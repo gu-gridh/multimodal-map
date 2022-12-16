@@ -1,0 +1,74 @@
+/* color palette from <https://github.com/vuejs/theme> */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.ol-zoom {
+  /* left: 33%; */
+  top: 2rem;
+}
+
+.ol-zoomslider {
+  /* left: 33%; */
+  top: 8rem !important;
+  --tw-bg-opacity: 1;
+  border: 0px solid rgb(13 148 136 / var(--tw-bg-opacity));
+  height: 250px;
+}
+
+.ol-full-screen {
+  top: 2rem;
+}
+
+.ol-zoom-in {
+  border-radius: 0.25rem 0.25rem 0 0 !important;
+}
+
+.ol-zoom-out {
+  border-radius: 0 0 0.25rem 0.25rem !important;
+}
+
+.ol-zoomslider-thumb {
+  width: 1.375em !important;
+}
+
+.ol-control button {
+  background-color: white;
+  color: darkslategray;
+  font-weight: 400;
+}
+
+.ol-control button:focus, .ol-control button:active, .ol-control button:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(13 148 136 / var(--tw-bg-opacity));
+  color: white;
+  font-weight: 400;
+}
+
+.ol-scale-line {
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.ol-scale-line-inner {
+  color: darkslategray;
+}
+
+.ol-overviewmap {
+  left: 0.5em !important;
+}
+
+.clickable {
+  pointer-events: all !important;
+}
+
+.non-clickable {
+  pointer-events: none !important;
+}
+
+.base-shadow {
+  --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color),
+    0 2px 4px -2px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
+    var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
