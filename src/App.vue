@@ -79,7 +79,10 @@ import type { Place, Name } from "./types/map";
 
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
-import { project as config } from "@/assets/project.json";
+
+const { config } = defineProps({
+  config: Object,
+});
 
 const store = mapStore();
 const { params, results } = storeToRefs(store);
