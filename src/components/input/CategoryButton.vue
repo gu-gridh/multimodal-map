@@ -1,7 +1,7 @@
 <template>
   <button
     class="clickable base-shadow category-button"
-    v-class="{ active: isActive }"
+    :class="{ active: isActive }"
     @click="toggle"
     v-html="text"
   ></button>
@@ -39,7 +39,7 @@ function toggle() {
   color: white;
 }
 
-.category-button:active {
+.category-button.active {
   background-color: #0d9488;
   color: white;
 }

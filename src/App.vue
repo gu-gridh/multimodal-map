@@ -13,6 +13,14 @@
         </div>
         <div class="filter-container">
           <area-search id="button-wrapper" class="clickable"></area-search>
+
+          <CategoryButtonList
+            :categories="['Streets', 'Buildings', 'Areas']"
+            class="my-2"
+          />
+
+          <RangeSlider :min="1700" :max="2022" :step="1" class="my-2" />
+
           <autocomplete-component
             placeholderText="Search..."
             noResultsText="No results found."
