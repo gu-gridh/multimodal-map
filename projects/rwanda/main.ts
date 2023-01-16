@@ -1,4 +1,4 @@
-import { project as config } from "./project.json"
 import create from "@/create"
+import App from "./App.vue";
 
-create({ config });
+create(App);

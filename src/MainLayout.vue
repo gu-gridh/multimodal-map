@@ -2,64 +2,77 @@
   <div class="map-container h-full">
     <div class="non-clickable absolute z-10 grid grid-cols-6 gap-4 mx-12 mt-8">
       <div class="col-span-2 flex flex-col divide-y">
-        <div class="px-8 py-6 bg-white rounded-t-lg shadow-lg">
-          <div
-            class="font-display text-5xl leading-tight"
-            v-html="config.name"
-          ></div>
-        </div>
-        <div class="px-8 py-6 bg-white rounded-b-lg shadow-lg">
-          <p class="text-gray-700 text-base" v-html="config.about"></p>
-        </div>
-        <div class="filter-container">
-          <area-search id="button-wrapper" class="clickable"></area-search>
-
-          <CategoryButtonList
-            :categories="['Streets', 'Buildings', 'Areas']"
-            class="my-2"
-          />
-
-          <RangeSlider :min="1700" :max="2022" :step="1" class="my-2" />
-
-          <autocomplete-component
-            placeholderText="Search..."
-            noResultsText="No results found."
-            :displayFunction="displayName"
-            :searchItems="searchText"
-          ></autocomplete-component>
-          <div class="clickable overflow-y-auto h-[600px]">
-            <map-card
-              v-for="result in results"
-              v-bind:key="result"
-              :place="result"
-              class="pb-5 rounded-lg"
-            >
-            </map-card>
+        <slot name="title">
+          <div class="px-8 py-6 bg-white rounded-t-lg shadow-lg">
+            <div
+              class="font-display text-5xl leading-tight"
+              v-html="config.name"
+            ></div>
           </div>
-        </div>
+        </slot>
+
+        <slot name="about">
+          <div class="px-8 py-6 bg-white rounded-b-lg shadow-lg">
+            <p class="text-gray-700 text-base" v-html="config.about"></p>
+          </div>
+        </slot>
+
+        <slot name="search">
+          <div class="filter-container">
+            <area-search id="button-wrapper" class="clickable"></area-search>
+
+            <CategoryButtonList
+              :categories="['Streets', 'Buildings', 'Areas']"
+              class="my-2"
+            />
+
+            <RangeSlider :min="1700" :max="2022" :step="1" class="my-2" />
+
+            <autocomplete-component
+              placeholderText="Search..."
+              noResultsText="No results found."
+              :displayFunction="displayName"
+              :searchItems="searchText"
+            ></autocomplete-component>
+            <div class="clickable overflow-y-auto h-[600px]">
+              <map-card
+                v-for="result in results"
+                v-bind:key="result"
+                :place="result"
+                class="pb-5 rounded-lg"
+              >
+              </map-card>
+            </div>
+          </div>
+        </slot>
       </div>
 
       <div class="col-start-6 col-span-1">
-        <div class="bg-white rounded-lg shadow-lgmb-4">
-          <div class="px-8 py-6">
-            <div>
-              Here you'll find more information and media on the selected
-              location.
+        <slot name="details">
+          <div class="bg-white rounded-lg shadow-lgmb-4">
+            <div class="px-8 py-6">
+              <div>
+                Here you'll find more information and media on the selected
+                location.
+              </div>
             </div>
           </div>
-        </div>
+        </slot>
       </div>
     </div>
-    <map-component
-      :urls="urls"
-      :center="[30.0636, -1.9567]"
-      :getFeatureDisplayName="getName"
-    ></map-component>
+
+    <slot name="background">
+      <map-component
+        :urls="urls"
+        :center="[30.0636, -1.9567]"
+        :getFeatureDisplayName="getName"
+      ></map-component>
+    </slot>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { ref, watch, inject } from "vue";
 import MapComponent from "./components/MapComponent.vue";
 import MapCard from "./components/MapCard.vue";
 import AreaSearch from "./components/AreaSearch.vue";
@@ -79,10 +92,9 @@ import type { Place, Name } from "./types/map";
 
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
+import type { Project } from "./types/project";
 
-const { config } = defineProps({
-  config: Object,
-});
+const config = inject<Project>("config");
 
 const store = mapStore();
 const { params, results } = storeToRefs(store);
