@@ -1,5 +1,5 @@
 <template>
-  <div class="category-button-list-container">
+  <div class="flex flex-wrap gap-2">
     <CategoryButton
       v-for="category in categories"
       v-bind:key="category"
@@ -16,8 +16,4 @@ defineProps<{
 }>();
 </script>
 
-<style scoped>
-.category-button-list-container {
-  display: flex;
-}
-</style>
+<style scoped></style>

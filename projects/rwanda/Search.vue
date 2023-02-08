@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 import AreaSearch from "@/components/AreaSearch.vue";
 import AutocompleteComponent from "@/components/input/AutocompleteComponent.vue";
 import CategoryButtonList from "@/components/input/CategoryButtonList.vue";

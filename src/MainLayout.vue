@@ -1,7 +1,7 @@
 <template>
   <div class="map-container h-full">
     <div class="non-clickable absolute z-10 grid grid-cols-6 gap-4 mx-12 mt-8">
-      <div class="col-span-2 flex flex-col divide-y">
+      <div class="col-span-2 flex flex-col">
         <slot name="title">
           <div class="px-8 py-6 bg-white rounded-t-lg shadow-lg">
             <div

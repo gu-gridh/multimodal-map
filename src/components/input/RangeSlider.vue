@@ -1,5 +1,5 @@
 <template>
-  <div class="range-slider-container">
+  <div class="range-slider-container bg-white rounded">
     <div class="start-end-box">{{ min }}</div>
     <div style="width: 70%" class="clickable range-slider-wrapper">
       <Slider
@@ -44,8 +44,6 @@ const selection = ref<Array<number>>([props.min, props.max]);
 }
 
 .start-end-box {
-  background-color: white;
-  border-radius: 5px;
   width: 15%;
   text-align: center;
   padding-top: 0.5rem;

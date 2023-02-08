@@ -1,6 +1,6 @@
 <template>
   <button
-    class="clickable base-shadow category-button"
+    class="p-1 px-2 clickable base-shadow category-button"
     :class="{ active: isActive }"
     @click="toggle"
     v-html="text"
@@ -25,12 +25,6 @@ function toggle() {
 .category-button {
   background-color: white;
   color: rgb(71, 85, 105);
-  padding-left: 1rem;
-  padding-right: 1rem;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-  margin-right: 0.5rem;
-  margin-left: 0.5rem;
   border-radius: 4px;
 }
 
