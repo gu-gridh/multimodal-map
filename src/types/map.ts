@@ -19,7 +19,7 @@ interface Item {
   name: string;
 }
 
-type DisplayFunction = (f: any) => string;
+type DisplayFunction = (f: Feature) => string;
 type TextSearchFunction = (query: string) => Promise<Array<any>>;
 
 interface PlaceType {

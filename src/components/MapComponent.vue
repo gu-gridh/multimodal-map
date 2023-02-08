@@ -110,16 +110,18 @@ import type Feature from "ol/Feature";
 import type Geometry from "ol/geom/Geometry";
 import type { SelectEvent } from "ol/interaction/Select";
 import type { DisplayFunction } from "../types/map";
+import type { Project } from "@/types/project";
+import { featureToItem } from "@/assets/utils";
 
 const format = inject("ol-format");
 const selectConditions = inject("ol-selectconditions");
+const config = inject("config") as Project;
 
 const store = mapStore();
 const { extent } = storeToRefs(store);
 const props = defineProps<{
   center: Array<number>;
   urls?: Array<string>;
-  getFeatureDisplayName: DisplayFunction;
 }>();
 
 // const center = ref([1331838.7808, 7907869.1983]);
@@ -201,6 +203,9 @@ const onClick = (event: SelectEvent) => {
     selectedFeature.value = undefined;
   }
 };
+
+const getFeatureDisplayName: DisplayFunction =
+  config.getFeatureDisplayName || ((feature) => String(feature.getId()));
 </script>
 
 <style>

@@ -35,11 +35,7 @@
     </div>
 
     <slot name="background">
-      <map-component
-        :urls="mapUrls"
-        :center="[30.0636, -1.9567]"
-        :getFeatureDisplayName="getName"
-      ></map-component>
+      <MapComponent :urls="mapUrls" :center="[30.0636, -1.9567]" />
     </slot>
   </div>
 </template>
@@ -56,18 +52,11 @@ import type { Place } from "./types/map";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
 import type { Project } from "./types/project";
-import { formatNames } from "./rwandaTmp";
 
 const config = inject<Project>("config");
 
 const store = mapStore();
 const { mapUrls } = storeToRefs(store);
-
-function getName(f: Feature<Geometry>): string {
-  const place = f.getProperties() as Place;
-
-  return formatNames(f.getId(), place.names);
-}
 </script>
 
 <style>
