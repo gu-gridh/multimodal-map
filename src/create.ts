@@ -1,4 +1,4 @@
-import { createApp } from "vue";
+import { createApp, type Component } from "vue";
 import { createPinia } from "pinia";
 
 import router from "@/router";
