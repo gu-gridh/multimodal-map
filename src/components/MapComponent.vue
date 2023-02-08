@@ -120,18 +120,17 @@ const config = inject("config") as Project;
 const store = mapStore();
 const { extent } = storeToRefs(store);
 const props = defineProps<{
-  center: Array<number>;
   urls?: Array<string>;
 }>();
 
 // const center = ref([1331838.7808, 7907869.1983]);
 const projection = ref("EPSG:3857");
-const zoom = ref(15);
+const zoom = ref(config.zoom);
 const rotation = ref(0);
 const view = ref();
 const map = ref();
 const source = ref();
-const projectedCenter = fromLonLat(props.center, projection.value);
+const projectedCenter = fromLonLat(config.center, projection.value);
 
 // Controls
 const fullscreencontrol = ref(true);

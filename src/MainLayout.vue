@@ -35,7 +35,7 @@
     </div>
 
     <slot name="background">
-      <MapComponent :urls="mapUrls" :center="[30.0636, -1.9567]" />
+      <MapComponent :urls="mapUrls" />
     </slot>
   </div>
 </template>
