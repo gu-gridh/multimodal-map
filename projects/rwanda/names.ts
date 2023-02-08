@@ -1,0 +1,1 @@
+export {formatNames} from "@/rwandaTmp"

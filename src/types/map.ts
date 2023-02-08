@@ -1,5 +1,9 @@
 import type Feature from "ol/Feature";
 import type Geometry from "ol/geom/Geometry";
+import type {
+  FeatureCollection as GeoJSONFeatureCollection,
+  Geometry as GeoJSONGeometry,
+} from "geojson";
 
 interface Marker {
   id: number | string;
@@ -64,6 +68,15 @@ interface Place {
   type: PlaceType;
 }
 
+interface Paginated {
+  count: number;
+  next: string | null;
+  previous: string | null;
+}
+
+type PaginatedFeatureCollection<P> = Paginated &
+  GeoJSONFeatureCollection<GeoJSONGeometry, P>;
+
 export type {
   Marker,
   Item,
@@ -74,4 +87,5 @@ export type {
   Name,
   Informant,
   Language,
+  PaginatedFeatureCollection,
 };

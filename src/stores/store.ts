@@ -9,12 +9,12 @@ interface MapParams {
   selectedId?: Array<number>;
 }
 
-
 export const mapStore = defineStore("map", () => {
   const item = ref<any | undefined>(undefined);
   const extent = ref<Array<number>>();
   const results = ref<Array<any>>();
   const params = ref<MapParams>({});
+  const mapUrls = ref<Array<string>>();
 
-  return { item, extent, params, results };
+  return { item, extent, params, results, mapUrls };
 });
