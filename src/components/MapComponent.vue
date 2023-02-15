@@ -180,7 +180,8 @@ const onClick = (event: SelectEvent) => {
 };
 
 const getFeatureDisplayName: DisplayFunction =
-  config.getFeatureDisplayName || ((feature) => String(feature.getId()));
+  config.getFeatureDisplayName ||
+  ((feature) => feature.get("name") || String(feature.getId()));
 </script>
 
 <style>
