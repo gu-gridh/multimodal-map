@@ -35,7 +35,7 @@
     </div>
 
     <slot name="background">
-      <MapComponent :urls="mapUrls" />
+      <MapComponent />
     </slot>
   </div>
 </template>
@@ -49,14 +49,9 @@ import type Geometry from "ol/geom/Geometry";
 
 import type { Place } from "./types/map";
 
-import { storeToRefs } from "pinia";
-import { mapStore } from "@/stores/store";
 import type { Project } from "./types/project";
 
 const config = inject<Project>("config");
-
-const store = mapStore();
-const { mapUrls } = storeToRefs(store);
 </script>
 
 <style>

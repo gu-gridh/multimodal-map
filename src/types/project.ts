@@ -4,6 +4,7 @@ interface Project {
   name: string;
   urls: Record<string, string>;
   about: string;
+  projection: string;
   center: [number, number];
   zoom: number;
   getFeatureDisplayName?: DisplayFunction;

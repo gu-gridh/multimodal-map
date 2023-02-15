@@ -34,23 +34,6 @@
 
     <slot name="layers"></slot>
 
-    <ol-vector-layer v-for="url in urls" v-bind:key="url">
-      <ol-source-vector
-        :url="url"
-        :format="GeoJSONFormat"
-        :projection="projection"
-        ref="source"
-      >
-      </ol-source-vector>
-      <ol-style>
-        <ol-style-circle :radius="10">
-          <ol-style-fill color="rgb(255,255,255,0.7)"></ol-style-fill>
-          <ol-style-stroke color="gray"></ol-style-stroke>
-        </ol-style-circle>
-        <ol-style-stroke color="gray" :width="7"></ol-style-stroke>
-      </ol-style>
-    </ol-vector-layer>
-
     <ol-interaction-select
       @select="onClick"
       :condition="selectCondition"
@@ -113,9 +96,7 @@ import type Geometry from "ol/geom/Geometry";
 import type { SelectEvent } from "ol/interaction/Select";
 import type { DisplayFunction } from "../types/map";
 import type { Project } from "@/types/project";
-import { featureToItem } from "@/assets/utils";
 
-const format = inject("ol-format");
 const selectConditions = inject("ol-selectconditions");
 const config = inject("config") as Project;
 
@@ -125,13 +106,11 @@ const props = defineProps<{
   urls?: Array<string>;
 }>();
 
-// const center = ref([1331838.7808, 7907869.1983]);
-const projection = ref("EPSG:3857");
+const projection = ref(config.projection);
 const zoom = ref(config.zoom);
 const rotation = ref(0);
 const view = ref();
 const map = ref();
-const source = ref();
 const projectedCenter = fromLonLat(config.center, projection.value);
 
 // Controls
@@ -154,11 +133,6 @@ const selectedFeature = ref<Feature<Geometry>>();
 
 const hoverCondition = selectConditions.pointerMove;
 const selectCondition = selectConditions.click;
-
-// GeoJSON formatting
-const GeoJSONFormat = new format.GeoJSON({
-  featureProjection: projection.value,
-});
 
 function zoomChanged() {
   let newExtent = map.value.map

@@ -30,7 +30,7 @@ const projection = getProjection("EPSG:25833");
   const capabilities = parser.read(response.data);
   options.value =
     optionsFromCapabilities(capabilities, {
-      layer: "Basisdata_NP_Ortofoto_Svalbard_WMTS_25833",
+      layer: capabilities.Contents.Layer[0].Identifier,
       projection,
     }) || undefined;
   console.log({
