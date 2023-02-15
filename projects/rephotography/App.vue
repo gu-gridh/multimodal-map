@@ -7,11 +7,9 @@
     <template #background>
       <MapComponent>
         <template #layers>
-          <ol-tile-layer>
-            <ol-source-xyz
-              url="https://dh.gu.se/tiles/imperium/{z}/{x}/{y}.png"
-            />
-          </ol-tile-layer>
+          <NpolarLayer
+            capabilitiesUrl="https://geodata.npolar.no/arcgis/rest/services/Basisdata/NP_Ortofoto_Svalbard_WMTS_25833/MapServer/WMTS/1.0.0/WMTSCapabilities.xml"
+          />
         </template>
       </MapComponent>
     </template>
@@ -24,6 +22,7 @@ import { project as config } from "./project.json";
 import MainLayout from "@/MainLayout.vue";
 import Search from "./Search.vue";
 import MapComponent from "@/components/MapComponent.vue";
+import NpolarLayer from "./NpolarLayer.vue";
 
 provide("config", config);
 </script>
