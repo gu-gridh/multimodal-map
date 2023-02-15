@@ -6,6 +6,7 @@ import { register } from "ol/proj/proj4";
 import { type Options, optionsFromCapabilities } from "ol/source/WMTS";
 import axios from "axios";
 import { WMTSCapabilities } from "ol/format";
+import SourceWMTSRephotography from "./SourceWMTSRephotography.vue";
 
 const props = defineProps({
   capabilitiesUrl: {
@@ -42,7 +43,7 @@ const projection = getProjection("EPSG:25833");
 
 <template>
   <ol-tile-layer v-if="options">
-    <ol-source-wmts
+    <SourceWMTSRephotography
       :urls="options.urls"
       :format="options.format"
       :layer="options.layer"
