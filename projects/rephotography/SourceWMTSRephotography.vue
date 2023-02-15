@@ -42,18 +42,7 @@ export default {
     const tileLayer = inject("tileLayer");
     const { properties } = usePropsAsObjectProperties(props);
 
-    const source = computed(
-      () =>
-        new WMTS({
-          ...properties,
-          projection:
-            typeof properties.projection == "string"
-              ? properties.projection
-              : new Projection({
-                  ...properties.projection,
-                }),
-        })
-    );
+    const source = computed(() => new WMTS(properties));
 
     watch(source, () => {
       tileLayer.value.setSource(source.value);
