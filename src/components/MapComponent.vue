@@ -32,6 +32,8 @@
       <ol-source-osm />
     </ol-tile-layer>
 
+    <slot name="layers"></slot>
+
     <ol-vector-layer v-for="url in urls" v-bind:key="url">
       <ol-source-vector
         :url="url"
