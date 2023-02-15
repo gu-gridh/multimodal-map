@@ -31,7 +31,7 @@
 
 <script lang="ts" setup>
 import { provide, inject } from "vue";
-import { project as config } from "./project.json";
+import config from "./project.json";
 import MainLayout from "@/MainLayout.vue";
 import Search from "./Search.vue";
 import MapComponent from "@/components/MapComponent.vue";
