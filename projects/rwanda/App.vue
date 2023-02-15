@@ -7,17 +7,24 @@
     <template #background>
       <MapComponent>
         <template #layers>
-          <ol-vector-layer v-for="url in mapUrls" v-bind:key="url">
-            <ol-source-vector :url="url" :format="GeoJSONFormat" ref="source">
-            </ol-source-vector>
-            <ol-style>
+          <DianaPlaceLayer
+            path="rwanda/geojson/place"
+            :params="{
+              has_no_name: false,
+              id__in: params.searchIds ? params.searchIds : '',
+              in_bbox:
+                params.bbox && !params.searchIds ? params.bbox.toString() : '',
+              page_size: 500,
+            }"
+          >
+            <template #style>
               <ol-style-circle :radius="10">
                 <ol-style-fill color="rgb(255,255,255,0.7)"></ol-style-fill>
                 <ol-style-stroke color="gray"></ol-style-stroke>
               </ol-style-circle>
               <ol-style-stroke color="gray" :width="7"></ol-style-stroke>
-            </ol-style>
-          </ol-vector-layer>
+            </template>
+          </DianaPlaceLayer>
         </template>
       </MapComponent>
     </template>
@@ -36,6 +43,7 @@ import type { Place } from "@/types/map";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
 import MapComponent from "@/components/MapComponent.vue";
+import DianaPlaceLayer from "@/components/DianaPlaceLayer.vue";
 
 function getName(f: Feature): string {
   const place = f.getProperties() as Place;
@@ -47,7 +55,7 @@ config.getFeatureDisplayName = getName;
 provide("config", config);
 
 const store = mapStore();
-const { mapUrls } = storeToRefs(store);
+const { params } = storeToRefs(store);
 
 // GeoJSON formatting
 const format = inject("ol-format");
