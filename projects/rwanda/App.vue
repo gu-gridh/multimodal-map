@@ -17,13 +17,15 @@
               page_size: 500,
             }"
           >
-            <template #style>
+            <ol-style>
               <ol-style-circle :radius="10">
                 <ol-style-fill color="rgb(255,255,255,0.7)"></ol-style-fill>
                 <ol-style-stroke color="gray"></ol-style-stroke>
               </ol-style-circle>
               <ol-style-stroke color="gray" :width="7"></ol-style-stroke>
-            </template>
+            </ol-style>
+
+            <FeatureSelection />
           </DianaPlaceLayer>
         </template>
       </MapComponent>
@@ -44,6 +46,7 @@ import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
 import MapComponent from "@/components/MapComponent.vue";
 import DianaPlaceLayer from "@/components/DianaPlaceLayer.vue";
+import FeatureSelection from "@/components/FeatureSelection.vue";
 
 function getName(f: Feature): string {
   const place = f.getProperties() as Place;
