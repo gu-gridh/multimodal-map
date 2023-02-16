@@ -23,6 +23,10 @@
         </template>
       </MapComponent>
     </template>
+
+    <template #details>
+      <PlaceDetails />
+    </template>
   </MainLayout>
 </template>
 
@@ -35,6 +39,7 @@ import MapComponent from "@/components/MapComponent.vue";
 import NpolarLayer from "./NpolarLayer.vue";
 import DianaPlaceLayer from "@/components/DianaPlaceLayer.vue";
 import FeatureSelection from "@/components/FeatureSelection.vue";
+import PlaceDetails from "./PlaceDetails.vue";
 
 provide("config", config);
 </script>

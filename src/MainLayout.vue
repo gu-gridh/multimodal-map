@@ -20,9 +20,9 @@
         <slot name="search"></slot>
       </div>
 
-      <div class="col-start-6 col-span-1">
-        <slot name="details">
-          <div class="bg-white rounded-lg shadow-lgmb-4">
+      <slot name="details">
+        <div class="col-start-6 col-span-1">
+          <div class="bg-white rounded-lg shadow-lg mb-4">
             <div class="px-8 py-6">
               <div>
                 Here you'll find more information and media on the selected
@@ -30,8 +30,8 @@
               </div>
             </div>
           </div>
-        </slot>
-      </div>
+        </div>
+      </slot>
     </div>
 
     <slot name="background">
