@@ -1,18 +1,20 @@
 <script lang="ts" setup>
 import { ref, inject } from "vue";
 import type Feature from "ol/Feature";
-import type Geometry from "ol/geom/Geometry";
 import type { SelectEvent } from "ol/interaction/Select";
 import type { DisplayFunction } from "@/types/map";
 import type { Project } from "@/types/project";
+import { storeToRefs } from "pinia";
+import { mapStore } from "@/stores/store";
+
+const { selectedFeature } = storeToRefs(mapStore());
 
 const config = inject("config") as Project;
 
 const selectedCoordinates = ref();
 const hoverCoordinates = ref();
 
-const hoveredFeature = ref<Feature<Geometry>>();
-const selectedFeature = ref<Feature<Geometry>>();
+const hoveredFeature = ref<Feature>();
 
 const selectConditions = inject("ol-selectconditions");
 const hoverCondition = selectConditions.pointerMove;

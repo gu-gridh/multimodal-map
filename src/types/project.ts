@@ -5,7 +5,7 @@ interface Project {
   urls: Record<string, string>;
   about: string;
   projection: string;
-  center: [number, number];
+  center: [number, number] | number[];
   zoom: number;
   getFeatureDisplayName?: DisplayFunction;
 }

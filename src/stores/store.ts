@@ -1,20 +1,18 @@
-import { ref, computed } from "vue";
+import { ref } from "vue";
 import { defineStore } from "pinia";
-import type { Item } from "../types/map";
-import type { Ref } from "vue";
+import type Feature from "ol/Feature";
 
 interface MapParams {
   bbox?: Array<number>;
   searchIds?: Array<number>;
-  selectedId?: Array<number>;
 }
 
 export const mapStore = defineStore("map", () => {
-  const item = ref<any | undefined>(undefined);
   const extent = ref<Array<number>>();
+  const selectedFeature = ref<Feature>();
   const results = ref<Array<any>>();
   const params = ref<MapParams>({});
   const mapUrls = ref<Array<string>>();
 
-  return { item, extent, params, results, mapUrls };
+  return { extent, selectedFeature, params, results, mapUrls };
 });
