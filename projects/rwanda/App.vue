@@ -41,12 +41,12 @@ import Search from "./Search.vue";
 import type { Project } from "@/types/project";
 import { formatNames } from "./names";
 import type Feature from "ol/Feature";
-import type { Place } from "@/types/map";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
 import MapComponent from "@/components/MapComponent.vue";
 import DianaPlaceLayer from "@/components/DianaPlaceLayer.vue";
 import FeatureSelection from "@/components/FeatureSelection.vue";
+import type { Place } from "./types";
 
 function getName(f: Feature): string {
   const place = f.getProperties() as Place;

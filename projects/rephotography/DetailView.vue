@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ref, watchEffect } from "vue";
+import { inject, ref, watchEffect } from "vue";
 import axios from "axios";
 import type { Image } from "./types";
+import type { DianaClient } from "@/assets/diana";
 
 const props = defineProps({
   type: {
@@ -10,17 +11,15 @@ const props = defineProps({
   },
   id: {
     type: [String, Number],
-    require: true,
+    required: true,
   },
 });
 
+const diana = inject("diana") as DianaClient;
 const object = ref<Image>();
 
 watchEffect(async () => {
-  const response = await axios.get(
-    `https://diana.dh.gu.se/api/rephotography/${props.type}/${props.id}`
-  );
-  object.value = response.data;
+  object.value = await diana.get(props.type, props.id);
 });
 </script>
 

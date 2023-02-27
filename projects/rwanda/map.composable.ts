@@ -1,9 +1,10 @@
 import { inject, watch } from "vue";
-import type { PaginatedFeatureCollection, Place } from "@/types/map";
+import type { MapResponse } from "@/types/diana";
 import axios from "axios";
 import type { Project } from "@/types/project";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
+import type { Place } from "./types";
 
 export function useRwandaMap() {
   const config = inject("config") as Project;
@@ -15,7 +16,7 @@ export function useRwandaMap() {
       return new Promise<Array<Place>>(() => [] as Array<Place>);
     } else {
       return axios
-        .get<PaginatedFeatureCollection<Place>>(
+        .get<MapResponse<Place>>(
           `${config.urls.baseURL}/${config.urls.place}`,
           { params: { search: query } }
         )
@@ -43,7 +44,7 @@ export function useRwandaMap() {
         page_size: 500,
       };
       axios
-        .get<PaginatedFeatureCollection<Place>>(
+        .get<MapResponse<Place>>(
           `${config.urls.baseURL}/${config.urls.place}`,
           {
             params: searchParams,

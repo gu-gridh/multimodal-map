@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { DIANA_BASE } from "@/assets/diana";
 import { computed, inject } from "vue";
 
 const props = defineProps({
@@ -15,10 +16,9 @@ const props = defineProps({
 const format = inject("ol-format");
 const geoJsonFormat = new format.GeoJSON();
 
-const urlBase = "https://diana.dh.gu.se/api/";
 const url = computed(
   () =>
-    urlBase + props.path + "?" + new URLSearchParams(props.params).toString()
+    DIANA_BASE + props.path + "?" + new URLSearchParams(props.params).toString()
 );
 </script>
 

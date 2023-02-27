@@ -80,7 +80,7 @@
 
 <script setup lang="ts">
 import { ref, watch } from "vue";
-import type { TextSearchFunction, DisplayFunction } from "../../types/map";
+import type { TextSearchFunction, DisplayFunction } from "../../types/diana";
 
 import {
   Combobox,

@@ -1,4 +1,4 @@
-import type { DisplayFunction } from "./map";
+import type { DisplayFunction } from "./diana";
 
 interface Project {
   name: string;

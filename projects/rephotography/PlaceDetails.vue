@@ -1,21 +1,23 @@
 <script lang="ts" setup>
-import { watchEffect, ref } from "vue";
+import { watchEffect, ref, inject } from "vue";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
 import axios from "axios";
 import type { Image } from "./types";
+import type { DianaClient } from "@/assets/diana";
 
 const { selectedFeature } = storeToRefs(mapStore());
 
 const objects = ref<Array<Image | any>>();
 
+const diana = inject("diana") as DianaClient;
+
 watchEffect(async () => {
   if (selectedFeature.value) {
-    const response = await axios.get(
-      "https://diana.dh.gu.se/api/rephotography/image/?place=" +
-        selectedFeature.value.get("comment")
-    );
-    objects.value = response.data.results;
+    const response = await diana?.list("image", {
+      place: selectedFeature.value.get("comment"),
+    });
+    objects.value = response.results;
   } else {
     objects.value = [];
   }

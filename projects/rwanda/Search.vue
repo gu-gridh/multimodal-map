@@ -3,12 +3,12 @@ import AreaSearch from "@/components/AreaSearch.vue";
 import AutocompleteComponent from "@/components/input/AutocompleteComponent.vue";
 import CategoryButtonList from "@/components/input/CategoryButtonList.vue";
 import RangeSlider from "@/components/input/RangeSlider.vue";
-import MapCard from "@/components/MapCard.vue";
+import MapCard from "./MapCard.vue";
 import { mapStore } from "@/stores/store";
-import type { Place } from "@/types/map";
 import { storeToRefs } from "pinia";
 import { useRwandaMap } from "./map.composable";
 import { formatNames } from "./names";
+import type { Place } from "./types";
 
 const { searchText } = useRwandaMap();
 const store = mapStore();

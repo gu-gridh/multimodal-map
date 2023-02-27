@@ -1,4 +1,4 @@
-import type { Name } from "@/types/map";
+import type { Name } from "./types";
 
 export function formatNames(
   id: number | undefined | string,

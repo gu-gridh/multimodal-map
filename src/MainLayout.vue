@@ -43,12 +43,6 @@
 <script setup lang="ts">
 import { inject } from "vue";
 import MapComponent from "./components/MapComponent.vue";
-
-import type Feature from "ol/Feature";
-import type Geometry from "ol/geom/Geometry";
-
-import type { Place } from "./types/map";
-
 import type { Project } from "./types/project";
 
 const config = inject<Project>("config");

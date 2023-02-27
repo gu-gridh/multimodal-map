@@ -2,7 +2,7 @@
 import { ref, inject } from "vue";
 import type Feature from "ol/Feature";
 import type { SelectEvent } from "ol/interaction/Select";
-import type { DisplayFunction } from "@/types/map";
+import type { DisplayFunction } from "@/types/diana";
 import type { Project } from "@/types/project";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
