@@ -27,9 +27,16 @@ watchEffect(async () => {
       <div class="px-8 py-6">
         <h3 class="font-bold">{{ selectedFeature.get("name") }}</h3>
 
-        <div v-for="object in objects" :key="object.uuid">
-          <img :src="`${object.iiif_file}/full/380,/0/default.jpg`" />
-        </div>
+        <router-link
+          v-for="object in objects"
+          :key="object.uuid"
+          :to="`/detail/image/${object.uuid}`"
+          class="clickable"
+        >
+          <div>
+            <img :src="`${object.iiif_file}/full/380,/0/default.jpg`" />
+          </div>
+        </router-link>
       </div>
     </div>
   </div>
