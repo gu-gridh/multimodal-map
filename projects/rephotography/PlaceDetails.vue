@@ -22,16 +22,13 @@ watchEffect(async () => {
 </script>
 
 <template>
-  <div v-if="selectedFeature" class="col-start-6 col-span-1">
+  <div v-if="selectedFeature" class="col-start-5 col-span-2">
     <div class="bg-white rounded-lg shadow-lg mb-4">
       <div class="px-8 py-6">
         <h3 class="font-bold">{{ selectedFeature.get("name") }}</h3>
 
         <div v-for="object in objects" :key="object.uuid">
-          <img
-            :src="`${object.iiif_file}/full/180,/0/default.jpg`"
-            width="100"
-          />
+          <img :src="`${object.iiif_file}/full/380,/0/default.jpg`" />
         </div>
       </div>
     </div>
