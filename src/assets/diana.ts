@@ -18,6 +18,19 @@ export class DianaClient {
     return response.data;
   }
 
+  async listAll<T>(
+    type: string,
+    params?: Record<any, any>,
+    limit = 500
+  ): Promise<T[]> {
+    params = { ...params, limit };
+    const response = await axios.get<ListResponse<T>>(
+      DIANA_BASE + `${this.project}/${type}`,
+      { params }
+    );
+    return response.data.results;
+  }
+
   async map<T>(type: string, params?: object): Promise<MapResponse<T>> {
     const response = await axios.get<MapResponse<T>>(
       DIANA_BASE + `${this.project}/${type}`,

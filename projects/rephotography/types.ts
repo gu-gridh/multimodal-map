@@ -1,4 +1,4 @@
-export interface Image {
+export type Image = {
   published: boolean;
   uuid: string;
   file: string;
@@ -10,4 +10,10 @@ export interface Image {
   date: string;
   focus: number;
   tag: number[];
-}
+};
+
+export type Rephotography = {
+  published: boolean;
+  old_image: number;
+  new_image: number;
+};
