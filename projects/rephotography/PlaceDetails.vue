@@ -3,10 +3,11 @@ import { watchEffect, ref } from "vue";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
 import axios from "axios";
+import type { Image } from "./types";
 
 const { selectedFeature } = storeToRefs(mapStore());
 
-const objects = ref();
+const objects = ref<Array<Image | any>>();
 
 watchEffect(async () => {
   if (selectedFeature.value) {
@@ -30,11 +31,14 @@ watchEffect(async () => {
         <router-link
           v-for="object in objects"
           :key="object.uuid"
-          :to="`/detail/image/${object.uuid}`"
+          :to="`/detail/image/1`"
           class="clickable"
         >
           <div>
             <img :src="`${object.iiif_file}/full/380,/0/default.jpg`" />
+            <div>{{ object.title }}</div>
+            <div>{{ object.description }}</div>
+            <div>{{ object.date }}</div>
           </div>
         </router-link>
       </div>
