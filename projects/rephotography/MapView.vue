@@ -6,6 +6,10 @@ import NpolarLayer from "./NpolarLayer.vue";
 import DianaPlaceLayer from "@/components/DianaPlaceLayer.vue";
 import FeatureSelection from "@/components/FeatureSelection.vue";
 import PlaceDetails from "./PlaceDetails.vue";
+import { storeToRefs } from "pinia";
+import { rephotographyStore } from "./store";
+
+const { categories } = storeToRefs(rephotographyStore());
 </script>
 
 <template>
@@ -21,7 +25,10 @@ import PlaceDetails from "./PlaceDetails.vue";
             capabilitiesUrl="https://geodata.npolar.no/arcgis/rest/services/Basisdata/NP_Ortofoto_Svalbard_WMTS_25833/MapServer/WMTS/1.0.0/WMTSCapabilities.xml"
           />
 
-          <DianaPlaceLayer path="rephotography/geojson/place">
+          <DianaPlaceLayer
+            path="rephotography/geojson/place"
+            :params="{ type: categories.join(',') }"
+          >
             <ol-style>
               <ol-style-circle :radius="10">
                 <ol-style-fill color="rgb(232 157 59)" />

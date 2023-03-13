@@ -1,23 +1,22 @@
 <template>
   <button
     class="p-1 px-2 clickable base-shadow category-button"
-    :class="{ active: isActive }"
+    :class="{ active: value }"
     @click="toggle"
     v-html="text"
   ></button>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-
 defineProps<{
   text: string;
+  value: boolean;
 }>();
 
-const isActive = ref<boolean>(false);
+const emit = defineEmits(["toggle"]);
 
 function toggle() {
-  isActive.value = !isActive.value;
+  emit("toggle");
 }
 </script>
 

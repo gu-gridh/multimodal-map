@@ -24,7 +24,11 @@ function displayName(p: Place): string {
     <AreaSearch id="button-wrapper" class="clickable" />
 
     <CategoryButtonList
-      :categories="['Streets', 'Buildings', 'Areas']"
+      :categories="{
+        Streets: 'Streets',
+        Buildings: 'Buildings',
+        Areas: 'Areas',
+      }"
       class="my-2"
     />
 
