@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { inject, ref, watchEffect } from "vue";
-import axios from "axios";
 import type { Image } from "./types";
 import type { DianaClient } from "@/assets/diana";
 
@@ -25,9 +24,15 @@ watchEffect(async () => {
 
 <template>
   <article v-if="object">
-    <section>
+    <section class="illustration">
       <img :src="`${object.iiif_file}/full/800,/0/default.jpg`" />
     </section>
     <h1>{{ object.title }}</h1>
   </article>
 </template>
+
+<style scoped>
+.illustration {
+  min-height: 70vh;
+}
+</style>
