@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { provide } from "vue";
-import config from "./project.json";
+import config from "./config";
 import { DianaClient } from "@/assets/diana";
 
 const endpoint = new DianaClient("rephotography");

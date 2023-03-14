@@ -1,3 +1,9 @@
+import type { Project } from "@/types/project";
+
+export type RephotographyProject = Project & {
+  timeRange: [number, number];
+};
+
 export type Image = {
   published: boolean;
   uuid: string;

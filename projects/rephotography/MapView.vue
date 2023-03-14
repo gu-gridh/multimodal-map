@@ -8,8 +8,15 @@ import FeatureSelection from "@/components/FeatureSelection.vue";
 import PlaceDetails from "./PlaceDetails.vue";
 import { storeToRefs } from "pinia";
 import { rephotographyStore } from "./store";
+import { computed } from "vue";
 
-const { categories } = storeToRefs(rephotographyStore());
+const { categories, years } = storeToRefs(rephotographyStore());
+
+const placeParams = computed(() => ({
+  type: categories.value.join(","),
+  start_date: years.value[0],
+  end_date: years.value[1],
+}));
 </script>
 
 <template>
@@ -27,7 +34,7 @@ const { categories } = storeToRefs(rephotographyStore());
 
           <DianaPlaceLayer
             path="rephotography/geojson/place"
-            :params="{ type: categories.join(',') }"
+            :params="placeParams"
           >
             <ol-style>
               <ol-style-circle :radius="10">

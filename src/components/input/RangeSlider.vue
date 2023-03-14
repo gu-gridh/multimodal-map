@@ -17,7 +17,7 @@
 
 <script setup lang="ts">
 import Slider from "@vueform/slider";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 
 const props = defineProps<{
   range?: Array<number>;
@@ -26,7 +26,13 @@ const props = defineProps<{
   step: number;
 }>();
 
+const emit = defineEmits(["change"]);
+
 const selection = ref<Array<number>>([props.min, props.max]);
+
+watch(selection, () => {
+  emit("change", selection.value);
+});
 </script>
 
 <style src="@vueform/slider/themes/default.css"></style>
