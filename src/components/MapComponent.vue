@@ -37,7 +37,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject, defineProps } from "vue";
+import { ref, inject } from "vue";
 import { fromLonLat, transformExtent } from "ol/proj";
 import { mapStore } from "@/stores/store";
 import { storeToRefs } from "pinia";

@@ -22,6 +22,7 @@ function setCategories(keys: string[]) {
   <CategoryButtonList
     :categories="CATEGORIES"
     class="my-2"
+    :limit="1"
     @change="setCategories"
   />
 

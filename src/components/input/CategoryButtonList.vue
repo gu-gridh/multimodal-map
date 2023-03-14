@@ -14,8 +14,9 @@
 import { ref } from "vue";
 import CategoryButton from "./CategoryButton.vue";
 
-defineProps<{
+const props = defineProps<{
   categories: Record<string, string>;
+  limit?: 1;
 }>();
 
 const emit = defineEmits(["change"]);
@@ -25,6 +26,8 @@ const values = ref<Record<string, boolean>>({});
 function toggle(key: string) {
   if (values.value[key]) {
     delete values.value[key];
+  } else if (props.limit === 1) {
+    values.value = { [key]: true };
   } else {
     values.value[key] = true;
   }
