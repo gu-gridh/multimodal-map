@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { computed } from "vue";
 import MainLayout from "@/MainLayout.vue";
 import Search from "./Search.vue";
 import MapComponent from "@/components/MapComponent.vue";
@@ -8,15 +9,17 @@ import FeatureSelection from "@/components/FeatureSelection.vue";
 import PlaceDetails from "./PlaceDetails.vue";
 import { storeToRefs } from "pinia";
 import { rephotographyStore } from "./store";
-import { computed } from "vue";
+import { clean } from "@/assets/utils";
 
 const { categories, years } = storeToRefs(rephotographyStore());
 
-const placeParams = computed(() => ({
-  type: categories.value.join(","),
-  start_date: years.value[0],
-  end_date: years.value[1],
-}));
+const placeParams = computed(() =>
+  clean({
+    type: categories.value.join(","),
+    start_date: years.value[0],
+    end_date: years.value[1],
+  })
+);
 </script>
 
 <template>
