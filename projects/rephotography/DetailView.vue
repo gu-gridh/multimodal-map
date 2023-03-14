@@ -2,6 +2,8 @@
 import { inject, ref, watchEffect } from "vue";
 import type { Image } from "./types";
 import type { DianaClient } from "@/assets/diana";
+import ObjectImage from "./ObjectImage.vue";
+import ObjectRephotography from "./ObjectRephotography.vue";
 
 const props = defineProps({
   type: {
@@ -19,20 +21,17 @@ const object = ref<Image>();
 
 watchEffect(async () => {
   object.value = await diana.get(props.type, props.id);
+  console.log(object.value);
 });
+
+const objectComponent = {
+  image: ObjectImage,
+  rephotography: ObjectRephotography,
+}[props.type];
 </script>
 
 <template>
   <article v-if="object">
-    <section class="illustration">
-      <img :src="`${object.iiif_file}/full/800,/0/default.jpg`" />
-    </section>
-    <h1>{{ object.title }}</h1>
+    <component :is="objectComponent" :object="object" :id="id" />
   </article>
 </template>
-
-<style scoped>
-.illustration {
-  min-height: 70vh;
-}
-</style>
