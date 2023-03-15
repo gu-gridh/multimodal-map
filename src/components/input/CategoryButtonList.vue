@@ -4,34 +4,33 @@
       v-for="(label, key) in categories"
       :key="key"
       :text="label"
-      :value="!!values[key]"
+      :value="!!modelValue.includes(key)"
       @toggle="toggle(key)"
     />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
 import CategoryButton from "./CategoryButton.vue";
 
 const props = defineProps<{
+  modelValue: string[];
   categories: Record<string, string>;
   limit?: 1;
 }>();
 
-const emit = defineEmits(["change"]);
-
-const values = ref<Record<string, boolean>>({});
+const emit = defineEmits(["update:modelValue"]);
 
 function toggle(key: string) {
-  if (values.value[key]) {
-    delete values.value[key];
+  let newValue = [...props.modelValue];
+  if (newValue.includes(key)) {
+    newValue.splice(newValue.indexOf(key), 1);
   } else if (props.limit === 1) {
-    values.value = { [key]: true };
+    newValue = [key];
   } else {
-    values.value[key] = true;
+    newValue.push(key);
   }
-  emit("change", Object.keys(values.value));
+  emit("update:modelValue", newValue);
 }
 </script>
 

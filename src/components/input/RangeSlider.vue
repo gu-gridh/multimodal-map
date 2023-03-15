@@ -20,18 +20,18 @@ import Slider from "@vueform/slider";
 import { ref, watch } from "vue";
 
 const props = defineProps<{
-  range?: Array<number>;
+  modelValue: [number, number];
   min: number;
   max: number;
   step: number;
 }>();
 
-const emit = defineEmits(["change"]);
+const emit = defineEmits(["update:modelValue"]);
 
-const selection = ref<Array<number>>([props.min, props.max]);
+const selection = ref<[number, number]>(props.modelValue);
 
 watch(selection, () => {
-  emit("change", selection.value);
+  emit("update:modelValue", selection.value);
 });
 </script>
 
