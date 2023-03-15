@@ -1,23 +1,30 @@
 <script setup lang="ts">
+import DetailPage from "@/components/DetailPage.vue";
 import OpenSeadragon from "@/components/OpenSeadragon.vue";
+import type { ImageDeep } from "./types";
 
-defineProps({
-  object: {
-    type: Object,
-    required: true,
-  },
-  id: {
-    type: Number,
-    required: true,
-  },
-});
+defineProps<{
+  object: ImageDeep;
+  id: Number;
+}>();
 </script>
 
 <template>
   <section class="illustration flex">
     <OpenSeadragon :src="`${object.iiif_file}/info.json`" class="flex-1" />
   </section>
-  <h1>{{ object.title }}</h1>
+
+  <DetailPage :title="object.title" back="/">
+    <p class="my-2">{{ object.description }}</p>
+    <div>By: {{ object.creator.name }}</div>
+    <div>At: {{ object.place.description }}</div>
+    <div>On: {{ object.date }}</div>
+    <div>Focus: {{ object.focus.text }}</div>
+    <div>
+      Tags:
+      {{ object.tag.map((tag) => tag.text).join(", ") }}
+    </div>
+  </DetailPage>
 </template>
 
 <style scoped>
