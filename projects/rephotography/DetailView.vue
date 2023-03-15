@@ -32,6 +32,6 @@ const objectComponent = {
 
 <template>
   <article v-if="object">
-    <component :is="objectComponent" :object="object" :id="id" />
+    <component :is="objectComponent" :object="object" :id="Number(id)" />
   </article>
 </template>
