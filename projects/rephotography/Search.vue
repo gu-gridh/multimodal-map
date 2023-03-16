@@ -31,6 +31,7 @@ const YEARS = {
   />
 
   <RangeSlider
+    v-if="categories.length"
     v-model="years"
     :min="YEARS.MIN"
     :max="YEARS.MAX"
