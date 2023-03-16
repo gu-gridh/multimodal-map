@@ -80,7 +80,7 @@
 
 <script setup lang="ts">
 import { ref, watch } from "vue";
-import type { TextSearchFunction, DisplayFunction } from "../../types/diana";
+import type { TextSearchFunction } from "../../types/diana";
 
 import {
   Combobox,
@@ -98,7 +98,7 @@ import {
 
 const props = defineProps<{
   searchItems: TextSearchFunction;
-  displayFunction: DisplayFunction;
+  displayFunction: (item: any) => string;
   placeholderText: string;
   noResultsText: string;
 }>();

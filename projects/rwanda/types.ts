@@ -1,3 +1,5 @@
+import type { Feature } from "geojson";
+
 interface PlaceType {
   id?: number;
   created_at: string;

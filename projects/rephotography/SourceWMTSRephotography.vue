@@ -3,16 +3,21 @@
 </template>
 
 <script lang="ts">
-/** A copy of SourceWMTS from vue3-openlayers but can handle custom projection. */
-import WMTS from "ol/source/WMTS";
+/**
+ * A copy of SourceWMTS from vue3-openlayers but can handle custom projection.
+ * See https://github.com/MelihAltintas/vue3-openlayers/issues/134
+ */
+
+import WMTS, { type Options } from "ol/source/WMTS";
 import Projection from "ol/proj/Projection";
 import WMTSTileGrid from "ol/tilegrid/WMTS";
 import { get as getProjection } from "ol/proj";
 import { getTopLeft, getWidth } from "ol/extent";
-import { inject, onMounted, onUnmounted, watch, computed } from "vue";
+import { inject, onMounted, onUnmounted, watch, computed, type Ref } from "vue";
 import { toRefs, reactive } from "vue";
+import type TileLayer from "ol/layer/Tile";
 
-function usePropsAsObjectProperties(props, ignoredKeys = []) {
+function usePropsAsObjectProperties(props: any, ignoredKeys: string[] = []) {
   let options = toRefs(props);
   Object.keys(options).forEach((key) => {
     options[key] = options[key].value;
@@ -38,11 +43,11 @@ function usePropsAsObjectProperties(props, ignoredKeys = []) {
 
 export default {
   name: "ol-source-wmts",
-  setup(props) {
-    const tileLayer = inject("tileLayer");
+  setup(props: any) {
+    const tileLayer = inject("tileLayer") as Ref<TileLayer<any>>;
     const { properties } = usePropsAsObjectProperties(props);
 
-    const source = computed(() => new WMTS(properties));
+    const source = computed(() => new WMTS(properties as any));
 
     watch(source, () => {
       tileLayer.value.setSource(source.value);

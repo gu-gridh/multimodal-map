@@ -3,7 +3,7 @@
     <div class="non-clickable absolute z-10 grid grid-cols-6 gap-4 mx-12 mt-8">
       <div class="col-span-2 flex flex-col">
         <slot name="title">
-          <div class="px-8 py-6 bg-white rounded-t-lg shadow-lg">
+          <div v-if="config" class="px-8 py-6 bg-white rounded-t-lg shadow-lg">
             <div
               class="font-display text-5xl leading-tight"
               v-html="config.name"
@@ -12,7 +12,7 @@
         </slot>
 
         <slot name="about">
-          <div class="px-8 py-6 bg-white rounded-b-lg shadow-lg">
+          <div v-if="config" class="px-8 py-6 bg-white rounded-b-lg shadow-lg">
             <p class="text-gray-700 text-base" v-html="config.about"></p>
           </div>
         </slot>

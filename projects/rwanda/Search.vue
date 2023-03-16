@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import AreaSearch from "@/components/AreaSearch.vue";
 import AutocompleteComponent from "@/components/input/AutocompleteComponent.vue";
-import CategoryButtonList from "@/components/input/CategoryButtonList.vue";
-import RangeSlider from "@/components/input/RangeSlider.vue";
 import MapCard from "./MapCard.vue";
 import { mapStore } from "@/stores/store";
 import { storeToRefs } from "pinia";
@@ -22,17 +20,6 @@ function displayName(p: Place): string {
 <template>
   <div class="filter-container">
     <AreaSearch id="button-wrapper" class="clickable" />
-
-    <CategoryButtonList
-      :categories="{
-        Streets: 'Streets',
-        Buildings: 'Buildings',
-        Areas: 'Areas',
-      }"
-      class="my-2"
-    />
-
-    <RangeSlider :min="1700" :max="2022" :step="1" class="my-2" />
 
     <AutocompleteComponent
       placeholderText="Search..."

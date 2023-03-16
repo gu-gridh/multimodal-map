@@ -93,7 +93,7 @@ const getFeatureDisplayName: DisplayFunction =
   >
     <div
       class="ol-popup-content"
-      v-html="getFeatureDisplayName(selectedFeature)"
+      v-html="getFeatureDisplayName(selectedFeature as Feature)"
     ></div>
   </ol-overlay>
 </template>
