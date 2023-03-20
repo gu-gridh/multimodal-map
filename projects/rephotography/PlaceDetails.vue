@@ -28,7 +28,7 @@ watchEffect(async () => {
 
 <template>
   <div v-if="selectedFeature" class="col-start-5 col-span-2">
-    <div class="bg-white rounded-lg shadow-lg mb-4">
+    <div class="detail-view">
       <div class="px-8 py-6">
         <h3 class="font-bold">{{ selectedFeature.get("name") }}</h3>
         <div class="flex flex-col gap-2">

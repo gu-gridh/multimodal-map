@@ -56,3 +56,23 @@ const placeParams = computed(() =>
     </template>
   </MainLayout>
 </template>
+
+<style>
+#app .ol-popup {
+  font-size: 1.2em;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  text-align: center;
+  position: absolute;
+  background-color: white;
+  box-shadow: 2 2px 8px rgba(0, 0, 0, 0.5);
+  padding: 3px;
+  border-radius: 5px;
+  border: 0px solid #cccccc;
+  bottom: 25px;
+  left: -50px;
+  min-width: 100px;
+  }
+
+  </style>
