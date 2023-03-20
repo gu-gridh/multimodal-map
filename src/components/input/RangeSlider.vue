@@ -1,5 +1,5 @@
 <template>
-  <div class="range-slider-container">
+  <div class="range-slider-container bg-white rounded">
     <div class="start-end-box">{{ min }}</div>
     <div style="width: 70%" class="clickable range-slider-wrapper">
       <Slider
@@ -17,16 +17,22 @@
 
 <script setup lang="ts">
 import Slider from "@vueform/slider";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 
 const props = defineProps<{
-  range?: Array<number>;
+  modelValue: [number, number];
   min: number;
   max: number;
   step: number;
 }>();
 
-const selection = ref<Array<number>>([props.min, props.max]);
+const emit = defineEmits(["update:modelValue"]);
+
+const selection = ref<[number, number]>(props.modelValue);
+
+watch(selection, () => {
+  emit("update:modelValue", selection.value);
+});
 </script>
 
 <style src="@vueform/slider/themes/default.css"></style>
@@ -44,8 +50,6 @@ const selection = ref<Array<number>>([props.min, props.max]);
 }
 
 .start-end-box {
-  background-color: white;
-  border-radius: 5px;
   width: 15%;
   text-align: center;
   padding-top: 0.5rem;

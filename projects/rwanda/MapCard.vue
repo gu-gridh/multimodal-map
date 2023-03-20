@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Place } from "../types/map";
+import type { Place } from "./types";
 
 defineProps<{
   place: Place;

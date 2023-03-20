@@ -1,22 +1,4 @@
-import type Feature from "ol/Feature";
-import type Geometry from "ol/geom/Geometry";
-
-interface Marker {
-  id: number | string;
-  coordinates: [number, number];
-  tooltip: string;
-  features: {
-    name: string;
-  };
-}
-
-interface Item {
-  id: number;
-  name: string;
-}
-
-type DisplayFunction = (f: any) => string;
-type TextSearchFunction = (query: string) => Promise<Array<any>>;
+import type { Feature } from "geojson";
 
 interface PlaceType {
   id?: number;
@@ -64,14 +46,4 @@ interface Place {
   type: PlaceType;
 }
 
-export type {
-  Marker,
-  Item,
-  TextSearchFunction,
-  DisplayFunction,
-  Place,
-  PlaceType,
-  Name,
-  Informant,
-  Language,
-};
+export type { Place, PlaceType, Name, Informant, Language };

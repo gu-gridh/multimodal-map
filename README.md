@@ -1,46 +1,40 @@
 # multimodal-map
 
-This template should help get you started developing with Vue 3 in Vite.
+A map-centric user interface for exploring data from a [Diana](https://github.com/CDH-DevTeam/diana-backend) server.
 
 ## Recommended IDE Setup
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [Volar Takeover Mode](https://vuejs.org/guide/typescript/overview.html#volar-takeover-mode).
 
-## Type Support for `.vue` Imports in TS
+## Development tasks
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
-
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
-
-1. Disable the built-in TypeScript Extension
-    1) Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-    2) Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
+### Setup
 
 ```sh
-npm install
+yarn install
 ```
 
-### Compile and Hot-Reload for Development
+### Start local development server
 
 ```sh
-npm run dev
+yarn dev
 ```
 
-### Type-Check, Compile and Minify for Production
+### Build for deployment
 
 ```sh
-npm run build
+yarn build
 ```
 
-### Lint with [ESLint](https://eslint.org/)
+### Choose research project
+
+Choose which project to build for, by specifying the `PROJECT` environment variable:
 
 ```sh
-npm run lint
+PROJECT=rephotography yarn dev
+# or...
+echo "PROJECT=rephotography" > .env.local
+yarn dev
 ```
+
+It identifies a directory under [projects/](projects/), e.g. `projects/rephotography`, where project-specific configuration and code lives.

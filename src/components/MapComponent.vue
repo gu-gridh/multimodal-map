@@ -32,104 +32,28 @@
       <ol-source-osm />
     </ol-tile-layer>
 
-    <ol-vector-layer v-for="url in urls" v-bind:key="url">
-      <ol-source-vector
-        :url="url"
-        :format="GeoJSONFormat"
-        :projection="projection"
-        ref="source"
-      >
-      </ol-source-vector>
-      <ol-style>
-        <ol-style-circle :radius="10">
-          <ol-style-fill color="rgb(255,255,255,0.7)"></ol-style-fill>
-          <ol-style-stroke color="gray"></ol-style-stroke>
-        </ol-style-circle>
-        <ol-style-stroke color="gray" :width="7"></ol-style-stroke>
-      </ol-style>
-    </ol-vector-layer>
-
-    <ol-interaction-select
-      @select="onClick"
-      :condition="selectCondition"
-      ref="selectInteraction"
-    >
-      <ol-style>
-        <ol-style-circle :radius="15">
-          <ol-style-fill color="teal"></ol-style-fill>
-          <ol-style-stroke color="gray"></ol-style-stroke>
-        </ol-style-circle>
-        <ol-style-stroke color="teal" :width="10"></ol-style-stroke>
-      </ol-style>
-    </ol-interaction-select>
-
-    <ol-interaction-select
-      @select="onHover"
-      :condition="hoverCondition"
-      ref="hoverInteraction"
-    >
-      <ol-style>
-        <ol-style-circle :radius="15">
-          <ol-style-fill color="teal"></ol-style-fill>
-          <ol-style-stroke color="gray"></ol-style-stroke>
-        </ol-style-circle>
-        <ol-style-stroke color="teal" :width="10"></ol-style-stroke>
-      </ol-style>
-    </ol-interaction-select>
-
-    <ol-overlay
-      class="ol-popup"
-      v-if="hoveredFeature"
-      :position="hoverCoordinates"
-    >
-      <div
-        class="ol-popup-content"
-        v-html="getFeatureDisplayName(hoveredFeature)"
-      ></div>
-    </ol-overlay>
-
-    <ol-overlay
-      class="ol-popup"
-      v-if="selectedFeature"
-      :position="selectedCoordinates"
-    >
-      <div
-        class="ol-popup-content"
-        v-html="getFeatureDisplayName(selectedFeature)"
-      ></div>
-    </ol-overlay>
+    <slot name="layers"></slot>
   </ol-map>
 </template>
 
 <script setup lang="ts">
-import { ref, inject, defineProps } from "vue";
+import { ref, inject } from "vue";
 import { fromLonLat, transformExtent } from "ol/proj";
 import { mapStore } from "@/stores/store";
 import { storeToRefs } from "pinia";
-import type Feature from "ol/Feature";
-import type Geometry from "ol/geom/Geometry";
-import type { SelectEvent } from "ol/interaction/Select";
-import type { DisplayFunction } from "../types/map";
+import type { Project } from "@/types/project";
 
-const format = inject("ol-format");
-const selectConditions = inject("ol-selectconditions");
+const config = inject("config") as Project;
 
 const store = mapStore();
 const { extent } = storeToRefs(store);
-const props = defineProps<{
-  center: Array<number>;
-  urls?: Array<string>;
-  getFeatureDisplayName: DisplayFunction;
-}>();
 
-// const center = ref([1331838.7808, 7907869.1983]);
-const projection = ref("EPSG:3857");
-const zoom = ref(15);
+const projection = ref(config.projection);
+const zoom = ref(config.zoom);
 const rotation = ref(0);
 const view = ref();
 const map = ref();
-const source = ref();
-const projectedCenter = fromLonLat(props.center, projection.value);
+const projectedCenter = fromLonLat(config.center, projection.value);
 
 // Controls
 const fullscreencontrol = ref(true);
@@ -138,24 +62,6 @@ const zoomcontrol = ref(true);
 const zoomslidercontrol = ref(true);
 const scalelinecontrol = ref(true);
 const overviewmapcontrol = ref(true);
-
-// Interactions
-const hoverInteraction = ref();
-const selectInteraction = ref();
-
-const selectedCoordinates = ref();
-const hoverCoordinates = ref();
-
-const hoveredFeature = ref<Feature<Geometry>>();
-const selectedFeature = ref<Feature<Geometry>>();
-
-const hoverCondition = selectConditions.pointerMove;
-const selectCondition = selectConditions.click;
-
-// GeoJSON formatting
-const GeoJSONFormat = new format.GeoJSON({
-  featureProjection: projection.value,
-});
 
 function zoomChanged() {
   let newExtent = map.value.map
@@ -172,35 +78,6 @@ function onCenterChange() {
   newExtent = transformExtent(newExtent, projection.value, "EPSG:4326");
   extent.value = newExtent;
 }
-
-const onHover = (event: SelectEvent) => {
-  const features = event.selected;
-
-  if (features.length === 1) {
-    hoverCoordinates.value = event.mapBrowserEvent.coordinate;
-    hoveredFeature.value = features[0];
-  } else {
-    hoverCoordinates.value = undefined;
-    hoveredFeature.value = undefined;
-  }
-};
-
-const onClick = (event: SelectEvent) => {
-  const features = event.selected;
-
-  if (features.length === 1) {
-    // Unselect the hovered feature
-    hoverCoordinates.value = undefined;
-    hoveredFeature.value = undefined;
-
-    // Select the clicked feature
-    selectedCoordinates.value = event.mapBrowserEvent.coordinate;
-    selectedFeature.value = features[0];
-  } else {
-    selectedCoordinates.value = undefined;
-    selectedFeature.value = undefined;
-  }
-};
 </script>
 
 <style>
