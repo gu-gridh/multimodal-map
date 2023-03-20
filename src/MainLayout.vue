@@ -1,28 +1,30 @@
 <template>
   <div class="map-container h-full">
-    <div class="non-clickable absolute z-10 grid grid-cols-6 gap-4 mx-12 mt-8">
-      <div class="col-span-2 flex flex-col">
+        <div class="left-pane">
         <slot name="title">
-          <div v-if="config" class="px-8 py-6 bg-white rounded-t-lg shadow-lg">
+           <!--<div v-if="config" class="px-8 py-6 bg-white rounded-t-lg shadow-lg">-->
+            <div v-if="config" class="py-1">
             <div
-              class="font-display text-5xl leading-tight"
+              class="main-title"
               v-html="config.name"
             ></div>
           </div>
         </slot>
 
         <slot name="about">
-          <div v-if="config" class="px-8 py-6 bg-white rounded-b-lg shadow-lg">
-            <p class="text-gray-700 text-base" v-html="config.about"></p>
+           <!--<div v-if="config" class="px-8 py-6 bg-white rounded-b-lg shadow-lg">-->
+            <div v-if="config" class="py-6">
+            <p class="" v-html="config.about"></p>
           </div>
         </slot>
 
         <slot name="search"></slot>
-      </div>
+    </div>
 
-      <slot name="details">
-        <div class="col-start-6 col-span-1">
-          <div class="bg-white rounded-lg shadow-lg mb-4">
+    <div class="right-pane">
+    <slot name="details">
+      <div class="col-start-6 col-span-2 detail">
+          <div class="bg-black rounded-lg shadow-lg mb-4 mx-12 detail">
             <div class="px-8 py-6">
               <div>
                 Here you'll find more information and media on the selected
@@ -65,5 +67,33 @@ body {
 .map-container {
   height: inherit;
   width: inherit;
+}
+
+.left-pane{
+  position:absolute;
+  height:100vh;
+  background-color:grey;
+  background: linear-gradient(90deg, rgba(213,213,213,1) 0%, rgba(213,213,213,1) 30%, rgba(213,213,213,0.9) 50%, rgba(213,213,213,0) 99%);
+  width:700px;
+  z-index:100;
+  padding:80px 250px 50px 60px;
+  pointer-events: none;
+}
+
+.right-pane{
+  position:absolute;
+  height:100vh;
+  right:0px;
+  height:100vh;
+  pointer-events: none;
+  width:350px;
+  z-index:100;
+}
+
+.detail-view{
+  height:100vh;
+  background-color:white;
+  width:100%;
+  padding:10px;
 }
 </style>

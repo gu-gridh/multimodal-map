@@ -12,3 +12,20 @@ provide("diana", endpoint);
 <template>
   <router-view />
 </template>
+
+<style>
+html,
+body {
+
+
+  font-family: "Barlow Condensed", sans-serif !important;
+
+}
+
+.main-title{
+  font-size:80px;
+  line-height:0.9;
+  font-weight:100;
+}
+
+</style>
