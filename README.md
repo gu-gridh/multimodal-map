@@ -6,39 +6,35 @@ A map-centric user interface for exploring data from a [Diana](https://github.co
 
 [VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [Volar Takeover Mode](https://vuejs.org/guide/typescript/overview.html#volar-takeover-mode).
 
-## Project Setup
+## Development tasks
+
+### Setup
 
 ```sh
-npm install
+yarn install
 ```
 
-### Compile and Hot-Reload for Development
+### Start local development server
 
 ```sh
-npm run dev
+yarn dev
 ```
 
-### Type-Check, Compile and Minify for Production
+### Build for deployment
 
 ```sh
-npm run build
+yarn build
 ```
 
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
-
-## Choose research project
+### Choose research project
 
 Choose which project to build for, by specifying the `PROJECT` environment variable:
 
 ```sh
-PROJECT=rwanda npm run dev
+PROJECT=rephotography yarn dev
 # or...
-echo "PROJECT=rwanda" > .env.local
-npm run dev
+echo "PROJECT=rephotography" > .env.local
+yarn dev
 ```
 
-It identifies a directory under [projects/](projects/), e.g. `projects/rwanda`, where project-specific configuration lives.
+It identifies a directory under [projects/](projects/), e.g. `projects/rephotography`, where project-specific configuration and code lives.
