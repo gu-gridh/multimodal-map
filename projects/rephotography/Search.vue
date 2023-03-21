@@ -78,6 +78,7 @@ margin-bottom:5px;
   align-items: bottom;
   padding:25px 0 0 0;
   background-color: rgba(255,255,255,0.6);
+  backdrop-filter: blur(3px);
 }
 
 #app .range-slider-wrapper {
