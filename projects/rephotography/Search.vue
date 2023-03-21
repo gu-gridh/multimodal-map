@@ -11,9 +11,12 @@ const { categories, years } = storeToRefs(rephotographyStore());
 
 // See https://github.com/gu-gridh/rephotography/blob/master/views.py
 const CATEGORIES = {
-  image: "All Categories",
+  all: "All Categories",
   image: "Photographs",
-  video: "Video",
+  video: "Videos",
+  models: "Models",
+  documents: "Documents",
+  drawings: "Drawings and art",
   observation: "Observations",
 };
 
