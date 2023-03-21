@@ -114,10 +114,11 @@ margin-bottom:30px;
 
 .detail-view{
   height:100vh;
-  background-color:white;
+  background-color:rgba(255,255,255,0.9);
   width:100%;
 
   transition: all 0.5s ease-in-out;
+  backdrop-filter: blur(7px);
 }
 
 @media screen and (max-width: 1200px) {
