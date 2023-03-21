@@ -1,6 +1,6 @@
 <template>
   <button
-    class="p-1 px-2 clickable base-shadow category-button"
+    class="p-1 px-2 clickable category-button"
     :class="{ active: value }"
     @click="toggle"
     v-html="text"
