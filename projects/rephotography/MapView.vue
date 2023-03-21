@@ -10,6 +10,7 @@ import PlaceDetails from "./PlaceDetails.vue";
 import { storeToRefs } from "pinia";
 import { rephotographyStore } from "./store";
 import { clean } from "@/assets/utils";
+import markerIcon from '@/assets/marker-gold.svg'
 
 const { categories, years } = storeToRefs(rephotographyStore());
 
@@ -40,10 +41,12 @@ const placeParams = computed(() =>
             :params="placeParams"
           >
             <ol-style>
-              <ol-style-circle :radius="10">
-                <ol-style-fill color="rgb(232 157 59)" />
-                <ol-style-stroke :width="0" />
-              </ol-style-circle>
+              
+
+              <ol-style-stroke color="red" :width="2"></ol-style-stroke>
+            <ol-style-fill color="rgba(255,255,255,0.1)"></ol-style-fill>
+            <ol-style-icon :src="markerIcon" :scale="2.0"></ol-style-icon>
+             
             </ol-style>
             <FeatureSelection />
           </DianaPlaceLayer>
@@ -58,6 +61,10 @@ const placeParams = computed(() =>
 </template>
 
 <style>
+
+#app .ol-style-icon{
+margin-top:-200px !important;
+}
 #app .ol-popup {
   font-size: 1.2em;
   -webkit-user-select: none;
