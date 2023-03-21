@@ -42,6 +42,7 @@ import { fromLonLat, transformExtent } from "ol/proj";
 import { mapStore } from "@/stores/store";
 import { storeToRefs } from "pinia";
 import type { Project } from "@/types/project";
+import markerIcon from '@/assets/marker-gold.svg'
 
 const config = inject("config") as Project;
 
