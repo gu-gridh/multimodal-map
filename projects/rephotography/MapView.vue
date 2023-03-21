@@ -41,12 +41,7 @@ const placeParams = computed(() =>
             :params="placeParams"
           >
             <ol-style>
-              
-
-              <ol-style-stroke color="red" :width="2"></ol-style-stroke>
-            <ol-style-fill color="rgba(255,255,255,0.1)"></ol-style-fill>
-            <ol-style-icon :src="markerIcon" :scale="2.0"></ol-style-icon>
-             
+            <ol-style-icon :src="markerIcon" :scale="1.8" :displacement="[-10,45]" :anchor="[0.0,0.0]"></ol-style-icon>
             </ol-style>
             <FeatureSelection />
           </DianaPlaceLayer>
@@ -62,9 +57,7 @@ const placeParams = computed(() =>
 
 <style>
 
-#app .ol-style-icon{
-margin-top:-200px !important;
-}
+
 #app .ol-popup {
   font-size: 1.2em;
   -webkit-user-select: none;
@@ -77,26 +70,11 @@ margin-top:-200px !important;
   padding: 3px;
   border-radius: 5px;
   border: 0px solid #cccccc;
-  bottom: 25px;
+  bottom: 35px;
   left: -50px;
   min-width: 100px;
   }
 
-  #app .ol-style-circle {
-  font-size: 1.2em;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  user-select: none;
-  text-align: center;
-  position: absolute;
-  background-color: white;
-  box-shadow: 2 2px 8px rgba(0, 0, 0, 0.5);
-  padding: 3px;
-  border-radius: 5px;
-  border: 0px solid #cccccc;
-  bottom: 25px;
-  left: -50px;
-  min-width: 100px;
-  }
+
 
   </style>
