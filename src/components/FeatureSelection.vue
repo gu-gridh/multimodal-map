@@ -6,6 +6,8 @@ import type { DisplayFunction } from "@/types/diana";
 import type { Project } from "@/types/project";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
+import markerIcon from '@/assets/marker-gold.svg'
+import markerIconRed from '@/assets/marker-red.svg'
 
 const { selectedFeature } = storeToRefs(mapStore());
 
@@ -57,20 +59,14 @@ const getFeatureDisplayName: DisplayFunction =
 <template>
   <ol-interaction-select @select="onClick" :condition="selectCondition">
     <ol-style>
-      <ol-style-circle :radius="15">
-        <ol-style-fill color="rgb(232 157 59)" />
-        <ol-style-stroke :width="0" />
-      </ol-style-circle>
+      <ol-style-icon :src="markerIconRed" :scale="2.0" :displacement="[-10,45]" :anchor="[0.0,0.0]"></ol-style-icon>
       <ol-style-stroke color="teal" :width="10"></ol-style-stroke>
     </ol-style>
   </ol-interaction-select>
 
   <ol-interaction-select @select="onHover" :condition="hoverCondition">
     <ol-style>
-      <ol-style-circle :radius="15">
-        <ol-style-fill color="rgb(232 157 59)" />
-        <ol-style-stroke :width="0" />
-      </ol-style-circle>
+      <ol-style-icon :src="markerIcon" :scale="2.0" :displacement="[-10,45]" :anchor="[0.0,0.0]"></ol-style-icon>
       <ol-style-stroke color="teal" :width="10"></ol-style-stroke>
     </ol-style>
   </ol-interaction-select>

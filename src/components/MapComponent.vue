@@ -42,7 +42,7 @@ import { fromLonLat, transformExtent } from "ol/proj";
 import { mapStore } from "@/stores/store";
 import { storeToRefs } from "pinia";
 import type { Project } from "@/types/project";
-import markerIcon from '@/assets/marker-gold.svg'
+
 
 const config = inject("config") as Project;
 
@@ -90,9 +90,9 @@ function onCenterChange() {
 }
 
 .ol-control button:active, .ol-control button:hover, .ol-control button:focus {
+ 
   background: #FF9900 !important;
   border-width:0px !important;
-
 }
 
 .ol-scaleline-control{
