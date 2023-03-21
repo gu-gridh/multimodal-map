@@ -82,7 +82,6 @@ function onCenterChange() {
 
 <style>
 .ol-control button {
-
   font-family: 'Barlow Condensed', sans-serif;
   border-radius: 50% !important;
   background-color:rgb(40,40,40)!important;
