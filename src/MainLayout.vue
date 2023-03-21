@@ -16,6 +16,7 @@
             <div v-if="config" class="py-6">
             <p class="" v-html="config.about"></p>
           </div>
+          <div class="p-1 px-2 clickable base-shadow category-button" style="width:90px; text-align:center; margin-top:-15px; cursor:pointer;">Learn more... </div>
         </slot>
 
         <slot name="search"></slot>
