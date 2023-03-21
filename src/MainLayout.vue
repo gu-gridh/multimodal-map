@@ -13,10 +13,10 @@
 
         <slot name="about">
            <!--<div v-if="config" class="px-8 py-6 bg-white rounded-b-lg shadow-lg">-->
-            <div v-if="config" class="py-6">
+            <div v-if="config" class="py-5">
             <p class="" v-html="config.about"></p>
           </div>
-          <div class="p-1 px-2 clickable base-shadow category-button" style="width:90px; text-align:center; margin-top:-15px; cursor:pointer;">Learn more... </div>
+          <div class="p-1 px-2 clickable category-button" style="width:90px; text-align:center; margin-top:-10px; cursor:pointer;">Learn more... </div>
         </slot>
 
         <slot name="search"></slot>

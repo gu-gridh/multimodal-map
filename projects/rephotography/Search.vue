@@ -56,11 +56,7 @@ margin-bottom:5px;
   border-radius: 4px;
 }
 
-#app .base-shadow {
-  --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.0), 0 2px 4px -2px rgb(0 0 0 / 0.0);
---tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color),
-0 2px 4px -2px var(--tw-shadow-color);
-}
+
 
 #app .category-button:hover {
   background-color: #FF6600;
