@@ -77,19 +77,21 @@ margin-bottom:5px;
   width: 100%;
   height:90px;
   align-items: bottom;
-  padding:5px 0 0 0;
+  padding:25px 0 0 0;
   background-color: rgba(255,255,255,0.6);
 }
 
 #app .range-slider-wrapper {
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-left: 5px;
+  padding-right: 5px;
+
 }
 
 #app .start-end-box {
   width: 15%;
+  font-size:20px;
   text-align: center;
-  padding-top: 0.5rem;
+  padding-top: 0.0rem;
   padding-bottom: 0.5rem;
 }
 
@@ -105,4 +107,20 @@ margin-bottom:5px;
   background-color: #FF9900;
   border: 1px solid var(--slider-tooltip-bg,#FF9900);
 }
+
+#app .slider-handle {
+  margin-top:-10px;
+  margin-left:10px;
+  width: 0; 
+  height: 0; 
+  border-radius:0px;
+  background:none;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 15px solid #FF9900;
+  box-shadow: var(--slider-handle-shadow,.5px .5px 2px 1px rgba(0,0,0,.0));
+  cursor: grab;
+}
+
+
 </style>
