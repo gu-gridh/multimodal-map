@@ -70,6 +70,27 @@ body {
   width: inherit;
 }
 
+.close-button{
+  width:40px;
+  height:40px;
+  padding:16px 15px 10px 9px;
+  line-height:1.0px;
+  font-size:50px;
+  font-weight:100;
+  border-radius:50%;
+  background-color:rgb(100,100,100);
+  color:white;
+  transform: rotate(45deg);
+cursor:pointer;
+margin-bottom:30px;
+}
+
+.close-button:hover{
+
+  background-color:rgb(40,40,40);
+
+}
+
 .left-pane{
   position:absolute;
   height:100vh;
@@ -77,24 +98,38 @@ body {
   background: linear-gradient(90deg, rgba(213,213,213,1) 0%, rgba(213,213,213,1) 30%, rgba(213,213,213,0.9) 50%, rgba(213,213,213,0) 99%);
   width:700px;
   z-index:100;
-  padding:80px 250px 50px 60px;
+  padding:60px 250px 50px 60px;
   pointer-events: none;
 }
 
 .right-pane{
   position:absolute;
   height:100vh;
-  right:0px;
-  height:100vh;
-  pointer-events: none;
   width:350px;
+  right:0px;
+  pointer-events: none;
   z-index:100;
+  transition: all 0.5s ease-in-out;
 }
 
 .detail-view{
   height:100vh;
   background-color:white;
   width:100%;
-  padding:10px;
+
+  transition: all 0.5s ease-in-out;
 }
+
+@media screen and (max-width: 1200px) {
+  .right-pane{
+
+  width:250px;
+  z-index:100;
+}
+.detail-view{
+  padding:0px;
+}
+}
+
+
 </style>

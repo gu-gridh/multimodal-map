@@ -27,9 +27,10 @@ watchEffect(async () => {
 </script>
 
 <template>
-  <div v-if="selectedFeature" class="col-start-5 col-span-2">
-    <div class="detail-view">
+  <div v-if="selectedFeature" class="detail-view">
+  
       <div class="px-8 py-6">
+        <div class="close-button">+</div>
         <h3 class="font-bold">{{ selectedFeature.get("name") }}</h3>
         <div class="flex flex-col gap-2">
           <router-link
@@ -60,6 +61,6 @@ watchEffect(async () => {
           </router-link>
         </div>
       </div>
-    </div>
+  
   </div>
 </template>
