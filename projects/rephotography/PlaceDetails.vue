@@ -53,7 +53,7 @@ watchEffect(async () => {
             class="clickable"
           >
             <div>
-              <img :src="`${image.iiif_file}/full/380,/0/default.jpg`" />
+              <img :src="`${image.iiif_file}/full/380,/0/default.jpg`" class="image"/>
               <div>{{ image.title }}</div>
               <div>{{ image.description }}</div>
               <div>{{ image.date }}</div>
@@ -70,5 +70,9 @@ h3{
   font-size:35px;
   font-weight:100;
   margin-left:-2px;
+}
+
+.image{
+  margin-bottom:8px;
 }
 </style>
