@@ -10,10 +10,8 @@ defineProps<{
 </script>
 
 <template>
-  <section class="illustration flex">
-    <OpenSeadragon :src="`${object.iiif_file}/info.json`" class="flex-1" />
-  </section>
 
+  <div class="metadata">
   <DetailPage :title="object.title" back="/">
     <p class="my-2">{{ object.description }}</p>
     <div>By: {{ object.creator.name }}</div>
@@ -25,10 +23,20 @@ defineProps<{
       {{ object.tag.map((tag) => tag.text).join(", ") }}
     </div>
   </DetailPage>
+</div>
+
+  <section class="illustration flex">
+    <OpenSeadragon :src="`${object.iiif_file}/info.json`" class="flex-1" />
+  </section>
+
+
+  
 </template>
 
 <style scoped>
-.illustration {
-  min-height: 70vh;
-}
+
+
+
+
+
 </style>
