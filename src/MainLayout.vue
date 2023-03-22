@@ -70,26 +70,7 @@ body {
   width: inherit;
 }
 
-.close-button{
-  width:40px;
-  height:40px;
-  padding:16px 15px 10px 9px;
-  line-height:1.0px;
-  font-size:50px;
-  font-weight:100;
-  border-radius:50%;
-  background-color:rgb(100,100,100);
-  color:white;
-  transform: rotate(45deg);
-cursor:pointer;
-margin-bottom:30px;
-}
 
-.close-button:hover{
-
-  background-color:rgb(40,40,40);
-
-}
 
 .left-pane{
   position:absolute;

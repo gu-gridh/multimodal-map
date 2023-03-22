@@ -38,11 +38,36 @@ body {
 
 #app .detail-view{
   height:100vh;
-  background-color:rgba(255,255,255,0.9);
+  background-color:rgba(0,0,0,0.85);
   width:100%;
-
+  color:white;
   transition: all 0.5s ease-in-out;
   backdrop-filter: blur(7px);
+}
+
+.close-button{
+  width:40px;
+  height:40px;
+  margin-left:-10px;
+  margin-top:-5px;
+  padding:16px 15px 10px 9px;
+  line-height:1.0px;
+  font-size:50px;
+  font-weight:100;
+  border-radius:50%;
+  background-color:rgb(100,100,100);
+  color:white;
+  transform: rotate(45deg);
+cursor:pointer;
+pointer-events: auto;
+margin-bottom:30px;
+
+}
+
+.close-button:hover{
+
+  background-color:rgb(140,140,140);
+
 }
 
 </style>
