@@ -94,11 +94,7 @@ margin-bottom:30px;
 .left-pane{
   position:absolute;
   height:100vh;
-  background-color:grey;
-  background: linear-gradient(90deg, rgba(213,213,213,1) 0%, rgba(213,213,213,1) 30%, rgba(213,213,213,0.9) 50%, rgba(213,213,213,0) 99%);
-  width:700px;
   z-index:100;
-  padding:60px 250px 50px 60px;
   pointer-events: none;
 }
 
@@ -114,11 +110,8 @@ margin-bottom:30px;
 
 .detail-view{
   height:100vh;
-  background-color:rgba(255,255,255,0.9);
   width:100%;
-
   transition: all 0.5s ease-in-out;
-  backdrop-filter: blur(7px);
 }
 
 @media screen and (max-width: 1200px) {
