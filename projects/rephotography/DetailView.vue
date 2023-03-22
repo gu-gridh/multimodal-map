@@ -38,27 +38,6 @@ const objectComponent = {
 
 <style>
 
-.meta-title{
-font-weight:100;
-font-size:50px;
-line-height:0.9;
-margin-left:75px;
-}
 
-.metadata {
-  float:left;
-  width:350px;
-  height:100vh;
-  background-color:black;
-  color:white;
-
-}
-
-.illustration {
-  float:left;
-  width:calc(100% - 350px);
-  background-color:black;
-  height:100vh;
-}
 
 </style>

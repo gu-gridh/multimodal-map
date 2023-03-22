@@ -36,7 +36,4 @@ defineProps<{
 <style scoped>
 
 
-
-
-
 </style>
