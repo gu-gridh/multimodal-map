@@ -42,6 +42,7 @@ const objectComponent = {
 font-weight:100;
 font-size:50px;
 line-height:0.9;
+margin-left:75px;
 }
 
 .metadata {
