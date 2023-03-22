@@ -18,9 +18,9 @@ defineProps({
         <router-link
           v-if="back"
           :to="back"
-          class="block border-4 rounded-full aspect-square w-10 text-lg mx-5"
+          class="back-button"
         >
-          ←
+       
         </router-link>
       </div>
     </header>
@@ -30,3 +30,22 @@ defineProps({
     </main>
   </div>
 </template>
+
+<style>
+.back-button {
+  left:20px;
+  top:40px;
+  background: url(@/assets/backbutton.png);
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+ background-color: rgba(35, 35, 35, 0.9);
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  overflow: hidden;
+  position:absolute;
+}
+
+</style>
