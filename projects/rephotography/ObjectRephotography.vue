@@ -40,6 +40,6 @@ watchEffect(async () => {
 
 <style scoped>
 .illustration {
-  min-height: 70vh;
+  min-height: 100vh;
 }
 </style>

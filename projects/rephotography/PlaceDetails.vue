@@ -31,7 +31,7 @@ watchEffect(async () => {
   
       <div class="px-8 py-6">
         <div class="close-button">+</div>
-        <h3 class="font-bold">{{ selectedFeature.get("name") }}</h3>
+        <h3 class="">{{ selectedFeature.get("name") }}</h3>
         <div class="flex flex-col gap-2">
           <router-link
             v-for="rephotography in rephotographies"
@@ -40,7 +40,7 @@ watchEffect(async () => {
             class="clickable"
           >
             <div>
-              <div>(Rephotography)</div>
+              <div>Rephotography</div>
               <div>{{ rephotography.old_image }}</div>
               <div>{{ rephotography.new_image }}</div>
             </div>
@@ -64,3 +64,11 @@ watchEffect(async () => {
   
   </div>
 </template>
+
+<style>
+h3{
+  font-size:35px;
+  font-weight:100;
+  margin-left:-2px;
+}
+</style>
