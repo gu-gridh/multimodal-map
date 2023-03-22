@@ -30,9 +30,10 @@ body {
 
 #app .left-pane{
   background-color:grey;
-  width:700px;
-  padding:60px 250px 50px 60px;
-  background: linear-gradient(90deg, rgba(213,213,213,1) 0%, rgba(213,213,213,1) 30%, rgba(213,213,213,0.8) 50%,  rgba(213,213,213,0) 100%);
+  width:900px;
+  padding:60px 450px 50px 60px;
+  background:url("@/assets/gradientRephotography.png");
+  background-size:contain;
 }
 
 #app .detail-view{
