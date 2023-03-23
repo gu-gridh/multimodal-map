@@ -43,6 +43,12 @@ const placeParams = computed(() =>
             </ol-style>
             <FeatureSelection />
           </DianaPlaceLayer>
+
+          <ol-tile-layer>
+            <ol-source-xyz
+              url="https://dh.gu.se/tiles/gbg_1921/{z}/{x}/{y}.png"
+            />
+          </ol-tile-layer>
         </template>
       </MapComponent>
     </template>
