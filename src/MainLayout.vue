@@ -21,7 +21,7 @@
             <div v-if="config" class="py-5">
             <p class="" v-html="config.about"></p>
           </div>
-          <div class="p-1 px-2 clickable category-button" style="width:90px; text-align:center; margin-top:-10px; cursor:pointer;">Learn more... </div>
+          <div class="p-1 px-2 clickable category-button" style="width:90px; text-align:center; margin-top:-10px; cursor:pointer;" v-html="config.moreinfo"></div>
         </slot>
 
         <slot name="search"></slot>

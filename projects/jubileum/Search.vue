@@ -11,11 +11,11 @@ const { categories, years } = storeToRefs(rephotographyStore());
 
 // See https://github.com/gu-gridh/rephotography/blob/master/views.py
 const CATEGORIES = {
-  all: "All Categories",
-  image: "Photographs",
-  documents: "Documents",
-  drawings: "Drawings and art",
-  observation: "Observations",
+  all: "Alla kategorier",
+  image: "Fotografier",
+  documents: "Dokument",
+  drawings: "Teckningar och konst",
+  observation: "Observationer",
 };
 
 const YEARS = {
@@ -25,7 +25,7 @@ const YEARS = {
 </script>
 
 <template>
-  <div class="section-title">Documentation by category</div>
+  <div class="section-title">Typ av dokumentation</div>
   <CategoryButtonList
     v-model="categories"
     :categories="CATEGORIES"
@@ -54,12 +54,12 @@ margin-bottom:5px;
 
 
 #app .category-button:hover {
-  background-color: rgb(180,100,100);
+  background-color: rgb(220,140,140);
   color: white;
 }
 
 #app .category-button.active {
-  background-color: #FF9900;
+  background-color: rgb(180,100,100);
   color: white;
 }
 

@@ -3,6 +3,7 @@ import type { RephotographyProject } from "./types";
 export default <RephotographyProject>{
   title: "Göteborgs Jubileum",
   subtitle: "1923",
+  moreinfo: "Läs mer...",
   urls: {
     baseURL: "https://diana.dh.gu.se/api/rwanda",
     place: "geojson/place",
