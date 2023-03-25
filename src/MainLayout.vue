@@ -7,7 +7,11 @@
             <div v-if="config" class="py-1">
             <div
               class="main-title"
-              v-html="config.name"
+              v-html="config.title"
+            ></div>
+            <div
+              class="sub-title"
+              v-html="config.subtitle"
             ></div>
           </div>
         </slot>

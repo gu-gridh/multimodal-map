@@ -1,7 +1,8 @@
 import type { RephotographyProject } from "./types";
 
 export default <RephotographyProject>{
-  name: "Extended Rephotography",
+  title: "Extended Rephotography",
+  subtitle:"",
   urls: {
     baseURL: "https://diana.dh.gu.se/api/rwanda",
     place: "geojson/place",
