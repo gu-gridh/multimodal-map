@@ -39,9 +39,9 @@ body {
   background-image:url(@/assets/border-jubileum.png);
   background-repeat: repeat-y;
   background-size: 35px;
-  background-position: right 10px;
+  background-position: right 0px;
   transform:rotate(0.03turn);
-  margin-left:-100px;
+  margin-left:-130px;
   margin-top:-70px;
   height:115vh;
   box-shadow: 0 4px 128px 0 rgba(0, 0, 0, 0.2), 0 66px 100px 0 rgba(0, 0, 0, 0.19);
