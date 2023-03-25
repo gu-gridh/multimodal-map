@@ -45,15 +45,16 @@ margin-bottom:5px;
 }
 
 #app .category-button {
-  background-color: rgba(255,255,255,0.6);
+  background-color: rgba(235,225,225,0.6);
   color: rgb(71, 85, 105);
   border-radius: 4px;
+  transition: all 0.2s ease-in-out;
 }
 
 
 
 #app .category-button:hover {
-  background-color: #FF6600;
+  background-color: rgb(180,100,100);
   color: white;
 }
 

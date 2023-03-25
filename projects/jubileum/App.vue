@@ -46,7 +46,6 @@ body {
 
 
 #app .left-pane{
-  background-color:grey;
   width:550px;
   padding:120px 50px 50px 150px;
   background:rgb(248,249,228);
