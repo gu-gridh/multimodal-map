@@ -23,13 +23,27 @@ body {
 }
 
 .main-title{
+  font-family: "Cormorant Garamond", serif !important;
   font-size:80px;
-  line-height:0.9;
+  line-height:0.85;
   font-weight:100;
   text-align:center;
   margin-left:-25px;
-  color:rgb(200,100,100)
+  color:rgb(180,100,100)
 }
+
+.sub-title{
+  font-family: "Cormorant Garamond", serif !important;
+  font-size:90px;
+  line-height:0.8;
+  font-weight:100;
+  text-align:center;
+  margin-left:-25px;
+  color:rgb(180,100,100);
+  margin-top:-15px;
+  margin-bottom:15px;
+}
+
 
 #app .left-pane{
   background-color:grey;
