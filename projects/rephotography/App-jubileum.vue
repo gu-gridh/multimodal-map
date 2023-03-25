@@ -26,14 +26,31 @@ body {
   font-size:80px;
   line-height:0.9;
   font-weight:100;
+  text-align:center;
+  margin-left:-25px;
+  color:rgb(200,100,100)
 }
 
 #app .left-pane{
   background-color:grey;
-  width:900px;
-  padding:60px 450px 50px 60px;
-  background:url("@/assets/gradient-rephotography.png");
-  background-size:contain;
+  width:550px;
+  padding:120px 50px 50px 150px;
+  background:rgb(248,249,228);
+  background-image:url(@/assets/border-jubileum.png);
+  background-repeat: repeat-y;
+  background-size: 35px;
+  background-position: right 10px;
+  transform:rotate(0.03turn);
+  margin-left:-100px;
+  margin-top:-70px;
+  height:115vh;
+  box-shadow: 0 4px 128px 0 rgba(0, 0, 0, 0.2), 0 66px 100px 0 rgba(0, 0, 0, 0.19);
+}
+
+#app .left-pane-content{
+
+  transform:rotate(-0.03turn);
+ 
 }
 
 #app .detail-view{
