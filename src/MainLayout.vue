@@ -1,6 +1,7 @@
 <template>
   <div class="map-container h-full">
         <div class="left-pane">
+          <div class="left-pane-layer">
           <div class="left-pane-content">
         <slot name="title">
            <!--<div v-if="config" class="px-8 py-6 bg-white rounded-t-lg shadow-lg">-->
@@ -26,6 +27,7 @@
 
         <slot name="search"></slot>
       </div>
+    </div>
     </div>
 
     <div class="right-pane">
