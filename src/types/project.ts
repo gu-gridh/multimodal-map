@@ -4,7 +4,6 @@ interface Project {
   title: string;
   subtitle?: string;
   moreinfo?: string;
-  urls?: Record<string, string>;
   about: string;
   projection: string;
   center: [number, number] | number[];
