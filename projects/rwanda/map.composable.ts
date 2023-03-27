@@ -1,13 +1,12 @@
 import { inject, watch } from "vue";
 import type { MapResponse } from "@/types/diana";
 import axios from "axios";
-import type { Project } from "@/types/project";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
-import type { Place } from "./types";
+import type { RwandaProject, Place } from "./types";
 
 export function useRwandaMap() {
-  const config = inject("config") as Project;
+  const config = inject("config") as RwandaProject;
   const store = mapStore();
   const { params, results, mapUrls } = storeToRefs(store);
 

@@ -1,4 +1,8 @@
-import type { Feature } from "geojson";
+import type { Project } from "@/types/project";
+
+export type RwandaProject = Project & {
+  urls: Record<string, string>;
+};
 
 interface PlaceType {
   id?: number;
