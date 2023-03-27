@@ -1,2 +1,10 @@
+.vscode/
+*.code-workspace
+.idea/
+.DS_Store
+COMMIT_MSG
+
 .env.*
 dist/
+node_modules/
+*.log
