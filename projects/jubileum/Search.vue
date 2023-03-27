@@ -1,13 +1,9 @@
 <script setup lang="ts">
-import { inject } from "vue";
 import CategoryButtonList from "@/components/input/CategoryButtonList.vue";
-import RangeSlider from "@/components/input/RangeSlider.vue";
 import { storeToRefs } from "pinia";
-import { rephotographyStore } from "./store";
-import type { RephotographyProject } from "./types";
+import { jubileumStore } from "./store";
 
-const config = inject<RephotographyProject>("config");
-const { categories, years } = storeToRefs(rephotographyStore());
+const { categories } = storeToRefs(jubileumStore());
 
 // See https://github.com/gu-gridh/rephotography/blob/master/views.py
 const CATEGORIES = {
@@ -16,11 +12,6 @@ const CATEGORIES = {
   documents: "Dokument",
   drawings: "Teckningar och konst",
   observation: "Observationer",
-};
-
-const YEARS = {
-  MIN: config?.timeRange?.[0] || 0,
-  MAX: config?.timeRange?.[1] || new Date().getFullYear(),
 };
 </script>
 

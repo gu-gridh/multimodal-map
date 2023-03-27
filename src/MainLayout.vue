@@ -13,10 +13,11 @@
 
           <slot name="about">
             <!--<div v-if="config" class="px-8 py-6 bg-white rounded-b-lg shadow-lg">-->
-            <div v-if="config" class="py-5">
+            <div class="py-5">
               <p class="" v-html="config.about"></p>
             </div>
             <div
+              v-if="config.moreinfo"
               class="p-1 px-2 clickable category-button"
               style="
                 width: 90px;
@@ -59,7 +60,7 @@ import { inject } from "vue";
 import MapComponent from "./components/MapComponent.vue";
 import type { Project } from "./types/project";
 
-const config = inject<Project>("config");
+const config = inject("config") as Project;
 </script>
 
 <style>

@@ -3,7 +3,6 @@ import { inject, ref, watchEffect } from "vue";
 import type { Image } from "./types";
 import type { DianaClient } from "@/assets/diana";
 import ObjectImage from "./ObjectImage.vue";
-import ObjectRephotography from "./ObjectRephotography.vue";
 
 const props = defineProps({
   type: {
@@ -26,7 +25,6 @@ watchEffect(async () => {
 
 const objectComponent = {
   image: ObjectImage,
-  rephotography: ObjectRephotography,
 }[props.type];
 </script>
 

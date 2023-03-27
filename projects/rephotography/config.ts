@@ -2,7 +2,6 @@ import type { RephotographyProject } from "./types";
 
 export default <RephotographyProject>{
   title: "Extended Rephotography",
-  subtitle: "",
   moreinfo: "Learn more...",
   urls: {
     baseURL: "https://diana.dh.gu.se/api/rwanda",

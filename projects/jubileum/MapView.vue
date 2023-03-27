@@ -3,22 +3,19 @@ import { computed } from "vue";
 import MainLayout from "@/MainLayout.vue";
 import Search from "./Search.vue";
 import MapComponent from "@/components/MapComponent.vue";
-import NpolarLayer from "./NpolarLayer.vue";
 import DianaPlaceLayer from "@/components/DianaPlaceLayer.vue";
 import FeatureSelection from "@/components/FeatureSelection.vue";
 import PlaceDetails from "./PlaceDetails.vue";
 import { storeToRefs } from "pinia";
-import { rephotographyStore } from "./store";
+import { jubileumStore } from "./store";
 import { clean } from "@/assets/utils";
 import markerIcon from "@/assets/marker-gold.svg";
 
-const { categories, years } = storeToRefs(rephotographyStore());
+const { categories } = storeToRefs(jubileumStore());
 
 const placeParams = computed(() =>
   clean({
     type: categories.value.join(","),
-    start_date: years.value[0],
-    end_date: years.value[1],
   })
 );
 </script>
@@ -32,10 +29,6 @@ const placeParams = computed(() =>
     <template #background>
       <MapComponent>
         <template #layers>
-          <NpolarLayer
-            capabilitiesUrl="https://geodata.npolar.no/arcgis/rest/services/Basisdata/NP_Ortofoto_Svalbard_WMTS_25833/MapServer/WMTS/1.0.0/WMTSCapabilities.xml"
-          />
-
           <DianaPlaceLayer
             path="rephotography/geojson/place"
             :params="placeParams"

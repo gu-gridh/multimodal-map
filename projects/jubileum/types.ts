@@ -1,9 +1,7 @@
 import type { Project } from "@/types/project";
 import type { Geometry } from "ol/geom";
 
-export type RephotographyProject = Project & {
-  timeRange: [number, number];
-};
+export type JubileumProject = Project;
 
 export type Image = {
   published: boolean;
@@ -24,12 +22,6 @@ export type ImageDeep = Omit<Image, "creator" | "place" | "focus" | "tag"> & {
   place: Place;
   focus: Focus;
   tag: Tag[];
-};
-
-export type Rephotography = {
-  published: boolean;
-  old_image: number;
-  new_image: number;
 };
 
 export type Person = {

@@ -1,5 +1,5 @@
 {
-  "name": "Project name",
+  "title": "Project name",
   "urls": {
     "baseURL": "https://diana.dh.gu.se/api/rwanda",
     "place": "geojson/place",
