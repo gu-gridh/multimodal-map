@@ -38,7 +38,9 @@
   font-weight: 400;
 }
 
-.ol-control button:focus, .ol-control button:active, .ol-control button:hover {
+.ol-control button:focus,
+.ol-control button:active,
+.ol-control button:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(13 148 136 / var(--tw-bg-opacity));
   color: white;

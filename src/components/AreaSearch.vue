@@ -30,9 +30,8 @@ function onClick() {
   position: static;
   background-color: #fff6;
   border-radius: 9999px;
-  padding: 0.5rem/* 8px */;
+  padding: 0.5rem /* 8px */;
   display: inline-block;
-
 }
 
 .area-search-button {

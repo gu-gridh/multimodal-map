@@ -10,7 +10,7 @@ import PlaceDetails from "./PlaceDetails.vue";
 import { storeToRefs } from "pinia";
 import { rephotographyStore } from "./store";
 import { clean } from "@/assets/utils";
-import markerIcon from '@/assets/marker-gold.svg'
+import markerIcon from "@/assets/marker-gold.svg";
 
 const { categories, years } = storeToRefs(rephotographyStore());
 
@@ -41,7 +41,12 @@ const placeParams = computed(() =>
             :params="placeParams"
           >
             <ol-style>
-            <ol-style-icon :src="markerIcon" :scale="1.8" :displacement="[-10,45]" :anchor="[0.0,0.0]"></ol-style-icon>
+              <ol-style-icon
+                :src="markerIcon"
+                :scale="1.8"
+                :displacement="[-10, 45]"
+                :anchor="[0.0, 0.0]"
+              ></ol-style-icon>
             </ol-style>
             <FeatureSelection />
           </DianaPlaceLayer>
@@ -56,8 +61,6 @@ const placeParams = computed(() =>
 </template>
 
 <style>
-
-
 #app .ol-popup {
   font-size: 1.2em;
   -webkit-user-select: none;
@@ -73,29 +76,27 @@ const placeParams = computed(() =>
   bottom: 35px;
   left: -50px;
   min-width: 100px;
-  }
-
-  #app .ol-control button {
-  font-family: 'Barlow Condensed', sans-serif;
-  border-radius: 50% !important;
-  background-color:rgb(248,249,228) !important;
-  color:black !important;
 }
 
-#app .ol-control button:hover, .ol-control button:focus {
-  background-color: rgb(220,140,140) !important;
-  color:white!important;
-  border-style:none !important;
-  border-style:hidden !important;
+#app .ol-control button {
+  font-family: "Barlow Condensed", sans-serif;
+  border-radius: 50% !important;
+  background-color: rgb(248, 249, 228) !important;
+  color: black !important;
+}
+
+#app .ol-control button:hover,
+.ol-control button:focus {
+  background-color: rgb(220, 140, 140) !important;
+  color: white !important;
+  border-style: none !important;
+  border-style: hidden !important;
 }
 
 #app .ol-control button:active {
-  background-color: rgb(180,100,100) !important;
-  color:white!important;
-  border-style:none !important;
-  border-style:hidden !important;
+  background-color: rgb(180, 100, 100) !important;
+  color: white !important;
+  border-style: none !important;
+  border-style: hidden !important;
 }
-
-
-
-  </style>
+</style>

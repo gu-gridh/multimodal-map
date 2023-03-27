@@ -36,8 +36,4 @@ const objectComponent = {
   </article>
 </template>
 
-<style>
-
-
-
-</style>
+<style></style>

@@ -2,8 +2,6 @@
 import { ref, onMounted } from "vue";
 import OpenSeadragon from "openseadragon";
 
-
-
 const props = defineProps({
   src: String,
 });
@@ -22,21 +20,17 @@ onMounted(() =>
     showHomeControl: false,
     showFullPageControl: true,
     //fullPageButton: "full-page",
-      //zoomInButton: "zoom-in",
-     // zoomOutButton: "zoom-out",
+    //zoomInButton: "zoom-in",
+    // zoomOutButton: "zoom-out",
     prefixUrl: "/openseadragon/",
     // If a proper tileSource is not given, use src prop.
     tileSources: props.src,
   })
 );
-
-
-
 </script>
 
 <template>
   <div ref="viewerEl" class="osd">
-    
     <!-- <div id="ToolbarHorizontal" v-show="src.length > 1">
       <div id="CenterNav">
         <a id="previous" href="#previous-page">
@@ -60,7 +54,6 @@ onMounted(() =>
       </a>
     </div> -->
   </div>
-
 </template>
 
 <style scoped>
@@ -80,7 +73,7 @@ onMounted(() =>
   text-align: center;
   padding: 5px 10px 5px 10px;
   border-radius: 8px;
-  font-size:18px;
+  font-size: 18px;
   font-weight: bold;
   vertical-align: 13px;
   margin-left: 10px;
@@ -100,7 +93,7 @@ onMounted(() =>
   background-size: 100%;
   background-repeat: no-repeat;
   background-position: center;
- background-color: rgba(35, 35, 35, 0.9);
+  background-color: rgba(35, 35, 35, 0.9);
   border-radius: 50%;
   width: 35px;
   height: 35px;
@@ -111,7 +104,7 @@ onMounted(() =>
 #Prev {
   background: url(@/assets/openseadragon/prev.png);
   background-size: 35px 35px;
-     background-color: rgba(35, 35, 35, 0.9);
+  background-color: rgba(35, 35, 35, 0.9);
   background-repeat: no-repeat;
   background-position: center;
   display: inline-block;
@@ -121,12 +114,11 @@ onMounted(() =>
 #Next {
   background: url(@/assets/openseadragon/next.png);
   background-size: 35px 35px;
-     background-color: rgba(35, 35, 35, 0.9);
+  background-color: rgba(35, 35, 35, 0.9);
   background-repeat: no-repeat;
   background-position: center;
   display: inline-block;
   position: relative;
-
 }
 
 #ZoomIn {
@@ -134,7 +126,7 @@ onMounted(() =>
   background-size: 100%;
   background-repeat: no-repeat;
   background-position: center;
- background-color: rgba(35, 35, 35, 0.9);
+  background-color: rgba(35, 35, 35, 0.9);
   border-radius: 50%;
   width: 35px;
   height: 35px;
@@ -148,7 +140,7 @@ onMounted(() =>
   background-size: 100%;
   background-repeat: no-repeat;
   background-position: center;
- background-color: rgba(35, 35, 35, 0.9);
+  background-color: rgba(35, 35, 35, 0.9);
   border-radius: 50%;
   width: 35px;
   height: 35px;
@@ -161,11 +153,9 @@ onMounted(() =>
   border-radius: 50%;
   color: white;
   opacity: 0.7;
-  margin-bottom:3px;
- 
+  margin-bottom: 3px;
 }
 .NavButton:hover {
   opacity: 1;
 }
-
 </style>

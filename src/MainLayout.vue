@@ -1,38 +1,41 @@
 <template>
   <div class="map-container h-full">
-        <div class="left-pane">
-          <div class="left-pane-layer">
-          <div class="left-pane-content">
-        <slot name="title">
-           <!--<div v-if="config" class="px-8 py-6 bg-white rounded-t-lg shadow-lg">-->
+    <div class="left-pane">
+      <div class="left-pane-layer">
+        <div class="left-pane-content">
+          <slot name="title">
+            <!--<div v-if="config" class="px-8 py-6 bg-white rounded-t-lg shadow-lg">-->
             <div v-if="config" class="py-1">
-            <div
-              class="main-title"
-              v-html="config.title"
-            ></div>
-            <div
-              class="sub-title"
-              v-html="config.subtitle"
-            ></div>
-          </div>
-        </slot>
+              <div class="main-title" v-html="config.title"></div>
+              <div class="sub-title" v-html="config.subtitle"></div>
+            </div>
+          </slot>
 
-        <slot name="about">
-           <!--<div v-if="config" class="px-8 py-6 bg-white rounded-b-lg shadow-lg">-->
+          <slot name="about">
+            <!--<div v-if="config" class="px-8 py-6 bg-white rounded-b-lg shadow-lg">-->
             <div v-if="config" class="py-5">
-            <p class="" v-html="config.about"></p>
-          </div>
-          <div class="p-1 px-2 clickable category-button" style="width:90px; text-align:center; margin-top:-10px; cursor:pointer;" v-html="config.moreinfo"></div>
-        </slot>
+              <p class="" v-html="config.about"></p>
+            </div>
+            <div
+              class="p-1 px-2 clickable category-button"
+              style="
+                width: 90px;
+                text-align: center;
+                margin-top: -10px;
+                cursor: pointer;
+              "
+              v-html="config.moreinfo"
+            ></div>
+          </slot>
 
-        <slot name="search"></slot>
+          <slot name="search"></slot>
+        </div>
       </div>
-    </div>
     </div>
 
     <div class="right-pane">
-    <slot name="details">
-      <div class="col-start-6 col-span-2 detail">
+      <slot name="details">
+        <div class="col-start-6 col-span-2 detail">
           <div class="bg-black rounded-lg shadow-lg mb-4 mx-12 detail">
             <div class="px-8 py-6">
               <div>
@@ -78,41 +81,36 @@ body {
   width: inherit;
 }
 
-
-
-.left-pane{
-  position:absolute;
-  height:100vh;
-  z-index:100;
+.left-pane {
+  position: absolute;
+  height: 100vh;
+  z-index: 100;
   pointer-events: none;
 }
 
-.right-pane{
-  position:absolute;
-  height:100vh;
-  width:350px;
-  right:0px;
+.right-pane {
+  position: absolute;
+  height: 100vh;
+  width: 350px;
+  right: 0px;
   pointer-events: none;
-  z-index:100;
+  z-index: 100;
   transition: all 0.5s ease-in-out;
 }
 
-.detail-view{
-  height:100vh;
-  width:100%;
+.detail-view {
+  height: 100vh;
+  width: 100%;
   transition: all 0.5s ease-in-out;
 }
 
 @media screen and (max-width: 1200px) {
-  .right-pane{
-
-  width:250px;
-  z-index:100;
+  .right-pane {
+    width: 250px;
+    z-index: 100;
+  }
+  .detail-view {
+    padding: 0px;
+  }
 }
-.detail-view{
-  padding:0px;
-}
-}
-
-
 </style>
