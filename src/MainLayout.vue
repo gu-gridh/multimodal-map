@@ -69,6 +69,7 @@ body {
   height: 100vh;
   width: 100vw;
   margin: 0 !important;
+  overflow: hidden !important;
 }
 
 #app {

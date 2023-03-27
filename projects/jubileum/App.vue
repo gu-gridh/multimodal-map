@@ -69,14 +69,21 @@ body {
 #app .left-pane-content {
   transform: rotate(-0.03turn);
 }
+#app .right-pane {
+  position: absolute;
+  height: 100vh;
+  width: auto;
+  right: 50px;
+  pointer-events: none;
+  z-index: 100;
+  transition: all 0.5s ease-in-out;
+}
 
 #app .detail-view {
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.85);
-  width: 100%;
   color: white;
   transition: all 0.5s ease-in-out;
-  backdrop-filter: blur(7px);
+  padding-top: 70px;
+  width: 240px;
 }
 
 .close-button {
