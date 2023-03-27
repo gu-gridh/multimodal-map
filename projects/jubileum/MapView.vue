@@ -75,6 +75,27 @@ const placeParams = computed(() =>
   min-width: 100px;
   }
 
+  #app .ol-control button {
+  font-family: 'Barlow Condensed', sans-serif;
+  border-radius: 50% !important;
+  background-color:rgb(248,249,228) !important;
+  color:black !important;
+}
+
+#app .ol-control button:hover, .ol-control button:focus {
+  background-color: rgb(220,140,140) !important;
+  color:white!important;
+  border-style:none !important;
+  border-style:hidden !important;
+}
+
+#app .ol-control button:active {
+  background-color: rgb(180,100,100) !important;
+  color:white!important;
+  border-style:none !important;
+  border-style:hidden !important;
+}
+
 
 
   </style>

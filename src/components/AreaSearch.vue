@@ -36,7 +36,7 @@ function onClick() {
 }
 
 .area-search-button {
-  background-color: rgb(255, 255, 255, 100);
+  background-color: rgba(255, 255, 255, 100);
   color: rgb(71, 85, 105);
   font-weight: bold;
   padding-top: 0.5rem;

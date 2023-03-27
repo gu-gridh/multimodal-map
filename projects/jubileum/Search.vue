@@ -11,13 +11,11 @@ const { categories, years } = storeToRefs(rephotographyStore());
 
 // See https://github.com/gu-gridh/rephotography/blob/master/views.py
 const CATEGORIES = {
-  all: "All Categories",
-  image: "Photographs",
-  video: "Videos",
-  models: "Models",
-  documents: "Documents",
-  drawings: "Drawings and art",
-  observation: "Observations",
+  all: "Alla kategorier",
+  image: "Fotografier",
+  documents: "Dokument",
+  drawings: "Teckningar och konst",
+  observation: "Observationer",
 };
 
 const YEARS = {
@@ -27,21 +25,14 @@ const YEARS = {
 </script>
 
 <template>
-  <div class="section-title">Documentation by category</div>
+  <div class="section-title">Typ av dokumentation</div>
   <CategoryButtonList
     v-model="categories"
     :categories="CATEGORIES"
     :limit="1"
     class="my-2"
   />
-  <div class="section-title">Time span</div>
-  <RangeSlider
-    v-model="years"
-    :min="YEARS.MIN"
-    :max="YEARS.MAX"
-    :step="1"
-    class="my-2"
-  />
+
 </template>
 
 <style>
@@ -54,20 +45,21 @@ margin-bottom:5px;
 }
 
 #app .category-button {
-  background-color: rgba(255,255,255,0.6);
+  background-color: rgba(235,225,225,0.6);
   color: rgb(71, 85, 105);
   border-radius: 4px;
+  transition: all 0.2s ease-in-out;
 }
 
 
 
 #app .category-button:hover {
-  background-color: #FF6600;
+  background-color: rgb(220,140,140);
   color: white;
 }
 
 #app .category-button.active {
-  background-color: #FF9900;
+  background-color: rgb(180,100,100);
   color: white;
 }
 

@@ -16,8 +16,8 @@
       @zoomChanged="zoomChanged"
     />
 
-    <ol-fullscreen-control v-if="fullscreencontrol" />
-    <ol-attribution-control v-if="attributioncontrol" />
+    <!-- <ol-fullscreen-control v-if="fullscreencontrol" /> -->
+      <!--<ol-attribution-control v-if="attributioncontrol" /> -->
     <ol-overviewmap-control v-if="overviewmapcontrol">
       <ol-tile-layer>
         <ol-source-osm />
@@ -26,7 +26,7 @@
 
     <ol-scaleline-control v-if="scalelinecontrol" />
     <ol-zoom-control v-if="zoomcontrol" />
-    <ol-zoomslider-control v-if="zoomslidercontrol" />
+    <!-- <ol-zoomslider-control v-if="zoomslidercontrol" /> -->
 
     <ol-tile-layer>
       <ol-source-osm />
@@ -42,6 +42,7 @@ import { fromLonLat, transformExtent } from "ol/proj";
 import { mapStore } from "@/stores/store";
 import { storeToRefs } from "pinia";
 import type { Project } from "@/types/project";
+
 
 const config = inject("config") as Project;
 
@@ -81,6 +82,94 @@ function onCenterChange() {
 </script>
 
 <style>
+.ol-control button {
+  font-family: 'Barlow Condensed', sans-serif;
+  border-radius: 50% !important;
+  background-color:rgb(40,40,40)!important;
+  color:white!important;
+}
+
+.ol-control button:active, .ol-control button:hover, .ol-control button:focus {
+ 
+  background: #FF9900 !important;
+  border-width:0px !important;
+}
+
+.ol-scaleline-control{
+  right:20px !important;
+}
+
+
+.ol-full-screen {
+right: 25px !important;
+top: 20px !important;
+position: fixed !important;
+font-size:30px  !important;
+  color: black;
+  border-radius: 50% !important;
+  width: 40px  !important;
+  height: 40px  !important;
+  padding: 0px  !important;
+  box-shadow: 0rem 0.5rem 1rem rgba(0, 0, 0, 0.2)!important;
+  opacity:0.9!important;
+}
+
+.ol-zoom {
+  font-size:30px  !important;
+  color: white!important;
+  width: 40px  !important;
+  height: 40px  !important;
+  padding: 0px  !important;
+  box-shadow: 0rem 0.5rem 1rem rgba(0, 0, 0, 0.2)!important;
+  opacity:0.9!important;
+  right:20px !important;
+  position: absolute !important;
+}
+
+.ol-zoom-in {
+  right:20px !important;
+  top:20px !important;
+   position: fixed;
+
+
+
+}
+.ol-zoom-in:hover {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+.ol-zoom-out {
+   right:20px;
+   top:68px;
+     position: fixed;
+  margin-top: 3px;
+  
+  
+}
+.ol-zoom-out:hover {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.ol-control {
+position:fixed;
+
+}
+#app .ol-zoomslider {
+top: 1rem !important;
+border-radius: 5px !important;
+background:rgba(255,255,255,0.4)!important;
+border: 0px solid rgba(0,60,136,.0) !important;
+right: 60px!important;
+height: 200px !important;
+width:25px!important;
+position: fixed !important;
+}
+
+.ol-zoomslider-thumb {
+width:60px!important;
+
+}
+
+
 .overlay-content {
   background: #ff0000;
   box-shadow: 0 5px 10px rgb(2 2 2 / 20%);
@@ -91,11 +180,11 @@ function onCenterChange() {
 .ol-popup {
   text-align: center;
   position: absolute;
-  background-color: white;
+  color:white;
+  background-color: rgb(40,40,40)!important;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
   padding: 15px;
   border-radius: 10px;
-  border: 0px solid #cccccc;
   bottom: 12px;
   left: -50px;
   min-width: 150px;
@@ -113,14 +202,14 @@ function onCenterChange() {
 }
 
 .ol-popup:after {
-  border-top-color: white;
+  border-top-color: rgb(40,40,40)!important;
   border-width: 10px;
   left: 48px;
   margin-left: -10px;
 }
 
 .ol-popup:before {
-  border-top-color: #cccccc;
+  border-top-color: rgb(40,40,40)!important;
   border-width: 11px;
   left: 48px;
   margin-left: -11px;
