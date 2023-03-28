@@ -25,7 +25,6 @@ const placeParams = computed(() =>
     <template #search>
       <Search />
     </template>
-
     <template #background>
       <MapComponent>
         <template #layers>
