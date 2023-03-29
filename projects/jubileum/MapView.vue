@@ -45,7 +45,7 @@ const placeParams = computed(() =>
 
           <ol-tile-layer>
             <ol-source-xyz
-              url="https://dh.gu.se/tiles/gbg_1921b/{z}/{x}/{y}.png"
+              url="https://data.dh.gu.se/tiles/gbg_1921b/{z}/{x}/{y}.png"
             />
           </ol-tile-layer>
         </template>
