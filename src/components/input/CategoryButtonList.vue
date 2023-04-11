@@ -24,10 +24,13 @@ const emit = defineEmits(["update:modelValue"]);
 function toggle(key: string) {
   let newValue = [...props.modelValue];
   if (newValue.includes(key)) {
+    // If the toggled category was selected before, unselect it.
     newValue.splice(newValue.indexOf(key), 1);
   } else if (props.limit === 1) {
+    // If the limit is one, select only the new one.
     newValue = [key];
   } else {
+    // If it was not selected before, select it.
     newValue.push(key);
   }
   emit("update:modelValue", newValue);

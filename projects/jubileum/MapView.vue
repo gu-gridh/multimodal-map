@@ -15,7 +15,7 @@ const { categories } = storeToRefs(jubileumStore());
 
 const placeParams = computed(() =>
   clean({
-    type: categories.value.join(","),
+    type: categories.value.filter((x) => x !== "all").join(","),
   })
 );
 </script>

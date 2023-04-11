@@ -16,7 +16,7 @@ const { categories, years } = storeToRefs(rephotographyStore());
 
 const placeParams = computed(() =>
   clean({
-    type: categories.value.join(","),
+    type: categories.value.filter((x) => x !== "all").join(","),
     start_date: years.value[0],
     end_date: years.value[1],
   })
