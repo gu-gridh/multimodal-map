@@ -5,6 +5,9 @@ export type RephotographyProject = Project & {
   timeRange: [number, number];
 };
 
+export type Documentation = Image | Rephotography | Video;
+export type DocumentationDeep = ImageDeep | RephotographyDeep | VideoDeep;
+
 export type Image = {
   published: boolean;
   uuid: string;
