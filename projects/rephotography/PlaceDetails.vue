@@ -2,23 +2,38 @@
 import { watchEffect, ref, inject } from "vue";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
-import type { Image, Rephotography } from "./types";
+import type { Image, Rephotography, RephotographyDeep } from "./types";
 import type { DianaClient } from "@/assets/diana";
 
 const { selectedFeature } = storeToRefs(mapStore());
 const diana = inject("diana") as DianaClient;
 
 const images = ref<Array<Image>>();
-const rephotographies = ref<Array<Rephotography>>();
+const rephotographies = ref<Array<RephotographyDeep>>();
 
 watchEffect(async () => {
   if (selectedFeature.value) {
     const place = selectedFeature.value.get("comment");
     images.value = await diana.listAll<Image>("image", { place });
-    rephotographies.value = await diana.listAll<Rephotography>(
+    // Load Rephotographies in two steps because `depth` doesn't work yet.
+    // TODO Implement `depth` instead
+    const rephotographiesShallow = await diana.listAll<Rephotography>(
       "rephotography",
       { place }
     );
+    const rephotographiesDeep: RephotographyDeep[] = [];
+    for (const rephotography of rephotographiesShallow) {
+      const [oldImage, newImage] = await Promise.all([
+        diana.get<Image>("image", rephotography.old_image),
+        diana.get<Image>("image", rephotography.new_image),
+      ]);
+      rephotographiesDeep.push({
+        ...rephotography,
+        old_image: oldImage,
+        new_image: newImage,
+      });
+    }
+    rephotographies.value = rephotographiesDeep;
   } else {
     images.value = [];
     rephotographies.value = [];
@@ -39,9 +54,28 @@ watchEffect(async () => {
           class="clickable"
         >
           <div>
-            <div>Rephotography</div>
-            <div>{{ rephotography.old_image }}</div>
-            <div>{{ rephotography.new_image }}</div>
+            <div class="split-image">
+              <img
+                :src="`${rephotography.old_image.iiif_file}/full/380,/0/default.jpg`"
+                class="image"
+              />
+              <img
+                :src="`${rephotography.new_image.iiif_file}/full/380,/0/default.jpg`"
+                class="image"
+              />
+            </div>
+          </div>
+          <div class="flex justify-between">
+            <div>
+              <div>{{ rephotography.old_image.title }}</div>
+              <div>{{ rephotography.old_image.description }}</div>
+              <div>{{ rephotography.old_image.date }}</div>
+            </div>
+            <div class="text-right">
+              <div>{{ rephotography.new_image.title }}</div>
+              <div>{{ rephotography.new_image.description }}</div>
+              <div>{{ rephotography.new_image.date }}</div>
+            </div>
           </div>
         </router-link>
 
@@ -75,5 +109,12 @@ watchEffect(async () => {
 
 .image {
   margin-bottom: 8px;
+}
+
+.split-image {
+  display: flex;
+}
+.split-image img {
+  width: 50%;
 }
 </style>

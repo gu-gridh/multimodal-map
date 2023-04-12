@@ -32,6 +32,14 @@ export type Rephotography = {
   new_image: number;
 };
 
+export type RephotographyDeep = Omit<
+  Rephotography,
+  "old_image" | "new_image"
+> & {
+  old_image: Image;
+  new_image: Image;
+};
+
 export type Person = {
   id: number;
   name: string;
