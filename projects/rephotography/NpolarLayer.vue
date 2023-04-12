@@ -48,5 +48,6 @@ const projection = getProjection("EPSG:25833");
       :style="options.style"
       :tile-grid="options.tileGrid"
       :wrap-x="options.wrapX"
+      crossOrigin="anonymous"
   /></ol-tile-layer>
 </template>
