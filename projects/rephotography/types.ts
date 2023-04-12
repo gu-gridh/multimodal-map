@@ -36,8 +36,8 @@ export type RephotographyDeep = Omit<
   Rephotography,
   "old_image" | "new_image"
 > & {
-  old_image: Image;
-  new_image: Image;
+  old_image: ImageDeep;
+  new_image: ImageDeep;
 };
 
 export type Person = {

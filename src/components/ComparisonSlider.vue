@@ -29,7 +29,8 @@ onMounted(() => {
 
   // Forward events from the dragger button to the Split.js gutter.
   for (const type of ["mousedown", "mouseup"]) {
-    dragger.value.addEventListener(type, (e: Event) =>
+    type ConstructableEvent = Event & { constructor: any };
+    dragger.value.addEventListener(type, (e: ConstructableEvent) =>
       split.value.pairs[0].gutter.dispatchEvent(new e.constructor(type, e))
     );
   }
