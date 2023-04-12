@@ -50,7 +50,7 @@ watchEffect(async () => {
   </div>
 </template>
 
-<style>
+<style scoped>
 .place-title {
   text-align: center;
   width: 100%;

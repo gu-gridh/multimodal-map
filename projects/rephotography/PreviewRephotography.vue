@@ -9,11 +9,7 @@ defineProps<{
 
 <template>
   <router-link :to="`/detail/rephotography/1`" class="clickable">
-    <ComparisonSlider
-      :srcLeft="`${rephotography.old_image.iiif_file}/full/380,/0/default.jpg`"
-      :srcRight="`${rephotography.new_image.iiif_file}/full/380,/0/default.jpg`"
-      locked
-    >
+    <ComparisonSlider locked>
       <template #left>
         <img
           :src="`${rephotography.old_image.iiif_file}/full/380,/0/default.jpg`"

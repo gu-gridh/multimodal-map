@@ -65,7 +65,7 @@ watchEffect(async () => {
   </div>
 </template>
 
-<style>
+<style scoped>
 #app h3 {
   font-size: 35px;
   font-weight: 100;

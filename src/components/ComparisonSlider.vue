@@ -1,34 +1,27 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from "vue";
+import { onMounted, ref } from "vue";
 import Split from "split.js";
 import { useElementSize } from "@vueuse/core";
 
 const props = defineProps<{
-  srcLeft: string;
-  srcRight: string;
   locked?: boolean;
 }>();
 
 const el = ref();
-const split1 = ref();
-const split2 = ref();
-const split = ref<Split.Instance | undefined>();
-
 const { width, height } = useElementSize(el);
 
+const split1 = ref();
+const split2 = ref();
+const splitSizes = ref<number[]>([50, 50]);
+
 onMounted(() => {
-  split.value = Split([split1.value, split2.value], {
+  Split([split1.value, split2.value], {
     minSize: 0,
     snapOffset: 0,
     gutterSize: props.locked ? 0 : 5,
+    onDrag: (sizes) => (splitSizes.value = sizes),
   });
 });
-
-const splitSizes = computed(() =>
-  split.value
-    ? split.value.getSizes().map((perc) => (perc / 100) * width.value)
-    : [undefined, undefined]
-);
 </script>
 
 <template>
@@ -42,7 +35,7 @@ const splitSizes = computed(() =>
       <div
         :style="{
           width: `${width}px`,
-          marginLeft: `-${splitSizes[1]}px`,
+          marginLeft: `-${(splitSizes[0] / 100) * width}px`,
         }"
       >
         <slot name="right" />
@@ -50,3 +43,10 @@ const splitSizes = computed(() =>
     </div>
   </figure>
 </template>
+
+<style scoped>
+:deep(.gutter) {
+  background-color: black;
+  cursor: col-resize;
+}
+</style>
