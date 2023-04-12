@@ -2,7 +2,12 @@
 import { watchEffect, ref, inject } from "vue";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
-import type { Image, Rephotography, RephotographyDeep } from "./types";
+import type {
+  Image,
+  ImageDeep,
+  Rephotography,
+  RephotographyDeep,
+} from "./types";
 import type { DianaClient } from "@/assets/diana";
 import PreviewRephotography from "./PreviewRephotography.vue";
 import PreviewImage from "./PreviewImage.vue";
@@ -26,8 +31,8 @@ watchEffect(async () => {
     const rephotographiesDeep: RephotographyDeep[] = [];
     for (const rephotography of rephotographiesShallow) {
       const [oldImage, newImage] = await Promise.all([
-        diana.get<Image>("image", rephotography.old_image),
-        diana.get<Image>("image", rephotography.new_image),
+        diana.get<ImageDeep>("image", rephotography.old_image),
+        diana.get<ImageDeep>("image", rephotography.new_image),
       ]);
       rephotographiesDeep.push({
         ...rephotography,
