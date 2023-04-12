@@ -54,6 +54,7 @@ onMounted(() => {
       </div>
     </div>
     <div
+      v-if="!locked"
       ref="dragger"
       class="absolute w-6 h-6 -ml-3 -mt-3 top-1/2 rounded-full bg-black text-white z-10 cursor-col-resize flex justify-around items-center"
       :style="{ left: `${splitSizes[0]}%` }"
