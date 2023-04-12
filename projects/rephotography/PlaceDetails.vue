@@ -4,6 +4,8 @@ import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
 import type { Image, Rephotography, RephotographyDeep } from "./types";
 import type { DianaClient } from "@/assets/diana";
+import PreviewRephotography from "./PreviewRephotography.vue";
+import PreviewImage from "./PreviewImage.vue";
 
 const { selectedFeature } = storeToRefs(mapStore());
 const diana = inject("diana") as DianaClient;
@@ -47,54 +49,17 @@ watchEffect(async () => {
       <div class="close-button">+</div>
       <h3 class="">{{ selectedFeature.get("name") }}</h3>
       <div class="flex flex-col gap-2">
-        <router-link
+        <PreviewRephotography
           v-for="rephotography in rephotographies"
           :key="rephotography.old_image + ' ' + rephotography.new_image"
-          :to="`/detail/rephotography/1`"
-          class="clickable"
-        >
-          <div>
-            <div class="split-image">
-              <img
-                :src="`${rephotography.old_image.iiif_file}/full/380,/0/default.jpg`"
-                class="image"
-              />
-              <img
-                :src="`${rephotography.new_image.iiif_file}/full/380,/0/default.jpg`"
-                class="image"
-              />
-            </div>
-          </div>
-          <div class="flex justify-between">
-            <div>
-              <div>{{ rephotography.old_image.title }}</div>
-              <div>{{ rephotography.old_image.description }}</div>
-              <div>{{ rephotography.old_image.date }}</div>
-            </div>
-            <div class="text-right">
-              <div>{{ rephotography.new_image.title }}</div>
-              <div>{{ rephotography.new_image.description }}</div>
-              <div>{{ rephotography.new_image.date }}</div>
-            </div>
-          </div>
-        </router-link>
+          :rephotography="rephotography"
+        />
 
-        <router-link
+        <PreviewImage
           v-for="image in images"
           :key="image.uuid"
-          :to="`/detail/image/1`"
-          class="clickable"
-        >
-          <div>
-            <img
-              :src="`${image.iiif_file}/full/380,/0/default.jpg`"
-              class="image"
-            />
-            <div>{{ image.title }}</div>
-            <div>{{ image.description }}</div>
-            <div>{{ image.date }}</div>
-          </div>
-        </router-link>
+          :image="image"
+        />
       </div>
     </div>
   </div>
