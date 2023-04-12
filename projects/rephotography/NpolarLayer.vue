@@ -33,11 +33,6 @@ const projection = getProjection("EPSG:25833");
       layer: capabilities.Contents.Layer[0].Identifier,
       projection,
     }) || undefined;
-  console.log({
-    projection,
-    capabilities,
-    options: options.value,
-  });
 })();
 </script>
 
