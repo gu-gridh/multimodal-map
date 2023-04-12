@@ -40,6 +40,25 @@ export type RephotographyDeep = Omit<
   new_image: ImageDeep;
 };
 
+export type Video = {
+  uuid: string;
+  title: string;
+  description: string;
+  date: string;
+  link: string;
+  place: number;
+  creator: number;
+  focus: number;
+  tag: number[];
+};
+
+export type VideoDeep = Omit<Video, "creator" | "place" | "focus" | "tag"> & {
+  place: Place;
+  creator: Person;
+  focus: Focus;
+  tag: Tag[];
+};
+
 export type Person = {
   id: number;
   name: string;

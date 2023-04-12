@@ -7,21 +7,25 @@ import type {
   ImageDeep,
   Rephotography,
   RephotographyDeep,
+  Video,
 } from "./types";
 import type { DianaClient } from "@/assets/diana";
 import PreviewRephotography from "./PreviewRephotography.vue";
 import PreviewImage from "./PreviewImage.vue";
+import PreviewVideo from "./PreviewVideo.vue";
 
 const { selectedFeature } = storeToRefs(mapStore());
 const diana = inject("diana") as DianaClient;
 
-const images = ref<Array<Image>>();
-const rephotographies = ref<Array<RephotographyDeep>>();
+const images = ref<Image[]>();
+const videos = ref<Video[]>();
+const rephotographies = ref<RephotographyDeep[]>();
 
 watchEffect(async () => {
   if (selectedFeature.value) {
     const place = selectedFeature.value.get("comment");
     images.value = await diana.listAll<Image>("image", { place });
+    videos.value = await diana.listAll<Video>("video", { place });
     // Load Rephotographies in two steps because `depth` doesn't work yet.
     // TODO Implement `depth` instead
     const rephotographiesShallow = await diana.listAll<Rephotography>(
@@ -58,6 +62,12 @@ watchEffect(async () => {
           v-for="rephotography in rephotographies"
           :key="rephotography.old_image + ' ' + rephotography.new_image"
           :rephotography="rephotography"
+        />
+
+        <PreviewVideo
+          v-for="video in videos"
+          :key="video.uuid"
+          :video="video"
         />
 
         <PreviewImage
