@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { RephotographyDeep } from "./types";
+import ComparisonSlider from "@/components/ComparisonSlider.vue";
 
 defineProps<{
   rephotography: RephotographyDeep;
@@ -8,18 +9,24 @@ defineProps<{
 
 <template>
   <router-link :to="`/detail/rephotography/1`" class="clickable">
-    <div>
-      <div class="split-image">
+    <ComparisonSlider
+      :srcLeft="`${rephotography.old_image.iiif_file}/full/380,/0/default.jpg`"
+      :srcRight="`${rephotography.new_image.iiif_file}/full/380,/0/default.jpg`"
+      locked
+    >
+      <template #left>
         <img
           :src="`${rephotography.old_image.iiif_file}/full/380,/0/default.jpg`"
           class="image"
         />
+      </template>
+      <template #right>
         <img
           :src="`${rephotography.new_image.iiif_file}/full/380,/0/default.jpg`"
           class="image"
         />
-      </div>
-    </div>
+      </template>
+    </ComparisonSlider>
     <div class="flex justify-between">
       <div>
         <div>{{ rephotography.old_image.title }}</div>
