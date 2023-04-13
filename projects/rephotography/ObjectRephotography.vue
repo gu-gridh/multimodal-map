@@ -11,12 +11,7 @@ defineProps<{
 
 <template>
   <div class="metadata">
-    <DetailPage
-      :title="`${[object.old_image.title, object.new_image.title]
-        .filter(Boolean)
-        .join(' / ')}`"
-      back="/"
-    >
+    <DetailPage :title="object.title" back="/">
       <h2 class="text-xl">Left image</h2>
 
       <p v-if="object.old_image.description" class="my-2">
@@ -26,7 +21,7 @@ defineProps<{
         By: {{ object.old_image.creator.name }}
       </div>
       <div v-if="object.old_image.place">
-        At: {{ object.old_image.place.description }}
+        At: {{ object.old_image.place.name }}
       </div>
       <div v-if="object.old_image.date">On: {{ object.old_image.date }}</div>
       <div v-if="object.old_image.focus">
@@ -46,7 +41,7 @@ defineProps<{
         By: {{ object.new_image.creator.name }}
       </div>
       <div v-if="object.new_image.place">
-        At: {{ object.new_image.place.description }}
+        At: {{ object.new_image.place.name }}
       </div>
       <div v-if="object.new_image.date">On: {{ object.new_image.date }}</div>
       <div v-if="object.new_image.focus">

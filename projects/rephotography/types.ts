@@ -31,6 +31,7 @@ export type ImageDeep = Omit<Image, "creator" | "place" | "focus" | "tag"> & {
 
 export type Rephotography = {
   published: boolean;
+  title: string;
   old_image: number;
   new_image: number;
 };
