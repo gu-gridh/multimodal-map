@@ -23,7 +23,7 @@ const rephotographies = ref<RephotographyDeep[]>();
 
 watchEffect(async () => {
   if (selectedFeature.value) {
-    const place = selectedFeature.value.get("comment");
+    const place = selectedFeature.value.get("id");
     images.value = await diana.listAll<Image>("image", { place });
     videos.value = await diana.listAll<Video>("video", { place });
     // Load Rephotographies in two steps because `depth` doesn't work yet.
@@ -50,12 +50,16 @@ watchEffect(async () => {
     rephotographies.value = [];
   }
 });
+
+function deselectPlace() {
+  selectedFeature.value = undefined;
+}
 </script>
 
 <template>
   <div v-if="selectedFeature" class="detail-view">
     <div class="px-8 py-6">
-      <div class="close-button">+</div>
+      <div class="close-button" @click="deselectPlace">+</div>
       <h3 class="">{{ selectedFeature.get("name") }}</h3>
       <div class="flex flex-col gap-10 pointer">
         <PreviewRephotography

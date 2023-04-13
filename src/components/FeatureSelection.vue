@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, inject } from "vue";
+import { ref, inject, watch } from "vue";
 import type Feature from "ol/Feature";
 import type { SelectEvent } from "ol/interaction/Select";
 import type { DisplayFunction } from "@/types/diana";
@@ -8,6 +8,7 @@ import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
 import markerIcon from "@/assets/marker-gold.svg";
 import markerIconRed from "@/assets/marker-red.svg";
+import Collection from "ol/Collection";
 
 const { selectedFeature } = storeToRefs(mapStore());
 
@@ -21,6 +22,10 @@ const hoveredFeature = ref<Feature>();
 const selectConditions = inject("ol-selectconditions");
 const hoverCondition = selectConditions.pointerMove;
 const selectCondition = selectConditions.click;
+// This list is connected to the ol-interaction-select element; this is to be able to deselect programmatically
+const selectedFeaturesCollection = new Collection(
+  selectedFeature.value ? [selectedFeature.value] : []
+);
 
 const onHover = (event: SelectEvent) => {
   const features = event.selected;
@@ -51,13 +56,25 @@ const onClick = (event: SelectEvent) => {
   }
 };
 
+// Sync selected feature from store to OL
+watch(selectedFeature, () => {
+  selectedFeaturesCollection.clear();
+  selectedFeaturesCollection.extend(
+    selectedFeature.value ? [selectedFeature.value] : []
+  );
+});
+
 const getFeatureDisplayName: DisplayFunction =
   config.getFeatureDisplayName ||
   ((feature) => feature.get("name") || String(feature.getId()));
 </script>
 
 <template>
-  <ol-interaction-select @select="onClick" :condition="selectCondition">
+  <ol-interaction-select
+    @select="onClick"
+    :condition="selectCondition"
+    :features="selectedFeaturesCollection"
+  >
     <ol-style>
       <ol-style-icon
         :src="markerIconRed"
