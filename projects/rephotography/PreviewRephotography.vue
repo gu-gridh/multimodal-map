@@ -9,6 +9,7 @@ defineProps<{
 
 <template>
   <router-link :to="`/detail/rephotography/1`" class="clickable">
+    <div class="image-container">
     <ComparisonSlider locked>
       <template #left>
         <img
@@ -23,6 +24,7 @@ defineProps<{
         />
       </template>
     </ComparisonSlider>
+  </div>
     <div class="flex justify-between">
       <div>
         <div>{{ rephotography.old_image.title }}</div>

@@ -12,7 +12,7 @@ defineProps<{
 <template>
   <div class="metadata">
     <DetailPage :title="object.title" back="/">
-      <p class="my-2">{{ object.description }}</p>
+      <p class="my-5 image-title">{{ object.description }}</p>
       <div>By: {{ object.creator.name }}</div>
       <div>At: {{ object.place.description }}</div>
       <div>On: {{ object.date }}</div>
@@ -29,4 +29,8 @@ defineProps<{
   </section>
 </template>
 
-<style scoped></style>
+<style scoped>
+.image-title {
+  font-size:150%;
+}
+</style>

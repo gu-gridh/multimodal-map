@@ -12,9 +12,9 @@ defineProps<{
 <template>
   <div class="metadata">
     <DetailPage :title="object.title" back="/">
-      <h2 class="text-xl">Left image</h2>
+      <h2 class="text-xl mt-5">Left image:</h2>
 
-      <p v-if="object.old_image.description" class="my-2">
+      <p v-if="object.old_image.description" class="my-1 image-title">
         {{ object.old_image.description }}
       </p>
       <div v-if="object.old_image.creator">
@@ -32,9 +32,9 @@ defineProps<{
         {{ object.old_image.tag.map((tag) => tag.text).join(", ") }}
       </div>
 
-      <h2 class="text-xl mt-4">Right image</h2>
+      <h2 class="text-xl mt-9">Right image:</h2>
 
-      <p v-if="object.new_image.description" class="my-2">
+      <p v-if="object.new_image.description" class="my-1 image-title">
         {{ object.new_image.description }}
       </p>
       <div v-if="object.new_image.creator">
@@ -54,7 +54,7 @@ defineProps<{
     </DetailPage>
   </div>
 
-  <section class="illustration flex flex-col justify-center">
+  <section class="illustration  justify-center">
     <ComparisonSlider>
       <template #left>
         <img
@@ -75,5 +75,9 @@ defineProps<{
 <style scoped>
 .illustration {
   min-height: 100vh;
+}
+
+.image-title {
+  font-size:150%;
 }
 </style>

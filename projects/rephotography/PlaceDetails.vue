@@ -57,7 +57,7 @@ watchEffect(async () => {
     <div class="px-8 py-6">
       <div class="close-button">+</div>
       <h3 class="">{{ selectedFeature.get("name") }}</h3>
-      <div class="flex flex-col gap-10">
+      <div class="flex flex-col gap-10 pointer">
         <PreviewRephotography
           v-for="rephotography in rephotographies"
           :key="rephotography.old_image + ' ' + rephotography.new_image"
@@ -80,7 +80,7 @@ watchEffect(async () => {
   </div>
 </template>
 
-<style scoped>
+<style>
 #app h3 {
   font-size: 35px;
   font-weight: 100;
@@ -97,4 +97,23 @@ watchEffect(async () => {
 .split-image img {
   width: 50%;
 }
+
+.pointer:hover{
+  cursor:pointer;
+}
+
+.image-container {
+  border-radius: 5px;
+  overflow: hidden;
+  margin-bottom:8px;
+}
+
+
+.image {
+  display: block;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
 </style>
