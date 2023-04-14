@@ -96,12 +96,12 @@ body {
   width: 350px;
   right: 0px;
   pointer-events: none;
-  z-index: 100;
+  z-index: 200;
   transition: all 0.5s ease-in-out;
+  overflow: hidden !important;
 }
 
 .detail-view {
-  height: 100vh;
   width: 100%;
   transition: all 0.5s ease-in-out;
 }

@@ -57,7 +57,7 @@ watchEffect(async () => {
     <div class="px-8 py-6">
       <div class="close-button">+</div>
       <h3 class="">{{ selectedFeature.get("name") }}</h3>
-      <div class="flex flex-col gap-2">
+      <div class="flex flex-col gap-10">
         <PreviewRephotography
           v-for="rephotography in rephotographies"
           :key="rephotography.old_image + ' ' + rephotography.new_image"
