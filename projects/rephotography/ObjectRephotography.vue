@@ -17,8 +17,8 @@ defineProps<{
       <p v-if="object.old_image.description" class="my-1 image-title">
         {{ object.old_image.description }}
       </p>
-      <div v-if="object.old_image.creator">
-        By: {{ object.old_image.creator.name }}
+      <div v-if="object.old_image.photographer">
+        By: {{ object.old_image.photographer.name }}
       </div>
       <div v-if="object.old_image.place">
         At: {{ object.old_image.place.name }}
@@ -37,8 +37,8 @@ defineProps<{
       <p v-if="object.new_image.description" class="my-1 image-title">
         {{ object.new_image.description }}
       </p>
-      <div v-if="object.new_image.creator">
-        By: {{ object.new_image.creator.name }}
+      <div v-if="object.new_image.photographer">
+        By: {{ object.new_image.photographer.name }}
       </div>
       <div v-if="object.new_image.place">
         At: {{ object.new_image.place.name }}
@@ -54,7 +54,7 @@ defineProps<{
     </DetailPage>
   </div>
 
-  <section class="illustration  justify-center">
+  <section class="illustration justify-center">
     <ComparisonSlider>
       <template #left>
         <img
@@ -78,6 +78,6 @@ defineProps<{
 }
 
 .image-title {
-  font-size:150%;
+  font-size: 150%;
 }
 </style>

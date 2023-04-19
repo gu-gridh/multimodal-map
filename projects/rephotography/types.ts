@@ -14,7 +14,7 @@ export type Image = {
   file: string;
   iiif_file: string;
   title: string;
-  creator: number;
+  photographer: number;
   place: number;
   description: string;
   date: string;
@@ -22,8 +22,11 @@ export type Image = {
   tag: number[];
 };
 
-export type ImageDeep = Omit<Image, "creator" | "place" | "focus" | "tag"> & {
-  creator: Person;
+export type ImageDeep = Omit<
+  Image,
+  "photographer" | "place" | "focus" | "tag"
+> & {
+  photographer: Person;
   place: Place;
   focus: Focus;
   tag: Tag[];
@@ -51,14 +54,17 @@ export type Video = {
   date: string;
   link: string;
   place: number;
-  creator: number;
+  photographer: number;
   focus: number;
   tag: number[];
 };
 
-export type VideoDeep = Omit<Video, "creator" | "place" | "focus" | "tag"> & {
+export type VideoDeep = Omit<
+  Video,
+  "photographer" | "place" | "focus" | "tag"
+> & {
   place: Place;
-  creator: Person;
+  photographer: Person;
   focus: Focus;
   tag: Tag[];
 };

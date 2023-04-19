@@ -16,7 +16,7 @@ const guplayId = computed(() => props.object.link.split("/").pop());
   <div class="metadata">
     <DetailPage :title="object.title" back="/">
       <p class="my-5 image-title">{{ object.description }}</p>
-      <div>By: {{ object.creator.name }}</div>
+      <div>By: {{ object.photographer.name }}</div>
       <div>At: {{ object.place.description }}</div>
       <div>On: {{ object.date }}</div>
       <div>Focus: {{ object.focus.text }}</div>
@@ -34,6 +34,6 @@ const guplayId = computed(() => props.object.link.split("/").pop());
 
 <style scoped>
 .image-title {
-  font-size:150%;
+  font-size: 150%;
 }
 </style>
