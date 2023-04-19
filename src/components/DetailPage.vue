@@ -19,7 +19,7 @@ defineProps({
       </div>
     </header>
 
-    <main class="container py-5 mx-20">
+    <main class="container py-5 metadata-posts">
       <slot />
     </main>
   </div>
@@ -46,7 +46,8 @@ defineProps({
   font-weight: 100;
   font-size: 50px;
   line-height: 0.9;
-  margin-left: 75px;
+  padding-left: 75px;
+
 }
 
 .metadata {
@@ -56,6 +57,23 @@ defineProps({
   background-color: black;
   color: white;
 }
+
+.metadata-posts {
+  padding-left:75px;
+  padding-right:20px;
+}
+
+.object-title {
+  font-size: 150%;
+  line-height:1.2;
+  width:90%;
+  padding-bottom:10px;
+}
+
+.theme-color{
+  color:orange;
+}
+
 
 .illustration {
   float: left;

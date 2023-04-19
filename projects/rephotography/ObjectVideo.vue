@@ -15,7 +15,7 @@ const guplayId = computed(() => props.object.link.split("/").pop());
 <template>
   <div class="metadata">
     <DetailPage :title="object.title" back="/">
-      <p class="my-5 image-title">{{ object.description }}</p>
+      <p class="my-5 object-title">{{ object.description }}</p>
       <div>By: {{ object.photographer.name }}</div>
       <div>At: {{ object.place.description }}</div>
       <div>On: {{ object.date }}</div>

@@ -12,9 +12,9 @@ defineProps<{
 <template>
   <div class="metadata">
     <DetailPage :title="object.title" back="/">
-      <h2 class="text-xl mt-5">Left image:</h2>
+      <h2 class="text-xl mt-5 theme-color">Left image:</h2>
 
-      <p v-if="object.old_image.description" class="my-1 image-title">
+      <p v-if="object.old_image.description" class="my-1 object-title">
         {{ object.old_image.description }}
       </p>
       <div v-if="object.old_image.photographer">
@@ -32,9 +32,9 @@ defineProps<{
         {{ object.old_image.tag.map((tag) => tag.text).join(", ") }}
       </div>
 
-      <h2 class="text-xl mt-9">Right image:</h2>
+      <h2 class="text-xl mt-9 theme-color">Right image:</h2>
 
-      <p v-if="object.new_image.description" class="my-1 image-title">
+      <p v-if="object.new_image.description" class="my-1 object-title">
         {{ object.new_image.description }}
       </p>
       <div v-if="object.new_image.photographer">
