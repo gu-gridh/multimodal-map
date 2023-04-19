@@ -4,7 +4,7 @@ export default <RephotographyProject>{
   title: "Extended Rephotography",
   moreinfo: "Learn more...",
   about:
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras nec nulla imperdiet, sollicitudin diam sit amet, porttitor urna.",
+    "A transdisciplinary project based on collaborative research focusing  on the glacial environment in northwest Svalbard. The core of the project is using field based visualizations and research analysis.",
   projection: "EPSG:3857",
   center: [11.1, 79.55],
   zoom: 11,
