@@ -71,6 +71,7 @@ export type Person = {
 export type Place = {
   id: number;
   geometry: Geometry;
+  name: string;
   description: string;
   comment: string;
   tag: Tag[];
