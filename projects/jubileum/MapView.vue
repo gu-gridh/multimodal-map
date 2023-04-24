@@ -29,7 +29,7 @@ const placeParams = computed(() =>
       <MapComponent>
         <template #layers>
           <DianaPlaceLayer
-            path="rephotography/geojson/place"
+            path="jubileum/geojson/place"
             :params="placeParams"
           >
             <ol-style>

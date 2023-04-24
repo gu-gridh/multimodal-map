@@ -3,7 +3,7 @@ import { provide } from "vue";
 import config from "./config";
 import { DianaClient } from "@/assets/diana";
 
-const endpoint = new DianaClient("rephotography");
+const endpoint = new DianaClient("jubileum");
 
 provide("config", config);
 provide("diana", endpoint);
