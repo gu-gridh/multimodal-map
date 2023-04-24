@@ -18,10 +18,13 @@ watchEffect(async () => {
     images.value = [];
   }
 });
+function deselectPlace() {
+  selectedFeature.value = undefined;
+}
 </script>
 
 <template>
-  <div v-if="selectedFeature" class="detail-view">
+  <div v-if="selectedFeature" class="detail-view" @click="deselectPlace">
     <div class="place-title">
       <p>{{ selectedFeature.get("name") }}</p>
     </div>
@@ -51,6 +54,16 @@ watchEffect(async () => {
 </template>
 
 <style scoped>
+#app .detail-view {
+
+  height: 100% !important;
+  pointer-events:auto!important;
+  overflow-y: scroll !important;
+  backdrop-filter: blur(0px);
+padding-left:30px;
+
+}
+
 .place-title {
   text-align: center;
   width: calc(100% - 20px);
@@ -58,21 +71,21 @@ watchEffect(async () => {
 }
 
 .place-title p {
-  color: black;
+  color: white;
   font-size: 25px;
   font-weight: 600;
   line-height:1.0;
   word-break: break-word;
   hyphens: auto;
-  background-color: rgba(248, 249, 229, 1);
+  background-color: rgb(180, 100, 100);
   border-radius: 10px 10px 0 0;
   padding: 20px 25px 20px 25px;
   width: 100%;
-  border-style:dotted;
+/*   border-style:dashed;
   border-width:0px 0pc 1px 0px;
-Border-color:black;
-  backdrop-filter: blur(3px);
-  box-shadow: 5px -5px 10px 0 rgba(0, 0, 0, 0.2), 0 0px 0px 0 rgba(0, 0, 0, 0.19);
+Border-color:black; */
+  backdrop-filter: blur(0px);
+  box-shadow: 0px -5px 10px 0 rgba(0, 0, 0, 0.2), 0 0px 0px 0 rgba(0, 0, 0, 0.19);
 }
 
 .meta-container {
@@ -86,20 +99,32 @@ Border-color:black;
 
 .image-card {
   width: auto;
+  pointer-events:auto !important;
   border-radius: 20px;
   margin-right:20px;
   padding: 20px;
   margin-bottom:20px;
-  background-color: rgba(248, 249, 229, 1);
-  box-shadow: 5px 10px 10px 0 rgba(0, 0, 0, 0.2), 0 0px 10px 0 rgba(0, 0, 0, 0.19);
-
+  background-color: rgba(248, 249, 229, 0.9);
+  box-shadow: 0px 10px 10px 0 rgba(0, 0, 0, 0.2), 0 0px 10px 0 rgba(0, 0, 0, 0.19);
+  transition: all 0.2s ease-in-out;
 }
+
+.image-card:hover .image-container {
+transform:scale(1.03);
+  background-color: rgba(248, 249, 229, 1.0);
+}
+
+.image-card:hover{
+  background-color: rgba(248, 249, 229, 1.0);
+}
+
 
 .image-container {
   border-radius: 50%;
   overflow:hidden;
   width: 200px;
   height: 200px;
+  transition: all 0.2s ease-in-out;
 }
 
 .image {
@@ -109,9 +134,5 @@ Border-color:black;
   margin-top:-20px;
 }
 
-#app .detail-view {
-  height: 100vh !important;
-  pointer-events: auto!important;
-  overflow-y: scroll !important;
-}
+
 </style>
