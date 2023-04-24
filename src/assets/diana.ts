@@ -12,7 +12,7 @@ export class DianaClient {
 
   async list<T>(type: string, params?: object): Promise<ListResponse<T>> {
     const response = await axios.get<ListResponse<T>>(
-      DIANA_BASE + `${this.project}/${type}`,
+      DIANA_BASE + `${this.project}/${type}/`,
       { params }
     );
     return response.data;
@@ -25,7 +25,7 @@ export class DianaClient {
   ): Promise<T[]> {
     params = { ...params, limit };
     const response = await axios.get<ListResponse<T>>(
-      DIANA_BASE + `${this.project}/${type}`,
+      DIANA_BASE + `${this.project}/${type}/`,
       { params }
     );
     return response.data.results;
@@ -33,7 +33,7 @@ export class DianaClient {
 
   async map<T>(type: string, params?: object): Promise<MapResponse<T>> {
     const response = await axios.get<MapResponse<T>>(
-      DIANA_BASE + `${this.project}/${type}`,
+      DIANA_BASE + `${this.project}/${type}/`,
       { params }
     );
     return response.data;
