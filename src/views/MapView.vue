@@ -13,7 +13,7 @@
     />
 
     <ol-tile-layer>
-      <ol-source-osm />
+      <!-- <ol-source-osm /> -->
     </ol-tile-layer>
   </ol-map>
 </template>
