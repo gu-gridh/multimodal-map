@@ -102,16 +102,15 @@ function deselectPlace() {
   width: 50%;
 }
 
-.pointer:hover{
-  cursor:pointer;
+.pointer:hover {
+  cursor: pointer;
 }
 
 .image-container {
   border-radius: 5px;
   overflow: hidden;
-  margin-bottom:8px;
+  margin-bottom: 8px;
 }
-
 
 .image {
   display: block;
@@ -119,5 +118,4 @@ function deselectPlace() {
   width: 100%;
   height: 100%;
 }
-
 </style>

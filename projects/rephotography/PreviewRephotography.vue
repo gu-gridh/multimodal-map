@@ -13,21 +13,21 @@ defineProps<{
     class="clickable"
   >
     <div class="image-container">
-    <ComparisonSlider locked>
-      <template #left>
-        <img
-          :src="`${rephotography.old_image.iiif_file}/full/380,/0/default.jpg`"
-          class="image"
-        />
-      </template>
-      <template #right>
-        <img
-          :src="`${rephotography.new_image.iiif_file}/full/380,/0/default.jpg`"
-          class="image"
-        />
-      </template>
-    </ComparisonSlider>
-  </div>
+      <ComparisonSlider locked>
+        <template #left>
+          <img
+            :src="`${rephotography.old_image.iiif_file}/full/380,/0/default.jpg`"
+            class="image"
+          />
+        </template>
+        <template #right>
+          <img
+            :src="`${rephotography.new_image.iiif_file}/full/380,/0/default.jpg`"
+            class="image"
+          />
+        </template>
+      </ComparisonSlider>
+    </div>
     <div class="flex justify-between">
       <div>
         <div>{{ rephotography.old_image.title }}</div>

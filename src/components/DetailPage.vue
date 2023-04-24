@@ -47,7 +47,6 @@ defineProps({
   font-size: 50px;
   line-height: 0.9;
   padding-left: 75px;
-
 }
 
 .metadata {
@@ -59,21 +58,20 @@ defineProps({
 }
 
 .metadata-posts {
-  padding-left:75px;
-  padding-right:20px;
+  padding-left: 75px;
+  padding-right: 20px;
 }
 
 .object-title {
   font-size: 150%;
-  line-height:1.2;
-  width:90%;
-  padding-bottom:10px;
+  line-height: 1.2;
+  width: 90%;
+  padding-bottom: 10px;
 }
 
-.theme-color{
-  color:orange;
+.theme-color {
+  color: orange;
 }
-
 
 .illustration {
   float: left;

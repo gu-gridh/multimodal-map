@@ -103,6 +103,6 @@ watchEffect(async () => {
 #app .detail-view {
   height: 100vh !important;
   pointer-events: auto !important;
-  overflow-y:scroll !important;}
-  
+  overflow-y: scroll !important;
+}
 </style>
