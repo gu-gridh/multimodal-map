@@ -3,54 +3,37 @@ import DetailPage from "@/components/DetailPage.vue";
 import type { RephotographyDeep } from "./types";
 import ComparisonSlider from "@/components/ComparisonSlider.vue";
 
-defineProps<{
+const props = defineProps<{
   object: RephotographyDeep;
   id: number;
 }>();
+
+const images = {
+  "Left image": props.object.old_image,
+  "Right image": props.object.new_image,
+};
 </script>
 
 <template>
   <div class="metadata">
     <DetailPage :title="object.title" back="/">
-      <h2 class="text-xl mt-5 theme-color">Left image:</h2>
+      <template v-for="(image, label) in images" :key="label">
+        <h2 class="text-xl mt-5 theme-color">{{ label }}:</h2>
 
-      <p v-if="object.old_image.description" class="my-1 object-title">
-        {{ object.old_image.description }}
-      </p>
-      <div v-if="object.old_image.photographer">
-        By: {{ object.old_image.photographer.name }}
-      </div>
-      <div v-if="object.old_image.place">
-        At: {{ object.old_image.place.name }}
-      </div>
-      <div v-if="object.old_image.date">On: {{ object.old_image.date }}</div>
-      <div v-if="object.old_image.focus">
-        Focus: {{ object.old_image.focus.text }}
-      </div>
-      <div v-if="object.old_image.tag?.length">
-        Tags:
-        {{ object.old_image.tag.map((tag) => tag.text).join(", ") }}
-      </div>
-
-      <h2 class="text-xl mt-9 theme-color">Right image:</h2>
-
-      <p v-if="object.new_image.description" class="my-1 object-title">
-        {{ object.new_image.description }}
-      </p>
-      <div v-if="object.new_image.photographer">
-        By: {{ object.new_image.photographer.name }}
-      </div>
-      <div v-if="object.new_image.place">
-        At: {{ object.new_image.place.name }}
-      </div>
-      <div v-if="object.new_image.date">On: {{ object.new_image.date }}</div>
-      <div v-if="object.new_image.focus">
-        Focus: {{ object.new_image.focus.text }}
-      </div>
-      <div v-if="object.new_image.tag.length">
-        Tags:
-        {{ object.new_image.tag.map((tag) => tag.text).join(", ") }}
-      </div>
+        <p v-if="image.description" class="my-1 object-title">
+          {{ image.description }}
+        </p>
+        <div v-if="image.photographer?.name">
+          By: {{ image.photographer.name }}
+        </div>
+        <div v-if="image.place?.name">At: {{ image.place.name }}</div>
+        <div v-if="image.date">On: {{ image.date }}</div>
+        <div v-if="image.focus?.text">Focus: {{ image.focus.text }}</div>
+        <div v-if="image.tag?.length">
+          Tags:
+          {{ image.tag.map((tag) => tag.text).join(", ") }}
+        </div>
+      </template>
     </DetailPage>
   </div>
 
