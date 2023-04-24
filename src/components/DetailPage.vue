@@ -47,6 +47,11 @@ defineProps({
   font-size: 50px;
   line-height: 0.9;
   padding-left: 75px;
+  padding-right: 20px;
+  width:calc(100% - 25px);
+  word-break: break-word;
+  hyphens: auto;
+ 
 }
 
 .metadata {

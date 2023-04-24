@@ -12,11 +12,13 @@ defineProps<{
 <template>
   <div class="metadata">
     <DetailPage :title="object.title" back="/">
-      <p class="my-2">{{ object.description }}</p>
-      <div v-if="object.creator">By: {{ object.creator.name }}</div>
-      <div v-if="object.place">At: {{ object.place.description }}</div>
-      <div>On: {{ object.date }}</div>
-      <div v-if="object.focus">Focus: {{ object.focus.text }}</div>
+      <p class="my-2 object-title">{{ object.description }}</p>
+
+
+      <div v-if="object.creator?.name">By: {{ object.creator.name }}</div>
+      <div v-if="object.place?.decription">At: {{ object.place.description }}</div>
+      <div v-if="object.date?.text">On: {{ object.date }}</div>
+      <div v-if="object.focus?.text">Focus: {{ object.focus.text }}</div>
       <div v-if="object.tag?.length">
         Tags:
         {{ object.tag.map((tag) => tag.text).join(", ") }}

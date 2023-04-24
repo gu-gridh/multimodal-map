@@ -29,7 +29,7 @@ watchEffect(async () => {
     <router-link
       v-for="image in images"
       :key="image.uuid"
-      :to="`/detail/image/1`"
+      :to="`/detail/image/${image.id}`"
       class="clickable"
     >
       <div class="image-card">
@@ -62,6 +62,8 @@ watchEffect(async () => {
   font-size: 25px;
   font-weight: 600;
   line-height:1.0;
+  word-break: break-word;
+  hyphens: auto;
   background-color: rgba(248, 249, 229, 1);
   border-radius: 10px 10px 0 0;
   padding: 20px 25px 20px 25px;

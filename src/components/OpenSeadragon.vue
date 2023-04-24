@@ -13,9 +13,9 @@ onMounted(() =>
     /** @see https://openseadragon.github.io/docs/OpenSeadragon.html#.Options */
     element: viewerEl.value,
     immediateRender: false,
-    visibilityRatio: 1,
-    minZoomImageRatio: 1,
-    homeFillsViewer: true,
+    visibilityRatio: 1.0,
+    minZoomImageRatio: 1.0,
+    homeFillsViewer: false,
     showZoomControl: true,
     showHomeControl: false,
     showFullPageControl: true,
