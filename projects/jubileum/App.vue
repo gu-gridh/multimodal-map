@@ -73,17 +73,19 @@ body {
   position: absolute;
   height: 100vh;
   width: auto;
-  right: 0px;
   pointer-events: none;
   z-index: 100;
   transition: all 0.5s ease-in-out;
+ 
+ 
 }
 
 #app .detail-view {
   color: white;
   transition: all 0.5s ease-in-out;
-  padding-top: 70px;
+  padding-top: 20px;
   width: 260px;
+  pointer-events: none;
 }
 
 .close-button {

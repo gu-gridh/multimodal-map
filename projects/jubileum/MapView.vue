@@ -9,7 +9,7 @@ import PlaceDetails from "./PlaceDetails.vue";
 import { storeToRefs } from "pinia";
 import { jubileumStore } from "./store";
 import { clean } from "@/assets/utils";
-import markerIcon from "@/assets/marker-gold.svg";
+import markerIcon from "@/assets/marker-white.svg";
 
 const { categories } = storeToRefs(jubileumStore());
 
@@ -32,7 +32,7 @@ const placeParams = computed(() =>
             <ol-style>
               <ol-style-icon
                 :src="markerIcon"
-                :scale="1.8"
+                :scale="2.0"
                 :displacement="[-10, 45]"
                 :anchor="[0.0, 0.0]"
               ></ol-style-icon>

@@ -53,27 +53,31 @@ watchEffect(async () => {
 <style scoped>
 .place-title {
   text-align: center;
-  width: 100%;
-  margin-bottom: 15px;
+  width: calc(100% - 20px);
+  margin-bottom: -15px;
 }
 
 .place-title p {
-  color: white;
+  color: black;
   font-size: 25px;
   font-weight: 600;
-  background-color: rgba(0, 0, 0, 0.5);
-  border-radius: 10px;
-
-  padding: 10px 25px 10px 25px;
+  line-height:1.0;
+  background-color: rgba(248, 249, 229, 1);
+  border-radius: 10px 10px 0 0;
+  padding: 20px 25px 20px 25px;
   width: 100%;
-  display: inline;
+  border-style:dotted;
+  border-width:0px 0pc 1px 0px;
+Border-color:black;
   backdrop-filter: blur(3px);
+  box-shadow: 5px -5px 10px 0 rgba(0, 0, 0, 0.2), 0 0px 0px 0 rgba(0, 0, 0, 0.19);
 }
 
 .meta-container {
   color: black;
   font-weight: 400;
   font-size: 20px;
+  line-height:1.0;
   text-align: center;
   margin-top: 10px;
 }
@@ -85,12 +89,13 @@ watchEffect(async () => {
   padding: 20px;
   margin-bottom:20px;
   background-color: rgba(248, 249, 229, 1);
-  box-shadow: 0 0px 40px 0 rgba(0, 0, 0, 0.2), 0 0px 40px 0 rgba(0, 0, 0, 0.19);
+  box-shadow: 5px 10px 10px 0 rgba(0, 0, 0, 0.2), 0 0px 10px 0 rgba(0, 0, 0, 0.19);
+
 }
 
 .image-container {
   border-radius: 50%;
-  overflow: hidden;
+  overflow:hidden;
   width: 200px;
   height: 200px;
 }
@@ -104,7 +109,7 @@ watchEffect(async () => {
 
 #app .detail-view {
   height: 100vh !important;
-  pointer-events: auto !important;
+  pointer-events: auto!important;
   overflow-y: scroll !important;
 }
 </style>
