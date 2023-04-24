@@ -34,8 +34,8 @@ const CATEGORIES = {
 }
 
 #app .category-button {
-  background-color: rgba(235, 225, 225, 0.6);
-  color: rgb(71, 85, 105);
+  background-color: rgba(180, 100, 100, 0.8);
+  color: white;
   border-radius: 4px;
   transition: all 0.2s ease-in-out;
 }

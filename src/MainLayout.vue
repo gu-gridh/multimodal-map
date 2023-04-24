@@ -13,7 +13,7 @@
 
           <slot name="about">
             <!--<div v-if="config" class="px-8 py-6 bg-white rounded-b-lg shadow-lg">-->
-            <div class="py-5">
+            <div class="py-5 about">
               <p class="" v-html="config.about"></p>
             </div>
             <div

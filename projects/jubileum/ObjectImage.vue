@@ -31,4 +31,8 @@ defineProps<{
   </section>
 </template>
 
-<style scoped></style>
+<style scoped>
+.metadata .object-title {
+  font-family: 'Josefin Sans', sans-serif !important;
+}
+</style>

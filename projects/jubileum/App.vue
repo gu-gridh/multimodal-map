@@ -20,31 +20,37 @@ body {
 }
 
 .main-title {
-  font-family: "Cormorant Garamond", serif !important;
-  font-size: 70px;
+  font-family: 'Josefin Sans', sans-serif !important;
+  font-size: 85px;
   line-height: 0.85;
-  font-weight: 100;
+  font-weight: 200;
   text-align: center;
   margin-left: -25px;
   color: rgb(180, 100, 100);
 }
 
 .sub-title {
-  font-family: "Cormorant Garamond", serif !important;
-  font-size: 85px;
+  font-family: 'Josefin Sans', sans-serif !important;
+  font-size: 75px;
   line-height: 0.8;
-  font-weight: 100;
+  font-weight: 200;
   text-align: center;
   margin-left: -25px;
   color: rgb(180, 100, 100);
-  margin-top: -15px;
+  margin-top: 10px;
   margin-bottom: 15px;
+}
+
+.about{
+  padding-right:25px;
+  line-height:1.3;
+  text-align:justify;
 }
 
 #app .left-pane {
   background-color: grey;
-  width: 900px;
-  padding: 60px 550px 50px 60px;
+  width: 1000px;
+  padding: 60px 600px 50px 60px;
   background: url("@/assets/gradient-jubileum.png");
   background-size: contain;
 }
@@ -65,8 +71,8 @@ body {
 #app .detail-view {
   color: white;
   transition: all 0.5s ease-in-out;
-  padding-top: 20px;
-  width: 260px;
+  padding-top: 70px;
+  width: 290px;
   pointer-events: none;
 }
 
