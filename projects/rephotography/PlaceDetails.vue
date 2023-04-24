@@ -23,7 +23,7 @@ const rephotographies = ref<RephotographyDeep[]>();
 
 watchEffect(async () => {
   if (selectedFeature.value) {
-    const place = selectedFeature.value.get("id");
+    const place = selectedFeature.value.getId();
     images.value = await diana.listAll<Image>("image", { place });
     videos.value = await diana.listAll<Video>("video", { place });
     // Load Rephotographies in two steps because `depth` doesn't work yet.

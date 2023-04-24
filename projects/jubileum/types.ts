@@ -4,7 +4,7 @@ import type { Geometry } from "ol/geom";
 export type JubileumProject = Project;
 
 export type Image = {
-  published: boolean;
+  id: number;
   uuid: string;
   file: string;
   iiif_file: string;

@@ -8,7 +8,10 @@ defineProps<{
 </script>
 
 <template>
-  <router-link :to="`/detail/rephotography/1`" class="clickable">
+  <router-link
+    :to="`/detail/rephotography/${rephotography.id}`"
+    class="clickable"
+  >
     <div class="image-container">
     <ComparisonSlider locked>
       <template #left>

@@ -7,8 +7,7 @@ defineProps<{
 </script>
 
 <template>
-    
-  <router-link :to="`/detail/image/1`" class="clickable">
+  <router-link :to="`/detail/image/${image.id}`" class="clickable">
     <div>
       <div class="image-container">
       <img :src="`${image.iiif_file}/full/380,/0/default.jpg`" class="image" />

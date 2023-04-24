@@ -9,7 +9,7 @@ export type Documentation = Image | Rephotography | Video;
 export type DocumentationDeep = ImageDeep | RephotographyDeep | VideoDeep;
 
 export type Image = {
-  published: boolean;
+  id: number;
   uuid: string;
   file: string;
   iiif_file: string;
@@ -33,7 +33,7 @@ export type ImageDeep = Omit<
 };
 
 export type Rephotography = {
-  published: boolean;
+  id: number;
   title: string;
   old_image: number;
   new_image: number;
@@ -48,6 +48,7 @@ export type RephotographyDeep = Omit<
 };
 
 export type Video = {
+  id: number;
   uuid: string;
   title: string;
   description: string;

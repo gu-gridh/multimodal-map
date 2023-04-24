@@ -11,7 +11,7 @@ const guplayId = computed(() => props.video.link.split("/").pop());
 </script>
 
 <template>
-  <router-link :to="`/detail/video/1`" class="clickable">
+  <router-link :to="`/detail/video/${video.id}`" class="clickable">
     <div>
       <div class="image-container">
       <GuplayPreview :guplayId="guplayId || ''" />
