@@ -41,7 +41,7 @@ export class DianaClient {
 
   async get<T>(type: string, id: string | number, params?: object): Promise<T> {
     const response = await axios.get<T>(
-      DIANA_BASE + `${this.project}/${type}/${id}`,
+      DIANA_BASE + `${this.project}/${type}/${id}/`,
       { params }
     );
     return response.data;

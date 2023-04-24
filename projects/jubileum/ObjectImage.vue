@@ -13,11 +13,11 @@ defineProps<{
   <div class="metadata">
     <DetailPage :title="object.title" back="/">
       <p class="my-2">{{ object.description }}</p>
-      <div>By: {{ object.creator.name }}</div>
-      <div>At: {{ object.place.description }}</div>
+      <div v-if="object.creator">By: {{ object.creator.name }}</div>
+      <div v-if="object.place">At: {{ object.place.description }}</div>
       <div>On: {{ object.date }}</div>
-      <div>Focus: {{ object.focus.text }}</div>
-      <div>
+      <div v-if="object.focus">Focus: {{ object.focus.text }}</div>
+      <div v-if="object.tag?.length">
         Tags:
         {{ object.tag.map((tag) => tag.text).join(", ") }}
       </div>

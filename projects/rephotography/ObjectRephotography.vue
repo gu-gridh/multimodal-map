@@ -27,7 +27,7 @@ defineProps<{
       <div v-if="object.old_image.focus">
         Focus: {{ object.old_image.focus.text }}
       </div>
-      <div v-if="object.old_image.tag.length">
+      <div v-if="object.old_image.tag?.length">
         Tags:
         {{ object.old_image.tag.map((tag) => tag.text).join(", ") }}
       </div>
