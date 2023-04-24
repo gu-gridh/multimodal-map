@@ -60,7 +60,7 @@ function deselectPlace() {
   pointer-events:auto!important;
   overflow-y: scroll !important;
 padding-left:30px;
-padding-bottom:30px;
+padding-bottom:80px;
 
 }
 
@@ -128,8 +128,8 @@ transform:scale(1.03);
 .image-container {
   border-radius: 50%;
   overflow:hidden;
-  width: 200px;
-  height: 200px;
+  width: 230px;
+  height: 230px;
   transition: all 0.2s ease-in-out;
 }
 

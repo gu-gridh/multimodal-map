@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { provide } from "vue";
 import config from "./config";
+import Footer from './Footer.vue';
 import { DianaClient } from "@/assets/diana";
 
 const endpoint = new DianaClient("jubileum");
@@ -10,7 +11,9 @@ provide("diana", endpoint);
 </script>
 
 <template>
+    <Footer />
   <router-view />
+
 </template>
 
 <style>
@@ -72,7 +75,7 @@ body {
   color: white;
   transition: all 0.5s ease-in-out;
   padding-top: 67px;
-  width: 290px;
+  width: 320px;
   pointer-events: none;
 }
 

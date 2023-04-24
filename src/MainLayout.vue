@@ -48,11 +48,13 @@
         </div>
       </slot>
     </div>
-
+ 
     <slot name="background">
       <MapComponent />
     </slot>
+
   </div>
+
 </template>
 
 <script setup lang="ts">
