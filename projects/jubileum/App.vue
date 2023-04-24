@@ -42,33 +42,15 @@ body {
 }
 
 #app .left-pane {
-  width: 500px;
-  background: linear-gradient(
-    90deg,
-    rgb(254, 255, 233) 30%,
-    rgba(228, 225, 214) 100%
-  );
-  transform: rotate(0.03turn);
-  margin-left: -130px;
-  margin-top: -70px;
-  height: 115vh;
-  box-shadow: 0 4px 128px 0 rgba(0, 0, 0, 0.2),
-    0 66px 100px 0 rgba(0, 0, 0, 0.19);
+  background-color: grey;
+  width: 900px;
+  padding: 60px 550px 50px 60px;
+  background: url("@/assets/gradient-jubileum.png");
+  background-size: contain;
 }
 
-#app .left-pane-layer {
-  width: inherit;
-  height: inherit;
-  padding: 120px 50px 50px 150px;
-  background-image: url(@/assets/border-jubileum.png);
-  background-repeat: repeat-y;
-  background-size: 37px 700px;
-  background-position: right 0px;
-}
 
-#app .left-pane-content {
-  transform: rotate(-0.03turn);
-}
+
 #app .right-pane {
   position: absolute;
   height: 100vh;
