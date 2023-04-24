@@ -81,7 +81,9 @@ watchEffect(async () => {
 .image-card {
   width: auto;
   border-radius: 20px;
+  margin-right:20px;
   padding: 20px;
+  margin-bottom:20px;
   background-color: rgba(248, 249, 229, 1);
   box-shadow: 0 0px 40px 0 rgba(0, 0, 0, 0.2), 0 0px 40px 0 rgba(0, 0, 0, 0.19);
 }
@@ -96,8 +98,8 @@ watchEffect(async () => {
 .image {
   display: block;
   object-fit: cover;
-  width: 100%;
-  height: 100%;
+  height: 145%;
+  margin-top:-20px;
 }
 
 #app .detail-view {
