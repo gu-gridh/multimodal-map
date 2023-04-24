@@ -59,8 +59,8 @@ function deselectPlace() {
   height: 100% !important;
   pointer-events:auto!important;
   overflow-y: scroll !important;
-  backdrop-filter: blur(0px);
 padding-left:30px;
+padding-bottom:30px;
 
 }
 
@@ -84,7 +84,7 @@ padding-left:30px;
 /*   border-style:dashed;
   border-width:0px 0pc 1px 0px;
 Border-color:black; */
-  backdrop-filter: blur(0px);
+opacity:0.99;
   box-shadow: 0px -5px 10px 0 rgba(0, 0, 0, 0.2), 0 0px 0px 0 rgba(0, 0, 0, 0.19);
 }
 
@@ -104,14 +104,20 @@ Border-color:black; */
   margin-right:20px;
   padding: 20px;
   margin-bottom:20px;
-  background-color: rgba(248, 249, 229, 0.9);
-  box-shadow: 0px 10px 10px 0 rgba(0, 0, 0, 0.2), 0 0px 10px 0 rgba(0, 0, 0, 0.19);
+  background-color: rgba(248, 249, 229, 0.95);
+  box-shadow: 0px 0px 20px 0 rgba(0, 0, 0, 0.2), 0 0px 20px 0 rgba(0, 0, 0, 0.19);
   transition: all 0.2s ease-in-out;
+
 }
 
 .image-card:hover .image-container {
 transform:scale(1.03);
   background-color: rgba(248, 249, 229, 1.0);
+
+}
+
+.image-card:hover .image{
+
 }
 
 .image-card:hover{

@@ -49,8 +49,8 @@ body {
 
 #app .left-pane {
   background-color: grey;
-  width: 1000px;
-  padding: 60px 600px 50px 60px;
+  width: 900px;
+  padding: 60px 500px 50px 60px;
   background: url("@/assets/gradient-jubileum.png");
   background-size: contain;
 }
@@ -71,7 +71,7 @@ body {
 #app .detail-view {
   color: white;
   transition: all 0.5s ease-in-out;
-  padding-top: 70px;
+  padding-top: 67px;
   width: 290px;
   pointer-events: none;
 }
