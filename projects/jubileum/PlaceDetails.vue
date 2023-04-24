@@ -99,4 +99,10 @@ watchEffect(async () => {
   width: 100%;
   height: 100%;
 }
+
+#app .detail-view {
+  height: 100vh !important;
+  pointer-events: auto !important;
+  overflow-y:scroll !important;}
+  
 </style>
