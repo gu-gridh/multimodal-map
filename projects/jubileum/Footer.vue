@@ -1,35 +1,29 @@
 <template>
   <footer id="footer">
     <a href="https://dh.gu.se/">
-      <div
-        id="CDHLogo"
-      >
-        #GRIDH
-      </div>
+      <div id="CDHLogo">#GRIDH</div>
     </a>
   </footer>
 </template>
 
 <script>
 export default {
-  name: 'Footer',
-  data() {
-  }
-}
+  name: "Footer",
+  data() {},
+};
 </script>
 
 <style scoped>
 #footer {
   background-color: #222;
   color: white;
-  line-height: 1.0;
+  line-height: 1;
   height: 80px;
   width: 100%;
   font-size: 12px;
-  position:absolute;
-  z-index:999;
-  bottom:0;
-
+  position: absolute;
+  z-index: 999;
+  bottom: 0;
 }
 
 a {

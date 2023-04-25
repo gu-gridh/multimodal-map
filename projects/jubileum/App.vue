@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { provide } from "vue";
 import config from "./config";
-import Footer from './Footer.vue';
+import Footer from "./Footer.vue";
 import { DianaClient } from "@/assets/diana";
 
 const endpoint = new DianaClient("jubileum");
@@ -11,9 +11,8 @@ provide("diana", endpoint);
 </script>
 
 <template>
-    <Footer />
+  <Footer />
   <router-view />
-
 </template>
 
 <style>
@@ -23,11 +22,11 @@ body {
 }
 
 .map-container {
-  height:calc(100vh - 80px)!important;
+  height: calc(100vh - 80px) !important;
 }
 
 .main-title {
-  font-family: 'Josefin Sans', sans-serif !important;
+  font-family: "Josefin Sans", sans-serif !important;
   font-size: 85px;
   line-height: 0.85;
   font-weight: 200;
@@ -38,7 +37,7 @@ body {
 }
 
 .sub-title {
-  font-family: 'Josefin Sans', sans-serif !important;
+  font-family: "Josefin Sans", sans-serif !important;
   font-size: 75px;
   line-height: 0.8;
   font-weight: 200;
@@ -50,10 +49,10 @@ body {
   margin-bottom: 15px;
 }
 
-.about{
-  padding-right:25px;
-  line-height:1.3;
-  text-align:justify;
+.about {
+  padding-right: 25px;
+  line-height: 1.3;
+  text-align: justify;
 }
 
 #app .left-pane {
@@ -64,8 +63,6 @@ body {
   background-size: contain;
 }
 
-
-
 #app .right-pane {
   position: absolute;
   height: 100vh;
@@ -73,8 +70,6 @@ body {
   pointer-events: none;
   z-index: 100;
   transition: all 0.5s ease-in-out;
- 
- 
 }
 
 #app .detail-view {

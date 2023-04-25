@@ -2,7 +2,7 @@
   <ol-map
     :loadTilesWhileAnimating="true"
     :loadTilesWhileInteracting="true"
-    style="height: 100%; width: 100%; z-index: !important;"
+    style="height: 100%; width: 100%; z-index: !important"
     ref="map"
   >
     <ol-view
@@ -19,23 +19,20 @@
     <!-- <ol-fullscreen-control v-if="fullscreencontrol" /> -->
     <!--<ol-attribution-control v-if="attributioncontrol" /> -->
     <ol-overviewmap-control v-if="overviewmapcontrol">
-    <ol-tile-layer>
+      <ol-tile-layer>
         <ol-source-osm />
-      </ol-tile-layer> 
+      </ol-tile-layer>
     </ol-overviewmap-control>
 
     <ol-scaleline-control v-if="scalelinecontrol" />
     <ol-zoom-control v-if="zoomcontrol" />
     <!-- <ol-zoomslider-control v-if="zoomslidercontrol" /> -->
 
-
     <ol-tile-layer>
-   <ol-source-osm /> 
-    </ol-tile-layer> 
-
+      <ol-source-osm />
+    </ol-tile-layer>
 
     <slot name="layers"></slot>
-
   </ol-map>
 </template>
 
@@ -84,8 +81,6 @@ function onCenterChange() {
 </script>
 
 <style>
-
-
 .ol-control button {
   font-family: "Barlow Condensed", sans-serif;
   border-radius: 50% !important;

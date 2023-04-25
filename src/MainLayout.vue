@@ -48,13 +48,11 @@
         </div>
       </slot>
     </div>
- 
+
     <slot name="background">
       <MapComponent />
     </slot>
-
   </div>
-
 </template>
 
 <script setup lang="ts">
@@ -80,9 +78,9 @@ body {
   /* display: flex !important; */
 }
 
-.about{
-  line-height:1.2;
-  margin-bottom:10px;
+.about {
+  line-height: 1.2;
+  margin-bottom: 10px;
 }
 
 .map-container {

@@ -14,9 +14,10 @@ defineProps<{
     <DetailPage :title="object.title" back="/">
       <p class="my-2 object-title">{{ object.description }}</p>
 
-
       <div v-if="object.creator?.name">By: {{ object.creator.name }}</div>
-      <div v-if="object.place?.decription">At: {{ object.place.description }}</div>
+      <div v-if="object.place?.decription">
+        At: {{ object.place.description }}
+      </div>
       <div v-if="object.date?.string">On: {{ object.date }}</div>
       <div v-if="object.focus?.text">Focus: {{ object.focus.text }}</div>
       <div v-if="object.tag?.length">
@@ -33,9 +34,9 @@ defineProps<{
 
 <style scoped>
 .metadata .object-title {
-  font-family: 'Josefin Sans', sans-serif !important;
+  font-family: "Josefin Sans", sans-serif !important;
 }
-.illustration{
-  height:calc(100vh - 80px);
+.illustration {
+  height: calc(100vh - 80px);
 }
 </style>

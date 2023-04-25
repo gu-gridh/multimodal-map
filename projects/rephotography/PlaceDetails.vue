@@ -111,7 +111,7 @@ function deselectPlace() {
   border-radius: 8px;
   overflow: hidden;
   margin-bottom: 8px;
-  height:200px;
+  height: 200px;
 }
 
 #app .image {

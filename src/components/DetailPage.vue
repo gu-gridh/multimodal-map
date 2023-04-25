@@ -48,11 +48,10 @@ defineProps({
   line-height: 0.9;
   padding-left: 75px;
   padding-right: 20px;
-  width:calc(100% - 25px);
+  width: calc(100% - 25px);
   hyphens: auto;
   word-wrap: break-word;
   overflow-wrap: break-word;
-
 }
 
 .metadata {
