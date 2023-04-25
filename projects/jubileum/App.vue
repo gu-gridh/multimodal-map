@@ -22,6 +22,10 @@ body {
   font-family: "Barlow Condensed", sans-serif !important;
 }
 
+.map-container {
+  height:calc(100vh - 80px)!important;
+}
+
 .main-title {
   font-family: 'Josefin Sans', sans-serif !important;
   font-size: 85px;
