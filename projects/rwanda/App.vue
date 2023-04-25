@@ -23,8 +23,9 @@ body {
 
 .main-title {
   font-size: 80px;
-  line-height: 0.9;
-  font-weight: 100;
+  line-height: 0.8;
+  font-weight: 600;
+  color:rgb(180,100,100);
 }
 
 #app .left-pane {

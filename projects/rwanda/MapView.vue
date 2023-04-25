@@ -68,9 +68,8 @@ const GeoJSONFormat = new format.GeoJSON({
                 <ol-style-fill color="rgb(255,255,255,0.7)"></ol-style-fill>
                 <ol-style-stroke color="gray"></ol-style-stroke>
               </ol-style-circle>
-              <ol-style-stroke color="gray" :width="7"></ol-style-stroke>
+              <ol-style-stroke color="rgba(100,100,100,0.8)" :width="5"></ol-style-stroke>
             </ol-style>
-
             <FeatureSelection />
           </DianaPlaceLayer>
         </template>
@@ -115,7 +114,7 @@ bottom:100px;
   border: 0px solid #cccccc;
   bottom: 35px;
   left: -50px;
-  min-width: 100px;
+  min-width: 200px;
 }
 
 #app .ol-control button {

@@ -82,7 +82,7 @@ const getFeatureDisplayName: DisplayFunction =
         :displacement="[-12, 50]"
         :anchor="[0.0, 0.0]"
       ></ol-style-icon>
-      <ol-style-stroke color="teal" :width="10"></ol-style-stroke>
+      <ol-style-stroke color="rgb(220,100,100)" :width="6"></ol-style-stroke>
     </ol-style>
   </ol-interaction-select>
 
@@ -94,7 +94,7 @@ const getFeatureDisplayName: DisplayFunction =
         :displacement="[-12, 50]"
         :anchor="[0.0, 0.0]"
       ></ol-style-icon>
-      <ol-style-stroke color="teal" :width="10"></ol-style-stroke>
+      <ol-style-stroke color="rgb(220,100,100)" :width="6"></ol-style-stroke>
     </ol-style>
   </ol-interaction-select>
 
