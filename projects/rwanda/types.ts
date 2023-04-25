@@ -1,7 +1,15 @@
 import type { Project } from "@/types/project";
+import type { Geometry } from "ol/geom";
 
 export type RwandaProject = Project & {
   urls: Record<string, string>;
+};
+
+export type Image = {
+  id: number;
+  uuid: string;
+  file: string;
+  iiif_file: string;
 };
 
 interface PlaceType {
@@ -50,4 +58,4 @@ interface Place {
   type: PlaceType;
 }
 
-export type { Place, PlaceType, Name, Informant, Language };
+export type { Image, Place, PlaceType, Name, Informant, Language };

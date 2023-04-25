@@ -1,68 +1,70 @@
+<script lang="ts" setup>
+import { provide } from "vue";
+import config from "./config";
+import Footer from './Footer.vue';
+import { DianaClient } from "@/assets/diana";
+
+const endpoint = new DianaClient("rwanda");
+
+provide("config", config);
+provide("diana", endpoint);
+</script>
+
 <template>
-  <MainLayout>
-    <template #search>
-      <Search />
-    </template>
-
-    <template #background>
-      <MapComponent>
-        <template #layers>
-          <DianaPlaceLayer
-            path="rwanda/geojson/place/"
-            :params="{
-              has_no_name: false,
-              id__in: params.searchIds ? params.searchIds : '',
-              in_bbox:
-                params.bbox && !params.searchIds ? params.bbox.toString() : '',
-              page_size: 500,
-            }"
-          >
-            <ol-style>
-              <ol-style-circle :radius="10">
-                <ol-style-fill color="rgb(255,255,255,0.7)"></ol-style-fill>
-                <ol-style-stroke color="gray"></ol-style-stroke>
-              </ol-style-circle>
-              <ol-style-stroke color="gray" :width="7"></ol-style-stroke>
-            </ol-style>
-
-            <FeatureSelection />
-          </DianaPlaceLayer>
-        </template>
-      </MapComponent>
-    </template>
-  </MainLayout>
+     <Footer />
+  <router-view />
 </template>
 
-<script lang="ts" setup>
-import { inject, provide } from "vue";
-import configRaw from "./project.json";
-import MainLayout from "@/MainLayout.vue";
-import Search from "./Search.vue";
-import type { Project } from "@/types/project";
-import { formatNames } from "./names";
-import type Feature from "ol/Feature";
-import { storeToRefs } from "pinia";
-import { mapStore } from "@/stores/store";
-import MapComponent from "@/components/MapComponent.vue";
-import DianaPlaceLayer from "@/components/DianaPlaceLayer.vue";
-import FeatureSelection from "@/components/FeatureSelection.vue";
-import type { Place } from "./types";
-
-function getName(f: Feature): string {
-  const place = f.getProperties() as Place;
-  return formatNames(f.getId(), place.names);
+<style>
+html,
+body {
+  font-family: "Barlow Condensed", sans-serif !important;
 }
 
-const config: Project = { ...configRaw };
-config.getFeatureDisplayName = getName;
-provide("config", config);
+.main-title {
+  font-size: 80px;
+  line-height: 0.9;
+  font-weight: 100;
+}
 
-const store = mapStore();
-const { params } = storeToRefs(store);
+#app .left-pane {
+  background-color: grey;
+  width: 900px;
+  padding: 60px 450px 50px 60px;
+  background: url("@/assets/gradient-rephotography.png");
+  background-size: contain;
+}
 
-// GeoJSON formatting
-const format = inject("ol-format");
-const GeoJSONFormat = new format.GeoJSON({
-  featureProjection: config.projection,
-});
-</script>
+#app .detail-view {
+  height: 100vh !important;
+  pointer-events: auto !important;
+  overflow-y: scroll !important;
+  background-color: rgba(0, 0, 0, 0.85);
+  width: 100%;
+  color: white;
+  transition: all 0.5s ease-in-out;
+  backdrop-filter: blur(7px);
+}
+
+.close-button {
+  width: 40px;
+  height: 40px;
+  margin-left: -10px;
+  margin-top: -5px;
+  padding: 16px 15px 10px 9px;
+  line-height: 1px;
+  font-size: 50px;
+  font-weight: 100;
+  border-radius: 50%;
+  background-color: rgb(100, 100, 100);
+  color: white;
+  transform: rotate(45deg);
+  cursor: pointer;
+  pointer-events: auto;
+  margin-bottom: 30px;
+}
+
+.close-button:hover {
+  background-color: rgb(140, 140, 140);
+}
+</style>
