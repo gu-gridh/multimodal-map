@@ -65,6 +65,8 @@ padding-bottom:80px;
 }
 
 .place-title {
+  font-family: 'Josefin Sans', sans-serif !important;
+  letter-spacing: -0.1rem;
   text-align: center;
   width: calc(100% - 20px);
   margin-bottom: -15px;
@@ -72,7 +74,7 @@ padding-bottom:80px;
 
 .place-title p {
   color: white;
-  font-size: 25px;
+  font-size: 28px;
   font-weight: 600;
   line-height:1.0;
   word-break: break-word;

@@ -27,6 +27,7 @@ body {
   font-size: 85px;
   line-height: 0.85;
   font-weight: 200;
+  letter-spacing: -0.2rem;
   text-align: center;
   margin-left: -25px;
   color: rgb(180, 100, 100);
@@ -37,6 +38,7 @@ body {
   font-size: 75px;
   line-height: 0.8;
   font-weight: 200;
+  letter-spacing: -0.2rem;
   text-align: center;
   margin-left: -25px;
   color: rgb(180, 100, 100);
