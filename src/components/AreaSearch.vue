@@ -1,9 +1,8 @@
 <template>
-  <div class="area-search-button-background">
+
     <button class="area-search-button" @click="onClick">
       {{ searchLabel }}
     </button>
-  </div>
 </template>
 
 <script setup lang="ts">

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import AreaSearch from "@/components/AreaSearch.vue";
 import AutocompleteComponent from "@/components/input/AutocompleteComponent.vue";
 import MapCard from "./MapCard.vue";
 import { mapStore } from "@/stores/store";
@@ -18,16 +17,16 @@ function displayName(p: Place): string {
 </script>
 
 <template>
+   
   <div class="filter-container">
-    <AreaSearch id="button-wrapper" class="clickable" />
-
+   
     <AutocompleteComponent
       placeholderText="Search..."
       noResultsText="No results found."
       :displayFunction="displayName"
       :searchItems="searchText"
     />
-    <div class="clickable overflow-y-auto h-[600px]">
+    <div class="clickable mapcard-container overflow-y-auto h-[600px]">
       <MapCard
         v-for="result in results"
         v-bind:key="result"
@@ -38,7 +37,7 @@ function displayName(p: Place): string {
   </div>
 </template>
 
-<style scoped>
+<style>
 .filter-container {
   padding: 1.5rem 0 1.5rem 0;
   border-bottom-right-radius: 0.5rem /* 8px */;
@@ -47,4 +46,45 @@ function displayName(p: Place): string {
   flex-direction: column;
   align-items: flex-start;
 }
+
+
+
+.section-title {
+  font-weight: 400;
+  font-size: 20px;
+  margin-top: 30px;
+  margin-bottom: 5px;
+}
+#app .mapcard-container {
+  margin-top:10px;
+}
+
+#app .area-search-button {
+  border-radius:0px;
+  margin-bottom:10px;
+}
+
+#app .category-button {
+  background-color: rgba(180, 100, 100, 1.0);
+  color: white;
+  border-radius: 4px;
+  transition: all 0.2s ease-in-out;
+}
+
+#app .category-button:hover {
+  background-color: rgb(220, 140, 140);
+  color: white;
+}
+
+#app .category-button.active {
+  background-color: rgb(180, 100, 100);
+  color: white;
+}
+
+
+
+#app .rounded {
+  border-radius: 10px;
+}
+
 </style>

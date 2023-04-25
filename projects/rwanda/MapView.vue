@@ -11,6 +11,7 @@ import { formatNames } from "./names";
 import type Feature from "ol/Feature";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
+import AreaSearch from "@/components/AreaSearch.vue";
 import MapComponent from "@/components/MapComponent.vue";
 import DianaPlaceLayer from "@/components/DianaPlaceLayer.vue";
 import FeatureSelection from "@/components/FeatureSelection.vue";
@@ -39,11 +40,17 @@ const GeoJSONFormat = new format.GeoJSON({
 
 <template>
   <MainLayout>
+
     <template #search>
       <Search />
     </template>
 
     <template #background>
+      <div style="display:flex; align-items: center; justify-content: center;">
+    <div class="mapoverlay">
+    <AreaSearch id="button-wrapper" class="clickable category-button" />
+  </div>
+</div>
       <MapComponent>
         <template #layers>
           <DianaPlaceLayer
@@ -69,7 +76,7 @@ const GeoJSONFormat = new format.GeoJSON({
         </template>
       </MapComponent>
     </template>
-    
+
     <template #details>
   <PlaceDetails />
 </template>
@@ -81,12 +88,25 @@ const GeoJSONFormat = new format.GeoJSON({
 
 
 <style>
+
+.mapoverlay{
+z-index: 100;
+position:absolute;
+font-size: 18px;
+font-weight: 500;
+color: white;
+bottom:100px;
+
+
+
+}
 #app .ol-popup {
   font-size: 1.2em;
   -webkit-user-select: none;
   -moz-user-select: none;
   user-select: none;
   text-align: center;
+  line-height: 1.2;
   position: absolute;
   background-color: white;
   box-shadow: 2 2px 8px rgba(0, 0, 0, 0.5);
@@ -96,5 +116,27 @@ const GeoJSONFormat = new format.GeoJSON({
   bottom: 35px;
   left: -50px;
   min-width: 100px;
+}
+
+#app .ol-control button {
+  font-family: "Barlow Condensed", sans-serif;
+  border-radius: 50% !important;
+  background-color: rgb(248, 249, 228) !important;
+  color: black !important;
+}
+
+#app .ol-control button:hover,
+.ol-control button:focus {
+  background-color: rgb(220, 140, 140) !important;
+  color: white !important;
+  border-style: none !important;
+  border-style: hidden !important;
+}
+
+#app .ol-control button:active {
+  background-color: rgb(180, 100, 100) !important;
+  color: white !important;
+  border-style: none !important;
+  border-style: hidden !important;
 }
 </style>
