@@ -107,15 +107,15 @@ function deselectPlace() {
 }
 
 .image-container {
-  border-radius: 5px;
+  border-radius: 8px;
   overflow: hidden;
   margin-bottom: 8px;
+  height:200px;
 }
 
-.image {
+#app .image {
   display: block;
   object-fit: cover;
-  width: 100%;
   height: 100%;
 }
 </style>
