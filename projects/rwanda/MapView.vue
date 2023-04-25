@@ -107,26 +107,25 @@ bottom:100px;
   text-align: center;
   line-height: 1.2;
   position: absolute;
-  background-color: white;
   box-shadow: 2 2px 8px rgba(0, 0, 0, 0.5);
   padding: 3px;
   border-radius: 5px;
   border: 0px solid #cccccc;
   bottom: 35px;
   left: -50px;
-  min-width: 200px;
+  min-width: 150px;
 }
 
 #app .ol-control button {
   font-family: "Barlow Condensed", sans-serif;
   border-radius: 50% !important;
-  background-color: rgb(248, 249, 228) !important;
-  color: black !important;
+  background-color: rgb(50, 50, 50) !important;
+  color: white !important;
 }
 
 #app .ol-control button:hover,
 .ol-control button:focus {
-  background-color: rgb(220, 140, 140) !important;
+  background-color: rgb(180, 100, 100) !important;
   color: white !important;
   border-style: none !important;
   border-style: hidden !important;

@@ -57,7 +57,7 @@ body {
   font-size: 50px;
   font-weight: 100;
   border-radius: 50%;
-  background-color: rgb(100, 100, 100);
+  background-color: rgb(180, 100, 100);
   color: white;
   transform: rotate(45deg);
   cursor: pointer;
@@ -66,6 +66,6 @@ body {
 }
 
 .close-button:hover {
-  background-color: rgb(140, 140, 140);
+  background-color: rgb(140, 100, 100);
 }
 </style>

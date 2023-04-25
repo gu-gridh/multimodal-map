@@ -66,7 +66,7 @@ function deselectPlace() {
 }
 
 .image-container {
-  border-radius: 8px;
+  border-radius: 5px;
   overflow: hidden;
   margin-bottom: 8px;
   height:200px;
@@ -75,6 +75,6 @@ function deselectPlace() {
 #app .image {
   display: block;
   object-fit: cover;
-  height: 100%;
+  height: 120%;
 }
 </style>
