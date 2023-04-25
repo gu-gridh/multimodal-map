@@ -16,10 +16,10 @@ const props = defineProps({
 const format = inject("ol-format");
 const geoJsonFormat = new format.GeoJSON();
 
-const url = computed(
-  () =>
-    DIANA_BASE + props.path + "?" + new URLSearchParams(props.params).toString()
-);
+const url = computed(() => {
+  const params = { page_size: "500", ...props.params };
+  return DIANA_BASE + props.path + "?" + new URLSearchParams(params).toString();
+});
 </script>
 
 <template>

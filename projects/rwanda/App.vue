@@ -8,7 +8,7 @@
       <MapComponent>
         <template #layers>
           <DianaPlaceLayer
-            path="rwanda/geojson/place"
+            path="rwanda/geojson/place/"
             :params="{
               has_no_name: false,
               id__in: params.searchIds ? params.searchIds : '',

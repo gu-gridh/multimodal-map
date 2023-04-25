@@ -37,7 +37,7 @@ const placeParams = computed(() =>
           />
 
           <DianaPlaceLayer
-            path="rephotography/geojson/place"
+            path="rephotography/geojson/place/"
             :params="placeParams"
           >
             <ol-style>
