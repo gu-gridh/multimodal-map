@@ -28,7 +28,7 @@ const placeParams = computed(() =>
     <template #background>
       <MapComponent>
         <template #layers>
-          <DianaPlaceLayer path="jubileum/geojson/place" :params="placeParams">
+          <DianaPlaceLayer path="jubileum/geojson/place/" :params="placeParams">
             <ol-style>
               <ol-style-icon
                 :src="markerIcon"
@@ -62,7 +62,7 @@ const placeParams = computed(() =>
   -moz-user-select: none;
   user-select: none;
   text-align: center;
-  line-height:1.2;
+  line-height: 1.2;
   position: absolute;
   background-color: white;
   box-shadow: 2 2px 8px rgba(0, 0, 0, 0.5);
