@@ -89,6 +89,7 @@ function deselectPlace() {
   font-size: 35px;
   font-weight: 100;
   margin-left: -2px;
+  margin-bottom: 10px;
 }
 
 .image {
