@@ -1,6 +1,6 @@
-import type { RephotographyProject } from "./types";
+import type { RwandaProject } from "./types";
 
-export default <RephotographyProject>{
+export default <RwandaProject>{
   title: "Streets of Rwanda",
   urls: {
     baseURL: "https://diana.dh.gu.se/api/rwanda",

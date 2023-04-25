@@ -1,26 +1,40 @@
+
+
+
 <script lang="ts" setup>
-import { computed } from "vue";
+import { inject, provide } from "vue";
+import configRaw from "./config.ts";
 import MainLayout from "@/MainLayout.vue";
 import Search from "./Search.vue";
+import type { Project } from "@/types/project";
+import { formatNames } from "./names";
+import type Feature from "ol/Feature";
+import { storeToRefs } from "pinia";
+import { mapStore } from "@/stores/store";
 import MapComponent from "@/components/MapComponent.vue";
-import NpolarLayer from "./NpolarLayer.vue";
 import DianaPlaceLayer from "@/components/DianaPlaceLayer.vue";
 import FeatureSelection from "@/components/FeatureSelection.vue";
 import PlaceDetails from "./PlaceDetails.vue";
-import { storeToRefs } from "pinia";
-import { rephotographyStore } from "./store";
-import { clean } from "@/assets/utils";
-import markerIcon from "@/assets/marker-gold.svg";
+import type { Place } from "./types";
 
-const { categories, years } = storeToRefs(rephotographyStore());
 
-const placeParams = computed(() =>
-  clean({
-    type: categories.value.filter((x) => x !== "all").join(","),
-    start_date: years.value[0],
-    end_date: years.value[1],
-  })
-);
+function getName(f: Feature): string {
+  const place = f.getProperties() as Place;
+  return formatNames(f.getId(), place.names);
+}
+
+const config: Project = { ...configRaw };
+config.getFeatureDisplayName = getName;
+provide("config", config);
+
+const store = mapStore();
+const { params } = storeToRefs(store);
+
+// GeoJSON formatting
+const format = inject("ol-format");
+const GeoJSONFormat = new format.GeoJSON({
+  featureProjection: config.projection,
+});
 </script>
 
 <template>
@@ -55,8 +69,16 @@ const placeParams = computed(() =>
         </template>
       </MapComponent>
     </template>
-  </MainLayout>
+    
+    <template #details>
+  <PlaceDetails />
 </template>
+</MainLayout>
+</template>
+
+
+
+
 
 <style>
 #app .ol-popup {
