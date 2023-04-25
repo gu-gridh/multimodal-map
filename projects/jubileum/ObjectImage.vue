@@ -35,4 +35,7 @@ defineProps<{
 .metadata .object-title {
   font-family: 'Josefin Sans', sans-serif !important;
 }
+.illustration{
+  height:calc(100vh - 80px);
+}
 </style>
