@@ -38,7 +38,8 @@ const objectComponent = {
   height: 100% !important;
   pointer-events: auto !important;
   overflow-y: scroll !important;
-  padding-left: 30px;
+  padding-left: 20px;
+  padding-right: 20px;
   padding-bottom: 80px;
 }
 </style>

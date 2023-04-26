@@ -43,6 +43,7 @@ body {
   background-size: contain;
 }
 
+
 #app .detail-view {
   height: 100vh !important;
   pointer-events: auto !important;

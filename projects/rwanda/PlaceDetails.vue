@@ -26,7 +26,7 @@ function deselectPlace() {
 
 <template>
   <div v-if="selectedFeature" class="detail-view">
-    <div class="px-8 py-6">
+    <div class="px-4 py-6">
       <div class="close-button" @click="deselectPlace">+</div>
       <h3 class="">{{ selectedFeature.get("name") }}</h3>
       <div class="flex flex-col gap-10 pointer">
@@ -75,6 +75,5 @@ function deselectPlace() {
 #app .image {
   display: block;
   object-fit: cover;
-  height: 120%;
 }
 </style>

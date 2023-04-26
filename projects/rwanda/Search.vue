@@ -40,8 +40,17 @@ function displayName(p: Place): string {
 </template>
 
 <style>
-.card-holder{
 
+.filter-container {
+  display:flex;
+  flex-direction: column;
+  height:calc(100vh - 400px);
+
+}
+
+
+.card-holder{
+  flex:1;
   border-radius:8px;
   padding:0px 20px;
   border-style:dashed;
@@ -49,8 +58,8 @@ function displayName(p: Place): string {
   border-width:1px;
   margin-top:20px;
   width:100%;
-  height:calc(100vh - 620px);
   z-index:0;
+  backdrop-filter: blur(7px);
 }
 
 #app .searchbox{

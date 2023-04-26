@@ -40,7 +40,6 @@ const GeoJSONFormat = new format.GeoJSON({
 
 <template>
   <MainLayout>
-
     <template #search>
       <Search />
     </template>
