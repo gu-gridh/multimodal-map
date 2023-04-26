@@ -26,7 +26,8 @@ function displayName(p: Place): string {
       :displayFunction="displayName"
       :searchItems="searchText"
     />
-    <div class="clickable mapcard-container overflow-y-auto h-[600px]">
+   
+    <div class="card-holder clickable overflow-y-auto">
       <MapCard
         v-for="result in results"
         v-bind:key="result"
@@ -34,10 +35,66 @@ function displayName(p: Place): string {
         class="pb-5 rounded-lg"
       />
     </div>
+
   </div>
 </template>
 
 <style>
+.card-holder{
+
+  border-radius:8px;
+  padding:0px 20px;
+  border-style:dashed;
+  border-color:black;
+  border-width:1px;
+  margin-top:20px;
+  width:100%;
+  height:calc(100vh - 620px);
+  z-index:0;
+}
+
+#app .searchbox{
+  background-color:black !important;
+width:100%;
+color:white;
+  padding:15px  !important;
+  font-size: 25px;
+
+}
+
+#app .searchbox-menu{
+  z-index:10;
+  margin-top:-5px;
+  padding:10px 0px 0px 0px;
+  border-radius:0 0 8px 8px;
+  background-color:rgb(45,45,45);
+  color:white;
+  max-height:calc(100vh - 550px);
+
+
+}
+
+#app .searchbox-menu-text{
+  
+  padding:15px  !important;
+  font-size: 16px;
+
+}
+
+#app .searchbox-menu-text-active{
+  
+ background-color:rgb(180,100,100);
+
+}
+
+
+#app .searchbox-menu-text-active{
+  
+  color:white;
+ 
+ }
+
+
 .filter-container {
   padding: 1.5rem 0 1.5rem 0;
   border-bottom-right-radius: 0.5rem /* 8px */;

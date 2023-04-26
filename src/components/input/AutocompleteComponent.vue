@@ -2,10 +2,10 @@
   <Combobox v-model="selectedItem">
     <div class="mt-0 non-clickable w-full">
       <div
-        class="clickable relative cursor-default overflow-hidden rounded-lg bg-white text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm"
+        class="clickable relative cursor-default overflow-hidden rounded-lg text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 sm:text-sm"
       >
         <ComboboxInput
-          class="outline-none border-none py-2 pl-3 pr-10 w-full text-sm leading-5 text-gray-900 focus:ring-0"
+          class="searchbox"
           @change="searchTerm = $event.target.value"
           :placeholder="placeholderText"
         />
@@ -22,11 +22,11 @@
         @after-leave="searchTerm = ''"
       >
         <ComboboxOptions
-          class="clickable relative mt-1 max-h-60 overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
+          class="searchbox-menu clickable relative overflow-auto shadow-lg focus:outline-none"
         >
           <div
             v-if="searchResults.length === 0 && searchTerm !== ''"
-            class="relative cursor-default select-none py-2 px-4 text-gray-700"
+            class=""
           >
             {{ noResultsText }}
           </div>
@@ -39,10 +39,10 @@
             v-slot="{ selected, active }"
           >
             <li
-              class="relative cursor-default select-none py-2 pl-10 pr-4"
+              class="searchbox-menu-text"
               :class="{
-                'bg-teal-600 text-white': active,
-                'text-gray-900': !active,
+              'searchbox-menu-text-active': active,
+                'searchbox-menu-text-inactive': !active,
               }"
             >
               <span
@@ -54,7 +54,7 @@
               <span
                 v-if="selected"
                 class="absolute inset-y-0 left-0 flex items-center pl-3"
-                :class="{ 'text-white': active, 'text-teal-600': !active }"
+                :class="{ 'text-white': active, 'text-teal-300': !active }"
               >
                 <CheckIcon class="h-5 w-5" aria-hidden="true" />
               </span>
