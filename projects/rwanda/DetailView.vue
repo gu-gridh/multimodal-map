@@ -33,4 +33,12 @@ const objectComponent = {
   </article>
 </template>
 
-<style></style>
+<style>
+#app .detail-view {
+  height: 100% !important;
+  pointer-events: auto !important;
+  overflow-y: scroll !important;
+  padding-left: 30px;
+  padding-bottom: 80px;
+}
+</style>

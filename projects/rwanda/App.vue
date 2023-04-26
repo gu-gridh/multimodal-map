@@ -28,6 +28,13 @@ body {
   color:rgb(180,100,100);
 }
 
+.about {
+  padding-right: 25px;
+  line-height: 1.3;
+  text-align: left;
+}
+
+
 #app .left-pane {
   background-color: grey;
   width: 900px;
