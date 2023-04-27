@@ -64,7 +64,7 @@
       </TransitionRoot>
     </div>
     <div
-      class="bg-white rounded p-4 my-2 shadow-md w-full flex content-end"
+      class="bg-white rounded p-4 my-2 shadow-md w-full flex content-end clickable"
       v-if="selectedItem"
     >
       <span class="flex-auto" v-html="displayFunction(selectedItem)"></span>
