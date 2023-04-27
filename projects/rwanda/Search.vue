@@ -59,7 +59,7 @@ function displayName(p: Place): string {
   margin-top:20px;
   width:100%;
   z-index:0;
-  backdrop-filter: blur(7px);
+  backdrop-filter: blur(5px);
 }
 
 #app .searchbox{
