@@ -14,6 +14,8 @@
       style="z-index=0"
       @centerChanged="onCenterChange"
       @zoomChanged="zoomChanged"
+      :min-zoom="minZoom"
+      :max-zoom="maxZoom"
     />
 
     <!-- <ol-fullscreen-control v-if="fullscreencontrol" /> -->
@@ -62,6 +64,20 @@ const zoomcontrol = ref(true);
 const zoomslidercontrol = ref(true);
 const scalelinecontrol = ref(true);
 const overviewmapcontrol = ref(true);
+
+const props = defineProps({
+  minZoom: {
+    type: Number,
+    default: 0,
+  },
+  maxZoom: {
+    type: Number,
+    default: 28,
+  },
+});
+
+const minZoom = ref(props.minZoom);
+const maxZoom = ref(props.maxZoom);
 
 function zoomChanged() {
   let newExtent = map.value.map
