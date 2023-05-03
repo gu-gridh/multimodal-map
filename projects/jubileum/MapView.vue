@@ -26,7 +26,7 @@ const placeParams = computed(() =>
       <Search />
     </template>
     <template #background>
-      <MapComponent>
+        <MapComponent :min-zoom="16" :max-zoom="18" :restrictExtent="[11.922, 57.7215, 11.996, 57.69035]" >
         <template #layers>
           <DianaPlaceLayer path="jubileum/geojson/place/" :params="placeParams">
             <ol-style>
