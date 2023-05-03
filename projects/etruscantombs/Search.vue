@@ -13,18 +13,15 @@ const { categories, years } = storeToRefs(rephotographyStore());
 const CATEGORIES = {
   all: "All Categories",
   image: "Photographs",
-  video: "Videos",
   models: "Models",
-  documents: "Documents",
-  drawings: "Drawings and art",
-  observation: "Observations",
+  drawings: "Plans",
 };
 
 const TAGS = {
   all: "All Tags",
-  image: "Glacier",
-  video: "Camp",
-  models: "Animal",
+  xxx: "Tomb type A",
+  xxx: "Tomb type B",
+  xxx: "Tomb type C",
 };
 
 const YEARS = {
@@ -50,7 +47,7 @@ const YEARS = {
     v-model="years"
     :min="YEARS.MIN"
     :max="YEARS.MAX"
-    :step="1"
+    :step="50"
     class="my-2"
   />
 </template>
@@ -70,12 +67,12 @@ const YEARS = {
 }
 
 #app .category-button:hover {
-  background-color: #ff6600;
+  background-color: rgb(140,80,80);
   color: white;
 }
 
 #app .category-button.active {
-  background-color: #ff9900;
+  background-color: rgb(180,100,100);
   color: white;
 }
 
@@ -107,12 +104,12 @@ const YEARS = {
 }
 
 #app .slider-connect {
-  background-color: #ff9900;
+  background-color: rgb(180,100,100);
 }
 
 #app .slider-tooltip {
-  background-color: #ff9900;
-  border: 1px solid var(--slider-tooltip-bg, #ff9900);
+  background-color: rgb(180,100,100);
+  border: 1px solid var(--slider-tooltip-bg, rgb(180,100,100));
 }
 
 #app .slider-handle {
@@ -124,7 +121,7 @@ const YEARS = {
   background: none;
   border-left: 8px solid transparent;
   border-right: 8px solid transparent;
-  border-top: 15px solid #ff9900;
+  border-top: 15px solid rgb(180,100,100);;
   box-shadow: var(--slider-handle-shadow, 0.5px 0.5px 2px 1px rgba(0, 0, 0, 0));
   cursor: grab;
 }
