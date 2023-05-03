@@ -45,12 +45,13 @@ const GeoJSONFormat = new format.GeoJSON({
     </template>
 
     <template #background>
+     
       <div style="display:flex; align-items: center; justify-content: center;">
     <div class="mapoverlay">
     <AreaSearch id="button-wrapper" class="clickable category-button" />
   </div>
 </div>
-      <MapComponent>
+<MapComponent :min-zoom="14" :max-zoom="19" :restrictExtent="[30.1, -1.92, 30.01, -1.980]" >
         <template #layers>
           <DianaPlaceLayer
             path="rwanda/geojson/place/"
