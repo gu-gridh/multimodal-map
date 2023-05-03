@@ -2,18 +2,23 @@
 import { watchEffect, ref, inject } from "vue";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
-import type { Image } from "./types";
+import type {
+  Image,
+  ImageDeep,
+} from "./types";
 import type { DianaClient } from "@/assets/diana";
+import PreviewImage from "./PreviewImage.vue";
+
 
 const { selectedFeature } = storeToRefs(mapStore());
 const diana = inject("diana") as DianaClient;
 
-const images = ref<Array<Image>>();
+const images = ref<Image[]>();
 
 watchEffect(async () => {
   if (selectedFeature.value) {
     const place = selectedFeature.value.getId();
-    images.value = await diana.listAll<Image>("image", { place });
+    images.value = await diana.listAll<Image>("image", { place }); 
   } else {
     images.value = [];
   }
