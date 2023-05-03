@@ -5,19 +5,22 @@
     style="height: 100%; width: 100%; z-index: !important"
     ref="map"
   >
-    <ol-view
-      ref="view"
-      :center="projectedCenter"
-      :rotation="rotation"
-      :zoom="zoom"
-      :projection="projection"
-      style="z-index=0"
-      @centerChanged="onCenterChange"
-      @zoomChanged="zoomChanged"
-      :min-zoom="minZoom"
-      :max-zoom="maxZoom"
-    />
 
+  <ol-view
+    ref="view"
+    :center="projectedCenter"
+    :rotation="rotation"
+    :zoom="zoom"
+    :projection="projection"
+    style="z-index=0"
+    @centerChanged="onCenterChange"
+    @zoomChanged="zoomChanged"
+    :min-zoom="minZoom"
+    :max-zoom="maxZoom"
+    :extent="transformedRestrictExtent"
+  />
+
+  
     <!-- <ol-fullscreen-control v-if="fullscreencontrol" /> -->
     <!--<ol-attribution-control v-if="attributioncontrol" /> -->
     <ol-overviewmap-control v-if="overviewmapcontrol">
@@ -39,7 +42,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject } from "vue";
+import { ref, inject, computed } from "vue";
 import { fromLonLat, transformExtent } from "ol/proj";
 import { mapStore } from "@/stores/store";
 import { storeToRefs } from "pinia";
@@ -74,10 +77,25 @@ const props = defineProps({
     type: Number,
     default: 28,
   },
+  restrictExtent: {
+    type: Array,
+    default: () => [],
+  },
 });
 
 const minZoom = ref(props.minZoom);
 const maxZoom = ref(props.maxZoom);
+
+const transformedRestrictExtent = computed(() => {
+  if (props.restrictExtent.length > 0) {
+    return transformExtent(
+      props.restrictExtent as [number, number, number, number],
+      "EPSG:4326",
+      projection.value
+    );
+  }
+  return undefined;
+});
 
 function zoomChanged() {
   let newExtent = map.value.map
