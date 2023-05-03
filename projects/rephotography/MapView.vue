@@ -30,7 +30,7 @@ const placeParams = computed(() =>
     </template>
 
     <template #background>
-      <MapComponent>
+      <MapComponent :min-zoom="9" :max-zoom="16" :restrictExtent="[0.0, 75.0, 30.0, 81.0]" >
         <template #layers>
           <NpolarLayer
             capabilitiesUrl="https://geodata.npolar.no/arcgis/rest/services/Basisdata/NP_Ortofoto_Svalbard_WMTS_25833/MapServer/WMTS/1.0.0/WMTSCapabilities.xml"
