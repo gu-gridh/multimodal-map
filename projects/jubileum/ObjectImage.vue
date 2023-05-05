@@ -12,7 +12,8 @@ defineProps<{
 <template>
   <div class="metadata">
     <DetailPage :title="object.title" back="/">
-      <p class="my-2 object-title">{{ object.description }}</p>
+      <div class="objects">
+      <p class="">{{ object.description }}</p>
 
       <div v-if="object.creator?.name">By: {{ object.creator.name }}</div>
       <div v-if="object.place?.decription">
@@ -24,6 +25,7 @@ defineProps<{
         Tags:
         {{ object.tag.map((tag) => tag.text).join(", ") }}
       </div>
+    </div>
     </DetailPage>
   </div>
 
@@ -48,6 +50,18 @@ defineProps<{
 <style scoped>
 .metadata .object-title {
   font-family: "Josefin Sans", sans-serif !important;
+}
+
+.metadata .objects {
+margin-top:30px;
+font-weight:200;
+font-size:1.0em;
+line-height:1.2;
+text-align:left;
+padding:0px 40px 0px 0px;
+hyphens: auto;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 .illustration {
   height: calc(100vh - 80px);
