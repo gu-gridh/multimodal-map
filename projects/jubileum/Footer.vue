@@ -1,7 +1,7 @@
 <template>
   <footer id="footer">
     <a href="https://dh.gu.se/">
-      <div id="CDHLogo">#GRIDH</div>
+      <div id="CDHLogo">#GRIDH</div> <div id="GUBLogo">Göteborgs universitetsbibliotek</div>
     </a>
   </footer>
 </template>
@@ -42,6 +42,22 @@ a {
   font-size: 45px;
   line-height: 0.4;
   padding: 30px 0px 10px 0px;
+  vertical-align: middle;
+  font-family: "Barlow Condensed", sans-serif;
+}
+
+#GUBLogo {
+  float: right;
+  margin-top: 0px;
+  margin-right: 60px;
+  width: auto;
+  height: auto;
+  text-align: left;
+  font-weight: 100;
+  font-style: normal;
+  font-size: 35px;
+  line-height: 0.4;
+  padding: 33px 0px 10px 0px;
   vertical-align: middle;
   font-family: "Barlow Condensed", sans-serif;
 }
