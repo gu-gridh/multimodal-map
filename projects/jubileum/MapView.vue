@@ -113,7 +113,7 @@ z-index: 100;
 position:absolute;
 border-radius: 8px;
 font-size: 18px;
-font-weight: 500;
+font-weight: 700;
 color: white;
 margin-left:400px;
 background-color: rgb(180, 100, 100, 0.7);
@@ -128,13 +128,18 @@ padding: 4px 10px 4px 10px;
 .ui-mode .item {
 cursor: pointer;
 display: inline;
-font-weight: 300;
+font-weight: 400;
 padding: 0px 15px 0px 15px;
+
+}
+
+.ui-mode .item:hover {
+  color:black;
 }
 
 .ui-mode .selected{
 font-weight: 500;
-color: rgb(150,200,255);
+color: white;
 }
 
 #app .ol-popup {
