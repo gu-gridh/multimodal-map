@@ -14,7 +14,7 @@ import MasonryGrid from "./MasonryGrid.vue";
 import { ref } from "vue";
 
 const { categories } = storeToRefs(jubileumStore());
-
+const targetDiv = document.getElementById("third");
 const placeParams = computed(() =>
   clean({
     type: categories.value.filter((x) => x !== "all").join(","),
@@ -24,11 +24,11 @@ const placeParams = computed(() =>
 const showGrid = ref(false);
 
 function toggleGrid() {
-  showGrid.value = !showGrid.value;
+  showGrid.value = true;
 }
 
 function toggleMap() {
-  showGrid.value = !showGrid.value;
+  showGrid.value = false;
 }
 
 </script>
@@ -74,7 +74,9 @@ function toggleMap() {
             </ol-tile-layer>
           </template>
         </MapComponent>
+        <div id="gallery">
         <MasonryGrid v-if="showGrid" />
+      </div>
       </div>
     </template>
     <template #details>
@@ -87,6 +89,8 @@ function toggleMap() {
 .map-container {
   position: relative;
 }
+
+#gallery{}
 
 .toggle-grid-btn {
   position: absolute;
