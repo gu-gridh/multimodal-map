@@ -10,6 +10,8 @@ import { storeToRefs } from "pinia";
 import { jubileumStore } from "./store";
 import { clean } from "@/assets/utils";
 import markerIcon from "@/assets/marker-white.svg";
+import MasonryGrid from "./MasonryGrid.vue";
+import { ref } from "vue";
 
 const { categories } = storeToRefs(jubileumStore());
 
@@ -18,6 +20,17 @@ const placeParams = computed(() =>
     type: categories.value.filter((x) => x !== "all").join(","),
   })
 );
+
+const showGrid = ref(false);
+
+function toggleGrid() {
+  showGrid.value = !showGrid.value;
+}
+
+function toggleMap() {
+  showGrid.value = !showGrid.value;
+}
+
 </script>
 
 <template>
@@ -26,29 +39,44 @@ const placeParams = computed(() =>
       <Search />
     </template>
     <template #background>
-        <MapComponent :min-zoom="15" :max-zoom="18" :restrictExtent="[11.922, 57.7215, 11.996, 57.69035]" >
-        <template #layers>
-          <DianaPlaceLayer path="jubileum/geojson/place/" :params="placeParams">
-            <ol-style>
-              <ol-style-icon
-                :src="markerIcon"
-                :scale="2.0"
-                :displacement="[-10, 45]"
-                :anchor="[0.0, 0.0]"
-              ></ol-style-icon>
-            </ol-style>
-            <FeatureSelection />
-          </DianaPlaceLayer>
-
-          <ol-tile-layer>
-            <ol-source-xyz
-              url="https://data.dh.gu.se/tiles/gbg_1921b/{z}/{x}/{y}.png"
-            />
-          </ol-tile-layer>
-        </template>
-      </MapComponent>
+      <div class="map-container">
+        <div style="display:flex;  align-items: center; justify-content: center;">
+        <div class="ui-mode ui-overlay">
+        <button class="item" @click="toggleGrid">
+         Galleri
+        </button>
+        <button class="item" @click="toggleMap">
+          Karta
+        </button>
+      </div>
+    </div>
+        <MapComponent
+          :min-zoom="16"
+          :max-zoom="18"
+          :restrictExtent="[11.922, 57.7215, 11.996, 57.69035]"
+        >
+          <template #layers>
+            <DianaPlaceLayer path="jubileum/geojson/place/" :params="placeParams">
+              <ol-style>
+                <ol-style-icon
+                  :src="markerIcon"
+                  :scale="2.0"
+                  :displacement="[-10, 45]"
+                  :anchor="[0.0, 0.0]"
+                ></ol-style-icon>
+              </ol-style>
+              <FeatureSelection />
+            </DianaPlaceLayer>
+            <ol-tile-layer>
+              <ol-source-xyz
+                url="https://data.dh.gu.se/tiles/gbg_1921b/{z}/{x}/{y}.png"
+              />
+            </ol-tile-layer>
+          </template>
+        </MapComponent>
+        <MasonryGrid v-if="showGrid" />
+      </div>
     </template>
-
     <template #details>
       <PlaceDetails />
     </template>
@@ -56,6 +84,59 @@ const placeParams = computed(() =>
 </template>
 
 <style>
+.map-container {
+  position: relative;
+}
+
+.toggle-grid-btn {
+  position: absolute;
+  top: 30px;
+  left: calc(50% + 150px); 
+  z-index: 1001;
+  background-color: rgba(255,255,255,0.7);
+  color:black;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 8px;
+  font-size: 20px;
+  cursor: pointer;
+  backdrop-filter: blur(3px);
+}
+
+.toggle-grid-btn:hover {
+  background-color: #dc8c8c;
+  color: white;
+}
+
+.ui-overlay {
+z-index: 100;
+position:absolute;
+border-radius: 8px;
+font-size: 18px;
+font-weight: 500;
+color: white;
+margin-left:400px;
+background-color: rgb(180, 100, 100, 0.7);
+backdrop-filter: blur(3px);
+}
+
+.ui-mode {
+top: 30px;
+padding: 4px 10px 4px 10px;
+}
+
+.ui-mode .item {
+cursor: pointer;
+display: inline;
+font-weight: 300;
+padding: 0px 15px 0px 15px;
+}
+
+.ui-mode .selected{
+font-weight: 500;
+color: rgb(150,200,255);
+}
+
 #app .ol-popup {
   font-size: 1.2em;
   -webkit-user-select: none;
