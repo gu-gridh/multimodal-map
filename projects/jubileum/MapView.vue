@@ -10,6 +10,8 @@ import { storeToRefs } from "pinia";
 import { jubileumStore } from "./store";
 import { clean } from "@/assets/utils";
 import markerIcon from "@/assets/marker-white.svg";
+import MasonryGrid from "./MasonryGrid.vue";
+import { ref } from "vue";
 
 const { categories } = storeToRefs(jubileumStore());
 
@@ -18,6 +20,13 @@ const placeParams = computed(() =>
     type: categories.value.filter((x) => x !== "all").join(","),
   })
 );
+
+const showGrid = ref(false);
+
+function toggleGrid() {
+  showGrid.value = !showGrid.value;
+}
+
 </script>
 
 <template>
@@ -26,29 +35,37 @@ const placeParams = computed(() =>
       <Search />
     </template>
     <template #background>
-        <MapComponent :min-zoom="16" :max-zoom="18" :restrictExtent="[11.922, 57.7215, 11.996, 57.69035]" >
-        <template #layers>
-          <DianaPlaceLayer path="jubileum/geojson/place/" :params="placeParams">
-            <ol-style>
-              <ol-style-icon
-                :src="markerIcon"
-                :scale="2.0"
-                :displacement="[-10, 45]"
-                :anchor="[0.0, 0.0]"
-              ></ol-style-icon>
-            </ol-style>
-            <FeatureSelection />
-          </DianaPlaceLayer>
-
-          <ol-tile-layer>
-            <ol-source-xyz
-              url="https://data.dh.gu.se/tiles/gbg_1921b/{z}/{x}/{y}.png"
-            />
-          </ol-tile-layer>
-        </template>
-      </MapComponent>
+      <div class="map-container">
+        <button class="toggle-grid-btn" @click="toggleGrid">
+          {{ showGrid.value ? "Hide Grid" : "Show Grid" }}
+        </button>
+        <MapComponent
+          :min-zoom="16"
+          :max-zoom="18"
+          :restrictExtent="[11.922, 57.7215, 11.996, 57.69035]"
+        >
+          <template #layers>
+            <DianaPlaceLayer path="jubileum/geojson/place/" :params="placeParams">
+              <ol-style>
+                <ol-style-icon
+                  :src="markerIcon"
+                  :scale="2.0"
+                  :displacement="[-10, 45]"
+                  :anchor="[0.0, 0.0]"
+                ></ol-style-icon>
+              </ol-style>
+              <FeatureSelection />
+            </DianaPlaceLayer>
+            <ol-tile-layer>
+              <ol-source-xyz
+                url="https://data.dh.gu.se/tiles/gbg_1921b/{z}/{x}/{y}.png"
+              />
+            </ol-tile-layer>
+          </template>
+        </MapComponent>
+        <MasonryGrid v-if="showGrid" />
+      </div>
     </template>
-
     <template #details>
       <PlaceDetails />
     </template>
@@ -56,6 +73,29 @@ const placeParams = computed(() =>
 </template>
 
 <style>
+.map-container {
+  position: relative;
+}
+
+.toggle-grid-btn {
+  position: absolute;
+  top: 10px;
+  left: 50%; 
+  transform: translateX(-50%); 
+  z-index: 1001;
+  background-color: #f8f9e5;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.toggle-grid-btn:hover {
+  background-color: #dc8c8c;
+  color: white;
+}
+
 #app .ol-popup {
   font-size: 1.2em;
   -webkit-user-select: none;
