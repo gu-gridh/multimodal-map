@@ -28,16 +28,15 @@ onMounted(async () => {
 <style>
 .masonry-grid {
   position: absolute;
-  top: 10px;
-  left: 50%; /* Center the grid horizontally */
-  transform: translateX(-50%); /* Center the grid horizontally */
+  top: 0px;
+  
+  /* transform: translateX(-50%); Center the grid horizontally */
   width: 100%; /* Make the grid responsive */
-  max-width: 1000px; /* Limit the width on larger screens */
-  height: calc(100% - 20px); /* Make the grid height responsive */
-  z-index: 1000;
-  background-color: rgba(0, 0, 0, 0.8);
-  padding: 10px;
-  border-radius: 5px;
+  /*max-width: 1000px;  Limit the width on larger screens */
+  height: 100%; /* Make the grid height responsive */
+  z-index: 1;
+  background-color: rgb(234, 228, 219);
+  padding: 10px 10px 10px 450px;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   grid-gap: 10px;
