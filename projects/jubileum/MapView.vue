@@ -27,6 +27,10 @@ function toggleGrid() {
   showGrid.value = !showGrid.value;
 }
 
+function toggleMap() {
+  showGrid.value = !showGrid.value;
+}
+
 </script>
 
 <template>
@@ -36,9 +40,16 @@ function toggleGrid() {
     </template>
     <template #background>
       <div class="map-container">
-        <button class="toggle-grid-btn" @click="toggleGrid">
-          {{ showGrid.value ? "Hide Grid" : "Show Grid" }}
+        <div style="display:flex;  align-items: center; justify-content: center;">
+        <div class="ui-mode ui-overlay">
+        <button class="item" @click="toggleGrid">
+         Galleri
         </button>
+        <button class="item" @click="toggleMap">
+          Karta
+        </button>
+      </div>
+    </div>
         <MapComponent
           :min-zoom="16"
           :max-zoom="18"
@@ -79,21 +90,51 @@ function toggleGrid() {
 
 .toggle-grid-btn {
   position: absolute;
-  top: 10px;
-  left: 50%; 
-  transform: translateX(-50%); 
+  top: 30px;
+  left: calc(50% + 150px); 
   z-index: 1001;
-  background-color: #f8f9e5;
+  background-color: rgba(255,255,255,0.7);
+  color:black;
   border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  font-size: 16px;
+  padding: 8px 15px;
+  border-radius: 8px;
+  font-size: 20px;
   cursor: pointer;
+  backdrop-filter: blur(3px);
 }
 
 .toggle-grid-btn:hover {
   background-color: #dc8c8c;
   color: white;
+}
+
+.ui-overlay {
+z-index: 100;
+position:absolute;
+border-radius: 8px;
+font-size: 18px;
+font-weight: 500;
+color: white;
+margin-left:400px;
+background-color: rgb(180, 100, 100, 0.7);
+backdrop-filter: blur(3px);
+}
+
+.ui-mode {
+top: 30px;
+padding: 4px 10px 4px 10px;
+}
+
+.ui-mode .item {
+cursor: pointer;
+display: inline;
+font-weight: 300;
+padding: 0px 15px 0px 15px;
+}
+
+.ui-mode .selected{
+font-weight: 500;
+color: rgb(150,200,255);
 }
 
 #app .ol-popup {
