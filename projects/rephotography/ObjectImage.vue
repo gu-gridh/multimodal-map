@@ -27,8 +27,24 @@ defineProps<{
   </div>
 
   <section class="illustration flex">
+
     <OpenSeadragon :src="`${object.iiif_file}/info.json`" class="flex-1" />
+
+  <div id="ToolbarVertical">
+      <a id="full-page" href="#full-page">
+        <div id="FullPage" class="NavButton"></div>
+      </a>
+      <a id="zoom-in" href="#zoom-in">
+        <div id="ZoomIn" class="NavButton"></div>
+      </a>
+      <a id="zoom-out" href="#zoom-out">
+        <div id="ZoomOut" class="NavButton"></div>
+      </a>
+    </div>
   </section>
 </template>
 
-<style scoped></style>
+<style scoped>
+
+
+</style>

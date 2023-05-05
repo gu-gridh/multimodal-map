@@ -19,9 +19,12 @@ onMounted(() =>
     showZoomControl: true,
     showHomeControl: false,
     showFullPageControl: true,
-    //fullPageButton: "full-page",
-    //zoomInButton: "zoom-in",
-    // zoomOutButton: "zoom-out",
+    showNavigator:  true,
+    //navigatorId:   "navigatorDiv",
+    navigatorAutoFade:  true,
+    fullPageButton: "full-page",
+    zoomInButton: "zoom-in",
+    zoomOutButton: "zoom-out",
     prefixUrl: "/openseadragon/",
     // If a proper tileSource is not given, use src prop.
     tileSources: props.src,
@@ -30,8 +33,8 @@ onMounted(() =>
 </script>
 
 <template>
-  <div ref="viewerEl" class="osd">
-    <!-- <div id="ToolbarHorizontal" v-show="src.length > 1">
+    <div ref="viewerEl" class="osd"> </div>
+     <!-- <div id="ToolbarHorizontal" v-show="src.length > 1">
       <div id="CenterNav">
         <a id="previous" href="#previous-page">
           <div id="Prev" class="NavButton"></div>
@@ -42,21 +45,18 @@ onMounted(() =>
         </a>
       </div>
     </div> -->
-    <!-- <div id="ToolbarVertical">
-      <a id="full-page" href="#full-page">
-        <div id="FullPage" class="NavButton"></div>
-      </a>
-      <a id="zoom-in" href="#zoom-in">
-        <div id="ZoomIn" class="NavButton"></div>
-      </a>
-      <a id="zoom-out" href="#zoom-out">
-        <div id="ZoomOut" class="NavButton"></div>
-      </a>
-    </div> -->
-  </div>
 </template>
 
-<style scoped>
+<style>
+#navigatorDiv{
+position:absolute;
+  width:80px;
+  height:80px;
+  margin-top:10px;
+  margin-right:10px;
+
+}
+
 #ToolbarHorizontal {
   position: absolute;
   display: flex;
@@ -64,9 +64,11 @@ onMounted(() =>
   width: 100%;
   z-index: 1000;
 }
+
 #CenterNav {
   margin: auto;
 }
+
 #ToolbarHorizontal span {
   background-color: rgba(35, 35, 35, 0.6);
   color: white;
@@ -80,12 +82,14 @@ onMounted(() =>
   margin-right: 10px;
 }
 
+
 #ToolbarVertical {
   position: absolute;
-  margin-top: 15px;
+  top: 45px;
   width: 60px;
   margin-left: 15px;
   z-index: 1000;
+  cursor:pointer;
 }
 
 #FullPage {
@@ -99,6 +103,7 @@ onMounted(() =>
   height: 35px;
   border-radius: 50%;
   overflow: hidden;
+  cursor:pointer;
 }
 
 #Prev {
@@ -131,7 +136,7 @@ onMounted(() =>
   width: 35px;
   height: 35px;
   margin-top: 10px;
-
+  cursor:pointer;
   overflow: hidden;
 }
 
@@ -144,7 +149,7 @@ onMounted(() =>
   border-radius: 50%;
   width: 35px;
   height: 35px;
-
+  cursor:pointer;
   overflow: hidden;
 }
 .NavButton {
@@ -154,8 +159,10 @@ onMounted(() =>
   color: white;
   opacity: 0.7;
   margin-bottom: 3px;
+  cursor:pointer;
 }
 .NavButton:hover {
   opacity: 1;
+  cursor:pointer;
 }
 </style>
