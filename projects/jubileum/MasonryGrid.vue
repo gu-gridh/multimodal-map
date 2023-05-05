@@ -29,17 +29,15 @@ onMounted(async () => {
 .masonry-grid {
   position: absolute;
   top: 0px;
-  
-  /* transform: translateX(-50%); Center the grid horizontally */
   width: 100%; /* Make the grid responsive */
-  /*max-width: 1000px;  Limit the width on larger screens */
   height: 100%; /* Make the grid height responsive */
   z-index: 1;
   background-color: rgb(234, 228, 219);
   padding: 10px 10px 10px 450px;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  grid-gap: 10px;
+  grid-template-rows: masonry;
+  grid-gap: 2px;
   overflow-y: scroll;
 }
 

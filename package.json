@@ -11,6 +11,7 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@yeger/vue-masonry-wall": "^3.4.4",
     "@headlessui/vue": "^1.7.2",
     "@heroicons/vue": "^2.0.11",
     "@types/geojson": "^7946.0.10",
