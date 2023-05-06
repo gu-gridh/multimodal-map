@@ -6,7 +6,7 @@
       :to="`/detail/image/${image.id}`"
       class="grid-item"
     >
-      <img :src="`${image.iiif_file}/full/200,/0/default.jpg`" />
+      <img :src="`${image.iiif_file}/full/400,/0/default.jpg`" />
     </router-link>
   </div>
 </template>
@@ -33,11 +33,11 @@ onMounted(async () => {
   height: 100%; /* Make the grid height responsive */
   z-index: 200;
   background-color: rgb(234, 228, 219);
-  padding: 10px 10px 10px 450px;
+  padding: 0px 10px 10px 450px;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   grid-template-rows: masonry;
-  grid-gap: 2px;
+  grid-gap: 5px;
   overflow-y: scroll;
 }
 
