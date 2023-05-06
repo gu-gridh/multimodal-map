@@ -23,13 +23,6 @@ const placeParams = computed(() =>
 
 const showGrid = ref(false);
 
-function toggleGrid() {
-  showGrid.value = true;
-}
-
-function toggleMap() {
-  showGrid.value = false;
-}
 
 </script>
 
@@ -68,10 +61,10 @@ function toggleMap() {
         </MapComponent>
         <div style="display:flex;  align-items: center; justify-content: center;">
         <div class="ui-mode ui-overlay">
-        <button class="item" @click="toggleGrid">
+        <button class="item" v-bind:class="{ selected: showGrid}" v-on:click="showGrid = true;">
          Galleri
         </button>
-        <button class="item" @click="toggleMap">
+        <button class="item" v-bind:class="{ selected: !showGrid}" v-on:click="showGrid = false;">
           Karta
         </button>
       </div>
@@ -138,12 +131,13 @@ padding: 4px 10px 4px 10px;
 cursor: pointer;
 display: inline;
 font-weight: 400;
+color:black;
 padding: 0px 15px 0px 15px;
 
 }
 
 .ui-mode .item:hover {
-  color:black;
+  color:white;
 }
 
 .ui-mode .selected{
