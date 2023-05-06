@@ -39,17 +39,8 @@ function toggleMap() {
       <Search />
     </template>
     <template #background>
+    
       <div class="map-container">
-        <div style="display:flex;  align-items: center; justify-content: center;">
-        <div class="ui-mode ui-overlay">
-        <button class="item" @click="toggleGrid">
-         Galleri
-        </button>
-        <button class="item" @click="toggleMap">
-          Karta
-        </button>
-      </div>
-    </div>
         <MapComponent
           :min-zoom="16"
           :max-zoom="18"
@@ -72,16 +63,30 @@ function toggleMap() {
                 url="https://data.dh.gu.se/tiles/gbg_1921b/{z}/{x}/{y}.png"
               />
             </ol-tile-layer>
+            
           </template>
         </MapComponent>
-        <div id="gallery">
-        <MasonryGrid v-if="showGrid" />
+        <div style="display:flex;  align-items: center; justify-content: center;">
+        <div class="ui-mode ui-overlay">
+        <button class="item" @click="toggleGrid">
+         Galleri
+        </button>
+        <button class="item" @click="toggleMap">
+          Karta
+        </button>
       </div>
+    </div>
+        <MasonryGrid v-if="showGrid" />
+
       </div>
     </template>
     <template #details>
+      
       <PlaceDetails />
     </template>
+    <template>
+   
+  </template>
   </MainLayout>
 </template>
 
@@ -95,8 +100,8 @@ function toggleMap() {
 .toggle-grid-btn {
   position: absolute;
   top: 30px;
-  left: calc(50% + 150px); 
-  z-index: 1001;
+  left: calc(50vh + 150px); 
+  z-index: 1000;
   background-color: rgba(255,255,255,0.7);
   color:black;
   border: none;
@@ -113,7 +118,7 @@ function toggleMap() {
 }
 
 .ui-overlay {
-z-index: 100;
+z-index: 250;
 position:absolute;
 border-radius: 8px;
 font-size: 18px;

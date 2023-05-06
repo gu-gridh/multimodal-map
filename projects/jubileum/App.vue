@@ -61,6 +61,7 @@ body {
   padding: 60px 500px 50px 60px;
   background: url("@/assets/gradient-jubileum.png");
   background-size: contain;
+  z-index:500;
 }
 
 #app .right-pane {

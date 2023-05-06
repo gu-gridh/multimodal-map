@@ -31,7 +31,7 @@ onMounted(async () => {
   top: 0px;
   width: 100%; /* Make the grid responsive */
   height: 100%; /* Make the grid height responsive */
-  z-index: 1;
+  z-index: 200;
   background-color: rgb(234, 228, 219);
   padding: 10px 10px 10px 450px;
   display: grid;
