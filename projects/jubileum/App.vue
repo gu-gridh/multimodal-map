@@ -51,8 +51,9 @@ body {
 
 .about {
   padding-right: 25px;
-  line-height: 1.3;
+  line-height: 1.2;
   text-align: justify;
+  font-size:0.95em;
 }
 
 #app .left-pane {

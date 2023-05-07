@@ -18,12 +18,12 @@ export default {
   background-color: #222;
   color: white;
   line-height: 1;
-  height: 80px;
-  width: 100%;
+  height: 82px;
+  width: calc(100% + 2px);
   font-size: 12px;
   position: absolute;
-  z-index: 999;
-  bottom: 0;
+  z-index: 3000;
+  bottom: -2px;;
 }
 
 a {

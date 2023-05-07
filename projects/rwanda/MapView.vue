@@ -17,6 +17,7 @@ import DianaPlaceLayer from "@/components/DianaPlaceLayer.vue";
 import FeatureSelection from "@/components/FeatureSelection.vue";
 import PlaceDetails from "./PlaceDetails.vue";
 import type { Place } from "./types";
+import About from "./About.vue";
 
 
 function getName(f: Feature): string {
@@ -39,6 +40,7 @@ const GeoJSONFormat = new format.GeoJSON({
 </script>
 
 <template>
+      <About />
   <MainLayout>
     <template #search>
       <button class="item"  @click="visibleAbout = true;">

@@ -11,6 +11,7 @@ import { storeToRefs } from "pinia";
 import { rephotographyStore } from "./store";
 import { clean } from "@/assets/utils";
 import markerIcon from "@/assets/marker-gold.svg";
+import About from "./About.vue";
 
 const { categories, years } = storeToRefs(rephotographyStore());
 
@@ -24,6 +25,7 @@ const placeParams = computed(() =>
 </script>
 
 <template>
+     <About />
   <MainLayout>
     <template #search>
       <button class="item"  @click="visibleAbout = true;">

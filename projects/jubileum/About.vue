@@ -1,14 +1,26 @@
 <template>
-  
   <div class="about" v-bind:class="{fullopacity: visibleAbout}">
-    <div class="main-title">Göteborgs <br>Jubileum<br>1923</div>
+    <div class="main-title" v-bind:class="{fullopacityui: visibleAbout}">Göteborgs <br>Jubileum<br>1923</div>
 
-    <div style="display:flex;  align-items: center; justify-content: center; margin-top:80px;">
-
-    <button class="item" @click="visibleAbout = false;">
+    <div style="display:flex;  align-items: center; justify-content: center; margin-top:20px;">
+      <div class="article" v-bind:class="{fullopacityui: visibleAbout}">
+        Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, 
+        totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. 
+        Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, 
+        sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. 
+        Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, 
+        sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. 
+        Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, 
+        nisi ut aliquid ex ea commodi consequatur? 
+        Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, 
+        vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?
+      </div>
+    </div>
+      <div style="display:flex;  align-items: center; justify-content: center; margin-top:20px;">
+    <button @click="visibleAbout = false;" >
             <div
               class="p-1 px-2 clickable category-button"
-              style="width:auto; padding:5px 15px; text-align: center; cursor: pointer;">Utforska</div>
+              style="width:auto; padding:5px 15px; text-align: center; cursor: pointer;"  v-bind:class="{fullopacityui: visibleAbout}">Utforska</div>
           </button>
         </div>
   </div>
@@ -27,47 +39,30 @@ export default {
 
 <style scoped>
 .about {
-  position:absolute;
-  background-color: #999;
+  position:fixed;
   color: white;
   line-height: 1;
   height: 100%;
-
   width: 100%;
   font-size: 12px;
   border-radius:10px;
   z-index: 2000;
-  background-color: rgba(234, 228, 219,0.9);
-  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.5);
-  backdrop-filter:blur(5px);
+  backdrop-filter:blur(0px);
   pointer-events:none;
+  transform:scale(1.5);
+  translate: 0px 100px;
+  transition: all 1.5s ease-in-out;
   opacity:0.0;
-  transition: all 0.5s ease-in-out;
-}
-
-.about-modular {
-  position:absolute;
-  background-color: #999;
-  color: white;
-  line-height: 1;
-  height: 85vh;
-  margin-top:3vh;
-  margin-left:25%;
-  width: 50%;
-  font-size: 12px;
-  border-radius:10px;
-  z-index: 2000;
-  background-color: rgba(234, 228, 219,0.9);
-  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.5);
-  backdrop-filter:blur(5px);
-  pointer-events:none;
-  opacity:0.0;
-  transition: all 0.5s ease-in-out;
 }
 
 .fullopacity{
+  backdrop-filter:blur(5px);
   opacity:1.0;
   pointer-events:auto;
+  transform:scale(1.0);
+  translate: 0px 0px;
+  background: linear-gradient(90deg, rgba(234, 228, 219,1) 0%, rgba(234, 228, 219,0.7) 100%);
+ 
 }
 
 .main-title {
@@ -78,11 +73,33 @@ export default {
   text-align: center;
   color:rgb(180,100,100);
   margin-top:100px;
+  opacity:0.0;
+  transition: all 0.4s ease-in-out;
+
+}
+
+
+
+.article{
+  text-align:justify;
+  color:black;
+columns:2;
+column-gap:30px;
+width:800px;
+font-size:1.2em;
+opacity:0.0;
+transition: all 0.4s ease-in-out;
 }
 
 .category-button{
   font-size:2em;
   font-weight:200;
+  transition: all 0.4s ease-in-out;
+  opacity:1.0;
+}
+
+.fullopacityui{
+  opacity:1.0;
 }
 
 a {

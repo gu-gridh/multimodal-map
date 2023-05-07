@@ -7,6 +7,6 @@ export default <JubileumProject>{
   about:
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras nec nulla imperdiet, sollicitudin diam sit amet, porttitor urna. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras nec nulla imperdiet, sollicitudin diam sit amet, porttitor urna.",
   projection: "EPSG:3857",
-  center: [11.983, 57.696],
-  zoom: 17,
+  center: [11.982, 57.696],
+  zoom: 16.5,
 };
