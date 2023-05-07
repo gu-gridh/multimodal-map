@@ -22,7 +22,7 @@ export default {
   width: 100%;
   font-size: 12px;
   position: absolute;
-  z-index: 999;
+  z-index: 3000;
   bottom: 0;
 }
 

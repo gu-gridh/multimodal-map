@@ -12,6 +12,7 @@ import { clean } from "@/assets/utils";
 import markerIcon from "@/assets/marker-white.svg";
 import MasonryGrid from "./MasonryGrid.vue";
 import { ref } from "vue";
+import About from "./About.vue";
 
 const { categories } = storeToRefs(jubileumStore());
 const targetDiv = document.getElementById("third");
@@ -27,8 +28,20 @@ const showGrid = ref(false);
 </script>
 
 <template>
+    <About />
   <MainLayout>
     <template #search>
+      <button class="item"  @click="visibleAbout = true;">
+            <div
+              class="p-1 px-2 clickable category-button"
+              style="
+                width: auto;
+                text-align: center;
+                margin-top: -10px;
+                cursor: pointer;
+              "
+            >Mer information</div>
+          </button>
       <Search />
     </template>
     <template #background>

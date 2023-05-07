@@ -23,6 +23,7 @@ body {
   font-size: 80px;
   line-height: 0.9;
   font-weight: 100;
+  margin-bottom:15px;
 }
 
 #app .left-pane {

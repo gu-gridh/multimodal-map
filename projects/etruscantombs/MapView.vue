@@ -26,6 +26,17 @@ const placeParams = computed(() =>
 <template>
   <MainLayout>
     <template #search>
+      <button class="item"  @click="visibleAbout = true;">
+            <div
+              class="p-1 px-2 clickable category-button"
+              style="
+                width: auto;
+                text-align: center;
+                margin-top: 0px;
+                cursor: pointer;
+              "
+            >More info</div>
+          </button>
       <Search />
     </template>
 

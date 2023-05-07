@@ -12,21 +12,12 @@
           </slot>
 
           <slot name="about">
-            <!--<div v-if="config" class="px-8 py-6 bg-white rounded-b-lg shadow-lg">-->
-            <div class="py-5 about">
+
+            
+            <div class="py-2 about">
               <p class="" v-html="config.about"></p>
             </div>
-            <div
-              v-if="config.moreinfo"
-              class="p-1 px-2 clickable category-button"
-              style="
-                width: 90px;
-                text-align: center;
-                margin-top: -10px;
-                cursor: pointer;
-              "
-              v-html="config.moreinfo"
-            ></div>
+            
           </slot>
 
           <slot name="search"></slot>
