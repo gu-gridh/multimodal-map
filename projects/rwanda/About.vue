@@ -21,7 +21,7 @@
     <button class="item" @click="visibleAbout = false;">
             <div
               class="p-1 px-2 clickable category-button"
-              style="width:auto; padding:5px 15px; text-align: center; cursor: pointer;">Utforska</div>
+              style="width:auto; padding:5px 15px; text-align: center; cursor: pointer;">Explore</div>
           </button>
         </div>
   </div>
