@@ -46,7 +46,6 @@ export default {
   height: calc(100% - 80px);
   width: 100%;
   font-size: 12px;
-  border-radius:10px;
   z-index: 2000;
   backdrop-filter:blur(0px);
   pointer-events:none;
@@ -172,7 +171,7 @@ font-size:1.3em;
   position:fixed;
   color: white;
   line-height: 1;
-  height: calc(100% - 80px);
+  height: calc(100% - 0px);
   width: 100%;
   padding:80px 40px;
 

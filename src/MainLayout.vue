@@ -212,7 +212,7 @@ body {
   transform:scale(1.0);
 }
 
-#footer {
+#app #footer {
   height: 0px;
 }
 }
