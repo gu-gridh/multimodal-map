@@ -44,8 +44,8 @@ defineProps({
 
 .meta-title {
   font-weight: 100;
-  font-size: 50px;
-  line-height: 0.9;
+  font-size: 40px;
+  line-height: 1.0;
   padding-left: 75px;
   padding-right: 20px;
   width: calc(100% - 25px);
@@ -83,5 +83,18 @@ defineProps({
   width: calc(100% - 350px);
   background-color: black;
   height: 100vh;
+}
+
+.category-button{
+  margin-top:30px;
+  cursor:pointer;
+  font-size:1.1em;
+  padding:8px 16px;
+  background: url("@/assets/interface/downloadbuttonwhite.png");
+  background-size: 25px;
+      background-repeat: no-repeat;
+      padding-left: 45px;
+      background-position: 8px 5px;
+
 }
 </style>
