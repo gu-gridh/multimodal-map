@@ -17,7 +17,7 @@
       </div>
     </div>
       <div style="display:flex;  align-items: center; justify-content: center; margin-top:20px;">
-    <button @click="visibleAbout = false;" >
+          <button @click="$emit('close')">
             <div
               class="p-1 px-2 clickable category-button"
               style="width:auto; padding:5px 15px; text-align: center; cursor: pointer;"  v-bind:class="{fullopacityui: visibleAbout}">Utforska</div>
@@ -29,10 +29,11 @@
 <script lang="ts">
 export default {
   name: "aboutview",
-  data() {
-    return {
-      visibleAbout:true
-  }
+  props: {
+    visibleAbout: {
+      type: Boolean,
+      required: true,
+    },
   },
 };
 </script>
@@ -77,8 +78,6 @@ export default {
   transition: all 0.4s ease-in-out;
 
 }
-
-
 
 .article{
   text-align:justify;

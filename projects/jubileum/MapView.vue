@@ -14,6 +14,7 @@ import MasonryGrid from "./MasonryGrid.vue";
 import { ref } from "vue";
 import About from "./About.vue";
 import { onMounted, watch } from "vue";
+import { nextTick } from "vue";
 
 const { categories } = storeToRefs(jubileumStore());
 const targetDiv = document.getElementById("third");
@@ -22,6 +23,12 @@ const placeParams = computed(() =>
     type: categories.value.filter((x) => x !== "all").join(","),
   })
 );
+
+const toggleAboutVisibility = async () => {
+  console.log('fired')
+  await nextTick();
+  visibleAbout.value = !visibleAbout.value;
+};
 
 const showGrid = ref(false);
 const visibleAbout = ref(false);
@@ -40,10 +47,10 @@ watch(showGrid, (newValue) => {
 </script>
 
 <template>
-  <About v-if="visibleAbout" />
+<About v-show="visibleAbout" :visibleAbout="visibleAbout" @close="visibleAbout = false" />
   <MainLayout>
     <template #search>
-      <button class="item" @click="visibleAbout = !visibleAbout;">
+    <button class="item" @click="toggleAboutVisibility">
             <div
               class="p-1 px-2 clickable category-button"
               style="
