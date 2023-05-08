@@ -43,7 +43,7 @@ export default {
   position:fixed;
   color: white;
   line-height: 1;
-  height: 100%;
+  height: calc(100% - 80px);
   width: 100%;
   font-size: 12px;
   border-radius:10px;
@@ -54,6 +54,9 @@ export default {
   translate: 0px 100px;
   transition: all 1.5s ease-in-out;
   opacity:0.0;
+  padding:80px 30px;
+  overflow-y:auto;
+
 }
 
 .fullopacity{
@@ -73,21 +76,23 @@ export default {
   letter-spacing: -0.2rem;
   text-align: center;
   color:rgb(180,100,100);
-  margin-top:100px;
   opacity:0.0;
   transition: all 0.4s ease-in-out;
 
 }
 
+
 .article{
-  text-align:justify;
-  color:black;
+text-align:left;
+ color:black;
 columns:2;
 column-gap:30px;
-width:800px;
-font-size:1.2em;
+width:900px;
+font-size:1.4em;
 opacity:0.0;
+margin-bottom:20px;
 transition: all 0.4s ease-in-out;
+
 }
 
 .category-button{
@@ -135,5 +140,42 @@ a {
   padding: 33px 0px 10px 0px;
   vertical-align: middle;
   font-family: "Barlow Condensed", sans-serif;
+}
+
+@media screen and (min-width: 1600px) {
+  .main-title {
+    font-size:140px;
+  }
+
+  .article{
+column-gap:30px;
+width:1200px;
+font-size:1.6em;
+}
+}
+
+@media screen and (max-width: 1000px) {
+  .main-title {
+    font-size:70px;
+    width:100%;
+    margin-left:0px;
+  }
+
+  .article{
+columns:1;
+width:1200px;
+text-align:justify;
+font-size:1.3em;
+}
+
+.about {
+  position:fixed;
+  color: white;
+  line-height: 1;
+  height: calc(100% - 80px);
+  width: 100%;
+  padding:80px 40px;
+
+}
 }
 </style>
