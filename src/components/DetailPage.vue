@@ -85,16 +85,5 @@ defineProps({
   height: 100vh;
 }
 
-.category-button{
-  margin-top:30px;
-  cursor:pointer;
-  font-size:1.1em;
-  padding:8px 16px;
-  background: url("@/assets/interface/downloadbuttonwhite.png");
-  background-size: 25px;
-      background-repeat: no-repeat;
-      padding-left: 45px;
-      background-position: 8px 5px;
 
-}
 </style>

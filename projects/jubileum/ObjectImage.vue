@@ -35,7 +35,7 @@ const downloadImage = (fileUrl: string, fileName: string) => {
         Tags:
         {{ object.tag.map((tag) => tag.text).join(", ") }}
       </div>
-      <button class="category-button" @click="downloadImage(object.file, `${object.title}.tif`)">Download Image</button>
+      <button class="category-button" @click="downloadImage(object.file, `${object.title}.tif`)">Ladda ner bild</button>
 
     </div>
     </DetailPage>
@@ -81,5 +81,16 @@ hyphens: auto;
   height: calc(100vh - 80px);
 }
 
+.category-button{
+  margin-top:30px;
+  cursor:pointer;
+  font-size:1.1em;
+  padding:8px 16px;
+  background: url("@/assets/interface/downloadbuttonwhite.png");
+  background-size: 25px;
+      background-repeat: no-repeat;
+      padding-left: 45px;
+      background-position: 8px 5px;
 
+}
 </style>
