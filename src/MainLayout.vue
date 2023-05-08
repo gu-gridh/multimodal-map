@@ -3,6 +3,8 @@
     <div class="left-pane">
       <div class="left-pane-layer">
         <div class="left-pane-content">
+          <div class="mobile-ui">
+          </div>
           <slot name="title">
             <!--<div v-if="config" class="px-8 py-6 bg-white rounded-t-lg shadow-lg">-->
             <div v-if="config" class="py-1">
@@ -21,10 +23,13 @@
           </slot>
 
           <slot name="search"></slot>
+
+          
+
         </div>
       </div>
     </div>
-
+    
     <div class="right-pane">
       <slot name="details">
         <div class="col-start-6 col-span-2 detail">
@@ -39,10 +44,13 @@
         </div>
       </slot>
     </div>
-
+    <div class="atlas">
     <slot name="background">
+     
       <MapComponent />
+  
     </slot>
+  </div>
   </div>
 </template>
 
@@ -67,6 +75,11 @@ body {
   height: inherit;
   width: inherit;
   /* display: flex !important; */
+}
+.atlas {
+  position:absolute;
+  width:100%;
+  height:100vh;
 }
 
 .about {
@@ -98,9 +111,12 @@ body {
 }
 
 .detail-view {
+  padding-top: 5px;
   width: 100%;
   transition: all 0.5s ease-in-out;
 }
+
+
 
 @media screen and (max-width: 1200px) {
   .right-pane {
@@ -110,5 +126,94 @@ body {
   .detail-view {
     padding: 0px;
   }
+}
+
+@media screen and (max-width: 900px) {
+ #app .left-pane {
+  position: relative;
+  float:left;
+  height: auto;
+  z-index: 500;
+  width:100%;
+  pointer-events: auto;
+  margin-top:70vh;
+  border-radius:20px 20px 0 0;
+  padding: 30px 10px 30px 40px;
+  background-color:white;
+  box-shadow: 0px -5px 10px 0 rgba(0, 0, 0, 0.2),
+    0 0px 0px 0 rgba(0, 0, 0, 0.19);
+}
+
+#app .map-container {
+overflow-y:auto;
+width:100%;
+height:calc(100vh - 0px) !important;
+}
+
+body {
+  height: 100vh;
+  width: 100vw;
+}
+
+.atlas {
+  height: 100vh;
+  float:left;
+  width: calc(100% - 0px);
+  position:absolute;
+  overflow:hidden;
+  margin-top: -50px;
+}
+
+#app .right-pane {
+  float:left;
+  height: 75vh;
+  width: 100%;
+  left: 0px;
+}
+
+#app .detail-view {
+  width: 100%;
+ padding-top:30px;
+ padding-bottom:0px;
+}
+
+.mobile-ui{
+
+}
+
+.main-title {
+  width:100%;
+  font-size: 80px;
+}
+
+.sub-title {
+  font-size: 55px;
+}
+
+#app .image-container {
+  overflow: hidden;
+  border-radius:8px;
+  width: 100%;
+  height: auto;
+  margin-left:auto;
+  margin-right:auto;
+  transition: all 0.2s ease-in-out;
+}
+
+#app .image {
+  display: block;
+  object-fit: cover;
+  height: 105%;
+  width:100%;
+  margin-top: -20px;
+}
+
+#app .image-container:hover {
+  transform:scale(1.0);
+}
+
+#footer {
+  height: 0px;
+}
 }
 </style>

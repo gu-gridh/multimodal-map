@@ -77,7 +77,7 @@ body {
 #app .detail-view {
   color: white;
   transition: all 0.5s ease-in-out;
-  padding-top: 67px;
+  padding-top: 33px;
   width: 320px;
   pointer-events: none;
 }
@@ -103,4 +103,6 @@ body {
 .close-button:hover {
   background-color: rgb(140, 140, 140);
 }
+
+
 </style>
