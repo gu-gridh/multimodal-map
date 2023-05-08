@@ -13,6 +13,7 @@ import markerIcon from "@/assets/marker-white.svg";
 import MasonryGrid from "./MasonryGrid.vue";
 import { ref } from "vue";
 import About from "./About.vue";
+import { onMounted, watch } from "vue";
 
 const { categories } = storeToRefs(jubileumStore());
 const targetDiv = document.getElementById("third");
@@ -24,6 +25,17 @@ const placeParams = computed(() =>
 
 const showGrid = ref(false);
 const visibleAbout = ref(false);
+
+onMounted(() => {
+  const storedShowGrid = localStorage.getItem("showGrid");
+  if (storedShowGrid) {
+    showGrid.value = JSON.parse(storedShowGrid);
+  }
+});
+
+watch(showGrid, (newValue) => {
+  localStorage.setItem("showGrid", JSON.stringify(newValue));
+});
 
 </script>
 
