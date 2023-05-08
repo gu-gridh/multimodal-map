@@ -3,6 +3,7 @@
     <div class="main-title" v-bind:class="{fullopacityui: visibleAbout}">Göteborgs <br>Jubileum<br>1923</div>
 
     <div style="display:flex;  align-items: center; justify-content: center; margin-top:20px;">
+
       <div class="article" v-bind:class="{fullopacityui: visibleAbout}">
         Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, 
         totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. 
@@ -14,7 +15,17 @@
         nisi ut aliquid ex ea commodi consequatur? 
         Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, 
         vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?
+        Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, 
+        totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. 
+        Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, 
+        sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. 
+        Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, 
+        sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. 
+        Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, 
+        nisi ut aliquid ex ea commodi consequatur? 
+        
       </div>
+
     </div>
       <div style="display:flex;  align-items: center; justify-content: center; margin-top:20px;">
     <button @click="visibleAbout = false;" >
@@ -42,7 +53,7 @@ export default {
   position:fixed;
   color: white;
   line-height: 1;
-  height: 100%;
+  height: calc(100% - 80px);
   width: 100%;
   font-size: 12px;
   border-radius:10px;
@@ -53,6 +64,9 @@ export default {
   translate: 0px 100px;
   transition: all 1.5s ease-in-out;
   opacity:0.0;
+  padding:80px 30px;
+  overflow-y:auto;
+
 }
 
 .fullopacity{
@@ -72,23 +86,23 @@ export default {
   letter-spacing: -0.2rem;
   text-align: center;
   color:rgb(180,100,100);
-  margin-top:100px;
   opacity:0.0;
   transition: all 0.4s ease-in-out;
 
 }
 
 
-
 .article{
-  text-align:justify;
-  color:black;
+text-align:left;
+ color:black;
 columns:2;
 column-gap:30px;
-width:800px;
-font-size:1.2em;
+width:900px;
+font-size:1.4em;
 opacity:0.0;
+margin-bottom:20px;
 transition: all 0.4s ease-in-out;
+
 }
 
 .category-button{
@@ -136,5 +150,42 @@ a {
   padding: 33px 0px 10px 0px;
   vertical-align: middle;
   font-family: "Barlow Condensed", sans-serif;
+}
+
+@media screen and (min-width: 1600px) {
+  .main-title {
+    font-size:140px;
+  }
+
+  .article{
+column-gap:30px;
+width:1200px;
+font-size:1.6em;
+}
+}
+
+@media screen and (max-width: 1000px) {
+  .main-title {
+    font-size:70px;
+    width:100%;
+    margin-left:0px;
+  }
+
+  .article{
+columns:1;
+width:1200px;
+text-align:justify;
+font-size:1.3em;
+}
+
+.about {
+  position:fixed;
+  color: white;
+  line-height: 1;
+  height: calc(100% - 80px);
+  width: 100%;
+  padding:80px 40px;
+
+}
 }
 </style>

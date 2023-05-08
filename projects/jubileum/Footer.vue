@@ -13,7 +13,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 #footer {
   background-color: #222;
   color: white;
@@ -61,4 +61,5 @@ a {
   vertical-align: middle;
   font-family: "Barlow Condensed", sans-serif;
 }
+
 </style>

@@ -84,6 +84,7 @@ watch(showGrid, (newValue) => {
             
           </template>
         </MapComponent>
+        <div class="toggle-grid-btn">
         <div style="display:flex;  align-items: center; justify-content: center;">
         <div class="ui-mode ui-overlay">
         <button class="item" v-bind:class="{ selected: showGrid}" v-on:click="showGrid = true;">
@@ -93,6 +94,7 @@ watch(showGrid, (newValue) => {
           Karta
         </button>
       </div>
+    </div>
     </div>
         <MasonryGrid v-if="showGrid" />
 
@@ -115,25 +117,7 @@ watch(showGrid, (newValue) => {
 
 #gallery{}
 
-.toggle-grid-btn {
-  position: absolute;
-  top: 30px;
-  left: calc(50vh + 150px); 
-  z-index: 1000;
-  background-color: rgba(255,255,255,0.7);
-  color:black;
-  border: none;
-  padding: 8px 15px;
-  border-radius: 8px;
-  font-size: 20px;
-  cursor: pointer;
-  backdrop-filter: blur(3px);
-}
 
-.toggle-grid-btn:hover {
-  background-color: #dc8c8c;
-  color: white;
-}
 
 .ui-overlay {
 z-index: 250;
@@ -208,5 +192,17 @@ color: white;
   color: white !important;
   border-style: none !important;
   border-style: hidden !important;
+}
+
+@media screen and (max-width: 1200px) {
+  .toggle-grid-btn{
+  margin-left:-150px;
+}
+}
+
+@media screen and (max-width: 1100px) {
+  .toggle-grid-btn{
+  display:none;
+}
 }
 </style>
