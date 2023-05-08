@@ -7,13 +7,23 @@ defineProps<{
   object: ImageDeep;
   id: Number;
 }>();
+
+const downloadImage = (fileUrl: string, fileName: string) => {
+  const link = document.createElement('a');
+  link.href = fileUrl;
+  link.download = fileName;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
 </script>
 
 <template>
   <div class="metadata">
     <DetailPage :title="object.title" back="/">
       <div class="objects">
-      <p class="">{{ object.description }}</p>
+        <p v-html="object.description"></p>
+
 
       <div v-if="object.creator?.name">By: {{ object.creator.name }}</div>
       <div v-if="object.place?.decription">
@@ -25,6 +35,8 @@ defineProps<{
         Tags:
         {{ object.tag.map((tag) => tag.text).join(", ") }}
       </div>
+      <button @click="downloadImage(object.file, `${object.title}.tif`)">Download Image</button>
+
     </div>
     </DetailPage>
   </div>

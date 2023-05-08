@@ -23,15 +23,15 @@ const placeParams = computed(() =>
 );
 
 const showGrid = ref(false);
-
+const visibleAbout = ref(false);
 
 </script>
 
 <template>
-    <About />
+  <About v-if="visibleAbout" />
   <MainLayout>
     <template #search>
-      <button class="item"  @click="visibleAbout = true;">
+      <button class="item" @click="visibleAbout = !visibleAbout;">
             <div
               class="p-1 px-2 clickable category-button"
               style="
