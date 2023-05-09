@@ -107,11 +107,12 @@ function deselectPlace() {
   cursor: pointer;
 }
 
-.image-container {
+#app .image-container {
   border-radius: 8px;
   overflow: hidden;
   margin-bottom: 8px;
-  height: 200px;
+ width:100%;
+ height:auto !important;
 }
 
 #app .image {

@@ -16,13 +16,13 @@ defineProps<{
       <ComparisonSlider locked>
         <template #left>
           <img
-            :src="`${rephotography.old_image.iiif_file}/full/380,/0/default.jpg`"
+            :src="`${rephotography.old_image.iiif_file}/full/600,/0/default.jpg`"
             class="image"
           />
         </template>
         <template #right>
           <img
-            :src="`${rephotography.new_image.iiif_file}/full/380,/0/default.jpg`"
+            :src="`${rephotography.new_image.iiif_file}/full/600,/0/default.jpg`"
             class="image"
           />
         </template>

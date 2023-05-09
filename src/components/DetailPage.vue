@@ -31,7 +31,7 @@ defineProps({
   height:calc(100vh - 80px);
   padding-bottom:30px;
   padding-left:75px;
-  padding-right:0px;
+  padding-right:20px;
 }
 
 .back-button {

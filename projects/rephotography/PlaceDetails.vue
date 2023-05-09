@@ -107,16 +107,18 @@ function deselectPlace() {
   cursor: pointer;
 }
 
-.image-container {
+#app .image-container {
   border-radius: 8px;
   overflow: hidden;
-  margin-bottom: 8px;
-  height: 200px;
+  margin-bottom: 10px;
+  width:100%;
+  height:auto;
+  background-color:green;
 }
 
 #app .image {
   display: block;
-  object-fit: cover;
-  height: 100%;
+  transform:scale(1.1);
 }
+
 </style>

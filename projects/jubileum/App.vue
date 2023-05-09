@@ -34,6 +34,7 @@ body {
   text-align: center;
   margin-left: -25px;
   color: rgb(180, 100, 100);
+  transition: all 0.2s ease-in-out;
 }
 
 .sub-title {
@@ -77,33 +78,13 @@ body {
 #app .detail-view {
   color: white;
   transition: all 0.5s ease-in-out;
-  padding-top: 33px;
+  padding-top: 20px;
   padding-bottom: 0px;
-  width: 320px;
+  width: 100%;
   pointer-events: none;
 }
 
-.close-button {
-  width: 40px;
-  height: 40px;
-  margin-left: -10px;
-  margin-top: -5px;
-  padding: 16px 15px 10px 9px;
-  line-height: 1px;
-  font-size: 50px;
-  font-weight: 100;
-  border-radius: 50%;
-  background-color: rgb(100, 100, 100);
-  color: white;
-  transform: rotate(45deg);
-  cursor: pointer;
-  pointer-events: auto;
-  margin-bottom: 30px;
-}
 
-.close-button:hover {
-  background-color: rgb(140, 140, 140);
-}
 
 
 </style>

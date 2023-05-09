@@ -102,6 +102,7 @@ body {
   height: 100vh;
   z-index: 100;
   pointer-events: none;
+  transition: all 0.2s ease-in-out;
 }
 
 .right-pane {
@@ -113,6 +114,7 @@ body {
   z-index: 200;
   transition: all 0.5s ease-in-out;
   overflow: hidden !important;
+  transition: all 0.5s ease-in-out;
 }
 
 .detail-view {
@@ -125,7 +127,9 @@ body {
 
 /* Adaption for various screen sizes */
 
-@media screen and (min-width: 1600px) {
+/* If your screen is very large */
+
+@media screen and (min-width: 1900px) {
   #app .about-main-title {
     font-size:140px;
   }
@@ -135,20 +139,124 @@ column-gap:30px;
 width:1200px;
 font-size:1.6em;
 }
+
+#app .left-pane {
+  width:1300px;
+  padding: 60px 750px 50px 60px;
+  font-size:120%;
+  }
+
+  #app .right-pane {
+    font-size:120%;
+  width: 450px;
+}
+
+  .main-title {
+    font-size:105px;
+  margin-left: -10px;
+  transition: all 0.2s ease-in-out;
+}
+
+.sub-title {
+  font-size: 95px;
+
+  margin-top: 15px;
+  margin-bottom: 20px;
+}
+
+#app .detail-view {
+  width: 100%;
+}
+
+#app .image-container {
+  overflow: hidden;
+  margin-bottom: 8px;
+ width:100%;
+ object-fit: cover !important;
+}
+
+#app .image {
+ width:100%!important;
+
 }
 
 
+#app .meta-container{
+  font-size:120%;
+}
+#app .meta-title{
+  font-size:50px;
+}
+
+#app .meta-container .category-button{
+  padding:12px 16px;
+      background-size: 30px;
+      padding-left: 50px;
+      background-position: 10px 10px;
+
+}
+
+#app .ui-overlay {
+  font-size:150%;
+  margin-top:70px;
+}
+
+#app .masonry-grid {
+
+  padding: 0px 10px 10px 600px;
+
+}
+
+#app .filter-container {
+  height:calc(100vh - 480px);
+
+}
+}
+
+/* If your screen is smallish */
 
 @media screen and (max-width: 1200px) {
-  .right-pane {
-    width: 250px;
-    z-index: 100;
-  }
-  .detail-view {
-    padding: 0px;
-  }
+#app .right-pane {
+width: 250px;
 }
 
+.image-card {
+  width: auto;
+  pointer-events: auto !important;
+  border-radius: 10px;
+  margin-right: 20px;
+  padding: 20px 8px 20px 8px!important;
+  margin-bottom: 20px;
+  overflow:hidden!important;
+
+}
+
+#app .image-container {
+  overflow: hidden;
+
+  margin-bottom: 8px;
+  border-radius:8px!important;
+ width:100%!important;
+ height:auto!important;
+ padding-bottom:0px!important;
+ overflow:hidden!important;
+}
+
+#app .image {
+  overflow:hidden!important;
+  width:100%!important;
+  height:auto!important;
+  transform:scale(1.2)!important;
+
+}
+.image-card:hover .image-container {
+  transform:scale(1.0)!important;
+
+}
+}
+
+
+/* If your screen is very small */
 
 @media screen and (max-width: 900px) {
  #app .left-pane {
@@ -201,6 +309,7 @@ bottom: 100px;
   height: 100vh;
   width: 100%;
   left: 0px;
+  padding-right:0px;
 
 }
 
@@ -214,11 +323,15 @@ bottom: 100px;
 
 #app .image-card {
   width: auto;
-  
   border-radius: 10px;
   margin-right: 25px;
-  padding: 20px;
   margin-bottom: 20px;
+}
+
+#app .place-title {
+  width: calc(100% -25px);
+  margin-bottom: -25px;
+  padding-right:5px;
 }
 
 .mobile-ui-drag{
@@ -255,9 +368,9 @@ box-shadow: inset 0px 2px 2px 0 rgba(0, 0, 0, 0.3),
 
 #app .image-container {
   overflow: hidden;
-  border-radius:8px;
-  width: 100%;
-  height:auto;
+  border-radius:8px !important;
+  width: 100% !important;
+  height:auto !important;
   margin-left:auto;
   margin-right:auto;
   transition: all 0.2s ease-in-out;
@@ -265,10 +378,7 @@ box-shadow: inset 0px 2px 2px 0 rgba(0, 0, 0, 0.3),
 
 #app .image {
   display: block;
-  object-fit: cover;
-  height: 100%;
-  width:100%;
-  margin-top: -20px;
+  transform:scale(1.1);
 }
 
 #app .image-container:hover {
@@ -363,4 +473,6 @@ overflow-y:auto;
   margin-left: 0px;
 }
 }
+
+
 </style>

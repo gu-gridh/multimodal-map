@@ -29,11 +29,13 @@ function deselectPlace() {
 </script>
 
 <template>
+ 
   <div v-if="selectedFeature" class="detail-view" @click="deselectPlace">
+    <div class="close-button" @click="deselectPlace">+</div>
     <div class="place-title">
       <p>{{ selectedFeature.get("name") }}</p>
     </div>
-
+    
     <router-link
       v-for="image in images"
       :key="image.uuid"
@@ -55,6 +57,7 @@ function deselectPlace() {
         </div>
       </div>
     </router-link>
+  
   </div>
 </template>
 
@@ -72,7 +75,8 @@ function deselectPlace() {
   letter-spacing: -0.1rem;
   text-align: center;
   width: calc(100% - 20px);
-  margin-bottom: -25px;
+  margin-bottom: -30px;
+  margin-top:10px;
 }
 
 .place-title p {
@@ -84,7 +88,7 @@ function deselectPlace() {
   hyphens: auto;
   background-color: rgb(180, 100, 100);
   border-radius: 10px 10px 0 0;
-  padding: 20px 25px 20px 25px;
+  padding: 25px 25px 25px 25px;
   width: 100%;
   opacity: 0.99;
   box-shadow: 0px -5px 10px 0 rgba(0, 0, 0, 0.2),
@@ -113,6 +117,8 @@ function deselectPlace() {
   transition: all 0.2s ease-in-out;
 }
 
+
+
 .image-card:hover .image-container {
   transform: scale(1.03);
   background-color: rgba(248, 249, 229, 1);
@@ -125,18 +131,103 @@ function deselectPlace() {
   background-color: rgba(248, 249, 229, 1);
 }
 
-.image-container {
-  border-radius: 50%;
+#app .image-container {
+  border-radius:50%;
   overflow: hidden;
-  width: 230px;
-  height: 230px;
-  transition: all 0.2s ease-in-out;
+  margin-bottom: 8px;
+  height: 250px;
+  width: 250px;
 }
 
 .image {
   display: block;
   object-fit: cover;
-  height: 145%;
-  margin-top: -20px;
+  width:100%!important;
+  height:100%!important;
+  transform:scale(1.2)!important;
 }
+
+.close-button {
+  width: 45px;
+  height: 45px;
+  margin-left: calc(50% - 40px) !important;
+  margin-top: 0px !important;
+  padding: 18px 15px 10px 11px;
+  line-height: 1px;
+  font-size: 50px;
+  font-weight: 100;
+  border-radius: 50%;
+  color: white;
+  transform: rotate(45deg);
+  cursor: pointer;
+  pointer-events: auto;
+  z-index:1000;
+  background-color: rgb(180, 100, 100);
+  margin-bottom: 0px;
+}
+
+.close-button:hover {
+  background-color: rgb(140, 60, 60);
+}
+
+@media screen and (min-width: 1900px) {
+
+  #app .image-container {
+  border-radius:50%;
+  overflow: hidden;
+  margin-bottom: 8px;
+  height: 350px;
+  width: 350px;
+}
+
+#app .image {
+  overflow:hidden!important;
+  width:100%!important;
+  height:100%!important;
+  transform:scale(1.2)!important;
+
+}
+}
+
+@media screen and (max-width: 1200px) {
+
+  #app .image-container {
+  border-radius:50%!important;
+  overflow: hidden!important;
+  margin-bottom: 8px;
+  height: 180px!important;
+  width: 180px!important;
+}
+
+#app .image {
+  overflow:hidden!important;
+  width:100%!important;
+  height:100%!important;
+  transform:scale(1.2)!important;
+
+}
+}
+
+@media screen and (max-width: 900px) {
+
+#app .image-container {
+border-radius:8px!important;
+overflow: hidden!important;
+margin-bottom: 8px;
+height: auto!important;
+width: 100%!important;
+}
+
+#app .image {
+overflow:hidden!important;
+width:100%!important;
+height:100%!important;
+transform:scale(1.2)!important;
+
+}
+}
+
+
+
+
 </style>

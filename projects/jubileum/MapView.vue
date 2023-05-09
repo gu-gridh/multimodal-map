@@ -127,6 +127,7 @@ watch(showGrid, (newValue) => {
 
 
 .ui-overlay {
+margin-top: 70px;
 z-index: 250;
 position:absolute;
 border-radius: 8px;
@@ -134,12 +135,12 @@ font-size: 18px;
 font-weight: 700;
 color: white;
 margin-left:400px;
-background-color: rgb(180, 100, 100, 0.7);
+background-color: rgb(180, 100, 100, 0.8);
 backdrop-filter: blur(3px);
 }
 
 .ui-mode {
-top: 30px;
+top: 0px;
 padding: 4px 10px 4px 10px;
 }
 

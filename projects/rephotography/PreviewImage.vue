@@ -11,7 +11,7 @@ defineProps<{
     <div>
       <div class="image-container">
         <img
-          :src="`${image.iiif_file}/full/380,/0/default.jpg`"
+          :src="`${image.iiif_file}/full/500,/0/default.jpg`"
           class="image"
         />
       </div>

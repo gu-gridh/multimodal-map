@@ -20,6 +20,7 @@ const props = defineProps({
 const diana = inject("diana") as DianaClient;
 const object = ref<Documentation>();
 
+
 watchEffect(async () => {
   object.value = await diana.get(props.type, props.id, { depth: 3 });
 });
@@ -37,4 +38,18 @@ const objectComponent = {
   </article>
 </template>
 
-<style></style>
+<style>
+.metadata {
+  float: left;
+  width: 450px;
+  height: 100vh;
+  background-color: black;
+  color: white;
+}
+.illustration {
+  float: left;
+  width: calc(100% - 450px);
+  background-color: black;
+  height: 100vh;
+}
+</style>
