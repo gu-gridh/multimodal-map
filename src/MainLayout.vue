@@ -432,6 +432,8 @@ overflow-y:auto;
 #app .metadata {
   float: left;
   width:100%;
+
+
 }
 
 #app .meta-title {

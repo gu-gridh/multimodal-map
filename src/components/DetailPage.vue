@@ -63,7 +63,7 @@ defineProps({
 
 .metadata {
   float: left;
-  width: 350px;
+  width: 450px;
   height: 100vh;
   background-color: black;
   color: white;

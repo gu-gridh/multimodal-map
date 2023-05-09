@@ -47,7 +47,7 @@ watch(showGrid, (newValue) => {
 </script>
 
 <template>
-<About v-show="visibleAbout" :visibleAbout="visibleAbout" @close="visibleAbout = false" />
+<About :visibleAbout="visibleAbout" @close="visibleAbout = false" />
   <MainLayout>
     <template #search>
     <button class="item" @click="toggleAboutVisibility">

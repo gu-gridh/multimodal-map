@@ -113,7 +113,6 @@ function deselectPlace() {
   margin-bottom: 10px;
   width:100%;
   height:auto;
-  background-color:green;
 }
 
 #app .image {
