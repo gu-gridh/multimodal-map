@@ -48,7 +48,7 @@ function deselectPlace() {
               class="image"
             />
           </div>
-          <div class="meta-container">
+          <div class="card-meta-container">
             <div>{{ image.title }}</div>
             <div>{{ image.date }}</div>
           </div>
@@ -72,7 +72,7 @@ function deselectPlace() {
   letter-spacing: -0.1rem;
   text-align: center;
   width: calc(100% - 20px);
-  margin-bottom: -15px;
+  margin-bottom: -25px;
 }
 
 .place-title p {
@@ -86,15 +86,12 @@ function deselectPlace() {
   border-radius: 10px 10px 0 0;
   padding: 20px 25px 20px 25px;
   width: 100%;
-  /*   border-style:dashed;
-  border-width:0px 0pc 1px 0px;
-Border-color:black; */
   opacity: 0.99;
   box-shadow: 0px -5px 10px 0 rgba(0, 0, 0, 0.2),
     0 0px 0px 0 rgba(0, 0, 0, 0.19);
 }
 
-.meta-container {
+.card-meta-container {
   color: black;
   font-weight: 400;
   font-size: 20px;
@@ -106,7 +103,7 @@ Border-color:black; */
 .image-card {
   width: auto;
   pointer-events: auto !important;
-  border-radius: 20px;
+  border-radius: 10px;
   margin-right: 20px;
   padding: 20px;
   margin-bottom: 20px;

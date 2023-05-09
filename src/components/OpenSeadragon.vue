@@ -85,7 +85,7 @@ position:absolute;
 
 #ToolbarVertical {
   position: absolute;
-  top: 45px;
+  top: 20px;
   width: 60px;
   margin-left: 15px;
   z-index: 1000;

@@ -45,12 +45,13 @@
       </slot>
     </div>
     <div class="atlas">
+    
     <slot name="background">
-     
       <MapComponent />
-  
     </slot>
+    <div class="atlas-gradient"></div>
   </div>
+ 
   </div>
 </template>
 
@@ -153,22 +154,23 @@ font-size:1.6em;
  #app .left-pane {
   position: relative;
   float:left;
-  height: auto;
+  height:auto;
   z-index: 500;
   width:100%;
   pointer-events: auto;
   margin-top:70vh;
   border-radius:25px 25px 0 0;
-  padding: 30px 30px 30px 30px;
-  background-color:white;
-  box-shadow: 0px -5px 10px 0 rgba(0, 0, 0, 0.2),
+  padding: 30px 30px 60px 30px;
+  background-color:rgba(255,255,255,0.8);
+  backdrop-filter:blur(5px);
+  box-shadow: 0px -10px 20px 0 rgba(0, 0, 0, 0.3),
     0 0px 0px 0 rgba(0, 0, 0, 0.19);
 }
 
 #app .map-container {
 overflow-y:auto;
 width:100%;
-height:calc(100vh - 0px) !important;
+height:calc(100vh) !important;
 }
 
 body {
@@ -182,20 +184,41 @@ body {
   width: calc(100% - 0px);
   position:absolute;
   overflow:hidden;
-  margin-top: -100px;
+  margin-top: 0px;
+}
+
+.atlas-gradient {
+  height: 300px;
+  width: 100%;
+  position:absolute;
+  background: linear-gradient(0deg, rgba(255,255,255,1) 20%, rgba(255,255,255,0) 100%);
+bottom: 100px;
+  z-index:100;
 }
 
 #app .right-pane {
   float:left;
-  height: 75vh;
+  height: 100vh;
   width: 100%;
   left: 0px;
+
 }
 
 #app .detail-view {
   width: 100%;
+  overflow:hidden;
  padding-top:30px;
- padding-bottom:200px;
+ padding-bottom:35vh !important;
+ 
+}
+
+#app .image-card {
+  width: auto;
+  
+  border-radius: 10px;
+  margin-right: 25px;
+  padding: 20px;
+  margin-bottom: 20px;
 }
 
 .mobile-ui-drag{
@@ -234,7 +257,7 @@ box-shadow: inset 0px 2px 2px 0 rgba(0, 0, 0, 0.3),
   overflow: hidden;
   border-radius:8px;
   width: 100%;
-  height: auto;
+  height:auto;
   margin-left:auto;
   margin-right:auto;
   transition: all 0.2s ease-in-out;
@@ -243,7 +266,7 @@ box-shadow: inset 0px 2px 2px 0 rgba(0, 0, 0, 0.3),
 #app .image {
   display: block;
   object-fit: cover;
-  height: 105%;
+  height: 100%;
   width:100%;
   margin-top: -20px;
 }

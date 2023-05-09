@@ -31,7 +31,7 @@ defineProps({
   height:calc(100vh - 80px);
   padding-bottom:30px;
   padding-left:75px;
-  padding-right:30px;
+  padding-right:0px;
 }
 
 .back-button {
@@ -71,13 +71,13 @@ defineProps({
 
 .metadata-posts {
   padding-left: 0px;
-  padding-right: 20px;
+  padding-right: 0px;
 }
 
 .object-title {
   font-size: 150%;
   line-height: 1.2;
-  width: 90%;
+  width: 100%;
   padding-bottom: 10px;
 }
 
@@ -90,6 +90,19 @@ defineProps({
   width: calc(100% - 350px);
   background-color: black;
   height: 100vh;
+}
+
+#app p{
+  margin-bottom:20px;
+}
+
+#app .meta-container a{
+  color:#CCFFFF;
+  cursor:pointer;
+}
+
+#app .meta-container a:hover{
+  cursor:pointer;
 }
 
 
