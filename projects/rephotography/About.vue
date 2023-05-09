@@ -12,10 +12,10 @@
       </div>
     </div>
       <div style="display:flex;  align-items: center; justify-content: center; margin-top:20px;">
-          <button @click="$emit('close')">
+        <button @click="$emit('close')">
             <div
               class="p-1 px-2 clickable category-button"
-              style="width:auto; padding:5px 15px; text-align: center; cursor: pointer;"  v-bind:class="{fullopacityui: visibleAbout}">Utforska</div>
+              style="width:auto; padding:5px 15px; text-align: center; cursor: pointer;"  v-bind:class="{fullopacityui: visibleAbout}">Explore</div>
           </button>
         </div>
   </div>
@@ -38,7 +38,7 @@ export default {
   position:fixed;
   color: white;
   line-height: 1;
-  height: calc(100% - 80px);
+  height: calc(100%);
   width: 100%;
   font-size: 12px;
   z-index: 2000;
@@ -59,17 +59,18 @@ export default {
   pointer-events:auto;
   transform:scale(1.0);
   translate: 0px 0px;
-  background: linear-gradient(90deg, rgba(234, 228, 219,1) 0%, rgba(234, 228, 219,0.7) 100%);
+  background: linear-gradient(90deg, rgba(250, 250, 250,1) 0%, rgba(250, 250, 250,0.7) 100%);
  
 }
 
 .about-main-title {
+  margin-top:100px;
   font-size: 105px;
-  line-height: 0.8;
-  font-weight: 200;
+  line-height: 0.9;
+  font-weight: 100;
   letter-spacing: -0.2rem;
   text-align: center;
-  color:rgb(180,100,100);
+  color:black;
   opacity:0.0;
   transition: all 0.4s ease-in-out;
 
@@ -84,6 +85,7 @@ column-gap:30px;
 width:900px;
 font-size:1.4em;
 opacity:0.0;
+margin-top:30px;
 margin-bottom:20px;
 transition: all 0.4s ease-in-out;
 

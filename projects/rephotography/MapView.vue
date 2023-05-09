@@ -2,7 +2,6 @@
 import { computed } from "vue";
 import MainLayout from "@/MainLayout.vue";
 import Search from "./Search.vue";
-import About from "./About.vue";
 import MapComponent from "@/components/MapComponent.vue";
 import NpolarLayer from "./NpolarLayer.vue";
 import DianaPlaceLayer from "@/components/DianaPlaceLayer.vue";
@@ -12,7 +11,10 @@ import { storeToRefs } from "pinia";
 import { rephotographyStore } from "./store";
 import { clean } from "@/assets/utils";
 import markerIcon from "@/assets/marker-gold.svg";
-import visibleAbout from "./About.vue";
+import { ref } from "vue";
+import About from "./About.vue";
+import { onMounted, watch } from "vue";
+import { nextTick } from "vue";
 
 const { categories, years } = storeToRefs(rephotographyStore());
 
@@ -23,8 +25,13 @@ const placeParams = computed(() =>
     end_date: years.value[1],
   })
 );
+const visibleAbout = ref(false);
 
-
+const toggleAboutVisibility = async () => {
+  console.log('fired')
+  await nextTick();
+  visibleAbout.value = !visibleAbout.value;
+};
 
 
 </script>
@@ -32,7 +39,7 @@ const placeParams = computed(() =>
 
 
 <template>
-  <About />
+ <About v-show="visibleAbout" :visibleAbout="visibleAbout" @close="visibleAbout = false" />
   <MainLayout>
     <template #search>
       <button class="item"  @click="visibleAbout = true;">
