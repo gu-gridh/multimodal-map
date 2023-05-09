@@ -292,14 +292,17 @@ position:absolute;
 margin-top:60vh;
 height:40vh;
 width:100%;
+padding-right:20px;
 overflow-y:auto;
-
 }
 
 #app .metadata {
   float: left;
   width:100%;
+}
 
+#app .meta-title {
+  width: auto;
 }
 
 #app #ToolbarVertical {

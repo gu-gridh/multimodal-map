@@ -26,6 +26,14 @@ defineProps({
 </template>
 
 <style>
+.meta-container{
+  overflow-y: auto;
+  height:calc(100vh - 80px);
+  padding-bottom:30px;
+  padding-left:75px;
+  padding-right:30px;
+}
+
 .back-button {
   left: 20px;
   top: 40px;
@@ -46,7 +54,6 @@ defineProps({
   font-weight: 100;
   font-size: 40px;
   line-height: 1.0;
-  padding-left: 75px;
   padding-right: 20px;
   width: calc(100% - 25px);
   hyphens: auto;
@@ -63,7 +70,7 @@ defineProps({
 }
 
 .metadata-posts {
-  padding-left: 75px;
+  padding-left: 0px;
   padding-right: 20px;
 }
 

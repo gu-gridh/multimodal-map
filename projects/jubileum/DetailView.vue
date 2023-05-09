@@ -34,7 +34,7 @@ const objectComponent = {
 </template>
 
 <style>
-#app .metadata {
+.metadata {
   float: left;
   width: 450px;
   height: 100vh;
