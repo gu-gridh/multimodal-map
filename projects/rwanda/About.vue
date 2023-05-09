@@ -1,7 +1,7 @@
 <template>
   
-  <div class="about" v-bind:class="{fullopacity: visibleAbout}">
-    <div class="main-title" v-bind:class="{fullopacityui: visibleAbout}">Streets of<br>Rwanda</div>
+  <div class="about-container" v-bind:class="{fullopacity: visibleAbout}">
+    <div class="about-main-title" v-bind:class="{fullopacityui: visibleAbout}">Streets of<br>Rwanda</div>
 
     <div style="display:flex;  align-items: center; justify-content: center; margin-top:40px;">
       <div class="article" v-bind:class="{fullopacityui: visibleAbout}">
@@ -39,7 +39,7 @@ export default {
 </script>
 
 <style scoped>
-.about {
+.about-container {
   position:fixed;
   background-color: #999;
   color: white;
@@ -67,7 +67,7 @@ export default {
   background: linear-gradient(90deg, rgba(210,200,200,1) 0%, rgba(240,230,230,0.8) 100%);
 }
 
-.main-title {
+.about-main-title {
   font-size: 105px;
   line-height: 0.8;
   font-weight: 600;

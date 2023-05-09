@@ -1,6 +1,6 @@
 <template>
-  <div class="about" v-bind:class="{fullopacity: visibleAbout}">
-    <div class="main-title" v-bind:class="{fullopacityui: visibleAbout}">Göteborgs <br>Jubileum<br>1923</div>
+  <div class="about-container" v-bind:class="{fullopacity: visibleAbout}">
+    <div class="about-main-title" v-bind:class="{fullopacityui: visibleAbout}">Göteborgs <br>Jubileum<br>1923</div>
 
     <div style="display:flex;  align-items: center; justify-content: center; margin-top:20px;">
       <div class="article" v-bind:class="{fullopacityui: visibleAbout}">
@@ -39,7 +39,7 @@ export default {
 </script>
 
 <style scoped>
-.about {
+.about-container {
   position:fixed;
   color: white;
   line-height: 1;
@@ -68,7 +68,8 @@ export default {
  
 }
 
-.main-title {
+.about-main-title {
+  font-family: "Josefin Sans", sans-serif !important;
   font-size: 105px;
   line-height: 0.8;
   font-weight: 200;
@@ -141,40 +142,6 @@ a {
   font-family: "Barlow Condensed", sans-serif;
 }
 
-@media screen and (min-width: 1600px) {
-  .main-title {
-    font-size:140px;
-  }
 
-  .article{
-column-gap:30px;
-width:1200px;
-font-size:1.6em;
-}
-}
 
-@media screen and (max-width: 1000px) {
-  .main-title {
-    font-size:70px;
-    width:100%;
-    margin-left:0px;
-  }
-
-  .article{
-columns:1;
-width:1200px;
-text-align:justify;
-font-size:1.3em;
-}
-
-.about {
-  position:fixed;
-  color: white;
-  line-height: 1;
-  height: calc(100% - 0px);
-  width: 100%;
-  padding:80px 40px;
-
-}
-}
 </style>

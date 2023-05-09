@@ -6,7 +6,7 @@ defineProps({
 </script>
 
 <template>
-  <div>
+  <div class="meta-container">
     <header class="flex flex-row-reverse pt-8">
       <div class="flex-1"></div>
       <div class="container">

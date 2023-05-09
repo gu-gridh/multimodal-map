@@ -3,7 +3,7 @@
     <div class="left-pane">
       <div class="left-pane-layer">
         <div class="left-pane-content">
-          <div class="mobile-ui">
+          <div class="mobile-ui-drag">
           </div>
           <slot name="title">
             <!--<div v-if="config" class="px-8 py-6 bg-white rounded-t-lg shadow-lg">-->
@@ -82,6 +82,10 @@ body {
   height:100vh;
 }
 
+.mobile-ui-drag{
+  display:none;
+}
+
 .about {
   line-height: 1.2;
   margin-bottom: 10px;
@@ -118,6 +122,22 @@ body {
 
 
 
+/* Adaption for various screen sizes */
+
+@media screen and (min-width: 1600px) {
+  #app .about-main-title {
+    font-size:140px;
+  }
+
+  #app .article{
+column-gap:30px;
+width:1200px;
+font-size:1.6em;
+}
+}
+
+
+
 @media screen and (max-width: 1200px) {
   .right-pane {
     width: 250px;
@@ -128,6 +148,7 @@ body {
   }
 }
 
+
 @media screen and (max-width: 900px) {
  #app .left-pane {
   position: relative;
@@ -137,8 +158,8 @@ body {
   width:100%;
   pointer-events: auto;
   margin-top:70vh;
-  border-radius:20px 20px 0 0;
-  padding: 30px 10px 30px 40px;
+  border-radius:25px 25px 0 0;
+  padding: 30px 30px 30px 30px;
   background-color:white;
   box-shadow: 0px -5px 10px 0 rgba(0, 0, 0, 0.2),
     0 0px 0px 0 rgba(0, 0, 0, 0.19);
@@ -156,12 +177,12 @@ body {
 }
 
 .atlas {
-  height: 100vh;
+  height: 120vh;
   float:left;
   width: calc(100% - 0px);
   position:absolute;
   overflow:hidden;
-  margin-top: -50px;
+  margin-top: -100px;
 }
 
 #app .right-pane {
@@ -174,20 +195,39 @@ body {
 #app .detail-view {
   width: 100%;
  padding-top:30px;
- padding-bottom:0px;
+ padding-bottom:200px;
 }
 
-.mobile-ui{
+.mobile-ui-drag{
+display:block;
+width:60px;
+height:8px;
+border-radius:4px;
+border-color:grey;
+border-width:0.5px 0.5px 0px 0.5px;
+border-style:solid;
+margin-left:auto;
+margin-right:auto;
+margin-bottom:25px;
+margin-top:-15px;
+box-shadow: inset 0px 2px 2px 0 rgba(0, 0, 0, 0.2),
+    0 0px 0px 0 rgba(0, 0, 0, 0.19);
+}
 
+.mobile-ui-drag:hover{
+box-shadow: inset 0px 2px 2px 0 rgba(0, 0, 0, 0.3),
+    0 0px 0px 0 rgba(0, 0, 0, 0.19);
 }
 
 .main-title {
   width:100%;
-  font-size: 80px;
+  font-size: 73px;
+  margin-left:0px;
 }
 
 .sub-title {
   font-size: 55px;
+  margin-left:0px;
 }
 
 #app .image-container {
@@ -214,6 +254,87 @@ body {
 
 #app #footer {
   height: 0px;
+}
+
+#app .about-main-title {
+    font-size:75px;
+    width:100%;
+    margin-left:0px;
+  }
+
+  #app .article{
+columns:1;
+width:1200px;
+text-align:left;
+margin-top:30px;
+font-size:1.5em;
+}
+
+#app .about-container {
+  position:fixed;
+  color: white;
+  line-height: 1;
+  height: calc(100% - 0px);
+  width: 100%;
+  padding:80px 40px;
+
+}
+
+#app .illustration {
+  position:absolute;
+  height:60vh;
+  width: 100%;
+
+}
+
+#app .meta-container {
+position:absolute;
+margin-top:60vh;
+height:40vh;
+width:100%;
+overflow-y:auto;
+
+}
+
+#app .metadata {
+  float: left;
+  width:100%;
+
+}
+
+#app #ToolbarVertical {
+
+  top: 15px;
+}
+}
+
+@media screen and (max-width: 400px) {
+  .left-pane{
+    padding: 30px 10px 30px 10px;
+  }
+  .main-title {
+  width:100%;
+  font-size: 60px;
+  margin-left: 0px;
+}
+.sub-title {
+  font-size: 50px;
+  margin-left: 0px;
+}
+}
+
+@media screen and (max-width: 350px) {
+  .left-pane{
+    padding: 30px 10px 30px 10px;
+  }
+  .main-title {
+  width:100%;
+  font-size: 50px;
+  margin-left: 0px;
+}
+.sub-title {
+  font-size: 40px;
+  margin-left: 0px;
 }
 }
 </style>

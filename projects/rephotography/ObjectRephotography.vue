@@ -63,4 +63,16 @@ const images = {
 .image-title {
   font-size: 150%;
 }
+
+@media screen and (max-width: 900px) {
+  #app .illustration {
+  min-height: 30vh;
+  height:30vh;
+}
+#app .meta-container{
+  margin-top: 35vh;
+  height:65vh;
+}
+}
+
 </style>
