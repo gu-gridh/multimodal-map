@@ -25,7 +25,7 @@ const placeParams = computed(() =>
     end_date: years.value[1],
   })
 );
-const visibleAbout = ref(false);
+const visibleAbout = ref(true);
 
 const toggleAboutVisibility = async () => {
   console.log('fired')
@@ -42,7 +42,7 @@ const toggleAboutVisibility = async () => {
  <About v-show="visibleAbout" :visibleAbout="visibleAbout" @close="visibleAbout = false" />
   <MainLayout>
     <template #search>
-      <button class="item"  @click="visibleAbout = true;">
+      <button class="item"  @click="toggleAboutVisibility">
             <div
               class="p-1 px-2 clickable category-button"
               style="
