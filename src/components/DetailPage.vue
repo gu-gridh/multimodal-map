@@ -47,7 +47,7 @@ defineProps({
   height: 35px;
   border-radius: 50%;
   overflow: hidden;
-  position: absolute;
+  position: fixed;
 }
 
 .meta-title {

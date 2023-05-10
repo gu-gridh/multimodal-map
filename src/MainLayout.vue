@@ -298,6 +298,25 @@ width: 250px;
   backdrop-filter:blur(5px);
   box-shadow: 0px -10px 20px 0 rgba(0, 0, 0, 0.3),
     0 0px 0px 0 rgba(0, 0, 0, 0.19);
+  
+  
+}
+
+#app .main-title {
+  width:100%;
+  font-size: 70px;
+  margin-left:0px;
+}
+
+.sub-title {
+  font-size: 55px;
+  margin-left:0px;
+}
+
+#app .about{
+  width:100%;
+  padding:0px;
+ 
 }
 
 #app .map-container {
@@ -380,16 +399,7 @@ box-shadow: inset 0px 2px 2px 0 rgba(0, 0, 0, 0.3),
     0 0px 0px 0 rgba(0, 0, 0, 0.19);
 }
 
-.main-title {
-  width:100%;
-  font-size: 73px;
-  margin-left:0px;
-}
 
-.sub-title {
-  font-size: 55px;
-  margin-left:0px;
-}
 
 #app .image-container {
   overflow: hidden;
@@ -471,12 +481,16 @@ overflow-y:auto;
   float: left;
   width:100%;
 
-
 }
 
 #app .meta-title {
   width: auto;
 }
+
+#app  .back-button {
+  margin-top:50vh;
+}
+
 
 #app #ToolbarVertical {
 
