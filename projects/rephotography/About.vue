@@ -1,10 +1,10 @@
 <template>
   <div class="about-container" v-bind:class="{fullopacity: visibleAbout}">
-    <div class="flex-machine">
-      <div class="red-content">
-    <div class="about-main-title" v-bind:class="{fullopacityui: visibleAbout}">Extended <br>Rephotography</div>
+    <div class="flex-machine"  v-bind:class="{fullopacityui: visibleAbout}">
+      <div class="red-content" >
+    <div class="about-main-title" >Extended <br>Rephotography</div>
 
-    <div class="about-article-main" v-bind:class="{fullopacityui: visibleAbout}">
+    <div class="about-article-main">
         Extended Rephotography is a transdisciplinary project focused on the glacial environment in northwest Svalbard. The core of the project is using Extended Reality (XR) technologies for field based visualizations and research analysis, documentation and communication of research results.
         The works aimed for the public is focused on storytelling and visualization using a wide range of historical data and on going research as a collaboration between several disciplines and institutions.
     </div>
@@ -12,7 +12,7 @@
 
  
 
-      <div class="about-article-sub" v-bind:class="{fullopacityui: visibleAbout}">
+      <div class="about-article-sub">
       The project is led by Tyrone Martinsson and is a collaboration between University of Gothenburg, Norwegian Polar Institute, Visual Arena Lindholmen, Universeum, and University of Plymouth. Infravis, the national infrastructure for resaearch visualisation, has developed this tool to explore the data. The site is hosted and maintained by Gothenburg Research Infrastructure in Digital Humanities (GRIDH).
       </div>
   
@@ -25,10 +25,11 @@
               style="width:auto; padding:5px 15px; text-align: center; cursor: pointer;"  v-bind:class="{fullopacityui: visibleAbout}">Explore</div>
           </button>
         </div>
-        <div class="about-lower-border"> </div>
+        <div class="about-lower-border" v-bind:class="{fullopacityui: visibleAbout}"> </div>
+        <div class="about-logo-top-right"> </div>
       </div>
        
-        <div class="about-logo-top-right"> </div>
+       
 
   </div>
   
@@ -48,9 +49,6 @@ export default {
 </script>
 
 <style scoped>
-body{
-  border:opx;
-}
 .about-container {
   position:fixed;
   color: white;
@@ -63,10 +61,19 @@ body{
   pointer-events:none;
   transform:scale(1.5);
   translate: 0px 100px;
-  transition: all 1.5s ease-in-out;
+  transition: all 2.0s ease-in-out;
   opacity:0.0;
   overflow-y:auto;
+  background: linear-gradient(90deg, rgba(250, 250, 250,1) 0%, rgba(250, 250, 250,0.5) 30%);
 
+}
+
+.flex-machine{
+  opacity:0.0; 
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  transition: all 1.0s ease-in-out;
 }
 
 .fullopacity{
@@ -79,13 +86,11 @@ body{
  
 }
 
-.flex-machine{
-  height:100%;
-  display:flex;
-  flex-direction:column;
- 
-
+.fullopacityui{
+  opacity:1.0; 
 }
+
+
 
 .red-content{
   display:flex;
@@ -106,10 +111,7 @@ body{
   letter-spacing: -0.2rem;
   text-align: center;
   color:black;
-  opacity:0.0;
   margin-bottom:40px;
-  transition: all 0.4s ease-in-out;
-
 }
 
 .about-article-main{
@@ -122,7 +124,7 @@ columns:1;
 column-gap:30px;
 width:850px;
 font-size:1.8em;
-opacity:0.0;
+
 padding:00px 30px;
 transition: all 0.4s ease-in-out;
 
@@ -138,7 +140,7 @@ column-gap:30px;
 width:950px;
 font-size:1.4em;
 font-weight: 200;
-opacity:0.0;
+
 padding:30px;
 transition: all 0.4s ease-in-out;
 
@@ -153,12 +155,8 @@ transition: all 0.4s ease-in-out;
   background-color:rgb(230,230,230);
   padding:8px 20px !important;
   z-index:1000;
-  opacity:1.0;
-  margin-bottom:50px;
-}
 
-.fullopacityui{
-  opacity:1.0;
+  margin-bottom:50px;
 }
 
 a {
@@ -176,10 +174,12 @@ a {
   background-repeat: no-repeat;
   background-size: cover;
   opacity:0.7;
+  transition: all 0.4s ease-in-out;
 
 }
 
 .about-logo-top-right{
+  z-index:1000;
   display:block;
   pointer-events:none;
   width:200px;
@@ -190,7 +190,8 @@ a {
   background-size: contain;
   top:30px;
   right:60px;
-  opacity:0.7;
+  opacity:1.0;
+  transition: all 0.4s ease-in-out;
 
 }
 

@@ -25,7 +25,7 @@
               style="width:auto; padding:5px 15px; text-align: center; cursor: pointer;"  v-bind:class="{fullopacityui: visibleAbout}">Utforska</div>
           </button>
         </div>
-        <div class="about-lower-border"> </div>
+        <div class="about-lower-border" v-bind:class="{fullopacityui: visibleAbout}"> </div>
       </div>
        
         <div class="about-logo-top-right"> </div>
