@@ -63,7 +63,7 @@ body{
   pointer-events:none;
   transform:scale(1.5);
   translate: 0px 100px;
-  transition: all 1.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
   opacity:0.0;
   overflow-y:auto;
   background: linear-gradient(90deg, rgba(245, 235, 225,1) 0%, rgba(245, 235, 225,0.8) 30%);

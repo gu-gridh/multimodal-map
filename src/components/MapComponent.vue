@@ -131,9 +131,11 @@ function onCenterChange() {
 
 .ol-scaleline-control {
   right: 20px !important;
+  display:none!important;
 }
 
 .ol-full-screen {
+  display:none!important;
   right: 25px !important;
   top: 20px !important;
   position: fixed !important;

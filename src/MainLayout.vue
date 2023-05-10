@@ -451,17 +451,19 @@ padding:20px 40px;
 
 #app .illustration {
   position:absolute;
-  height:60vh;
+  height:50vh;
   width: 100%;
 
 }
 
 #app .meta-container {
 position:absolute;
-margin-top:60vh;
-height:40vh;
+margin-top:50vh;
+height:50vh;
+font-size:120%;
 width:100%;
 padding-right:20px;
+padding-bottom:100px !important;
 overflow-y:auto;
 }
 
@@ -481,15 +483,8 @@ overflow-y:auto;
   top: 15px;
 }
 
-#app .ol-zoom {
-  font-size: 30px !important;
-  width: 25px !important;
-  height: 25px !important;
-}
-
-.ol-zoom-out {
-  top: 90px;
-  margin-top: 3px;
+#app .ol-control button {
+  display:none !important;
 }
 }
 
