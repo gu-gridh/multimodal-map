@@ -85,6 +85,34 @@ body {
 }
 
 
+@media screen and (max-width: 900px) {
+
+  #app .detail-view {
+ padding-top:65px !important;
+}
+
+.ui-overlay {
+margin-top: 25px !important;
+margin-left:0px !important;
+font-size:120% !important;
+}
+
+#app .masonry-grid {
+  position: absolute;
+  top: 0px;
+  width: 100%;
+  height: 100%; /* Make the grid height responsive */
+  z-index: 200;
+  background-color: rgb(234, 228, 219);
+  padding: 0px 0px 230px 00px;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  grid-template-rows: masonry;
+  grid-gap: 5px;
+  overflow-y: scroll;
+}
+}
+
+
 
 
 </style>

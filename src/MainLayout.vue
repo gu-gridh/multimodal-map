@@ -298,8 +298,6 @@ width: 250px;
   backdrop-filter:blur(5px);
   box-shadow: 0px -10px 20px 0 rgba(0, 0, 0, 0.3),
     0 0px 0px 0 rgba(0, 0, 0, 0.19);
-  
-  
 }
 
 #app .main-title {
@@ -363,7 +361,7 @@ bottom: 100px;
 #app .detail-view {
   width: 100%;
   overflow:hidden;
- padding-top:65px;
+ padding-top:20px;
  padding-bottom:35vh !important;
  
 }
@@ -371,14 +369,14 @@ bottom: 100px;
 #app .image-card {
   width: auto;
   border-radius: 10px;
-  margin-right: 25px;
+  margin-right: 30px;
   margin-bottom: 20px;
 }
 
 #app .place-title {
   width: calc(100% -25px);
   margin-bottom: -25px;
-  padding-right:5px;
+  padding-right:10px;
 }
 
 .mobile-ui-drag{
@@ -506,30 +504,30 @@ overflow-y:auto;
 }
 
 @media screen and (max-width: 400px) {
-  .left-pane{
+  #app  .left-pane{
     padding: 30px 10px 30px 10px;
   }
-  .main-title {
+  #app  .main-title {
   width:100%;
-  font-size: 60px;
+  font-size: 70px !important;
   margin-left: 0px;
 }
-.sub-title {
+#app .sub-title {
   font-size: 50px;
   margin-left: 0px;
 }
 }
 
 @media screen and (max-width: 350px) {
-  .left-pane{
+  #app .left-pane{
     padding: 30px 10px 30px 10px;
   }
-  .main-title {
+  #app .main-title {
   width:100%;
-  font-size: 50px;
+  font-size: 60px !important;
   margin-left: 0px;
 }
-.sub-title {
+#app .sub-title {
   font-size: 40px;
   margin-left: 0px;
 }

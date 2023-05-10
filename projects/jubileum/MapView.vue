@@ -219,44 +219,4 @@ color: white;
   border-style: hidden !important;
 }
 
-@media screen and (max-width: 1200px) {
-  .toggle-grid-btn{
-  margin-left:0px;
-}
-}
-
-@media screen and (max-width: 1100px) {
-  .toggle-grid-btn{
-  display:none;
-}
-}
-
-@media screen and (max-width: 900px) {
-  .toggle-grid-btn{
-  display:block;
-  border-color:green;
-  border-width:5px;
-  width:auto;
-  height:200px;
-}
-.ui-overlay {
-margin-top: 25px;
-margin-left:0px;
-font-size:120%;
-}
-
-.masonry-grid {
-  position: absolute;
-  top: 0px;
-  width: 100%;
-  height: 100%; /* Make the grid height responsive */
-  z-index: 200;
-  background-color: rgb(234, 228, 219);
-  padding: 0px 0px 230px 00px;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  grid-template-rows: masonry;
-  grid-gap: 5px;
-  overflow-y: scroll;
-}
-}
 </style>
