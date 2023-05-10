@@ -26,9 +26,7 @@ const downloadImage = (fileUrl: string, fileName: string) => {
 
 
       <div v-if="object.creator?.name">By: {{ object.creator.name }}</div>
-      <div v-if="object.place?.description">
-        At: {{ object.place.description }}
-      </div>
+      <div v-if="object.place?.description" v-html="object.place.description"></div>
       <div v-if="object.date">On: {{ object.date }}</div>
       <div v-if="object.focus?.text">Focus: {{ object.focus.text }}</div>
       <div v-if="object.tag?.length">
