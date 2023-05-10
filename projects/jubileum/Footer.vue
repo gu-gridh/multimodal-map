@@ -6,11 +6,7 @@
   </footer>
 </template>
 
-<script>
-export default {
-  name: "Footer",
-  data() {},
-};
+<script setup lang="ts">
 </script>
 
 <style>
