@@ -293,7 +293,7 @@ width: 250px;
   pointer-events: auto;
   margin-top:70vh;
   border-radius:30px 30px 0 0;
-  padding: 30px 30px 100px 30px;
+  padding: 30px 30px 100px 30px !important;
   background-color:rgba(255,255,255,0.6);
   backdrop-filter:blur(5px);
   box-shadow: 0px -10px 20px 0 rgba(0, 0, 0, 0.3),
@@ -400,8 +400,6 @@ box-shadow: inset 0px 2px 2px 0 rgba(0, 0, 0, 0.3),
     0 0px 0px 0 rgba(0, 0, 0, 0.19);
 }
 
-
-
 #app .image-container {
   overflow: hidden;
   border-radius:8px !important;
@@ -494,7 +492,6 @@ overflow-y:auto;
 
 
 #app #ToolbarVertical {
-
   top: 15px;
 }
 
@@ -505,31 +502,23 @@ overflow-y:auto;
 
 @media screen and (max-width: 400px) {
   #app  .left-pane{
-    padding: 30px 10px 30px 10px;
+    padding: 30px 10px 100px 10px;
   }
   #app  .main-title {
-  width:100%;
   font-size: 70px !important;
-  margin-left: 0px;
 }
 #app .sub-title {
   font-size: 50px;
-  margin-left: 0px;
 }
 }
 
 @media screen and (max-width: 350px) {
-  #app .left-pane{
-    padding: 30px 10px 30px 10px;
-  }
+ 
   #app .main-title {
-  width:100%;
   font-size: 60px !important;
-  margin-left: 0px;
 }
 #app .sub-title {
   font-size: 40px;
-  margin-left: 0px;
 }
 }
 
