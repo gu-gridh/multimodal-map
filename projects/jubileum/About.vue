@@ -1,29 +1,38 @@
 <template>
   <div class="about-container" v-bind:class="{fullopacity: visibleAbout}">
-    <div class="about-main-title" v-bind:class="{fullopacityui: visibleAbout}">Göteborgs <br>Jubileum<br>1923</div>
+    <div class="flex-machine">
+      <div class="red-content">
+    <div class="about-main-title" v-bind:class="{fullopacityui: visibleAbout}">Göteborgs<br>Jubileum</div>
+    <div class="about-sub-title" v-bind:class="{fullopacityui: visibleAbout}">1923</div>
 
-    <div style="display:flex;  align-items: center; justify-content: center; margin-top:20px;">
-      <div class="article" v-bind:class="{fullopacityui: visibleAbout}">
-        Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, 
-        totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. 
-        Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, 
-        sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. 
-        Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, 
-        sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. 
-        Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, 
-        nisi ut aliquid ex ea commodi consequatur? 
-        Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, 
-        vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?
-      </div>
+    <div class="about-article-main" v-bind:class="{fullopacityui: visibleAbout}">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
     </div>
-      <div style="display:flex;  align-items: center; justify-content: center; margin-top:20px;">
-          <button @click="$emit('close')">
+
+
+ 
+
+      <div class="about-article-sub" v-bind:class="{fullopacityui: visibleAbout}">
+      Projektet leddes av xxx och är ett samarbete mellan universitetsbiblioteket och Göteborgs infrastruktur i Digital Humaniora (GRIDH). Namn på alla som varit med: Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn.
+      </div>
+  
+    
+    
+      
+        <button @click="$emit('close')">
             <div
               class="p-1 px-2 clickable category-button"
               style="width:auto; padding:5px 15px; text-align: center; cursor: pointer;"  v-bind:class="{fullopacityui: visibleAbout}">Utforska</div>
           </button>
         </div>
+        <div class="about-lower-border"> </div>
+      </div>
+       
+        <div class="about-logo-top-right"> </div>
+
   </div>
+  
+
 </template>
 
 <script lang="ts">
@@ -39,11 +48,14 @@ export default {
 </script>
 
 <style scoped>
+body{
+  border:opx;
+}
 .about-container {
   position:fixed;
   color: white;
   line-height: 1;
-  height: calc(100% - 80px);
+  height: calc(100% -80px);
   width: 100%;
   font-size: 12px;
   z-index: 2000;
@@ -53,8 +65,8 @@ export default {
   translate: 0px 100px;
   transition: all 1.5s ease-in-out;
   opacity:0.0;
-  padding:80px 30px;
   overflow-y:auto;
+  background: linear-gradient(90deg, rgba(245, 235, 225,1) 0%, rgba(245, 235, 225,0.8) 30%);
 
 }
 
@@ -64,42 +76,103 @@ export default {
   pointer-events:auto;
   transform:scale(1.0);
   translate: 0px 0px;
-  background: linear-gradient(90deg, rgba(234, 228, 219,1) 0%, rgba(234, 228, 219,0.7) 100%);
+  background: linear-gradient(90deg, rgba(245, 235, 225,1) 0%, rgba(245, 235, 225,0.8) 100%);
+}
+
+.flex-machine{
+  height:100%;
+  display:flex;
+  flex-direction:column;
  
+
+}
+
+.red-content{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content: start;
+  width:auto;
+
 }
 
 .about-main-title {
   font-family: "Josefin Sans", sans-serif !important;
+  margin-top:100px;
+  flex-basis:auto;
+  width:100%;
   font-size: 105px;
-  line-height: 0.8;
-  font-weight: 200;
+  line-height: 0.85;
+  font-weight: 100;
   letter-spacing: -0.2rem;
   text-align: center;
   color:rgb(180,100,100);
   opacity:0.0;
+  margin-bottom:40px;
   transition: all 0.4s ease-in-out;
 
 }
 
+.about-sub-title {
+  font-family: "Josefin Sans", sans-serif !important;
+  margin-top:-30px;
+  flex-basis:auto;
+  width:100%;
+  font-size: 65px;
+  line-height: 0.9;
+  font-weight: 100;
+  letter-spacing: -0.2rem;
+  text-align: center;
+  color:rgb(180,100,100);
+  opacity:0.0;
+  margin-bottom:40px;
+  transition: all 0.4s ease-in-out;
 
-.article{
-text-align:left;
+}
+
+.about-article-main{
+  position:relative;
+  float:left;
+text-align:center;
+ color:black;
+ font-weight: 100;
+columns:1;
+column-gap:30px;
+width:850px;
+font-size:1.8em;
+opacity:0.0;
+padding:00px 30px;
+transition: all 0.4s ease-in-out;
+
+}
+
+.about-article-sub{
+  position:relative;
+  float:left;
+text-align:justify;
  color:black;
 columns:2;
 column-gap:30px;
-width:900px;
+width:950px;
 font-size:1.4em;
+font-weight: 200;
 opacity:0.0;
-margin-bottom:20px;
+padding:30px;
 transition: all 0.4s ease-in-out;
 
 }
 
 .category-button{
+  position:relative;
+  float:left;
   font-size:2em;
-  font-weight:200;
+  font-weight:400;
   transition: all 0.4s ease-in-out;
+  background-color:rgb(230,230,230);
+  padding:8px 20px !important;
+  z-index:1000;
   opacity:1.0;
+  margin-bottom:50px;
 }
 
 .fullopacityui{
@@ -110,37 +183,35 @@ a {
   font-weight: bold;
 }
 
-#CDHLogo {
-  float: right;
-  margin-top: 0px;
-  margin-right: 30px;
-  width: auto;
-  height: auto;
-  text-align: left;
-  font-weight: 100;
-  font-style: normal;
-  font-size: 45px;
-  line-height: 0.4;
-  padding: 30px 0px 10px 0px;
-  vertical-align: middle;
-  font-family: "Barlow Condensed", sans-serif;
+.about-lower-border{
+  flex-grow: 1;
+  margin-top:0px;
+  pointer-events:none;
+  width:100%;
+  height:300px;
+  position:relative;
+  background:url(./images/about-mountains.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  opacity:0.7;
+
 }
 
-#GUBLogo {
-  float: right;
-  margin-top: 0px;
-  margin-right: 60px;
-  width: auto;
-  height: auto;
-  text-align: left;
-  font-weight: 100;
-  font-style: normal;
-  font-size: 35px;
-  line-height: 0.4;
-  padding: 33px 0px 10px 0px;
-  vertical-align: middle;
-  font-family: "Barlow Condensed", sans-serif;
+.about-logo-top-right{
+  display:block;
+  pointer-events:none;
+  width:200px;
+  height:90px;
+  position:absolute;
+  background:url(./images/logo-Infravis-516.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  top:30px;
+  right:60px;
+  opacity:0.7;
+
 }
+
 
 
 

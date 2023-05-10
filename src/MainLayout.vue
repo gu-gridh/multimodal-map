@@ -211,6 +211,31 @@ font-size:1.6em;
   height:calc(100vh - 480px);
 
 }
+
+#app .about-container {
+  font-size:120%;
+}
+
+#app .about-main-title {
+  margin-top:120px;
+ 
+  font-size: 155px;
+  
+
+}
+
+#app .about-article-main{
+  margin-top:50px;
+width:1350px;
+
+}
+
+#app .about-article-sub{
+  
+width:1500px;
+
+
+}
 }
 
 /* If your screen is smallish */
@@ -390,27 +415,38 @@ box-shadow: inset 0px 2px 2px 0 rgba(0, 0, 0, 0.3),
 }
 
 #app .about-main-title {
-    font-size:75px;
+    font-size:70px;
     width:100%;
-    margin-left:0px;
+    margin-top:50px;
   }
 
-  #app .article{
+  #app .about-article-main{
 columns:1;
-width:1200px;
-text-align:left;
-margin-top:30px;
-font-size:1.5em;
+width:100%;
+padding:0px 40px;
+font-size:1.8em;
+}
+
+#app .about-article-sub{
+columns:1;
+width:100%;
+margin-top:10px;
+font-size:1.6em;
+padding:20px 40px;
 }
 
 #app .about-container {
   position:fixed;
   color: white;
   line-height: 1;
-  height: calc(100% - 0px);
+  height: 100%;
   width: 100%;
-  padding:80px 40px;
+  padding:0px 0px;
 
+}
+
+#app .about-logo-top-right{
+  display:none;
 }
 
 #app .illustration {

@@ -29,7 +29,7 @@ body {
   font-family: "Josefin Sans", sans-serif !important;
   font-size: 85px;
   line-height: 0.85;
-  font-weight: 200;
+  font-weight: 100;
   letter-spacing: -0.2rem;
   text-align: center;
   margin-left: -25px;
@@ -41,7 +41,7 @@ body {
   font-family: "Josefin Sans", sans-serif !important;
   font-size: 75px;
   line-height: 0.8;
-  font-weight: 200;
+  font-weight: 100;
   letter-spacing: -0.2rem;
   text-align: center;
   margin-left: -25px;
