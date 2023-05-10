@@ -150,8 +150,8 @@ function onCenterChange() {
 .ol-zoom {
   font-size: 30px !important;
   color: white !important;
-  width: 40px !important;
-  height: 40px !important;
+  width: 40px;
+  height: 40px;
   padding: 0px !important;
   box-shadow: 0rem 0.5rem 1rem rgba(0, 0, 0, 0.2) !important;
   opacity: 0.9 !important;

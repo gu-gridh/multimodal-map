@@ -293,7 +293,7 @@ width: 250px;
   pointer-events: auto;
   margin-top:70vh;
   border-radius:25px 25px 0 0;
-  padding: 30px 30px 60px 30px;
+  padding: 30px 30px 100px 30px;
   background-color:rgba(255,255,255,0.8);
   backdrop-filter:blur(5px);
   box-shadow: 0px -10px 20px 0 rgba(0, 0, 0, 0.3),
@@ -479,6 +479,17 @@ overflow-y:auto;
 #app #ToolbarVertical {
 
   top: 15px;
+}
+
+#app .ol-zoom {
+  font-size: 30px !important;
+  width: 25px !important;
+  height: 25px !important;
+}
+
+.ol-zoom-out {
+  top: 90px;
+  margin-top: 3px;
 }
 }
 
