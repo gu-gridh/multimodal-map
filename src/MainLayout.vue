@@ -363,7 +363,7 @@ bottom: 100px;
 #app .detail-view {
   width: 100%;
   overflow:hidden;
- padding-top:30px;
+ padding-top:65px;
  padding-bottom:35vh !important;
  
 }
