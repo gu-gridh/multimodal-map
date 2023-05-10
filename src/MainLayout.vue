@@ -347,7 +347,7 @@ body {
   position:absolute;
   background: linear-gradient(0deg, rgba(255,255,255,1) 20%, rgba(255,255,255,0) 100%);
 bottom: 100px;
-  z-index:100;
+  z-index:201;
   pointer-events:none;
 }
 
