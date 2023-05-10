@@ -1,24 +1,15 @@
 <template>
   <footer id="footer">
     <a href="https://dh.gu.se/">
-      <div
-        id="CDHLogo"
-      >
-        #GRIDH
-      </div>
+      <div id="CDHLogo">#GRIDH</div>
     </a>
   </footer>
 </template>
 
-<script>
-export default {
-  name: 'Footer',
-  data() {
-  }
-}
+<script setup lang="ts">
 </script>
 
-<style scoped>
+<style>
 #footer {
   background-color: #222;
   color: white;
@@ -29,7 +20,6 @@ export default {
   position: absolute;
   z-index: 3000;
   bottom: -2px;;
-
 }
 
 a {
@@ -51,4 +41,21 @@ a {
   vertical-align: middle;
   font-family: "Barlow Condensed", sans-serif;
 }
+
+#GUBLogo {
+  float: right;
+  margin-top: 0px;
+  margin-right: 60px;
+  width: auto;
+  height: auto;
+  text-align: left;
+  font-weight: 100;
+  font-style: normal;
+  font-size: 35px;
+  line-height: 0.4;
+  padding: 33px 0px 10px 0px;
+  vertical-align: middle;
+  font-family: "Barlow Condensed", sans-serif;
+}
+
 </style>
