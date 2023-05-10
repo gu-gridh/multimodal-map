@@ -292,9 +292,9 @@ width: 250px;
   width:100%;
   pointer-events: auto;
   margin-top:70vh;
-  border-radius:25px 25px 0 0;
+  border-radius:30px 30px 0 0;
   padding: 30px 30px 100px 30px;
-  background-color:rgba(255,255,255,0.8);
+  background-color:rgba(255,255,255,0.6);
   backdrop-filter:blur(5px);
   box-shadow: 0px -10px 20px 0 rgba(0, 0, 0, 0.3),
     0 0px 0px 0 rgba(0, 0, 0, 0.19);
@@ -306,11 +306,13 @@ width: 250px;
   width:100%;
   font-size: 70px;
   margin-left:0px;
+  font-weight:200;
 }
 
 .sub-title {
   font-size: 55px;
   margin-left:0px;
+  font-weight:200;
 }
 
 #app .about{
@@ -346,6 +348,7 @@ body {
   background: linear-gradient(0deg, rgba(255,255,255,1) 20%, rgba(255,255,255,0) 100%);
 bottom: 100px;
   z-index:100;
+  pointer-events:none;
 }
 
 #app .right-pane {

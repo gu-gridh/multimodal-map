@@ -51,7 +51,7 @@ body {
 }
 
 .about {
-  padding-right: 25px;
+  padding-right: 0px;
   line-height: 1.2;
   text-align: justify;
   font-size:0.95em;

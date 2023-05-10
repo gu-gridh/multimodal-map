@@ -47,8 +47,21 @@ watch(showGrid, (newValue) => {
 </script>
 
 <template>
+ 
+        <div style="display:flex; align-items: center; justify-content: center;">
+        <div class="ui-mode ui-overlay">
+          <button class="item" v-bind:class="{ selected: !showGrid}" v-on:click="showGrid = false;">
+          Karta
+        </button>
+        <button class="item" v-bind:class="{ selected: showGrid}" v-on:click="showGrid = true;">
+         Galleri
+        </button>
+      </div>
+    </div>
+  
 <About :visibleAbout="visibleAbout" @close="visibleAbout = false" />
   <MainLayout>
+    
     <template #search>
     <button class="item" @click="toggleAboutVisibility">
             <div
@@ -63,9 +76,11 @@ watch(showGrid, (newValue) => {
           </button>
       <Search />
     </template>
+    
     <template #background>
     
       <div class="map-container">
+        
         <MapComponent
           :min-zoom="16"
           :max-zoom="18"
@@ -90,41 +105,43 @@ watch(showGrid, (newValue) => {
             </ol-tile-layer>
             
           </template>
+          
         </MapComponent>
-        <div class="toggle-grid-btn">
-        <div style="display:flex;  align-items: center; justify-content: center;">
-        <div class="ui-mode ui-overlay">
-        <button class="item" v-bind:class="{ selected: showGrid}" v-on:click="showGrid = true;">
-         Galleri
-        </button>
-        <button class="item" v-bind:class="{ selected: !showGrid}" v-on:click="showGrid = false;">
-          Karta
-        </button>
-      </div>
-    </div>
-    </div>
+        
         <MasonryGrid v-if="showGrid" />
 
       </div>
     </template>
+    
     <template #details>
       
       <PlaceDetails />
+      
     </template>
+    
     <template>
    
   </template>
+  
   </MainLayout>
+  
 </template>
 
 <style>
 .map-container {
   position: relative;
+  width:100%;
 }
 
 #gallery{}
 
 
+.toggle-grid-btn{
+  position:absolute;
+  display:block;
+  width:auto;
+  z-index:3000;
+}
 
 .ui-overlay {
 margin-top: 70px;
@@ -134,7 +151,7 @@ border-radius: 8px;
 font-size: 18px;
 font-weight: 700;
 color: white;
-margin-left:400px;
+margin-left:0px;
 background-color: rgb(180, 100, 100, 0.8);
 backdrop-filter: blur(3px);
 }
@@ -204,13 +221,42 @@ color: white;
 
 @media screen and (max-width: 1200px) {
   .toggle-grid-btn{
-  margin-left:-150px;
+  margin-left:0px;
 }
 }
 
 @media screen and (max-width: 1100px) {
   .toggle-grid-btn{
   display:none;
+}
+}
+
+@media screen and (max-width: 900px) {
+  .toggle-grid-btn{
+  display:block;
+  border-color:green;
+  border-width:5px;
+  width:auto;
+  height:200px;
+}
+.ui-overlay {
+margin-top: 25px;
+margin-left:0px;
+font-size:120%;
+}
+
+.masonry-grid {
+  position: absolute;
+  top: 0px;
+  width: 100%;
+  height: 100%; /* Make the grid height responsive */
+  z-index: 200;
+  background-color: rgb(234, 228, 219);
+  padding: 0px 0px 230px 00px;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  grid-template-rows: masonry;
+  grid-gap: 5px;
+  overflow-y: scroll;
 }
 }
 </style>
