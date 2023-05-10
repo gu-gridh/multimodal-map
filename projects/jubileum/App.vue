@@ -69,7 +69,7 @@ body {
 #app .right-pane {
   position: absolute;
   height: 100vh;
-  width: auto;
+  width: 350px;
   pointer-events: none;
   z-index: 100;
   transition: all 0.5s ease-in-out;
@@ -80,7 +80,7 @@ body {
   transition: all 0.5s ease-in-out;
   padding-top: 20px;
   padding-bottom: 0px;
-  width: 100%;
+  width: auto;
   pointer-events: none;
 }
 
