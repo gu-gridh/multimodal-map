@@ -47,7 +47,7 @@ onMounted(async () => {
 }
 
 .grid-item {
-  transition: transform 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 
 .grid-item:hover {
