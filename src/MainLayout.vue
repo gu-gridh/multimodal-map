@@ -283,6 +283,7 @@ width: 250px;
 
 /* If your screen is very small */
 
+/* The basic structure */
 @media screen and (max-width: 900px) {
  #app .left-pane {
   position: relative;
@@ -423,6 +424,8 @@ box-shadow: inset 0px 2px 2px 0 rgba(0, 0, 0, 0.3),
   height: 0px;
 }
 
+/* The about screen */
+
 #app .about-main-title {
     font-size:70px;
     width:100%;
@@ -458,6 +461,8 @@ padding:20px 40px;
   display:none;
 }
 
+/* The object viewer */
+
 #app .illustration {
   position:absolute;
   height:50vh;
@@ -490,14 +495,23 @@ overflow-y:auto;
   margin-top:50vh;
 }
 
+/* The III viewer */
+
 
 #app #ToolbarVertical {
   top: 15px;
 }
 
-#app .ol-control button {
-  display:none !important;
+/* The Map Widgets */
+
+#app .ol-zoom {
+  font-size: 22px !important;
+  width: 25px;
+  height: 25px;
+  padding: 0px !important;
+
 }
+
 }
 
 @media screen and (max-width: 400px) {
