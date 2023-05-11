@@ -9,20 +9,21 @@ const { categories } = storeToRefs(jubileumStore());
 const CATEGORIES = {
   all: "Alla kategorier",
   image: "Fotografier",
-  documents: "Dokument",
-  drawings: "Teckningar och konst",
-  observation: "Observationer",
+  drawings: "Trycksak",
+
 };
 </script>
 
 <template>
-  <!--   <div class="section-title">Typ av dokumentation</div>
+ <div class="section-title">Typ av dokumentation</div>
   <CategoryButtonList
     v-model="categories"
     :categories="CATEGORIES"
     :limit="1"
     class="my-2"
-  /> -->
+  /> 
+
+  <div class="section-title">Taggar</div>
 </template>
 
 <style>
@@ -34,7 +35,7 @@ const CATEGORIES = {
 }
 
 #app .category-button {
-  background-color: rgba(180, 100, 100, 0.8);
+  background-color: rgba(180, 120, 120, 0.8);
   color: white;
   border-radius: 4px;
   transition: all 0.2s ease-in-out;
@@ -46,7 +47,7 @@ const CATEGORIES = {
 }
 
 #app .category-button.active {
-  background-color: rgb(180, 100, 100);
+  background-color: rgb(180, 80, 80);
   color: white;
 }
 

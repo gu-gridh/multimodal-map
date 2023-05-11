@@ -84,6 +84,14 @@ body {
   pointer-events: none;
 }
 
+@media screen and (max-width: 1200px) {
+
+.ui-overlay {
+margin-left:200px !important;
+
+}
+}
+
 
 @media screen and (max-width: 900px) {
 

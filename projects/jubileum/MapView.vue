@@ -151,7 +151,7 @@ border-radius: 8px;
 font-size: 18px;
 font-weight: 700;
 color: white;
-margin-left:0px;
+margin-left:420px;
 background-color: rgb(180, 100, 100, 0.8);
 backdrop-filter: blur(3px);
 }
