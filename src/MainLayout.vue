@@ -341,7 +341,7 @@ body {
 }
 
 .atlas-gradient {
-  height: 300px;
+  height: 250px;
   width: 100%;
   position:absolute;
   background: linear-gradient(0deg, rgba(255,255,255,1) 20%, rgba(255,255,255,0) 100%);
