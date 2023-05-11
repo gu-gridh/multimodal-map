@@ -9,10 +9,33 @@ interface MapParams {
 
 export const mapStore = defineStore("map", () => {
   const extent = ref<Array<number>>();
+  const center = ref<Array<number>>([0, 0]);  // Default center
+  const zoom = ref<number>(1);  // Default zoom
   const selectedFeature = ref<Feature>();
   const results = ref<Array<any>>();
   const params = ref<MapParams>({});
   const mapUrls = ref<Array<string>>();
 
-  return { extent, selectedFeature, params, results, mapUrls };
+  // Define methods to update the zoom and center.
+  function updateCenter(newCenter: Array<number>) {
+    console.log('Updating center in store:', newCenter);
+    center.value = newCenter;
+  }
+
+  function updateZoom(newZoom: number) {
+    console.log('Updating zoom in store:', newZoom);
+    zoom.value = newZoom;
+  }
+
+  return { 
+    extent, 
+    center, 
+    zoom, 
+    selectedFeature, 
+    params, 
+    results, 
+    mapUrls, 
+    updateCenter, 
+    updateZoom 
+  };
 });

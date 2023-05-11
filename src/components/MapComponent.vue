@@ -8,13 +8,7 @@
 
   <ol-view
     ref="view"
-    :center="projectedCenter"
-    :rotation="rotation"
-    :zoom="zoom"
-    :projection="projection"
     style="z-index=0"
-    @centerChanged="onCenterChange"
-    @zoomChanged="zoomChanged"
     :min-zoom="minZoom"
     :max-zoom="maxZoom"
     :extent="transformedRestrictExtent"
@@ -42,7 +36,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject, computed } from "vue";
+import { ref, inject, computed, onMounted } from "vue";
 import { fromLonLat, transformExtent } from "ol/proj";
 import { mapStore } from "@/stores/store";
 import { storeToRefs } from "pinia";
@@ -51,10 +45,10 @@ import type { Project } from "@/types/project";
 const config = inject("config") as Project;
 
 const store = mapStore();
-const { extent } = storeToRefs(store);
+const { extent, center, zoom } = storeToRefs(store);
+
 
 const projection = ref(config.projection);
-const zoom = ref(config.zoom);
 const rotation = ref(0);
 const view = ref();
 const map = ref();
@@ -97,21 +91,57 @@ const transformedRestrictExtent = computed(() => {
   return undefined;
 });
 
-function zoomChanged() {
-  let newExtent = map.value.map
-    .getView()
-    .calculateExtent(map.value.map.getSize());
+/* function zoomChanged() {
+  let newZoom = map.value.map.getView().getZoom();
+  console.log('Updating zoom:', newZoom);
+  store.updateZoom(newZoom);
+
+  let newExtent = map.value.map.getView().calculateExtent(map.value.map.getSize());
   newExtent = transformExtent(newExtent, projection.value, "EPSG:4326");
   extent.value = newExtent;
 }
 
 function onCenterChange() {
-  let newExtent = map.value.map
-    .getView()
-    .calculateExtent(map.value.map.getSize());
+  let newCenter = map.value.map.getView().getCenter();
+  console.log('Updating center:', newCenter);
+  store.updateCenter(newCenter);
+
+  let newExtent = map.value.map.getView().calculateExtent(map.value.map.getSize());
   newExtent = transformExtent(newExtent, projection.value, "EPSG:4326");
   extent.value = newExtent;
+} */
+
+onMounted(() => {
+  let storeCenter = store.center;
+  let storeZoom = store.zoom;
+  
+  console.log('Loading from store - center:', storeCenter, 'zoom:', storeZoom);
+  
+  if (storeCenter[0] !== 0 && storeZoom !== 1) {
+    map.value.map.getView().setCenter(storeCenter);
+    map.value.map.getView().setZoom(storeZoom);
+  } else {
+    // No stored center and zoom, use default values.
+    map.value.map.getView().setCenter(fromLonLat(config.center, projection.value));
+    map.value.map.getView().setZoom(config.zoom);
+  }
+
+  // Listen to the end of map movement.
+  map.value.map.on('moveend', onMoveEnd);
+});
+
+function onMoveEnd() {
+  let newCenter = map.value.map.getView().getCenter();
+  store.updateCenter(newCenter);
+
+  let newZoom = map.value.map.getView().getZoom();
+  store.updateZoom(newZoom);
+
+/*   let newExtent = map.value.map.getView().calculateExtent(map.value.map.getSize());
+  newExtent = transformExtent(newExtent, projection.value, "EPSG:4326");
+  extent.value = newExtent; */
 }
+
 </script>
 
 <style>
