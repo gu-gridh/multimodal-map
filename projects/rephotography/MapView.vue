@@ -92,10 +92,6 @@ const toggleAboutVisibility = async () => {
 
 <style>
 
-.fullopacity{
-  opacity:1.0;
-  pointer-events:auto;
-}
 #app .ol-popup {
   font-size: 1.2em;
   -webkit-user-select: none;

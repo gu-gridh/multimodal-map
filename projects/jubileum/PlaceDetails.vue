@@ -81,14 +81,12 @@ function deselectPlace() {
 
 .place-title p {
   color: white;
-  font-size: 28px;
+  font-size: 26px;
   font-weight: 600;
-  line-height: 1;
-  word-break: break-word;
-  hyphens: auto;
+  line-height: 1.0;
   background-color: rgb(180, 100, 100);
   border-radius: 10px 10px 0 0;
-  padding: 25px 25px 25px 25px;
+  padding: 20px 10px 15px 10px;
   width: 100%;
   opacity: 0.99;
   box-shadow: 0px -5px 10px 0 rgba(0, 0, 0, 0.2),
@@ -205,6 +203,12 @@ function deselectPlace() {
   height:100%!important;
   transform:scale(1.2)!important;
 
+}
+
+.place-title p {
+
+  font-size: 20px;
+ 
 }
 }
 

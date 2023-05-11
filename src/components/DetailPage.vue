@@ -52,13 +52,11 @@ defineProps({
 
 .meta-title {
   font-weight: 100;
-  font-size: 40px;
+  font-size: 35px;
   line-height: 1.0;
   padding-right: 20px;
+  padding-top: 8px;
   width: calc(100% - 25px);
-  hyphens: auto;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
 }
 
 .metadata {
