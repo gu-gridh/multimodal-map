@@ -12,20 +12,12 @@
               <div class="sub-title" v-html="config.subtitle"></div>
             </div>
           </slot>
-
           <slot name="about">
-
-            
-            <div class="py-2 about">
+            <div class="about">
               <p class="" v-html="config.about"></p>
             </div>
-            
           </slot>
-
           <slot name="search"></slot>
-
-          
-
         </div>
       </div>
     </div>
@@ -87,9 +79,9 @@ body {
   display:none;
 }
 
-.about {
+#app .about {
   line-height: 1.2;
-  margin-bottom: 10px;
+  padding-top:10px;
 }
 
 .map-container {

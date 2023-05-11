@@ -135,14 +135,6 @@ watch(showGrid, (newValue) => {
 
 #gallery{}
 
-
-.toggle-grid-btn{
-  position:absolute;
-  display:block;
-  width:auto;
-  z-index:3000;
-}
-
 .ui-overlay {
 margin-top: 70px;
 z-index: 250;
