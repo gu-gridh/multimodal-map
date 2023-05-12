@@ -85,7 +85,7 @@ const getFeatureDisplayName: DisplayFunction =
       <ol-style-stroke color="rgb(220,100,100)" :width="6"></ol-style-stroke>
     </ol-style>
   </ol-interaction-select>
-
+  
   <ol-interaction-select @select="onHover" :condition="hoverCondition">
     <ol-style>
       <ol-style-icon
