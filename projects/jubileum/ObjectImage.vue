@@ -26,13 +26,15 @@ const downloadImage = (fileUrl: string, fileName: string) => {
 
 
       <div v-if="object.creator?.name">By: {{ object.creator.name }}</div>
-      <div v-if="object.place?.description" v-html="object.place.description"></div>
       <div v-if="object.date">On: {{ object.date }}</div>
       <div v-if="object.focus?.text">Focus: {{ object.focus.text }}</div>
       <div v-if="object.tag?.length">
         Tags:
         {{ object.tag.map((tag) => tag.text).join(", ") }}
       </div>
+      <h2>Om platsen  </h2>
+      <div v-if="object.place?.description" v-html="object.place.description"></div>
+
       <button class="category-button" @click="downloadImage(object.file, `${object.title}.tif`)">Ladda ner bild</button>
 
     </div>
@@ -61,6 +63,12 @@ const downloadImage = (fileUrl: string, fileName: string) => {
 .metadata .object-title {
   font-family: "Josefin Sans", sans-serif !important;
 
+}
+
+h2{
+  font-size:1.5em;
+  margin-top:30px;
+  margin-bottom:5px;
 }
 
 
