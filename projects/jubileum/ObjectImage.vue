@@ -71,9 +71,6 @@ font-size:1.0em;
 line-height:1.2;
 text-align:left;
 padding:0px 40px 0px 0px;
-hyphens: auto;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
 }
 .illustration {
   height: calc(100vh - 80px);
