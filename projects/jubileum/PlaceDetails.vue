@@ -14,11 +14,24 @@ const { selectedFeature } = storeToRefs(mapStore());
 const diana = inject("diana") as DianaClient;
 
 const images = ref<Image[]>();
+let text = ref(false)
+let description = ref("");
 
 watchEffect(async () => {
   if (selectedFeature.value) {
     const place = selectedFeature.value.getId();
+    description = selectedFeature.value.get("description")
+    console.log(description)
     images.value = await diana.listAll<Image>("image", { place }); 
+     //översätt respons till json för att kontrollera array
+     const imgArr = JSON.parse(JSON.stringify(images.value))
+    //om det inte finns några bilder - visa text
+    if(imgArr.length == 0 ){
+      text.value = true
+    }
+    else {
+      text.value = false
+    }
   } else {
     images.value = [];
   }
@@ -35,7 +48,7 @@ function deselectPlace() {
     <div class="place-title">
       <p>{{ selectedFeature.get("name") }}</p>
     </div>
-    
+    <!-- if there are images -->
     <router-link
       v-for="image in images"
       :key="image.uuid"
@@ -57,7 +70,24 @@ function deselectPlace() {
         </div>
       </div>
     </router-link>
-  
+    <!-- if no image, show poster & text-->
+    <div v-if="text">
+      <div class="image-card">
+        <div>
+          <div class="image-container">
+            <img
+              :src= "`https://img.dh.gu.se/diana/static/jubileum/iiif/04e8be91-0a1f-4635-a94e-b214bccec939.tif/full/400,/0/default.jpg`"
+              class="image"
+            />
+          </div>
+            <div>
+              <div>
+                <div class="card-text" v-html="description"></div>
+              </div>
+            </div>
+          </div>
+        </div>    
+    </div>
   </div>
 </template>
 
@@ -166,6 +196,20 @@ function deselectPlace() {
 
 .close-button:hover {
   background-color: rgb(140, 60, 60);
+}
+
+
+.card-text {
+  font-family: "Barlow Condensed", sans-serif;
+  color: black;
+  margin-top:20px;
+  font-size:1.0em;
+  text-align: left;
+  hyphens: auto;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  line-height:1.2;
+  padding:0px 40px 0px 0px;
 }
 
 @media screen and (min-width: 1900px) {
