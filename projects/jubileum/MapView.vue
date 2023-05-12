@@ -85,7 +85,7 @@ watch(showGrid, (newValue) => {
           :min-zoom="16"
           :max-zoom="18"
           :restrictExtent="[11.922, 57.7215, 11.996, 57.69035]"
-          :key="showGrid"
+          :key="showGrid.toString()"
         >
           <template #layers>
             <DianaPlaceLayer path="jubileum/geojson/place/" :params="placeParams">
