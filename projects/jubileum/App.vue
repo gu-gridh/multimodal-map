@@ -96,7 +96,7 @@ margin-left:200px !important;
 @media screen and (max-width: 900px) {
 
   #app .detail-view {
- padding-top:65px !important;
+ padding-top:70px !important;
 }
 
 .ui-overlay {

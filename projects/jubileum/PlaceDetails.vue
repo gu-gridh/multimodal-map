@@ -59,7 +59,7 @@ function deselectPlace() {
         <div>
           <div class="image-container">
             <img
-              :src="`${image.iiif_file}/full/380,/0/default.jpg`"
+              :src="`${image.iiif_file}/full/500,/0/default.jpg`"
               class="image"
             />
           </div>
@@ -74,12 +74,12 @@ function deselectPlace() {
     <div v-if="text">
       <div class="image-card">
         <div>
-          <div class="image-container">
+        <!--   <div class="image-container">
             <img
               :src= "`https://img.dh.gu.se/diana/static/jubileum/iiif/04e8be91-0a1f-4635-a94e-b214bccec939.tif/full/400,/0/default.jpg`"
               class="image"
             />
-          </div>
+          </div> -->
             <div>
               <div>
                 <div class="card-text" v-html="description"></div>
@@ -202,14 +202,12 @@ function deselectPlace() {
 .card-text {
   font-family: "Barlow Condensed", sans-serif;
   color: black;
-  margin-top:20px;
+  margin-top:10px;
   font-size:1.0em;
   text-align: left;
   hyphens: auto;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
   line-height:1.2;
-  padding:0px 40px 0px 0px;
+  padding:5px 5px;
 }
 
 @media screen and (min-width: 1900px) {
@@ -273,6 +271,20 @@ height:100%!important;
 transform:scale(1.2)!important;
 
 }
+
+.place-title p {
+
+font-size: 25px;
+
+}
+
+.card-text {
+  
+  font-size:1.1em;
+  padding:5px 15px;
+}
+
+
 }
 
 
