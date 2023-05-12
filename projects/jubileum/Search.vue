@@ -23,7 +23,6 @@ const CATEGORIES = {
     class="my-2"
   /> 
 
-  <div class="section-title">Taggar</div>
 </template>
 
 <style>
