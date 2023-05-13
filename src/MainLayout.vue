@@ -185,7 +185,6 @@ font-size:1.6em;
       background-size: 30px;
       padding-left: 50px;
       background-position: 10px 10px;
-
 }
 
 #app .ui-overlay {
@@ -485,6 +484,13 @@ overflow-y:auto;
 
 #app  .back-button {
   margin-top:50vh;
+}
+
+#app .meta-container .category-button{
+  padding:12px 16px;
+      background-size: 30px;
+      padding-left: 50px;
+      background-position: 10px 10px;
 }
 
 /* The III viewer */
