@@ -6,7 +6,9 @@ defineProps({
 </script>
 
 <template>
+     <div class="meta-top-gradient"> </div>
   <div class="meta-container">
+
     <header class="flex flex-row-reverse pt-8">
       <div class="flex-1"></div>
       <div class="container">
@@ -26,6 +28,16 @@ defineProps({
 </template>
 
 <style>
+
+.meta-top-gradient{
+  margin-top:0vh;
+ width:100%;
+ height:30px;
+ background: linear-gradient(0deg, rgba(0,0,0,0) 00%, rgba(0,0,0,1) 90%);
+ z-index:100;
+ position:absolute;
+}
+
 .meta-container{
   overflow-y: auto;
   height:calc(100vh - 80px);
@@ -33,6 +45,8 @@ defineProps({
   padding-left:75px;
   padding-right:20px;
 }
+
+
 
 .back-button {
   left: 20px;
@@ -102,6 +116,17 @@ defineProps({
 
 #app .meta-container a:hover{
   cursor:pointer;
+}
+
+/* If your screen is very small */
+
+/* The basic structure */
+@media screen and (max-width: 900px) {
+  .meta-top-gradient{
+   
+  margin-top:49.9vh;
+
+}
 }
 
 
