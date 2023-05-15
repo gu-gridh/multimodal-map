@@ -8,6 +8,7 @@ import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
 import markerIcon from "@/assets/marker-white.svg";
 import markerIconGreen from "@/assets/marker-green.svg";
+import markerIconRedOutline from "@/assets/marker-red-outline.svg";
 import Collection from "ol/Collection";
 
 const { selectedFeature } = storeToRefs(mapStore());
@@ -77,9 +78,9 @@ const getFeatureDisplayName: DisplayFunction =
   >
     <ol-style>
       <ol-style-icon
-        :src="markerIconGreen"
-        :scale="2.0"
-        :displacement="[-12, 50]"
+        :src="markerIconRedOutline"
+        :scale="2.1"
+        :displacement="[-10, 50]"
         :anchor="[0.0, 0.0]"
       ></ol-style-icon>
       <ol-style-stroke color="rgb(220,100,100)" :width="6"></ol-style-stroke>
@@ -90,8 +91,8 @@ const getFeatureDisplayName: DisplayFunction =
     <ol-style>
       <ol-style-icon
         :src="markerIcon"
-        :scale="2.0"
-        :displacement="[-12, 50]"
+        :scale="2.1"
+        :displacement="[-10, 50]"
         :anchor="[0.0, 0.0]"
       ></ol-style-icon>
       <ol-style-stroke color="rgb(220,100,100)" :width="6"></ol-style-stroke>
