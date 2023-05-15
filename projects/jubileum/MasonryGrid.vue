@@ -3,7 +3,7 @@
     :key="layoutKey"
     class="masonry-wall"
     :items="images"
-    :options="{ columnWidth: 250, gutter: 5, percentPosition: true }"
+    :options="{ columnWidth: 250, gutter: 0, percentPosition: true }"
   >
     <template v-slot:default="{ item }">
       <router-link
@@ -11,7 +11,7 @@
         :to="`/detail/image/${item.id}`"
         class="grid-item"
       >
-        <img :src="`${item.iiif_file}/full/400,/0/default.jpg`" @load="imageLoaded" />
+        <img :src="`${item.iiif_file}/full/900,/0/default.jpg`" @load="imageLoaded" />
       </router-link>
     </template>
   </VueMasonryWall>
@@ -60,18 +60,34 @@ defineComponent({
   height: 100%; 
   z-index: 200;
   background-color: rgb(234, 228, 219);
-  padding: 0px 10px 10px 10px; 
+  padding: 0px 0px 0px 0px; 
   overflow-y: scroll;
+  transition: all 0.5s ease-in-out;
+
 }
 
-@media (min-width: 768px) {
+@media (min-width: 900px) {
   .masonry-wall {
-    padding: 0px 10px 10px 450px; 
+    padding: 0px 0px 0px 450px; 
   }
 }
 
-.masonry-item:hover {
-  transform: scale(1.1);
+
+.masonry-item{
+  background-color:green;
+overflow:hidden;
+width:auto;
+
+
+}
+
+.masonry-item img{
+  object-fit: cover; 
+transition: all 0.2s ease-in-out;
+}
+
+.masonry-item:hover img {
+  transform: scale(1.05);
   z-index: 300; 
 }
 
