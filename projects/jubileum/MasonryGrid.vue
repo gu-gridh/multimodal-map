@@ -3,8 +3,8 @@
     :key="layoutKey"
     class="masonry-wall"
     :items="images"
-    :column-width="200" 
-    :gap="2"
+    :column-width="300" 
+    :gap="0"
   >
     <template v-slot:default="{ item }">
       <router-link
@@ -12,7 +12,7 @@
         :to="`/detail/image/${item.id}`"
         class="grid-item"
       >
-        <img :src="`${item.iiif_file}/full/700,/0/default.jpg`" @load="imageLoaded" />
+        <img :src="`${item.iiif_file}/full/450,/0/default.jpg`" @load="imageLoaded" />
          <div class="grid-item-info">
           <div class="grid-item-info-meta">
             <h1>{{item.title}}</h1>
