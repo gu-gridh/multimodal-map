@@ -21,7 +21,6 @@ watchEffect(async () => {
   if (selectedFeature.value) {
     const place = selectedFeature.value.getId();
     description = selectedFeature.value.get("description")
-    console.log(description)
     images.value = await diana.listAll<Image>("image", { place }); 
      //översätt respons till json för att kontrollera array
      const imgArr = JSON.parse(JSON.stringify(images.value))
@@ -74,12 +73,6 @@ function deselectPlace() {
     <div v-if="text">
       <div class="image-card">
         <div>
-        <!--   <div class="image-container">
-            <img
-              :src= "`https://img.dh.gu.se/diana/static/jubileum/iiif/04e8be91-0a1f-4635-a94e-b214bccec939.tif/full/400,/0/default.jpg`"
-              class="image"
-            />
-          </div> -->
             <div>
               <div>
                 <div class="card-text" v-html="description"></div>

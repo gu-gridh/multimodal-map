@@ -4,7 +4,7 @@ import MainLayout from "@/MainLayout.vue";
 import Search from "./Search.vue";
 import MapComponent from "@/components/MapComponent.vue";
 import DianaPlaceLayer from "@/components/DianaPlaceLayer.vue";
-import FeatureSelection from "@/components/FeatureSelection.vue";
+import FeatureSelect from "./FeautureSelect.vue";
 import PlaceDetails from "./PlaceDetails.vue";
 import { storeToRefs } from "pinia";
 import { jubileumStore } from "./store";
@@ -97,7 +97,7 @@ watch(showGrid, (newValue) => {
                   :anchor="[0.0, 0.0]"
                 ></ol-style-icon>
               </ol-style>
-              <FeatureSelection />
+              <FeatureSelect />
             </DianaPlaceLayer>
             <ol-tile-layer>
               <ol-source-xyz

@@ -18,12 +18,10 @@ export const mapStore = defineStore("map", () => {
 
   // Define methods to update the zoom and center.
   function updateCenter(newCenter: Array<number>) {
-    console.log('Updating center in store:', newCenter);
     center.value = newCenter;
   }
 
   function updateZoom(newZoom: number) {
-    console.log('Updating zoom in store:', newZoom);
     zoom.value = newZoom;
   }
 

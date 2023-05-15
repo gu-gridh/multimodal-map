@@ -115,7 +115,6 @@ onMounted(() => {
   let storeCenter = store.center;
   let storeZoom = store.zoom;
   
-  console.log('Loading from store - center:', storeCenter, 'zoom:', storeZoom);
   
   if (storeCenter[0] !== 0 && storeZoom !== 1) {
     map.value.map.getView().setCenter(storeCenter);
