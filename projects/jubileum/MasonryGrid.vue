@@ -106,6 +106,7 @@ defineComponent({
 }
 
 .grid-item {
+  display: flex;
   position: relative;
   overflow: hidden;
   width: auto;
