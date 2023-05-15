@@ -120,7 +120,6 @@ defineComponent({
 .grid-item:hover img {
   transform: scale(1.05);
   z-index: 300; 
-  filter: brightness(50%); 
 }
 
 .grid-item:hover .grid-item-info {
