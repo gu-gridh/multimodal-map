@@ -45,7 +45,7 @@ const capitalize = (word: String) => {
         <div class="place-card">
           <p>{{ capitalize(place.values_.type.text) }}</p>
           <div v-for="name in place.values_.names">
-            <span class="lang">{{ name.languages[0].abbreviation }}</span> <span>{{ name.text }}</span>
+            <span class="lang">{{ name.languages[0].abbreviation }}</span> <div class="long-name"><span class="centered-name">{{ name.text }}</span></div>
           </div>
           <p class="link">More</p>
         </div>
@@ -108,6 +108,7 @@ const capitalize = (word: String) => {
 
 
 .lang {
+  
   border-radius: 5px;
   background: rgb(180,100,100);
   padding: 1px;
@@ -118,6 +119,23 @@ const capitalize = (word: String) => {
   line-height:1.9;
   margin:2px;
   color:white;
+}
+
+.long-name{
+  width:85%;
+  float:right;
+  display:inline;
+  margin-left:0px;
+ 
+  vertical-align: middle;
+height:30px;
+line-height:35px;
+}
+
+.centered-name{
+  display: inline-block;
+  line-height:1.2 !important;
+  height:auto!important;
 }
 
 .place-card {
