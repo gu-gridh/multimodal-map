@@ -51,12 +51,12 @@ const toggleAboutVisibility = async () => {
   <MainLayout>
     <template #search>
       <button class="item"  @click="visibleAbout = true;">
-            <div
-              class="p-1 px-2 clickable category-button"
+        <div
+              class="p-1 px-3 clickable category-button"
               style="
                 width: auto;
                 text-align: center;
-                margin-top: 0px;
+                margin-top: -5px;
                 cursor: pointer;
               "
             >More info</div>
