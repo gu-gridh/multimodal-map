@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import DetailPage from "@/components/DetailPage.vue";
 import OpenSeadragon from "@/components/OpenSeadragon.vue";
-import type { ImageDeep } from "./types";
+import type { ImageDeep, Image } from "./types";
 
 defineProps<{
-  object: ImageDeep;
+  object: Image;
   id: Number;
 }>();
 </script>
@@ -13,7 +13,7 @@ defineProps<{
   <div class="metadata">
     <DetailPage :title="object.title" back="/">
       <p class="my-5 object-title">{{ object.description }}</p>
-      <div v-if="object.photographer?.name">
+      <!-- <div v-if="object.photographer?.name">
         By: {{ object.photographer.name }}
       </div>
       <div v-if="object.place?.name">At: {{ object.place.name }}</div>
@@ -22,7 +22,7 @@ defineProps<{
       <div v-if="object.tag?.length">
         Tags:
         {{ object.tag.map((tag) => tag.text).join(", ") }}
-      </div>
+      </div> -->
     </DetailPage>
   </div>
 

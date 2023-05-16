@@ -4,6 +4,7 @@ import type { Image } from "./types";
 defineProps<{
   image: Image;
 }>();
+
 </script>
 
 <template>
@@ -16,7 +17,7 @@ defineProps<{
         />
       </div>
       <div>{{ image.title }}</div>
-      <div>{{ image.description }}</div>
+      <!-- <div>{{ image.description }} description</div> -->
       <!-- <div>{{ image.date }}</div> -->
     </div>
   </router-link>
