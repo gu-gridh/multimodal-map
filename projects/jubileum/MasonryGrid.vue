@@ -4,7 +4,7 @@
     class="masonry-wall"
     :items="images"
     :column-width="300" 
-    :gap="0"
+    :gap="10"
   >
     <template v-slot:default="{ item }">
       <router-link

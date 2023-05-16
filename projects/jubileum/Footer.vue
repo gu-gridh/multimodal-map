@@ -19,7 +19,7 @@
   font-size: 12px;
   position: absolute;
   z-index: 3000;
-  bottom: -2px;;
+  bottom: -2px;
 }
 
 a {
