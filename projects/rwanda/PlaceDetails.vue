@@ -13,8 +13,10 @@ const images = ref<Array<Image>>();
 
 watchEffect(async () => {
   if (selectedFeature.value) {
-    const place = selectedFeature.value.getId();
-    images.value = await diana.listAll<Image>("image", { place });
+    const place_of_interest = selectedFeature.value.getId();
+    console.log(selectedFeature.value)
+    images.value = await diana.listAll<Image>("image/", { place_of_interest });
+    console.log(images)
   } else {
     images.value = [];
   }
