@@ -13,7 +13,7 @@
  
 
       <div class="about-article-sub" v-bind:class="{fullopacityui: visibleAbout}">
-      Projektet leddes av xxx och är ett samarbete mellan universitetsbiblioteket och Göteborgs infrastruktur i Digital Humaniora (GRIDH). Namn på alla som varit med: Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn.
+      Projektet leddes av xxx och är ett samarbete mellan xxx och Göteborgs infrastruktur i Digital Humaniora (GRIDH). Namn på alla som varit med: Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn.
       </div>
   
     
@@ -63,7 +63,7 @@ body{
   pointer-events:none;
   transform:scale(1.5);
   translate: 0px 100px;
-  transition: all 1.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
   opacity:0.0;
   overflow-y:auto;
   background: linear-gradient(90deg, rgba(245, 235, 225,1) 0%, rgba(245, 235, 225,0.8) 30%);
@@ -97,13 +97,12 @@ body{
 }
 
 .about-main-title {
-  font-family: "Josefin Sans", sans-serif !important;
   margin-top:100px;
   flex-basis:auto;
   width:100%;
   font-size: 105px;
   line-height: 0.85;
-  font-weight: 100;
+  font-weight: 600;
   letter-spacing: -0.2rem;
   text-align: center;
   color:rgb(180,100,100);
