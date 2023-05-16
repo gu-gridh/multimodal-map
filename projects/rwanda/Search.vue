@@ -63,6 +63,7 @@ function displayName(p: Place): string {
 }
 
 #app .searchbox{
+
   background-color:black !important;
 width:100%;
 color:white;
@@ -105,6 +106,7 @@ color:white;
 
 
 .filter-container {
+  margin-top:30px;
   padding: 1.5rem 0 1.5rem 0;
   border-bottom-right-radius: 0.5rem /* 8px */;
   border-bottom-left-radius: 0.5rem /* 8px */;
@@ -146,8 +148,6 @@ color:white;
   background-color: rgb(180, 100, 100);
   color: white;
 }
-
-
 
 #app .rounded {
   border-radius: 10px;

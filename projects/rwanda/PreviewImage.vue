@@ -4,11 +4,13 @@ import type { Image } from "./types";
 defineProps<{
   image: Image;
 }>();
+
 </script>
 
 <template>
   <router-link :to="`/detail/image/${image.id}`" class="clickable">
     <div>
+      <div class="image-card">
       <div class="image-container">
         <img
           :src="`${image.iiif_file}/full/380,/0/default.jpg`"
@@ -16,9 +18,10 @@ defineProps<{
         />
       </div>
       <div>{{ image.title }}</div>
-      <div>{{ image.description }}</div>
+      <!-- <div>{{ image.description }} description</div> -->
       <!-- <div>{{ image.date }}</div> -->
     </div>
+  </div>
   </router-link>
 </template>
 

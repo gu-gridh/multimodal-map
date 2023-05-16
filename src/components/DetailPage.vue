@@ -8,6 +8,7 @@ defineProps({
 <template>
      <div class="meta-top-gradient"> </div>
   <div class="meta-container">
+ 
 
     <header class="flex flex-row-reverse pt-8">
       <div class="flex-1"></div>
@@ -31,7 +32,7 @@ defineProps({
 
 .meta-top-gradient{
   margin-top:0vh;
- width:100%;
+ width:350px;
  height:30px;
  background: linear-gradient(0deg, rgba(0,0,0,0) 00%, rgba(0,0,0,1) 90%);
  z-index:100;
@@ -123,7 +124,7 @@ defineProps({
 /* The basic structure */
 @media screen and (max-width: 900px) {
   .meta-top-gradient{
-   
+    width:100%;
   margin-top:49.9vh;
 
 }
