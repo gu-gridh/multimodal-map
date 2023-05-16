@@ -44,7 +44,7 @@ function displayName(p: Place): string {
 .filter-container {
   display:flex;
   flex-direction: column;
-  height:calc(100vh - 400px);
+  height:auto;
 
 }
 
