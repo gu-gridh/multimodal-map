@@ -76,17 +76,6 @@ const capitalize = (word: String) => {
   margin-bottom: 8px;
 }
 
-.split-image {
-  display: flex;
-}
-.split-image img {
-  width: 50%;
-}
-
-.pointer:hover {
-  cursor: pointer;
-}
-
 .image-container {
   border-radius: 5px;
   overflow: hidden;
