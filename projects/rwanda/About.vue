@@ -2,8 +2,8 @@
   <div class="about-container" v-bind:class="{fullopacity: visibleAbout}">
     <div class="flex-machine">
       <div class="red-content">
-    <div class="about-main-title" v-bind:class="{fullopacityui: visibleAbout}">Göteborgs<br>Jubileum</div>
-    <div class="about-sub-title" v-bind:class="{fullopacityui: visibleAbout}">1923</div>
+    <div class="about-main-title" v-bind:class="{fullopacityui: visibleAbout}">Streets of<br>Rwanda</div>
+    <div class="about-sub-title" v-bind:class="{fullopacityui: visibleAbout}"></div>
 
     <div class="about-article-main" v-bind:class="{fullopacityui: visibleAbout}">
       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
@@ -13,7 +13,7 @@
  
 
       <div class="about-article-sub" v-bind:class="{fullopacityui: visibleAbout}">
-      Projektet leddes av xxx och är ett samarbete mellan universitetsbiblioteket och Göteborgs infrastruktur i Digital Humaniora (GRIDH). Namn på alla som varit med: Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn.
+      Projektet leddes av xxx och är ett samarbete mellan xxx och Göteborgs infrastruktur i Digital Humaniora (GRIDH). Namn på alla som varit med: Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn.
       </div>
   
     
@@ -22,7 +22,7 @@
         <button @click="$emit('close')">
             <div
               class="p-1 px-2 clickable category-button"
-              style="width:auto; padding:5px 15px; text-align: center; cursor: pointer;"  v-bind:class="{fullopacityui: visibleAbout}">Utforska</div>
+              style="width:auto; padding:5px 15px; text-align: center; cursor: pointer;"  v-bind:class="{fullopacityui: visibleAbout}">Explore</div>
           </button>
         </div>
         <div class="about-lower-border"> </div>
@@ -63,7 +63,7 @@ body{
   pointer-events:none;
   transform:scale(1.5);
   translate: 0px 100px;
-  transition: all 1.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
   opacity:0.0;
   overflow-y:auto;
   background: linear-gradient(90deg, rgba(245, 235, 225,1) 0%, rgba(245, 235, 225,0.8) 30%);
@@ -97,13 +97,12 @@ body{
 }
 
 .about-main-title {
-  font-family: "Josefin Sans", sans-serif !important;
   margin-top:100px;
   flex-basis:auto;
   width:100%;
   font-size: 105px;
   line-height: 0.85;
-  font-weight: 100;
+  font-weight: 600;
   letter-spacing: -0.2rem;
   text-align: center;
   color:rgb(180,100,100);

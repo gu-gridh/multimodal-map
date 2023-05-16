@@ -10,6 +10,8 @@ export type Image = {
   uuid: string;
   file: string;
   iiif_file: string;
+  title: string;
+  description: string
 };
 
 interface PlaceType {
@@ -58,4 +60,4 @@ interface Place {
   type: PlaceType;
 }
 
-export type { Image, Place, PlaceType, Name, Informant, Language };
+export type { Place, PlaceType, Name, Informant, Language };

@@ -27,14 +27,14 @@ function displayName(p: Place): string {
       :searchItems="searchText"
     />
    
-    <div class="card-holder clickable overflow-y-auto">
+<!--     <div class="card-holder clickable overflow-y-auto">
       <MapCard
         v-for="result in results"
         v-bind:key="result"
         :place="result"
         class="pb-5 rounded-lg"
       />
-    </div>
+    </div> -->
 
   </div>
 </template>
