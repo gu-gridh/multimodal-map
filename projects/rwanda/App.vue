@@ -35,7 +35,6 @@ body {
   margin-top:15px;
 }
 
-
 #app .left-pane {
   background-color: grey;
   width: 900px;

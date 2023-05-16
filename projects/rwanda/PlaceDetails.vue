@@ -37,16 +37,21 @@ const capitalize = (word: String) => {
 
 <template>
   <div v-if="selectedFeature" class="detail-view">
-    <div class="px-4 py-6">
+    <div class="px-2 py-6">
       <div class="close-button" @click="deselectPlace">+</div>
 
       <!-- place card -->
       <router-link :to="`/detail/place/${place.id_}`" class="clickable">
         <div class="place-card">
+          <div style="width:100%;">
           <p>{{ capitalize(place.values_.type.text) }}</p>
+        
           <div v-for="name in place.values_.names">
+            <div style="width:100%; display:flex;">
             <span class="lang">{{ name.languages[0].abbreviation }}</span> <div class="long-name"><span class="centered-name">{{ name.text }}</span></div>
           </div>
+        </div>
+      </div>
           <p class="link">More</p>
         </div>
       </router-link>
@@ -73,7 +78,7 @@ const capitalize = (word: String) => {
   margin-bottom: 10px;
 }
 
-.image-card {
+.image-card-white {
   height:auto;
   color:black;
   background-color: white;
@@ -85,11 +90,10 @@ const capitalize = (word: String) => {
   transition: all 0.2s ease-in-out;
 }
 
-.image-card:hover {
+.image-card-white:hover {
   cursor:pointer;
   transform:scale(1.05);
 }
-
 
 .image-container {
   border-radius: 8px;
@@ -103,39 +107,6 @@ const capitalize = (word: String) => {
   object-fit: cover;
   height:100%;
   margin-bottom: 8px;
-}
-
-
-
-.lang {
-  
-  border-radius: 5px;
-  background: rgb(180,100,100);
-  padding: 1px;
-  display: inline-block;
-  width: 30px;
-  height: 30px;
-  text-align: center;
-  line-height:1.9;
-  margin:2px;
-  color:white;
-}
-
-.long-name{
-  width:85%;
-  float:right;
-  display:inline;
-  margin-left:0px;
- 
-  vertical-align: middle;
-height:30px;
-line-height:35px;
-}
-
-.centered-name{
-  display: inline-block;
-  line-height:1.2 !important;
-  height:auto!important;
 }
 
 .place-card {
@@ -161,14 +132,58 @@ line-height:35px;
   font-size:1.5em;
 }
 
+
+.lang {
+  float:left;
+  border-radius: 5px;
+  background: rgb(180,100,100);
+  padding: 1px;
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  line-height:1.9;
+  margin:2px;
+  color:white;
+}
+
+.long-name{
+  width:80%;
+  float:left;
+  display:inline;
+  margin-left:10px;
+  vertical-align: middle;
+  height:30px;
+  line-height:35px;
+  overflow:hidden;
+}
+
+.centered-name{
+  display: inline-block;
+  line-height:1.2 !important;
+  height:auto!important;
+}
+
+
+
 .link {
-  font-size: 16px;
+
+  width:100%;
+
   line.height: 1.0;
   text-align: center; 
-  padding-top: 20px; 
+  margin-top: 20px; 
   color: rgb(180,100,100);
   padding-bottom:10px;
   font-size:1.3em !important;
+}
+
+@media screen and (max-width: 1210px) {
+
+  .long-name{
+width:70%;
+ 
+}
 }
 
 

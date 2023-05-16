@@ -10,7 +10,7 @@ defineProps<{
 <template>
   <router-link :to="`/detail/image/${image.id}`" class="clickable">
     <div>
-      <div class="image-card">
+      <div class="image-card-white">
       <div class="image-container">
         <img
           :src="`${image.iiif_file}/full/380,/0/default.jpg`"
