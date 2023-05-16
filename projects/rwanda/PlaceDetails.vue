@@ -52,14 +52,15 @@ const capitalize = (word: String) => {
       </router-link>
 
       <!-- image card -->
-      <div class="flex flex-col gap-10 pointer">
+      <div class="flex flex-col gap-4 pointer">
+       
         <PreviewImage
           v-for="image in images"
           :key="image.uuid"
           :image="image"
         />
       </div>
-      
+    
     </div>
   </div>
 </template>
@@ -72,12 +73,26 @@ const capitalize = (word: String) => {
   margin-bottom: 10px;
 }
 
-.image {
-  margin-bottom: 8px;
+.image-card {
+  height:auto;
+  color:black;
+  background-color: white;
+  font-size: 14px;
+  margin-bottom: 0px;
+  border-radius: 10px;
+  padding: 10px 10px 15px 10px;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.5);
+  transition: all 0.2s ease-in-out;
 }
 
+.image-card:hover {
+  cursor:pointer;
+  transform:scale(1.05);
+}
+
+
 .image-container {
-  border-radius: 5px;
+  border-radius: 8px;
   overflow: hidden;
   margin-bottom: 8px;
   height:200px;
@@ -86,7 +101,11 @@ const capitalize = (word: String) => {
 #app .image {
   display: block;
   object-fit: cover;
+  height:100%;
+  margin-bottom: 8px;
 }
+
+
 
 .lang {
   border-radius: 5px;
@@ -109,7 +128,6 @@ const capitalize = (word: String) => {
   margin-bottom: 40px;
   border-radius: 10px;
   padding: 10px 10px 0px 10px;
-  padding-top: 10px;
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.5);
   transition: all 0.2s ease-in-out;
 }
@@ -134,4 +152,7 @@ const capitalize = (word: String) => {
   padding-bottom:10px;
   font-size:1.3em !important;
 }
+
+
+
 </style>
