@@ -113,6 +113,7 @@ const capitalize = (word: String) => {
 }
 
 .place-card {
+  height:auto;
   color:black;
   background-color: white;
   font-size: 14px;
@@ -127,6 +128,11 @@ const capitalize = (word: String) => {
 .place-card:hover {
   cursor:pointer;
   transform:scale(1.05);
+}
+
+.place-card p{
+  color:rgb(180,100,100);
+  padding-left:3px;
 }
 
 .link {
