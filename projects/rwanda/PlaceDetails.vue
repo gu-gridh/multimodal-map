@@ -100,29 +100,41 @@ const capitalize = (word: String) => {
 }
 
 .lang {
-  border-radius: 4px;
+  border-radius: 5px;
   background: rgb(180,100,100);
   padding: 1px;
   display: inline-block;
-  width: 25px;
+  width: 30px;
+  height: 30px;
   text-align: center;
-  margin: 2px;
+  line-height:1.9;
+  margin:2px;
+  color:white;
 }
 
 .place-card {
   color:black;
   background-color: white;
   font-size: 14px;
-  margin-bottom: 10px;
-  border-radius: 8px;
-  padding: 5px;
+  margin-bottom: 40px;
+  border-radius: 10px;
+  padding: 10px 10px 0px 10px;
   padding-top: 10px;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.5);
+  transition: all 0.2s ease-in-out;
+}
+
+.place-card:hover {
+  cursor:pointer;
+  transform:scale(1.05);
 }
 
 .link {
   font-size: 16px;
+  line.height: 1.0;
   text-align: center; 
-  padding-top: 10px; 
+  padding-top: 20px; 
   color: rgb(180,100,100);
+  padding-bottom:10px;
 }
 </style>

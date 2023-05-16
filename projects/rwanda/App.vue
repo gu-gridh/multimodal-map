@@ -45,11 +45,12 @@ body {
 }
 
 
+
 #app .detail-view {
   height: 100vh !important;
   pointer-events: auto !important;
   overflow-y: scroll !important;
-  background-color: rgba(0, 0, 0, 0.85);
+  background-color: rgba(0, 0, 0, 0.75);
   width: 100%;
   color: white;
   transition: all 0.5s ease-in-out;

@@ -149,8 +149,6 @@ color:white;
   color: white;
 }
 
-
-
 #app .rounded {
   border-radius: 10px;
 }
