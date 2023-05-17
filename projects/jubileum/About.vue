@@ -5,26 +5,21 @@
     <div class="about-main-title" v-bind:class="{fullopacityui: visibleAbout}">Göteborgs<br>Jubileum</div>
     <div class="about-sub-title" v-bind:class="{fullopacityui: visibleAbout}">1923</div>
 
-    <div class="about-article-main" v-bind:class="{fullopacityui: visibleAbout}">
+    <div class="about-article-main"  v-bind:class="{fullopacityui: visibleAbout}">
       Då Göteborg firar 400 år vill vi här bjuda på en återblick till firandet för 100 år sedan.    
     </div>
 
-      <div class="about-article-sub" v-bind:class="{fullopacityui: visibleAbout}">
-Jubileumsutställningen i Göteborg invigdes den 8 maj 1923 av dåvarande kung Gustaf V. Utställningen arrangerades för att högtidlighålla stadens 300-årsjubileum 1921 men på grund av de höga ambitionerna och efterdyningarna av världskriget m.m. så blev utställningen fördröjd till 1923. På samma sätt har ju årets firande blivit fördröjt två år på grund av Covid-19 pandemin. Utställningen var planerad att stänga den 30 september men förlängdes till den 15 oktober och hade då besökts av 4,2 miljoner personer.
-Det var en mycket stor utställning som omfattade stora delar av Göteborg och ett flertal av dagens mer välkända byggnader och institutioner grundades som exempelvis Göteborgs konstmuseum, Göteborgs botaniska trädgård, Naturhistoriska museet och Slottsskogsvallen. I huvudsak var utställningen lokaliserad till två områden: området för själva Jubileumsutställningen samt området för lantbruksmötet, luftfartsutställningen och nordisk trädgårdsutställning med båda på vardera över 220 000 m².
-      </div>
-      <div class="about-article-sub" v-bind:class="{fullopacityui: visibleAbout}">
-Under jubileumsutställningen 1923 pågick en konstutställning med samtida nordisk konst på Konstmuseet och på Konsthallen. I den lokal som vi idag kallar Göteborgs Konsthall visades den norska delen av utställningen med bland andra Edvard Munch. Den danska och finska delen visades i två intilliggande byggnader som idag är rivna, medan den svenska konsten höll till inne på det nuvarande Göteborgs Konstmuseum.
-      </div>
-      <div class="about-article-sub" v-bind:class="{fullopacityui: visibleAbout}">
-Bakom konstmuseet och upp emot området runt näckrosdammen var platsen för den Historiska minnesutställningen. Här visades olika former av historiska utställningar kopplade till olika ämnen som sjöfart, handel, konsthantverk och hemslöjd. En rolig detalj är att humanistiska fakulteten och Humanistiska biblioteket ligger precis där stora delar av utställningen då var lokaliserad. Biblioteket ligger i dag där huvudrestaurangen låg och Humanisten där minneshallen stod.
-      </div>
-      <div class="about-article-sub" v-bind:class="{fullopacityui: visibleAbout}">
-Nedanför, på andra sida Korsvägen där nuvarande Svenska mässan ligger var Exportutställningen lokaliserad. Här visade många av de stora industriföretagen upp sina produkter.
-Här kan du se bilder på de olika byggnaderna m.m. som stod på platsen under utställningen. Vi har även samlat en rad digitaliserade skrifter som på olika sätt berör utställningen, som du lätt hittar här. Återkom gärna vid flera tillfällen då vi kommer fortsätta att publicera digitaliserat material här.
-      </div>
-      <div class="about-article-sub" v-bind:class="{fullopacityui: visibleAbout}">
-Göteborgs forskningsinfrastruktur för digital humaniora (GRIDH) i samarbete med Göteborgs universitetsbibliotek har tagit fram den här tjänsten som en del i ett större samarbete. Vi hoppas du kommer finna både bilder och texter intressanta.
+      <div class="about-article-sub"  v-bind:class="{fullopacityui: visibleAbout}">
+<p>Jubileumsutställningen i Göteborg invigdes den 8 maj 1923 av dåvarande kung Gustaf V. Utställningen arrangerades för att högtidlighålla stadens 300-årsjubileum 1921 men på grund av de höga ambitionerna och efterdyningarna av världskriget m.m. så blev utställningen fördröjd till 1923. På samma sätt har ju årets firande blivit fördröjt två år på grund av Covid-19 pandemin. Utställningen var planerad att stänga den 30 september men förlängdes till den 15 oktober och hade då besökts av 4,2 miljoner personer.
+ Det var en mycket stor utställning som omfattade stora delar av Göteborg och ett flertal av dagens mer välkända byggnader och institutioner grundades som exempelvis Göteborgs konstmuseum, Göteborgs botaniska trädgård, Naturhistoriska museet och Slottsskogsvallen. I huvudsak var utställningen lokaliserad till två områden: området för själva Jubileumsutställningen samt området för lantbruksmötet, luftfartsutställningen och nordisk trädgårdsutställning med båda på vardera över 220 000 m².</p>
+
+    <p>Under jubileumsutställningen 1923 pågick en konstutställning med samtida nordisk konst på Konstmuseet och på Konsthallen. I den lokal som vi idag kallar Göteborgs Konsthall visades den norska delen av utställningen med bland andra Edvard Munch. Den danska och finska delen visades i två intilliggande byggnader som idag är rivna, medan den svenska konsten höll till inne på det nuvarande Göteborgs Konstmuseum.</p>
+
+      <p>Bakom konstmuseet och upp emot området runt näckrosdammen var platsen för den Historiska minnesutställningen. Här visades olika former av historiska utställningar kopplade till olika ämnen som sjöfart, handel, konsthantverk och hemslöjd. En rolig detalj är att humanistiska fakulteten och Humanistiska biblioteket ligger precis där stora delar av utställningen då var lokaliserad. Biblioteket ligger i dag där huvudrestaurangen låg och Humanisten där minneshallen stod.</p>
+
+        <p>Nedanför, på andra sida Korsvägen där nuvarande Svenska mässan ligger var Exportutställningen lokaliserad. Här visade många av de stora industriföretagen upp sina produkter. Här kan du se bilder på de olika byggnaderna m.m. som stod på platsen under utställningen. Vi har även samlat en rad digitaliserade skrifter som på olika sätt berör utställningen, som du lätt hittar här. Återkom gärna vid flera tillfällen då vi kommer fortsätta att publicera digitaliserat material här.</p>
+ 
+<p>Göteborgs forskningsinfrastruktur för digital humaniora (GRIDH) i samarbete med Göteborgs universitetsbibliotek har tagit fram den här tjänsten som en del i ett större samarbete. Vi hoppas du kommer finna både bilder och texter intressanta.</p>
       </div>
     
         <button @click="$emit('close')">
@@ -154,7 +149,7 @@ transition: all 0.4s ease-in-out;
 .about-article-sub{
   position:relative;
   float:left;
-  text-align:left;
+  text-align:justify;
   color:black;
   width:950px;
   font-size:1.4em;
