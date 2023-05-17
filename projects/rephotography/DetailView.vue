@@ -51,5 +51,6 @@ const objectComponent = {
   width: calc(100% - 450px);
   background-color: black;
   height: 100vh;
+  overflow:hidden;
 }
 </style>

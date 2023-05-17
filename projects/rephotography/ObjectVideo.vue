@@ -35,7 +35,5 @@ const guplayId = computed(() => props.object.link.split("/").pop());
 </template>
 
 <style scoped>
-.image-title {
-  font-size: 150%;
-}
+
 </style>
