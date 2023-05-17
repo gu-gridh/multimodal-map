@@ -39,13 +39,12 @@ const capitalize = (word: String) => {
   <div v-if="selectedFeature" class="detail-view">
     <div class="px-2 py-6">
       <div class="close-button" @click="deselectPlace">+</div>
-
+      <div class="flex flex-col gap-4 pointer">
       <!-- place card -->
       <router-link :to="`/detail/place/${place.id_}`" class="clickable">
         <div class="place-card">
           <div style="width:100%;">
           <p>{{ capitalize(place.values_.type.text) }}</p>
-        
           <div v-for="name in place.values_.names">
             <div style="width:100%; display:flex;">
             <span class="lang">{{ name.languages[0].abbreviation }}</span> <div class="long-name"><span class="centered-name">{{ name.text }}</span></div>
@@ -57,9 +56,9 @@ const capitalize = (word: String) => {
       </router-link>
 
       <!-- image card -->
-      <div class="flex flex-col gap-4 pointer">
+    
        
-        <PreviewImage
+      <PreviewImage
           v-for="image in images"
           :key="image.uuid"
           :image="image"
@@ -105,6 +104,7 @@ const capitalize = (word: String) => {
 #app .image {
   display: block;
   object-fit: cover;
+  width:100%;
   height:100%;
   margin-bottom: 8px;
 }
@@ -115,10 +115,11 @@ const capitalize = (word: String) => {
   background-color: white;
   font-size: 14px;
   margin-bottom: 40px;
-  border-radius: 10px;
-  padding: 10px 10px 0px 10px;
+  padding: 10px 10px 10px 10px;
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.5);
   transition: all 0.2s ease-in-out;
+  border-radius: 10px !important;
+  overflow:hidden;
 }
 
 .place-card:hover {
@@ -131,7 +132,6 @@ const capitalize = (word: String) => {
   padding-left:3px;
   font-size:1.5em;
 }
-
 
 .lang {
   float:left;
@@ -167,14 +167,13 @@ const capitalize = (word: String) => {
 
 
 .link {
-
   width:100%;
-
-  line.height: 1.0;
+  height: auto !important;
+  line-height: 0.8;
   text-align: center; 
   margin-top: 20px; 
   color: rgb(180,100,100);
-  padding-bottom:10px;
+  padding-bottom:0px;
   font-size:1.3em !important;
 }
 

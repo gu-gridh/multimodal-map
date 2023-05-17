@@ -77,4 +77,12 @@ body {
 .close-button:hover {
   background-color: rgb(140, 100, 100);
 }
+
+@media screen and (max-width: 900px) {
+
+#app .main-title {
+  font-weight: 600 !important;
+}
+}
+
 </style>
