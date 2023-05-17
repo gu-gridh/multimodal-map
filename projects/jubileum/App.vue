@@ -53,7 +53,7 @@ body {
 .about {
   padding-right: 0px;
   line-height: 1.2;
-  text-align: justify;
+  text-align: left;
   font-size:0.95em;
 }
 
@@ -83,6 +83,7 @@ body {
   width: auto;
   pointer-events: none;
 }
+
 
 @media screen and (max-width: 1250px) {
 

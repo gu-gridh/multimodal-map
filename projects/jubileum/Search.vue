@@ -15,13 +15,13 @@ const CATEGORIES = {
 </script>
 
 <template>
- <div class="section-title">Typ av dokumentation</div>
+ <!-- <div class="section-title">Typ av dokumentation</div>
   <CategoryButtonList
     v-model="categories"
     :categories="CATEGORIES"
     :limit="1"
     class="my-2"
-  /> 
+  />  -->
 
 </template>
 

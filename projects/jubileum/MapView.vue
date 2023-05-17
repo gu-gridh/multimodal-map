@@ -72,8 +72,24 @@ watch(showGrid, (newValue) => {
                 margin-top: -10px;
                 cursor: pointer;
               "
-            >Mer information</div>
+            >Om portalen</div>
           </button>
+<div style="width:100%; margin-top:20px;">
+  <a href="https://gupea.ub.gu.se/handle/2077/74634">
+          <button class="item">
+            <div
+              class="p-1 px-2 clickable category-button"
+              style="
+                width: auto;
+                text-align: center;
+                margin-top: -10px;
+                cursor: pointer;
+                font-weight:400;
+              "
+            >Publikationer i GUPEA</div>
+          </button>
+        </a>
+        </div>
       <Search />
     </template>
     
@@ -135,6 +151,8 @@ watch(showGrid, (newValue) => {
 }
 
 #gallery{}
+
+
 
 .ui-overlay {
 margin-top: 70px;
