@@ -111,10 +111,8 @@ font-size: 18px;
 font-weight: 500;
 color: white;
 bottom:100px;
-
-
-
 }
+
 #app .ol-popup {
   font-size: 1.2em;
   -webkit-user-select: none;
@@ -129,7 +127,7 @@ bottom:100px;
   border: 0px solid #cccccc;
   bottom: 35px;
   left: -50px;
-  min-width: 150px;
+  min-width: 200px;
 }
 
 #app .ol-control button {
