@@ -17,7 +17,7 @@ function displayName(p: Place): string {
 </script>
 
 <template>
-   
+  
   <div class="filter-container">
    
     <AutocompleteComponent
