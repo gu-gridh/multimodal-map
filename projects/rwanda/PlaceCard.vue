@@ -56,7 +56,7 @@ defineProps<{
         <div  v-for="name in place.properties.names">
         <div  v-if="name !== null || undefined">
         
-          <div class="meta-item"  v-if="name.languages && name.languages.length > 0"><div class="lang">{{ name.languages[0].abbreviation }}</div> <div class="long-name" v-if="name.text">{{ name.text }}</div></div>      
+          <div class="meta-item"  v-if="name.languages && name.languages.length > 0"><div class="lang">{{ name.languages[0].abbreviation }}</div> <div class="long-name" style="font-weight:600;" v-if="name.text">{{ name.text }}</div></div>      
     
         <div style="width:100%; float:left; margin-bottom:30px; padding-left:45px;">
           <div class="meta-item" v-if="name.period !== null">Period: {{ name.period.start_year }} - {{ name.period.end_year }}. {{ capitalize(name.period.text) }}</div>
@@ -87,11 +87,16 @@ body{
 .place-card {
   margin-top:60px;
   color:black;
+  background-color: white;
   font-size: 1.0em;
   padding: 0px;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.5);
   transition: all 0.0s ease-in-out;
   max-height:calc(100vh - 250px);
+  overflow:hidden;
   overflow-y:auto;
+  margin-bottom: 10px;
+  border-radius: 10px !important;
 }
 
 .place-card:hover {
