@@ -58,6 +58,9 @@ defineProps<{
 </template>
 
 <style>
+body{
+  background-color:rgb(45,45,45);
+}
 
 .back-button {
   left: 20px;
@@ -76,7 +79,7 @@ defineProps<{
 }
 
 .metadata {
-  background-color: rgb(45,45,45) !important;
+  background-color: transparent !important;
 }
 
 .meta-top-gradient{
