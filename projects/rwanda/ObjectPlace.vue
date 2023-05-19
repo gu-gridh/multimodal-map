@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Place } from './types';
-import PlacePage from "./PlacePage.vue"
+import PlaceCard from "./PlaceCard.vue"
 
     defineProps<{
         place: Place;
@@ -11,7 +11,7 @@ import PlacePage from "./PlacePage.vue"
 
 <template>
     <div class="metadata">
-        <PlacePage :place="place" :id="id" />
+        <PlaceCard :place="place" :id="id" />
     </div>
     <!-- gallery here -->
 </template>

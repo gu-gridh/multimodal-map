@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import type { Place } from './types';
+import type { DianaClient } from "@/assets/diana"
+import { inject } from "vue"
 
 defineProps<{
         place: Place;
@@ -11,6 +13,9 @@ defineProps<{
       const rest = word.slice(1)
       return first + rest
     }
+
+    //check if data is missing - TODO
+
 
 </script>
 
@@ -32,23 +37,24 @@ defineProps<{
     </header>
 
     <main class="container metadata-posts">
-        <p>Type: {{ capitalize(place.properties.type.text) }}</p>
+      <p>{{ capitalize(place.properties.type.text) }}</p>
+      <p>Description: {{ capitalize(place.properties.description) }}</p>
+        <div>
+            <p>{{place.properties.is_existing ? 'Existing' : 'Non-existing'}} - {{ place.properties.is_iconic ? 'Iconic' : 'Not iconic'}} - {{ place.properties.is_private ? 'Private' : 'Public'}}</p>
+            <p v-if="place.properties.parent_place !== null"><a :href="place.properties.parent_place.id">Parent place</a></p>
+        </div>
+        <hr/>
         <div v-for="name in place.properties.names">
         <div v-if="name !== null || undefined">
-        
-            <p v-if="name.languages && name.languages.length > 0">{{ name.languages[0].name }} </p><p v-else>-</p>         
-            <p v-if="name.text">{{ name.text }}</p>
-            <!-- <p v-if="name.period.text && name.period.text !== null">{{ name.period.text }}</p><p v-else></p> -->
+            <p v-if="name.languages && name.languages.length > 0">{{ name.languages[0].abbreviation }} <span v-if="name.text">{{ name.text }}</span></p>        
+            <p v-if="name.period !== null">Period: {{ name.period.start_year }} - {{ name.period.end_year }}. {{ capitalize(name.period.text) }}</p>
+            <p v-if="name.informants && name.informants.length > 0">Informant: <span v-for="informant in name.informants">{{ name.informants[0].custom_id }}. {{ name.informants[0].note }}</span></p>
+            <p v-if="name.referent">Comment: {{ name.referent.comment }}</p>
+            <p v-if="name.note">Note: {{ name.note }}</p>
         </div>
         <hr/>
 
       </div>
-      
-      <!-- <div>
-        <p>Exists: {{ object?.properties.is_existing }}</p>
-        <p>Iconic: {{ object?.properties.is_iconic }}</p>
-        <p>Private: {{ object?.properties.is_private }}</p>
-      </div> -->
     </main>
 
   </div>

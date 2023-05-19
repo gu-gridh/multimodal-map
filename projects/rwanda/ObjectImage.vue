@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import DetailPage from "@/components/DetailPage.vue";
 import OpenSeadragon from "@/components/OpenSeadragon.vue";
-import type { ImageDeep, Image } from "./types";
+import type { Image } from "./types";
 
 defineProps<{
   object: Image;
