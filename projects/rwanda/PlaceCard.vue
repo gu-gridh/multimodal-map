@@ -36,26 +36,42 @@ defineProps<{
       </div>
     </header>
 
-    <main class="container metadata-posts">
-      <p>{{ capitalize(place.properties.type.text) }}</p>
-      <p>Description: {{ capitalize(place.properties.description) }}</p>
-        <div>
-            <p>{{place.properties.is_existing ? 'Existing' : 'Non-existing'}} - {{ place.properties.is_iconic ? 'Iconic' : 'Not iconic'}} - {{ place.properties.is_private ? 'Private' : 'Public'}}</p>
-            <p v-if="place.properties.parent_place !== null"><a :href="place.properties.parent_place.id">Parent place</a></p>
+   
+      <div class="place-card">
+        <div class="place-card-content"> 
+        <div class="mini-map">  </div>
+        <div class="metadata-content"> 
+      <h1>{{ capitalize(place.properties.type.text) }}</h1>
+      <div class="meta-item">{{ capitalize(place.properties.description) }}</div>
+      <div class="meta-item"> {{place.properties.is_existing ? 'Existing' : 'Non-existing'}} - {{ place.properties.is_iconic ? 'Iconic' : 'Not iconic'}} - {{ place.properties.is_private ? 'Private' : 'Public'}}</div>
+      <div class="meta-item" v-if="place.properties.parent_place !== null">
+        <a :href="place.properties.parent_place.id">
+        <div class="category-button">
+          Parent place
         </div>
-        <hr/>
-        <div v-for="name in place.properties.names">
-        <div v-if="name !== null || undefined">
-            <p v-if="name.languages && name.languages.length > 0">{{ name.languages[0].abbreviation }} <span v-if="name.text">{{ name.text }}</span></p>        
-            <p v-if="name.period !== null">Period: {{ name.period.start_year }} - {{ name.period.end_year }}. {{ capitalize(name.period.text) }}</p>
-            <p v-if="name.informants && name.informants.length > 0">Informant: <span v-for="informant in name.informants">{{ name.informants[0].custom_id }}. {{ name.informants[0].note }}</span></p>
-            <p v-if="name.referent">Comment: {{ name.referent.comment }}</p>
-            <p v-if="name.note">Note: {{ name.note }}</p>
+      </a>
+    </div>
+       
+    <div style="margin-top:30px;">
+        <div  v-for="name in place.properties.names">
+        <div  v-if="name !== null || undefined">
+        
+          <div class="meta-item"  v-if="name.languages && name.languages.length > 0"><div class="lang">{{ name.languages[0].abbreviation }}</div> <div class="long-name" v-if="name.text">{{ name.text }}</div></div>      
+    
+        <div style="width:100%; float:left; margin-bottom:30px; padding-left:45px;">
+          <div class="meta-item" v-if="name.period !== null">Period: {{ name.period.start_year }} - {{ name.period.end_year }}. {{ capitalize(name.period.text) }}</div>
+              <div class="meta-item" v-if="name.informants && name.informants.length > 0">Informant: <span v-for="informant in name.informants">{{ name.informants[0].custom_id }}. {{ name.informants[0].note }}</span></div>
+                <div class="meta-item" v-if="name.referent">Comment: {{ name.referent.comment }}</div>
+                  <div class="meta-item" v-if="name.note">Note: {{ name.note }}</div>
         </div>
-        <hr/>
-
+      </div>  
       </div>
-    </main>
+      </div>
+    </div>
+    </div>
+      </div>
+  
+
 
   </div>
 
@@ -66,6 +82,50 @@ defineProps<{
 <style>
 body{
   background-color:rgb(45,45,45);
+}
+
+.place-card {
+  margin-top:60px;
+  color:black;
+  font-size: 1.0em;
+  padding: 0px;
+  transition: all 0.0s ease-in-out;
+  max-height:calc(100vh - 250px);
+  overflow-y:auto;
+}
+
+.place-card:hover {
+transform:scale(1.0);
+}
+
+.place-card-content {
+height:auto;
+
+}
+
+.place-card-content h1{
+font-size:2.5em;
+color:rgb(180,100,100);
+
+}
+
+.place-card-content .metadata-content{
+padding:20px 30px 30px 30px;
+}
+
+.place-card .category-button{
+width:110px!important;
+padding:4px 18px;
+margin-bottom:20px;
+
+}
+
+.mini-map{
+  width:100%;
+  height:250px;
+  background-color:grey;
+  margin-bottom:0px;
+ 
 }
 
 .back-button {
@@ -86,9 +146,18 @@ body{
 
 .metadata {
   background-color: transparent !important;
+  overflow:hidden !important;
+  width: 550px !important;
 }
 
-.meta-top-gradient{
- background: linear-gradient(0deg, rgba(45,45,45,0) 00%, rgba(45,45,45,1) 90%);
+.meta-item {
+margin-bottom:5px;
 }
+
+
+.meta-top-gradient{
+ background: transparent;
+}
+
+
 </style>
