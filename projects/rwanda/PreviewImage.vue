@@ -18,8 +18,6 @@ defineProps<{
         />
       </div>
       <div>{{ image.title }}</div>
-      <!-- <div>{{ image.description }} description</div> -->
-      <!-- <div>{{ image.date }}</div> -->
     </div>
   </div>
   </router-link>

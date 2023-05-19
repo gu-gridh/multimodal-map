@@ -17,7 +17,6 @@ watchEffect(async () => {
   if (selectedFeature.value) {
     const place_of_interest = selectedFeature.value.getId();
     place = JSON.parse(JSON.stringify(selectedFeature.value))
-    console.log(place)
     images.value = await diana.listAll<Image>("image/", { place_of_interest });
   } else {
     images.value = [];
@@ -47,7 +46,9 @@ const capitalize = (word: String) => {
           <p>{{ capitalize(place.values_.type.text) }}</p>
           <div v-for="name in place.values_.names">
             <div style="width:100%; display:flex;">
-            <span class="lang">{{ name.languages[0].abbreviation }}</span> <div class="long-name"><span class="centered-name">{{ name.text }}</span></div>
+            <span class="lang" v-if="name.languages && name.languages.abbreviation > 0">{{ name.languages[0].abbreviation }}</span> 
+            <span v-else></span>
+            <div class="long-name"><span class="centered-name">{{ name.text }}</span></div>
           </div>
         </div>
       </div>
@@ -60,7 +61,7 @@ const capitalize = (word: String) => {
        
       <PreviewImage
           v-for="image in images"
-          :key="image.uuid"
+          :key="image.id"
           :image="image"
         />
       </div>

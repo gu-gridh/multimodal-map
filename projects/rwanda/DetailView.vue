@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { inject, ref, watchEffect } from "vue";
-import type { Documentation, Image, Place } from "./types";
+import type { Image, Place } from "./types";
 import type { DianaClient } from "@/assets/diana";
 import ObjectImage from "./ObjectImage.vue";
+import ObjectPlace from "./ObjectPlace.vue"
 
 const props = defineProps({
   type: {
@@ -15,12 +16,20 @@ const props = defineProps({
   },
 });
 
+
 const diana = inject("diana") as DianaClient;
 const object = ref<Image>();
+const place = ref<Place>()
+
 
 watchEffect(async () => {
-  object.value = await diana.get(props.type, props.id, { depth: 1 });
-  console.log(object)
+  if(props.type == 'image'){
+    object.value = await diana.get(props.type, props.id, { depth: 1 });
+    console.log('image id', props.id)
+  }
+  if (props.type == 'place') {
+    place.value = await diana.get<Place>("geojson/place/", props.id);
+  }
 });
 
 const objectComponent = {
@@ -29,8 +38,11 @@ const objectComponent = {
 </script>
 
 <template>
-  <article v-if="object">
+  <article v-if="props.type == 'image'">
     <component :is="objectComponent" :object="object" :id="Number(id)" />
+  </article>
+  <article v-if="props.type == 'place'">
+    <ObjectPlace  :place="place" :id="Number(id)"/>
   </article>
 </template>
 
