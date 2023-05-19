@@ -46,7 +46,7 @@ const capitalize = (word: String) => {
           <p>{{ capitalize(place.values_.type.text) }}</p>
           <div v-for="name in place.values_.names">
             <div style="width:100%; display:flex;">
-            <span class="lang" v-if="name.languages && name.languages.abbreviation > 0">{{ name.languages[0].abbreviation }}</span> 
+            <span class="lang" v-if="name.languages && name.languages.length > 0">{{ name.languages[0].abbreviation }}</span> 
             <span v-else></span>
             <div class="long-name"><span class="centered-name">{{ name.text }}</span></div>
           </div>
