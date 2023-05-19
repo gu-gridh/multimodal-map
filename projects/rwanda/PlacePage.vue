@@ -74,4 +74,12 @@ defineProps<{
   overflow: hidden;
   position: fixed;
 }
+
+.metadata {
+  background-color: rgb(45,45,45) !important;
+}
+
+.meta-top-gradient{
+ background: linear-gradient(0deg, rgba(45,45,45,0) 00%, rgba(45,45,45,1) 90%);
+}
 </style>

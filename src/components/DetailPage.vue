@@ -32,7 +32,7 @@ defineProps({
 
 .meta-top-gradient{
   margin-top:0vh;
- width:350px;
+ width:450px;
  height:30px;
  background: linear-gradient(0deg, rgba(0,0,0,0) 00%, rgba(0,0,0,1) 90%);
  z-index:100;
