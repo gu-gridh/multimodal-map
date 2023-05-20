@@ -21,14 +21,12 @@ defineProps<{
 
 <template>
 
-<div class="meta-top-gradient"> </div>
+
   <div class="meta-container">
+
     <header class="flex flex-row-reverse pt-8">
       <div class="flex-1"></div>
       <div class="container">
-        <slot name="title">
-          <h1 class="meta-title"></h1>
-        </slot>
       </div>
       <div class="flex-1 text-center">
         <!-- TODO -->
@@ -36,8 +34,7 @@ defineProps<{
       </div>
     </header>
 
-   
-      <div class="place-card">
+      <div class="place-card-full">
         <div class="place-card-content"> 
         <div class="mini-map">  </div>
         <div class="metadata-content"> 
@@ -80,27 +77,38 @@ defineProps<{
 </template>
 
 <style>
-body{
-  background-color:rgb(45,45,45);
+
+.meta-container{
+  overflow-y: auto;
+  height:calc(100vh - 80px);
+  padding-bottom:30px;
+  padding-left:45px;
+  padding-right:20px;
 }
 
-.place-card {
-  margin-top:60px;
+#app .metadata {
+  background-color: transparent !important;
+  overflow:hidden !important;
+  width: 550px !important;
+  background-color:red;
+}
+
+.place-card-full {
+  margin-top:80px;
   color:black;
   background-color: white;
-  font-size: 1.0em;
   padding: 0px;
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.5);
   transition: all 0.0s ease-in-out;
-  max-height:calc(100vh - 250px);
+  max-height:calc(100vh - 240px);
   overflow:hidden;
   overflow-y:auto;
   margin-bottom: 10px;
   border-radius: 10px !important;
 }
 
-.place-card:hover {
-transform:scale(1.0);
+.lang{
+  font-size: 14px;
 }
 
 .place-card-content {
@@ -116,6 +124,7 @@ color:rgb(180,100,100);
 
 .place-card-content .metadata-content{
 padding:20px 30px 30px 30px;
+line-height:1.2;
 }
 
 .place-card .category-button{
@@ -127,9 +136,10 @@ margin-bottom:20px;
 
 .mini-map{
   width:100%;
-  height:250px;
+  height:200px;
   background-color:grey;
   margin-bottom:0px;
+
  
 }
 
@@ -149,20 +159,44 @@ margin-bottom:20px;
   position: fixed;
 }
 
-.metadata {
-  background-color: transparent !important;
-  overflow:hidden !important;
-  width: 550px !important;
-}
-
 .meta-item {
 margin-bottom:5px;
 }
 
+@media screen and (max-width: 900px) {
 
-.meta-top-gradient{
- background: transparent;
+  /* Overwrites the body-container in MainLayout.vue */
+  html,
+body {
+  height: auto;
+  overflow: auto !important;
 }
 
+/* Overwrites the meeta-container in MainLayout.vue */
+#app .meta-container {
+position:absolute;
+margin-top:40vh;
+height:auto;
+font-size:120%;
+width:100%;
+padding-right:0px;
+padding-left:0px;
+padding-bottom:0px !important;
+overflow-y:auto;
+}
+
+.place-card-full {
+  margin-top:0px;
+  color:black;
+  background-color: white;
+  padding-bottom: 30px;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.5);
+  transition: all 0.0s ease-in-out;
+  max-height:10000px;
+  overflow:auto;
+  margin-bottom: 0px;
+  border-radius: 30px 30px 0px 0px !important;
+}
+}
 
 </style>

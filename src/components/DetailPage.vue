@@ -79,7 +79,6 @@ defineProps({
   float: left;
   width: 450px;
   height: 100vh;
-  background-color: black;
   color: white;
 }
 

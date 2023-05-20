@@ -62,6 +62,7 @@ body {
   width: 100vw;
   margin: 0 !important;
   overflow: hidden !important;
+  background-color:rgb(45,45,45);
 }
 
 #app {
@@ -330,13 +331,13 @@ body {
   overflow:hidden;
   margin-top: 0px;
 }
-
+/* This one makes the map appear to fade out under the transparent left-pane */
 .atlas-gradient {
   height: 250px;
   width: 100%;
   position:absolute;
   background: linear-gradient(0deg, rgba(255,255,255,1) 20%, rgba(255,255,255,0) 100%);
-bottom: 100px;
+  bottom: 100px;
   z-index:201;
   pointer-events:none;
 }

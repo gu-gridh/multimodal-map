@@ -16,9 +16,12 @@ provide("diana", endpoint);
 </template>
 
 <style>
+
+/* Project theme in regards to colour and fonts */
 html,
 body {
   font-family: "Barlow Condensed", sans-serif !important;
+  background-color:rgb(45,45,45)!important;
 }
 
 .main-title {
