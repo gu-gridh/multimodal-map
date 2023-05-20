@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AutocompleteComponent from "@/components/input/AutocompleteComponent.vue";
-import ObjectViewMapCard from "./ObjectViewMapCard.vue";
+import MapViewMapCard from "./MapViewMapCard.vue";
 import { mapStore } from "@/stores/store";
 import { storeToRefs } from "pinia";
 import { useRwandaMap } from "./map.composable";
@@ -28,7 +28,7 @@ function displayName(p: Place): string {
     />
    
 <!--     <div class="card-holder clickable overflow-y-auto">
-      <MapCard
+      <MapViewMapCard
         v-for="result in results"
         v-bind:key="result"
         :place="result"
