@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AutocompleteComponent from "@/components/input/AutocompleteComponent.vue";
-import MapCard from "./MapCard.vue";
+import ObjectViewMapCard from "./ObjectViewMapCard.vue";
 import { mapStore } from "@/stores/store";
 import { storeToRefs } from "pinia";
 import { useRwandaMap } from "./map.composable";

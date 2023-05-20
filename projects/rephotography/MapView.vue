@@ -1,12 +1,12 @@
 <script lang="ts" setup>
 import { computed } from "vue";
 import MainLayout from "@/MainLayout.vue";
-import Search from "./Search.vue";
+import MapViewControls from "./MapViewControls.vue";
 import MapComponent from "@/components/MapComponent.vue";
 import NpolarLayer from "./NpolarLayer.vue";
 import DianaPlaceLayer from "@/components/DianaPlaceLayer.vue";
 import FeatureSelection from "@/components/FeatureSelection.vue";
-import PlaceDetails from "./PlaceDetails.vue";
+import MapViewPreview from "./MapViewPreview.vue";
 import { storeToRefs } from "pinia";
 import { rephotographyStore } from "./store";
 import { clean } from "@/assets/utils";
@@ -53,7 +53,7 @@ const toggleAboutVisibility = async () => {
               "
             >More info</div>
           </button>
-      <Search />
+      <MapViewControls />
     </template>
 
   
@@ -85,7 +85,7 @@ const toggleAboutVisibility = async () => {
     </template>
 
     <template #details>
-      <PlaceDetails />
+      <MapViewPreview />
     </template>
   </MainLayout>
 </template>

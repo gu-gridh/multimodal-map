@@ -2,9 +2,9 @@
 import { inject, ref, watchEffect } from "vue";
 import type { Documentation } from "./types";
 import type { DianaClient } from "@/assets/diana";
-import ObjectImage from "./ObjectImage.vue";
-import ObjectVideo from "./ObjectVideo.vue";
-import ObjectRephotography from "./ObjectRephotography.vue";
+import ObjectViewImage from "./ObjectViewImage.vue";
+import ObjectViewVideo from "./ObjectViewVideo.vue";
+import ObjectViewRephotography from "./ObjectViewRephotography.vue";
 
 const props = defineProps({
   type: {
@@ -26,9 +26,9 @@ watchEffect(async () => {
 });
 
 const objectComponent = {
-  image: ObjectImage,
-  video: ObjectVideo,
-  rephotography: ObjectRephotography,
+  image: ObjectViewImage,
+  video: ObjectViewVideo,
+  rephotography: ObjectViewRephotography,
 }[props.type];
 </script>
 
@@ -51,5 +51,6 @@ const objectComponent = {
   width: calc(100% - 450px);
   background-color: black;
   height: 100vh;
+  overflow:hidden;
 }
 </style>

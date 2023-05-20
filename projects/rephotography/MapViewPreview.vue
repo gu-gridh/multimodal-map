@@ -10,9 +10,9 @@ import type {
   Video,
 } from "./types";
 import type { DianaClient } from "@/assets/diana";
-import PreviewRephotography from "./PreviewRephotography.vue";
-import PreviewImage from "./PreviewImage.vue";
-import PreviewVideo from "./PreviewVideo.vue";
+import PreviewRephotography from "./MapViewPreviewRephotography.vue";
+import PreviewImage from "./MapViewPreviewImage.vue";
+import PreviewVideo from "./MapViewPreviewVideo.vue";
 
 const { selectedFeature } = storeToRefs(mapStore());
 const diana = inject("diana") as DianaClient;
@@ -110,14 +110,14 @@ function deselectPlace() {
 #app .image-container {
   border-radius: 8px;
   overflow: hidden;
-  margin-bottom: 8px;
- width:100%;
- height:auto !important;
+  margin-bottom: 10px;
+  width:100%;
+  height:auto;
 }
 
 #app .image {
   display: block;
-  object-fit: cover;
-  height: 100%;
+  transform:scale(1.1);
 }
+
 </style>

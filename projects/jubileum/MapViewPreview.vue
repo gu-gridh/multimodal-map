@@ -7,7 +7,7 @@ import type {
   ImageDeep,
 } from "./types";
 import type { DianaClient } from "@/assets/diana";
-import PreviewImage from "./PreviewImage.vue";
+import MapViewPreviewImage from "./MapViewPreviewImage.vue";
 
 
 const { selectedFeature } = storeToRefs(mapStore());

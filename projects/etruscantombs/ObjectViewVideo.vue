@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import DetailPage from "@/components/DetailPage.vue";
+import ObjectViewComponent from "@/components/ObjectViewComponent.vue";
 import type { VideoDeep } from "./types";
 import GuplayViewer from "@/components/GuplayViewer.vue";
 
@@ -14,7 +14,7 @@ const guplayId = computed(() => props.object.link.split("/").pop());
 
 <template>
   <div class="metadata">
-    <DetailPage :title="object.title" back="/">
+    <ObjectViewComponent :title="object.title" back="/">
       <p class="my-5 object-title">{{ object.description }}</p>
       <div v-if="object.photographer?.name">
         By: {{ object.photographer.name }}
@@ -26,7 +26,7 @@ const guplayId = computed(() => props.object.link.split("/").pop());
         Tags:
         {{ object.tag.map((tag) => tag.text).join(", ") }}
       </div>
-    </DetailPage>
+    </ObjectViewComponent>
   </div>
 
   <section class="illustration">

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import DetailPage from "@/components/DetailPage.vue";
+import ObjectViewComponent from "@/components/ObjectViewComponent.vue";
 import type { RephotographyDeep } from "./types";
 import ComparisonSlider from "@/components/ComparisonSlider.vue";
 
@@ -16,7 +16,7 @@ const images = {
 
 <template>
   <div class="metadata">
-    <DetailPage :title="object.title" back="/">
+    <ObjectViewComponent :title="object.title" back="/">
       <template v-for="(image, label) in images" :key="label">
         <h2 class="text-xl mt-5 theme-color">{{ label }}:</h2>
 
@@ -34,7 +34,7 @@ const images = {
           {{ image.tag.map((tag) => tag.text).join(", ") }}
         </div>
       </template>
-    </DetailPage>
+    </ObjectViewComponent>
   </div>
 
   <section class="illustration justify-center">

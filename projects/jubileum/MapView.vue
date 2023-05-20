@@ -1,16 +1,16 @@
 <script lang="ts" setup>
 import { computed } from "vue";
 import MainLayout from "@/MainLayout.vue";
-import Search from "./Search.vue";
+import MapViewControls from "./MapViewControls.vue";
 import MapComponent from "@/components/MapComponent.vue";
 import DianaPlaceLayer from "@/components/DianaPlaceLayer.vue";
-import FeatureSelect from "./FeautureSelect.vue";
-import PlaceDetails from "./PlaceDetails.vue";
+import MapViewFeautureSelect from "./MapViewFeautureSelect.vue";
+import MapViewPreview from "./MapViewPreview.vue";
 import { storeToRefs } from "pinia";
 import { jubileumStore } from "./store";
 import { clean } from "@/assets/utils";
 import markerIcon from "@/assets/marker-white.svg";
-import MasonryGrid from "./MasonryGrid.vue";
+import MapViewGallery from "./MapViewGallery.vue";
 import { ref } from "vue";
 import About from "./About.vue";
 import { onMounted, watch } from "vue";
@@ -90,7 +90,7 @@ watch(showGrid, (newValue) => {
           </button>
         </a>
         </div>
-      <Search />
+      <MapViewControls />
     </template>
     
     <template #background>
@@ -113,7 +113,7 @@ watch(showGrid, (newValue) => {
                   :anchor="[0.0, 0.0]"
                 ></ol-style-icon>
               </ol-style>
-              <FeatureSelect />
+              <MapViewFeautureSelect />
             </DianaPlaceLayer>
             <ol-tile-layer>
               <ol-source-xyz
@@ -125,14 +125,14 @@ watch(showGrid, (newValue) => {
           
         </MapComponent>
         
-        <MasonryGrid v-if="showGrid" />
+        <MapViewGallery v-if="showGrid" />
 
       </div>
     </template>
     
     <template #details>
       
-      <PlaceDetails />
+      <MapViewPreview />
       
     </template>
     

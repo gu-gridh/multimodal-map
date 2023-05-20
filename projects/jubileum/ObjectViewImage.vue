@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import DetailPage from "@/components/DetailPage.vue";
+import ObjectViewComponent from "@/components/ObjectViewComponent.vue";
 import OpenSeadragon from "@/components/OpenSeadragon.vue";
 import type { ImageDeep } from "./types";
 
@@ -20,7 +20,7 @@ const downloadImage = (fileUrl: string, fileName: string) => {
 
 <template>
   <div class="metadata">
-    <DetailPage :title="object.title" back="/">
+    <ObjectViewComponent :title="object.title" back="/">
       <div class="objects">
         <p v-html="object.description"></p>
 
@@ -38,7 +38,7 @@ const downloadImage = (fileUrl: string, fileName: string) => {
       <button class="category-button" @click="downloadImage(object.file, `${object.title}.tif`)">Ladda ner bild</button>
 
     </div>
-    </DetailPage>
+    </ObjectViewComponent>
   </div>
 
   <section class="illustration flex">

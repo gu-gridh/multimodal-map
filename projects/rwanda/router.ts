@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import MapView from "./MapView.vue";
-import DetailView from "./DetailView.vue";
+import ObjectView from "./ObjectView.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -13,7 +13,7 @@ const router = createRouter({
     {
       path: "/detail/:type/:id",
       name: "detail",
-      component: DetailView,
+      component: ObjectView,
       props: true,
     },
   ],

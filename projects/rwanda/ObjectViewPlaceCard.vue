@@ -127,7 +127,7 @@ padding:20px 30px 30px 30px;
 line-height:1.2;
 }
 
-.place-card .category-button{
+.place-card-full .category-button{
 width:110px!important;
 padding:4px 18px;
 margin-bottom:20px;
@@ -143,60 +143,7 @@ margin-bottom:20px;
  
 }
 
-.back-button {
-  left: 20px;
-  top: 40px;
-  background: url(@/assets/backbutton.png);
-  background-size: 100%;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-color: rgba(35, 35, 35, 0.9);
-  border-radius: 50%;
-  width: 35px;
-  height: 35px;
-  border-radius: 50%;
-  overflow: hidden;
-  position: fixed;
-}
-
 .meta-item {
 margin-bottom:5px;
 }
-
-@media screen and (max-width: 900px) {
-
-  /* Overwrites the body-container in MainLayout.vue */
-  html,
-body {
-  height: auto;
-  overflow: auto !important;
-}
-
-/* Overwrites the meeta-container in MainLayout.vue */
-#app .meta-container {
-position:absolute;
-margin-top:40vh;
-height:auto;
-font-size:120%;
-width:100%;
-padding-right:0px;
-padding-left:0px;
-padding-bottom:0px !important;
-overflow-y:auto;
-}
-
-.place-card-full {
-  margin-top:0px;
-  color:black;
-  background-color: white;
-  padding-bottom: 30px;
-  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.5);
-  transition: all 0.0s ease-in-out;
-  max-height:10000px;
-  overflow:auto;
-  margin-bottom: 0px;
-  border-radius: 30px 30px 0px 0px !important;
-}
-}
-
 </style>

@@ -1,12 +1,11 @@
 <script lang="ts" setup>
 import { computed } from "vue";
 import MainLayout from "@/MainLayout.vue";
-import Search from "./Search.vue";
+import MapViewControls from "./MapViewControls.vue";
 import MapComponent from "@/components/MapComponent.vue";
-import NpolarLayer from "./NpolarLayer.vue";
 import DianaPlaceLayer from "@/components/DianaPlaceLayer.vue";
 import FeatureSelection from "@/components/FeatureSelection.vue";
-import PlaceDetails from "./PlaceDetails.vue";
+import MapViewPreview from "./MapViewPreview.vue";
 import { storeToRefs } from "pinia";
 import { rephotographyStore } from "./store";
 import { clean } from "@/assets/utils";
@@ -39,15 +38,13 @@ const placeParams = computed(() =>
               "
             >More info</div>
           </button>
-      <Search />
+      <MapViewControls />
     </template>
 
     <template #background>
       <MapComponent :min-zoom="10" :max-zoom="18" :restrictExtent="[11.9, 42.15, 12.2, 42.4]" >
         <template #layers>
-          <NpolarLayer
-            capabilitiesUrl="https://geodata.npolar.no/arcgis/rest/services/Basisdata/NP_Ortofoto_Svalbard_WMTS_25833/MapServer/WMTS/1.0.0/WMTSCapabilities.xml"
-          />
+
 
           <DianaPlaceLayer
             path="rephotography/geojson/place/"
@@ -68,7 +65,7 @@ const placeParams = computed(() =>
     </template>
 
     <template #details>
-      <PlaceDetails />
+      <MapViewPreview />
     </template>
   </MainLayout>
 </template>

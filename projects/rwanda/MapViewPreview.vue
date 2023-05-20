@@ -3,7 +3,7 @@ import { watchEffect, ref, inject } from "vue";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
 import type { Image, Place } from "./types";
-import PreviewImage from "./PreviewImage.vue";
+import MapViewPreviewImage from "./MapViewPreviewImage.vue";
 import type { DianaClient } from "@/assets/diana";
 //import { stringifyQuery } from "vue-router";
 
@@ -59,7 +59,7 @@ const capitalize = (word: String) => {
       <!-- image card -->
     
        
-      <PreviewImage
+      <MapViewPreviewImage
           v-for="image in images"
           :key="image.id"
           :image="image"

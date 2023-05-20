@@ -5,7 +5,7 @@
 import { inject, provide, ref, nextTick } from "vue";
 import configRaw from "./config";
 import MainLayout from "@/MainLayout.vue";
-import Search from "./Search.vue";
+import MapViewControls from "./MapViewControls.vue";
 import type { Project } from "@/types/project";
 import { formatNames } from "./names";
 import type Feature from "ol/Feature";
@@ -15,7 +15,7 @@ import { mapStore } from "@/stores/store";
 import MapComponent from "@/components/MapComponent.vue";
 import DianaPlaceLayer from "@/components/DianaPlaceLayer.vue";
 import FeatureSelection from "@/components/FeatureSelection.vue";
-import PlaceDetails from "./PlaceDetails.vue";
+import MapViewPreview from "./MapViewPreview.vue";
 import type { Place } from "./types";
 import About from "./About.vue";
 
@@ -61,7 +61,7 @@ const toggleAboutVisibility = async () => {
               "
             >More info</div>
           </button>
-      <Search />
+      <MapViewControls />
     </template>
 
     <template #background>
@@ -97,7 +97,7 @@ const toggleAboutVisibility = async () => {
     </template>
 
     <template #details>
-  <PlaceDetails />
+  <MapViewPreview />
 </template>
 </MainLayout>
 </template>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import DetailPage from "@/components/DetailPage.vue";
+import ObjectViewComponent from "@/components/ObjectViewComponent.vue";
 import OpenSeadragon from "@/components/OpenSeadragon.vue";
 import type { ImageDeep } from "./types";
 
@@ -11,7 +11,7 @@ defineProps<{
 
 <template>
   <div class="metadata">
-    <DetailPage :title="object.title" back="/">
+    <ObjectViewComponent :title="object.title" back="/">
       <p class="my-5 object-title">{{ object.description }}</p>
       <div v-if="object.photographer?.name">
         By: {{ object.photographer.name }}
@@ -23,13 +23,14 @@ defineProps<{
         Tags:
         {{ object.tag.map((tag) => tag.text).join(", ") }}
       </div>
-    </DetailPage>
+    </ObjectViewComponent>
   </div>
 
   <section class="illustration flex">
+
     <OpenSeadragon :src="`${object.iiif_file}/info.json`" class="flex-1" />
 
-    <div id="ToolbarVertical">
+  <div id="ToolbarVertical">
       <a id="full-page" href="#full-page">
         <div id="FullPage" class="NavButton"></div>
       </a>
@@ -40,8 +41,10 @@ defineProps<{
         <div id="ZoomOut" class="NavButton"></div>
       </a>
     </div>
-    
   </section>
 </template>
 
-<style scoped></style>
+<style scoped>
+
+
+</style>

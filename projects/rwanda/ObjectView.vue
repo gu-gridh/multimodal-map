@@ -2,8 +2,8 @@
 import { inject, ref, watchEffect } from "vue";
 import type { Image, Place } from "./types";
 import type { DianaClient } from "@/assets/diana";
-import ObjectImage from "./ObjectImage.vue";
-import ObjectPlace from "./ObjectPlace.vue"
+import ObjectViewImage from "./ObjectViewImage.vue";
+import ObjectViewPlace from "./ObjectViewPlace.vue"
 
 const props = defineProps({
   type: {
@@ -33,7 +33,7 @@ watchEffect(async () => {
 });
 
 const objectComponent = {
-  image: ObjectImage,
+  image: ObjectViewImage,
 }[props.type];
 </script>
 
@@ -42,7 +42,7 @@ const objectComponent = {
     <component :is="objectComponent" :object="object" :id="Number(id)" />
   </article>
   <article v-if="props.type == 'place'">
-    <ObjectPlace  :place="place" :id="Number(id)"/>
+    <ObjectViewPlace  :place="place" :id="Number(id)"/>
   </article>
 </template>
 

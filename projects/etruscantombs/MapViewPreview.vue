@@ -10,9 +10,9 @@ import type {
   Video,
 } from "./types";
 import type { DianaClient } from "@/assets/diana";
-import PreviewRephotography from "./PreviewRephotography.vue";
-import PreviewImage from "./PreviewImage.vue";
-import PreviewVideo from "./PreviewVideo.vue";
+import MapViewPreviewRephotography from "./MapViewPreviewRephotography.vue";
+import MapViewPreviewImage from "./MapViewPreviewImage.vue";
+import MapViewPreviewVideo from "./MapViewPreviewVideo.vue";
 
 const { selectedFeature } = storeToRefs(mapStore());
 const diana = inject("diana") as DianaClient;
@@ -62,19 +62,19 @@ function deselectPlace() {
       <div class="close-button" @click="deselectPlace">+</div>
       <h3 class="">{{ selectedFeature.get("name") }}</h3>
       <div class="flex flex-col gap-10 pointer">
-        <PreviewRephotography
+        <MapViewPreviewRephotography
           v-for="rephotography in rephotographies"
           :key="rephotography.old_image + ' ' + rephotography.new_image"
           :rephotography="rephotography"
         />
 
-        <PreviewVideo
+        <MapViewPreviewVideo
           v-for="video in videos"
           :key="video.uuid"
           :video="video"
         />
 
-        <PreviewImage
+        <MapViewPreviewImage
           v-for="image in images"
           :key="image.uuid"
           :image="image"
@@ -110,14 +110,14 @@ function deselectPlace() {
 #app .image-container {
   border-radius: 8px;
   overflow: hidden;
-  margin-bottom: 10px;
-  width:100%;
-  height:auto;
+  margin-bottom: 8px;
+ width:100%;
+ height:auto !important;
 }
 
 #app .image {
   display: block;
-  transform:scale(1.1);
+  object-fit: cover;
+  height: 100%;
 }
-
 </style>
