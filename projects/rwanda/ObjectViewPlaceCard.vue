@@ -119,6 +119,7 @@ height:auto;
 .place-card-content h1{
 font-size:2.5em;
 color:rgb(180,100,100);
+margin-bottom:5px;
 
 }
 
@@ -130,6 +131,7 @@ line-height:1.2;
 .place-card-full .category-button{
 width:110px!important;
 padding:4px 18px;
+margin-top:15px;
 margin-bottom:20px;
 
 }
