@@ -48,7 +48,7 @@ body {
 
 
 
-#app .detail-view {
+#app .mapview-preview {
   height: 100vh !important;
   pointer-events: auto !important;
   overflow-y: scroll !important;

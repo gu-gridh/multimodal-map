@@ -19,6 +19,10 @@ body {
   font-family: "Barlow Condensed", sans-serif !important;
 }
 
+.theme-color {
+  color: orange;
+}
+
 .main-title {
   font-size: 80px;
   line-height: 0.9;
@@ -34,7 +38,7 @@ body {
   background-size: contain;
 }
 
-#app .detail-view {
+#app .mapview-preview {
   height: 100vh !important;
   pointer-events: auto !important;
   overflow-y: scroll !important;

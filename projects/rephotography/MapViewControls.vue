@@ -42,8 +42,8 @@ const YEARS = {
     class="my-2"
   />
 
-  <div class="section-title">Tags</div>
-
+  <!-- <div class="section-title">Tags</div>
+ -->
   
   <div class="section-title">Time span</div>
   <RangeSlider

@@ -94,10 +94,6 @@ defineProps({
   padding-bottom: 10px;
 }
 
-.theme-color {
-  color: orange;
-}
-
 .illustration {
   float: left;
   width: calc(100% - 350px);

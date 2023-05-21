@@ -57,7 +57,7 @@ function deselectPlace() {
 </script>
 
 <template>
-  <div v-if="selectedFeature" class="detail-view">
+  <div v-if="selectedFeature" class="mapview-preview">
     <div class="px-8 py-6">
       <div class="close-button" @click="deselectPlace">+</div>
       <h3 class="">{{ selectedFeature.get("name") }}</h3>

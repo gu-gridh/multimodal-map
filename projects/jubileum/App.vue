@@ -78,7 +78,7 @@ body {
   transition: all 0.5s ease-in-out;
 }
 
-#app .detail-view {
+#app .mapview-preview {
   color: white;
   transition: all 0.5s ease-in-out;
   padding-top: 20px;
@@ -99,7 +99,7 @@ margin-left:200px !important;
 
 @media screen and (max-width: 900px) {
 
-  #app .detail-view {
+  #app .mapview-preview {
  padding-top:70px !important;
 }
 

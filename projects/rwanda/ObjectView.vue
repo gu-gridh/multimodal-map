@@ -47,7 +47,7 @@ const objectComponent = {
 </template>
 
 <style>
-#app .detail-view {
+#app .mapview-preview {
   height: 100% !important;
   pointer-events: auto !important;
   overflow-y: scroll !important;

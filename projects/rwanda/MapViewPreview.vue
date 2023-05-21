@@ -35,7 +35,7 @@ const capitalize = (word: String) => {
 </script>
 
 <template>
-  <div v-if="selectedFeature" class="detail-view">
+  <div v-if="selectedFeature" class="mapview-preview">
     <div class="px-2 py-6">
       <div class="close-button" @click="deselectPlace">+</div>
       <div class="flex flex-col gap-4 pointer">

@@ -42,7 +42,7 @@ function deselectPlace() {
 
 <template>
  
-  <div v-if="selectedFeature" class="detail-view" @click="deselectPlace">
+  <div v-if="selectedFeature" class="mapview-preview" @click="deselectPlace">
     <div class="close-button" @click="deselectPlace">+</div>
     <div class="place-title">
       <p>{{ selectedFeature.get("name") }}</p>
@@ -85,7 +85,7 @@ function deselectPlace() {
 </template>
 
 <style scoped>
-#app .detail-view {
+#app .mapview-preview {
   height: 100% !important;
   pointer-events: auto !important;
   overflow-y: scroll !important;

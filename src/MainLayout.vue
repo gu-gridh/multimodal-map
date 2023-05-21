@@ -110,7 +110,7 @@ body {
   transition: all 0.5s ease-in-out;
 }
 
-.detail-view {
+.mapview-preview {
   padding-top: 5px;
   width: 100%;
   transition: all 0.5s ease-in-out;
@@ -157,7 +157,7 @@ font-size:1.6em;
   margin-bottom: 20px;
 }
 
-#app .detail-view {
+#app .mapview-preview {
   width: 100%;
 }
 
@@ -351,7 +351,7 @@ body {
 
 }
 
-#app .detail-view {
+#app .mapview-preview {
   width: 100%;
   overflow:hidden;
  padding-top:20px;
@@ -494,7 +494,7 @@ overflow-y:auto;
       background-position: 10px 10px;
 }
 
-/* The III viewer */
+/* The IIIF-viewer */
 
 
 #app #ToolbarVertical {
