@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Place } from './types';
-import type { DianaClient } from "@/assets/diana"
-import { inject, ref } from "vue"
+import router from './router'
+import { ref } from "vue"
 
 defineProps<{
         place: Place;
@@ -30,17 +30,7 @@ defineProps<{
 
 
   <div class="meta-container">
-
-    <header class="flex flex-row-reverse pt-8">
-      <div class="flex-1"></div>
-      <div class="container">
-      </div>
-      <div class="flex-1 text-center">
-        <!-- TODO -->
-        <!-- <router-link to="back" class="back-button"> </router-link> -->
-      </div>
-    </header>
-
+    <button class="back-button" @click="router.go(-1)"></button>
       <div class="place-card-full">
         <div class="place-card-content">
           <!-- mini map -->
@@ -188,5 +178,21 @@ margin-bottom:20px;
 
 .meta-item {
 margin-bottom:5px;
+}
+
+.back-button {
+  left: 20px;
+  top: 40px;
+  background: url(@/assets/backbutton.png);
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: rgba(35, 35, 35, 0.9);
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  overflow: hidden;
+  position: fixed;
 }
 </style>
