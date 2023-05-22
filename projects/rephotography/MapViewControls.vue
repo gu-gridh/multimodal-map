@@ -14,8 +14,7 @@ const CATEGORIES = {
   all: "All Categories",
   image: "Photographs",
   video: "Videos",
-  models: "Models",
-  documents: "Documents",
+  // documents: "Documents",
   drawings: "Drawings and art",
   observation: "Observations",
 };
