@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Place } from './types';
 import type { DianaClient } from "@/assets/diana"
-import { inject } from "vue"
+import { inject, ref } from "vue"
 
 defineProps<{
         place: Place;
@@ -13,6 +13,13 @@ defineProps<{
       const rest = word.slice(1)
       return first + rest
     }
+
+    const center = ref([30.0636, -1.9520]);
+    const projection = ref("EPSG:4326");
+    const zoom = ref(15);
+    const rotation = ref(0);
+    const strokeWidth = ref(5);
+    const strokeColor = ref("red");
 
     //check if data is missing - TODO
 
@@ -35,8 +42,42 @@ defineProps<{
     </header>
 
       <div class="place-card-full">
-        <div class="place-card-content"> 
-        <div class="mini-map">  </div>
+        <div class="place-card-content">
+          <!-- mini map -->
+        <div class="mini-map">
+          <ol-map 
+          :loadTilesWhileAnimating="true"
+          :loadTilesWhileInteracting="true"
+          style="height:200px"
+          >
+            <ol-view
+              ref="view"
+              :center="place.geometry.coordinates[0][0]"
+              :rotation="rotation"
+              :zoom="zoom"
+              :projection="projection"
+            />
+            <ol-tile-layer>
+              <ol-source-osm />
+            </ol-tile-layer>
+            <ol-vector-layer>
+            <ol-source-vector>
+              <ol-feature>
+                <ol-geom-line-string
+                  :coordinates="place.geometry.coordinates[0]"
+                ></ol-geom-line-string>
+                <ol-style>
+                  <ol-style-stroke
+                    :color="strokeColor"
+                    :width="strokeWidth"
+                  ></ol-style-stroke>
+                </ol-style>
+              </ol-feature>
+            </ol-source-vector>
+          </ol-vector-layer>
+          </ol-map>
+        </div>
+        <!-- meta-data -->
         <div class="metadata-content"> 
       <h1>{{ capitalize(place.properties.type.text) }}</h1>
       <div class="meta-item">{{ capitalize(place.properties.description) }}</div>
