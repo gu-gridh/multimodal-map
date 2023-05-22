@@ -28,9 +28,9 @@ defineProps<{
 
 <template>
 
-
+<button class="back-button" @click="router.go(-1)"></button>
   <div class="meta-container">
-    <button class="back-button" @click="router.go(-1)"></button>
+   
       <div class="place-card-full">
         <div class="place-card-content">
           <!-- mini map -->
@@ -38,7 +38,7 @@ defineProps<{
           <ol-map 
           :loadTilesWhileAnimating="true"
           :loadTilesWhileInteracting="true"
-          style="height:200px"
+          style="height:250px"
           >
             <ol-view
               ref="view"
@@ -107,8 +107,11 @@ defineProps<{
 
 </template>
 
-<style>
+<style scoped>
 
+</style>
+
+<style>
 .meta-container{
   overflow-y: auto;
   height:calc(100vh - 80px);
@@ -125,7 +128,7 @@ defineProps<{
 }
 
 .place-card-full {
-  margin-top:80px;
+  margin-top:90px;
   color:black;
   background-color: white;
   padding: 0px;
@@ -170,18 +173,32 @@ margin-bottom:20px;
 .mini-map{
   width:100%;
   height:200px;
+  overflow:hidden;
   background-color:grey;
   margin-bottom:0px;
-
- 
 }
-
 .meta-item {
 margin-bottom:5px;
 }
 
 .back-button {
-  left: 20px;
+  left: 45px;
+  top: 40px;
+  background: url(@/assets/backbutton.png);
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: rgba(35, 35, 35, 0.9);
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  overflow: hidden;
+  position: fixed;
+}
+
+.back-button {
+  left: 45px;
   top: 40px;
   background: url(@/assets/backbutton.png);
   background-size: 100%;
