@@ -107,7 +107,7 @@ defineProps<{
 
 </template>
 
-<style scoped>
+<style>
 
 </style>
 
@@ -118,13 +118,6 @@ defineProps<{
   padding-bottom:30px;
   padding-left:45px;
   padding-right:20px;
-}
-
-#app .metadata {
-  background-color: transparent !important;
-  overflow:hidden !important;
-  width: 550px !important;
-  background-color:red;
 }
 
 .place-card-full {

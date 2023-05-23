@@ -34,6 +34,23 @@ defineProps<{
   </section>
 </template>
 
-<style scoped>
+<style coped>
+.metadata {
+  background-color: black !important;
+  overflow:hidden !important;
+  width: 450px !important;
+}
 
+.meta-title {
+  padding-left:50px;
+}
+
+.object-title{
+font-size:1.1em;
+}
+
+.metadata-posts {
+  padding-left: 50px;
+  padding-right: 10px;
+}
 </style>

@@ -16,7 +16,13 @@ import ObjectViewPlaceCard from "./ObjectViewPlaceCard.vue"
     <!-- gallery here -->
 </template>
 
-<style>
+<style scoped>
+
+#app .metadata {
+    background-color: transparent !important;
+  overflow:hidden !important;
+  width:550px!important;
+}
 
 @media screen and (max-width: 900px) {
 
@@ -26,6 +32,8 @@ body {
 height: auto;
 overflow: auto !important;
 }
+
+
 
 /* Overwrites the meeta-container in MainLayout.vue */
 #app .meta-container {
