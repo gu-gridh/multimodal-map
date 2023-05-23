@@ -63,6 +63,7 @@ body {
   margin: 0 !important;
   overflow: hidden !important;
   background-color:rgb(45,45,45);
+  -ms-overflow-style: none;
 }
 
 #app {
@@ -116,7 +117,9 @@ body {
   transition: all 0.5s ease-in-out;
 }
 
-
+body::-webkit-scrollbar{
+    display: none;
+  }
 
 /* Adaption for various screen sizes */
 
