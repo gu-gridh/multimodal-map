@@ -28,8 +28,8 @@ defineProps<{
 
 <template>
 
-<button class="back-button" @click="router.go(-1)"></button>
-  <div class="meta-container">
+<button class="place-back-button" @click="router.go(-1)"></button>
+  <div class="place-meta-container">
    
       <div class="place-card-full">
         <div class="place-card-content">
@@ -99,20 +99,27 @@ defineProps<{
     </div>
       </div>
   
-
-
   </div>
-
-
-
 </template>
 
 <style>
+.place-back-button {
+  left: 40px;
+  top: 40px;
+  background: url(@/assets/backbutton.png);
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: rgba(35, 35, 35, 0.9);
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  overflow: hidden;
+  position: absolute;
+}
 
-</style>
-
-<style>
-.meta-container{
+.place-meta-container{
   overflow-y: auto;
   height:calc(100vh - 80px);
   padding-bottom:30px;
@@ -161,7 +168,7 @@ line-height:1.2;
 }
 
 .place-card-full .category-button{
-width:110px!important;
+  width:110px!important;
 padding:4px 18px;
 margin-top:15px;
 margin-bottom:20px;
@@ -176,38 +183,51 @@ margin-bottom:20px;
   margin-bottom:0px;
 }
 .meta-item {
-margin-bottom:5px;
+  margin-bottom:5px;
 }
 
-.back-button {
-  left: 45px;
+
+
+@media screen and (max-width: 900px) {
+
+  .place-back-button {
+  left: 40px;
   top: 40px;
-  background: url(@/assets/backbutton.png);
-  background-size: 100%;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-color: rgba(35, 35, 35, 0.9);
-  border-radius: 50%;
-  width: 35px;
-  height: 35px;
-  border-radius: 50%;
-  overflow: hidden;
-  position: fixed;
+  width: 50px;
+  height: 50px;
+
 }
 
-.back-button {
-  left: 45px;
-  top: 40px;
-  background: url(@/assets/backbutton.png);
-  background-size: 100%;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-color: rgba(35, 35, 35, 0.9);
-  border-radius: 50%;
-  width: 35px;
-  height: 35px;
-  border-radius: 50%;
-  overflow: hidden;
-  position: fixed;
+  .place-card-full .category-button{
+  width:110px!important;
+padding:4px 18px;
+margin-top:15px;
+padding:0px;
+padding-left:0px;
+margin-bottom:20px;
+
 }
+
+
+.place-card-full {
+margin-top:0px;
+color:black;
+background-color: white;
+padding-bottom: 30px;
+box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.5);
+transition: all 0.0s ease-in-out;
+max-height:10000px;
+overflow:hidden;
+margin-bottom: 0px;
+border-radius: 30px 30px 0px 0px !important;
+}
+
+.mini-map{
+  width:100%;
+  height:250px;
+  background-color:grey;
+  margin-bottom:0px;
+}
+}
+
 </style>

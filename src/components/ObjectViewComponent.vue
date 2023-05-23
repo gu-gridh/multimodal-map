@@ -47,8 +47,6 @@ defineProps({
   padding-right:20px;
 }
 
-
-
 .back-button {
   left: 20px;
   top: 40px;
