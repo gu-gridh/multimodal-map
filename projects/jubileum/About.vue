@@ -23,8 +23,10 @@ Nedanför, på andra sida Korsvägen där nuvarande Svenska mässan ligger var E
   Humlesjö, Siska, Åhlfeldt, Johan, Strinnholm, Anders <i>et al.</i> (2023).
       <i>Göteborgs jubileum 1923</i>, v.1.0 GRIDH. https://jubileet1923.dh.gu.se/. Accessed [datum].</p>
 <p><b>För att citera kodbasen:</b><br>
-  Westin, Jonathan, Bridge, Tristan & Åkerlund, Kristin. ”gu-gridh/multimodal-map/projects/jubileum: v.1.0 Initial public release" Github, May 24, 2023. https://github.com/gu-gridh/multimodal-map/tree/main/projects/jubileum</p>
-      </div>
+  Westin, Jonathan, Bridge, Tristan & Åkerlund, Kristin. ”gu-gridh/multimodal-map/projects/jubileum: v.1.0 Initial public release" Github, May 24, 2023. https://github.com/gu-gridh/multimodal-map/tree/main/projects/jubileum</p>      
+  Bilder: <a href="https://creativecommons.org/publicdomain/zero/1.0/deed.sv">CC0</a><br>
+  Texter: <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>
+</div>
     
         <button @click="$emit('close')">
             <div
@@ -186,7 +188,7 @@ transition: all 0.4s ease-in-out;
 }
 
 a {
-  font-weight: bold;
+  font-weight: normal;
 }
 
 .about-lower-border{

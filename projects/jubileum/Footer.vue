@@ -9,7 +9,13 @@
    
     <div id="citation"> 
       Citera portalen som: Humlesjö, Siska, Åhlfeldt, Johan, Strinnholm, Anders <i>et al.</i> (2023).<br>
-      <i>Göteborgs jubileum 1923</i>, v.1.0 GRIDH. https://jubileet1923.dh.gu.se/. Accessed [datum]</div>
+      <i>Göteborgs jubileum 1923</i>, v.1.0 GRIDH. https://jubileet1923.dh.gu.se/. Accessed [datum]<br>
+      </div>
+
+      <div id="legal"> 
+      Bilder: <a href="https://creativecommons.org/publicdomain/zero/1.0/deed.sv">CC0</a><br>
+  Texter: <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>
+</div>
   </footer>
 </template>
 
@@ -31,7 +37,7 @@
 }
 
 a {
-  font-weight: bold;
+  font-weight: normal;
 }
 
 #CDHLogo {
@@ -83,6 +89,21 @@ a {
   border-width:0 0.5px 0 0px;
   border-color:white;
 
+}
+
+#legal{
+  float: left;
+  margin-left: 50px;
+  width: 200px;
+  height: auto;
+  text-align: left;
+  font-weight: 200;
+  font-style: normal;
+  font-size: 16px;
+  line-height: 1.2;
+  padding-right:20px;
+  margin-top:20px;;
+  vertical-align: middle;
 }
 
 </style>
