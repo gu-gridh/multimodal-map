@@ -116,21 +116,17 @@ function deselectPlace() {
     0 0px 0px 0 rgba(0, 0, 0, 0.19);
 }
 
-.card-meta-container {
-  color: black;
-  font-weight: 400;
-  font-size: 20px;
-  line-height: 1;
-  text-align: center;
-  margin-top: 10px;
-}
+
 
 .image-card {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
   width: auto;
   pointer-events: auto !important;
   border-radius: 10px;
   margin-right: 20px;
-  padding: 20px;
+  padding: 20px 20px;
   margin-bottom: 20px;
   background-color: rgba(248, 249, 229, 0.95);
   box-shadow: 0px 0px 20px 0 rgba(0, 0, 0, 0.2),
@@ -138,6 +134,15 @@ function deselectPlace() {
   transition: all 0.2s ease-in-out;
 }
 
+.card-meta-container {
+  color: black;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 1;
+  text-align: center;
+  margin-top: 10px;
+  padding:0px 0px;
+}
 
 
 .image-card:hover .image-container {
@@ -152,7 +157,7 @@ function deselectPlace() {
   background-color: rgba(248, 249, 229, 1);
 }
 
-#app .image-container {
+ .image-container {
   border-radius:50%;
   overflow: hidden;
   margin-bottom: 8px;
@@ -218,7 +223,6 @@ function deselectPlace() {
   width:100%!important;
   height:100%!important;
   transform:scale(1.2)!important;
-
 }
 }
 
@@ -228,8 +232,8 @@ function deselectPlace() {
   border-radius:50%!important;
   overflow: hidden!important;
   margin-bottom: 8px;
-  height: 180px!important;
-  width: 180px!important;
+  height: 160px!important;
+  width: 160px!important;
 }
 
 #app .image {

@@ -18,7 +18,12 @@
       <p>Bakom konstmuseet och upp emot området runt näckrosdammen var platsen för den Historiska minnesutställningen. Här visades olika former av historiska utställningar kopplade till olika ämnen som sjöfart, handel, konsthantverk och hemslöjd. En rolig detalj är att humanistiska fakulteten och Humanistiska biblioteket ligger precis där stora delar av utställningen då var lokaliserad. Biblioteket ligger i dag där huvudrestaurangen låg och Humanisten där minneshallen stod.
 Nedanför, på andra sida Korsvägen där nuvarande Svenska mässan ligger var Exportutställningen lokaliserad. Här visade många av de stora industriföretagen upp sina produkter. Här kan du se bilder på de olika byggnaderna m.m. som stod på platsen under utställningen. Vi har även samlat en rad digitaliserade skrifter som på olika sätt berör utställningen, som du lätt hittar här. Återkom gärna vid flera tillfällen då vi kommer fortsätta att publicera digitaliserat material här.</p>
  
-<p>Göteborgs forskningsinfrastruktur för digital humaniora (GRIDH) i samarbete med Göteborgs universitetsbibliotek har tagit fram den här tjänsten som en del i ett större samarbete. Vi hoppas du kommer finna både bilder och texter intressanta.</p>
+<p>Portalen <i>Göteborgs jubileum 1923</i> är ett samarbetsprojekt mellan Göteborgs universitetsbibliotek och Göteborgs infrastruktur för digital humaniora (GRIDH). Bilderna och trycksakerna kommer från bibliotekets samlingar, Göteborgs stadsmuseums databas Carlotta, Wikipedia och Filmarkivet. Samtliga bilder har fri upphovsrätt. Bild- och platsbeskrivningar är skrivna av Siska Humlesjö och Johan Åhlfeldt. Den inledande texten är skriven av Anders Strinnholm.</p>
+<p><b>För att citera portalen som helhet:</b> <br>
+  Humlesjö, Siska, Åhlfeldt, Johan, Strinnholm, Anders <i>et al.</i> (2023).
+      <i>Göteborgs jubileum 1923</i>, v.1.0 GRIDH. https://jubileet1923.dh.gu.se/. Accessed [datum].</p>
+<p><b>För att citera kodbasen:</b><br>
+  Westin, Jonathan, Bridge, Tristan & Åkerlund, Kristin. ”gu-gridh/multimodal-map/projects/jubileum: v.1.0 Initial public release" Github, May 24, 2023. https://github.com/gu-gridh/multimodal-map/tree/main/projects/jubileum</p>
       </div>
     
         <button @click="$emit('close')">
@@ -138,7 +143,7 @@ body{
 columns:1;
 column-gap:30px;
 width:850px;
-font-size:1.8em;
+font-size:2.0em;
 opacity:0.0;
 padding:00px 30px;
 transition: all 0.4s ease-in-out;
@@ -150,9 +155,14 @@ transition: all 0.4s ease-in-out;
   float:left;
   text-align:justify;
   color:black;
-  width:950px;
+  columns:2;
+  width:auto;
+  padding-left:30px;
+  padding-right:30px;
+  max-width:1050px;
   font-size:1.4em;
-  font-weight: 200;
+  line-height:1.1;
+  font-weight: 300;
   opacity:0.0;
   padding:30px;
   transition: all 0.4s ease-in-out;
@@ -196,15 +206,19 @@ a {
 .about-logo-top-right{
   display:block;
   pointer-events:none;
-  width:200px;
-  height:90px;
+  width:180px;
+  height:180px;
+  padding:20px;
   position:absolute;
-  background:url(./images/logo-Infravis-516.png);
+  background:url(../../public/gu-logo.png);
   background-repeat: no-repeat;
-  background-size: contain;
-  top:30px;
-  right:60px;
-  opacity:0.7;
+  background-position:center;
+  background-size: 80%;
+  background-color:rgb(45,45,45);
+  top:0px;
+  right:50px;
+  opacity:1.0;
+  border-radius:0px 0px 4px 4px;
 
 }
 
