@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Place } from './types';
-import type { DianaClient } from "@/assets/diana"
-import { inject } from "vue"
+import router from './router'
+import { ref } from "vue"
 
 defineProps<{
         place: Place;
@@ -14,6 +14,13 @@ defineProps<{
       return first + rest
     }
 
+    const center = ref([30.0636, -1.9520]);
+    const projection = ref("EPSG:4326");
+    const zoom = ref(15);
+    const rotation = ref(0);
+    const strokeWidth = ref(5);
+    const strokeColor = ref("red");
+
     //check if data is missing - TODO
 
 
@@ -21,22 +28,46 @@ defineProps<{
 
 <template>
 
-
-  <div class="meta-container">
-
-    <header class="flex flex-row-reverse pt-8">
-      <div class="flex-1"></div>
-      <div class="container">
-      </div>
-      <div class="flex-1 text-center">
-        <!-- TODO -->
-        <!-- <router-link to="back" class="back-button"> </router-link> -->
-      </div>
-    </header>
-
+<button class="place-back-button" @click="router.go(-1)"></button>
+  <div class="place-meta-container">
+   
       <div class="place-card-full">
-        <div class="place-card-content"> 
-        <div class="mini-map">  </div>
+        <div class="place-card-content">
+          <!-- mini map -->
+        <div class="mini-map">
+          <ol-map 
+          :loadTilesWhileAnimating="true"
+          :loadTilesWhileInteracting="true"
+          style="height:250px"
+          >
+            <ol-view
+              ref="view"
+              :center="place.geometry.coordinates[0][0]"
+              :rotation="rotation"
+              :zoom="zoom"
+              :projection="projection"
+            />
+            <ol-tile-layer>
+              <ol-source-osm />
+            </ol-tile-layer>
+            <ol-vector-layer>
+            <ol-source-vector>
+              <ol-feature>
+                <ol-geom-line-string
+                  :coordinates="place.geometry.coordinates[0]"
+                ></ol-geom-line-string>
+                <ol-style>
+                  <ol-style-stroke
+                    :color="strokeColor"
+                    :width="strokeWidth"
+                  ></ol-style-stroke>
+                </ol-style>
+              </ol-feature>
+            </ol-source-vector>
+          </ol-vector-layer>
+          </ol-map>
+        </div>
+        <!-- meta-data -->
         <div class="metadata-content"> 
       <h1>{{ capitalize(place.properties.type.text) }}</h1>
       <div class="meta-item">{{ capitalize(place.properties.description) }}</div>
@@ -68,17 +99,27 @@ defineProps<{
     </div>
       </div>
   
-
-
   </div>
-
-
-
 </template>
 
 <style>
+.place-back-button {
+  left: 40px;
+  top: 40px;
+  background: url(@/assets/backbutton.png);
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: rgba(35, 35, 35, 0.9);
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  overflow: hidden;
+  position: absolute;
+}
 
-.meta-container{
+.place-meta-container{
   overflow-y: auto;
   height:calc(100vh - 80px);
   padding-bottom:30px;
@@ -86,15 +127,8 @@ defineProps<{
   padding-right:20px;
 }
 
-#app .metadata {
-  background-color: transparent !important;
-  overflow:hidden !important;
-  width: 550px !important;
-  background-color:red;
-}
-
 .place-card-full {
-  margin-top:80px;
+  margin-top:90px;
   color:black;
   background-color: white;
   padding: 0px;
@@ -105,7 +139,12 @@ defineProps<{
   overflow-y:auto;
   margin-bottom: 10px;
   border-radius: 10px !important;
+  -ms-overflow-style: none;
 }
+
+.place-card-full::-webkit-scrollbar {
+    width: 0 !important
+    }
 
 .lang{
   font-size: 14px;
@@ -129,7 +168,7 @@ line-height:1.2;
 }
 
 .place-card-full .category-button{
-width:110px!important;
+  width:110px!important;
 padding:4px 18px;
 margin-top:15px;
 margin-bottom:20px;
@@ -139,13 +178,56 @@ margin-bottom:20px;
 .mini-map{
   width:100%;
   height:200px;
+  overflow:hidden;
   background-color:grey;
   margin-bottom:0px;
-
- 
 }
-
 .meta-item {
-margin-bottom:5px;
+  margin-bottom:5px;
 }
+
+
+
+@media screen and (max-width: 900px) {
+
+  .place-back-button {
+  left: 40px;
+  top: 40px;
+  width: 50px;
+  height: 50px;
+
+}
+
+  .place-card-full .category-button{
+  width:110px!important;
+padding:4px 18px;
+margin-top:15px;
+padding:0px;
+padding-left:0px;
+margin-bottom:20px;
+
+}
+
+
+.place-card-full {
+margin-top:0px;
+color:black;
+background-color: white;
+padding-bottom: 30px;
+box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.5);
+transition: all 0.0s ease-in-out;
+max-height:10000px;
+overflow:hidden;
+margin-bottom: 0px;
+border-radius: 30px 30px 0px 0px !important;
+}
+
+.mini-map{
+  width:100%;
+  height:250px;
+  background-color:grey;
+  margin-bottom:0px;
+}
+}
+
 </style>

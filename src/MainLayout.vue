@@ -63,6 +63,7 @@ body {
   margin: 0 !important;
   overflow: hidden !important;
   background-color:rgb(45,45,45);
+  -ms-overflow-style: none;
 }
 
 #app {
@@ -116,7 +117,9 @@ body {
   transition: all 0.5s ease-in-out;
 }
 
-
+body::-webkit-scrollbar{
+    display: none;
+  }
 
 /* Adaption for various screen sizes */
 
@@ -172,13 +175,22 @@ font-size:1.6em;
  width:100%!important;
 
 }
-
+#app .place-meta-container{
+  font-size:120%;
+}
 
 #app .meta-container{
   font-size:120%;
 }
 #app .meta-title{
   font-size:50px;
+}
+
+#app .place-meta-container .category-button{
+  padding:12px 16px;
+      background-size: 30px;
+      padding-left: 50px;
+      background-position: 10px 10px;
 }
 
 #app .meta-container .category-button{
@@ -413,7 +425,7 @@ box-shadow: inset 0px 2px 2px 0 rgba(0, 0, 0, 0.3),
 }
 
 #app #footer {
-  height: 0px;
+  display:none!important;
 }
 
 /* The about screen */
@@ -462,6 +474,17 @@ padding:20px 40px;
 
 }
 
+#app .place-meta-container {
+position:absolute;
+margin-top:50vh;
+height:50vh;
+font-size:120%;
+width:100%;
+padding-right:20px;
+padding-bottom:100px !important;
+overflow-y:auto;
+}
+
 #app .meta-container {
 position:absolute;
 margin-top:50vh;
@@ -473,9 +496,15 @@ padding-bottom:100px !important;
 overflow-y:auto;
 }
 
+#app .place-metadata {
+  float: left;
+  width:100%!important;
+
+}
+
 #app .metadata {
   float: left;
-  width:100%;
+  width:100%!important;
 
 }
 
@@ -485,6 +514,13 @@ overflow-y:auto;
 
 #app  .back-button {
   margin-top:50vh;
+}
+
+#app .place-meta-container .category-button{
+  padding:12px 16px;
+      background-size: 30px;
+      padding-left: 50px;
+      background-position: 10px 10px;
 }
 
 #app .meta-container .category-button{
