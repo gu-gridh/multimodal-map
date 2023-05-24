@@ -25,7 +25,7 @@ const placeParams = computed(() =>
     end_date: years.value[1],
   })
 );
-const visibleAbout = ref(true);
+const visibleAbout = ref(false);
 
 const toggleAboutVisibility = async () => {
   console.log('fired')
