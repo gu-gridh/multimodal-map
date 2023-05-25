@@ -190,6 +190,7 @@ margin-bottom:20px;
 
 @media screen and (max-width: 900px) {
 
+
   .place-back-button {
   left: 40px;
   top: 40px;
@@ -198,15 +199,6 @@ margin-bottom:20px;
 
 }
 
-  .place-card-full .category-button{
-  width:110px!important;
-padding:4px 18px;
-margin-top:15px;
-padding:0px;
-padding-left:0px;
-margin-bottom:20px;
-
-}
 
 
 .place-card-full {
@@ -227,6 +219,15 @@ border-radius: 30px 30px 0px 0px !important;
   height:250px;
   background-color:grey;
   margin-bottom:0px;
+}
+
+.place-card-full .category-button{
+width:120px!important;
+padding:8px 15px!important;
+margin-top:15px;
+padding:0px;
+padding-left:0px;
+margin-bottom:0px!important;
 }
 }
 
