@@ -34,7 +34,7 @@ import { rephotographyStore } from "./store";
 import type { RephotographyProject } from "./types";
 
 const config = inject<RephotographyProject>("config");
-const { categories, years } = storeToRefs(rephotographyStore());
+const { categories, years, tags} = storeToRefs(rephotographyStore());
 
 // See https://github.com/gu-gridh/rephotography/blob/master/views.py
 const CATEGORIES = {
@@ -62,7 +62,6 @@ onMounted(async () => {
   TAGS.value = { ...TAGS.value, ...tags };
 });
 
-const tags = ref<string[]>([]);
 </script>
 
 <style>

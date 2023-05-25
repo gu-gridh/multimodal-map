@@ -37,7 +37,9 @@ const toggleAboutVisibility = async () => {
   visibleAbout.value = !visibleAbout.value;
 };
 
-
+watch(tags, (newTags) => {
+  console.log("Tags changed:", newTags);
+});
 </script>
 
 
