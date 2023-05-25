@@ -28,7 +28,7 @@ defineProps<{
 
 <template>
 
-<button class="place-back-button" @click="router.go(-1)"></button>
+<button class="place-back-button" @click="router.push({path: '/'})"></button>
   <div class="place-meta-container">
    
       <div class="place-card-full">

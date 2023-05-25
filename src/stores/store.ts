@@ -25,6 +25,14 @@ export const mapStore = defineStore("map", () => {
     zoom.value = newZoom;
   }
 
+  function updateResults(newResults: Array<any>) {
+    results.value = newResults
+  }
+
+  function updateSelectedFeature(newSelect: Feature) {
+    selectedFeature.value = newSelect
+  }
+
   return { 
     extent, 
     center, 
@@ -34,6 +42,8 @@ export const mapStore = defineStore("map", () => {
     results, 
     mapUrls, 
     updateCenter, 
-    updateZoom 
+    updateZoom,
+    updateResults,
+    updateSelectedFeature
   };
 });
