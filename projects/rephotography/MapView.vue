@@ -16,7 +16,8 @@ import About from "./About.vue";
 import { onMounted, watch } from "vue";
 import { nextTick } from "vue";
 
-const { categories, years } = storeToRefs(rephotographyStore());
+const { categories, years, tags } = storeToRefs(rephotographyStore());
+// tags add here
 
 const placeParams = computed(() =>
   clean({
@@ -24,6 +25,9 @@ const placeParams = computed(() =>
     start_date: years.value[0],
     end_date: years.value[1],
   })
+
+// tags: tags.value.join(","),  
+
 );
 const visibleAbout = ref(false);
 
