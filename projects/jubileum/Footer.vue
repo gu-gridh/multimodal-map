@@ -8,7 +8,7 @@
     </a> 
    
     <div id="citation"> 
-      Citera portalen som: Humlesjö, Siska, Åhlfeldt, Johan, Strinnholm, Anders <i>et al.</i> (2023).<br>
+      Citera portalen: Humlesjö, Siska, Åhlfeldt, Johan, Strinnholm, Anders <i>et al.</i> (2023).<br>
       <i>Göteborgs jubileum 1923</i>, v.1.0 GRIDH. https://jubileet1923.dh.gu.se/. Accessed [datum]<br>
       </div>
 
@@ -81,10 +81,10 @@ a {
   text-align: right;
   font-weight: 200;
   font-style: normal;
-  font-size: 16px;
-  line-height: 1.2;
+  font-size: 14px;
+  line-height: 1.3;
   padding-right:20px;
-  margin-top:20px;;
+  margin-top:23px;;
   vertical-align: middle;
   border-style:solid;
   border-width:0 0.5px 0 0px;
@@ -100,10 +100,9 @@ a {
   text-align: left;
   font-weight: 200;
   font-style: normal;
-  font-size: 16px;
-  line-height: 1.2;
-  padding-right:20px;
-  margin-top:20px;;
+  font-size: 14px;
+  line-height: 1.3;
+  margin-top:23px;;
   vertical-align: middle;
 }
 
