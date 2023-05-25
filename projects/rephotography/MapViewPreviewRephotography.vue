@@ -10,20 +10,20 @@ defineProps<{
 <template>
   <router-link
     :to="`/detail/rephotography/${rephotography.id}`"
-    class="clickable"
+    class="clickable no-touch"
   >
-    <div class="image-container">
+    <div class="image-container no-touch">
       <ComparisonSlider locked>
         <template #left>
           <img
             :src="`${rephotography.old_image.iiif_file}/full/600,/0/default.jpg`"
-            class="image"
+            class="image no-touch"
           />
         </template>
         <template #right>
           <img
             :src="`${rephotography.new_image.iiif_file}/full/600,/0/default.jpg`"
-            class="image"
+            class="image no-touch"
           />
         </template>
       </ComparisonSlider>
@@ -42,3 +42,8 @@ defineProps<{
     </div>
   </router-link>
 </template>
+
+<style>
+
+</style>
+
