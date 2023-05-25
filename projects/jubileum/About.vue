@@ -16,10 +16,25 @@
     <p>Under jubileumsutställningen 1923 pågick en konstutställning med samtida nordisk konst på Konstmuseet och på Konsthallen. I den lokal som vi idag kallar Göteborgs Konsthall visades den norska delen av utställningen med bland andra Edvard Munch. Den danska och finska delen visades i två intilliggande byggnader som idag är rivna, medan den svenska konsten höll till inne på det nuvarande Göteborgs Konstmuseum.</p>
 
       <p>Bakom konstmuseet och upp emot området runt näckrosdammen var platsen för den Historiska minnesutställningen. Här visades olika former av historiska utställningar kopplade till olika ämnen som sjöfart, handel, konsthantverk och hemslöjd. En rolig detalj är att humanistiska fakulteten och Humanistiska biblioteket ligger precis där stora delar av utställningen då var lokaliserad. Biblioteket ligger i dag där huvudrestaurangen låg och Humanisten där minneshallen stod.
-Nedanför, på andra sida Korsvägen där nuvarande Svenska mässan ligger var Exportutställningen lokaliserad. Här visade många av de stora industriföretagen upp sina produkter. Här kan du se bilder på de olika byggnaderna m.m. som stod på platsen under utställningen. Vi har även samlat en rad digitaliserade skrifter som på olika sätt berör utställningen, som du lätt hittar här. Återkom gärna vid flera tillfällen då vi kommer fortsätta att publicera digitaliserat material här.</p>
- 
-<p>Göteborgs forskningsinfrastruktur för digital humaniora (GRIDH) i samarbete med Göteborgs universitetsbibliotek har tagit fram den här tjänsten som en del i ett större samarbete. Vi hoppas du kommer finna både bilder och texter intressanta.</p>
-      </div>
+Nedanför, på andra sida Korsvägen där nuvarande Svenska mässan ligger var Exportutställningen lokaliserad. Här visade många av de stora industriföretagen upp sina produkter. </p>
+
+<p>Här kan du se bilder på de olika byggnaderna m.m. som stod på platsen under utställningen. Vi har även samlat en rad digitaliserade skrifter som på olika sätt berör utställningen, som du lätt hittar här. Återkom gärna vid flera tillfällen då vi kommer fortsätta att publicera digitaliserat material här.</p>
+<h2>Om Portalen </h2>
+<p>Göteborgs jubileum 1923 är ett samarbetsprojekt mellan Göteborgs universitetsbibliotek (GUB) och Göteborgs infrastruktur för digital humaniora (GRIDH). 
+Bilderna och trycksakerna kommer från bibliotekets samlingar, Göteborgs stadsmuseums databas <a href="https://samlingar.goteborgsstadsmuseum.se/carlotta/web/">Carlotta</a>,  <a href="https://sv.wikipedia.org/wiki/Portal:Huvudsida]och">Wikipedia</a> och <a href="https://sv.wikipedia.org/wiki/Portal:Huvudsida">Filmarkivet</a>. Samtliga bilder har fri upphovsrätt.  </p>
+
+<p>Bild- och platsbeskrivningar: Siska Humlesjö och Johan Åhlfeldt, GRIDH. Text om jubileet och projektet: Anders Strinnholm, GUB.
+Samordning av digitaliseringen av Universitetsbibliotekets material: Lennart Stark, GUB. 
+Utvecklingen av gränssnittet: Jonathan Westin, Tristan Bridge och Kristin Åkerlund, GRIDH. 
+Utveckling av datamodellen och backend: Johan Åhlfeldt och Aram Karimi, GRIDH.</p>
+
+<p><b>För att citera portalen som helhet:</b> <br>
+  Humlesjö, Siska, Åhlfeldt, Johan, Strinnholm, Anders <i>et al.</i> (2023).
+      <i>Göteborgs jubileum 1923</i>, v.1.0 GRIDH. https://jubileet1923.dh.gu.se/. Accessed [datum].</p>
+<p><b>För att citera kodbasen:</b><br>
+  Westin, Jonathan, Bridge, Tristan & Åkerlund, Kristin. ”gu-gridh/multimodal-map/projects/jubileum: v.1.0 Initial public release" Github, May 24, 2023. https://github.com/gu-gridh/multimodal-map/tree/main/projects/jubileum</p>      
+  Bilder: <a href="https://creativecommons.org/publicdomain/zero/1.0/deed.sv">CC0 1.0</a> | Texter: <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>
+</div>
     
         <button @click="$emit('close')">
             <div
@@ -52,6 +67,12 @@ export default {
 <style scoped>
 body{
   border:opx;
+}
+
+h2{
+  font-size:120%;
+  font-style:bold;
+  margin-bottom:5px;
 }
 .about-container {
   position:fixed;
@@ -137,10 +158,10 @@ body{
  font-weight: 100;
 columns:1;
 column-gap:30px;
-width:850px;
-font-size:1.8em;
+max-width:1400px;
+font-size:2.0em;
 opacity:0.0;
-padding:00px 30px;
+padding:0px 100px;
 transition: all 0.4s ease-in-out;
 
 }
@@ -150,11 +171,16 @@ transition: all 0.4s ease-in-out;
   float:left;
   text-align:justify;
   color:black;
-  width:950px;
+  columns:2;
+  width:auto;
+  padding:30px 100px;
+  column-gap:30px;
+  max-width:1400px;
   font-size:1.4em;
-  font-weight: 200;
+  line-height:1.1;
+  font-weight: 300;
   opacity:0.0;
-  padding:30px;
+  
   transition: all 0.4s ease-in-out;
 }
 
@@ -176,7 +202,7 @@ transition: all 0.4s ease-in-out;
 }
 
 a {
-  font-weight: bold;
+  font-weight: normal;
 }
 
 .about-lower-border{
@@ -196,16 +222,21 @@ a {
 .about-logo-top-right{
   display:block;
   pointer-events:none;
-  width:200px;
-  height:90px;
+  width:180px;
+  height:180px;
+  padding:20px;
   position:absolute;
-  background:url(./images/logo-Infravis-516.png);
+  background:url(../../public/gu-logo-sv.png);
   background-repeat: no-repeat;
-  background-size: contain;
-  top:30px;
-  right:60px;
-  opacity:0.7;
-
+  background-position:center;
+  background-size: 80%;
+  background-color:rgb(180,100,100);
+  top:0px;
+  right:50px;
+  opacity:1.0;
+  border-radius:0px 0px 4px 4px;
+  box-shadow: 0px 3px 10px 0 rgba(0, 0, 0, 0.3),
+    0 0px 0px 0px rgba(0, 0, 0, 0.4);
 }
 
 

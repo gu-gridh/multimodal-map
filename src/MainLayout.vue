@@ -237,6 +237,7 @@ width:1350px;
 #app .about-article-sub{
   
 width:1500px;
+max-width:1900px;
 
 
 }
@@ -254,7 +255,7 @@ width: 250px;
   pointer-events: auto !important;
   border-radius: 10px;
   margin-right: 20px;
-  padding: 20px 8px 20px 8px!important;
+  padding: 20px!important;
   margin-bottom: 20px;
   overflow:hidden!important;
 
@@ -262,10 +263,9 @@ width: 250px;
 
 #app .image-container {
   overflow: hidden;
-
   margin-bottom: 8px;
   border-radius:8px!important;
- width:100%!important;
+  width:100%!important;
  height:auto!important;
  padding-bottom:0px!important;
  overflow:hidden!important;
