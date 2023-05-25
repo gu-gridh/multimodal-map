@@ -16,16 +16,24 @@
     <p>Under jubileumsutställningen 1923 pågick en konstutställning med samtida nordisk konst på Konstmuseet och på Konsthallen. I den lokal som vi idag kallar Göteborgs Konsthall visades den norska delen av utställningen med bland andra Edvard Munch. Den danska och finska delen visades i två intilliggande byggnader som idag är rivna, medan den svenska konsten höll till inne på det nuvarande Göteborgs Konstmuseum.</p>
 
       <p>Bakom konstmuseet och upp emot området runt näckrosdammen var platsen för den Historiska minnesutställningen. Här visades olika former av historiska utställningar kopplade till olika ämnen som sjöfart, handel, konsthantverk och hemslöjd. En rolig detalj är att humanistiska fakulteten och Humanistiska biblioteket ligger precis där stora delar av utställningen då var lokaliserad. Biblioteket ligger i dag där huvudrestaurangen låg och Humanisten där minneshallen stod.
-Nedanför, på andra sida Korsvägen där nuvarande Svenska mässan ligger var Exportutställningen lokaliserad. Här visade många av de stora industriföretagen upp sina produkter. Här kan du se bilder på de olika byggnaderna m.m. som stod på platsen under utställningen. Vi har även samlat en rad digitaliserade skrifter som på olika sätt berör utställningen, som du lätt hittar här. Återkom gärna vid flera tillfällen då vi kommer fortsätta att publicera digitaliserat material här.</p>
- 
-<p>Portalen <i>Göteborgs jubileum 1923</i> är ett samarbetsprojekt mellan Göteborgs universitetsbibliotek och Göteborgs infrastruktur för digital humaniora (GRIDH). Bilderna och trycksakerna kommer från bibliotekets samlingar, Göteborgs stadsmuseums databas Carlotta, Wikipedia och Filmarkivet. Samtliga bilder har fri upphovsrätt. Bild- och platsbeskrivningar är skrivna av Siska Humlesjö och Johan Åhlfeldt. Den inledande texten är skriven av Anders Strinnholm.</p>
+Nedanför, på andra sida Korsvägen där nuvarande Svenska mässan ligger var Exportutställningen lokaliserad. Här visade många av de stora industriföretagen upp sina produkter. </p>
+
+<p>Här kan du se bilder på de olika byggnaderna m.m. som stod på platsen under utställningen. Vi har även samlat en rad digitaliserade skrifter som på olika sätt berör utställningen, som du lätt hittar här. Återkom gärna vid flera tillfällen då vi kommer fortsätta att publicera digitaliserat material här.</p>
+<h2>Om Portalen </h2>
+<p>Göteborgs jubileum 1923 är ett samarbetsprojekt mellan Göteborgs universitetsbibliotek (GUB) och Göteborgs infrastruktur för digital humaniora (GRIDH). 
+Bilderna och trycksakerna kommer från bibliotekets samlingar, Göteborgs stadsmuseums databas <a href="https://samlingar.goteborgsstadsmuseum.se/carlotta/web/">Carlotta</a>,  <a href="https://sv.wikipedia.org/wiki/Portal:Huvudsida]och">Wikipedia</a> och <a href="https://sv.wikipedia.org/wiki/Portal:Huvudsida">Filmarkivet</a>. Samtliga bilder har fri upphovsrätt.  </p>
+
+<p>Bild- och platsbeskrivningar: Siska Humlesjö och Johan Åhlfeldt, GRIDH. Text om jubileet och projektet: Anders Strinnholm, GUB.
+Samordning av digitaliseringen av Universitetsbibliotekets material: Lennart Stark, GUB. 
+Utvecklingen av gränssnittet: Jonathan Westin, Tristan Bridge och Kristin Åkerlund, GRIDH. 
+Utveckling av datamodellen och backend: Johan Åhlfeldt och Aram Karimi, GRIDH.</p>
+
 <p><b>För att citera portalen som helhet:</b> <br>
   Humlesjö, Siska, Åhlfeldt, Johan, Strinnholm, Anders <i>et al.</i> (2023).
       <i>Göteborgs jubileum 1923</i>, v.1.0 GRIDH. https://jubileet1923.dh.gu.se/. Accessed [datum].</p>
 <p><b>För att citera kodbasen:</b><br>
   Westin, Jonathan, Bridge, Tristan & Åkerlund, Kristin. ”gu-gridh/multimodal-map/projects/jubileum: v.1.0 Initial public release" Github, May 24, 2023. https://github.com/gu-gridh/multimodal-map/tree/main/projects/jubileum</p>      
-  Bilder: <a href="https://creativecommons.org/publicdomain/zero/1.0/deed.sv">CC0 1.0</a><br>
-  Texter: <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>
+  Bilder: <a href="https://creativecommons.org/publicdomain/zero/1.0/deed.sv">CC0 1.0</a> | Texter: <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>
 </div>
     
         <button @click="$emit('close')">
@@ -59,6 +67,12 @@ export default {
 <style scoped>
 body{
   border:opx;
+}
+
+h2{
+  font-size:120%;
+  font-style:bold;
+  margin-bottom:5px;
 }
 .about-container {
   position:fixed;
@@ -144,10 +158,10 @@ body{
  font-weight: 100;
 columns:1;
 column-gap:30px;
-width:850px;
+max-width:1400px;
 font-size:2.0em;
 opacity:0.0;
-padding:00px 30px;
+padding:0px 100px;
 transition: all 0.4s ease-in-out;
 
 }
@@ -159,14 +173,14 @@ transition: all 0.4s ease-in-out;
   color:black;
   columns:2;
   width:auto;
-  padding-left:30px;
-  padding-right:30px;
-  max-width:1050px;
+  padding:30px 100px;
+  column-gap:30px;
+  max-width:1400px;
   font-size:1.4em;
   line-height:1.1;
   font-weight: 300;
   opacity:0.0;
-  padding:30px;
+  
   transition: all 0.4s ease-in-out;
 }
 
