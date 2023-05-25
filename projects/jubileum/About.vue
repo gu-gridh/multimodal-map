@@ -212,16 +212,17 @@ a {
   height:180px;
   padding:20px;
   position:absolute;
-  background:url(../../public/gu-logo.png);
+  background:url(../../public/gu-logo-sv.png);
   background-repeat: no-repeat;
   background-position:center;
   background-size: 80%;
-  background-color:rgb(45,45,45);
+  background-color:rgb(180,100,100);
   top:0px;
   right:50px;
   opacity:1.0;
   border-radius:0px 0px 4px 4px;
-
+  box-shadow: 0px 3px 10px 0 rgba(0, 0, 0, 0.3),
+    0 0px 0px 0px rgba(0, 0, 0, 0.4);
 }
 
 
