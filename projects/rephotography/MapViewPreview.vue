@@ -13,8 +13,11 @@ import type { DianaClient } from "@/assets/diana";
 import PreviewRephotography from "./MapViewPreviewRephotography.vue";
 import PreviewImage from "./MapViewPreviewImage.vue";
 import PreviewVideo from "./MapViewPreviewVideo.vue";
+import { rephotographyStore } from "./store";
+
 
 const { selectedFeature } = storeToRefs(mapStore());
+const { years } = storeToRefs(rephotographyStore()); 
 const diana = inject("diana") as DianaClient;
 
 const images = ref<Image[]>();
@@ -22,6 +25,8 @@ const videos = ref<Video[]>();
 const rephotographies = ref<RephotographyDeep[]>();
 
 watchEffect(async () => {
+  console.log("Range values: ", years.value);  
+
   if (selectedFeature.value) {
     const place = selectedFeature.value.getId();
     images.value = await diana.listAll<Image>("image", { place });
