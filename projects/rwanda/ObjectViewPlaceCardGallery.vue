@@ -67,7 +67,7 @@ onBeforeMount(() => {
 
 @media screen and (max-width: 900px) {
 
-#app .place-gallery {
+    #app .place-gallery {
 font-size:120%;
 width:100%;
 margin-left:0px;

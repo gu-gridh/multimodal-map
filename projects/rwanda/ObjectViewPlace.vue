@@ -22,7 +22,7 @@ import ObjectViewPlaceCardGallery from './ObjectViewPlaceCardGallery.vue';
 
 <style>
 
-.place-metadata{
+.place-card-container{
     background-color: transparent !important; 
     overflow:hidden !important; 
     width:550px!important;
