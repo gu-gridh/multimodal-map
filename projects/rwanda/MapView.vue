@@ -49,7 +49,6 @@ const toggleAboutVisibility = async () => {
 
 //MapViewControls
 const { searchText } = useRwandaMap();
-const { results, selectedFeature } = storeToRefs(store);
 
 function displayName(p: Place): string {
   return formatNames(p.id, p.names);

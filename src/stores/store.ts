@@ -15,6 +15,7 @@ export const mapStore = defineStore("map", () => {
   const results = ref<Array<any>>();
   const params = ref<MapParams>({});
   const mapUrls = ref<Array<string>>();
+  const galleryImages = ref<[]>();
 
   // Define methods to update the zoom and center.
   function updateCenter(newCenter: Array<number>) {
@@ -29,8 +30,8 @@ export const mapStore = defineStore("map", () => {
     results.value = newResults
   }
 
-  function updateSelectedFeature(newSelect: Feature) {
-    selectedFeature.value = newSelect
+  function updateGalleryImages(newImages: []) {
+    galleryImages.value = newImages
   }
 
   return { 
@@ -41,9 +42,10 @@ export const mapStore = defineStore("map", () => {
     params, 
     results, 
     mapUrls, 
+    galleryImages,
     updateCenter, 
     updateZoom,
     updateResults,
-    updateSelectedFeature
+    updateGalleryImages
   };
 });
