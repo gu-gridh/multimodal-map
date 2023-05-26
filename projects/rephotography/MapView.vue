@@ -30,6 +30,18 @@ const placeParams = computed(() =>
 
 );
 const visibleAbout = ref(false);
+let visited = false; // Store the visited status outside of the hook
+
+onMounted(() => {
+  // Check if the "visited" key exists in session storage
+  visited = sessionStorage.getItem("visited") === "true"; // Retrieve the visited status from session storage
+
+  if (!visited) {
+    // Hide the about component
+    visibleAbout.value = true;
+    sessionStorage.setItem("visited", "true");
+  } 
+})
 
 const toggleAboutVisibility = async () => {
   console.log('fired')
