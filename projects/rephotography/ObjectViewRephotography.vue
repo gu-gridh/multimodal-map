@@ -74,7 +74,6 @@ const images = {
   height:100%!important;
   pointer-events:none !important;
   overflow:hidden;
- 
 }
 
 @media screen and (max-width: 900px) {
