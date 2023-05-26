@@ -23,30 +23,25 @@ onBeforeMount(() => {
 </script>
 
 <template>
-
-    <div class="gallery">
-        <div v-for="image in images" :key="image.uuid">
-<!--             <router-link :to="`/image/${image.id}`" class="clickable">
-                <img :src="`${image.file}`" alt="image" class="imgPreview"/>
-                {{ image.title }}
-            </router-link> -->
-        </div>
-        <div class="imgPreview">
+    <div class="place-gallery">
             <MapViewPreviewImage
                 v-for="image in images"
                 :key="image.id"
                 :image="image"
             />
-        </div>
-        
     </div>
-
 </template>
 
 <style>
-    .gallery {
+    .place-gallery {
         color: white;
         font-size:120%;
+        width:calc(100% - 600px);
+        margin-left:600px;
+        height:calc(100vh - 80px);
+        padding-top:90px;
+        padding-left:20px;
+        overflow-y:auto;
     }
     .imgPreview {
         width: 300px;
@@ -60,4 +55,44 @@ onBeforeMount(() => {
         box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.5);
         transition: all 0.2s ease-in-out;
     }
+
+    .image-card-white {
+  float:left;
+  width:300px;
+  font-size: 14px;
+  margin-bottom: 0px;
+  margin-right:30px;
+  margin-bottom:30px;
+}
+
+@media screen and (max-width: 900px) {
+
+#app .place-gallery {
+font-size:120%;
+width:100%;
+margin-left:0px;
+height:calc(100vh);
+padding-top:40px;
+padding-left:50px;
+padding-right:50px;
+padding-bottom:50vh;
+overflow-y:auto;
+}
+.image-card-white {
+  float:left;
+  width:100%;
+  color:black;
+  background-color: white;
+  font-size: 20px;
+  margin-bottom: 0px;
+  border-radius: 10px;
+  padding: 10px 10px 15px 10px;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.5);
+  transition: all 0.2s ease-in-out;
+  margin-right:30px;
+  margin-bottom:30px;
+}
+}
+
+
 </style>

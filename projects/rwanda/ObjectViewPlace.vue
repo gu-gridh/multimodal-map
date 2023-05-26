@@ -11,11 +11,11 @@ import ObjectViewPlaceCardGallery from './ObjectViewPlaceCardGallery.vue';
 </script>
 
 <template>
-    <div class="place-metadata">
+    <div class="place-card-container">
         <ObjectViewPlaceCard :place="place" :id="id" />
     </div>
     <!-- gallery here -->
-    <div class="place-gallery">
+    <div class="place-gallery-container">
         <ObjectViewPlaceCardGallery :id="id"/>
     </div>
 </template>
@@ -46,13 +46,14 @@ margin-top:50vh;
 height:auto;
 font-size:120%;
 width:100%;
+z-index:100;
 padding-right:0px !important;
 padding-left:0px !important;
 padding-bottom:0px !important;
 overflow-y:auto;
 }
 
-.place-gallery {
+.place-gallery-container {
     color: white;
     width: 100%;
     float: left;

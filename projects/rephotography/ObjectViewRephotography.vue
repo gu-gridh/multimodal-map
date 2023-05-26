@@ -65,8 +65,7 @@ const images = {
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none; /* Standard syntax */
   pointer-events:auto !important;
- 
- 
+  background-color:black!important;
 }
 
 #app .illustration{

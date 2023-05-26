@@ -88,7 +88,6 @@ onMounted(() => {
   display:flex;
   flex-direction:column;
   align-items:center;
-  width:100px;
   position:absolute;
   margin-top:30%;
   width:30px;
