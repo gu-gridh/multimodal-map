@@ -46,7 +46,7 @@ onMounted(() => {
         <slot name="left" />
       </div>
     </div>
-    <div ref="split2" class="overflow-hidden">
+    <div ref="split2" class="overflow-hidden no-touch">
       <div
         :style="{
           width: `${width}px`,
@@ -59,11 +59,10 @@ onMounted(() => {
     <div
       v-if="!locked"
       ref="dragger"
-      class="absolute w-6 h-6 -ml-3 -mt-3 top-1/2 rounded-full bg-black text-white z-10 cursor-col-resize flex justify-around items-center"
+      class="dragger"
       :style="{ left: `${splitSizes[0]}%` }"
     >
-      <ChevronLeftIcon />
-      <ChevronRightIcon />
+    | |
     </div>
   </figure>
 </template>
@@ -71,6 +70,37 @@ onMounted(() => {
 <style scoped>
 :deep(.gutter) {
   background-color: black;
+  border-radius:30%;
   cursor: col-resize;
+  pointer-events:none;
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+}
+
+.dragger{
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+  overflow:hidden;
+  cursor: col-resize;
+  pointer-events:auto;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  width:100px;
+  position:absolute;
+  margin-top:30%;
+  width:30px;
+  height:30px;
+  padding:5px;
+  font-size:0.85em;
+  background-color:white;
+  background-size:contain;
+  margin-left:-12px;
+  border-radius:50%;
+  color:black;
+  box-shadow: 0px 1px 15px 0 rgba(0, 0, 0, 0.5),
+    0 0px 0px 0px rgba(0, 0, 0, 0.4);
 }
 </style>

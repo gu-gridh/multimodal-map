@@ -7,28 +7,31 @@ defineProps({
 
 <template>
      <div class="meta-top-gradient"> </div>
-  <div class="meta-container">
+  <div class="meta-container no-touch">
  
 
     <header class="flex flex-row-reverse pt-8">
-      <div class="flex-1"></div>
-      <div class="container">
+      <div class="flex-1" ></div>
+      <div class="container" >
         <slot name="title">
           <h1 class="meta-title">{{ title }}</h1>
         </slot>
       </div>
-      <div class="flex-1 text-center">
+      <div class="flex-1 text-center" >
         <router-link v-if="back" :to="back" class="back-button"> </router-link>
       </div>
     </header>
 
-    <main class="container metadata-posts">
+    <main class="container metadata-posts" >
       <slot />
     </main>
   </div>
 </template>
 
 <style>
+#app Body{
+ 
+}
 
 .meta-top-gradient{
   margin-top:0vh;

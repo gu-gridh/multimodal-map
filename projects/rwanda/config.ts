@@ -10,7 +10,7 @@ export default <RwandaProject>{
   },
   moreinfo: "Learn more...",
   about:
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet.",
+    "How recent renaming of streets and the use of the exogenous language English in Rwanda affects citizens who move and navigate in the also physically reconstructed urban space.",
   projection: "EPSG:3857",
   center: [30.0636, -1.9520],
   zoom: 15,
