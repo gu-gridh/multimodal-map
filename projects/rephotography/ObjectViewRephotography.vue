@@ -65,7 +65,7 @@ const images = {
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none; /* Standard syntax */
   pointer-events:auto !important;
-  z-index:1000!important;
+ 
  
 }
 
@@ -73,9 +73,19 @@ const images = {
   width:calc(100% - 450px)!important;
   height:100%!important;
   pointer-events:none !important;
-  z-index:0!important;
   overflow:hidden;
  
+}
+
+@media screen and (max-width: 900px) {
+
+#app .illustration {
+  float: left;
+  width: 100%!important;
+  height: auto!important;
+  max-height: 50vh!important;
+  background-color: black;
+}
 }
 
 

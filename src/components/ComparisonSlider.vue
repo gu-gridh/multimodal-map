@@ -90,7 +90,7 @@ onMounted(() => {
   align-items:center;
   width:100px;
   position:absolute;
-  margin-top:35%;
+  margin-top:30%;
   width:30px;
   height:30px;
   padding:5px;
