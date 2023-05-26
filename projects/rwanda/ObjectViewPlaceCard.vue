@@ -14,7 +14,7 @@ defineProps<{
         const rest = word.slice(1)
         return first + rest
       }
-      else return word
+      else return
     }
 
     const center = ref([30.0636, -1.9520]);
