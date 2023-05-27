@@ -111,7 +111,7 @@ padding: 60px 50px 50px 60px;
 }
 
 .left-pane-layer::-webkit-scrollbar {
-    width: 0px !important
+    width: 0px !important;
     }
 
 .right-pane {
@@ -129,10 +129,17 @@ padding: 60px 50px 50px 60px;
   width: 100%;
   pointer-events: auto !important;
   overflow-y: scroll !important;
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
 }
 
+.mapview-preview::-webkit-scrollbar {
+    width: 0px !important;
+    }
+
 body::-webkit-scrollbar{
-    display: none;
+    width: 0px  !important;
   }
 
 /* Adaption for various screen sizes */

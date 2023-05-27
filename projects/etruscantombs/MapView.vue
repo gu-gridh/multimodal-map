@@ -10,13 +10,9 @@ import { storeToRefs } from "pinia";
 import { rephotographyStore } from "./store";
 import { clean } from "@/assets/utils";
 import markerIcon from "@/assets/marker-gold.svg";
-import { ref } from "vue";
 import About from "./About.vue";
-import { onMounted, watch } from "vue";
-import { nextTick } from "vue";
 
-const { categories, years, tags } = storeToRefs(rephotographyStore());
-// tags add here
+const { categories, years } = storeToRefs(rephotographyStore());
 
 const placeParams = computed(() =>
   clean({
@@ -24,48 +20,20 @@ const placeParams = computed(() =>
     start_date: years.value[0],
     end_date: years.value[1],
   })
-
-// tags: tags.value.join(","),  
-
 );
-const visibleAbout = ref(false);
-let visited = false; // Store the visited status outside of the hook
-
-onMounted(() => {
-  // Check if the "visited" key exists in session storage
-  visited = sessionStorage.getItem("visited") === "true"; // Retrieve the visited status from session storage
-
-  if (!visited) {
-    // Hide the about component
-    visibleAbout.value = true;
-    sessionStorage.setItem("visited", "true");
-  } 
-})
-
-const toggleAboutVisibility = async () => {
-  console.log('fired')
-  await nextTick();
-  visibleAbout.value = !visibleAbout.value;
-};
-
-watch(tags, (newTags) => {
-  console.log("Tags changed:", newTags);
-});
 </script>
 
-
-
 <template>
- <About :visibleAbout="visibleAbout" @close="visibleAbout = false" />
+     <About />
   <MainLayout>
     <template #search>
-      <button class="item"  @click="toggleAboutVisibility">
+      <button class="item"  @click="visibleAbout = true;">
             <div
               class="p-1 px-2 clickable category-button"
               style="
-                width: 90px;
+                width: auto;
                 text-align: center;
-                margin-top: -10px;
+                margin-top: 0px;
                 cursor: pointer;
               "
             >More info</div>
@@ -73,13 +41,10 @@ watch(tags, (newTags) => {
       <MapViewControls />
     </template>
 
-  
-   
-
     <template #background>
-      <MapComponent :min-zoom="9" :max-zoom="16" :restrictExtent="[0.0, 75.0, 30.0, 81.0]" >
+      <MapComponent :min-zoom="10" :max-zoom="18" :restrictExtent="[11.9, 42.15, 12.2, 42.4]" >
         <template #layers>
-          
+
 
           <DianaPlaceLayer
             path="rephotography/geojson/place/"
@@ -106,7 +71,6 @@ watch(tags, (newTags) => {
 </template>
 
 <style>
-
 #app .ol-popup {
   font-size: 1.2em;
   -webkit-user-select: none;
