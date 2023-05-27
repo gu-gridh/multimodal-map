@@ -138,7 +138,7 @@ border-radius: 8px;
 
 #app .image {
   display: block;
-  transform:scale(1.1);
+  transform:scale(1.3);
 }
 
 </style>

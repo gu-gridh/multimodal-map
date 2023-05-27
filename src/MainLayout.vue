@@ -96,8 +96,23 @@ body {
   height: 100vh;
   z-index: 100;
   pointer-events: none;
-  transition: all 0.2s ease-in-out;
+
 }
+
+.left-pane-layer {
+  height:100vh;
+  pointer-events: auto;
+  width:500px;
+padding: 60px 50px 50px 60px;
+  overflow:hidden!important;
+  overflow-y: scroll !important;
+  -ms-overflow-style: none!important;
+  overflow-style: none!important;
+}
+
+.left-pane-layer::-webkit-scrollbar {
+    width: 0px !important
+    }
 
 .right-pane {
   position: absolute;
@@ -106,15 +121,14 @@ body {
   right: 0px;
   pointer-events: none;
   z-index: 200;
-  transition: all 0.5s ease-in-out;
   overflow: hidden !important;
-  transition: all 0.5s ease-in-out;
 }
 
 .mapview-preview {
   padding-top: 5px;
   width: 100%;
-  transition: all 0.5s ease-in-out;
+  pointer-events: auto !important;
+  overflow-y: scroll !important;
 }
 
 body::-webkit-scrollbar{
@@ -141,6 +155,13 @@ font-size:1.6em;
   padding: 60px 750px 50px 60px;
   font-size:120%;
   }
+
+  #app .left-pane-layer {
+  width:650px;
+padding: 60px 50px 50px 60px;
+}
+
+
 
   #app .right-pane {
     font-size:120%;
@@ -298,12 +319,21 @@ width: 250px;
   pointer-events: auto;
   margin-top:70vh;
   border-radius:30px 30px 0 0;
-  padding: 30px 30px 100px 30px !important;
+  padding: 10px 30px 100px 30px !important;
   background-color:rgba(255,255,255,0.6);
   backdrop-filter:blur(5px);
   box-shadow: 0px -10px 20px 0 rgba(0, 0, 0, 0.3),
     0 0px 0px 0 rgba(0, 0, 0, 0.19);
 }
+
+
+#app .left-pane-layer {
+width:100%;
+height:auto;
+padding: 20px 20px 0px 20px;
+font-size:120%;
+}
+
 
 #app .main-title {
   width:100%;

@@ -41,7 +41,6 @@ body {
 #app .left-pane {
   background-color: grey;
   width: 900px;
-  padding: 60px 450px 50px 60px;
   background: url("@/assets/gradient-rephotography.png");
   background-size: contain;
 }

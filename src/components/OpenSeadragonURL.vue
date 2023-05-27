@@ -14,7 +14,9 @@ onMounted(() => {
   viewer = OpenSeadragon({
     /** @see https://openseadragon.github.io/docs/OpenSeadragon.html#.Options */
      // @ts-ignore
-    element: viewer.value,
+     element: viewer.value,
+     preserveViewport: true,
+     sequenceMode: false,
     immediateRender: false,
     visibilityRatio: 1.0,
     minZoomImageRatio: 1.0,
@@ -31,8 +33,8 @@ onMounted(() => {
     prefixUrl: "/openseadragon/",
     // If a proper tileSource is not given, use src prop.
     tileSources: props.src,
-  })
-
+  });
+ 
   // Use the bookmark plugin
   viewer.bookmarkUrl({
     trackPage: true, // or false, depending on whether you want to track the current page

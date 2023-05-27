@@ -60,7 +60,7 @@ function bookmarkUrl(options) {
                     self.viewport.zoomTo(params.zoom, null, true);
                 }
                 if (params.x !== undefined && params.y !== undefined && (params.x !== pan.x || params.y !== pan.y)) {
-                    self.viewport.panTo(new $.Point(params.x, params.y), true);
+                    self.viewport.panTo(new OpenSeadragon.Point(params.x, params.y), true);
                 }
             });
         } else {
@@ -68,7 +68,7 @@ function bookmarkUrl(options) {
                 self.viewport.zoomTo(params.zoom, null, true);
             }
             if (params.x !== undefined && params.y !== undefined && (params.x !== pan.x || params.y !== pan.y)) {
-                self.viewport.panTo(new $.Point(params.x, params.y), true);
+                self.viewport.panTo(new OpenSeadragon.Point(params.x, params.y), true);
             }
         }
     };

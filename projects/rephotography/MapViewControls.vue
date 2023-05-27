@@ -7,14 +7,6 @@
     class="my-2"
   />
   
-  <div class="section-title">Tags</div>
-  <CategoryButtonList
-    v-model="tags"
-    :categories="TAGS"
-    :limit="1"
-    class="my-2"
-  />
-  
   <div class="section-title">Time span</div>
   <RangeSlider
     v-model="years"
@@ -23,6 +15,16 @@
     :step="1"
     class="my-2"
   />
+
+  <div class="section-title">Tags</div>
+  <div class="broad-controls">
+  <CategoryButtonList
+    v-model="tags"
+    :categories="TAGS"
+    :limit="1"
+    class="my-2"
+  />
+</div>
 </template>
 
 <script setup lang="ts">
@@ -136,5 +138,17 @@ onMounted(async () => {
   border-top: 15px solid #ff9900;
   box-shadow: var(--slider-handle-shadow, 0.5px 0.5px 2px 1px rgba(0, 0, 0, 0));
   cursor: grab;
+}
+
+#app .broad-controls{
+  width:120%;
+
+}
+
+@media screen and (max-width: 900px) {
+  #app .broad-controls{
+  width:100%;
+
+}
 }
 </style>
