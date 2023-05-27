@@ -152,8 +152,6 @@ watch(showGrid, (newValue) => {
 
 #gallery{}
 
-
-
 .ui-overlay {
 margin-top: 70px;
 z-index: 250;

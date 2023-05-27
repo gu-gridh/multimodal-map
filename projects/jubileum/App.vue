@@ -22,6 +22,7 @@ html,
 body {
   font-family: "Barlow Condensed", sans-serif !important;
   background-color: rgb(234, 228, 219) !important;
+  margin: 0 !important;
 }
 
 .map-container {
