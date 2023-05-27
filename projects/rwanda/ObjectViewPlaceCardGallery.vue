@@ -56,9 +56,9 @@ onBeforeMount(() => {
         transition: all 0.2s ease-in-out;
     }
 
-    .image-card-white {
+   #app .image-card-white {
   float:left;
-  width:300px;
+  width:300px !important;
   font-size: 14px;
   margin-bottom: 0px;
   margin-right:30px;

@@ -10,7 +10,7 @@ defineProps<{
 <template>
   <router-link
     :to="`/detail/rephotography/${rephotography.id}`"
-    class="clickable no-touch"
+    class="clickable no-touch image-card"
   >
     <div class="image-container no-touch">
       <ComparisonSlider locked>
