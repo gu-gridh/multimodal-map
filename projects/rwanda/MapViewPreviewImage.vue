@@ -8,7 +8,7 @@ defineProps<{
 </script>
 
 <template>
-  <router-link :to="`/detail/image/${image.id}`" class="clickable">
+  <router-link :to="`/image/${image.id}`" class="clickable">
     <div>
       <div class="image-card-white">
       <div class="image-container">

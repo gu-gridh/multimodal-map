@@ -6,14 +6,17 @@ import { storeToRefs } from "pinia";
 import { useRwandaMap } from "./map.composable";
 import { formatNames } from "./names";
 import type { Place } from "./types";
+import { ref, watch } from "vue";
 
 const { searchText } = useRwandaMap();
 const store = mapStore();
 const { results } = storeToRefs(store);
 
+
 function displayName(p: Place): string {
   return formatNames(p.id, p.names);
 }
+
 </script>
 
 <template>

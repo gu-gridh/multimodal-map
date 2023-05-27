@@ -40,7 +40,7 @@ const capitalize = (word: String) => {
       <div class="close-button" @click="deselectPlace">+</div>
       <div class="flex flex-col gap-4 pointer">
       <!-- place card -->
-      <router-link :to="`/detail/place/${place.id_}`" class="clickable">
+      <router-link :to="`/place/${place.id_}`" class="clickable">
         <div class="place-card">
           <div style="width:100%;">
           <p>{{ capitalize(place.values_.type.text) }}</p>

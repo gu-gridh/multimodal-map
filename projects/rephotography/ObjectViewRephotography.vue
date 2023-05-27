@@ -37,18 +37,18 @@ const images = {
     </ObjectViewComponent>
   </div>
 
-  <section class="illustration justify-center">
+  <section class="illustration justify-center no-touch">
     <ComparisonSlider>
       <template #left>
         <img
           :src="`${object.old_image.iiif_file}/full/1500,/0/default.jpg`"
-          class="image"
+          class="image no-touch"
         />
       </template>
       <template #right>
         <img
           :src="`${object.new_image.iiif_file}/full/1500,/0/default.jpg`"
-          class="image"
+          class="image no-touch"
         />
       </template>
     </ComparisonSlider>
@@ -56,7 +56,35 @@ const images = {
 </template>
 
 <style scoped>
+#app .no-touch{
+  pointer-events:none !important;
+}
 
+#app .metadata{
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+  pointer-events:auto !important;
+  background-color:black!important;
+}
+
+#app .illustration{
+  width:calc(100% - 450px)!important;
+  height:100%!important;
+  pointer-events:none !important;
+  overflow:hidden;
+}
+
+@media screen and (max-width: 900px) {
+
+#app .illustration {
+  float: left;
+  width: 100%!important;
+  height: auto!important;
+  max-height: 50vh!important;
+  background-color: black;
+}
+}
 
 
 </style>

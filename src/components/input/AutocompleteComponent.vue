@@ -63,12 +63,17 @@
         </ComboboxOptions>
       </TransitionRoot>
     </div>
+    
+        
     <div
       class="bg-white rounded p-4 my-2 shadow-md w-full flex content-end clickable"
       v-if="selectedItem"
     >
+    <router-link :to="`/place/${store.results?.id}`" class="clickable">
       <span class="flex-auto" v-html="displayFunction(selectedItem)"></span>
+    </router-link>
       <button class="place-self-center mx-1 flex-auto" @click="clickUnselect">
+        
         <XMarkIcon
           class="clickable h-6 w-6 text-red-700 hover:bg-red-200 rounded-full"
           aria-hidden="true"
@@ -81,7 +86,7 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
 import type { TextSearchFunction } from "../../types/diana";
-
+import { mapStore } from "@/stores/store";
 import {
   Combobox,
   ComboboxInput,
@@ -95,6 +100,7 @@ import {
   ChevronUpDownIcon,
   XMarkIcon,
 } from "@heroicons/vue/20/solid";
+import router from "@/router";
 
 const props = defineProps<{
   searchItems: TextSearchFunction;
@@ -102,6 +108,7 @@ const props = defineProps<{
   placeholderText: string;
   noResultsText: string;
 }>();
+
 
 const searchResults = ref<Array<any>>([]);
 
@@ -118,4 +125,14 @@ let selectedItem = ref<any>();
 function clickUnselect() {
   selectedItem.value = undefined;
 }
+
+//show Place after search click
+const store = mapStore();
+
+watch(selectedItem, () => {
+  store.updateResults(selectedItem.value)
+  router.push(`/place/${store.results?.id}`)  
+})
+
+
 </script>

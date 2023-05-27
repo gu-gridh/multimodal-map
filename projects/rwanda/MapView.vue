@@ -2,7 +2,7 @@
 
 
 <script lang="ts" setup>
-import { inject, provide, ref, nextTick } from "vue";
+import { inject, provide, ref, nextTick, watch } from "vue";
 import configRaw from "./config";
 import MainLayout from "@/MainLayout.vue";
 import MapViewControls from "./MapViewControls.vue";
@@ -18,7 +18,9 @@ import FeatureSelection from "@/components/FeatureSelection.vue";
 import MapViewPreview from "./MapViewPreview.vue";
 import type { Place } from "./types";
 import About from "./About.vue";
-
+import AutocompleteComponent from "@/components/input/AutocompleteComponent.vue";
+import { useRwandaMap } from "./map.composable";
+import GeoJSON from 'ol/format/GeoJSON.js'
 
 function getName(f: Feature): string {
   const place = f.getProperties() as Place;
@@ -44,6 +46,14 @@ const toggleAboutVisibility = async () => {
   await nextTick();
   visibleAbout.value = !visibleAbout.value;
 };
+
+//MapViewControls
+const { searchText } = useRwandaMap();
+
+function displayName(p: Place): string {
+  return formatNames(p.id, p.names);
+}
+
 </script>
 
 <template>
@@ -61,7 +71,15 @@ const toggleAboutVisibility = async () => {
               "
             >More info</div>
           </button>
-      <MapViewControls />
+      <div class="filter-container">
+        <AutocompleteComponent
+          placeholderText="Search..."
+          noResultsText="No results found."
+          :displayFunction="displayName"
+          :searchItems="searchText"
+        />
+      </div>
+      
     </template>
 
     <template #background>
@@ -71,7 +89,7 @@ const toggleAboutVisibility = async () => {
     <AreaSearch id="button-wrapper" class="clickable category-button" />
   </div> -->
 </div>
-<MapComponent :min-zoom="14" :max-zoom="19" :restrictExtent="[30.1, -1.92, 30.01, -1.980]" >
+<MapComponent :min-zoom="14" :max-zoom="19" :restrictExtent="[30.1, -1.92, 30.01, -1.980]">
         <template #layers>
           <DianaPlaceLayer
             path="rwanda/geojson/place/"
@@ -103,7 +121,12 @@ const toggleAboutVisibility = async () => {
 </template>
 
 <style>
+.filter-container {
+  display:flex;
+  flex-direction: column;
+  height:auto;
 
+}
 .mapoverlay{
 z-index: 100;
 position:absolute;

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Place } from './types';
 import ObjectViewPlaceCard from "./ObjectViewPlaceCard.vue"
+import ObjectViewPlaceCardGallery from './ObjectViewPlaceCardGallery.vue';
 
     defineProps<{
         place: Place;
@@ -10,18 +11,22 @@ import ObjectViewPlaceCard from "./ObjectViewPlaceCard.vue"
 </script>
 
 <template>
-    <div class="place-metadata">
+    <div class="place-card-container">
         <ObjectViewPlaceCard :place="place" :id="id" />
     </div>
     <!-- gallery here -->
+    <div class="place-gallery-container">
+        <ObjectViewPlaceCardGallery :id="id"/>
+    </div>
 </template>
 
 <style>
 
-.place-metadata{
-  background-color: transparent !important; 
+.place-card-container{
+    background-color: transparent !important; 
     overflow:hidden !important; 
     width:550px!important;
+    float: left;
 }
 
 @media screen and (max-width: 900px) {
@@ -41,11 +46,18 @@ margin-top:50vh;
 height:auto;
 font-size:120%;
 width:100%;
+z-index:100;
 padding-right:0px !important;
 padding-left:0px !important;
 padding-bottom:0px !important;
 overflow-y:auto;
 }
+
+.place-gallery-container {
+    color: white;
+    width: 100%;
+    float: left;
+}   
 
 }
 

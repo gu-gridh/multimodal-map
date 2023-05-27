@@ -91,6 +91,7 @@ const transformedRestrictExtent = computed(() => {
   return undefined;
 });
 
+
 /* function zoomChanged() {
   let newZoom = map.value.map.getView().getZoom();
   console.log('Updating zoom:', newZoom);

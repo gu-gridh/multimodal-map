@@ -33,9 +33,11 @@ const objectComponent = {
 </script>
 
 <template>
+  <div style="pointer-events:none !important;">
   <article v-if="object">
     <component :is="objectComponent" :object="object" :id="Number(id)" />
   </article>
+</div>
 </template>
 
 <style>
@@ -44,6 +46,7 @@ const objectComponent = {
   width: 450px;
   height: 100vh;
   background-color: black;
+  pointer-events:auto;
   color: white;
 }
 .illustration {
@@ -51,6 +54,6 @@ const objectComponent = {
   width: calc(100% - 450px);
   background-color: black;
   height: 100vh;
-  overflow:hidden;
+
 }
 </style>

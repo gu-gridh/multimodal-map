@@ -25,21 +25,17 @@ const place = ref<Place>()
 watchEffect(async () => {
   if(props.type == 'image'){
     object.value = await diana.get(props.type, props.id, { depth: 1 });
-    console.log('image id', props.id)
   }
   if (props.type == 'place') {
     place.value = await diana.get<Place>("geojson/place/", props.id);
   }
 });
 
-const objectComponent = {
-  image: ObjectViewImage,
-}[props.type];
 </script>
 
 <template>
   <article v-if="props.type == 'image'">
-    <component :is="objectComponent" :object="object" :id="Number(id)" />
+    <ObjectViewImage :object="object" :id="Number(id)" />
   </article>
   <article v-if="props.type == 'place'">
     <ObjectViewPlace  :place="place" :id="Number(id)"/>
