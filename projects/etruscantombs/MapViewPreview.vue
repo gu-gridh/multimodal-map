@@ -118,6 +118,8 @@ function deselectPlace() {
   margin-bottom: 30px;
   width:100%;
   height:auto;
+  padding:0px!important;
+  transition: all 0.2s ease-in-out;
 }
 
 #app .image-container {
@@ -126,11 +128,17 @@ function deselectPlace() {
   margin-bottom: 10px;
   width:100%;
   height:auto;
+  padding:0px;
+}
+
+#app .image-card:hover {
+transform:scale(1.03);
+border-radius: 8px;
 }
 
 #app .image {
   display: block;
-  transform:scale(1.1);
+  transform:scale(1.3);
 }
 
 </style>

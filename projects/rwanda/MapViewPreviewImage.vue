@@ -8,6 +8,7 @@ defineProps<{
 </script>
 
 <template>
+   <div class="container">
   <router-link :to="`/image/${image.id}`" class="clickable">
     <div>
       <div class="image-card-white">
@@ -21,6 +22,17 @@ defineProps<{
     </div>
   </div>
   </router-link>
+</div>
 </template>
 
-<style></style>
+<style scoped>
+h2{
+  font-size:1.5em;
+  font-weight:200;
+}
+
+.container{
+  height:auto;
+  background-color:none;
+}
+</style>

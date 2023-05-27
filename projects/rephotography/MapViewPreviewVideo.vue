@@ -34,7 +34,7 @@ h2{
 
 .container{
   height:auto;
-  background-color:blue;
+  background-color:none;
 }
 </style>
 
