@@ -176,8 +176,6 @@ const capitalize = (word: String) => {
   height:auto!important;
 }
 
-
-
 .link {
   width:100%;
   height: auto !important;
@@ -189,7 +187,7 @@ const capitalize = (word: String) => {
   font-size:1.3em !important;
 }
 
-@media screen and (max-width: 1210px) {
+@media screen and (max-width: 1200px) {
 
   .long-name{
 width:70%;
