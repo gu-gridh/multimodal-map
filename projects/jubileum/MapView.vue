@@ -31,7 +31,7 @@ const toggleAboutVisibility = async () => {
 };
 
 const showGrid = ref(false);
-const visibleAbout = ref(true);
+const visibleAbout = ref(false);
 
 onMounted(() => {
   const storedShowGrid = localStorage.getItem("showGrid");

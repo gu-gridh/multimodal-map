@@ -29,6 +29,7 @@ defineProps<{
         </template>
       </ComparisonSlider>
     </div>
+
     <div class="flex justify-between">
       <div>
         <div>{{ rephotography.old_image.title }}</div>

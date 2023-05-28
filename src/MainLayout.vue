@@ -108,6 +108,9 @@ padding: 60px 50px 50px 60px;
   overflow-y: scroll !important;
   -ms-overflow-style: none!important;
   overflow-style: none!important;
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
 }
 
 .left-pane-layer::-webkit-scrollbar {
