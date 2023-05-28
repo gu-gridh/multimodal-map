@@ -180,7 +180,6 @@ transition: all 0.4s ease-in-out;
   line-height:1.1;
   font-weight: 300;
   opacity:0.0;
-  
   transition: all 0.4s ease-in-out;
 }
 
@@ -237,6 +236,17 @@ a {
   border-radius:0px 0px 4px 4px;
   box-shadow: 0px 3px 10px 0 rgba(0, 0, 0, 0.3),
     0 0px 0px 0px rgba(0, 0, 0, 0.4);
+}
+
+
+@media screen and (max-width: 900px) {
+
+.about-article-sub{
+  font-size:1.25em;
+  -webkit-hyphens: auto;
+  -ms-hyphens: auto;
+  hyphens: auto;
+}
 }
 
 

@@ -36,7 +36,7 @@ body {
   font-weight: 100;
   letter-spacing: -0.2rem;
   text-align: center;
-  margin-left: -25px;
+  margin-left: -50px;
   color: rgb(180, 100, 100);
   transition: all 0.2s ease-in-out;
 }
@@ -48,14 +48,14 @@ body {
   font-weight: 100;
   letter-spacing: -0.2rem;
   text-align: center;
-  margin-left: -25px;
+  margin-left: -50px;
   color: rgb(180, 100, 100);
   margin-top: 10px;
   margin-bottom: 15px;
 }
 
 .about {
-  padding-right: 0px;
+  padding-right: 40px;
   line-height: 1.2;
   text-align: left;
   font-size:0.95em;
