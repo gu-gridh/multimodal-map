@@ -90,7 +90,7 @@ const capitalize = (word: String) => {
   color:black;
   background-color: white;
   font-size: 14px;
-  margin-bottom: 0px;
+  margin-bottom: 30px;
   border-radius: 10px;
   padding: 10px 10px 15px 10px;
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.5);
