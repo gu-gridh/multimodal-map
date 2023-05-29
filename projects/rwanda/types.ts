@@ -58,6 +58,8 @@ interface Place {
   is_private: boolean;
   names: Array<Name>;
   type: PlaceType;
+  properties: any;
+  geometry: any
 }
 
 export type { Place, PlaceType, Name, Informant, Language };

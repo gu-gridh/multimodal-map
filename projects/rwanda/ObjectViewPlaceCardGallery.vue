@@ -7,7 +7,7 @@ const props = defineProps({
 })
 const id = props.id
 
-const images = ref<null|string>(null);
+const images = ref<null|any>(null);
 
 //fetch all images
 onBeforeMount(() => {
@@ -20,13 +20,14 @@ onBeforeMount(() => {
     .catch(error => { console.error('Error fetching ', error)})
 })
 
+
 </script>
 
 <template>
     <div class="place-gallery">
             <MapViewPreviewImage
                 v-for="image in images"
-                :key="image.id"
+                :key="image.uuid"
                 :image="image"
             />
     </div>

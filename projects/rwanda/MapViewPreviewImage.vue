@@ -1,15 +1,22 @@
 <script setup lang="ts">
 import type { Image } from "./types";
+import router from './router'
 
-defineProps<{
+const props = defineProps<{
   image: Image;
 }>();
+
+console.log(props.image)
+
+const pushToPage = () => {
+  router.push({path: `/image/${props.image.id}`})
+  .then(() => {router.go(0)})
+}
 
 </script>
 
 <template>
-   <div class="container">
-  <router-link :to="`/image/${image.id}`" class="clickable">
+   <div class="container clickable" @click="pushToPage">
     <div>
       <div class="image-card-white">
       <div class="image-container">
@@ -21,7 +28,6 @@ defineProps<{
       <div>{{ image.title }}</div>
     </div>
   </div>
-  </router-link>
 </div>
 </template>
 

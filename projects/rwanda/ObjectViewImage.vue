@@ -11,8 +11,8 @@ defineProps<{
 
 <template>
   <div class="metadata">
-    <ObjectViewComponent :title="object.title" back="/">
-      <p class="my-5 object-title">{{ object.description }}</p>
+    <ObjectViewComponent :title="object?.title" back="/">
+      <p class="my-5 object-title">{{ object?.description }}</p>
     </ObjectViewComponent>
   </div>
 
