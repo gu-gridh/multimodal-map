@@ -111,6 +111,7 @@ padding: 60px 50px 50px 60px;
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none; /* Standard syntax */
+  scrollbar-width: none;
 }
 
 .left-pane-layer::-webkit-scrollbar {

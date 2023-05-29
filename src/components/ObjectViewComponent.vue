@@ -49,6 +49,7 @@ defineProps({
   padding-left:75px;
   padding-right:20px;
   -ms-overflow-style: none!important;
+  scrollbar-width: none;
 }
 
 .meta-container::-webkit-scrollbar {
