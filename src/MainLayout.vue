@@ -167,8 +167,8 @@ font-size:1.6em;
   }
 
   #app .left-pane-layer {
-  width:650px;
-padding: 60px 50px 50px 60px;
+  width:600px;
+padding: 60px 0px 50px 60px;
 }
 
 

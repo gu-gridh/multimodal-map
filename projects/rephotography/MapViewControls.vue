@@ -141,7 +141,7 @@ onMounted(async () => {
 }
 
 #app .broad-controls{
-  width:120%;
+  width:100%;
 
 }
 
