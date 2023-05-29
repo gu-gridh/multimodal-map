@@ -191,10 +191,11 @@ margin-bottom:20px;
 
 
   .place-back-button {
-  left: 40px;
-  top: 40px;
+  left: 30px;
+  top: 53vh;
   width: 50px;
   height: 50px;
+  z-index:1000;
 
 }
 

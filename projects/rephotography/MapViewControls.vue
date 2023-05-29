@@ -1,5 +1,34 @@
+<template>
+  <div class="section-title">Documentation by category</div>
+  <CategoryButtonList
+    v-model="categories"
+    :categories="CATEGORIES"
+    :limit="1"
+    class="my-2"
+  />
+  
+  <div class="section-title">Time span</div>
+  <RangeSlider
+    v-model="years"
+    :min="YEARS.MIN"
+    :max="YEARS.MAX"
+    :step="1"
+    class="my-2"
+  />
+
+  <div class="section-title">Tags</div>
+  <div class="broad-controls">
+  <CategoryButtonList
+    v-model="tags"
+    :categories="TAGS"
+    :limit="1"
+    class="my-2"
+  />
+</div>
+</template>
+
 <script setup lang="ts">
-import { inject } from "vue";
+import { inject, ref, onMounted } from "vue";
 import CategoryButtonList from "@/components/input/CategoryButtonList.vue";
 import RangeSlider from "@/components/input/RangeSlider.vue";
 import { storeToRefs } from "pinia";
@@ -7,7 +36,7 @@ import { rephotographyStore } from "./store";
 import type { RephotographyProject } from "./types";
 
 const config = inject<RephotographyProject>("config");
-const { categories, years } = storeToRefs(rephotographyStore());
+const { categories, years, tags} = storeToRefs(rephotographyStore());
 
 // See https://github.com/gu-gridh/rephotography/blob/master/views.py
 const CATEGORIES = {
@@ -19,40 +48,23 @@ const CATEGORIES = {
   observation: "Observations",
 };
 
-const TAGS = {
-  all: "All Tags",
-  image: "Glacier",
-  video: "Camp",
-  models: "Animal",
-};
-
+const TAGS = ref<Record<string, string>>({});
 const YEARS = {
   MIN: config?.timeRange?.[0] || 0,
   MAX: config?.timeRange?.[1] || new Date().getFullYear(),
 };
+
+onMounted(async () => {
+  const response = await fetch("https://diana.dh.gu.se/api/rephotography/tag/");
+  const data = await response.json();
+  const tags = data.results.reduce((acc: Record<string, string>, tag: any) => {
+    acc[tag.id] = tag.text;
+    return acc;
+  }, {});
+  TAGS.value = { ...TAGS.value, ...tags };
+});
+
 </script>
-
-<template>
-  <div class="section-title">Documentation by category</div>
-  <CategoryButtonList
-    v-model="categories"
-    :categories="CATEGORIES"
-    :limit="1"
-    class="my-2"
-  />
-
-  <!-- <div class="section-title">Tags</div>
- -->
-  
-  <div class="section-title">Time span</div>
-  <RangeSlider
-    v-model="years"
-    :min="YEARS.MIN"
-    :max="YEARS.MAX"
-    :step="1"
-    class="my-2"
-  />
-</template>
 
 <style>
 .section-title {
@@ -126,5 +138,17 @@ const YEARS = {
   border-top: 15px solid #ff9900;
   box-shadow: var(--slider-handle-shadow, 0.5px 0.5px 2px 1px rgba(0, 0, 0, 0));
   cursor: grab;
+}
+
+#app .broad-controls{
+  width:120%;
+
+}
+
+@media screen and (max-width: 900px) {
+  #app .broad-controls{
+  width:100%;
+
+}
 }
 </style>

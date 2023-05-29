@@ -33,19 +33,15 @@ body {
 #app .left-pane {
   background-color: grey;
   width: 900px;
-  padding: 60px 450px 50px 60px;
   background: url("@/assets/gradient-rephotography.png");
   background-size: contain;
 }
 
 #app .mapview-preview {
   height: 100vh !important;
-  pointer-events: auto !important;
-  overflow-y: scroll !important;
   background-color: rgba(0, 0, 0, 0.85);
   width: 100%;
   color: white;
-  transition: all 0.5s ease-in-out;
   backdrop-filter: blur(7px);
 }
 

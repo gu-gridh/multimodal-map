@@ -8,9 +8,10 @@ defineProps<{
 </script>
 
 <template>
+  <div class="container">
   <router-link
     :to="`/detail/rephotography/${rephotography.id}`"
-    class="clickable no-touch"
+    class="clickable no-touch image-card"
   >
     <div class="image-container no-touch">
       <ComparisonSlider locked>
@@ -28,6 +29,7 @@ defineProps<{
         </template>
       </ComparisonSlider>
     </div>
+
     <div class="flex justify-between">
       <div>
         <div>{{ rephotography.old_image.title }}</div>
@@ -41,9 +43,17 @@ defineProps<{
       </div>
     </div>
   </router-link>
+</div>
 </template>
 
-<style>
+<style scoped>
+h2{
+  font-size:1.5em;
+  font-weight:200;
+}
 
+.container{
+  height:auto;
+  background-color:none;
+}
 </style>
-

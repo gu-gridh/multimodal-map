@@ -16,7 +16,7 @@
     <p>Under jubileumsutställningen 1923 pågick en konstutställning med samtida nordisk konst på Konstmuseet och på Konsthallen. I den lokal som vi idag kallar Göteborgs Konsthall visades den norska delen av utställningen med bland andra Edvard Munch. Den danska och finska delen visades i två intilliggande byggnader som idag är rivna, medan den svenska konsten höll till inne på det nuvarande Göteborgs Konstmuseum.</p>
 
       <p>Bakom konstmuseet och upp emot området runt näckrosdammen var platsen för den Historiska minnesutställningen. Här visades olika former av historiska utställningar kopplade till olika ämnen som sjöfart, handel, konsthantverk och hemslöjd. En rolig detalj är att humanistiska fakulteten och Humanistiska biblioteket ligger precis där stora delar av utställningen då var lokaliserad. Biblioteket ligger i dag där huvudrestaurangen låg och Humanisten där minneshallen stod.
-Nedanför, på andra sida Korsvägen där nuvarande Svenska mässan ligger var Exportutställningen lokaliserad. Här visade många av de stora industriföretagen upp sina produkter. </p>
+Nedanför, på andra sidan Korsvägen där nuvarande Svenska mässan ligger var Exportutställningen lokaliserad. Här visade många av de stora industriföretagen upp sina produkter. </p>
 
 <p>Här kan du se bilder på de olika byggnaderna m.m. som stod på platsen under utställningen. Vi har även samlat en rad digitaliserade skrifter som på olika sätt berör utställningen, som du lätt hittar här. Återkom gärna vid flera tillfällen då vi kommer fortsätta att publicera digitaliserat material här.</p>
 <h2>Om Portalen </h2>
@@ -180,7 +180,6 @@ transition: all 0.4s ease-in-out;
   line-height:1.1;
   font-weight: 300;
   opacity:0.0;
-  
   transition: all 0.4s ease-in-out;
 }
 
@@ -237,6 +236,17 @@ a {
   border-radius:0px 0px 4px 4px;
   box-shadow: 0px 3px 10px 0 rgba(0, 0, 0, 0.3),
     0 0px 0px 0px rgba(0, 0, 0, 0.4);
+}
+
+
+@media screen and (max-width: 900px) {
+
+.about-article-sub{
+  font-size:1.25em;
+  -webkit-hyphens: auto;
+  -ms-hyphens: auto;
+  hyphens: auto;
+}
 }
 
 

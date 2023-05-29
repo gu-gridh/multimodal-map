@@ -16,7 +16,8 @@ import About from "./About.vue";
 import { onMounted, watch } from "vue";
 import { nextTick } from "vue";
 
-const { categories, years } = storeToRefs(rephotographyStore());
+const { categories, years, tags } = storeToRefs(rephotographyStore());
+// tags add here
 
 const placeParams = computed(() =>
   clean({
@@ -24,8 +25,23 @@ const placeParams = computed(() =>
     start_date: years.value[0],
     end_date: years.value[1],
   })
+
+// tags: tags.value.join(","),  
+
 );
 const visibleAbout = ref(false);
+let visited = false; // Store the visited status outside of the hook
+
+onMounted(() => {
+  // Check if the "visited" key exists in session storage
+  visited = sessionStorage.getItem("visited") === "true"; // Retrieve the visited status from session storage
+
+  if (!visited) {
+    // Hide the about component
+    visibleAbout.value = true;
+    sessionStorage.setItem("visited", "true");
+  } 
+})
 
 const toggleAboutVisibility = async () => {
   console.log('fired')
@@ -33,7 +49,9 @@ const toggleAboutVisibility = async () => {
   visibleAbout.value = !visibleAbout.value;
 };
 
-
+watch(tags, (newTags) => {
+  console.log("Tags changed:", newTags);
+});
 </script>
 
 

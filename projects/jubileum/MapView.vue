@@ -72,7 +72,7 @@ watch(showGrid, (newValue) => {
                 margin-top: -10px;
                 cursor: pointer;
               "
-            >Om portalen</div>
+            >Om jubileumsutställningen och portalen</div>
           </button>
 <div style="width:100%; margin-top:20px;">
   <a href="https://gupea.ub.gu.se/handle/2077/74634">
@@ -151,8 +151,6 @@ watch(showGrid, (newValue) => {
 }
 
 #gallery{}
-
-
 
 .ui-overlay {
 margin-top: 70px;

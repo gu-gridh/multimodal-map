@@ -11,6 +11,7 @@
 
 <style>
 #footer {
+  display:block;
   background-color: #222;
   color: white;
   line-height: 1;

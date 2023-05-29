@@ -66,7 +66,7 @@ function deselectPlace() {
     <div class="px-8 py-6">
       <div class="close-button" @click="deselectPlace">+</div>
       <h3 class="">{{ selectedFeature.get("name") }}</h3>
-      <div class="flex flex-col gap-10 pointer">
+      <div class="pointer">
         <PreviewRephotography
           v-for="rephotography in rephotographies"
           :key="rephotography.old_image + ' ' + rephotography.new_image"
@@ -112,17 +112,33 @@ function deselectPlace() {
   cursor: pointer;
 }
 
+#app .image-card {
+  float:left;
+  overflow: hidden;
+  margin-bottom: 30px;
+  width:100%;
+  height:auto;
+  padding:0px!important;
+  transition: all 0.2s ease-in-out;
+}
+
 #app .image-container {
   border-radius: 8px;
   overflow: hidden;
   margin-bottom: 10px;
   width:100%;
   height:auto;
+  padding:0px;
+}
+
+#app .image-card:hover {
+transform:scale(1.03);
+border-radius: 8px;
 }
 
 #app .image {
   display: block;
-  transform:scale(1.1);
+  transform:scale(1.3);
 }
 
 </style>

@@ -46,6 +46,7 @@ const objectComponent = {
   width: 450px;
   height: 100vh;
   background-color: black;
+  pointer-events:auto;
   color: white;
 }
 .illustration {

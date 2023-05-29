@@ -10,11 +10,14 @@ import type {
   Video,
 } from "./types";
 import type { DianaClient } from "@/assets/diana";
-import MapViewPreviewRephotography from "./MapViewPreviewRephotography.vue";
-import MapViewPreviewImage from "./MapViewPreviewImage.vue";
-import MapViewPreviewVideo from "./MapViewPreviewVideo.vue";
+import PreviewRephotography from "./MapViewPreviewRephotography.vue";
+import PreviewImage from "./MapViewPreviewImage.vue";
+import PreviewVideo from "./MapViewPreviewVideo.vue";
+import { rephotographyStore } from "./store";
+
 
 const { selectedFeature } = storeToRefs(mapStore());
+const { years } = storeToRefs(rephotographyStore()); 
 const diana = inject("diana") as DianaClient;
 
 const images = ref<Image[]>();
@@ -22,6 +25,8 @@ const videos = ref<Video[]>();
 const rephotographies = ref<RephotographyDeep[]>();
 
 watchEffect(async () => {
+  console.log("Range values: ", years.value);  
+
   if (selectedFeature.value) {
     const place = selectedFeature.value.getId();
     images.value = await diana.listAll<Image>("image", { place });
@@ -61,20 +66,20 @@ function deselectPlace() {
     <div class="px-8 py-6">
       <div class="close-button" @click="deselectPlace">+</div>
       <h3 class="">{{ selectedFeature.get("name") }}</h3>
-      <div class="flex flex-col gap-10 pointer">
-        <MapViewPreviewRephotography
+      <div class="pointer">
+        <PreviewRephotography
           v-for="rephotography in rephotographies"
           :key="rephotography.old_image + ' ' + rephotography.new_image"
           :rephotography="rephotography"
         />
 
-        <MapViewPreviewVideo
+        <PreviewVideo
           v-for="video in videos"
           :key="video.uuid"
           :video="video"
         />
 
-        <MapViewPreviewImage
+        <PreviewImage
           v-for="image in images"
           :key="image.uuid"
           :image="image"
@@ -107,17 +112,33 @@ function deselectPlace() {
   cursor: pointer;
 }
 
+#app .image-card {
+  float:left;
+  overflow: hidden;
+  margin-bottom: 30px;
+  width:100%;
+  height:auto;
+  padding:0px!important;
+  transition: all 0.2s ease-in-out;
+}
+
 #app .image-container {
   border-radius: 8px;
   overflow: hidden;
-  margin-bottom: 8px;
- width:100%;
- height:auto !important;
+  margin-bottom: 10px;
+  width:100%;
+  height:auto;
+  padding:0px;
+}
+
+#app .image-card:hover {
+transform:scale(1.03);
+border-radius: 8px;
 }
 
 #app .image {
   display: block;
-  object-fit: cover;
-  height: 100%;
+  transform:scale(1.3);
 }
+
 </style>

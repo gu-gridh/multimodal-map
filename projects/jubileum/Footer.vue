@@ -14,7 +14,7 @@
 
       <div id="legal"> 
       Bilder: <a href="https://creativecommons.org/publicdomain/zero/1.0/deed.sv">CC0 1.0</a><br>
-  Texter: <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>
+      Texter: <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>
 </div>
   </footer>
 </template>
@@ -27,18 +27,17 @@
   background-color: #222;
   color: white;
   line-height: 1;
-  height: 82px;
+  height: 80px;
   width: calc(100% + 2px);
   font-size: 12px;
   position: absolute;
   z-index: 3000;
-  bottom: -2px;
+  bottom: 0px;
     font-family: "Barlow Condensed", sans-serif;
 }
 
 a {
   font-weight: normal;
-
 }
 
 #CDHLogo {
@@ -54,7 +53,6 @@ a {
   line-height: 0.4;
   padding: 25px 0px 10px 0px;
   vertical-align: middle;
-
 }
 
 #GUBLogo {
@@ -70,7 +68,6 @@ a {
   line-height: 0.4;
   padding: 25px 0px 10px 0px;
   vertical-align: middle;
-
 }
 
 #citation {
@@ -89,7 +86,6 @@ a {
   border-style:solid;
   border-width:0 0.5px 0 0px;
   border-color:white;
-
 }
 
 #legal{
@@ -105,5 +101,4 @@ a {
   margin-top:23px;;
   vertical-align: middle;
 }
-
 </style>

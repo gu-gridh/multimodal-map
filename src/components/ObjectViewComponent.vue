@@ -48,7 +48,12 @@ defineProps({
   padding-bottom:30px;
   padding-left:75px;
   padding-right:20px;
+  -ms-overflow-style: none!important;
 }
+
+.meta-container::-webkit-scrollbar {
+    width: 0px !important;
+    }
 
 .back-button {
   left: 20px;
