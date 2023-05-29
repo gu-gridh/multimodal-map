@@ -163,7 +163,6 @@ font-size:1.6em;
 
 #app .left-pane {
   width:1300px;
-  padding: 60px 750px 50px 60px;
   font-size:120%;
   }
 
@@ -181,7 +180,6 @@ padding: 60px 50px 50px 60px;
 
   .main-title {
     font-size:105px;
-  margin-left: -10px;
   transition: all 0.2s ease-in-out;
 }
 
