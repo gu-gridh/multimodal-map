@@ -69,6 +69,11 @@ body {
   z-index:500;
 }
 
+#app .left-pane-layer {
+width:450px;
+padding: 60px 0px 50px 60px;
+}
+
 #app .right-pane {
   position: absolute;
   height: 100vh;

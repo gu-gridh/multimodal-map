@@ -130,7 +130,6 @@ h2{
   opacity:0.0;
   margin-bottom:40px;
   transition: all 0.4s ease-in-out;
-
 }
 
 .about-sub-title {
@@ -147,22 +146,21 @@ h2{
   opacity:0.0;
   margin-bottom:40px;
   transition: all 0.4s ease-in-out;
-
 }
 
 .about-article-main{
-  position:relative;
-  float:left;
-  text-align:center;
+ position:relative;
+ float:left;
+ text-align:center;
  color:black;
  font-weight: 100;
-columns:1;
-column-gap:30px;
-max-width:1400px;
-font-size:2.0em;
-opacity:0.0;
-padding:0px 100px;
-transition: all 0.4s ease-in-out;
+ columns:1;
+ column-gap:30px;
+ max-width:1400px;
+ font-size:2.0em;
+ opacity:0.0;
+ padding:0px 100px;
+ transition: all 0.4s ease-in-out;
 
 }
 
@@ -248,8 +246,4 @@ a {
   hyphens: auto;
 }
 }
-
-
-
-
 </style>
