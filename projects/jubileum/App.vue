@@ -72,6 +72,7 @@ body {
 #app .left-pane-layer {
 width:450px;
 padding: 60px 0px 50px 60px;
+scrollbar-width: none;
 }
 
 #app .right-pane {
