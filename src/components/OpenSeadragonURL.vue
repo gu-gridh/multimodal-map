@@ -1,4 +1,5 @@
 <script setup lang="ts">
+// @ts-nocheck
 import { ref, onMounted } from "vue";
 import OpenSeadragon from '@/external/bookmark-url.js';
 
@@ -6,14 +7,11 @@ const props = defineProps({
   src: String,
 });
 
- // @ts-ignore
 let viewer = ref(null);
 
 onMounted(() => {
-   // @ts-ignore
   viewer = OpenSeadragon({
     /** @see https://openseadragon.github.io/docs/OpenSeadragon.html#.Options */
-     // @ts-ignore
      element: viewer.value,
      preserveViewport: true,
      sequenceMode: false,

@@ -84,6 +84,7 @@
 </template>
 
 <script setup lang="ts">
+// @ts-nocheck
 import { ref, watch } from "vue";
 import type { TextSearchFunction } from "../../types/diana";
 import { mapStore } from "@/stores/store";
