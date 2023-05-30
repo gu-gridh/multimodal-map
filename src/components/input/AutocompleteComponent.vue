@@ -65,7 +65,7 @@
     </div>
     
         
-    <div
+    <!-- <div
       class="bg-white rounded p-4 my-2 shadow-md w-full flex content-end clickable"
       v-if="selectedItem"
     >
@@ -79,7 +79,7 @@
           aria-hidden="true"
         />
       </button>
-    </div>
+    </div> -->
   </Combobox>
 </template>
 
@@ -109,9 +109,7 @@ const props = defineProps<{
   noResultsText: string;
 }>();
 
-
 const searchResults = ref<Array<any>>([]);
-
 const searchTerm = ref<string>("");
 
 watch(searchTerm, () => {
@@ -126,13 +124,12 @@ function clickUnselect() {
   selectedItem.value = undefined;
 }
 
-//show Place after search click
+
 const store = mapStore();
 
 watch(selectedItem, () => {
   store.updateResults(selectedItem.value)
-  router.push(`/place/${store.results?.id}`)  
+  router.push({path: `/place/${store.results?.id}`})
+  .then(() => {router.go(0)})
 })
-
-
 </script>
