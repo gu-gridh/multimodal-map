@@ -5,6 +5,7 @@
     :categories="CATEGORIES"
     :limit="1"
     class="my-2"
+    @click="handleCategoryClick" 
   />
   
   <div class="section-title">Time span</div>
@@ -23,12 +24,14 @@
     :categories="TAGS"
     :limit="1"
     class="my-2"
+    @click="handleTagClick" 
   />
 </div>
 </template>
 
 <script setup lang="ts">
-import { inject, ref, onMounted } from "vue";
+// @ts-nocheck
+import { inject, ref, onMounted, computed } from "vue";
 import CategoryButtonList from "@/components/input/CategoryButtonList.vue";
 import RangeSlider from "@/components/input/RangeSlider.vue";
 import { storeToRefs } from "pinia";
@@ -36,7 +39,7 @@ import { rephotographyStore } from "./store";
 import type { RephotographyProject } from "./types";
 
 const config = inject<RephotographyProject>("config");
-const { categories, years, tags} = storeToRefs(rephotographyStore());
+const { categories, years, tags, tagsLayerVisible, placesLayerVisible } = storeToRefs(rephotographyStore());
 
 // See https://github.com/gu-gridh/rephotography/blob/master/views.py
 const CATEGORIES = {
@@ -57,12 +60,31 @@ const YEARS = {
 onMounted(async () => {
   const response = await fetch("https://diana.dh.gu.se/api/rephotography/tag/");
   const data = await response.json();
-  const tags = data.results.reduce((acc: Record<string, string>, tag: any) => {
-    acc[tag.id] = tag.text;
-    return acc;
-  }, {});
-  TAGS.value = { ...TAGS.value, ...tags };
+  const tagTexts = data.results.filter(result => result.published).map(tag => tag.text);
+  tagTexts.forEach(tagText => {
+    TAGS.value[tagText] = tagText;
+  });
 });
+
+const handleCategoryClick = (category: string) => {
+  if (tagsLayerVisible.value) { 
+    tagsLayerVisible.value = false;
+    placesLayerVisible.value = true;
+  }
+
+  // If a category is clicked, clear tags
+  tags.value = [];
+};
+
+const handleTagClick = (tag: string) => {
+  if (placesLayerVisible.value) { 
+    placesLayerVisible.value = false;
+    tagsLayerVisible.value = true;
+  }
+
+  // If a tag is clicked, clear categories
+  categories.value = [];
+};
 
 </script>
 

@@ -11,13 +11,16 @@ import { storeToRefs } from "pinia";
 import { rephotographyStore } from "./store";
 import { clean } from "@/assets/utils";
 import markerIcon from "@/assets/marker-gold.svg";
+import markerRed from "@/assets/marker-red.svg";
 import { ref } from "vue";
 import About from "./About.vue";
 import { onMounted, watch } from "vue";
 import { nextTick } from "vue";
+import GeoJSON from "ol/format/GeoJSON";
 
-const { categories, years, tags } = storeToRefs(rephotographyStore());
-// tags add here
+
+const { categories, years, tags, placesLayerVisible, tagsLayerVisible } = storeToRefs(rephotographyStore());
+
 
 const placeParams = computed(() =>
   clean({
@@ -25,10 +28,16 @@ const placeParams = computed(() =>
     start_date: years.value[0],
     end_date: years.value[1],
   })
-
-// tags: tags.value.join(","),  
-
 );
+
+const tagParams = computed(() => {
+  const tag_set = tags.value[0]; // Assuming that tags always contains at least one element
+  return clean({
+    tag_set,
+  });
+});
+
+
 const visibleAbout = ref(false);
 let visited = false; // Store the visited status outside of the hook
 
@@ -52,6 +61,13 @@ const toggleAboutVisibility = async () => {
 watch(tags, (newTags) => {
   console.log("Tags changed:", newTags);
 });
+
+const data = {
+  url: computed(() => {
+    return 'https://data.dh.gu.se/geography/glacier_front_2008.geojson';
+  }),
+  geoJsonFormat: new GeoJSON(),
+};
 </script>
 
 
@@ -84,20 +100,58 @@ watch(tags, (newTags) => {
             capabilitiesUrl="https://geodata.npolar.no/arcgis/rest/services/Basisdata/NP_Ortofoto_Svalbard_WMTS_25833/MapServer/WMTS/1.0.0/WMTSCapabilities.xml"
           />
 
+        <!-- places -->
+        <DianaPlaceLayer
+          v-if="placesLayerVisible"
+          path="rephotography/geojson/place/"
+          :params="placeParams"
+        >
+          <ol-style>
+            <ol-style-icon
+              :src="markerIcon"
+              :scale="1.8"
+              :displacement="[-10, 45]"
+              :anchor="[0.0, 0.0]"
+            ></ol-style-icon>
+          </ol-style>
+          <FeatureSelection />
+        </DianaPlaceLayer>
+
+        <!-- tags -->
+        <DianaPlaceLayer
+          v-if="tagsLayerVisible"
+          path="rephotography/search/tag/"
+          :params="tagParams"
+        >
+          <ol-style>
+            <ol-style-icon
+              :src="markerIcon"
+              :scale="1.8"
+              :displacement="[-10, 45]"
+              :anchor="[0.0, 0.0]"
+            ></ol-style-icon>
+          </ol-style>
+          <FeatureSelection />
+        </DianaPlaceLayer>
+
           <DianaPlaceLayer
-            path="rephotography/geojson/place/"
-            :params="placeParams"
+          path="rephotography/geojson/focus/"
           >
-            <ol-style>
-              <ol-style-icon
-                :src="markerIcon"
-                :scale="1.8"
-                :displacement="[-10, 45]"
-                :anchor="[0.0, 0.0]"
-              ></ol-style-icon>
-            </ol-style>
-            <FeatureSelection />
-          </DianaPlaceLayer>
+          <ol-style>
+            <ol-style-icon
+              :src="markerRed"
+              :scale="1.8"
+              :displacement="[-10, 45]"
+              :anchor="[0.0, 0.0]"
+            ></ol-style-icon>
+          </ol-style>
+          <FeatureSelection />
+        </DianaPlaceLayer>
+
+       <!--     <ol-vector-layer :z-index="1">
+            <ol-source-vector :url="data.url" :format="data.geoJsonFormat" ref="source" />
+          </ol-vector-layer> -->
+
         </template>
       </MapComponent>
     </template>
