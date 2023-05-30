@@ -42,7 +42,7 @@ const capitalize = (word: String) => {
       <div class="">
         
       <!-- place card -->
-      <router-link :to="`/place/${place.id_}`" class="">
+      <router-link :to="`/place/${place.id_}`">
         <div class="place-card">
           <div style="width:100%;">
           <p>{{ capitalize(place.values_.type.text) }}</p>

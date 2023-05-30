@@ -11,7 +11,9 @@ export type Image = {
   file: string;
   iiif_file: string;
   title: string;
-  description: string
+  description: string;
+  informants: any;
+  place_of_interest: any
 };
 
 interface PlaceType {
