@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { Place } from './types';
 import router from './router'
-import { ref } from "vue"
+import { ref, inject, onMounted } from "vue"
 
-defineProps<{
+    const props = defineProps<{
         place: Place;
         id: number;
     }>();
@@ -17,32 +17,53 @@ defineProps<{
       else return word
     }
 
-    const center = ref([30.0636, -1.9520]);
     const projection = ref("EPSG:4326");
-    const zoom = ref(15);
+    const zoom = ref(14);
     const rotation = ref(0);
     const strokeWidth = ref(5);
     const strokeColor = ref("red");
+    const center = ref()
 
+    const format = inject("ol-format");
+    const geoJson = new format.GeoJSON();
+
+    const url = "https://diana.dh.gu.se/api/rwanda/geojson/place/"+ props.id
+
+    onMounted(() => {
+      const coords = props.place.geometry.coordinates
+      const feature = props.place.geometry
+      coords.forEach((coord: any) => {
+        if(feature.type === 'MultiLineString' || 'Polygon') {
+          center.value = JSON.parse(JSON.stringify(coord[0]))
+        }
+        if(feature.type === 'MultiPolygon') {
+          center.value = JSON.parse(JSON.stringify(coord[0][0]))
+        }
+        if(feature.type === 'LineString') {
+          center.value = JSON.parse(JSON.stringify(coord))
+        }
+        else {center.value = [30.05885, -1.94995 ]}
+      });
+    })
+   
 </script>
 
 <template>
 
 <button class="place-back-button" @click="router.push({path: '/'})"></button>
   <div class="place-meta-container">
-   
       <div class="place-card-full">
         <div class="place-card-content">
           <!-- mini map -->
         <div class="mini-map">
           <ol-map 
-          :loadTilesWhileAnimating="true"
-          :loadTilesWhileInteracting="true"
-          style="height:250px"
+            :loadTilesWhileAnimating="true"
+            :loadTilesWhileInteracting="true"
+            style="height:250px"
           >
             <ol-view
               ref="view"
-              :center="place.geometry?.coordinates[0][0]"
+              :center="center"
               :rotation="rotation"
               :zoom="zoom"
               :projection="projection"
@@ -51,19 +72,11 @@ defineProps<{
               <ol-source-osm />
             </ol-tile-layer>
             <ol-vector-layer>
-              <ol-source-vector>
-                <ol-feature>
-                  <ol-geom-line-string
-                    :coordinates="place.geometry?.coordinates[0]"
-                  ></ol-geom-line-string>
-                  <ol-style>
-                    <ol-style-stroke
-                      :color="strokeColor"
-                      :width="strokeWidth"
-                    ></ol-style-stroke>
-                  </ol-style>
-                </ol-feature>
+              <ol-source-vector :url="url" :format="geoJson">
               </ol-source-vector>
+              <ol-style>
+        <ol-style-stroke :color="strokeColor" :width="strokeWidth"></ol-style-stroke>
+      </ol-style>
             </ol-vector-layer>
           </ol-map>
         </div>

@@ -6,8 +6,6 @@ const props = defineProps<{
   image: Image;
 }>();
 
-console.log(props.image)
-
 const pushToPage = () => {
   router.push({path: `/image/${props.image.id}`})
   .then(() => {router.go(0)})

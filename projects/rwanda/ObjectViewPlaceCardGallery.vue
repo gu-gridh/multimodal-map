@@ -14,7 +14,6 @@ onBeforeMount(() => {
     fetch('https://diana.dh.gu.se/api/rwanda/image/?place_of_interest='+ id)
     .then(res => res.json())
     .then(data => {
-        console.log(data.results)
         images.value = data.results
     })
     .catch(error => { console.error('Error fetching ', error)})
