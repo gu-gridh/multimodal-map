@@ -22,7 +22,7 @@ const pushToPage = () => {
       <div v-if="object.informants && object.informants.length > 0">
         <p v-for="info in object?.informants">Informants: {{ info.custom_id }}</p>
       </div>
-      <p class="toPlace clickable" @click="pushToPage">Place of interest</p>
+      <div class="toPlace category-button" @click="pushToPage">Place of interest</div>
     </ObjectViewComponent>
   </div>
 
@@ -45,6 +45,11 @@ const pushToPage = () => {
 </template>
 
 <style scoped>
+
+.category-button{
+  width:123px !important;
+  padding:2px 10px !important;
+}
 .metadata {
   background-color: black !important;
   overflow:hidden !important;
@@ -52,7 +57,7 @@ const pushToPage = () => {
 }
 
 .toPlace {
-  margin-top: 100px; 
+  margin-top: 50px; 
   color: rgb(180,100,100);
   font-size:1.1em !important;
   cursor: pointer;
