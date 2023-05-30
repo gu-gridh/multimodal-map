@@ -59,7 +59,7 @@ import { ref, inject, onMounted } from "vue"
           <ol-map 
             :loadTilesWhileAnimating="true"
             :loadTilesWhileInteracting="true"
-            style="height:250px"
+            style="height:220px"
           >
             <ol-view
               ref="view"
@@ -189,7 +189,7 @@ margin-bottom:20px;
 
 .mini-map{
   width:100%;
-  height:200px;
+  height:220px;
   overflow:hidden;
   background-color:grey;
   margin-bottom:0px;
@@ -227,12 +227,6 @@ margin-bottom: 0px;
 border-radius: 30px 30px 0px 0px !important;
 }
 
-.mini-map{
-  width:100%;
-  height:250px;
-  background-color:grey;
-  margin-bottom:0px;
-}
 
 .place-card-full .category-button{
 width:120px!important;

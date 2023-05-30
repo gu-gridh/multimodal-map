@@ -64,6 +64,11 @@ onBeforeMount(() => {
   margin-bottom:30px;
 }
 
+#app .place-gallery .image-container {
+  height:210px;
+ 
+}
+
 @media screen and (max-width: 900px) {
 
     #app .place-gallery {
