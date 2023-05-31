@@ -181,7 +181,7 @@ line-height:1.2;
 
 .place-card-full .category-button{
   width:110px!important;
-padding:4px 18px;
+padding:4px 18px!important;
 margin-top:15px;
 margin-bottom:20px;
 
@@ -206,6 +206,14 @@ margin-bottom:20px;
 }
 }
 
+
+@media screen and (min-width: 1900px) {
+  .place-card-full .category-button{
+  width:125px!important;
+padding:5px 18px!important;
+margin-top:15px;
+}
+}
 
 
 @media screen and (max-width: 900px) {
