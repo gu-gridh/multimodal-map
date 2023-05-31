@@ -14,7 +14,6 @@ provide("diana", endpoint);
      <Footer />
   <router-view />
 </template>
-
 <style>
 
 /* Project theme in regards to colour and fonts */
@@ -44,8 +43,6 @@ body {
   background: url("@/assets/gradient-rephotography.png");
   background-size: contain;
 }
-
-
 
 #app .mapview-preview {
   height: 100vh !important;

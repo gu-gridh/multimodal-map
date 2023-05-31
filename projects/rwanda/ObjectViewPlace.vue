@@ -25,7 +25,7 @@ import ObjectViewPlaceCardGallery from './ObjectViewPlaceCardGallery.vue';
 .place-card-container{
     background-color: transparent !important; 
     overflow:hidden !important; 
-    width:550px!important;
+    width:600px!important;
     float: left;
 }
 
