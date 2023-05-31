@@ -23,6 +23,7 @@ import { ref, inject, onMounted } from "vue"
     const strokeWidth = ref(5);
     const strokeColor = ref("red");
     const center = ref()
+    const minZoom = ref(10)
 
     const format = inject("ol-format");
     const geoJson = new format.GeoJSON();
@@ -67,6 +68,7 @@ import { ref, inject, onMounted } from "vue"
               :rotation="rotation"
               :zoom="zoom"
               :projection="projection"
+              :minZoom="minZoom"
             />
             <ol-tile-layer>
               <ol-source-osm />
