@@ -138,11 +138,11 @@ padding: 60px 50px 50px 60px;
   user-select: none; /* Standard syntax */
 }
 
-.mapview-preview::-webkit-scrollbar {
+/* .mapview-preview::-webkit-scrollbar {
     width: 0px !important;
-    }
+    } */
 
-body::-webkit-scrollbar{
+/* body::-webkit-scrollbar{
     width: 0px  !important;
   }
 
@@ -156,11 +156,11 @@ body::-webkit-scrollbar{
 
   html {
     scrollbar-width: none;
-  }
+  } */
 
-  .mapview-preview {
+  /* .mapview-preview {
     scrollbar-width: none;
-  }
+  } */
 
   
 
