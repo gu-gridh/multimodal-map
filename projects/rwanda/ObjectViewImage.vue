@@ -35,12 +35,45 @@ defineProps<{
 </template>
 
 <style>
+<<<<<<< Updated upstream
+=======
+
+.category-button{
+  width:123px !important;
+  padding:2px 10px !important;
+}
+
+>>>>>>> Stashed changes
 .metadata {
   background-color: black !important;
   overflow:hidden !important;
   width: 450px !important;
 }
 
+<<<<<<< Updated upstream
+=======
+.metadata .back-button {
+
+  top: 50px !important;
+
+}
+
+
+.toPlace {
+  margin-top: 50px; 
+  color: rgb(180,100,100);
+  font-size:1.1em !important;
+  cursor: pointer;
+}
+>>>>>>> Stashed changes
+
+@media screen and (min-width: 1900px) {
+
+.metadata .category-button{
+  width:160px!important;
+  padding:6px 20px!important;
+}
+}
 
 
 
