@@ -47,7 +47,8 @@ const CATEGORIES = {
   image: "Photographs",
   video: "Videos",
   // documents: "Documents",
-  drawings: "Drawings and art",
+  drawing: "Drawings",
+  art: "Art",
   observation: "Observations",
 };
 
@@ -84,7 +85,16 @@ const handleTagClick = (tag: string) => {
 
   // If a tag is clicked, clear categories
   categories.value = [];
+
+  // If the clicked tag is already selected, return early to prevent adding the tag again
+  if (tags.value.includes(tag)) {
+    return;
+  }
+
+  // Add the clicked tag
+  tags.value.push(tag);
 };
+
 
 </script>
 

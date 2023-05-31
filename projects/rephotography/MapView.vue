@@ -58,16 +58,21 @@ const toggleAboutVisibility = async () => {
   visibleAbout.value = !visibleAbout.value;
 };
 
-watch(tags, (newTags) => {
-  console.log("Tags changed:", newTags);
-});
-
-const data = {
-  url: computed(() => {
-    return 'https://data.dh.gu.se/geography/glacier_front_2008.geojson';
-  }),
+const vectorLayers = computed(() => [
+  {
+    url: "https://data.dh.gu.se/geography/glacier_front_2022.geojson",
+    geoJsonFormat: new GeoJSON(),
+  },
+  {
+  url: "https://data.dh.gu.se/geography/glacier_front_2021.geojson",
   geoJsonFormat: new GeoJSON(),
-};
+  },
+  {
+  url: "https://data.dh.gu.se/geography/glacier_front_2008.geojson",
+  geoJsonFormat: new GeoJSON(),
+  },
+]);
+
 </script>
 
 
@@ -148,9 +153,12 @@ const data = {
           <FeatureSelection />
         </DianaPlaceLayer>
 
-       <!--     <ol-vector-layer :z-index="1">
-            <ol-source-vector :url="data.url" :format="data.geoJsonFormat" ref="source" />
-          </ol-vector-layer> -->
+  <!--      <ol-vector-layer v-for="layer in vectorLayers" :key="layer.url" :z-index="1">
+            <ol-source-vector :url="layer.url" :format="layer.geoJsonFormat" ref="source" />
+            <ol-style>
+              <ol-style-stroke color="red" width="3"></ol-style-stroke>
+            </ol-style>
+        </ol-vector-layer> -->
 
         </template>
       </MapComponent>
