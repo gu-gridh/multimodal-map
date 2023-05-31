@@ -101,20 +101,22 @@ const layerColors = ["red", "green", "blue"];
               "
             >More info</div>
           </button>
-        
-      <MapViewControls />
 
-        <div class="section-title">Toggle Map Layer</div>
         <button class="item" @click="toggleSection">
           <div
             class="p-1 px-2 clickable category-button"
             style="
-              width: 90px;
+              width: 120px;
               text-align: center;
               cursor: pointer;
+              margin-left:10px;
             "
-          >Toggle</div>
+          >Glacier data layer</div>
       </button>
+        
+      <MapViewControls />
+
+        
     </template>
 
   
