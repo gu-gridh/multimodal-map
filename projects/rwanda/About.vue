@@ -161,14 +161,15 @@ transition: all 0.4s ease-in-out;
 
 }
 
-.category-button{
+.about-container .category-button{
+  width:200px!important;
   position:relative;
   float:left;
   font-size:2em;
   font-weight:400;
   transition: all 0.4s ease-in-out;
   background-color:rgb(230,230,230);
-  padding:8px 20px !important;
+  padding:10px 20px !important;
   z-index:1000;
   opacity:1.0;
   margin-bottom:50px;
