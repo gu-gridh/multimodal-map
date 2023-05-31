@@ -89,7 +89,7 @@ const getFeatureDisplayName: DisplayFunction =
   <ol-interaction-select @select="onHover" :condition="hoverCondition">
     <ol-style>
       <ol-style-icon
-        :src="markerIcon"
+        :src="markerIconRed"
         :scale="2.0"
         :displacement="[-12, 50]"
         :anchor="[0.0, 0.0]"
