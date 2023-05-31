@@ -7,18 +7,18 @@ const props = defineProps({
 })
 const id = props.id
 
-const images = ref<null|string>(null);
+const images = ref<null|any>(null);
 
 //fetch all images
 onBeforeMount(() => {
     fetch('https://diana.dh.gu.se/api/rwanda/image/?place_of_interest='+ id)
     .then(res => res.json())
     .then(data => {
-        console.log(data.results)
         images.value = data.results
     })
     .catch(error => { console.error('Error fetching ', error)})
 })
+
 
 </script>
 
@@ -26,7 +26,7 @@ onBeforeMount(() => {
     <div class="place-gallery">
             <MapViewPreviewImage
                 v-for="image in images"
-                :key="image.id"
+                :key="image.uuid"
                 :image="image"
             />
     </div>
@@ -62,6 +62,11 @@ onBeforeMount(() => {
   margin-bottom: 0px;
   margin-right:30px;
   margin-bottom:30px;
+}
+
+#app .place-gallery .image-container {
+  height:210px;
+ 
 }
 
 @media screen and (max-width: 900px) {

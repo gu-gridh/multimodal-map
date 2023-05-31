@@ -11,7 +11,9 @@ export type Image = {
   file: string;
   iiif_file: string;
   title: string;
-  description: string
+  description: string;
+  informants: any;
+  place_of_interest: any
 };
 
 interface PlaceType {
@@ -58,6 +60,8 @@ interface Place {
   is_private: boolean;
   names: Array<Name>;
   type: PlaceType;
+  properties: any;
+  geometry: any
 }
 
 export type { Place, PlaceType, Name, Informant, Language };

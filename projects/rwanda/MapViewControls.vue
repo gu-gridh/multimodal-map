@@ -6,11 +6,12 @@ import { storeToRefs } from "pinia";
 import { useRwandaMap } from "./map.composable";
 import { formatNames } from "./names";
 import type { Place } from "./types";
-import { ref, watch } from "vue";
+import { ref, watch, computed } from "vue";
+import router from './router'
 
 const { searchText } = useRwandaMap();
 const store = mapStore();
-const { results } = storeToRefs(store);
+//const { results } = storeToRefs(store);
 
 
 function displayName(p: Place): string {

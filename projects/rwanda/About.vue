@@ -189,7 +189,7 @@ a {
   width:100%;
   height:300px;
   position:relative;
-  background:url(./images/about-mountains.png);
+  /* background:url(./images/about-mountains.png); */
   background-repeat: no-repeat;
   background-size: cover;
   opacity:0.7;
@@ -202,7 +202,7 @@ a {
   width:200px;
   height:90px;
   position:absolute;
-  background:url(./images/logo-Infravis-516.png);
+  /* background:url(./images/logo-Infravis-516.png); */
   background-repeat: no-repeat;
   background-size: contain;
   top:30px;

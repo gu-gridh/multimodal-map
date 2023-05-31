@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { Place } from './types';
 import router from './router'
-import { ref } from "vue"
+import { ref, inject, onMounted } from "vue"
 
-defineProps<{
+    const props = defineProps<{
         place: Place;
         id: number;
     }>();
@@ -17,32 +17,53 @@ defineProps<{
       else return word
     }
 
-    const center = ref([30.0636, -1.9520]);
     const projection = ref("EPSG:4326");
-    const zoom = ref(15);
+    const zoom = ref(14);
     const rotation = ref(0);
     const strokeWidth = ref(5);
     const strokeColor = ref("red");
+    const center = ref()
 
+    const format = inject("ol-format");
+    const geoJson = new format.GeoJSON();
+
+    const url = "https://diana.dh.gu.se/api/rwanda/geojson/place/"+ props.id
+
+    onMounted(() => {
+      const coords = props.place.geometry.coordinates
+      const feature = props.place.geometry
+      coords.forEach((coord: any) => {
+        if(feature.type === 'MultiLineString' || 'Polygon') {
+          center.value = JSON.parse(JSON.stringify(coord[0]))
+        }
+        if(feature.type === 'MultiPolygon') {
+          center.value = JSON.parse(JSON.stringify(coord[0][0]))
+        }
+        if(feature.type === 'LineString') {
+          center.value = JSON.parse(JSON.stringify(coord))
+        }
+        else {center.value = [30.05885, -1.94995 ]}
+      });
+    })
+   
 </script>
 
 <template>
 
 <button class="place-back-button" @click="router.push({path: '/'})"></button>
   <div class="place-meta-container">
-   
       <div class="place-card-full">
         <div class="place-card-content">
           <!-- mini map -->
         <div class="mini-map">
           <ol-map 
-          :loadTilesWhileAnimating="true"
-          :loadTilesWhileInteracting="true"
-          style="height:250px"
+            :loadTilesWhileAnimating="true"
+            :loadTilesWhileInteracting="true"
+            style="height:220px"
           >
             <ol-view
               ref="view"
-              :center="place.geometry.coordinates[0][0]"
+              :center="center"
               :rotation="rotation"
               :zoom="zoom"
               :projection="projection"
@@ -51,29 +72,21 @@ defineProps<{
               <ol-source-osm />
             </ol-tile-layer>
             <ol-vector-layer>
-              <ol-source-vector>
-                <ol-feature>
-                  <ol-geom-line-string
-                    :coordinates="place.geometry.coordinates[0]"
-                  ></ol-geom-line-string>
-                  <ol-style>
-                    <ol-style-stroke
-                      :color="strokeColor"
-                      :width="strokeWidth"
-                    ></ol-style-stroke>
-                  </ol-style>
-                </ol-feature>
+              <ol-source-vector :url="url" :format="geoJson">
               </ol-source-vector>
+              <ol-style>
+        <ol-style-stroke :color="strokeColor" :width="strokeWidth"></ol-style-stroke>
+      </ol-style>
             </ol-vector-layer>
           </ol-map>
         </div>
         <!-- meta-data -->
         <div class="metadata-content"> 
-          <h1>{{ capitalize(place.properties.type.text) }}</h1>
-          <div class="meta-item">{{ capitalize(place.properties.description) }}</div>
-          <div class="meta-item"> {{place.properties.is_existing ? 'Existing' : 'Non-existing'}} - {{ place.properties.is_iconic ? 'Iconic' : 'Not iconic'}} - {{ place.properties.is_private ? 'Private' : 'Public'}}</div>
-          <div class="meta-item" v-if="place.properties.parent_place !== null">
-            <a :href="place.properties.parent_place.id">
+          <h1>{{ capitalize(place.properties?.type.text) }}</h1>
+          <div class="meta-item">{{ capitalize(place.properties?.description) }}</div>
+          <div class="meta-item"> {{place.properties?.is_existing ? 'Existing' : 'Non-existing'}} - {{ place.properties?.is_iconic ? 'Iconic' : 'Not iconic'}} - {{ place.properties?.is_private ? 'Private' : 'Public'}}</div>
+          <div class="meta-item" v-if="place.properties?.parent_place !== null">
+            <a :href="place.properties?.parent_place.id">
               <div class="category-button">
                 Parent place
               </div>
@@ -81,14 +94,14 @@ defineProps<{
           </div>
        
           <div style="margin-top:30px;">
-            <div  v-for="name in place.properties.names">
+            <div  v-for="name in place.properties?.names">
               <div  v-if="name !== null || undefined">
-                <div class="meta-item"  v-if="name.languages && name.languages.length > 0"><div class="lang">{{ name.languages[0].abbreviation }}</div> <div class="long-name" style="font-weight:600;" v-if="name.text">{{ name.text }}</div>
+                <div class="meta-item"  v-if="name.languages && name.languages.length > 0"><div class="lang">{{ name.languages[0]?.abbreviation }}</div> <div class="long-name" style="font-weight:600;" v-if="name.text">{{ name.text }}</div>
               </div>      
               <div style="width:100%; float:left; margin-bottom:30px; padding-left:45px;">
-                <div class="meta-item" v-if="name.period !== null">Period: {{ name.period.start_year }} - {{ name.period.end_year }}. {{ capitalize(name.period.text) }}</div>
-                <div class="meta-item" v-if="name.informants && name.informants.length > 0">Informant: <span v-for="informant in name.informants">{{ name.informants[0].custom_id }}. {{ name.informants[0].note }}</span></div>
-                <div class="meta-item" v-if="name.referent">Comment: {{ name.referent.comment }}</div>
+                <div class="meta-item" v-if="name.period !== null">Period: {{ name.period?.start_year }} - {{ name.period?.end_year }}. {{ capitalize(name.period?.text) }}</div>
+                <div class="meta-item" v-if="name.informants && name.informants.length > 0">Informant: <span v-for="informant in name.informants">{{ informant?.custom_id }}. {{ informant?.note }}</span></div>
+                <div class="meta-item" v-if="name.referent">Comment: {{ name.referent?.comment }}</div>
                 <div class="meta-item" v-if="name.note">Note: {{ name.note }}</div>
             </div>
           </div>  
@@ -176,7 +189,7 @@ margin-bottom:20px;
 
 .mini-map{
   width:100%;
-  height:200px;
+  height:220px;
   overflow:hidden;
   background-color:grey;
   margin-bottom:0px;
@@ -222,12 +235,6 @@ margin-bottom: 0px;
 border-radius: 30px 30px 0px 0px !important;
 }
 
-.mini-map{
-  width:100%;
-  height:250px;
-  background-color:grey;
-  margin-bottom:0px;
-}
 
 .place-card-full .category-button{
 width:120px!important;
