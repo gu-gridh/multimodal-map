@@ -1,4 +1,9 @@
 <template>
+        <!-- <div class="section-title">Glacier data layer</div>  -->
+<button class="item" @click="toggleMapLayer">
+  <div :class="['p-1', 'px-2', 'clickable', 'category-button', { 'active': mapLayerVisibility}]" style="width: auto; margin-left:10px; text-align: center; cursor: pointer;">Glacier data layer</div>
+</button>
+
   <div class="section-title">Documentation by category</div>
   <CategoryButtonList
     v-model="categories"
@@ -9,7 +14,7 @@
   />
   
   <transition name="slide">
-    <div v-if="isSliderVisible">
+    <div class="slideinactive" v-bind:class="{slideactive: isSliderVisible}">
       <div class="section-title">Time span</div>
       <RangeSlider
         v-model="years"
@@ -20,7 +25,7 @@
       />
     </div>
   </transition>
-
+<div class="tag-section">
   <div class="section-title">Tags</div>
   <div class="broad-controls">
   <CategoryButtonList
@@ -31,11 +36,9 @@
     @click="handleTagClick" 
   />
 </div>
+</div>
 
-  <div class="section-title">Glacier data layer</div>
-<button class="item" @click="toggleMapLayer">
-  <div :class="['p-1', 'px-2', 'clickable', 'category-button', { 'active': mapLayerVisibility}]" style="width: 120px; margin-left:10px; text-align: center; cursor: pointer;">Toggle</div>
-</button>
+
 
 
 
@@ -127,6 +130,7 @@ const handleTagClick = (tag: string) => {
     tags.value = [];
     placesLayerVisible.value = true;
     tagsLayerVisible.value = false;
+    isSliderVisible.value = true;
 
     // Clear the lastClickedTag since it was unselected
     lastClickedTag.value = '';
@@ -140,8 +144,8 @@ const handleTagClick = (tag: string) => {
 };
 
 const toggleMapLayer = () => {
-  mapLayerVisibility.value = !mapLayerVisibility.value; // Toggle the map layer visibility
-};
+   mapLayerVisibility.value = !mapLayerVisibility.value; // Toggle the map layer visibility
+ };
 </script>
 
 <style>
@@ -232,9 +236,23 @@ const toggleMapLayer = () => {
 
 .slide-leave-active {
   transition: all 0.4s;
+  opacity:1.0;
 }
+
 .slide-leave-to {
-  transform: translateX(-150%);
+  opacity:0.5;
 }
+
+.slideinactive {
+  opacity:0.4;
+  pointer-events: none !important;
+  transition: all 0.4s;
+}
+
+.slideactive {
+  transition: all 0.4s;
+  opacity:1.0;
+}
+
 
 </style>

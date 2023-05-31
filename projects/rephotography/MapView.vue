@@ -19,7 +19,7 @@ import { nextTick } from "vue";
 import GeoJSON from "ol/format/GeoJSON";
 
 
-const { categories, years, tags, placesLayerVisible, tagsLayerVisible, mapLayerVisibility } = storeToRefs(rephotographyStore());
+const { categories, years, tags, tagsLayerVisible, placesLayerVisible, mapLayerVisibility } = storeToRefs(rephotographyStore());
 
 
 const placeParams = computed(() =>
@@ -82,9 +82,11 @@ const toggleSection = () => {
 /*Colors for Vector Layer*/
 const layerColors = ["red", "green", "blue"];
 
+const toggleMapLayer = () => {
+  mapLayerVisibility.value = !mapLayerVisibility.value; // Toggle the map layer visibility
+};
+
 </script>
-
-
 
 <template>
  <About :visibleAbout="visibleAbout" @close="visibleAbout = false" />
@@ -101,7 +103,6 @@ const layerColors = ["red", "green", "blue"];
               "
             >More info</div>
           </button>
-        
       <MapViewControls />
     </template>
 
