@@ -48,7 +48,6 @@ const CATEGORIES = {
   video: "Videos",
   // documents: "Documents",
   drawing: "Drawings",
-  art: "Art",
   observation: "Observations",
 };
 

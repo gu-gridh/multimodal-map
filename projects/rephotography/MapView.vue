@@ -11,7 +11,7 @@ import { storeToRefs } from "pinia";
 import { rephotographyStore } from "./store";
 import { clean } from "@/assets/utils";
 import markerIcon from "@/assets/marker-gold.svg";
-import markerRed from "@/assets/marker-red.svg";
+import markerBlue from "@/assets/marker-blue.svg";
 import { ref } from "vue";
 import About from "./About.vue";
 import { onMounted, watch } from "vue";
@@ -73,6 +73,15 @@ const vectorLayers = computed(() => [
   },
 ]);
 
+const showSection = ref(false);
+
+const toggleSection = () => {
+  showSection.value = !showSection.value;
+};
+
+/*Colors for Vector Layer*/
+const layerColors = ["red", "green", "blue"];
+
 </script>
 
 
@@ -92,7 +101,20 @@ const vectorLayers = computed(() => [
               "
             >More info</div>
           </button>
+        
       <MapViewControls />
+
+        <div class="section-title">Toggle Map Layer</div>
+        <button class="item" @click="toggleSection">
+          <div
+            class="p-1 px-2 clickable category-button"
+            style="
+              width: 90px;
+              text-align: center;
+              cursor: pointer;
+            "
+          >Toggle</div>
+      </button>
     </template>
 
   
@@ -144,7 +166,7 @@ const vectorLayers = computed(() => [
           >
           <ol-style>
             <ol-style-icon
-              :src="markerRed"
+              :src="markerBlue"
               :scale="1.8"
               :displacement="[-10, 45]"
               :anchor="[0.0, 0.0]"
@@ -153,12 +175,15 @@ const vectorLayers = computed(() => [
           <FeatureSelection />
         </DianaPlaceLayer>
 
-  <!--      <ol-vector-layer v-for="layer in vectorLayers" :key="layer.url" :z-index="1">
-            <ol-source-vector :url="layer.url" :format="layer.geoJsonFormat" ref="source" />
-            <ol-style>
-              <ol-style-stroke color="red" width="3"></ol-style-stroke>
-            </ol-style>
-        </ol-vector-layer> -->
+        <div v-if="showSection">
+        <ol-vector-layer v-for="(layer, index) in vectorLayers" :key="layer.url" :z-index="1">
+        <ol-source-vector :url="layer.url" :format="layer.geoJsonFormat" ref="source" />
+        <ol-style>
+          <ol-style-stroke :color="layerColors[index % layerColors.length]" width="4"></ol-style-stroke>
+        </ol-style>
+      </ol-vector-layer>
+      </div>
+
 
         </template>
       </MapComponent>
