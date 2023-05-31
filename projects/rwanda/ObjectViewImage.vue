@@ -44,7 +44,7 @@ const pushToPage = () => {
   </section>
 </template>
 
-<style scoped>
+<style>
 
 .category-button{
   width:123px !important;
@@ -56,11 +56,25 @@ const pushToPage = () => {
   width: 450px !important;
 }
 
+.metadata .back-button{
+  margin-top:5px;
+}
+
+
+
 .toPlace {
   margin-top: 50px; 
   color: rgb(180,100,100);
   font-size:1.1em !important;
   cursor: pointer;
+}
+
+@media screen and (min-width: 1900px) {
+.metadata .category-button{
+  width:155px!important;
+padding:5px 18px!important;
+margin-top:30px;
+}
 }
 
 

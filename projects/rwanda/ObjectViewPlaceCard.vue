@@ -199,6 +199,14 @@ margin-bottom:20px;
 }
 
 
+@media screen and (min-width: 1900px) {
+  .place-card-full .category-button{
+  width:125px!important;
+padding:5px 18px!important;
+margin-top:15px;
+}
+}
+
 
 @media screen and (max-width: 900px) {
 
