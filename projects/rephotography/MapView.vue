@@ -19,7 +19,7 @@ import { nextTick } from "vue";
 import GeoJSON from "ol/format/GeoJSON";
 
 
-const { categories, years, tags, placesLayerVisible, tagsLayerVisible } = storeToRefs(rephotographyStore());
+const { categories, years, tags, placesLayerVisible, tagsLayerVisible, mapLayerVisibility } = storeToRefs(rephotographyStore());
 
 
 const placeParams = computed(() =>
@@ -101,22 +101,8 @@ const layerColors = ["red", "green", "blue"];
               "
             >More info</div>
           </button>
-
-        <button class="item" @click="toggleSection">
-          <div
-            class="p-1 px-2 clickable category-button"
-            style="
-              width: 120px;
-              text-align: center;
-              cursor: pointer;
-              margin-left:10px;
-            "
-          >Glacier data layer</div>
-      </button>
         
       <MapViewControls />
-
-        
     </template>
 
   
@@ -177,15 +163,14 @@ const layerColors = ["red", "green", "blue"];
           <FeatureSelection />
         </DianaPlaceLayer>
 
-        <div v-if="showSection">
-        <ol-vector-layer v-for="(layer, index) in vectorLayers" :key="layer.url" :z-index="1">
+        <div v-if="mapLayerVisibility">
+       <ol-vector-layer v-for="(layer, index) in vectorLayers" :key="layer.url" :z-index="1">
         <ol-source-vector :url="layer.url" :format="layer.geoJsonFormat" ref="source" />
         <ol-style>
           <ol-style-stroke :color="layerColors[index % layerColors.length]" width="4"></ol-style-stroke>
         </ol-style>
       </ol-vector-layer>
       </div>
-
 
         </template>
       </MapComponent>

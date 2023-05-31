@@ -8,14 +8,18 @@
     @click="handleCategoryClick" 
   />
   
-  <div class="section-title">Time span</div>
-  <RangeSlider
-    v-model="years"
-    :min="YEARS.MIN"
-    :max="YEARS.MAX"
-    :step="1"
-    class="my-2"
-  />
+  <transition name="slide">
+    <div v-if="isSliderVisible">
+      <div class="section-title">Time span</div>
+      <RangeSlider
+        v-model="years"
+        :min="YEARS.MIN"
+        :max="YEARS.MAX"
+        :step="1"
+        class="my-2"
+      />
+    </div>
+  </transition>
 
   <div class="section-title">Tags</div>
   <div class="broad-controls">
@@ -27,6 +31,14 @@
     @click="handleTagClick" 
   />
 </div>
+
+  <div class="section-title">Glacier data layer</div>
+<button class="item" @click="toggleMapLayer">
+  <div :class="['p-1', 'px-2', 'clickable', 'category-button', { 'active': mapLayerVisibility}]" style="width: 120px; margin-left:10px; text-align: center; cursor: pointer;">Toggle</div>
+</button>
+
+
+
 </template>
 
 <script setup lang="ts">
@@ -39,7 +51,7 @@ import { rephotographyStore } from "./store";
 import type { RephotographyProject } from "./types";
 
 const config = inject<RephotographyProject>("config");
-const { categories, years, tags, tagsLayerVisible, placesLayerVisible } = storeToRefs(rephotographyStore());
+const { categories, years, tags, tagsLayerVisible, placesLayerVisible, mapLayerVisibility } = storeToRefs(rephotographyStore());
 
 // See https://github.com/gu-gridh/rephotography/blob/master/views.py
 const CATEGORIES = {
@@ -66,6 +78,8 @@ onMounted(async () => {
   });
 });
 
+const isSliderVisible = ref(true);
+
 // Create a ref for last clicked category
 const lastClickedCategory = ref('');
 
@@ -77,6 +91,7 @@ const handleCategoryClick = (category: string) => {
 
   // If a category is clicked, clear tags
   tags.value = [];
+  isSliderVisible.value = true;
 
   // If the clicked category is the same as the last clicked one, default to "all"
   if (lastClickedCategory.value === category) {
@@ -93,7 +108,6 @@ const handleCategoryClick = (category: string) => {
   }
 };
 
-
 // Create a ref for last clicked tag
 const lastClickedTag = ref('');
 
@@ -105,6 +119,7 @@ const handleTagClick = (tag: string) => {
 
   // If a tag is clicked, clear categories
   categories.value = [];
+  isSliderVisible.value = false;
 
   // If the clicked tag is the same as the last clicked tag, return to the default view
   if (lastClickedTag.value === tag) {
@@ -124,9 +139,9 @@ const handleTagClick = (tag: string) => {
   }
 };
 
-
-
-
+const toggleMapLayer = () => {
+  mapLayerVisibility.value = !mapLayerVisibility.value; // Toggle the map layer visibility
+};
 </script>
 
 <style>
@@ -214,4 +229,12 @@ const handleTagClick = (tag: string) => {
 
 }
 }
+
+.slide-leave-active {
+  transition: all 0.4s;
+}
+.slide-leave-to {
+  transform: translateX(-150%);
+}
+
 </style>

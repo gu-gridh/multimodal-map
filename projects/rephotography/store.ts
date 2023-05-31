@@ -8,5 +8,6 @@ export const rephotographyStore = defineStore("rephotography", () => {
   const tags = ref<Array<string>>([]);  
   const tagsLayerVisible = ref(false); // Default visibility state for tags layer
   const placesLayerVisible = ref(true); // Default visibility state for places layer
-  return { categories, years, tags, tagsLayerVisible, placesLayerVisible };
+  const mapLayerVisibility = ref(false); // Default visibility state for map layer
+  return { categories, years, tags, tagsLayerVisible, placesLayerVisible, mapLayerVisibility };
 });
