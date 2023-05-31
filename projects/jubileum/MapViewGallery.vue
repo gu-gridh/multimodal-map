@@ -73,11 +73,20 @@ defineComponent({
   transition: all 0.5s ease-in-out;
 }
 
+
+
 @media (min-width: 900px) {
-  .masonry-wall {
+  #app .masonry-wall {
     padding: 0px 0px 0px 450px; 
   }
 }
+
+@media (min-width: 1900px) {
+  #app .masonry-wall {
+    padding: 0px 0px 0px 600px; 
+  }
+}
+
 
 .grid-item:hover .grid-item-info {
   opacity: 0.9;

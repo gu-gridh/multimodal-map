@@ -111,6 +111,7 @@ padding: 60px 50px 50px 60px;
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none; /* Standard syntax */
+  scrollbar-width: none;
 }
 
 .left-pane-layer::-webkit-scrollbar {
@@ -180,13 +181,12 @@ font-size:1.6em;
 
 #app .left-pane {
   width:1300px;
-  padding: 60px 750px 50px 60px;
   font-size:120%;
   }
 
   #app .left-pane-layer {
-  width:650px;
-padding: 60px 50px 50px 60px;
+  width:600px;
+padding: 60px 0px 50px 60px;
 }
 
 
@@ -198,7 +198,6 @@ padding: 60px 50px 50px 60px;
 
   .main-title {
     font-size:105px;
-  margin-left: -10px;
   transition: all 0.2s ease-in-out;
 }
 

@@ -22,20 +22,37 @@ const diana = inject("diana") as DianaClient;
 
 const images = ref<Image[]>();
 const videos = ref<Video[]>();
+const focusedFeatures = ref<number[]>([]);
 const rephotographies = ref<RephotographyDeep[]>();
 
-watchEffect(async () => {
-  console.log("Range values: ", years.value);  
+(async function fetchFocusedFeatures() {
+  const response = await fetch('https://diana.dh.gu.se/api/rephotography/geojson/focus/');
+  const json = await response.json();
+  focusedFeatures.value = json.features.map((feature: any) => feature.id);
+})();
 
+function isFeatureFocused(id: number) {
+  return focusedFeatures.value.includes(id);
+}
+watchEffect(async () => {
   if (selectedFeature.value) {
-    const place = selectedFeature.value.getId();
-    images.value = await diana.listAll<Image>("image", { place });
-    videos.value = await diana.listAll<Video>("video", { place });
+    const id = selectedFeature.value.getId();
+    const isFocus = isFeatureFocused(id);
+
+    // Determine the query parameter for images and videos
+    const queryParam = isFocus ? { focus: id } : { place: id };
+
+    images.value = await diana.listAll<Image>("image", queryParam);
+    videos.value = await diana.listAll<Video>("video", queryParam);
+    
+    // Query only by place for rephotographies
+    const rephotographyParam = { place: id };
+
     // Load Rephotographies in two steps because `depth` doesn't work yet.
     // TODO Implement `depth` instead
     const rephotographiesShallow = await diana.listAll<Rephotography>(
       "rephotography",
-      { place }
+      rephotographyParam
     );
     const rephotographiesDeep: RephotographyDeep[] = [];
     for (const rephotography of rephotographiesShallow) {
@@ -55,6 +72,8 @@ watchEffect(async () => {
     rephotographies.value = [];
   }
 });
+
+
 
 function deselectPlace() {
   selectedFeature.value = undefined;

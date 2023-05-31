@@ -69,6 +69,12 @@ body {
   z-index:500;
 }
 
+#app .left-pane-layer {
+width:450px;
+padding: 60px 0px 100px 60px;
+scrollbar-width: none;
+}
+
 #app .right-pane {
   position: absolute;
   height: 100vh;

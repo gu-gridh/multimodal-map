@@ -19,6 +19,9 @@
 Nedanför, på andra sidan Korsvägen där nuvarande Svenska mässan ligger var Exportutställningen lokaliserad. Här visade många av de stora industriföretagen upp sina produkter. </p>
 
 <p>Här kan du se bilder på de olika byggnaderna m.m. som stod på platsen under utställningen. Vi har även samlat en rad digitaliserade skrifter som på olika sätt berör utställningen, som du lätt hittar här. Återkom gärna vid flera tillfällen då vi kommer fortsätta att publicera digitaliserat material här.</p>
+
+<p>Bakgrundskartan till portalen kommer från kartverket <i>Historiskt kartverk över Göteborg upprättat för Jubileumsutställningen i Göteborg 1923 av andre stadsingenjören Arvid Södergren</i> som har <a href="https://gupea.ub.gu.se/handle/2077/38284">digitiserats av Göteborgs Universitetsbibliotek</a> .
+Kartverket beskriver stadens utveckling från att den grundades, dels med autentiska historiska kartor, dels med en serie nyproducerade kartor med historiskt innehåll från 1790-1921 med 30 till 10 års mellanrum. Som bakgrundskarta har vi använt kartbladet som beskriver Göteborgs centrum år 1921 i skala 1:4000 där utställningsområdet också finns utritat.</p>
 <h2>Om Portalen </h2>
 <p>Göteborgs jubileum 1923 är ett samarbetsprojekt mellan Göteborgs universitetsbibliotek (GUB) och Göteborgs infrastruktur för digital humaniora (GRIDH). 
 Bilderna och trycksakerna kommer från bibliotekets samlingar, Göteborgs stadsmuseums databas <a href="https://samlingar.goteborgsstadsmuseum.se/carlotta/web/">Carlotta</a>,  <a href="https://sv.wikipedia.org/wiki/Portal:Huvudsida]och">Wikipedia</a> och <a href="https://sv.wikipedia.org/wiki/Portal:Huvudsida">Filmarkivet</a>. Samtliga bilder har fri upphovsrätt.  </p>
@@ -130,7 +133,6 @@ h2{
   opacity:0.0;
   margin-bottom:40px;
   transition: all 0.4s ease-in-out;
-
 }
 
 .about-sub-title {
@@ -147,22 +149,21 @@ h2{
   opacity:0.0;
   margin-bottom:40px;
   transition: all 0.4s ease-in-out;
-
 }
 
 .about-article-main{
-  position:relative;
-  float:left;
-  text-align:center;
+ position:relative;
+ float:left;
+ text-align:center;
  color:black;
  font-weight: 100;
-columns:1;
-column-gap:30px;
-max-width:1400px;
-font-size:2.0em;
-opacity:0.0;
-padding:0px 100px;
-transition: all 0.4s ease-in-out;
+ columns:1;
+ column-gap:30px;
+ max-width:1400px;
+ font-size:2.0em;
+ opacity:0.0;
+ padding:0px 100px;
+ transition: all 0.4s ease-in-out;
 
 }
 
@@ -248,8 +249,4 @@ a {
   hyphens: auto;
 }
 }
-
-
-
-
 </style>

@@ -1,6 +1,6 @@
 <template>
-  <div class="about-container" v-bind:class="{fullopacity: !visibleAbout}">
-    <div class="flex-machine"  v-bind:class="{fullopacityui: !visibleAbout}">
+  <div class="about-container" v-bind:class="{abouthidden: !visibleAbout}">
+    <div class="flex-machine"  v-bind:class="{abouthiddenui: !visibleAbout}">
       <div class="red-content" >
     <div class="about-main-title" >Extended <br>Rephotography</div>
 
@@ -10,7 +10,7 @@
     </div>
 
 
- 
+
 
       <div class="about-article-sub">
       The project is led by Tyrone Martinsson and is a collaboration between University of Gothenburg, Norwegian Polar Institute, Visual Arena Lindholmen, Universeum, and University of Plymouth. Infravis, the national infrastructure for resaearch visualisation, has developed this tool to explore the data. The site is hosted and maintained by Gothenburg Research Infrastructure in Digital Humanities (GRIDH).
@@ -22,10 +22,10 @@
         <button @click="$emit('close')">
             <div
               class="p-1 px-2 clickable category-button"
-              style="width:auto; padding:5px 15px; text-align: center; cursor: pointer;"  v-bind:class="{fullopacityui: !visibleAbout}">Explore</div>
+              style="width:auto; padding:5px 15px; text-align: center; cursor: pointer;"  v-bind:class="{abouthiddenui: !visibleAbout}">Explore</div>
           </button>
         </div>
-        <div class="about-lower-border" v-bind:class="{fullopacityui: !visibleAbout}"> </div>
+        <div class="about-lower-border" v-bind:class="{abouthiddenui: !visibleAbout}"> </div>
         <div class="about-logo-top-right"> </div>
       </div>
        
@@ -65,7 +65,6 @@ export default {
   opacity:1.0;
   overflow-y:auto;
   background: linear-gradient(90deg, rgba(250, 250, 250,1) 0%, rgba(250, 250, 250,0.9) 100%);
-
 }
 
 .flex-machine{
@@ -73,10 +72,9 @@ export default {
   height:100%;
   display:flex;
   flex-direction:column;
-
 }
 
-.fullopacity{
+.abouthidden{
   transition: all 1.5s ease-in-out;
   backdrop-filter:blur(5px);
   opacity:0.0;
@@ -86,12 +84,10 @@ export default {
   background: linear-gradient(90deg, rgba(250, 250, 250,1) 0%, rgba(250, 250, 250,0.5) 30%);
 }
 
-.fullopacityui{
+.abouthiddenui{
   transition: all 1.5s ease-in-out;
   opacity:0.0; 
 }
-
-
 
 .red-content{
   display:flex;
@@ -99,7 +95,6 @@ export default {
   align-items:center;
   justify-content: start;
   width:auto;
-
 }
 
 .about-main-title {
@@ -125,10 +120,8 @@ columns:1;
 column-gap:30px;
 width:850px;
 font-size:1.8em;
-
 padding:00px 30px;
 transition: all 0.4s ease-in-out;
-
 }
 
 .about-article-sub{
@@ -141,10 +134,8 @@ column-gap:30px;
 width:950px;
 font-size:1.4em;
 font-weight: 200;
-
 padding:30px;
 transition: all 0.4s ease-in-out;
-
 }
 
 .category-button{
@@ -156,7 +147,6 @@ transition: all 0.4s ease-in-out;
   background-color:rgb(230,230,230);
   padding:8px 20px !important;
   z-index:1000;
-
   margin-bottom:50px;
 }
 
@@ -176,7 +166,6 @@ a {
   background-size: cover;
   opacity:0.7;
   transition: all 0.4s ease-in-out;
-
 }
 
 .about-logo-top-right{
@@ -193,7 +182,6 @@ a {
   right:60px;
   opacity:1.0;
   transition: all 0.4s ease-in-out;
-
 }
 
 
