@@ -66,6 +66,9 @@ onMounted(async () => {
   });
 });
 
+// Create a ref for last clicked category
+const lastClickedCategory = ref('');
+
 const handleCategoryClick = (category: string) => {
   if (tagsLayerVisible.value) { 
     tagsLayerVisible.value = false;
@@ -74,7 +77,25 @@ const handleCategoryClick = (category: string) => {
 
   // If a category is clicked, clear tags
   tags.value = [];
+
+  // If the clicked category is the same as the last clicked one, default to "all"
+  if (lastClickedCategory.value === category) {
+    categories.value = ["all"];
+
+    // Clear the lastClickedCategory since it was unselected
+    lastClickedCategory.value = '';
+  } else {
+    // Add the clicked category only if it's not the same as the last clicked one
+    categories.value = [category];
+
+    // Update last clicked category
+    lastClickedCategory.value = category;
+  }
 };
+
+
+// Create a ref for last clicked tag
+const lastClickedTag = ref('');
 
 const handleTagClick = (tag: string) => {
   if (placesLayerVisible.value) { 
@@ -85,14 +106,25 @@ const handleTagClick = (tag: string) => {
   // If a tag is clicked, clear categories
   categories.value = [];
 
-  // If the clicked tag is already selected, return early to prevent adding the tag again
-  if (tags.value.includes(tag)) {
-    return;
-  }
+  // If the clicked tag is the same as the last clicked tag, return to the default view
+  if (lastClickedTag.value === tag) {
+    categories.value = ["all"];
+    tags.value = [];
+    placesLayerVisible.value = true;
+    tagsLayerVisible.value = false;
 
-  // Add the clicked tag
-  tags.value.push(tag);
+    // Clear the lastClickedTag since it was unselected
+    lastClickedTag.value = '';
+  } else {
+    // Add the clicked tag only if it's not the same as the last clicked one
+    tags.value = [tag];
+
+    // Update last clicked tag
+    lastClickedTag.value = tag;
+  }
 };
+
+
 
 
 </script>

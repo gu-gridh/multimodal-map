@@ -19,7 +19,7 @@ const props = defineProps<{
   limit?: 1;
 }>();
 
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits(["update:modelValue", "click"]);
 
 function toggle(key: string) {
   let newValue = [...props.modelValue];
@@ -34,6 +34,7 @@ function toggle(key: string) {
     newValue.push(key);
   }
   emit("update:modelValue", newValue);
+  emit('click', key); // Emitting the click event here
 }
 </script>
 
