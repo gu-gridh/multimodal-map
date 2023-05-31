@@ -17,7 +17,7 @@ import { ref, inject, onMounted, watchEffect } from "vue"
       else return word
     }
 
-    const projection = ref("EPSG:4326");
+    const projection = ref("EPSG:3857");
     const zoom = ref(14);
     const rotation = ref(0);
     const strokeWidth = ref(5);
