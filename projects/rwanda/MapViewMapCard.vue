@@ -29,6 +29,7 @@
 <script setup lang="ts">
 import type { Place } from "./types";
 
+
 defineProps<{
   place: Place;
 }>();
@@ -36,4 +37,5 @@ defineProps<{
 function isIconic(place: Place): string {
   return place.is_iconic ? "iconic" : "not iconic";
 }
+
 </script>

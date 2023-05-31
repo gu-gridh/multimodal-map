@@ -111,7 +111,7 @@ padding: 60px 50px 50px 60px;
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none; /* Standard syntax */
-  scrollbar-width: none;
+  scrollbar-width: none!important;
 }
 
 .left-pane-layer::-webkit-scrollbar {
@@ -138,13 +138,31 @@ padding: 60px 50px 50px 60px;
   user-select: none; /* Standard syntax */
 }
 
-.mapview-preview::-webkit-scrollbar {
+/* .mapview-preview::-webkit-scrollbar {
     width: 0px !important;
-    }
+    } */
 
-body::-webkit-scrollbar{
+/* body::-webkit-scrollbar{
     width: 0px  !important;
   }
+
+  body {
+    -ms-overflow-style: none;
+  }
+
+  .mapview-preview {
+    -ms-overflow-style: none;
+  }
+
+  html {
+    scrollbar-width: none;
+  } */
+
+  /* .mapview-preview {
+    scrollbar-width: none;
+  } */
+
+  
 
 /* Adaption for various screen sizes */
 

@@ -5,7 +5,6 @@ import { mapStore } from "@/stores/store";
 import type { Image, Place } from "./types";
 import MapViewPreviewImage from "./MapViewPreviewImage.vue";
 import type { DianaClient } from "@/assets/diana";
-//import { stringifyQuery } from "vue-router";
 
 const { selectedFeature } = storeToRefs(mapStore());
 const diana = inject("diana") as DianaClient;
@@ -32,6 +31,9 @@ const capitalize = (word: String) => {
   const rest = word.slice(1)
   return first + rest
 }
+
+const store = mapStore();
+const {center, zoom} = storeToRefs(store);
 </script>
 
 <template>
