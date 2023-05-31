@@ -49,7 +49,7 @@ export default {
 
 <style scoped>
 body{
-  border:opx;
+  border:0px;
 }
 .about-container {
   position:fixed;

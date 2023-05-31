@@ -10,9 +10,16 @@ import { storeToRefs } from "pinia";
 import { rephotographyStore } from "./store";
 import { clean } from "@/assets/utils";
 import markerIcon from "@/assets/marker-gold.svg";
+import markerBlue from "@/assets/marker-blue.svg";
+import { ref } from "vue";
 import About from "./About.vue";
+import { onMounted, watch } from "vue";
+import { nextTick } from "vue";
+import GeoJSON from "ol/format/GeoJSON";
 
-const { categories, years } = storeToRefs(rephotographyStore());
+
+const { categories, years, tags, tagsLayerVisible, placesLayerVisible, mapLayerVisibility } = storeToRefs(rephotographyStore());
+
 
 const placeParams = computed(() =>
   clean({
@@ -21,19 +28,76 @@ const placeParams = computed(() =>
     end_date: years.value[1],
   })
 );
+
+const tagParams = computed(() => {
+  const tag_set = tags.value[0]; // Assuming that tags always contains at least one element
+  return clean({
+    tag_set,
+  });
+});
+
+
+const visibleAbout = ref(false);
+let visited = true; // Store the visited status outside of the hook
+
+onMounted(() => {
+  // Check if the "visited" key exists in session storage
+  visited = sessionStorage.getItem("visited") === "true"; // Retrieve the visited status from session storage
+
+  if (!visited) {
+    // Hide the about component
+    visibleAbout.value = true;
+    sessionStorage.setItem("visited", "true");
+  } 
+})
+
+const toggleAboutVisibility = async () => {
+  console.log('fired')
+  await nextTick();
+  visibleAbout.value = !visibleAbout.value;
+};
+
+const vectorLayers = computed(() => [
+  {
+    url: "https://data.dh.gu.se/geography/glacier_front_2022.geojson",
+    geoJsonFormat: new GeoJSON(),
+  },
+  {
+  url: "https://data.dh.gu.se/geography/glacier_front_2021.geojson",
+  geoJsonFormat: new GeoJSON(),
+  },
+  {
+  url: "https://data.dh.gu.se/geography/glacier_front_2008.geojson",
+  geoJsonFormat: new GeoJSON(),
+  },
+]);
+
+const showSection = ref(false);
+
+const toggleSection = () => {
+  showSection.value = !showSection.value;
+};
+
+/*Colors for Vector Layer*/
+const layerColors = ["red", "green", "blue"];
+
+const toggleMapLayer = () => {
+  mapLayerVisibility.value = !mapLayerVisibility.value; // Toggle the map layer visibility
+};
+
 </script>
 
 <template>
-     <About />
+ <About :visibleAbout="visibleAbout" @close="visibleAbout = false" />
   <MainLayout>
     <template #search>
-      <button class="item"  @click="visibleAbout = true;">
+      <button class="item"  @click="toggleAboutVisibility">
             <div
               class="p-1 px-2 clickable category-button"
               style="
-                width: auto;
+                width: 90px;
                 text-align: center;
-                margin-top: 0px;
+                margin-top: -10px;
                 cursor: pointer;
               "
             >More info</div>
@@ -41,27 +105,77 @@ const placeParams = computed(() =>
       <MapViewControls />
     </template>
 
+  
+   
+
     <template #background>
+      <div class="map-container">
       <MapComponent :min-zoom="10" :max-zoom="18" :restrictExtent="[11.9, 42.15, 12.2, 42.4]" >
         <template #layers>
+          <NpolarLayer
+            capabilitiesUrl="https://geodata.npolar.no/arcgis/rest/services/Basisdata/NP_Ortofoto_Svalbard_WMTS_25833/MapServer/WMTS/1.0.0/WMTSCapabilities.xml"
+          />
 
+        <!-- places -->
+        <DianaPlaceLayer
+          v-if="placesLayerVisible"
+          path="rephotography/geojson/place/"
+          :params="placeParams"
+        >
+          <ol-style>
+            <ol-style-icon
+              :src="markerIcon"
+              :scale="1.8"
+              :displacement="[-10, 45]"
+              :anchor="[0.0, 0.0]"
+            ></ol-style-icon>
+          </ol-style>
+          <FeatureSelection />
+        </DianaPlaceLayer>
+
+        <!-- tags -->
+        <DianaPlaceLayer
+          v-if="tagsLayerVisible"
+          path="rephotography/search/tag/"
+          :params="tagParams"
+        >
+          <ol-style>
+            <ol-style-icon
+              :src="markerIcon"
+              :scale="1.8"
+              :displacement="[-10, 45]"
+              :anchor="[0.0, 0.0]"
+            ></ol-style-icon>
+          </ol-style>
+          <FeatureSelection />
+        </DianaPlaceLayer>
 
           <DianaPlaceLayer
-            path="rephotography/geojson/place/"
-            :params="placeParams"
+          path="rephotography/geojson/focus/"
           >
-            <ol-style>
-              <ol-style-icon
-                :src="markerIcon"
-                :scale="1.8"
-                :displacement="[-10, 45]"
-                :anchor="[0.0, 0.0]"
-              ></ol-style-icon>
-            </ol-style>
-            <FeatureSelection />
-          </DianaPlaceLayer>
+          <ol-style>
+            <ol-style-icon
+              :src="markerBlue"
+              :scale="1.8"
+              :displacement="[-10, 45]"
+              :anchor="[0.0, 0.0]"
+            ></ol-style-icon>
+          </ol-style>
+          <FeatureSelection />
+        </DianaPlaceLayer>
+
+        <div v-if="mapLayerVisibility">
+       <ol-vector-layer v-for="(layer, index) in vectorLayers" :key="layer.url" :z-index="1">
+        <ol-source-vector :url="layer.url" :format="layer.geoJsonFormat" ref="source" />
+        <ol-style>
+          <ol-style-stroke :color="layerColors[index % layerColors.length]" width="4"></ol-style-stroke>
+        </ol-style>
+      </ol-vector-layer>
+      </div>
+
         </template>
       </MapComponent>
+    </div>
     </template>
 
     <template #details>
@@ -71,6 +185,12 @@ const placeParams = computed(() =>
 </template>
 
 <style>
+.map-container {
+  position: relative;
+  width:100%;
+}
+
+
 #app .ol-popup {
   font-size: 1.2em;
   -webkit-user-select: none;

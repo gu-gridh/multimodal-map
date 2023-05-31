@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import ObjectViewComponent from "@/components/ObjectViewComponent.vue";
-import OpenSeadragon from "@/components/OpenSeadragon.vue";
+import OpenSeadragon from "@/components/OpenSeadragonURL.vue";
 import type { ImageDeep } from "./types";
 
 defineProps<{
@@ -27,9 +27,10 @@ defineProps<{
   </div>
 
   <section class="illustration flex">
+
     <OpenSeadragon :src="`${object.iiif_file}/info.json`" class="flex-1" />
 
-    <div id="ToolbarVertical">
+  <div id="ToolbarVertical">
       <a id="full-page" href="#full-page">
         <div id="FullPage" class="NavButton"></div>
       </a>
@@ -40,8 +41,10 @@ defineProps<{
         <div id="ZoomOut" class="NavButton"></div>
       </a>
     </div>
-    
   </section>
 </template>
 
-<style scoped></style>
+<style scoped>
+
+
+</style>

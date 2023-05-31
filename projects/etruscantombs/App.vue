@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { provide } from "vue";
 import config from "./config";
-import Footer from "./Footer.vue";
+import Footer from './Footer.vue';
 import { DianaClient } from "@/assets/diana";
 
 const endpoint = new DianaClient("rephotography");
@@ -11,7 +11,7 @@ provide("diana", endpoint);
 </script>
 
 <template>
-    <Footer />
+      <Footer />
   <router-view />
 </template>
 
@@ -19,6 +19,14 @@ provide("diana", endpoint);
 html,
 body {
   font-family: "Barlow Condensed", sans-serif !important;
+}
+
+.map-container {
+  height: calc(100vh - 80px) !important;
+}
+
+.theme-color {
+  color: orange;
 }
 
 .main-title {
@@ -39,12 +47,9 @@ body {
 
 #app .mapview-preview {
   height: 100vh !important;
-  pointer-events: auto !important;
-  overflow-y: scroll !important;
   background-color: rgba(0, 0, 0, 0.85);
   width: 100%;
   color: white;
-  transition: all 0.5s ease-in-out;
   backdrop-filter: blur(7px);
 }
 
@@ -67,6 +72,6 @@ body {
 }
 
 .close-button:hover {
-  background-color: rgb(180, 100, 100);
+  background-color: rgb(140, 140, 140);
 }
 </style>

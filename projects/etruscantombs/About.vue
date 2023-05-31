@@ -2,8 +2,8 @@
   <div class="about-container" v-bind:class="{fullopacity: visibleAbout}">
     <div class="flex-machine">
       <div class="red-content">
-    <div class="about-main-title" v-bind:class="{fullopacityui: visibleAbout}">Göteborgs<br>Jubileum</div>
-    <div class="about-sub-title" v-bind:class="{fullopacityui: visibleAbout}">1923</div>
+    <div class="about-main-title" v-bind:class="{fullopacityui: visibleAbout}">Etruscan<br>Chamber Tombs</div>
+    <div class="about-sub-title" v-bind:class="{fullopacityui: visibleAbout}"></div>
 
     <div class="about-article-main" v-bind:class="{fullopacityui: visibleAbout}">
       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
@@ -22,7 +22,7 @@
         <button @click="$emit('close')">
             <div
               class="p-1 px-2 clickable category-button"
-              style="width:auto; padding:5px 15px; text-align: center; cursor: pointer;"  v-bind:class="{fullopacityui: visibleAbout}">Utforska</div>
+              style="width:auto; padding:5px 15px; text-align: center; cursor: pointer;"  v-bind:class="{fullopacityui: visibleAbout}">Explore</div>
           </button>
         </div>
         <div class="about-lower-border"> </div>
@@ -49,13 +49,13 @@ export default {
 
 <style scoped>
 body{
-  border:opx;
+  border:0px;
 }
 .about-container {
   position:fixed;
   color: white;
   line-height: 1;
-  height: calc(100% -80px);
+  height: calc(100%);
   width: 100%;
   font-size: 12px;
   z-index: 2000;
@@ -97,7 +97,7 @@ body{
 }
 
 .about-main-title {
-  font-family: "Josefin Sans", sans-serif !important;
+  font-family: 'Geo', sans-serif;
   margin-top:100px;
   flex-basis:auto;
   width:100%;
@@ -203,7 +203,7 @@ a {
   width:200px;
   height:90px;
   position:absolute;
-  background:url(./images/logo-Infravis-516.png);
+  background:url(./images/xxx.png);
   background-repeat: no-repeat;
   background-size: contain;
   top:30px;
