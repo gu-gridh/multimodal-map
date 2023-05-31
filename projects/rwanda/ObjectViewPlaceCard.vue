@@ -181,7 +181,7 @@ line-height:1.2;
 
 .place-card-full .category-button{
   width:110px!important;
-padding:4px 18px;
+padding:4px 18px!important;
 margin-top:15px;
 margin-bottom:20px;
 

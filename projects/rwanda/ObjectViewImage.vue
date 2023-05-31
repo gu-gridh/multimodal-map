@@ -56,10 +56,6 @@ const pushToPage = () => {
   width: 450px !important;
 }
 
-.metadata .back-button{
-  margin-top:5px;
-}
-
 
 
 .toPlace {
@@ -73,8 +69,14 @@ const pushToPage = () => {
 .metadata .category-button{
   width:155px!important;
 padding:5px 18px!important;
-margin-top:30px;
+margin-top:50px!important;
 }
+
+.metadata .back-button{
+  margin-top:5px;
+}
+
+
 }
 
 
