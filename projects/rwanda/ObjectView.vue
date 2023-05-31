@@ -1,4 +1,5 @@
 <script setup lang="ts">
+// @ts-nocheck
 import { inject, ref, watchEffect } from "vue";
 import type { Image, Place } from "./types";
 import type { DianaClient } from "@/assets/diana";

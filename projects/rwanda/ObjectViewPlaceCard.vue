@@ -153,7 +153,6 @@ import { ref, inject, onMounted } from "vue"
   border-radius: 10px !important;
   -ms-overflow-style: none;
   scrollbar-width: none;
-  -ms-overflow-style: none;
 }
 
 .place-card-full::-webkit-scrollbar {
