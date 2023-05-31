@@ -152,6 +152,8 @@ import { ref, inject, onMounted } from "vue"
   margin-bottom: 10px;
   border-radius: 10px !important;
   -ms-overflow-style: none;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 .place-card-full::-webkit-scrollbar {

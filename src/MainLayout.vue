@@ -145,6 +145,24 @@ body::-webkit-scrollbar{
     width: 0px  !important;
   }
 
+  body {
+    -ms-overflow-style: none;
+  }
+
+  .mapview-preview {
+    -ms-overflow-style: none;
+  }
+
+  html {
+    scrollbar-width: none;
+  }
+
+  .mapview-preview {
+    scrollbar-width: none;
+  }
+
+  
+
 /* Adaption for various screen sizes */
 
 /* If your screen is very large */
