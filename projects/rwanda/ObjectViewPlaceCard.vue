@@ -30,23 +30,23 @@ import { ref, inject, onMounted, watchEffect } from "vue"
 
     const url = "https://diana.dh.gu.se/api/rwanda/geojson/place/"+ props.id
 
-    watchEffect(async() => {
-      const coords = props.place?.geometry.coordinates
-      const feature = props.place?.geometry
-      console.log(coords)
-      await coords.forEach((coord: any) => {
-        if(feature.type === 'MultiLineString' || 'Polygon') {
-          center.value = JSON.parse(JSON.stringify(coord[0]))
-        }
-        if(feature.type === 'MultiPolygon') {
-          center.value = JSON.parse(JSON.stringify(coord[0][0]))
-        }
-        if(feature.type === 'LineString') {
-          center.value = JSON.parse(JSON.stringify(coord))
-        }
-        else {center.value = [30.05885, -1.94995 ]}
-      });
-    })
+    // watchEffect(async() => {
+    //   const coords = props.place?.geometry.coordinates
+    //   const feature = props.place?.geometry
+    //   console.log(coords)
+    //   await coords.forEach((coord: any) => {
+    //     if(feature.type === 'MultiLineString' || 'Polygon') {
+    //       center.value = JSON.parse(JSON.stringify(coord[0]))
+    //     }
+    //     if(feature.type === 'MultiPolygon') {
+    //       center.value = JSON.parse(JSON.stringify(coord[0][0]))
+    //     }
+    //     if(feature.type === 'LineString') {
+    //       center.value = JSON.parse(JSON.stringify(coord))
+    //     }
+    //     else {center.value = [30.05885, -1.94995 ]}
+    //   });
+    // })
    
 </script>
 
