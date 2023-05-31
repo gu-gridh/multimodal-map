@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Place } from './types';
 import router from './router'
-import { ref, inject, onMounted } from "vue"
+import { ref, inject, onMounted, watchEffect } from "vue"
 
     const props = defineProps<{
         place: Place;
@@ -22,7 +22,7 @@ import { ref, inject, onMounted } from "vue"
     const rotation = ref(0);
     const strokeWidth = ref(5);
     const strokeColor = ref("red");
-    const center = ref()
+    const center = ref([30.05885, -1.94995])
     const minZoom = ref(10)
 
     const format = inject("ol-format");
@@ -30,10 +30,11 @@ import { ref, inject, onMounted } from "vue"
 
     const url = "https://diana.dh.gu.se/api/rwanda/geojson/place/"+ props.id
 
-    onMounted(() => {
-      const coords = props.place.geometry.coordinates
-      const feature = props.place.geometry
-      coords.forEach((coord: any) => {
+    watchEffect(async() => {
+      const coords = props.place?.geometry.coordinates
+      const feature = props.place?.geometry
+      console.log(coords)
+      await coords.forEach((coord: any) => {
         if(feature.type === 'MultiLineString' || 'Polygon') {
           center.value = JSON.parse(JSON.stringify(coord[0]))
         }
