@@ -249,11 +249,13 @@ const toggleMapLayer = () => {
   opacity:0.4;
   pointer-events: none !important;
   transition: all 0.4s;
+  filter: grayscale(100%);
 }
 
 .slideactive {
   transition: all 0.4s;
   opacity:1.0;
+  filter: grayscale(0%);
 }
 
 

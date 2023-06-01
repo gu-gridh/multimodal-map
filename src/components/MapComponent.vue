@@ -17,13 +17,13 @@
   
     <!-- <ol-fullscreen-control v-if="fullscreencontrol" /> -->
     <!--<ol-attribution-control v-if="attributioncontrol" /> -->
-    <ol-overviewmap-control v-if="overviewmapcontrol">
+    <!-- <ol-overviewmap-control v-if="overviewmapcontrol">
       <ol-tile-layer>
         <ol-source-osm />
       </ol-tile-layer>
-    </ol-overviewmap-control>
+    </ol-overviewmap-control> -->
 
-    <ol-scaleline-control v-if="scalelinecontrol" />
+    <!-- <ol-scaleline-control v-if="scalelinecontrol" /> -->
     <ol-zoom-control v-if="zoomcontrol" />
     <!-- <ol-zoomslider-control v-if="zoomslidercontrol" /> -->
 
