@@ -4,6 +4,7 @@
   <div :class="['p-1', 'px-2', 'clickable', 'category-button', { 'active': mapLayerVisibility}]" style="width: auto; margin-left:10px; text-align: center; cursor: pointer;">Glacier data layer</div>
 </button>
 
+
   <div class="section-title">Documentation by category</div>
   <CategoryButtonList
     v-model="categories"
@@ -25,7 +26,7 @@
       />
     </div>
   </transition>
-<div class="tag-section">
+
   <div class="section-title">Tags</div>
   <div class="broad-controls">
   <CategoryButtonList
@@ -35,7 +36,6 @@
     class="my-2"
     @click="handleTagClick" 
   />
-</div>
 </div>
 
 
@@ -62,8 +62,10 @@ const CATEGORIES = {
   image: "Photographs",
   video: "Videos",
   // documents: "Documents",
-  drawing: "Drawings",
+  drawing: "Art",
   observation: "Observations",
+
+  
 };
 
 const TAGS = ref<Record<string, string>>({});

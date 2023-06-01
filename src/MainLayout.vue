@@ -231,7 +231,7 @@ padding: 60px 0px 50px 60px;
   font-size:120%;
 }
 #app .meta-title{
-  font-size:50px;
+  font-size:40px;
 }
 
 #app .place-meta-container .category-button{

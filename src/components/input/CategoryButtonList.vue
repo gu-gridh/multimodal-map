@@ -38,4 +38,5 @@ function toggle(key: string) {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+</style>
