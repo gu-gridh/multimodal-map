@@ -265,7 +265,7 @@ padding: 60px 0px 50px 60px;
 }
 
 #app .about-container {
-  font-size:120%;
+  font-size:90%;
 }
 
 #app .about-main-title {
