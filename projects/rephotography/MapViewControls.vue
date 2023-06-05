@@ -23,6 +23,7 @@
         :max="YEARS.MAX"
         :step="1"
         class="my-2"
+        :isSliderVisible="isSliderVisible" 
       />
     </div>
   </transition>
@@ -239,7 +240,6 @@ const toggleMapLayer = () => {
 
 .slideinactive {
   opacity:0.4;
-  pointer-events: none !important;
   transition: all 0.4s;
   filter: grayscale(100%);
 }
