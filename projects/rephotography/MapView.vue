@@ -5,6 +5,7 @@ import MapViewControls from "./MapViewControls.vue";
 import MapComponent from "@/components/MapComponent.vue";
 import NpolarLayer from "./NpolarLayer.vue";
 import DianaPlaceLayer from "@/components/DianaPlaceLayer.vue";
+import DianaPlaceLayerRephoto from "@/components/DianaPlaceLayerRephoto.vue";
 import FeatureSelection from "@/components/FeatureSelection.vue";
 import MapViewPreview from "./MapViewPreview.vue";
 import { storeToRefs } from "pinia";
@@ -165,12 +166,16 @@ const toggleMapLayer = () => {
         </DianaPlaceLayer>
 
         <div v-if="mapLayerVisibility">
-       <ol-vector-layer v-for="(layer, index) in vectorLayers" :key="layer.url" :z-index="1">
-        <ol-source-vector :url="layer.url" :format="layer.geoJsonFormat" ref="source" />
-        <ol-style>
-          <ol-style-stroke :color="layerColors[index % layerColors.length]" width="4"></ol-style-stroke>
-        </ol-style>
-      </ol-vector-layer>
+          <DianaPlaceLayerRephoto
+          v-for="(layer, index) in vectorLayers"
+          :key="layer.url"
+          :externalUrl="layer.url"
+        >
+          <ol-style>
+            <ol-style-stroke :color="layerColors[index % layerColors.length]" :width="4"></ol-style-stroke>
+          </ol-style>
+          <FeatureSelection />
+        </DianaPlaceLayerRephoto>
       </div>
 
         </template>
