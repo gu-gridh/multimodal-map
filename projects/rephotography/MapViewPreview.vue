@@ -8,11 +8,13 @@ import type {
   Rephotography,
   RephotographyDeep,
   Video,
+  Observation,
 } from "./types";
 import type { DianaClient } from "@/assets/diana";
 import PreviewRephotography from "./MapViewPreviewRephotography.vue";
 import PreviewImage from "./MapViewPreviewImage.vue";
 import PreviewVideo from "./MapViewPreviewVideo.vue";
+import PreviewObservation from "./MapPreviewObservation.vue";
 import { rephotographyStore } from "./store";
 
 
@@ -22,6 +24,7 @@ const diana = inject("diana") as DianaClient;
 
 const images = ref<Image[]>();
 const videos = ref<Video[]>();
+const observations = ref<Observation[]>();
 const focusedFeatures = ref<number[]>([]);
 const rephotographies = ref<RephotographyDeep[]>();
 
@@ -35,6 +38,11 @@ function isFeatureFocused(id: number) {
   return focusedFeatures.value.includes(id);
 }
 watchEffect(async () => {
+  images.value = [];
+  videos.value = [];
+  observations.value = [];
+  rephotographies.value = [];
+
   if (selectedFeature.value) {
     const id = selectedFeature.value.getId();
     
@@ -47,7 +55,8 @@ watchEffect(async () => {
   
       images.value = await diana.listAll<Image>("image", queryParam);
       videos.value = await diana.listAll<Video>("video", queryParam);
-      
+      observations.value = await diana.listAll<Observation>("observation", { place: id });
+     
       // Query only by place for rephotographies
       const rephotographyParam = { place: id };
   
@@ -112,6 +121,12 @@ function deselectPlace() {
           v-for="image in images"
           :key="image.uuid"
           :image="image"
+        />
+
+          <PreviewObservation
+          v-for="observation in observations"
+          :key="observation.id"
+          :observation="observation"
         />
       </div>
     </div>
