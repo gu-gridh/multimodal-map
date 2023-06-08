@@ -1,9 +1,29 @@
 <template>
-        <!-- <div class="section-title">Glacier data layer</div>  -->
-<button class="item" @click="toggleMapLayer">
-  <div :class="['p-1', 'px-2', 'clickable', 'category-button', { 'active': mapLayerVisibility}]" style="width: auto; margin-left:10px; text-align: center; cursor: pointer;">Glacier data layer</div>
-</button>
+ <div class="button-container">
+    <button class="item" @click="toggleMapLayer">
+      <div
+        :class="['p-1', 'px-2', 'clickable', 'category-button', { 'active': mapLayerVisibility}]"
+      >
+        Glacier data layer
+      </div>
+    </button>
 
+    <button class="item" @click="toggleMapLayerTwo">
+      <div
+        :class="['p-1', 'px-2', 'clickable', 'category-button', { 'active': mapLayerVisibilityTwo}]"
+      >
+        CryoClim_GAO_SJ_1936-1972 layer
+      </div>
+    </button>
+
+    <button class="item" @click="toggleMapLayerThree">
+      <div
+        :class="['p-1', 'px-2', 'clickable', 'category-button', { 'active': mapLayerVisibilityThree}]"
+      >
+        CryoClim_GAO_SJ_2001-2010 layer
+      </div>
+    </button>
+  </div>
 
   <div class="section-title">Documentation by category</div>
   <CategoryButtonList
@@ -55,7 +75,7 @@ import { rephotographyStore } from "./store";
 import type { RephotographyProject } from "./types";
 
 const config = inject<RephotographyProject>("config");
-const { categories, years, tags, tagsLayerVisible, placesLayerVisible, mapLayerVisibility } = storeToRefs(rephotographyStore());
+const { categories, years, tags, tagsLayerVisible, placesLayerVisible, mapLayerVisibility, mapLayerVisibilityTwo, mapLayerVisibilityThree } = storeToRefs(rephotographyStore());
 
 // See https://github.com/gu-gridh/rephotography/blob/master/views.py
 const CATEGORIES = {
@@ -140,6 +160,14 @@ const handleTagClick = (tag: string) => {
 
 const toggleMapLayer = () => {
    mapLayerVisibility.value = !mapLayerVisibility.value; // Toggle the map layer visibility
+ };
+
+ const toggleMapLayerTwo = () => {
+   mapLayerVisibilityTwo.value = !mapLayerVisibilityTwo.value; // Toggle the map layer visibility
+ };
+
+ const toggleMapLayerThree = () => {
+   mapLayerVisibilityThree.value = !mapLayerVisibilityThree.value; // Toggle the map layer visibility
  };
 </script>
 
@@ -250,5 +278,14 @@ const toggleMapLayer = () => {
   filter: grayscale(0%);
 }
 
+.button-container {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
 
+.button-container .item {
+  margin: 5px;
+}
 </style>

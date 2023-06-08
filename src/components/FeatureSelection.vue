@@ -66,9 +66,9 @@ watch(selectedFeature, () => {
 const getFeatureDisplayName: DisplayFunction =
   config.getFeatureDisplayName ||
 ((feature) => {
-  let name = feature.get("Name") || feature.get("name") || '';
+  let name = feature.get("Name") || feature.get("name") || feature.get("NAME") || '';
   let rawDate = feature.get("Date");
-
+  let rawYear = feature.get("YEAR_")
   // Check if rawDate is available
   if (rawDate) {
     let date = rawDate.toString(); 
@@ -89,6 +89,9 @@ const getFeatureDisplayName: DisplayFunction =
     });
     
     return `${name} ${formattedDate}`;
+  } else if (rawYear)
+  {
+    return `${name} ${rawYear}`;
   } else {
     // Return only name if Date is not available
     return `${name}`;

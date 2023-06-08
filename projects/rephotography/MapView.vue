@@ -20,7 +20,7 @@ import { nextTick } from "vue";
 import GeoJSON from "ol/format/GeoJSON";
 
 
-const { categories, years, tags, tagsLayerVisible, placesLayerVisible, mapLayerVisibility } = storeToRefs(rephotographyStore());
+const { categories, years, tags, tagsLayerVisible, placesLayerVisible, mapLayerVisibility, mapLayerVisibilityTwo, mapLayerVisibilityThree } = storeToRefs(rephotographyStore());
 
 
 const placeParams = computed(() =>
@@ -82,10 +82,6 @@ const toggleSection = () => {
 
 /*Colors for Vector Layer*/
 const layerColors = ["red", "green", "blue"];
-
-const toggleMapLayer = () => {
-  mapLayerVisibility.value = !mapLayerVisibility.value; // Toggle the map layer visibility
-};
 
 </script>
 
@@ -177,6 +173,29 @@ const toggleMapLayer = () => {
           <FeatureSelection />
         </DianaPlaceLayerRephoto>
       </div>
+
+      <div v-if="mapLayerVisibilityTwo">
+        <DianaPlaceLayerRephoto
+          :externalUrl="'https://data.dh.gu.se/geography/CryoClim_GAO_SJ_1936-1972.geojson'"
+        >
+          <ol-style>
+            <ol-style-stroke color="orange" :width="4"></ol-style-stroke>
+          </ol-style>
+          <FeatureSelection />
+        </DianaPlaceLayerRephoto>
+      </div>
+
+      <div v-if="mapLayerVisibilityThree">
+        <DianaPlaceLayerRephoto
+          :externalUrl="'https://data.dh.gu.se/geography/CryoClim_GAO_SJ_2001-2010.geojson'"
+        >
+          <ol-style>
+            <ol-style-stroke color="purple" :width="4"></ol-style-stroke>
+          </ol-style>
+          <FeatureSelection />
+        </DianaPlaceLayerRephoto>
+      </div>
+
 
         </template>
       </MapComponent>
