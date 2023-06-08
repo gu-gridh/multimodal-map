@@ -1,28 +1,29 @@
 <template>
+  <div class="section-title">Glacier data</div>
  <div class="button-container">
     <button class="item" @click="toggleMapLayer">
       <div
         :class="['p-1', 'px-2', 'clickable', 'category-button', { 'active': mapLayerVisibility}]"
       >
-        Glacier data layer
+        2008-2022
       </div>
     </button>
 
-    <button class="item" @click="toggleMapLayerTwo">
+     <button class="item" @click="toggleMapLayerTwo">
       <div
         :class="['p-1', 'px-2', 'clickable', 'category-button', { 'active': mapLayerVisibilityTwo}]"
       >
-        CryoClim_GAO_SJ_1936-1972 layer
+        1936-1972
       </div>
     </button>
 
-    <button class="item" @click="toggleMapLayerThree">
+    <!-- <button class="item" @click="toggleMapLayerThree">
       <div
         :class="['p-1', 'px-2', 'clickable', 'category-button', { 'active': mapLayerVisibilityThree}]"
       >
         CryoClim_GAO_SJ_2001-2010 layer
       </div>
-    </button>
+    </button> -->
   </div>
 
   <div class="section-title">Documentation by category</div>
@@ -175,8 +176,8 @@ const toggleMapLayer = () => {
 .section-title {
   font-weight: 400;
   font-size: 20px;
-  margin-top: 30px;
-  margin-bottom: 5px;
+  margin-top: 20px;
+  margin-bottom: 0px;
 }
 
 #app .category-button {
@@ -286,6 +287,6 @@ const toggleMapLayer = () => {
 }
 
 .button-container .item {
-  margin: 5px;
+  margin-right: 10px;
 }
 </style>

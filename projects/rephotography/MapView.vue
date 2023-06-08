@@ -179,7 +179,7 @@ const layerColors = ["red", "green", "blue"];
           :externalUrl="'https://data.dh.gu.se/geography/CryoClim_GAO_SJ_1936-1972.geojson'"
         >
           <ol-style>
-            <ol-style-stroke color="orange" :width="4"></ol-style-stroke>
+              <ol-style-fill color="rgba(255,2550,255,0.4)"></ol-style-fill>
           </ol-style>
           <FeatureSelection />
         </DianaPlaceLayerRephoto>
