@@ -1,6 +1,13 @@
 <template>
   <div class="section-title">Glacier data</div>
  <div class="button-container">
+  <button class="item" @click="toggleMapLayerTwo">
+      <div
+        :class="['p-1', 'px-2', 'clickable', 'category-button', { 'active': mapLayerVisibilityTwo}]"
+      >
+        1936-1972
+      </div>
+    </button>
     <button class="item" @click="toggleMapLayer">
       <div
         :class="['p-1', 'px-2', 'clickable', 'category-button', { 'active': mapLayerVisibility}]"
@@ -9,13 +16,7 @@
       </div>
     </button>
 
-     <button class="item" @click="toggleMapLayerTwo">
-      <div
-        :class="['p-1', 'px-2', 'clickable', 'category-button', { 'active': mapLayerVisibilityTwo}]"
-      >
-        1936-1972
-      </div>
-    </button>
+   
 
     <!-- <button class="item" @click="toggleMapLayerThree">
       <div

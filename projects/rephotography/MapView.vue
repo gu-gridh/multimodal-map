@@ -81,7 +81,7 @@ const toggleSection = () => {
 };
 
 /*Colors for Vector Layer*/
-const layerColors = ["red", "green", "blue"];
+const layerColors = ["rgb(255,150,0)", "rgb(0,150,50)", "rgb(0,100,255)"];
 
 </script>
 
