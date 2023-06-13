@@ -6,7 +6,7 @@ import MapComponent from "@/components/MapComponent.vue";
 import NpolarLayer from "./NpolarLayer.vue";
 import DianaPlaceLayer from "@/components/DianaPlaceLayer.vue";
 import DianaPlaceLayerRephoto from "@/components/DianaPlaceLayerRephoto.vue";
-import FeatureSelection from "@/components/FeatureSelection.vue";
+import FeatureSelection from "@/components/FeatureSelectionRephoto.vue";
 import MapViewPreview from "./MapViewPreview.vue";
 import { storeToRefs } from "pinia";
 import { rephotographyStore } from "./store";
@@ -158,7 +158,6 @@ const layerColors = ["rgb(255,150,0)", "rgb(0,150,50)", "rgb(0,100,255)"];
               :anchor="[0.0, 0.0]"
             ></ol-style-icon>
           </ol-style>
-          <FeatureSelection />
         </DianaPlaceLayer>
 
         <div v-if="mapLayerVisibility">
@@ -166,33 +165,33 @@ const layerColors = ["rgb(255,150,0)", "rgb(0,150,50)", "rgb(0,100,255)"];
           v-for="(layer, index) in vectorLayers"
           :key="layer.url"
           :externalUrl="layer.url"
+          :zIndex=1
         >
           <ol-style>
             <ol-style-stroke :color="layerColors[index % layerColors.length]" :width="4"></ol-style-stroke>
           </ol-style>
-          <FeatureSelection />
         </DianaPlaceLayerRephoto>
       </div>
 
       <div v-if="mapLayerVisibilityTwo">
         <DianaPlaceLayerRephoto
           :externalUrl="'https://data.dh.gu.se/geography/CryoClim_GAO_SJ_1936-1972.geojson'"
+          :zIndex=0
         >
           <ol-style>
               <ol-style-fill color="rgba(255,2550,255,0.4)"></ol-style-fill>
           </ol-style>
-          <FeatureSelection />
         </DianaPlaceLayerRephoto>
       </div>
 
       <div v-if="mapLayerVisibilityThree">
         <DianaPlaceLayerRephoto
           :externalUrl="'https://data.dh.gu.se/geography/CryoClim_GAO_SJ_2001-2010.geojson'"
+          :zIndex=0
         >
           <ol-style>
             <ol-style-stroke color="purple" :width="4"></ol-style-stroke>
           </ol-style>
-          <FeatureSelection />
         </DianaPlaceLayerRephoto>
       </div>
 
