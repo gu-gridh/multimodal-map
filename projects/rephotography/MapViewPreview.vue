@@ -14,7 +14,7 @@ import type { DianaClient } from "@/assets/diana";
 import PreviewRephotography from "./MapViewPreviewRephotography.vue";
 import PreviewImage from "./MapViewPreviewImage.vue";
 import PreviewVideo from "./MapViewPreviewVideo.vue";
-import PreviewObservation from "./MapPreviewObservation.vue";
+import PreviewObservation from "./MapViewPreviewObservation.vue";
 import { rephotographyStore } from "./store";
 
 

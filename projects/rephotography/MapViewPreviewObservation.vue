@@ -1,8 +1,10 @@
 <template>
   <div class="observation-card">
-      <h3 class="title">{{ observation.title }}</h3>
+    <div class="observation">Observation</div>
+      <div class="date">{{ observation.date }}</div>
+      <div class="title">{{ observation.title }}</div>
       <p class="description" v-html="observation.description"></p>
-      <p class="date">{{ observation.date }}</p>
+     
   </div>
 </template>
 
@@ -15,15 +17,15 @@ defineProps<{
 </script>
 
 <style scoped>
+
 .observation-card {
   float: left;
   height: auto;
   width: 100%;
   color: black;
-  background-color: rgb(100, 100, 100);
-  font-size: 14px;
+  background-color: rgb(230, 230, 230);
   margin-bottom: 30px;
-  padding: 10px 10px 10px 10px;
+  padding: 15px;
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.5);
   transition: all 0.2s ease-in-out;
   border-radius: 10px !important;
@@ -34,21 +36,31 @@ defineProps<{
   transform: scale(1.05);
 }
 
+.observation {
+  font-size: 1.0em;
+  line-height:1.0;
+  font-weight: 400;
+  padding-bottom:0px;
+  
+}
+
 .title {
-  font-size: 1.5em;
-  font-weight: 200;
-  color: white;
+  margin-top:20px;
+  font-size: 1.3em;
+  line-height:1.0;
+  font-weight: 400;
+  
 }
 
 .description {
   margin-top: 10px;
-  font-size: 1em;
-  color: white;
+  font-size: 1.0em;
+  line-height:1.2;
+
 }
 
 .date {
-  margin-top: 20px;
-  font-size: 0.9em;
-  color: white;
+  font-size: 1.0em;
+color:rgb(200, 0, 0);
 }
 </style>
