@@ -37,6 +37,7 @@ const rephotographies = ref<RephotographyDeep[]>();
 function isFeatureFocused(id: number) {
   return focusedFeatures.value.includes(id);
 }
+
 watchEffect(async () => {
   images.value = [];
   videos.value = [];
@@ -46,51 +47,53 @@ watchEffect(async () => {
   if (selectedFeature.value) {
     const id = selectedFeature.value.getId();
     
-    // Check if id is not null
     if (id) {
       const isFocus = isFeatureFocused(id);
-  
-      // Determine the query parameter for images and videos
       const queryParam = isFocus ? { focus: id } : { place: id };
   
       images.value = await diana.listAll<Image>("image", queryParam);
       videos.value = await diana.listAll<Video>("video", queryParam);
-      observations.value = await diana.listAll<Observation>("observation", { place: id });
-     
-      // Query only by place for rephotographies
-      const rephotographyParam = { place: id };
-  
-      // Load Rephotographies in two steps because `depth` doesn't work yet.
-      // TODO Implement `depth` instead
-      const rephotographiesShallow = await diana.listAll<Rephotography>(
-        "rephotography",
-        rephotographyParam
-      );
-      const rephotographiesDeep: RephotographyDeep[] = [];
-      for (const rephotography of rephotographiesShallow) {
-        const [oldImage, newImage] = await Promise.all([
-          diana.get<ImageDeep>("image", rephotography.old_image),
-          diana.get<ImageDeep>("image", rephotography.new_image),
-        ]);
-        rephotographiesDeep.push({
-          ...rephotography,
-          old_image: oldImage,
-          new_image: newImage,
-        });
+      try {
+        observations.value = await diana.listAll<Observation>("observation", { place: id });
+      } catch (error) {
+        console.error('Failed to fetch observations for place', id, error);
       }
-      rephotographies.value = rephotographiesDeep;
-    } else {
-      images.value = [];
-      videos.value = [];
-      rephotographies.value = [];
+
+      if (isFocus) {
+        // direct fetch from the rephotography focus API
+        const response = await fetch(`https://diana.dh.gu.se/api/rephotography/rephotography/focus/?focus_id=${id}&depth=2`);
+        const json = await response.json();
+        rephotographies.value = json.results.map((rephotography: any) => {
+          return {
+            ...rephotography,
+            old_image: rephotography.old_image,
+            new_image: rephotography.new_image,
+          };
+        });
+      } else {
+        // Load Rephotographies in two steps because `depth` doesn't work yet.
+        // TODO Implement `depth` instead
+        const rephotographiesShallow = await diana.listAll<Rephotography>(
+          "rephotography",
+          { place: id }
+        );
+        const rephotographiesDeep: RephotographyDeep[] = [];
+        for (const rephotography of rephotographiesShallow) {
+          const [oldImage, newImage] = await Promise.all([
+            diana.get<ImageDeep>("image", rephotography.old_image),
+            diana.get<ImageDeep>("image", rephotography.new_image),
+          ]);
+          rephotographiesDeep.push({
+            ...rephotography,
+            old_image: oldImage,
+            new_image: newImage,
+          });
+        }
+        rephotographies.value = rephotographiesDeep;
+      }
     }
-  } else {
-    images.value = [];
-    videos.value = [];
-    rephotographies.value = [];
   }
 });
-
 
 
 
