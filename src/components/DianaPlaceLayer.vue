@@ -11,6 +11,10 @@ const props = defineProps({
     type: Object,
     default: () => ({}),
   },
+  zIndex: {
+    type: Number,
+    default: 1,
+  },
 });
 
 const format = inject("ol-format");
@@ -26,7 +30,7 @@ const url = computed(() => {
 </script>
 
 <template>
-  <ol-vector-layer :z-index="1">
+  <ol-vector-layer :z-index="props.zIndex">
     <ol-source-vector :url="url" :format="geoJsonFormat" ref="source" />
     <slot />
   </ol-vector-layer>
