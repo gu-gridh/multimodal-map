@@ -45,7 +45,7 @@ watchEffect(async () => {
   rephotographies.value = [];
 
   if (selectedFeature.value) {
-    const id = selectedFeature.value.getId();
+    const id = selectedFeature.value.getId() as number;
     
     if (id) {
       const isFocus = isFeatureFocused(id);
