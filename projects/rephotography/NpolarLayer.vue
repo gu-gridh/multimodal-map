@@ -1,8 +1,5 @@
 <script lang="ts" setup>
 import { ref } from "vue";
-import proj4 from "proj4";
-import { get as getProjection } from "ol/proj";
-import { register } from "ol/proj/proj4";
 import { type Options, optionsFromCapabilities } from "ol/source/WMTS";
 import axios from "axios";
 import { WMTSCapabilities } from "ol/format";
@@ -17,13 +14,6 @@ const props = defineProps({
 
 const options = ref<Options>();
 
-proj4.defs(
-  "EPSG:25833",
-  "+proj=utm +zone=33 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs +type=crs"
-);
-register(proj4);
-const projection = getProjection("EPSG:25833");
-
 (async () => {
   const response = await axios.get(props.capabilitiesUrl);
   const parser = new WMTSCapabilities();
@@ -31,7 +21,6 @@ const projection = getProjection("EPSG:25833");
   options.value =
     optionsFromCapabilities(capabilities, {
       layer: capabilities.Contents.Layer[0].Identifier,
-      projection,
     }) || undefined;
 })();
 </script>
