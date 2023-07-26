@@ -7,7 +7,7 @@ import DianaPlaceLayer from "@/components/DianaPlaceLayer.vue";
 import FeatureSelection from "@/components/FeatureSelection.vue";
 import MapViewPreview from "./MapViewPreview.vue";
 import { storeToRefs } from "pinia";
-import { rephotographyStore } from "./store";
+import { etruscanTombsStore } from "./store";
 import { clean } from "@/assets/utils";
 import markerIcon from "@/assets/marker-gold.svg";
 import markerBlue from "@/assets/marker-blue.svg";
@@ -18,7 +18,7 @@ import { nextTick } from "vue";
 import GeoJSON from "ol/format/GeoJSON";
 
 
-const { categories, years, tags, tagsLayerVisible, placesLayerVisible, mapLayerVisibility } = storeToRefs(rephotographyStore());
+const { categories, years, tags, tagsLayerVisible, placesLayerVisible, mapLayerVisibility } = storeToRefs(etruscanTombsStore());
 
 
 const placeParams = computed(() =>
@@ -119,7 +119,7 @@ const toggleMapLayer = () => {
         <!-- places -->
         <DianaPlaceLayer
           v-if="placesLayerVisible"
-          path="rephotography/geojson/place/"
+          path="etruscantombs/geojson/place/"
           :params="placeParams"
         >
           <ol-style>
@@ -136,7 +136,7 @@ const toggleMapLayer = () => {
         <!-- tags -->
         <DianaPlaceLayer
           v-if="tagsLayerVisible"
-          path="rephotography/search/tag/"
+          path="etruscantombs/search/tag/"
           :params="tagParams"
         >
           <ol-style>
@@ -151,7 +151,7 @@ const toggleMapLayer = () => {
         </DianaPlaceLayer>
 
           <DianaPlaceLayer
-          path="rephotography/geojson/focus/"
+          path="etruscantombs/geojson/focus/"
           >
           <ol-style>
             <ol-style-icon

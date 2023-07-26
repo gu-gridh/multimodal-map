@@ -1,7 +1,7 @@
 import type { Project } from "@/types/project";
 import type { Geometry } from "ol/geom";
 
-export type RephotographyProject = Project & {
+export type EtruscanTombsProject = Project & {
   timeRange: [number, number];
 };
 
@@ -15,7 +15,7 @@ export type Image = {
   iiif_file: string;
   title: string;
   photographer: number;
-  place: number;
+  tomb: number;
   description: string;
   date: string;
   focus: number;
@@ -27,7 +27,7 @@ export type ImageDeep = Omit<
   "photographer" | "place" | "focus" | "tag"
 > & {
   photographer: Person;
-  place: Place;
+  tomb: Tomb;
   focus: Focus;
   tag: Tag[];
 };
@@ -54,7 +54,7 @@ export type Video = {
   description: string;
   date: string;
   link: string;
-  place: number;
+  tomb: number;
   photographer: number;
   focus: number;
   tag: number[];
@@ -64,7 +64,7 @@ export type VideoDeep = Omit<
   Video,
   "photographer" | "place" | "focus" | "tag"
 > & {
-  place: Place;
+  tomb: Tomb;
   photographer: Person;
   focus: Focus;
   tag: Tag[];
@@ -75,10 +75,20 @@ export type Person = {
   name: string;
 };
 
-export type Place = {
+export type Necropolis = {
   id: number;
   geometry: Geometry;
   name: string;
+  description: string;
+  comment: string;
+  tag: Tag[];
+};
+
+export type Tomb = {
+  id: number;
+  geometry: Geometry;
+  name: string;
+  necropolis: Necropolis;
   description: string;
   comment: string;
   tag: Tag[];

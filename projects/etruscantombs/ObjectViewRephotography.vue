@@ -26,7 +26,7 @@ const images = {
         <div v-if="image.photographer?.name">
           By: {{ image.photographer.name }}
         </div>
-        <div v-if="image.place?.name">At: {{ image.place.name }}</div>
+        <div v-if="image.tomb?.name">At: {{ image.tomb.name }}</div>
         <div v-if="image.date">On: {{ image.date }}</div>
         <div v-if="image.focus?.text">Focus: {{ image.focus.text }}</div>
         <div v-if="image.tag?.length">

@@ -50,13 +50,13 @@ import { inject, ref, onMounted, computed } from "vue";
 import CategoryButtonList from "@/components/input/CategoryButtonList.vue";
 import RangeSlider from "@/components/input/RangeSlider.vue";
 import { storeToRefs } from "pinia";
-import { rephotographyStore } from "./store";
-import type { RephotographyProject } from "./types";
+import { etruscanTombsStore } from "./store";
+import type { EtruscanTombsProject } from "./types";
 
-const config = inject<RephotographyProject>("config");
-const { categories, years, tags, tagsLayerVisible, placesLayerVisible, mapLayerVisibility } = storeToRefs(rephotographyStore());
+const config = inject<EtruscanTombsProject>("config");
+const { categories, years, tags, tagsLayerVisible, placesLayerVisible, mapLayerVisibility } = storeToRefs(etruscanTombsStore());
 
-// See https://github.com/gu-gridh/rephotography/blob/master/views.py
+// See https://github.com/gu-gridh/etruscantombs/blob/master/views.py
 const CATEGORIES = {
   all: "All Categories",
   image: "Photographs",
@@ -72,7 +72,7 @@ const YEARS = {
 };
 
 onMounted(async () => {
-  const response = await fetch("https://diana.dh.gu.se/api/rephotography/tag/");
+  const response = await fetch("https://diana.dh.gu.se/api/etruscantombs/tag/");
   const data = await response.json();
   const tagTexts = data.results.filter(result => result.published).map(tag => tag.text);
   tagTexts.forEach(tagText => {

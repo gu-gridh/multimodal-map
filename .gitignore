@@ -8,3 +8,6 @@ COMMIT_MSG
 dist/
 node_modules/
 *.log
+
+.yarnrc.yml
+.yarn

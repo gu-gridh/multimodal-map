@@ -1,6 +1,6 @@
-import type { EtrusanTombsProject } from "./types";
+import type { EtruscanTombsProject } from "./types";
 
-export default <EtrusanTombsProject>{
+export default <EtruscanTombsProject>{
   title: "Etruscan Chamber Tombs",
   subtitle: "",
   moreinfo: "Learn more...",

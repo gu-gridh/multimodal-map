@@ -13,11 +13,11 @@ import type { DianaClient } from "@/assets/diana";
 import PreviewRephotography from "./MapViewPreviewRephotography.vue";
 import PreviewImage from "./MapViewPreviewImage.vue";
 import PreviewVideo from "./MapViewPreviewVideo.vue";
-import { rephotographyStore } from "./store";
+import { etruscanTombsStore } from "./store";
 
 
 const { selectedFeature } = storeToRefs(mapStore());
-const { years } = storeToRefs(rephotographyStore()); 
+const { years } = storeToRefs(etruscanTombsStore()); 
 const diana = inject("diana") as DianaClient;
 
 const images = ref<Image[]>();
