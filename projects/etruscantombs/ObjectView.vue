@@ -4,7 +4,7 @@ import type { Documentation } from "./types";
 import type { DianaClient } from "@/assets/diana";
 import ObjectViewImage from "./ObjectViewImage.vue";
 import ObjectViewVideo from "./ObjectViewVideo.vue";
-import ObjectViewRephotography from "./ObjectViewRephotography.vue";
+// import ObjectViewRephotography from "./ObjectViewRephotography.vue";
 
 const props = defineProps({
   type: {
@@ -28,7 +28,7 @@ watchEffect(async () => {
 const objectComponent = {
   image: ObjectViewImage,
   video: ObjectViewVideo,
-  rephotography: ObjectViewRephotography,
+  // rephotography: ObjectViewRephotography,
 }[props.type];
 </script>
 

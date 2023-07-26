@@ -5,8 +5,8 @@ export type EtruscanTombsProject = Project & {
   timeRange: [number, number];
 };
 
-export type Documentation = Image | Rephotography | Video;
-export type DocumentationDeep = ImageDeep | RephotographyDeep | VideoDeep;
+export type Documentation = Image | Video;
+export type DocumentationDeep = ImageDeep | VideoDeep;
 
 export type Image = {
   id: number;
@@ -32,20 +32,20 @@ export type ImageDeep = Omit<
   tag: Tag[];
 };
 
-export type Rephotography = {
-  id: number;
-  title: string;
-  old_image: number;
-  new_image: number;
-};
+// export type Rephotography = {
+//   id: number;
+//   title: string;
+//   old_image: number;
+//   new_image: number;
+// };
 
-export type RephotographyDeep = Omit<
-  Rephotography,
-  "old_image" | "new_image"
-> & {
-  old_image: ImageDeep;
-  new_image: ImageDeep;
-};
+// export type RephotographyDeep = Omit<
+//   Rephotography,
+//   "old_image" | "new_image"
+// > & {
+//   old_image: ImageDeep;
+//   new_image: ImageDeep;
+// };
 
 export type Video = {
   id: number;

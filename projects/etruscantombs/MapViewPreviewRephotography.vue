@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { RephotographyDeep } from "./types";
+// import type { RephotographyDeep } from "./types";
 import ComparisonSlider from "@/components/ComparisonSlider.vue";
 
 defineProps<{
