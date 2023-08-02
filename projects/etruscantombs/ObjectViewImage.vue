@@ -16,7 +16,7 @@ defineProps<{
       <div v-if="object.photographer?.name">
         By: {{ object.photographer.name }}
       </div>
-      <div v-if="object.place?.name">At: {{ object.place.name }}</div>
+      <div v-if="object.tomb?.name">At: {{ object.tomb.name }}</div>
       <div v-if="object.date?.length">On: {{ object.date }}</div>
       <div v-if="object.focus?.text">Focus: {{ object.focus.text }}</div>
       <div v-if="object.tag?.length">

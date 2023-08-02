@@ -24,7 +24,7 @@ export type Image = {
 
 export type ImageDeep = Omit<
   Image,
-  "photographer" | "place" | "focus" | "tag"
+  "photographer" | "tomb" | "focus" | "tag"
 > & {
   photographer: Person;
   tomb: Tomb;
@@ -62,7 +62,7 @@ export type Video = {
 
 export type VideoDeep = Omit<
   Video,
-  "photographer" | "place" | "focus" | "tag"
+  "photographer" | "tomb" | "focus" | "tag"
 > & {
   tomb: Tomb;
   photographer: Person;

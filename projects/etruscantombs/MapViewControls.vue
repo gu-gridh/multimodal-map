@@ -72,7 +72,7 @@ const YEARS = {
 };
 
 onMounted(async () => {
-  const response = await fetch("https://diana.dh.gu.se/api/etruscantombs/tag/");
+  const response = await fetch("https://localhost:8000/api/etruscantombs/tag/");
   const data = await response.json();
   const tagTexts = data.results.filter(result => result.published).map(tag => tag.text);
   tagTexts.forEach(tagText => {

@@ -1,7 +1,7 @@
 import axios from "axios";
 import type { ListResponse, MapResponse } from "@/types/diana";
 
-export const DIANA_BASE = "https://diana.dh.gu.se/api/";
+export const DIANA_BASE = "http://localhost:8000/api/";
 
 export class DianaClient {
   project: string;
