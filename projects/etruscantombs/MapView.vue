@@ -119,7 +119,7 @@ const toggleMapLayer = () => {
         <!-- places -->
         <DianaPlaceLayer
           v-if="placesLayerVisible"
-          path="etruscantombs/geojson/place/"
+          path="etruscantombs/geojson/tomb/"
           :params="placeParams"
         >
           <ol-style>
@@ -151,7 +151,7 @@ const toggleMapLayer = () => {
         </DianaPlaceLayer>
 
           <DianaPlaceLayer
-          path="etruscantombs/geojson/focus/"
+          path="etruscantombs/necropolis"
           >
           <ol-style>
             <ol-style-icon
