@@ -57,20 +57,20 @@ const toggleAboutVisibility = async () => {
   visibleAbout.value = !visibleAbout.value;
 };
 
-const vectorLayers = computed(() => [
-  {
-    url: "https://data.dh.gu.se/geography/glacier_front_2022.geojson",
-    geoJsonFormat: new GeoJSON(),
-  },
-  {
-  url: "https://data.dh.gu.se/geography/glacier_front_2021.geojson",
-  geoJsonFormat: new GeoJSON(),
-  },
-  {
-  url: "https://data.dh.gu.se/geography/glacier_front_2008.geojson",
-  geoJsonFormat: new GeoJSON(),
-  },
-]);
+// const vectorLayers = computed(() => [
+//   {
+//     url: "https://data.dh.gu.se/geography/glacier_front_2022.geojson",
+//     geoJsonFormat: new GeoJSON(),
+//   },
+//   {
+//   url: "https://data.dh.gu.se/geography/glacier_front_2021.geojson",
+//   geoJsonFormat: new GeoJSON(),
+//   },
+//   {
+//   url: "https://data.dh.gu.se/geography/glacier_front_2008.geojson",
+//   geoJsonFormat: new GeoJSON(),
+//   },
+// ]);
 
 const showSection = ref(false);
 
@@ -151,7 +151,7 @@ const toggleMapLayer = () => {
         </DianaPlaceLayer>
 
           <DianaPlaceLayer
-          path="etruscantombs/necropolis"
+          path="etruscantombs/geojson/necropolis"
           >
           <ol-style>
             <ol-style-icon
