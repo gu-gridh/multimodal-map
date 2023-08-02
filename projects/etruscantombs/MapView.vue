@@ -112,9 +112,9 @@ const toggleMapLayer = () => {
       <div class="map-container">
       <MapComponent :min-zoom="10" :max-zoom="18" :restrictExtent="[11.9, 42.15, 12.2, 42.4]" >
         <template #layers>
-          <NpolarLayer
+          <!-- <NpolarLayer
             capabilitiesUrl="https://geodata.npolar.no/arcgis/rest/services/Basisdata/NP_Ortofoto_Svalbard_WMTS_25833/MapServer/WMTS/1.0.0/WMTSCapabilities.xml"
-          />
+          /> -->
 
         <!-- places -->
         <DianaPlaceLayer
