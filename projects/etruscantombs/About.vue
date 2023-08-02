@@ -197,7 +197,7 @@ a {
   width:200px;
   height:90px;
   position:absolute;
-  background:url(./images/xxx.png);
+  background:url(./images/logo-Infravis-516.png);
   background-repeat: no-repeat;
   background-size: contain;
   top:30px;
