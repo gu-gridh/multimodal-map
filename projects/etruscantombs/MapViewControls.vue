@@ -39,9 +39,6 @@
 </div>
 
 
-
-
-
 </template>
 
 <script setup lang="ts">
@@ -54,15 +51,15 @@ import { etruscanTombsStore } from "./store";
 import type { EtruscanTombsProject } from "./types";
 
 const config = inject<EtruscanTombsProject>("config");
-const { categories, years, tags, tagsLayerVisible, placesLayerVisible, mapLayerVisibility } = storeToRefs(etruscanTombsStore());
+const { categories, years, tags, tagsLayerVisible, tombLayerVisible, necropolisLayerVisible, mapLayerVisibility } = storeToRefs(etruscanTombsStore());
 
 // See https://github.com/gu-gridh/etruscantombs/blob/master/views.py
 const CATEGORIES = {
   all: "All Categories",
-  image: "Photographs",
-  models: "Models",
+  image: "Images",
+  // video: "Tombs",
   // documents: "Documents",
-  plans: "Plans",
+  observation: "Observations",
 };
 
 const TAGS = ref<Record<string, string>>({});
@@ -114,8 +111,9 @@ const handleCategoryClick = (category: string) => {
 const lastClickedTag = ref('');
 
 const handleTagClick = (tag: string) => {
-  if (placesLayerVisible.value) { 
-    placesLayerVisible.value = false;
+  if (tombLayerVisible.value | necropolisLayerVisible.value) { 
+    tombLayerVisible.value = false;
+    necropolisLayerVisible.value = false;
     tagsLayerVisible.value = true;
   }
 
@@ -127,7 +125,8 @@ const handleTagClick = (tag: string) => {
   if (lastClickedTag.value === tag) {
     categories.value = ["all"];
     tags.value = [];
-    placesLayerVisible.value = true;
+    tombsLayerVisible.value = true;
+    necropolisLayerVisible.value = true;
     tagsLayerVisible.value = false;
     isSliderVisible.value = true;
 

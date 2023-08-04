@@ -29,47 +29,47 @@ const focusedFeatures = ref<number[]>([]);
 //   focusedFeatures.value = json.features.map((feature: any) => feature.id);
 // })();
 
-// function isFeatureFocused(id: number) {
-//   return focusedFeatures.value.includes(id);
-// }
-// watchEffect(async () => {
-//   if (selectedFeature.value) {
-//     const id = selectedFeature.value.getId();
-//     const isFocus = isFeatureFocused(id);
+function isFeatureFocused(id: number) {
+  return focusedFeatures.value.includes(id);
+}
+watchEffect(async () => {
+  if (selectedFeature.value) {
+    const id = selectedFeature.value.getId();
+    const isFocus = isFeatureFocused(id);
 
-//     // Determine the query parameter for images and videos
-//     const queryParam = isFocus ? { focus: id } : { place: id };
+    // Determine the query parameter for images and videos
+    const queryParam = isFocus ? { focus: id } : { place: id };
 
-//     images.value = await diana.listAll<Image>("image", queryParam);
-//     videos.value = await diana.listAll<Video>("video", queryParam);
+    images.value = await diana.listAll<Image>("image", queryParam);
+    videos.value = await diana.listAll<Video>("video", queryParam);
     
-//     // Query only by place for rephotographies
-//     const rephotographyParam = { place: id };
+    // Query only by place for rephotographies
+    // const rephotographyParam = { place: id };
 
-//     // Load Rephotographies in two steps because `depth` doesn't work yet.
-//     // TODO Implement `depth` instead
-//     const rephotographiesShallow = await diana.listAll<Rephotography>(
-//       "rephotography",
-//       rephotographyParam
-//     );
-//     const rephotographiesDeep: RephotographyDeep[] = [];
-//     for (const rephotography of rephotographiesShallow) {
-//       const [oldImage, newImage] = await Promise.all([
-//         diana.get<ImageDeep>("image", rephotography.old_image),
-//         diana.get<ImageDeep>("image", rephotography.new_image),
-//       ]);
-//       rephotographiesDeep.push({
-//         ...rephotography,
-//         old_image: oldImage,
-//         new_image: newImage,
-//       });
-//     }
-//     rephotographies.value = rephotographiesDeep;
-//   } else {
-//     images.value = [];
-//     rephotographies.value = [];
-//   }
-// });
+    // // Load Rephotographies in two steps because `depth` doesn't work yet.
+    // // TODO Implement `depth` instead
+    // const rephotographiesShallow = await diana.listAll<Rephotography>(
+    //   "rephotography",
+    //   rephotographyParam
+    // );
+    // const rephotographiesDeep: RephotographyDeep[] = [];
+    // for (const rephotography of rephotographiesShallow) {
+    //   const [oldImage, newImage] = await Promise.all([
+    //     diana.get<ImageDeep>("image", rephotography.old_image),
+    //     diana.get<ImageDeep>("image", rephotography.new_image),
+    //   ]);
+    //   rephotographiesDeep.push({
+    //     ...rephotography,
+    //     old_image: oldImage,
+    //     new_image: newImage,
+    //   });
+    // }
+  //   rephotographies.value = rephotographiesDeep;
+  // } else {
+  //   images.value = [];
+  //   rephotographies.value = [];
+  // }
+}});
 
 
 

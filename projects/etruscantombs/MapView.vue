@@ -18,7 +18,7 @@ import { nextTick } from "vue";
 import GeoJSON from "ol/format/GeoJSON";
 
 
-const { categories, years, tags, tagsLayerVisible, placesLayerVisible, mapLayerVisibility } = storeToRefs(etruscanTombsStore());
+const { categories, years, tags, tagsLayerVisible, tombLayerVisible, necropolisLayerVisible, mapLayerVisibility } = storeToRefs(etruscanTombsStore());
 
 
 const placeParams = computed(() =>
@@ -57,20 +57,20 @@ const toggleAboutVisibility = async () => {
   visibleAbout.value = !visibleAbout.value;
 };
 
-// const vectorLayers = computed(() => [
-//   {
-//     url: "https://data.dh.gu.se/geography/glacier_front_2022.geojson",
-//     geoJsonFormat: new GeoJSON(),
-//   },
-//   {
-//   url: "https://data.dh.gu.se/geography/glacier_front_2021.geojson",
-//   geoJsonFormat: new GeoJSON(),
-//   },
-//   {
-//   url: "https://data.dh.gu.se/geography/glacier_front_2008.geojson",
-//   geoJsonFormat: new GeoJSON(),
-//   },
-// ]);
+const vectorLayers = computed(() => [
+  {
+    url: "https://data.dh.gu.se/geography/glacier_front_2022.geojson",
+    geoJsonFormat: new GeoJSON(),
+  },
+  {
+  url: "https://data.dh.gu.se/geography/glacier_front_2021.geojson",
+  geoJsonFormat: new GeoJSON(),
+  },
+  {
+  url: "https://data.dh.gu.se/geography/glacier_front_2008.geojson",
+  geoJsonFormat: new GeoJSON(),
+  },
+]);
 
 const showSection = ref(false);
 
@@ -118,7 +118,7 @@ const toggleMapLayer = () => {
 
         <!-- places -->
         <DianaPlaceLayer
-          v-if="placesLayerVisible"
+          v-if="tombLayerVisible"
           path="etruscantombs/geojson/tomb/"
           :params="placeParams"
         >
@@ -149,9 +149,11 @@ const toggleMapLayer = () => {
           </ol-style>
           <FeatureSelection />
         </DianaPlaceLayer>
-
+          
           <DianaPlaceLayer
-          path="etruscantombs/geojson/necropolis"
+          v-if="necropolisLayerVisible"
+          path="etruscantombs/geojson/necropolis/"
+          :params="placeParams"
           >
           <ol-style>
             <ol-style-icon
