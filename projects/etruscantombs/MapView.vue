@@ -18,7 +18,7 @@ import { nextTick } from "vue";
 import GeoJSON from "ol/format/GeoJSON";
 
 
-const { categories, years, tags, tagsLayerVisible, placesLayerVisible, mapLayerVisibility } = storeToRefs(rephotographyStore());
+const { categories, years, tags, placesLayerVisible, tagsLayerVisible } = storeToRefs(rephotographyStore());
 
 
 const placeParams = computed(() =>
@@ -72,19 +72,6 @@ const vectorLayers = computed(() => [
   },
 ]);
 
-const showSection = ref(false);
-
-const toggleSection = () => {
-  showSection.value = !showSection.value;
-};
-
-/*Colors for Vector Layer*/
-const layerColors = ["red", "green", "blue"];
-
-const toggleMapLayer = () => {
-  mapLayerVisibility.value = !mapLayerVisibility.value; // Toggle the map layer visibility
-};
-
 </script>
 
 <template>
@@ -110,7 +97,7 @@ const toggleMapLayer = () => {
 
     <template #background>
       <div class="map-container">
-      <MapComponent :min-zoom="10" :max-zoom="18" :restrictExtent="[11.9, 42.15, 12.2, 42.4]" >
+      <MapComponent :min-zoom="10" :max-zoom="18" :restrictExtent="[11.9, 57.72, 11.99, 57.69]" > <!-- 11.9, 42.15, 12.2, 42.4 -->
         <template #layers>
           <NpolarLayer
             capabilitiesUrl="https://geodata.npolar.no/arcgis/rest/services/Basisdata/NP_Ortofoto_Svalbard_WMTS_25833/MapServer/WMTS/1.0.0/WMTSCapabilities.xml"
@@ -119,7 +106,7 @@ const toggleMapLayer = () => {
         <!-- places -->
         <DianaPlaceLayer
           v-if="placesLayerVisible"
-          path="rephotography/geojson/place/"
+          path="jubileum/geojson/place/"
           :params="placeParams"
         >
           <ol-style>
@@ -133,7 +120,7 @@ const toggleMapLayer = () => {
           <FeatureSelection />
         </DianaPlaceLayer>
 
-        <!-- tags -->
+      <!-- tags
         <DianaPlaceLayer
           v-if="tagsLayerVisible"
           path="rephotography/search/tag/"
@@ -162,16 +149,7 @@ const toggleMapLayer = () => {
             ></ol-style-icon>
           </ol-style>
           <FeatureSelection />
-        </DianaPlaceLayer>
-
-        <div v-if="mapLayerVisibility">
-       <ol-vector-layer v-for="(layer, index) in vectorLayers" :key="layer.url" :z-index="1">
-        <ol-source-vector :url="layer.url" :format="layer.geoJsonFormat" ref="source" />
-        <ol-style>
-          <ol-style-stroke :color="layerColors[index % layerColors.length]" width="4"></ol-style-stroke>
-        </ol-style>
-      </ol-vector-layer>
-      </div>
+        </DianaPlaceLayer> -->
 
         </template>
       </MapComponent>

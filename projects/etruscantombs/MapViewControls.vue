@@ -1,9 +1,4 @@
 <template>
-
-<button class="item" @click="toggleMapLayer">
-  <div :class="['p-1', 'px-2', 'clickable', 'category-button', { 'active': mapLayerVisibility}]" style="width: auto; margin-left:10px; text-align: center; cursor: pointer;">Historical data layer</div>
-</button>
-
   <div class="section-title">Documentation by category</div>
   <CategoryButtonList
     v-model="categories"
@@ -141,10 +136,6 @@ const handleTagClick = (tag: string) => {
     lastClickedTag.value = tag;
   }
 };
-
-const toggleMapLayer = () => {
-   mapLayerVisibility.value = !mapLayerVisibility.value; // Toggle the map layer visibility
- };
 </script>
 
 <style>
