@@ -4,52 +4,25 @@ import MainLayout from "@/MainLayout.vue";
 import MapViewControls from "./MapViewControls.vue";
 import MapComponent from "@/components/MapComponent.vue";
 import DianaPlaceLayer from "@/components/DianaPlaceLayer.vue";
-import FeatureSelection from "@/components/FeatureSelection.vue";
+import MapViewFeautureSelect from "./MapViewFeautureSelect.vue";
 import MapViewPreview from "./MapViewPreview.vue";
 import { storeToRefs } from "pinia";
-import { etruscanTombsStore } from "./store";
+import { jubileumStore } from "./store";
 import { clean } from "@/assets/utils";
-import markerIcon from "@/assets/marker-gold.svg";
-import markerBlue from "@/assets/marker-blue.svg";
+import markerIcon from "@/assets/marker-white.svg";
+import MapViewGallery from "./MapViewGallery.vue";
 import { ref } from "vue";
 import About from "./About.vue";
 import { onMounted, watch } from "vue";
 import { nextTick } from "vue";
-import GeoJSON from "ol/format/GeoJSON";
 
-
-const { categories, years, tags, tagsLayerVisible, tombLayerVisible, necropolisLayerVisible, mapLayerVisibility } = storeToRefs(etruscanTombsStore());
-
-
+const { categories } = storeToRefs(jubileumStore());
+const targetDiv = document.getElementById("third");
 const placeParams = computed(() =>
   clean({
     type: categories.value.filter((x) => x !== "all").join(","),
-    start_date: years.value[0],
-    end_date: years.value[1],
   })
 );
-
-const tagParams = computed(() => {
-  const tag_set = tags.value[0]; // Assuming that tags always contains at least one element
-  return clean({
-    tag_set,
-  });
-});
-
-
-const visibleAbout = ref(false);
-let visited = true; // Store the visited status outside of the hook
-
-onMounted(() => {
-  // Check if the "visited" key exists in session storage
-  visited = sessionStorage.getItem("visited") === "true"; // Retrieve the visited status from session storage
-
-  if (!visited) {
-    // Hide the about component
-    visibleAbout.value = true;
-    sessionStorage.setItem("visited", "true");
-  } 
-})
 
 const toggleAboutVisibility = async () => {
   console.log('fired')
@@ -57,133 +30,118 @@ const toggleAboutVisibility = async () => {
   visibleAbout.value = !visibleAbout.value;
 };
 
-const vectorLayers = computed(() => [
-  {
-    url: "https://data.dh.gu.se/geography/glacier_front_2022.geojson",
-    geoJsonFormat: new GeoJSON(),
-  },
-  {
-  url: "https://data.dh.gu.se/geography/glacier_front_2021.geojson",
-  geoJsonFormat: new GeoJSON(),
-  },
-  {
-  url: "https://data.dh.gu.se/geography/glacier_front_2008.geojson",
-  geoJsonFormat: new GeoJSON(),
-  },
-]);
+const showGrid = ref(false);
+const visibleAbout = ref(false);
 
-const showSection = ref(false);
+onMounted(() => {
+  const storedShowGrid = localStorage.getItem("showGrid");
+  if (storedShowGrid) {
+    showGrid.value = JSON.parse(storedShowGrid);
+  }
+});
 
-const toggleSection = () => {
-  showSection.value = !showSection.value;
-};
-
-/*Colors for Vector Layer*/
-const layerColors = ["red", "green", "blue"];
-
-const toggleMapLayer = () => {
-  mapLayerVisibility.value = !mapLayerVisibility.value; // Toggle the map layer visibility
-};
+watch(showGrid, (newValue) => {
+  localStorage.setItem("showGrid", JSON.stringify(newValue));
+});
 
 </script>
 
 <template>
- <About :visibleAbout="visibleAbout" @close="visibleAbout = false" />
+ 
+        <div style="display:flex; align-items: center; justify-content: center;">
+        <div class="ui-mode ui-overlay">
+          <button class="item" v-bind:class="{ selected: !showGrid}" v-on:click="showGrid = false;">
+          Karta
+        </button>
+        <button class="item" v-bind:class="{ selected: showGrid}" v-on:click="showGrid = true;">
+         Galleri
+        </button>
+      </div>
+    </div>
+  
+<About :visibleAbout="visibleAbout" @close="visibleAbout = false" />
   <MainLayout>
+    
     <template #search>
-      <button class="item"  @click="toggleAboutVisibility">
+    <button class="item" @click="toggleAboutVisibility">
             <div
               class="p-1 px-2 clickable category-button"
               style="
-                width: 90px;
+                width: auto;
                 text-align: center;
                 margin-top: -10px;
                 cursor: pointer;
               "
-            >More info</div>
+            >Om jubileumsutställningen och portalen</div>
           </button>
+<div style="width:100%; margin-top:20px;">
+  <a href="https://gupea.ub.gu.se/handle/2077/74634">
+          <button class="item">
+            <div
+              class="p-1 px-2 clickable category-button"
+              style="
+                width: auto;
+                text-align: center;
+                margin-top: -10px;
+                cursor: pointer;
+                font-weight:400;
+              "
+            >Publikationer i GUPEA</div>
+          </button>
+        </a>
+        </div>
       <MapViewControls />
     </template>
-
-  
-   
-
+    
     <template #background>
+    
       <div class="map-container">
-      <MapComponent :min-zoom="10" :max-zoom="18" :restrictExtent="[11.9, 42.15, 12.2, 42.4]" >
-        <template #layers>
-          <!-- <NpolarLayer
-            capabilitiesUrl="https://geodata.npolar.no/arcgis/rest/services/Basisdata/NP_Ortofoto_Svalbard_WMTS_25833/MapServer/WMTS/1.0.0/WMTSCapabilities.xml"
-          /> -->
-
-        <!-- places -->
-        <DianaPlaceLayer
-          v-if="tombLayerVisible"
-          path="etruscantombs/geojson/tomb/"
-          :params="placeParams"
+        
+        <MapComponent
+          :min-zoom="16"
+          :max-zoom="18"
+          :restrictExtent="[11.922, 57.7215, 11.996, 57.69035]"
+          :key="showGrid.toString()"
         >
-          <ol-style>
-            <ol-style-icon
-              :src="markerIcon"
-              :scale="1.8"
-              :displacement="[-10, 45]"
-              :anchor="[0.0, 0.0]"
-            ></ol-style-icon>
-          </ol-style>
-          <FeatureSelection />
-        </DianaPlaceLayer>
-
-        <!-- tags -->
-        <DianaPlaceLayer
-          v-if="tagsLayerVisible"
-          path="etruscantombs/search/tag/"
-          :params="tagParams"
-        >
-          <ol-style>
-            <ol-style-icon
-              :src="markerIcon"
-              :scale="1.8"
-              :displacement="[-10, 45]"
-              :anchor="[0.0, 0.0]"
-            ></ol-style-icon>
-          </ol-style>
-          <FeatureSelection />
-        </DianaPlaceLayer>
+          <template #layers>
+            <DianaPlaceLayer path="jubileum/geojson/place/" :params="placeParams">
+              <ol-style>
+                <ol-style-icon
+                  :src="markerIcon"
+                  :scale="2.0"
+                  :displacement="[-10, 45]"
+                  :anchor="[0.0, 0.0]"
+                ></ol-style-icon>
+              </ol-style>
+              <MapViewFeautureSelect />
+            </DianaPlaceLayer>
+            <ol-tile-layer>
+              <ol-source-xyz
+                url="https://data.dh.gu.se/tiles/gbg_1921b/{z}/{x}/{y}.png"
+              />
+            </ol-tile-layer>
+            
+          </template>
           
-          <DianaPlaceLayer
-          v-if="necropolisLayerVisible"
-          path="etruscantombs/geojson/necropolis/"
-          :params="placeParams"
-          >
-          <ol-style>
-            <ol-style-icon
-              :src="markerBlue"
-              :scale="1.8"
-              :displacement="[-10, 45]"
-              :anchor="[0.0, 0.0]"
-            ></ol-style-icon>
-          </ol-style>
-          <FeatureSelection />
-        </DianaPlaceLayer>
+        </MapComponent>
+        
+        <MapViewGallery v-if="showGrid" />
 
-        <div v-if="mapLayerVisibility">
-       <ol-vector-layer v-for="(layer, index) in vectorLayers" :key="layer.url" :z-index="1">
-        <ol-source-vector :url="layer.url" :format="layer.geoJsonFormat" ref="source" />
-        <ol-style>
-          <ol-style-stroke :color="layerColors[index % layerColors.length]" width="4"></ol-style-stroke>
-        </ol-style>
-      </ol-vector-layer>
       </div>
-
-        </template>
-      </MapComponent>
-    </div>
     </template>
-
+    
     <template #details>
+      
       <MapViewPreview />
+      
     </template>
+    
+    <template>
+   
+  </template>
+  
   </MainLayout>
+  
 </template>
 
 <style>
@@ -192,6 +150,44 @@ const toggleMapLayer = () => {
   width:100%;
 }
 
+#gallery{}
+
+.ui-overlay {
+margin-top: 70px;
+z-index: 250;
+position:absolute;
+border-radius: 8px;
+font-size: 18px;
+font-weight: 700;
+color: white;
+margin-left:450px;
+background-color: rgb(180, 100, 100, 0.8);
+backdrop-filter: blur(3px);
+transition: all 0.5s ease-in-out;
+}
+
+.ui-mode {
+top: 0px;
+padding: 4px 10px 4px 10px;
+}
+
+.ui-mode .item {
+cursor: pointer;
+display: inline;
+font-weight: 400;
+color:black;
+padding: 0px 15px 0px 15px;
+
+}
+
+.ui-mode .item:hover {
+  color:white;
+}
+
+.ui-mode .selected{
+font-weight: 500;
+color: white;
+}
 
 #app .ol-popup {
   font-size: 1.2em;
@@ -199,6 +195,7 @@ const toggleMapLayer = () => {
   -moz-user-select: none;
   user-select: none;
   text-align: center;
+  line-height: 1.2;
   position: absolute;
   background-color: white;
   box-shadow: 2 2px 8px rgba(0, 0, 0, 0.5);
@@ -209,4 +206,27 @@ const toggleMapLayer = () => {
   left: -50px;
   min-width: 100px;
 }
+
+#app .ol-control button {
+  font-family: "Barlow Condensed", sans-serif;
+  border-radius: 50% !important;
+  background-color: rgb(248, 249, 228) !important;
+  color: black !important;
+}
+
+#app .ol-control button:hover,
+.ol-control button:focus {
+  background-color: rgb(220, 140, 140) !important;
+  color: white !important;
+  border-style: none !important;
+  border-style: hidden !important;
+}
+
+#app .ol-control button:active {
+  background-color: rgb(180, 100, 100) !important;
+  color: white !important;
+  border-style: none !important;
+  border-style: hidden !important;
+}
+
 </style>

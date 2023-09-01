@@ -1,10 +1,8 @@
 <script setup lang="ts">
 import { inject, ref, watchEffect } from "vue";
-import type { Documentation } from "./types";
+import type { Image } from "./types";
 import type { DianaClient } from "@/assets/diana";
 import ObjectViewImage from "./ObjectViewImage.vue";
-import ObjectViewVideo from "./ObjectViewVideo.vue";
-// import ObjectViewRephotography from "./ObjectViewRephotography.vue";
 
 const props = defineProps({
   type: {
@@ -18,26 +16,21 @@ const props = defineProps({
 });
 
 const diana = inject("diana") as DianaClient;
-const object = ref<Documentation>();
-
+const object = ref<Image>();
 
 watchEffect(async () => {
-  object.value = await diana.get(props.type, props.id, { depth: 3 });
+  object.value = await diana.get(props.type, props.id, { depth: 1 });
 });
 
 const objectComponent = {
   image: ObjectViewImage,
-  video: ObjectViewVideo,
-  // rephotography: ObjectViewRephotography,
 }[props.type];
 </script>
 
 <template>
-  <div style="pointer-events:none !important;">
   <article v-if="object">
     <component :is="objectComponent" :object="object" :id="Number(id)" />
   </article>
-</div>
 </template>
 
 <style>
@@ -46,7 +39,6 @@ const objectComponent = {
   width: 450px;
   height: 100vh;
   background-color: black;
-  pointer-events:auto;
   color: white;
 }
 .illustration {
@@ -54,6 +46,5 @@ const objectComponent = {
   width: calc(100% - 450px);
   background-color: black;
   height: 100vh;
-
 }
 </style>

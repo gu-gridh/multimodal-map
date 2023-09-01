@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { provide } from "vue";
 import config from "./config";
-import Footer from './Footer.vue';
+import Footer from "./Footer.vue";
 import { DianaClient } from "@/assets/diana";
 
 const endpoint = new DianaClient("etruscantombs");
@@ -11,31 +11,54 @@ provide("diana", endpoint);
 </script>
 
 <template>
-      <Footer />
+  <Footer />
   <router-view />
 </template>
 
 <style>
+
+/* Project theme in regards to colour and fonts */
 html,
 body {
   font-family: "Barlow Condensed", sans-serif !important;
+  background-color: rgb(234, 228, 219) !important;
+  margin: 0 !important;
 }
 
 .map-container {
   height: calc(100vh - 80px) !important;
 }
 
-.theme-color {
-  color: orange;
+.main-title {
+  font-family: "Josefin Sans", sans-serif !important;
+  font-size: 85px;
+  line-height: 0.85;
+  font-weight: 100;
+  letter-spacing: -0.2rem;
+  text-align: center;
+  margin-left: -50px;
+  color: rgb(180, 100, 100);
+  transition: all 0.2s ease-in-out;
 }
 
-.main-title {
-  font-family: 'Geo', sans-serif;
-  font-size: 90px;
-  line-height: 0.7;
-  font-weight: 600;
-  letter-spacing:-4.5px;
-  color:rgb(180,100,100)
+.sub-title {
+  font-family: "Josefin Sans", sans-serif !important;
+  font-size: 75px;
+  line-height: 0.8;
+  font-weight: 100;
+  letter-spacing: -0.2rem;
+  text-align: center;
+  margin-left: -50px;
+  color: rgb(180, 100, 100);
+  margin-top: 10px;
+  margin-bottom: 15px;
+}
+
+.about {
+  padding-right: 40px;
+  line-height: 1.2;
+  text-align: left;
+  font-size:0.95em;
 }
 
 #app .left-pane {
@@ -43,35 +66,71 @@ body {
   width: 900px;
   background: url("@/assets/gradient-jubileum.png");
   background-size: contain;
+  z-index:500;
+}
+
+#app .left-pane-layer {
+width:450px;
+padding: 60px 0px 100px 60px;
+scrollbar-width: none;
+}
+
+#app .right-pane {
+  position: absolute;
+  height: 100vh;
+  width: 360px;
+  pointer-events: none;
+  z-index: 100;
+  transition: all 0.5s ease-in-out;
 }
 
 #app .mapview-preview {
-  height: 100vh !important;
-  background-color: rgba(0, 0, 0, 0.85);
+  color: white;
+  transition: all 0.5s ease-in-out;
+  padding-top: 20px;
+  padding-bottom: 0px;
+  width: auto;
+  pointer-events: none;
+}
+
+
+@media screen and (max-width: 1250px) {
+
+.ui-overlay {
+margin-left:200px !important;
+
+}
+}
+
+
+@media screen and (max-width: 900px) {
+
+  #app .mapview-preview {
+ padding-top:70px !important;
+}
+
+.ui-overlay {
+margin-top: 25px !important;
+margin-left:0px !important;
+font-size:120% !important;
+}
+
+#app .masonry-grid {
+  position: absolute;
+  top: 0px;
   width: 100%;
-  color: white;
-  backdrop-filter: blur(7px);
+  height: 100%; /* Make the grid height responsive */
+  z-index: 200;
+  background-color: rgb(234, 228, 219);
+  padding: 0px 0px 230px 00px;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  grid-template-rows: masonry;
+  grid-gap: 5px;
+  overflow-y: scroll;
+}
 }
 
-.close-button {
-  width: 40px;
-  height: 40px;
-  margin-left: -10px;
-  margin-top: -5px;
-  padding: 16px 15px 10px 9px;
-  line-height: 1px;
-  font-size: 50px;
-  font-weight: 100;
-  border-radius: 50%;
-  background-color: rgb(100, 100, 100);
-  color: white;
-  transform: rotate(45deg);
-  cursor: pointer;
-  pointer-events: auto;
-  margin-bottom: 30px;
-}
 
-.close-button:hover {
-  background-color: rgb(140, 140, 140);
-}
+
+
 </style>

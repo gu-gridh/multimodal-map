@@ -1,150 +1,29 @@
+<script setup lang="ts">
+import CategoryButtonList from "@/components/input/CategoryButtonList.vue";
+import { storeToRefs } from "pinia";
+import { jubileumStore } from "./store";
+
+const { categories } = storeToRefs(jubileumStore());
+
+// See https://github.com/gu-gridh/rephotography/blob/master/views.py
+const CATEGORIES = {
+  all: "Alla kategorier",
+  image: "Fotografier",
+  drawings: "Trycksak",
+
+};
+</script>
+
 <template>
-
-<button class="item" @click="toggleMapLayer">
-  <div :class="['p-1', 'px-2', 'clickable', 'category-button', { 'active': mapLayerVisibility}]" style="width: auto; margin-left:10px; text-align: center; cursor: pointer;">Historical data layer</div>
-</button>
-
-  <div class="section-title">Documentation by category</div>
+ <!-- <div class="section-title">Typ av dokumentation</div>
   <CategoryButtonList
     v-model="categories"
     :categories="CATEGORIES"
     :limit="1"
     class="my-2"
-    @click="handleCategoryClick" 
-  />
-  
-<!--   <transition name="slide">
-    <div class="slideinactive" v-bind:class="{slideactive: isSliderVisible}">
-      <div class="section-title">Time span</div>
-      <RangeSlider
-        v-model="years"
-        :min="YEARS.MIN"
-        :max="YEARS.MAX"
-        :step="1"
-        class="my-2"
-      />
-    </div>
-  </transition> -->
-<div class="tag-section">
-  <div class="section-title">Tags</div>
-  <div class="broad-controls">
-  <CategoryButtonList
-    v-model="tags"
-    :categories="TAGS"
-    :limit="1"
-    class="my-2"
-    @click="handleTagClick" 
-  />
-</div>
-</div>
-
+  />  -->
 
 </template>
-
-<script setup lang="ts">
-// @ts-nocheck
-import { inject, ref, onMounted, computed } from "vue";
-import CategoryButtonList from "@/components/input/CategoryButtonList.vue";
-import RangeSlider from "@/components/input/RangeSlider.vue";
-import { storeToRefs } from "pinia";
-import { etruscanTombsStore } from "./store";
-import type { EtruscanTombsProject } from "./types";
-
-const config = inject<EtruscanTombsProject>("config");
-const { categories, years, tags, tagsLayerVisible, tombLayerVisible, necropolisLayerVisible, mapLayerVisibility } = storeToRefs(etruscanTombsStore());
-
-// See https://github.com/gu-gridh/etruscantombs/blob/master/views.py
-const CATEGORIES = {
-  all: "All Categories",
-  image: "Images",
-  // video: "Tombs",
-  // documents: "Documents",
-  observation: "Observations",
-};
-
-const TAGS = ref<Record<string, string>>({});
-const YEARS = {
-  MIN: config?.timeRange?.[0] || 0,
-  MAX: config?.timeRange?.[1] || new Date().getFullYear(),
-};
-
-onMounted(async () => {
-  const response = await fetch("http://localhost:8000/api/etruscantombs/tag/");
-  const data = await response.json();
-  const tagTexts = data.results.filter(result => result.published).map(tag => tag.text);
-  tagTexts.forEach(tagText => {
-    TAGS.value[tagText] = tagText;
-  });
-});
-
-const isSliderVisible = ref(true);
-
-// Create a ref for last clicked category
-const lastClickedCategory = ref('');
-
-const handleCategoryClick = (category: string) => {
-  if (tagsLayerVisible.value) { 
-    tagsLayerVisible.value = false;
-    placesLayerVisible.value = true;
-  }
-
-  // If a category is clicked, clear tags
-  tags.value = [];
-  isSliderVisible.value = true;
-
-  // If the clicked category is the same as the last clicked one, default to "all"
-  if (lastClickedCategory.value === category) {
-    categories.value = ["all"];
-
-    // Clear the lastClickedCategory since it was unselected
-    lastClickedCategory.value = '';
-  } else {
-    // Add the clicked category only if it's not the same as the last clicked one
-    categories.value = [category];
-
-    // Update last clicked category
-    lastClickedCategory.value = category;
-  }
-};
-
-// Create a ref for last clicked tag
-const lastClickedTag = ref('');
-
-const handleTagClick = (tag: string) => {
-  if (tombLayerVisible.value | necropolisLayerVisible.value) { 
-    tombLayerVisible.value = false;
-    necropolisLayerVisible.value = false;
-    tagsLayerVisible.value = true;
-  }
-
-  // If a tag is clicked, clear categories
-  categories.value = [];
-  isSliderVisible.value = false;
-
-  // If the clicked tag is the same as the last clicked tag, return to the default view
-  if (lastClickedTag.value === tag) {
-    categories.value = ["all"];
-    tags.value = [];
-    tombsLayerVisible.value = true;
-    necropolisLayerVisible.value = true;
-    tagsLayerVisible.value = false;
-    isSliderVisible.value = true;
-
-    // Clear the lastClickedTag since it was unselected
-    lastClickedTag.value = '';
-  } else {
-    // Add the clicked tag only if it's not the same as the last clicked one
-    tags.value = [tag];
-
-    // Update last clicked tag
-    lastClickedTag.value = tag;
-  }
-};
-
-const toggleMapLayer = () => {
-   mapLayerVisibility.value = !mapLayerVisibility.value; // Toggle the map layer visibility
- };
-</script>
 
 <style>
 .section-title {
@@ -155,18 +34,19 @@ const toggleMapLayer = () => {
 }
 
 #app .category-button {
-  background-color: rgba(255, 255, 255, 0.6);
-  color: rgb(71, 85, 105);
+  background-color: rgba(180, 120, 120, 0.8);
+  color: white;
   border-radius: 4px;
+  transition: all 0.2s ease-in-out;
 }
 
 #app .category-button:hover {
-  background-color: rgb(140,80,80);
+  background-color: rgb(220, 140, 140);
   color: white;
 }
 
 #app .category-button.active {
-  background-color:rgb(180,100,100);
+  background-color: rgb(180, 80, 80);
   color: white;
 }
 
@@ -219,38 +99,4 @@ const toggleMapLayer = () => {
   box-shadow: var(--slider-handle-shadow, 0.5px 0.5px 2px 1px rgba(0, 0, 0, 0));
   cursor: grab;
 }
-
-#app .broad-controls{
-  width:100%;
-
-}
-
-@media screen and (max-width: 900px) {
-  #app .broad-controls{
-  width:100%;
-
-}
-}
-
-.slide-leave-active {
-  transition: all 0.4s;
-  opacity:1.0;
-}
-
-.slide-leave-to {
-  opacity:0.5;
-}
-
-.slideinactive {
-  opacity:0.4;
-  pointer-events: none !important;
-  transition: all 0.4s;
-}
-
-.slideactive {
-  transition: all 0.4s;
-  opacity:1.0;
-}
-
-
 </style>
