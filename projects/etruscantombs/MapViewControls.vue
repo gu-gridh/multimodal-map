@@ -45,11 +45,11 @@ import { inject, ref, onMounted, computed } from "vue";
 import CategoryButtonList from "@/components/input/CategoryButtonList.vue";
 import RangeSlider from "@/components/input/RangeSlider.vue";
 import { storeToRefs } from "pinia";
-import { rephotographyStore } from "./store";
-import type { RephotographyProject } from "./types";
+import { etruscanStore } from "./store";
+import type { EtruscanProjectProject } from "./types";
 
-const config = inject<RephotographyProject>("config");
-const { categories, years, tags, tagsLayerVisible, placesLayerVisible, mapLayerVisibility } = storeToRefs(rephotographyStore());
+const config = inject<EtruscanProject>("config");
+const { categories, years, tags, tagsLayerVisible, placesLayerVisible, mapLayerVisibility } = storeToRefs(etruscanStore());
 
 // See https://github.com/gu-gridh/rephotography/blob/master/views.py
 const CATEGORIES = {

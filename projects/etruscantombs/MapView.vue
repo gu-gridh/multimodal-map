@@ -7,7 +7,7 @@ import DianaPlaceLayer from "@/components/DianaPlaceLayer.vue";
 import FeatureSelection from "@/components/FeatureSelection.vue";
 import MapViewPreview from "./MapViewPreview.vue";
 import { storeToRefs } from "pinia";
-import { rephotographyStore } from "./store";
+import { etruscanStore } from "./store";
 import { clean } from "@/assets/utils";
 import markerIcon from "@/assets/marker-gold.svg";
 import markerBlue from "@/assets/marker-blue.svg";
@@ -18,7 +18,7 @@ import { nextTick } from "vue";
 import GeoJSON from "ol/format/GeoJSON";
 
 
-const { categories, years, tags, placesLayerVisible, tagsLayerVisible } = storeToRefs(rephotographyStore());
+const { categories, years, tags, placesLayerVisible, tagsLayerVisible } = storeToRefs(etruscanStore());
 
 
 const placeParams = computed(() =>
