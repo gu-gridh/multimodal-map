@@ -43,7 +43,7 @@
 // @ts-nocheck
 import { inject, ref, onMounted, computed } from "vue";
 import CategoryButtonList from "@/components/input/CategoryButtonList.vue";
-import RangeSlider from "@/components/input/RangeSlider.vue";
+// import RangeSlider from "@/components/input/RangeSlider.vue";
 import { storeToRefs } from "pinia";
 import { etruscanStore } from "./store";
 import type { EtruscanProjectProject } from "./types";
@@ -67,15 +67,13 @@ const YEARS = {
 };
 
 onMounted(async () => {
-  const response = await fetch("https://diana.dh.gu.se/api/rephotography/tag/");
+  const response = await fetch("https://diana.dh.gu.se/api/rephotography/tag/"); /*To be changed*/
   const data = await response.json();
   const tagTexts = data.results.filter(result => result.published).map(tag => tag.text);
   tagTexts.forEach(tagText => {
     TAGS.value[tagText] = tagText;
   });
 });
-
-const isSliderVisible = ref(true);
 
 // Create a ref for last clicked category
 const lastClickedCategory = ref('');
@@ -116,7 +114,6 @@ const handleTagClick = (tag: string) => {
 
   // If a tag is clicked, clear categories
   categories.value = [];
-  isSliderVisible.value = false;
 
   // If the clicked tag is the same as the last clicked tag, return to the default view
   if (lastClickedTag.value === tag) {
@@ -162,7 +159,7 @@ const handleTagClick = (tag: string) => {
   color: white;
 }
 
-#app .range-slider-container {
+/* #app .range-slider-container {
   display: flex;
   width: 100%;
   height: 90px;
@@ -170,12 +167,12 @@ const handleTagClick = (tag: string) => {
   padding: 25px 0 0 0;
   background-color: rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(3px);
-}
+} */
 
-#app .range-slider-wrapper {
+/* #app .range-slider-wrapper {
   padding-left: 5px;
   padding-right: 5px;
-}
+} */
 
 #app .start-end-box {
   width: 15%;
@@ -187,29 +184,6 @@ const handleTagClick = (tag: string) => {
 
 #app .rounded {
   border-radius: 10px;
-}
-
-#app .slider-connect {
-  background-color: #ff9900;
-}
-
-#app .slider-tooltip {
-  background-color: #ff9900;
-  border: 1px solid var(--slider-tooltip-bg, #ff9900);
-}
-
-#app .slider-handle {
-  margin-top: -10px;
-  margin-left: 10px;
-  width: 0;
-  height: 0;
-  border-radius: 0px;
-  background: none;
-  border-left: 8px solid transparent;
-  border-right: 8px solid transparent;
-  border-top: 15px solid #ff9900;
-  box-shadow: var(--slider-handle-shadow, 0.5px 0.5px 2px 1px rgba(0, 0, 0, 0));
-  cursor: grab;
 }
 
 #app .broad-controls{
