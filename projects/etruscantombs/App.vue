@@ -74,4 +74,32 @@ body {
 .close-button:hover {
   background-color: rgb(140, 140, 140);
 }
+
+
+#app .ol-zoom-in {
+  left: calc(50% + 50px) !important;
+  top: calc(100vh - 140px)!important;
+  position: fixed;
+  border-radius: 10px 0px 0px 10px!important;
+  height:35px;
+  padding:0px!important;
+  widtH:50px;
+}
+
+#app  .ol-zoom-out {
+  left: calc(50% + 100px);
+  top: calc(100vh - 140px);
+  position: fixed;
+  margin-top: 1px;
+  border-radius: 0px 10px 10px 0px!important;
+  height:35px;
+  padding:0px!important;
+  widtH:50px;
+}
+
+#app .ol-control button:active,
+#app .ol-control button:hover,
+#app .ol-control button:focus {
+  background-color: rgba(0, 0, 0, 0.7)!important;
+}
 </style>

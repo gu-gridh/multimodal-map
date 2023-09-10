@@ -157,6 +157,7 @@ function onMoveEnd() {
 .ol-control button:focus {
   background: #ff9900 !important;
   border-width: 0px !important;
+  outline:0px solid var(--ol-subtle-foreground-color)!important;
 }
 
 .ol-scaleline-control {
