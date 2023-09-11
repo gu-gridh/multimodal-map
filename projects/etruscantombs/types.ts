@@ -29,13 +29,13 @@ export type Person = {
   name: string;
 };
 
-export type Place = {
-  id: number;
-  geometry: Geometry;
-  description: string;
-  comment: string;
-  tag: Tag[];
-};
+// export type Place = {
+//   id: number;
+//   geometry: Geometry;
+//   description: string;
+//   comment: string;
+//   tag: Tag[];
+// };
 
 export type Focus = {
   place: Geometry;
@@ -45,3 +45,36 @@ export type Focus = {
 export type Tag = {
   text: string;
 };
+
+export interface Name {
+  id?: number;
+  created_at: string;
+  updated_at: string;
+  published: boolean;
+  referent: number;
+  text: string;
+  note: string;
+}
+
+export interface PlaceType {
+  id?: number;
+  created_at: string;
+  updated_at: string;
+  published: boolean;
+  text: string;
+}
+
+export interface Place {
+  id?: number;
+  comment: string | null;
+  corrected: boolean;
+  description: string;
+  published: boolean;
+  is_existing: boolean;
+  is_iconic: boolean;
+  is_private: boolean;
+  names: Array<Name>;
+  type: PlaceType;
+  properties: any;
+  geometry: any
+}

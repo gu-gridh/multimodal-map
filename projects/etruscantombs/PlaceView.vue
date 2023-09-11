@@ -1,22 +1,22 @@
 <script setup lang="ts">
 import type { Place } from './types';
-import { ref, watchEffect } from 'vue'
+import { ref, defineProps } from 'vue';
+import ObjectViewPlaceCard from "./ObjectViewPlaceCard.vue"
 
 const sort = ref('type')
 
-//TODO - sort function called by watchEffect
-
-//watch for changes in the sort dropdown
-watchEffect(() => {
-    console.log(sort.value)
-    //if sort by type, sort by type
-    //if sort by year, sort by year
-})
+const { place, id } = defineProps<{
+    place: Place;
+    id: number;
+}>();
 
 </script>
 
 <template>
-    <!-- Here we will show info of the place -->
+   <div class="place-card-container">
+        <ObjectViewPlaceCard :place="place" :id="id" />
+    </div>
+     <!-- Here we will show info of the place -->
     <div class="place-view">
         <div class="place-card-container">
             Card with map and other info
@@ -78,5 +78,45 @@ watchEffect(() => {
 }
 .content-table td {
     padding: 15px;
+}
+<style>
+
+.place-card-container{
+    background-color: transparent !important; 
+    overflow:hidden !important; 
+    width:600px!important;
+    float: left;
+}
+
+@media screen and (max-width: 900px) {
+
+/* Overwrites the body-container in MainLayout.vue */
+html,
+body {
+height: auto;
+overflow: auto !important;
+}
+
+
+/* Overwrites the place-meta-container in MainLayout.vue */
+#app .place-meta-container {
+position:absolute;
+margin-top:50vh;
+height:auto;
+font-size:120%;
+width:100%;
+z-index:100;
+padding-right:0px !important;
+padding-left:0px !important;
+padding-bottom:0px !important;
+overflow-y:auto;
+}
+
+.place-gallery-container {
+    color: white;
+    width: 100%;
+    float: left;
+}   
+
 }
 </style>

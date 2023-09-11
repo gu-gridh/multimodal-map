@@ -79,7 +79,7 @@ const toggleAboutVisibility = async () => {
 
     <template #background>
       <div class="map-container">
-      <MapComponent :min-zoom="10" :max-zoom="18" :restrictExtent="[11.9, 42.15, 12.2, 42.4 ]" > <!-- 11.9, 42.15, 12.2, 42.4   11.9, 57.72, 11.99, 57.69--> 
+      <MapComponent :min-zoom="10" :max-zoom="18" :restrictExtent="[11.9, 57.72, 11.99, 57.69]" > <!-- 11.9, 42.15, 12.2, 42.4   11.9, 57.72, 11.99, 57.69--> 
         <template #layers>
           <!-- Layer for testing -->
           <DianaPlaceLayer

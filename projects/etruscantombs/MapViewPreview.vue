@@ -15,24 +15,16 @@ const diana = inject("diana") as DianaClient;
 
 const images = ref<Image[]>();
 let text = ref(false)
+let place = ref() 
 let description = ref("");
 
 //when a place is selected, fetch image and info
 watchEffect(async () => {
   if (selectedFeature.value) {
-    const place = selectedFeature.value.getId();
-    description = selectedFeature.value.get("description") 
-    //here we will fetch one "hero" IIIF image instead
-    images.value = await diana.listAll<Image>("image", { place }); 
-    //response to json (this can be deleted later)
-    const imgArr = JSON.parse(JSON.stringify(images.value))
-    //if no image, show text?
-    if(imgArr.length == 0 ){
-      text.value = true
-    }
-    else {
-      text.value = false
-    }
+    const place_of_interest = selectedFeature.value.getId();
+    place = JSON.parse(JSON.stringify(selectedFeature.value))
+    const placeId = selectedFeature.value.getId();  // Get ID of selected place
+    images.value = await diana.listAll<Image>("image", { place: placeId });  // Use place ID to fetch images
   } else {
     images.value = [];
   }
@@ -48,11 +40,9 @@ function deselectPlace() {
  
   <div v-if="selectedFeature" class="mapview-preview" @click="deselectPlace">
     <div class="close-button" @click="deselectPlace">+</div>
-    <!-- if there are images. This is hard coded -->
-    <router-link
+    <router-link :to="`/place/${place.id_}`"
       v-for="image in images"
       :key="image.uuid"
-      :to="`/place/124`" 
       class="clickable"
     >
       <div class="image-container">
@@ -62,6 +52,7 @@ function deselectPlace() {
         />
       </div>
     </router-link>
+
     <!-- if no image, show something else?-->
     <div v-if="text">
       <div class="image-card">
@@ -83,9 +74,6 @@ function deselectPlace() {
       <p>Text fetched from backend</p>
     </div>
     <div>
-      <router-link to="/place/124">
-        <button style="background-color: rgb(180, 100, 100)">More...</button>
-      </router-link>
     </div>
   </div>
 </template>
