@@ -19,14 +19,16 @@ provide("diana", endpoint);
 html,
 body {
   font-family: "Barlow Condensed", sans-serif !important;
+  background-color:rgb(232,228,217)!important;
 }
 
 .map-container {
   height: calc(100vh - 80px) !important;
+
 }
 
 .theme-color {
-  color: orange;
+  color:rgb(180,100,100);
 }
 
 .main-title {

@@ -61,7 +61,7 @@ watchEffect(() => {
 
 <style scoped>
 .place-view {
-    color: white;
+    color: black;
 }
 .place-card-container{
     overflow:hidden !important; 
@@ -71,6 +71,7 @@ watchEffect(() => {
 .place-gallery-container {
     width: 60%;
     float: left;
+    padding:30px;
 }  
 .dropdown {
     color: black;

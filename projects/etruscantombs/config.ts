@@ -5,7 +5,7 @@ export default <EtrusanTombsProject>{
   subtitle: "",
   moreinfo: "Learn more...",
   about:
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "Il portale è pubblicato da GRIDH presso l'Università di Goteborg con la collaborazione dell'Istituto Svedese di Studi Classici a Roma.",
   projection: "EPSG:3857",
   center: [11.997, 42.224],
   zoom: 16.5,
