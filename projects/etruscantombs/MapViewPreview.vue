@@ -17,14 +17,16 @@ const images = ref<Image[]>();
 let text = ref(false)
 let description = ref("");
 
+//when a place is selected, fetch image and info
 watchEffect(async () => {
   if (selectedFeature.value) {
     const place = selectedFeature.value.getId();
-    description = selectedFeature.value.get("description")
+    description = selectedFeature.value.get("description") 
+    //here we will fetch one "hero" IIIF image instead
     images.value = await diana.listAll<Image>("image", { place }); 
-     //översätt respons till json för att kontrollera array
-     const imgArr = JSON.parse(JSON.stringify(images.value))
-    //om det inte finns några bilder - visa text
+    //response to json (this can be deleted later)
+    const imgArr = JSON.parse(JSON.stringify(images.value))
+    //if no image, show text?
     if(imgArr.length == 0 ){
       text.value = true
     }
@@ -35,6 +37,8 @@ watchEffect(async () => {
     images.value = [];
   }
 });
+
+//deselecting place will close the preview
 function deselectPlace() {
   selectedFeature.value = undefined;
 }
@@ -44,32 +48,21 @@ function deselectPlace() {
  
   <div v-if="selectedFeature" class="mapview-preview" @click="deselectPlace">
     <div class="close-button" @click="deselectPlace">+</div>
-    <div class="place-title">
-      <p>{{ selectedFeature.get("name") }}</p>
-    </div>
-    <!-- if there are images -->
+    <!-- if there are images. This is hard coded -->
     <router-link
       v-for="image in images"
       :key="image.uuid"
-      :to="`/detail/image/${image.id}`"
+      :to="`/place/124`" 
       class="clickable"
     >
-      <div class="image-card">
-        <div>
-          <div class="image-container">
-            <img
-              :src="`${image.iiif_file}/full/500,/0/default.jpg`"
-              class="image"
-            />
-          </div>
-          <div class="card-meta-container">
-            <div>{{ image.title }}</div>
-            <div>{{ image.date }}</div>
-          </div>
-        </div>
+      <div class="image-container">
+        <img
+          :src="`${image.iiif_file}/full/500,/0/default.jpg`"
+          class="image"
+        />
       </div>
     </router-link>
-    <!-- if no image, show poster & text-->
+    <!-- if no image, show something else?-->
     <div v-if="text">
       <div class="image-card">
         <div>
@@ -81,12 +74,27 @@ function deselectPlace() {
           </div>
         </div>    
     </div>
+    <h2>{{ selectedFeature.get("name") }}</h2>
+    <p>More info fetched here</p>
+    <!-- Link to model that will open up in new window-->
+    <button style="background-color: rgb(180, 100, 100)">3D model</button>
+    <div>
+      <h3>Title from backend</h3>
+      <p>Text fetched from backend</p>
+    </div>
+    <div>
+      <router-link to="/place/124">
+        <button style="background-color: rgb(180, 100, 100)">More...</button>
+      </router-link>
+    </div>
   </div>
 </template>
 
 <style scoped>
 #app .mapview-preview {
-  height: 100% !important;
+  background-color: white;
+  color: black;
+  /* height: 100% !important; */
   pointer-events: auto !important;
   overflow-y: scroll !important;
   padding-left: 30px;
@@ -158,11 +166,9 @@ function deselectPlace() {
 }
 
  .image-container {
-  border-radius:50%;
   overflow: hidden;
-  margin-bottom: 8px;
-  height: 250px;
-  width: 250px;
+  width: 90%;
+  margin-top: 10px;
 }
 
 .image {
