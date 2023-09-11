@@ -4,6 +4,7 @@ import MainLayout from "@/MainLayout.vue";
 import MapViewControls from "./MapViewControls.vue";
 import MapComponent from "@/components/MapComponent.vue";
 import DianaPlaceLayer from "@/components/DianaPlaceLayer.vue";
+import LocalGeoJSONLayer from "@/components/LocalGeoJSONLayer.vue";
 import FeatureSelection from "@/components/FeatureSelection.vue";
 import MapViewPreview from "./MapViewPreview.vue";
 import { storeToRefs } from "pinia";
@@ -56,22 +57,6 @@ const toggleAboutVisibility = async () => {
   await nextTick();
   visibleAbout.value = !visibleAbout.value;
 };
-
-const vectorLayers = computed(() => [
-  {
-    url: "https://data.dh.gu.se/geography/glacier_front_2022.geojson",
-    geoJsonFormat: new GeoJSON(),
-  },
-  {
-  url: "https://data.dh.gu.se/geography/glacier_front_2021.geojson",
-  geoJsonFormat: new GeoJSON(),
-  },
-  {
-  url: "https://data.dh.gu.se/geography/glacier_front_2008.geojson",
-  geoJsonFormat: new GeoJSON(),
-  },
-]);
-
 </script>
 
 <template>
@@ -92,63 +77,34 @@ const vectorLayers = computed(() => [
       <MapViewControls />
     </template>
 
-  
-   
-
     <template #background>
       <div class="map-container">
-      <MapComponent :min-zoom="10" :max-zoom="18" :restrictExtent="[11.9, 42.15, 12.2, 42.4 ]" > <!-- 11.9, 42.15, 12.2, 42.4   11.9, 57.72, 11.99, 57.69-->
+      <MapComponent :min-zoom="10" :max-zoom="18" :restrictExtent="[11.9, 42.15, 12.2, 42.4 ]" > <!-- 11.9, 42.15, 12.2, 42.4   11.9, 57.72, 11.99, 57.69--> 
         <template #layers>
-        <!-- places -->
-        <DianaPlaceLayer
-          v-if="placesLayerVisible"
-          path="jubileum/geojson/place/"
-          :params="placeParams"
-        >
-          <ol-style>
-            <ol-style-icon
-              :src="markerIcon"
-              :scale="1.8"
-              :displacement="[-10, 45]"
-              :anchor="[0.0, 0.0]"
-            ></ol-style-icon>
-          </ol-style>
-          <FeatureSelection />
-        </DianaPlaceLayer>
-
-      <!-- tags
-        <DianaPlaceLayer
-          v-if="tagsLayerVisible"
-          path="rephotography/search/tag/"
-          :params="tagParams"
-        >
-          <ol-style>
-            <ol-style-icon
-              :src="markerIcon"
-              :scale="1.8"
-              :displacement="[-10, 45]"
-              :anchor="[0.0, 0.0]"
-            ></ol-style-icon>
-          </ol-style>
-          <FeatureSelection />
-        </DianaPlaceLayer>
-
+          <!-- Layer for testing -->
           <DianaPlaceLayer
-          path="rephotography/geojson/focus/"
+            v-if="placesLayerVisible"
+            path="jubileum/geojson/place/"
+            :params="placeParams"
           >
-          <ol-style>
-            <ol-style-icon
-              :src="markerBlue"
-              :scale="1.8"
-              :displacement="[-10, 45]"
-              :anchor="[0.0, 0.0]"
-            ></ol-style-icon>
-          </ol-style>
-          <FeatureSelection />
-        </DianaPlaceLayer> -->
+            <ol-style>
+              <ol-style-icon
+                :src="markerIcon"
+                :scale="1.8"
+                :displacement="[-10, 45]"
+                :anchor="[0.0, 0.0]"
+              ></ol-style-icon>
+            </ol-style>
+            <FeatureSelection />
+          </DianaPlaceLayer>
 
+          <!-- Local layer for testing -->
+          <LocalGeoJSONLayer :zIndex="1">
+            <!-- style components -->
+          </LocalGeoJSONLayer>
         </template>
       </MapComponent>
+
     </div>
     </template>
 
