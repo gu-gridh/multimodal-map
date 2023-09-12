@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { watchEffect, ref, inject } from "vue";
+import { watchEffect, ref, inject} from "vue";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
 import type {
@@ -7,13 +7,14 @@ import type {
   ImageDeep,
 } from "./types";
 import type { DianaClient } from "@/assets/diana";
+import OpenSeadragon from "@/components/OpenSeadragonSequence.vue";
 import MapViewPreviewImage from "./MapViewPreviewImage.vue";
 import MapViewPreviewModel from "./MapViewPreviewModel.vue";
 
 const { selectedFeature } = storeToRefs(mapStore());
 const diana = inject("diana") as DianaClient;
-
 const images = ref<Image[]>();
+const imageUrls = ref<string[]>([]);
 let text = ref(false)
 let place = ref() 
 let description = ref("");
@@ -24,8 +25,10 @@ watchEffect(async () => {
     place = JSON.parse(JSON.stringify(selectedFeature.value))
     const placeId = selectedFeature.value.getId();  // Get ID of selected place
     images.value = await diana.listAll<Image>("image", { place: placeId });  // Use place ID to fetch images
+    imageUrls.value = images.value.map(image => `${image.iiif_file}/info.json`);
   } else {
     images.value = [];
+    imageUrls.value = [];
   }
 });
 
@@ -36,34 +39,38 @@ function deselectPlace() {
 </script>
 
 <template>
-  <div v-if="selectedFeature" class="mapview-preview" @click="deselectPlace">
-
+  <div v-if="selectedFeature" class="mapview-preview">
     <div class="place-card">
-    <div class="close-button" @click="deselectPlace">+</div>
-   
-    <router-link :to="`/place/${place.id_}`"
-      v-for="image in images"
-      :key="image.uuid"
-      class="clickable"
-    >
-      <div class="image-container">
-        <img
-          :src="`${image.iiif_file}/full/500,/0/default.jpg`"
-          class="image"
-        />
+      <div class="close-button" @click="deselectPlace">+</div>
+      
+      <OpenSeadragon v-if="imageUrls.length > 0" :src="imageUrls" class="flex-1" />
+      
+      <!-- Code to list all images -->
+      <!-- <router-link :to="`/place/${place.id_}`"
+        v-for="image in images"
+        :key="image.uuid"
+        class="clickable"
+      >
+        <div class="image-container">
+          <img
+            :src="`${image.iiif_file}/full/500,/0/default.jpg`"
+            class="image"
+          />
+        </div>
+      </router-link> -->
+
+      <div class="card-text">
+        <div class="place-title">{{ selectedFeature.get("name") }}</div>
+        <button class="model-button">3D model</button>
       </div>
-    </router-link>
 
-   
-        <div class="card-text">
-          <div class="place-title">{{ selectedFeature.get("name") }}</div>
-          <button class="model-button">3D model</button>
-
-    
-      </div>    
+      <div class="center-button">
+        <router-link :to="`/place/${place.id_}`">
+          <button class="model-button">More Info</button>
+        </router-link>
+      </div>
     </div>
   </div>
-
 </template>
 
 <style scoped>
@@ -186,6 +193,12 @@ padding: 0px;
   color:white;
 }
 
+.center-button {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 20px;
+}
 
 @media screen and (min-width: 1900px) {
 
@@ -199,8 +212,4 @@ padding: 0px;
 
 
 }
-
-
-
-
 </style>
