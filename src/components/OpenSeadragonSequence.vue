@@ -20,7 +20,7 @@ onMounted(() => {
     minZoomImageRatio: 1.0,
     homeFillsViewer: true,
     showZoomControl: true,
-  
+    defaultZoomLevel: 1.2,
     showHomeControl: false,
     showFullPageControl: true,
     showNavigator: false,

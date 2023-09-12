@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { watchEffect, ref, inject} from "vue";
+import { watchEffect, ref, inject } from "vue";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
 import type {
@@ -16,7 +16,7 @@ const diana = inject("diana") as DianaClient;
 const images = ref<Image[]>();
 const imageUrls = ref<string[]>([]);
 let text = ref(false)
-let place = ref() 
+let place = ref()
 let description = ref("");
 
 //when a place is selected, fetch image and info
@@ -41,12 +41,14 @@ function deselectPlace() {
 <template>
   <div v-if="selectedFeature" class="mapview-preview">
     <div class="place-card">
-      <div class="close-button" @click="deselectPlace">+</div>
-      
-      <OpenSeadragon v-if="imageUrls.length > 0" :src="imageUrls" class="flex-1" />
-      
-      <!-- Code to list all images -->
-      <!-- <router-link :to="`/place/${place.id_}`"
+      <div class="place-card-top">
+        <div class="close-button" @click="deselectPlace">+</div>
+
+        <OpenSeadragon v-if="imageUrls.length > 0" :src="imageUrls" class="flex-1" />
+
+
+        <!-- Code to list all images -->
+        <!-- <router-link :to="`/place/${place.id_}`"
         v-for="image in images"
         :key="image.uuid"
         class="clickable"
@@ -58,16 +60,25 @@ function deselectPlace() {
           />
         </div>
       </router-link> -->
-
-      <div class="card-text">
-        <div class="place-title">{{ selectedFeature.get("name") }}</div>
-        <button class="theme-button">3D model</button>
       </div>
 
-      <div class="center-button">
-        <router-link :to="`/place/${place.id_}`">
-          <button class="theme-button" style="margin-top:20px;">More Info</button>
-        </router-link>
+      <div class="place-card-bottom">
+        <div class="card-text">
+          <div class="place-title">{{ selectedFeature.get("name") }}</div>
+          <button class="theme-button">3D model</button>
+
+
+
+
+
+          
+          </div>
+        </div>
+          <div class="center-button">
+            <router-link :to="`/place/${place.id_}`">
+              <button class="theme-button" style="margin-top:20px;">More Info</button>
+            </router-link>
+      
       </div>
     </div>
   </div>
@@ -85,29 +96,29 @@ function deselectPlace() {
 }
 
 .place-card {
-  display:flex;
-  flex-direction:column;
-  align-items:left;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
   width: auto;
   height: calc(100vh - 200px);
   pointer-events: auto !important;
   border-radius: 15px;
   margin-right: 30px;
-  margin-top: 40px;
+  margin-top: 50px;
   padding: 0px;
   margin-bottom: 20px;
-  overflow:hidden;
-  overflow-y:scroll;
+  overflow: hidden;
+  overflow-y: scroll;
   -ms-overflow-style: none;
   scrollbar-width: none;
-  background-color: rgba(250, 250, 250, 1.0)!important;
+  background-color: rgba(250, 250, 250, 1.0) !important;
   box-shadow: 0px 0px 30px 0 rgba(0, 0, 0, 0.3),
     0 0px 20px 0 rgba(0, 0, 0, 0.19);
   transition: all 0.1s ease-in-out;
 }
 
 .close-button {
-  position:absolute;
+  position: absolute;
   width: 35px;
   height: 35px;
   right: calc(40px) !important;
@@ -121,7 +132,7 @@ function deselectPlace() {
   transform: rotate(45deg);
   cursor: pointer;
   pointer-events: auto;
-  z-index:1000;
+  z-index: 1000;
   background-color: rgb(180, 100, 100);
   margin-bottom: 0px;
 }
@@ -130,47 +141,50 @@ function deselectPlace() {
   background-color: rgb(140, 60, 60);
 }
 
-.image-container {
-  overflow: hidden;
-  width: 100%;
-  height:40vh!important;
-  margin-top: 0px;
-  border-radius:0px !important;
+.place-card-top {
+
+  display: flex;
+  flex-grow: 1.5 !important;
+  border-radius: 0px !important;
+  min-height:150px;
+  background-color:rgb(60,60,60);
 }
+
 .image {
   display: block;
   object-fit: cover;
-  width:100%!important;
-  height:100%!important;
-  transform:scale(1.2)!important;
+  width: 100% !important;
+  height: 100% !important;
+  transform: scale(1.2) !important;
 }
 
+.place-card-bottom {
+  flex-grow: 1 !important;
+  border-radius: 0px !important;
+
+}
 .card-text {
-  height:25vh!important;
   font-family: "Barlow Condensed", sans-serif;
   color: black;
-  margin-top:0px;
-  font-size:1.0em;
+  font-size: 1.0em;
   text-align: left;
   hyphens: auto;
-  line-height:1.2;
-  padding:10px 20px 20px 20px;
-  float:left;
+  line-height: 1.2;
+  padding: 10px 20px 0px 20px;
+ 
 }
 
-.card-text p{
-padding: 0px;
+.card-text p {
+  padding: 0px;
 }
 
 .place-title {
   letter-spacing: -0.1rem;
   text-align: left;
   color: rgb(180, 100, 100);
-  width: calc(100% - 20px);
-  margin-bottom: 10px;
-  margin-top:10px;
-  float:left;
-  font-size:35px;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  font-size: 35px;
 }
 
 .place-title p {
@@ -191,19 +205,6 @@ padding: 0px;
   display: flex;
   justify-content: center;
   width: 100%;
-  margin-bottom: 20px;
-}
-
-@media screen and (min-width: 1900px) {
-
-}
-
-@media screen and (max-width: 1200px) {
-
-}
-
-@media screen and (max-width: 900px) {
-
-
+  padding-bottom: 20px;
 }
 </style>
