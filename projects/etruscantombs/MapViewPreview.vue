@@ -110,7 +110,7 @@ function deselectPlace() {
   position:absolute;
   width: 35px;
   height: 35px;
-  margin-left: calc(10px) !important;
+  right: calc(40px) !important;
   margin-top: 10px !important;
   padding: 14px 12px 10px 7px;
   line-height: 1px;

@@ -125,8 +125,8 @@ margin-top:15px;
   position: fixed;
   border-radius: 10px 0px 0px 10px!important;
   height:35px;
-  padding:0px!important;
-  widtH:50px;
+  padding-bottom:3px!important;
+  width:50px;
 }
 
 #app  .ol-zoom-out {
@@ -136,7 +136,7 @@ margin-top:15px;
   margin-top: 1px;
   border-radius: 0px 10px 10px 0px!important;
   height:35px;
-  padding:0px!important;
+  padding-bottom:3px!important;
   widtH:50px;
 }
 

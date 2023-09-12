@@ -20,9 +20,9 @@ onMounted(() => {
     minZoomImageRatio: 1.0,
     homeFillsViewer: true,
     showZoomControl: true,
-    zoomPerClick: 1,
+  
     showHomeControl: false,
-    showFullPageControl: false,
+    showFullPageControl: true,
     showNavigator: false,
     //navigatorId: "navigatorDiv",
     navigatorAutoFade: true,
@@ -40,12 +40,27 @@ onMounted(() => {
 
 <template>
   <div ref="viewerEl" class="osd">
+    <div id="ToolbarVertical">
+      <a id="full-page" href="#full-page">
+        <div id="FullPage" class="NavButton"></div>
+      </a>
+      <a id="zoom-in" href="#zoom-in">
+        <div id="ZoomIn" class="NavButton"></div>
+      </a>
+      <a id="zoom-out" href="#zoom-out">
+        <div id="ZoomOut" class="NavButton"></div>
+      </a>
+    </div> 
+
     <div id="ToolbarHorizontal">
+      
       <a id="prev-button" href="#prev-button">
         <div id="Prev" class="NavButton"></div>
       </a>
+
       <span id="currentpage">{{ currentPage }} / {{ src.length }}</span>
-       <a id="next-button" href="#next-button">
+       
+      <a id="next-button" href="#next-button">
         <div id="Next" class="NavButton"></div>
       </a>
     </div>
@@ -103,9 +118,9 @@ position:absolute;
 
 #ToolbarVertical {
   position: absolute;
-  top: 20px;
+  top: 10px;
   width: 60px;
-  margin-left: 15px;
+  margin-left: 10px;
   z-index: 1000;
   cursor:pointer;
 }
@@ -122,6 +137,7 @@ position:absolute;
   border-radius: 50%;
   overflow: hidden;
   cursor:pointer;
+
 }
 
 #Prev {
@@ -130,20 +146,21 @@ position:absolute;
   background-repeat: no-repeat;
   background-position: center;
   display: inline-block;
-  position: relative;
+  position: absolute;
   margin-right: 0px;
-  left:47px;
-}
+  left:10px;
+  outline: none;
+      }
 
+  
 #Next {
   background: url(@/assets/openseadragon/next.png);
   background-size: 35px 35px;
   background-repeat: no-repeat;
   background-position: center;
   display: inline-block;
-  position: relative;
+  position: absolute;
   left:-47px;
-  z-index:20;
 }
 
 #ZoomIn {
@@ -176,14 +193,19 @@ position:absolute;
 .NavButton {
   width: 35px;
   height: 35px;
-  border-radius: 50%;
   color: white;
   opacity: 1;
-  margin-bottom: 3px;
   cursor:pointer;
+  overflow:hidden;
+  outline: none;
 }
 .NavButton:hover {
   opacity: 0.8;
   cursor:pointer;
 }
+
+
+      *:focus {
+        outline:none!important;
+      }
 </style>
