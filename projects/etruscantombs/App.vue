@@ -110,6 +110,14 @@ margin-top:15px;
   background-color: rgb(140, 140, 140);
 }
 
+.theme-button{
+  background-color: rgb(180, 100, 100);
+  border-radius:5px;
+  padding:5px 10px;
+  color:white;
+}
+
+
 
 #app .ol-zoom-in {
   left: calc(50% + 50px) !important;

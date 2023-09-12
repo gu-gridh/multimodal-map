@@ -5,8 +5,11 @@ import OpenSeadragon from "openseadragon";
 const props = defineProps<{
   src: string[];  // Change this to an array of strings
 }>();
+ 
 
 const viewerEl = ref();
+
+
 
 onMounted(() => {  
   OpenSeadragon({
@@ -15,11 +18,12 @@ onMounted(() => {
     immediateRender: false,
     visibilityRatio: 1.0,
     minZoomImageRatio: 1.0,
-    homeFillsViewer: false,
+    homeFillsViewer: true,
     showZoomControl: true,
+    zoomPerClick: 1,
     showHomeControl: false,
-    showFullPageControl: true,
-    showNavigator: true,
+    showFullPageControl: false,
+    showNavigator: false,
     //navigatorId: "navigatorDiv",
     navigatorAutoFade: true,
     fullPageButton: "full-page",
@@ -40,24 +44,12 @@ onMounted(() => {
       <a id="prev-button" href="#prev-button">
         <div id="Prev" class="NavButton"></div>
       </a>
+      <span id="currentpage">{{ currentPage }} / {{ src.length }}</span>
        <a id="next-button" href="#next-button">
         <div id="Next" class="NavButton"></div>
       </a>
     </div>
   </div>
-    <!-- <div ref="viewerEl" class="osd"> </div> -->
- 
-     <!-- <div id="ToolbarHorizontal" v-show="src.length > 1">
-      <div id="CenterNav">
-        <a id="previous" href="#previous-page">
-          <div id="Prev" class="NavButton"></div>
-        </a>
-        <span id="currentpage">{{ currentImg + 1 }} / {{ src.length }}</span>
-        <a id="next" href="#next-page">
-          <div id="Next" class="NavButton"></div>
-        </a>
-      </div>
-    </div> -->
 </template>
 
 <style>
@@ -91,6 +83,23 @@ position:absolute;
   z-index: 1000;
 }
 
+#ToolbarHorizontal span {
+  display: flex;
+  flex-direction:column;
+  justify-content: center;  /* Add this line */
+  background-color: rgba(35, 35, 35, 0.6);
+  color: white;
+  text-align: center;
+  width:120px;
+  border-radius: 8px;
+  font-size:15px;
+  font-weight: bold;
+  vertical-align: 13px;
+  margin-left: 10px;
+  margin-right: 10px;
+  height:35px
+}
+
 
 #ToolbarVertical {
   position: absolute;
@@ -118,22 +127,23 @@ position:absolute;
 #Prev {
   background: url(@/assets/openseadragon/prev.png);
   background-size: 35px 35px;
-  background-color: rgba(35, 35, 35, 0.9);
   background-repeat: no-repeat;
   background-position: center;
   display: inline-block;
   position: relative;
-  margin-right: 50px;
+  margin-right: 0px;
+  left:47px;
 }
 
 #Next {
   background: url(@/assets/openseadragon/next.png);
   background-size: 35px 35px;
-  background-color: rgba(35, 35, 35, 0.9);
   background-repeat: no-repeat;
   background-position: center;
   display: inline-block;
   position: relative;
+  left:-47px;
+  z-index:20;
 }
 
 #ZoomIn {
@@ -168,12 +178,12 @@ position:absolute;
   height: 35px;
   border-radius: 50%;
   color: white;
-  opacity: 0.7;
+  opacity: 1;
   margin-bottom: 3px;
   cursor:pointer;
 }
 .NavButton:hover {
-  opacity: 1;
+  opacity: 0.8;
   cursor:pointer;
 }
 </style>

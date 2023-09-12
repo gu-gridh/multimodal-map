@@ -61,12 +61,12 @@ function deselectPlace() {
 
       <div class="card-text">
         <div class="place-title">{{ selectedFeature.get("name") }}</div>
-        <button class="model-button">3D model</button>
+        <button class="theme-button">3D model</button>
       </div>
 
       <div class="center-button">
         <router-link :to="`/place/${place.id_}`">
-          <button class="model-button">More Info</button>
+          <button class="theme-button" style="margin-top:20px;">More Info</button>
         </router-link>
       </div>
     </div>
@@ -133,7 +133,7 @@ function deselectPlace() {
 .image-container {
   overflow: hidden;
   width: 100%;
-  height:40vh;
+  height:40vh!important;
   margin-top: 0px;
   border-radius:0px !important;
 }
@@ -146,6 +146,7 @@ function deselectPlace() {
 }
 
 .card-text {
+  height:25vh!important;
   font-family: "Barlow Condensed", sans-serif;
   color: black;
   margin-top:0px;
@@ -184,13 +185,6 @@ padding: 0px;
   opacity: 0.99;
   box-shadow: 0px -5px 10px 0 rgba(0, 0, 0, 0.2),
     0 0px 0px 0 rgba(0, 0, 0, 0.19);
-}
-
-.model-button{
-  background-color: rgb(180, 100, 100);
-  border-radius:5px;
-  padding:5px 10px;
-  color:white;
 }
 
 .center-button {

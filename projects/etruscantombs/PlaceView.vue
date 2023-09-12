@@ -24,8 +24,8 @@ const { id } = defineProps<{
                 <!-- <p>PLACE: {{ place.id }}</p> -->
                 <div>
                     <select v-model="sort" class="dropdown">
-                        <option actve value="type">Sort by TYPE</option>
-                        <option value="year">Sort by YEAR</option>
+                        <option actve value="type">Sort by: TYPE</option>
+                        <option value="year">Sort by: YEAR</option>
                     </select>
                 </div>
                 <!-- Sort by TYPE table-->
@@ -89,10 +89,10 @@ const { id } = defineProps<{
 .dropdown {
     color: white;
     background-color:rgb(180,100,100);
-    padding:5px 10px;
+    padding:3px 10px;
     margin-left:-0px;
     width:auto;
-    height:35px;
+    height:32px;
     background-image:none;
     -webkit-appearance: none;
    

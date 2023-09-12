@@ -69,7 +69,7 @@ const toggleAboutVisibility = async () => {
               style="
                 width: 90px;
                 text-align: center;
-                margin-top: -10px;
+                margin-top: 10px;
                 cursor: pointer;
               "
             >More info</div>

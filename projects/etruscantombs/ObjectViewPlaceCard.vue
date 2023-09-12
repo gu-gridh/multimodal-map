@@ -85,7 +85,7 @@ import { ref, inject, onMounted, watchEffect} from "vue"
         <div class="card-text">
           <div class="place-title">Place Title</div>
           
-          <button class="model-button">3D model</button>
+          <button class="theme-button">3D model</button>
         </div>
     </div>
       </div>
@@ -93,7 +93,7 @@ import { ref, inject, onMounted, watchEffect} from "vue"
   </div>
 </template>
 
-<style>
+<style scoped>
 .place-back-button {
   left: 40px;
   top: 50px;
@@ -222,12 +222,6 @@ padding: 0px;
     0 0px 0px 0 rgba(0, 0, 0, 0.19);
 }
 
-.model-button{
-  background-color: rgb(180, 100, 100);
-  border-radius:5px;
-  padding:5px 10px;
-  color:white;
-}
 
 @media screen and (min-width: 1900px) {
 
