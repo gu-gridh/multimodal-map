@@ -98,6 +98,10 @@ const { id } = defineProps<{
    
 }
 
+.dropdown:focus {
+        outline: none;
+      }
+
 .content-table td {
     padding: 15px;
     text-align:right;
