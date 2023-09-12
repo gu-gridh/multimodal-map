@@ -21,7 +21,6 @@ let description = ref("");
 //when a place is selected, fetch image and info
 watchEffect(async () => {
   if (selectedFeature.value) {
-    const place_of_interest = selectedFeature.value.getId();
     place = JSON.parse(JSON.stringify(selectedFeature.value))
     const placeId = selectedFeature.value.getId();  // Get ID of selected place
     images.value = await diana.listAll<Image>("image", { place: placeId });  // Use place ID to fetch images

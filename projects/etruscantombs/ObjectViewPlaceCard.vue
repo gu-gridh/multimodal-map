@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import type { Place } from './types';
 import router from './router'
 import { ref, inject, onMounted, watchEffect} from "vue"
 
     const props = defineProps<{
-        place: Place;
         id: number;
     }>();
 
@@ -29,10 +27,6 @@ import { ref, inject, onMounted, watchEffect} from "vue"
     const geoJson = new format.GeoJSON();
 
     const url = "https://diana.dh.gu.se/api/rwanda/geojson/place/"+ props.id
-
-    onMounted(() => {
-      console.log(url)
-    });
 
     // watchEffect(async() => {
     //   const coords = props.place?.geometry.coordinates

@@ -5,8 +5,7 @@ import ObjectViewPlaceCard from "./ObjectViewPlaceCard.vue"
 
 const sort = ref('type')
 
-const { place, id } = defineProps<{
-    place: Place;
+const { id } = defineProps<{
     id: number;
 }>();
 
@@ -15,7 +14,7 @@ const { place, id } = defineProps<{
 <template>
    <div class="main-container">
     <div class="place-card-container">
-            <ObjectViewPlaceCard :place="place" :id="id" />
+            <ObjectViewPlaceCard :id="id" />
         </div>
         <!-- Here we will show info of the place -->
         <div class="place-view">
