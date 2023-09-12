@@ -86,10 +86,20 @@ const { id } = defineProps<{
     padding:30px;
 }  
 .dropdown {
-    color: black;
+    color: white;
+    background-color:rgb(180,100,100);
+    padding:5px 10px;
+    margin-left:-0px;
+    width:auto;
+    height:35px;
+    background-image:none;
+    -webkit-appearance: none;
+   
 }
+
 .content-table td {
     padding: 15px;
+    text-align:right;
 }
 
 
