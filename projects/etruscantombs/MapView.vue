@@ -148,7 +148,7 @@ watch(showGrid, (newValue) => {
 }
 
 .ui-overlay {
-margin-top: 50px;
+margin-top: 20px;
 z-index: 250;
 position:absolute;
 border-radius: 8px;
@@ -181,7 +181,7 @@ padding: 0px 15px 0px 15px;
 
 .ui-mode .selected{
 font-weight: 500;
-color: white);
+color:rgba(255,255,255,1.0);
 }
 
 #app .ol-popup {

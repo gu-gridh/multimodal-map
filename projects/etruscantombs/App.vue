@@ -76,7 +76,7 @@ width: 400px!important;
 }
 
 .ui-overlay {
-  margin-top: 15px !important;
+ 
 
 }
 }
