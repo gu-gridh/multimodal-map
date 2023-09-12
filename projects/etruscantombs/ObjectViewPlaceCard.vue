@@ -82,6 +82,11 @@ import { ref, inject, onMounted, watchEffect} from "vue"
             </ol-vector-layer>
           </ol-map>
         </div>
+        <div class="card-text">
+          <div class="place-title">Place Title</div>
+          
+          <button class="model-button">3D model</button>
+        </div>
     </div>
       </div>
   
@@ -107,6 +112,8 @@ import { ref, inject, onMounted, watchEffect} from "vue"
 
 .place-meta-container{
   overflow-y: auto;
+  overflow-x:auto;
+  overflow:auto;
   height:calc(100vh - 80px);
   padding-bottom:30px;
   padding-left:45px;
@@ -119,7 +126,7 @@ import { ref, inject, onMounted, watchEffect} from "vue"
   color:black;
   background-color: white;
   padding: 0px;
-  box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.3);
+  box-shadow: -3px 0px 25px rgba(0, 0, 0, 0.3);
   height:calc(100vh - 240px);
   overflow:hidden;
   overflow-y:auto;
@@ -172,6 +179,54 @@ margin-bottom:20px;
 }
 .meta-item {
   margin-bottom:5px;
+}
+
+.card-text {
+  font-family: "Barlow Condensed", sans-serif;
+  color: black;
+  margin-top:0px;
+  font-size:1.0em;
+  text-align: left;
+  hyphens: auto;
+  line-height:1.2;
+  padding:10px 20px 20px 20px;
+  float:left;
+}
+
+.card-text p{
+padding: 0px;
+}
+
+.place-title {
+  letter-spacing: -0.1rem;
+  text-align: left;
+  color: rgb(180, 100, 100);
+  width: calc(100% - 20px);
+  margin-bottom: 10px;
+  margin-top:10px;
+  float:left;
+  font-size:35px;
+}
+
+.place-title p {
+  color: white;
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 1.0;
+  background-color: rgb(180, 100, 100);
+  border-radius: 10px 10px 0 0;
+  padding: 20px 10px 15px 10px;
+  width: 100%;
+  opacity: 0.99;
+  box-shadow: 0px -5px 10px 0 rgba(0, 0, 0, 0.2),
+    0 0px 0px 0 rgba(0, 0, 0, 0.19);
+}
+
+.model-button{
+  background-color: rgb(180, 100, 100);
+  border-radius:5px;
+  padding:5px 10px;
+  color:white;
 }
 
 @media screen and (min-width: 1900px) {

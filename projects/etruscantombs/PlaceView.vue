@@ -67,13 +67,14 @@ const { id } = defineProps<{
 
 .place-card-container{
     background-color: transparent !important; 
-    overflow:hidden !important; 
+    overflow:auto !important; 
     width:600px!important;
     flex-grow: 0;
 }
 
 
 .place-view {
+    background-color: transparent !important;
     color: black;
     width: auto;
     flex-grow: 1;
