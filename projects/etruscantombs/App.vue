@@ -45,6 +45,7 @@ body {
   width: 900px;
   background: url("@/assets/gradient-jubileum.png");
   background-size: contain;
+  z-index:500;
 }
 #app .right-pane {
   width: 550px;
@@ -61,6 +62,8 @@ body {
   width: 450px;
 }
 }
+
+
 @media screen and (max-width: 1200px) {
 #app .right-pane {
 width: 400px!important;
@@ -71,6 +74,11 @@ width: 400px!important;
   border-radius:0px!important;
   margin-bottom: 0px!important;
 }
+
+.ui-overlay {
+  margin-top: 15px !important;
+
+}
 }
 
 @media screen and (max-width: 900px) {
@@ -80,6 +88,26 @@ width: 100%!important;
 
 #app .place-card {
 margin-top:15px;
+}
+
+.ui-overlay {
+margin-top: 25px !important;
+margin-left:0px !important;
+font-size:120% !important;
+}
+
+#app .masonry-grid {
+  position: absolute;
+  top: 0px;
+  width: 100%;
+  height: 100%; /* Make the grid height responsive */
+  z-index: 200;
+  background-color: rgb(234, 228, 219);
+  padding: 0px 0px 230px 00px;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  grid-template-rows: masonry;
+  grid-gap: 5px;
+  overflow-y: scroll;
 }
 }
 
@@ -145,4 +173,6 @@ margin-top:15px;
 #app .ol-control button:focus {
   background-color: rgba(0, 0, 0, 0.7)!important;
 }
+
+
 </style>

@@ -135,11 +135,7 @@ watch(showGrid, (newValue) => {
       <MapViewPreview />
       
     </template>
-    
-    <template>
-   
-  </template>
-  
+     
   </MainLayout>
   
 </template>

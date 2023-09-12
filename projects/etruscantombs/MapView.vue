@@ -12,6 +12,7 @@ import { etruscanStore } from "./store";
 import { clean } from "@/assets/utils";
 import markerIcon from "@/assets/marker-gold.svg";
 import markerBlue from "@/assets/marker-blue.svg";
+import MapViewGallery from "./MapViewGallery.vue";
 import { ref } from "vue";
 import About from "./About.vue";
 import { onMounted, watch } from "vue";
@@ -39,6 +40,7 @@ const tagParams = computed(() => {
 
 
 const visibleAbout = ref(false);
+const showGrid = ref(false);
 let visited = true; // Store the visited status outside of the hook
 
 onMounted(() => {
@@ -57,9 +59,34 @@ const toggleAboutVisibility = async () => {
   await nextTick();
   visibleAbout.value = !visibleAbout.value;
 };
+
+
+
+
+onMounted(() => {
+  const storedShowGrid = localStorage.getItem("showGrid");
+  if (storedShowGrid) {
+    showGrid.value = JSON.parse(storedShowGrid);
+  }
+});
+
+watch(showGrid, (newValue) => {
+  localStorage.setItem("showGrid", JSON.stringify(newValue));
+});
 </script>
 
 <template>
+  <div style="display:flex; align-items: center; justify-content: center;">
+        <div class="ui-mode ui-overlay">
+          <button class="item" v-bind:class="{ selected: !showGrid}" v-on:click="showGrid = false;">
+          Map
+        </button>
+        <button class="item" v-bind:class="{ selected: showGrid}" v-on:click="showGrid = true;">
+         Gallery
+        </button>
+      </div>
+    </div>
+
  <About :visibleAbout="visibleAbout" @close="visibleAbout = false" />
   <MainLayout>
     <template #search>
@@ -104,7 +131,7 @@ const toggleAboutVisibility = async () => {
           </LocalGeoJSONLayer>
         </template>
       </MapComponent>
-
+      <MapViewGallery v-if="showGrid" />
     </div>
     </template>
 
@@ -120,6 +147,42 @@ const toggleAboutVisibility = async () => {
   width:100%;
 }
 
+.ui-overlay {
+margin-top: 50px;
+z-index: 250;
+position:absolute;
+border-radius: 8px;
+font-size: 18px;
+font-weight: 700;
+color: white;
+margin-left:200px;
+background-color: rgb(0, 0, 0, 0.8);
+backdrop-filter: blur(3px);
+transition: all 0.5s ease-in-out;
+}
+
+.ui-mode {
+top: 0px;
+padding: 4px 10px 4px 10px;
+}
+
+.ui-mode .item {
+cursor: pointer;
+display: inline;
+font-weight: 400;
+color:rgba(255,255,255,0.5);
+padding: 0px 15px 0px 15px;
+
+}
+
+.ui-mode .item:hover {
+  color:white;
+}
+
+.ui-mode .selected{
+font-weight: 500;
+color: white);
+}
 
 #app .ol-popup {
   font-size: 1.2em;
