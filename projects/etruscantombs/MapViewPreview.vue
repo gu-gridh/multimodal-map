@@ -38,8 +38,10 @@ function deselectPlace() {
 
 <template>
   <div v-if="selectedFeature" class="mapview-preview" @click="deselectPlace">
+
+    <div class="place-card">
     <div class="close-button" @click="deselectPlace">+</div>
-    <h2>{{ selectedFeature.get("name") }}</h2>
+   
     <router-link :to="`/place/${place.id_}`"
       v-for="image in images"
       :key="image.uuid"
@@ -52,18 +54,22 @@ function deselectPlace() {
         />
       </div>
     </router-link>
-    <!-- if no image, show something else?-->
-    <div v-if="text">
-      <div class="image-card">
-          <div class="card-text" v-html="description"></div>
+
+   
+        <div class="card-text">
+          <div class="place-title">{{ selectedFeature.get("name") }}</div>
+          <button class="model-button">3D model</button>
+
+    
       </div>    
     </div>
   </div>
+
 </template>
 
 <style scoped>
 #app .mapview-preview {
-  background-color: white;
+  background-color: transparent;
   color: black;
   /* height: 100% !important; */
   pointer-events: auto !important;
@@ -72,90 +78,35 @@ function deselectPlace() {
   padding-bottom: 80px;
 }
 
-.place-title {
-  font-family: "Josefin Sans", sans-serif !important;
-  letter-spacing: -0.1rem;
-  text-align: center;
-  width: calc(100% - 20px);
-  margin-bottom: -30px;
-  margin-top:10px;
-}
-
-.place-title p {
-  color: white;
-  font-size: 26px;
-  font-weight: 600;
-  line-height: 1.0;
-  background-color: rgb(180, 100, 100);
-  border-radius: 10px 10px 0 0;
-  padding: 20px 10px 15px 10px;
-  width: 100%;
-  opacity: 0.99;
-  box-shadow: 0px -5px 10px 0 rgba(0, 0, 0, 0.2),
-    0 0px 0px 0 rgba(0, 0, 0, 0.19);
-}
-
-
-
-.image-card {
+.place-card {
   display:flex;
   flex-direction:column;
-  align-items:center;
+  align-items:left;
   width: auto;
+  height: calc(100vh - 200px);
   pointer-events: auto !important;
-  border-radius: 10px;
-  margin-right: 20px;
-  padding: 20px 20px;
+  border-radius: 15px;
+  margin-right: 30px;
+  margin-top: 40px;
+  padding: 0px;
   margin-bottom: 20px;
-  background-color: rgba(248, 249, 229, 0.95);
-  box-shadow: 0px 0px 20px 0 rgba(0, 0, 0, 0.2),
+  overflow:hidden;
+  overflow-y:scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  background-color: rgba(250, 250, 250, 1.0)!important;
+  box-shadow: 0px 0px 30px 0 rgba(0, 0, 0, 0.3),
     0 0px 20px 0 rgba(0, 0, 0, 0.19);
-  transition: all 0.2s ease-in-out;
-}
-
-.card-meta-container {
-  color: black;
-  font-weight: 400;
-  font-size: 20px;
-  line-height: 1;
-  text-align: center;
-  margin-top: 10px;
-  padding:0px 0px;
-}
-
-
-.image-card:hover .image-container {
-  transform: scale(1.03);
-  background-color: rgba(248, 249, 229, 1);
-}
-
-.image-card:hover .image {
-}
-
-.image-card:hover {
-  background-color: rgba(248, 249, 229, 1);
-}
-
- .image-container {
-  overflow: hidden;
-  width: 90%;
-  margin-top: 10px;
-}
-
-.image {
-  display: block;
-  object-fit: cover;
-  width:100%!important;
-  height:100%!important;
-  transform:scale(1.2)!important;
+  transition: all 0.1s ease-in-out;
 }
 
 .close-button {
-  width: 45px;
-  height: 45px;
-  margin-left: calc(50% - 40px) !important;
-  margin-top: 0px !important;
-  padding: 18px 15px 10px 11px;
+  position:absolute;
+  width: 35px;
+  height: 35px;
+  margin-left: calc(10px) !important;
+  margin-top: 10px !important;
+  padding: 14px 12px 10px 7px;
   line-height: 1px;
   font-size: 50px;
   font-weight: 100;
@@ -174,16 +125,69 @@ function deselectPlace() {
 }
 
 
+
+.image-container {
+  overflow: hidden;
+  width: 100%;
+  height:40vh;
+  margin-top: 0px;
+}
+.image {
+  display: block;
+  object-fit: cover;
+  width:100%!important;
+  height:100%!important;
+  transform:scale(1.2)!important;
+}
+
 .card-text {
   font-family: "Barlow Condensed", sans-serif;
   color: black;
-  margin-top:10px;
+  margin-top:0px;
   font-size:1.0em;
   text-align: left;
   hyphens: auto;
   line-height:1.2;
-  padding:5px 5px;
+  padding:10px 20px 20px 20px;
+  float:left;
 }
+
+.card-text p{
+padding: 0px;
+}
+
+.place-title {
+  letter-spacing: -0.1rem;
+  text-align: left;
+  color: rgb(180, 100, 100);
+  width: calc(100% - 20px);
+  margin-bottom: 10px;
+  margin-top:10px;
+  float:left;
+  font-size:35px;
+}
+
+.place-title p {
+  color: white;
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 1.0;
+  background-color: rgb(180, 100, 100);
+  border-radius: 10px 10px 0 0;
+  padding: 20px 10px 15px 10px;
+  width: 100%;
+  opacity: 0.99;
+  box-shadow: 0px -5px 10px 0 rgba(0, 0, 0, 0.2),
+    0 0px 0px 0 rgba(0, 0, 0, 0.19);
+}
+
+.model-button{
+  background-color: rgb(180, 100, 100);
+  border-radius:5px;
+  padding:5px 10px;
+  color:white;
+}
+
 
 @media screen and (min-width: 1900px) {
 

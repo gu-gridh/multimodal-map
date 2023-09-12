@@ -47,12 +47,15 @@ body {
   background-size: contain;
 }
 
+#app .right-pane {
+  width: 450px;
+}
+
 #app .mapview-preview {
   height: 100vh !important;
   background-color: rgba(0, 0, 0, 0.85);
   width: 100%;
   color: white;
-  backdrop-filter: blur(7px);
 }
 
 .close-button {
