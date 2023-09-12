@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Place } from './types';
 import router from './router'
-import { ref, inject, onMounted, watchEffect } from "vue"
+import { ref, inject, onMounted, watchEffect} from "vue"
 
     const props = defineProps<{
         place: Place;
@@ -22,13 +22,17 @@ import { ref, inject, onMounted, watchEffect } from "vue"
     const rotation = ref(0);
     const strokeWidth = ref(5);
     const strokeColor = ref("red");
-    const center = ref([30.05885, -1.94995])
+    const center = ref([12.001323, 42.241995])
     const minZoom = ref(10)
 
     const format = inject("ol-format");
     const geoJson = new format.GeoJSON();
 
     const url = "https://diana.dh.gu.se/api/rwanda/geojson/place/"+ props.id
+
+    onMounted(() => {
+      console.log(url)
+    });
 
     // watchEffect(async() => {
     //   const coords = props.place?.geometry.coordinates
@@ -74,12 +78,13 @@ import { ref, inject, onMounted, watchEffect } from "vue"
             <ol-tile-layer>
               <ol-source-osm />
             </ol-tile-layer>
+
             <ol-vector-layer>
               <ol-source-vector :url="url" :format="geoJson">
               </ol-source-vector>
               <ol-style>
-        <ol-style-stroke :color="strokeColor" :width="strokeWidth"></ol-style-stroke>
-      </ol-style>
+                <ol-style-stroke :color="strokeColor" :width="strokeWidth"></ol-style-stroke>
+              </ol-style>
             </ol-vector-layer>
           </ol-map>
         </div>

@@ -37,9 +37,9 @@ function deselectPlace() {
 </script>
 
 <template>
- 
   <div v-if="selectedFeature" class="mapview-preview" @click="deselectPlace">
     <div class="close-button" @click="deselectPlace">+</div>
+    <h2>{{ selectedFeature.get("name") }}</h2>
     <router-link :to="`/place/${place.id_}`"
       v-for="image in images"
       :key="image.uuid"
@@ -52,28 +52,11 @@ function deselectPlace() {
         />
       </div>
     </router-link>
-
     <!-- if no image, show something else?-->
     <div v-if="text">
       <div class="image-card">
-        <div>
-            <div>
-              <div>
-                <div class="card-text" v-html="description"></div>
-              </div>
-            </div>
-          </div>
-        </div>    
-    </div>
-    <h2>{{ selectedFeature.get("name") }}</h2>
-    <p>More info fetched here</p>
-    <!-- Link to model that will open up in new window-->
-    <button style="background-color: rgb(180, 100, 100)">3D model</button>
-    <div>
-      <h3>Title from backend</h3>
-      <p>Text fetched from backend</p>
-    </div>
-    <div>
+          <div class="card-text" v-html="description"></div>
+      </div>    
     </div>
   </div>
 </template>
