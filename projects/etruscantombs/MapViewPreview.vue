@@ -124,13 +124,12 @@ function deselectPlace() {
   background-color: rgb(140, 60, 60);
 }
 
-
-
 .image-container {
   overflow: hidden;
   width: 100%;
   height:40vh;
   margin-top: 0px;
+  border-radius:0px !important;
 }
 .image {
   display: block;
@@ -191,76 +190,13 @@ padding: 0px;
 
 @media screen and (min-width: 1900px) {
 
-  #app .image-container {
-  border-radius:50%;
-  overflow: hidden;
-  margin-bottom: 8px;
-  height: 350px;
-  width: 350px;
-}
-
-#app .image {
-  overflow:hidden!important;
-  width:100%!important;
-  height:100%!important;
-  transform:scale(1.2)!important;
-}
 }
 
 @media screen and (max-width: 1200px) {
 
-  #app .image-container {
-  border-radius:50%!important;
-  overflow: hidden!important;
-  margin-bottom: 8px;
-  height: 160px!important;
-  width: 160px!important;
-}
-
-#app .image {
-  overflow:hidden!important;
-  width:100%!important;
-  height:100%!important;
-  transform:scale(1.2)!important;
-
-}
-
-.place-title p {
-
-  font-size: 20px;
- 
-}
 }
 
 @media screen and (max-width: 900px) {
-
-#app .image-container {
-border-radius:8px!important;
-overflow: hidden!important;
-margin-bottom: 8px;
-height: auto!important;
-width: 100%!important;
-}
-
-#app .image {
-overflow:hidden!important;
-width:100%!important;
-height:100%!important;
-transform:scale(1.2)!important;
-
-}
-
-.place-title p {
-
-font-size: 25px;
-
-}
-
-.card-text {
-  
-  font-size:1.1em;
-  padding:5px 15px;
-}
 
 
 }

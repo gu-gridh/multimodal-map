@@ -46,16 +46,46 @@ body {
   background: url("@/assets/gradient-jubileum.png");
   background-size: contain;
 }
+#app .right-pane {
+  width: 550px;
+}
 
+@media screen and (max-width: 1800px) {
+#app .right-pane {
+  width: 500px;
+}
+}
+
+@media screen and (max-width: 1700px) {
 #app .right-pane {
   width: 450px;
+}
+}
+@media screen and (max-width: 1200px) {
+#app .right-pane {
+width: 400px!important;
+}
+
+#app .image-container {
+  height:40vh!important;
+  border-radius:0px!important;
+  margin-bottom: 0px!important;
+}
+}
+
+@media screen and (max-width: 900px) {
+#app .right-pane {
+width: 100%!important;
+}
+
+#app .place-card {
+margin-top:15px;
+}
 }
 
 #app .mapview-preview {
   height: 100vh !important;
-  background-color: rgba(0, 0, 0, 0.85);
   width: 100%;
-  color: white;
 }
 
 .close-button {
