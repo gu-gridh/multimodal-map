@@ -59,7 +59,7 @@ import { ref, inject, onMounted, watchEffect} from "vue"
           <ol-map 
             :loadTilesWhileAnimating="true"
             :loadTilesWhileInteracting="true"
-            style="height:220px"
+            style="height:300px"
           >
             <ol-view
               ref="view"
@@ -91,7 +91,7 @@ import { ref, inject, onMounted, watchEffect} from "vue"
 <style>
 .place-back-button {
   left: 40px;
-  top: 40px;
+  top: 50px;
   background: url(@/assets/backbutton.png);
   background-size: 100%;
   background-repeat: no-repeat;
@@ -114,19 +114,20 @@ import { ref, inject, onMounted, watchEffect} from "vue"
 }
 
 .place-card-full {
-  margin-top:90px;
+  margin-top:50px;
+  margin-left:50px;
   color:black;
   background-color: white;
   padding: 0px;
-  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.5);
-  transition: all 0.0s ease-in-out;
-  max-height:calc(100vh - 240px);
+  box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.3);
+  height:calc(100vh - 240px);
   overflow:hidden;
   overflow-y:auto;
   margin-bottom: 10px;
   border-radius: 10px !important;
   -ms-overflow-style: none;
   scrollbar-width: none;
+  transition: all 0.0s ease-in-out;
 }
 
 .place-card-full::-webkit-scrollbar {
@@ -164,7 +165,7 @@ margin-bottom:20px;
 
 .mini-map{
   width:100%;
-  height:220px;
+  height:300px;
   overflow:hidden;
   background-color:grey;
   margin-bottom:0px;

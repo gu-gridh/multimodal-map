@@ -15,12 +15,12 @@ const { id } = defineProps<{
    <div class="main-container">
     <div class="place-card-container">
             <ObjectViewPlaceCard :id="id" />
-        </div>
+    </div>
         <!-- Here we will show info of the place -->
         <div class="place-view">
             <div class="place-gallery-container">
-                Gallery of objects will show here with the ability to sort by TYPE of object
-                <p>ID: {{ id }}</p>
+                <!-- Gallery of objects will show here with the ability to sort by TYPE of object -->
+                <!-- <p>ID: {{ id }}</p> -->
                 <!-- <p>PLACE: {{ place.id }}</p> -->
                 <div>
                     <select v-model="sort" class="dropdown">
@@ -59,16 +59,29 @@ const { id } = defineProps<{
 </template>
 
 <style scoped>
-.place-view {
-    color: black;
+
+.main-container {
+    display: flex;
+    flex-direction: row;
 }
+
 .place-card-container{
+    background-color: transparent !important; 
     overflow:hidden !important; 
     width:600px!important;
-    float: left;
+    flex-grow: 0;
 }
+
+
+.place-view {
+    color: black;
+    width: auto;
+    flex-grow: 1;
+    padding-top:20px;
+}
+
 .place-gallery-container {
-    width: 60%;
+    width:100%;
     float: left;
     padding:30px;
 }  
@@ -78,16 +91,7 @@ const { id } = defineProps<{
 .content-table td {
     padding: 15px;
 }
-.place-card-container{
-    background-color: transparent !important; 
-    overflow:hidden !important; 
-    width:600px!important;
-    float: left;
-}
-.main-container {
-    display: flex;
-    flex-direction: row;
-}
+
 
 .place-card-wrapper {
     width: 40%;
