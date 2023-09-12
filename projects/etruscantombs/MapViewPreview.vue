@@ -100,11 +100,11 @@ function deselectPlace() {
   flex-direction: column;
   align-items: left;
   width: auto;
-  height: calc(100vh - 210px);
+  height: calc(100vh - 220px);
   pointer-events: auto !important;
   border-radius: 15px;
   margin-right: 30px;
-  margin-top: 60px;
+  margin-top: 70px;
   padding: 0px;
   margin-bottom: 20px;
   overflow: hidden;
