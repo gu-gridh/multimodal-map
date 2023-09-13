@@ -10,7 +10,7 @@ import MapViewPreview from "./MapViewPreview.vue";
 import { storeToRefs } from "pinia";
 import { etruscanStore } from "./store";
 import { clean } from "@/assets/utils";
-import markerIcon from "@/assets/marker-gold.svg";
+import markerIcon from "@/assets/marker-white.svg";
 import markerBlue from "@/assets/marker-blue.svg";
 import MapViewGallery from "./MapViewGallery.vue";
 import { ref } from "vue";
@@ -102,10 +102,14 @@ watch(showGrid, (newValue) => {
           
           <template #layers>
             <!-- Layer for testing -->
+             <!--it is possible to change color with :color="[180,100,100,1.0]", but then the marker becomes badly rasterized-->
             <DianaPlaceLayer v-if="placesLayerVisible" path="jubileum/geojson/place/" :params="placeParams">
               <ol-style>
-                <ol-style-icon :src="markerIcon" :scale="1.8" :displacement="[-10, 45]"
-                  :anchor="[0.0, 0.0]"></ol-style-icon>
+                <ol-style-icon 
+                :src="markerIcon" 
+                :scale="1.8" 
+                :displacement="[-10, 45]"
+                :anchor="[0.0, 0.0]"></ol-style-icon>
               </ol-style>
               <FeatureSelection />
             </DianaPlaceLayer>
