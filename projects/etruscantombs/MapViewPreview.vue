@@ -86,10 +86,16 @@ function deselectPlace() {
   color: black;
   /* height: 100% !important; */
   pointer-events: none !important;
-  overflow-y: scroll !important;
+  overflow: hidden !important;
   padding-left: 30px;
   padding-bottom: 80px;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
+
+#app .mapview-preview::-webkit-scrollbar {
+    width: 0 !important
+    }
 
 .place-card {
   display: flex;
@@ -112,13 +118,16 @@ function deselectPlace() {
     0 0px 20px 0 rgba(0, 0, 0, 0.19);
   transition: all 0.1s ease-in-out;
 }
+.place-card::-webkit-scrollbar {
+    width: 0 !important
+    }
 
 
 .close-button {
   position: absolute;
   width: 35px;
   height: 35px;
-  right: calc(70px) !important;
+  right: calc(40px) !important;
   margin-top: 10px !important;
   padding: 14px 12px 10px 7px;
   line-height: 1px;

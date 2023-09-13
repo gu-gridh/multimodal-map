@@ -49,7 +49,15 @@ body {
 }
 #app .right-pane {
   width: 550px;
+  right:0px;
+  overflow:auto!important;
+  -ms-overflow-style: none!important;
+  scrollbar-width: none!important;
 }
+
+#app .right-pane::-webkit-scrollbar {
+    width: 0 !important
+    }
 
 @media screen and (max-width: 1800px) {
 #app .right-pane {
