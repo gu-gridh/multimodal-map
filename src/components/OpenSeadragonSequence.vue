@@ -8,8 +8,7 @@ const props = defineProps<{
  
 
 const viewerEl = ref();
-
-
+const currentPage = ref(1);  // Define currentPage
 
 onMounted(() => {  
   OpenSeadragon({

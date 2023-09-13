@@ -41,11 +41,14 @@ function deselectPlace() {
 <template>
   <div v-if="selectedFeature" class="mapview-preview">
     <div class="place-card">
-      <div class="place-card-top">
-        <div class="close-button" @click="deselectPlace">+</div>
+      <div class="close-button" @click="deselectPlace">+</div>
+      <div v-if="imageUrls.length > 0" class="place-card-top">
 
-        <OpenSeadragon v-if="imageUrls.length > 0" :src="imageUrls" class="flex-1" />
-
+        <OpenSeadragon
+          :src="imageUrls" 
+          :key="imageUrls.join(',')" 
+          class="flex-1" 
+        />
 
         <!-- Code to list all images -->
         <!-- <router-link :to="`/place/${place.id_}`"
@@ -66,19 +69,12 @@ function deselectPlace() {
         <div class="card-text">
           <div class="place-title">{{ selectedFeature.get("name") }}</div>
           <button class="theme-button">3D model</button>
-
-
-
-
-
-          
-          </div>
         </div>
+      </div>
           <div class="center-button">
             <router-link :to="`/place/${place.id_}`">
               <button class="theme-button" style="margin-top:20px;">More Info</button>
             </router-link>
-      
       </div>
     </div>
   </div>
@@ -122,7 +118,7 @@ function deselectPlace() {
   position: absolute;
   width: 35px;
   height: 35px;
-  right: calc(40px) !important;
+  right: calc(70px) !important;
   margin-top: 10px !important;
   padding: 14px 12px 10px 7px;
   line-height: 1px;
