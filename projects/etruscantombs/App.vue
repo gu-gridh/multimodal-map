@@ -174,5 +174,19 @@ font-size:120% !important;
   background-color: rgba(0, 0, 0, 0.7)!important;
 }
 
+@media screen and (min-width: 1900px) {
+
+  #app .right-pane {
+    font-size:120%;
+  width: 600px!important;
+}
+
+
+#app .ui-overlay {
+  font-size:130%!important;
+  margin-top:20px !important;
+}
+}
+
 
 </style>
