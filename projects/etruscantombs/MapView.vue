@@ -19,9 +19,7 @@ import { onMounted, watch } from "vue";
 import { nextTick } from "vue";
 import GeoJSON from "ol/format/GeoJSON";
 
-
 const { categories, years, tags, placesLayerVisible, tagsLayerVisible } = storeToRefs(etruscanStore());
-
 
 const placeParams = computed(() =>
   clean({
@@ -106,7 +104,7 @@ watch(showGrid, (newValue) => {
 
     <template #background>
       <div class="map-container">
-      <MapComponent :min-zoom="10" :max-zoom="18" :restrictExtent="[11.9, 57.72, 11.99, 57.69]" > <!-- 11.9, 42.15, 12.2, 42.4   11.9, 57.72, 11.99, 57.69--> 
+      <MapComponent :min-zoom="10" :max-zoom="18" :restrictExtent="[11.9, 57.72, 11.99, 57.69]" :key="showGrid.toString()"> <!-- 11.9, 42.15, 12.2, 42.4   11.9, 57.72, 11.99, 57.69--> 
         <template #layers>
           <!-- Layer for testing -->
           <DianaPlaceLayer
