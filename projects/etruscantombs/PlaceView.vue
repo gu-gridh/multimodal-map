@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Place } from './types';
 import { ref, defineProps } from 'vue';
-import ObjectViewPlaceCard from "./ObjectViewPlaceCard.vue"
+import PlaceViewCard from "./PlaceViewCard.vue"
 
 const sort = ref('type')
 
@@ -14,7 +14,7 @@ const { id } = defineProps<{
 <template>
    <div class="main-container">
     <div class="place-card-container">
-            <ObjectViewPlaceCard :id="id" />
+            <PlaceViewCard :id="id" />
     </div>
         <!-- Here we will show info of the place -->
         <div class="place-view">

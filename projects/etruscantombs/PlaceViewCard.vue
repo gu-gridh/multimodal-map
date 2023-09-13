@@ -127,7 +127,7 @@ import { ref, inject, onMounted, watchEffect} from "vue"
   background-color: white;
   padding: 0px;
   box-shadow: -3px 0px 25px rgba(0, 0, 0, 0.3);
-  height:calc(100vh - 240px);
+  height:calc(100vh - 200px);
   overflow:hidden;
   overflow-y:auto;
   margin-bottom: 10px;
