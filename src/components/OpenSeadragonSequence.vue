@@ -11,8 +11,7 @@ const viewerEl = ref();
 const currentPage = ref(1);  // Define currentPage
 
 onMounted(() => {  
-  OpenSeadragon({
-    /** @see https://openseadragon.github.io/docs/OpenSeadragon.html#.Options */
+  const viewer = OpenSeadragon({
     element: viewerEl.value,
     immediateRender: false,
     visibilityRatio: 1.0,
@@ -23,7 +22,6 @@ onMounted(() => {
     showHomeControl: false,
     showFullPageControl: true,
     showNavigator: false,
-    //navigatorId: "navigatorDiv",
     navigatorAutoFade: true,
     fullPageButton: "full-page",
     zoomInButton: "zoom-in",
@@ -31,8 +29,11 @@ onMounted(() => {
     nextButton: "next-button",
     previousButton: "prev-button",
     prefixUrl: "/openseadragon/",
-    sequenceMode: true, // Enable sequence mode
+    sequenceMode: true,
     tileSources: props.src,
+  });
+    viewer.addHandler('page', function(event) {
+    currentPage.value = event.page + 1;
   });
 });
 </script>
