@@ -89,7 +89,7 @@ function deselectPlace() {
   background-color: transparent;
   color: black;
   /* height: 100% !important; */
-  pointer-events: auto !important;
+  pointer-events: none !important;
   overflow-y: scroll !important;
   padding-left: 30px;
   padding-bottom: 80px;
