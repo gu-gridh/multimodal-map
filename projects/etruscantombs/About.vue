@@ -97,12 +97,12 @@ body{
 }
 
 .about-main-title {
-  font-family: 'Geo', sans-serif;
+  font-family: 'Teko', sans-serif;
   margin-top:100px;
   flex-basis:auto;
   width:100%;
   font-size: 105px;
-  line-height: 0.85;
+  line-height: 0.75;
   font-weight: 100;
   letter-spacing: -0.2rem;
   text-align: center;

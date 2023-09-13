@@ -32,12 +32,12 @@ body {
 }
 
 .main-title {
-  font-family: 'Geo', sans-serif;
-  font-size: 90px;
+  font-family: 'Teko', sans-serif;
+  font-size: 100px;
   line-height: 0.7;
-  font-weight: 600;
-  letter-spacing:-4.5px;
-  color:rgb(180,100,100)
+
+  letter-spacing:-2.5px;
+  color:rgb(180,100,100);
 }
 
 #app .left-pane {

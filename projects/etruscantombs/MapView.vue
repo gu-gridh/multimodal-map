@@ -97,7 +97,7 @@ watch(showGrid, (newValue) => {
 
     <template #background>
       <div class="map-container">
-        <MapComponent :min-zoom="10" :max-zoom="18" :restrictExtent="[11.9, 42.15, 12.2, 42.4]"
+        <MapComponent :min-zoom="15" :max-zoom="18" :restrictExtent="[11.9, 42.15, 12.2, 42.4]"
           :key="showGrid.toString()"> <!-- 11.9, 42.15, 12.2, 42.4   11.975, 57.92, 11.99, 57.694-->
           
           <template #layers>
@@ -117,9 +117,8 @@ watch(showGrid, (newValue) => {
             <!-- Local layer for testing -->
             <LocalGeoJSONLayer :zIndex="0">
               <!-- style components -->
-        
                <ol-style>
-              <ol-style-stroke color="rgba(0,0,0,0.3)" :width="1"></ol-style-stroke>  
+              <ol-style-stroke color="rgba(0,0,0,0.14)" :width="2"></ol-style-stroke>  
               </ol-style>
             </LocalGeoJSONLayer>
           </template>
