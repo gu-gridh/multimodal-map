@@ -98,17 +98,17 @@ body{
 
 .about-main-title {
   font-family: 'Teko', sans-serif;
-  margin-top:100px;
+  margin-top:80px;
   flex-basis:auto;
   width:100%;
-  font-size: 105px;
+  font-size: 115px;
   line-height: 0.75;
   font-weight: 100;
-  letter-spacing: -0.2rem;
+  letter-spacing: 0rem;
   text-align: center;
   color:rgb(180,100,100);
   opacity:0.0;
-  margin-bottom:40px;
+  margin-bottom:30px;
   transition: all 0.4s ease-in-out;
 
 }

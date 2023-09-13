@@ -198,7 +198,8 @@ padding: 0px;
 }
 
 .place-title {
-  letter-spacing: -0.1rem;
+  font-family: 'Teko', sans-serif;
+  letter-spacing: -0.0rem;
   text-align: left;
   color: rgb(180, 100, 100);
   width: calc(100% - 20px);

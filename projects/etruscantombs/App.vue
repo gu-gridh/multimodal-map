@@ -35,9 +35,10 @@ body {
   font-family: 'Teko', sans-serif;
   font-size: 100px;
   line-height: 0.7;
-
-  letter-spacing:-2.5px;
+  font-weight:300;
+  letter-spacing:0.05rem;
   color:rgb(180,100,100);
+  margin-left:-10px;
 }
 
 #app .left-pane {

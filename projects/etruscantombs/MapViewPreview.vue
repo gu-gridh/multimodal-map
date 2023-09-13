@@ -183,7 +183,8 @@ function deselectPlace() {
 }
 
 .place-title {
-  letter-spacing: -0.1rem;
+  font-family: 'Teko', sans-serif;
+  letter-spacing: -0.0rem;
   text-align: left;
   color: rgb(180, 100, 100);
   padding-bottom: 10px;
