@@ -48,7 +48,7 @@ function deselectPlace() {
           :src="imageUrls" 
           :key="imageUrls.join(',')" 
           class="flex-1" 
-          v-if="imageUrls.length > 0"/>
+        />
 
         <!-- Code to list all images -->
         <!-- <router-link :to="`/place/${place.id_}`"
