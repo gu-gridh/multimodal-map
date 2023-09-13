@@ -73,8 +73,6 @@ defineComponent({
   transition: all 0.5s ease-in-out;
 }
 
-
-
 @media (min-width: 900px) {
   #app .masonry-wall {
     padding: 0px 0px 0px 450px; 

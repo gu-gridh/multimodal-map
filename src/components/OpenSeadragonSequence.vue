@@ -115,7 +115,6 @@ position:absolute;
   height:35px
 }
 
-
 #ToolbarVertical {
   position: absolute;
   top: 10px;
@@ -137,7 +136,6 @@ position:absolute;
   border-radius: 50%;
   overflow: hidden;
   cursor:pointer;
-
 }
 
 #Prev {
@@ -147,9 +145,7 @@ position:absolute;
   background-position: center;
   display: inline-block;
   position: absolute;
-  margin-right: 0px;
   left:10px;
-  outline: none;
       }
 
   

@@ -117,6 +117,7 @@ function deselectPlace() {
   transition: all 0.1s ease-in-out;
 }
 
+
 .close-button {
   position: absolute;
   width: 35px;
@@ -136,13 +137,11 @@ function deselectPlace() {
   background-color: rgb(180, 100, 100);
   margin-bottom: 0px;
 }
-
 .close-button:hover {
   background-color: rgb(140, 60, 60);
 }
 
 .place-card-top {
-
   display: flex;
   flex-grow: 1.5 !important;
   border-radius: 0px !important;
