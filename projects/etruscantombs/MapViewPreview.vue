@@ -42,13 +42,13 @@ function deselectPlace() {
   <div v-if="selectedFeature" class="mapview-preview">
     <div class="place-card">
       <div class="close-button" @click="deselectPlace">+</div>
-      <div v-if="imageUrls.length > 0" class="place-card-top">
+      <div  class="place-card-top">
 
         <OpenSeadragon
           :src="imageUrls" 
           :key="imageUrls.join(',')" 
           class="flex-1" 
-        />
+          v-if="imageUrls.length > 0"/>
 
         <!-- Code to list all images -->
         <!-- <router-link :to="`/place/${place.id_}`"
