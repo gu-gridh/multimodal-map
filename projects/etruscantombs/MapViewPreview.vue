@@ -143,7 +143,7 @@ function deselectPlace() {
 
 .place-card-top {
   display: flex;
-  flex-grow: 1.5 !important;
+  height:50%;
   border-radius: 0px !important;
   min-height:150px;
   background-color:rgb(60,60,60);
