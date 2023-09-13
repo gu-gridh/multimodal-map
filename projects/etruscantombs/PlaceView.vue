@@ -88,6 +88,7 @@ const { id } = defineProps<{
 }  
 .dropdown {
     color: white;
+    border-radius:5px;
     background-color:rgb(180,100,100);
     padding:3px 10px;
     margin-left:-0px;
@@ -99,7 +100,8 @@ const { id } = defineProps<{
 }
 
 .dropdown:focus {
-        outline: none;
+    outline: none;
+    outline-color: rgb(140,60,60) !important;
       }
 
 .content-table td {

@@ -66,7 +66,7 @@ onMounted(() => {
   </div>
 </template>
 
-<style>
+<style scoped>
 #navigatorDiv{
 position:absolute;
   width:80px;
