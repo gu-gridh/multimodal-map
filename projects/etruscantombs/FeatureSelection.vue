@@ -20,8 +20,11 @@ const hoverCoordinates = ref();
 const hoveredFeature = ref<Feature>();
 
 const selectConditions = inject("ol-selectconditions");
-const hoverCondition = selectConditions.pointerMove;
+
+//const hoverCondition = selectConditions.pointerMove;
+
 const selectCondition = selectConditions.click;
+
 // This list is connected to the ol-interaction-select element; this is to be able to deselect programmatically
 const selectedFeaturesCollection = new Collection(
   selectedFeature.value ? [selectedFeature.value] : []
@@ -117,7 +120,7 @@ const getFeatureDisplayName: DisplayFunction =
     </ol-style>
   </ol-interaction-select>
   
-  <ol-interaction-select @select="onHover" :condition="hoverCondition" :features="selectedFeaturesCollection">
+  <ol-interaction-select @select="onHover" :condition="hoverCondition">
     <ol-style>
       <ol-style-icon
         :src="markerIconRed"
@@ -134,6 +137,7 @@ const getFeatureDisplayName: DisplayFunction =
     class="ol-popup"
     v-if="hoveredFeature"
     :position="hoverCoordinates"
+
   >
     <div
       class="ol-popup-content"

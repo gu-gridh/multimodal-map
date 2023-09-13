@@ -5,7 +5,7 @@ import MapViewControls from "./MapViewControls.vue";
 import MapComponent from "@/components/MapComponent.vue";
 import DianaPlaceLayer from "@/components/DianaPlaceLayer.vue";
 import LocalGeoJSONLayer from "@/components/LocalGeoJSONLayer.vue";
-import FeatureSelection from "@/components/FeatureSelection.vue";
+import FeatureSelection from "./FeatureSelection.vue";
 import MapViewPreview from "./MapViewPreview.vue";
 import { storeToRefs } from "pinia";
 import { etruscanStore } from "./store";
@@ -181,21 +181,42 @@ z-index:100 !important;
 }
 
 #app .ol-popup {
-  font-size: 1.2em;
+  font-size: 1.1em !important;
   -webkit-user-select: none;
   -moz-user-select: none;
   user-select: none;
-  text-align: center;
+  text-align: left!important;
   position: absolute;
-  background-color: white;
   box-shadow: 2 2px 8px rgba(0, 0, 0, 0.5);
-  padding: 3px;
-  border-radius: 5px;
+  padding: 3px 10px;
+  border-radius: 8px !important;
   border: 0px solid #cccccc;
-  bottom: 35px;
-  left: -50px;
-  min-width: 100px;
+  bottom: 40px;
+  left: -70px;
+  min-width: 150px;
 }
+
+.ol-popup:after, .ol-popup:before {
+        top: 100%;
+        border: solid transparent;
+        content: " ";
+        height: 0;
+        width: 0;
+        position: absolute;
+        pointer-events: none;
+      }
+      .ol-popup:after {
+        border-top-color: white!important;
+        border-width: 0px!important;
+        left: 45px!important;
+        margin-left: 20px;
+      }
+      .ol-popup:before {
+        border-top-color: #cccccc;
+        border-width: 11px;
+        left: 48px;
+        margin-left: 15px;
+      }
 
 
 </style>
