@@ -182,7 +182,7 @@ const layerColors = ["rgb(255,150,0)", "rgb(0,150,50)", "rgb(0,100,255)"];
           :zIndex=1
         >
           <ol-style>
-              <ol-style-fill color="rgba(255,2550,255,0.4)"></ol-style-fill>
+              <ol-style-fill color="rgba(255,255,255,0.4)"></ol-style-fill>
           </ol-style>
         </DianaPlaceLayerRephoto>
       </div>
