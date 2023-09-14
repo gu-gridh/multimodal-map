@@ -5,7 +5,6 @@ import MapViewControls from "./MapViewControls.vue";
 import MapComponent from "@/components/MapComponent.vue";
 import DianaPlaceLayer from "@/components/DianaPlaceLayer.vue";
 import LocalGeoJSONLayer from "@/components/LocalGeoJSONLayer.vue";
-import LocalGeoJSONLayer2 from "@/components/LocalGeoJSONLayer2.vue";
 import FeatureSelection from "./FeatureSelection.vue";
 import MapViewPreview from "./MapViewPreview.vue";
 import { storeToRefs } from "pinia";
@@ -139,18 +138,17 @@ watch(showGrid, (newValue) => {
             </DianaPlaceLayer>
 
             <!-- Local layer for testing -->
-            <LocalGeoJSONLayer :zIndex="0">
-              <!-- style components -->
-               <ol-style>
-              <ol-style-stroke color="rgba(0,0,0,0.05)" :width="2"></ol-style-stroke>  
+            <LocalGeoJSONLayer :zIndex="0" geoJsonPath="/SGElevationMain.geojson">
+              <ol-style>
+                <ol-style-stroke color="rgba(0,0,0,0.05)" :width="2"></ol-style-stroke>  
               </ol-style>
             </LocalGeoJSONLayer>
-            <LocalGeoJSONLayer2 :zIndex="0">
-              <!-- style components -->
-               <ol-style>
-              <ol-style-stroke color="rgba(0,0,0,0.04)" :width="2"></ol-style-stroke>  
+
+            <LocalGeoJSONLayer :zIndex="0" geoJsonPath="/SGElevationEdge.geojson">
+              <ol-style>
+                <ol-style-stroke color="rgba(0,0,0,0.04)" :width="2"></ol-style-stroke>  
               </ol-style>
-            </LocalGeoJSONLayer2>
+            </LocalGeoJSONLayer>
           </template>
           
         </MapComponent>  
