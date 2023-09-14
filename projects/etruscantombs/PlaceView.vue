@@ -1,14 +1,29 @@
 <script setup lang="ts">
-import type { Place } from './types';
-import { ref, defineProps } from 'vue';
-import PlaceViewCard from "./PlaceViewCard.vue"
+import { ref, defineProps, onMounted, inject } from 'vue';
+import type { Image } from './types';
+import type { DianaClient } from "@/assets/diana";
+import PlaceViewCard from "./PlaceViewCard.vue";
 
-const sort = ref('type')
+const sort = ref('type');
+const { id } = defineProps<{ id: number; }>();
+const diana = inject("diana") as DianaClient;
+const images = ref<Image[]>([]);
+let place = ref();
 
-const { id } = defineProps<{
-    id: number;
-}>();
+//Blank squares
+const imageArray = ref([
+  { src: '', alt: 'Image 1' },
+  { src: '', alt: 'Image 2' },
+  { src: '', alt: 'Image 3' },
+  { src: '', alt: 'Image 4' },
+  { src: '', alt: 'Image 5' },
+]);
 
+onMounted(async () => {
+  if (id) {
+    images.value = await diana.listAll<Image>("image", { place: id });
+  }
+});
 </script>
 
 <template>
@@ -32,23 +47,33 @@ const { id } = defineProps<{
                 <table class="content-table" v-if="sort == 'type'">
                     <tr>
                         <td>Documents</td>
-                        <td>Content will link to pdf-viewer?</td>
+                           <div v-for="(image, index) in imageArray" :key="index" class="image-placeholder">
+                                <img :src="image.src" :alt="image.alt" class="image-square" />
+                            </div>
                     </tr>
                     <tr>
                         <td>3D Models</td>
-                        <td>Content will link to ModelView</td>
+                        <div v-for="(image, index) in imageArray" :key="index" class="image-placeholder">
+                            <img :src="image.src" :alt="image.alt" class="image-square" />
+                        </div>
                     </tr>
                     <tr>
                         <td>Plans</td>
-                        <td>Content</td>
+                        <div v-for="(image, index) in imageArray" :key="index" class="image-placeholder">
+                            <img :src="image.src" :alt="image.alt" class="image-square" />
+                        </div>
                     </tr>
                     <tr>
                         <td>Photos</td>
-                        <td>Content will link to ImageView</td>
+                         <div v-for="(image, index) in images" :key="index" class="image-placeholder">
+                            <img :src="`${image.iiif_file}/full/500,/0/default.jpg`" :alt="image.title" class="image-square" />
+                        </div>
                     </tr>
                     <tr>
                         <td>Observations</td>
-                        <td>Content</td>
+                        <div v-for="(image, index) in imageArray" :key="index" class="image-placeholder">
+                            <img :src="image.src" :alt="image.alt" class="image-square" />
+                        </div>
                     </tr>
                 </table>
 
@@ -59,33 +84,49 @@ const { id } = defineProps<{
 </template>
 
 <style scoped>
+.content-table td {
+    vertical-align: top;
+}
+
+.image-placeholder {
+    width: 200px; 
+    height: 200px;
+    background-color: #eee; 
+    margin: 10px;
+    display: inline-block; 
+}
+
+.image-square {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+}
 
 .main-container {
     display: flex;
     flex-direction: row;
+    height: 100vh; 
+    overflow: hidden; 
 }
 
 .place-card-container{
     background-color: transparent !important; 
-    overflow:auto !important; 
-    width:600px!important;
-    flex-grow: 0;
+    flex: 0 0 40%; /* Take up exactly 40% of the space */
 }
-
 
 .place-view {
     background-color: transparent !important;
     color: black;
-    width: auto;
-    flex-grow: 1;
-    padding-top:20px;
+    flex: 1;  /* Take up the remaining space */
+    padding-top: 20px;
+    overflow-y: auto; /* Enable vertical scrolling */
 }
 
 .place-gallery-container {
-    width:100%;
-    float: left;
-    padding:30px;
-}  
+    flex: 1;
+    padding: 30px;
+}
+
 .dropdown {
     color: white;
     border-radius:5px;
@@ -96,7 +137,6 @@ const { id } = defineProps<{
     height:32px;
     background-image:none;
     -webkit-appearance: none;
-   
 }
 
 .dropdown:focus {
