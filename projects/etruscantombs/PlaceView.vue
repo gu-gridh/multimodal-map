@@ -14,9 +14,6 @@ let place = ref();
 const imageArray = ref([
   { src: '', alt: 'Image 1' },
   { src: '', alt: 'Image 2' },
-  { src: '', alt: 'Image 3' },
-  { src: '', alt: 'Image 4' },
-  { src: '', alt: 'Image 5' },
 ]);
 
 onMounted(async () => {
@@ -58,15 +55,16 @@ onMounted(async () => {
                         </div>
                     </tr>
                     <tr>
-                        <td>Plans</td>
-                        <div v-for="(image, index) in imageArray" :key="index" class="image-placeholder">
-                            <img :src="image.src" :alt="image.alt" class="image-square" />
-                        </div>
-                    </tr>
-                    <tr>
                         <td>Photos</td>
                          <div v-for="(image, index) in images" :key="index" class="image-placeholder">
                             <img :src="`${image.iiif_file}/full/500,/0/default.jpg`" :alt="image.title" class="image-square" />
+                        </div>
+                    </tr>
+                  
+                    <tr>
+                        <td>Plans</td>
+                        <div v-for="(image, index) in imageArray" :key="index" class="image-placeholder">
+                            <img :src="image.src" :alt="image.alt" class="image-square-plan" />
                         </div>
                     </tr>
                     <tr>
@@ -92,14 +90,37 @@ onMounted(async () => {
     width: 200px; 
     height: 200px;
     background-color: #eee; 
-    margin: 10px;
+    margin: 8px;
+    border-radius:3px;
     display: inline-block; 
+    overflow:hidden;
+    transition: all 0.2s ease-in-out;
 }
 
 .image-square {
     width: 100%;
     height: 100%;
     object-fit: cover; 
+}
+
+.image-square-plan {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; 
+    background-color:white;
+}
+.image-placeholder img {
+  transform: scale(1.05);
+  transition: all 0.2s ease-in-out;
+}
+
+.image-placeholder:hover {
+  transform: scale(1.03);
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.15);
+}
+
+.image-placeholder:hover img {
+  transform: scale(1.1)
 }
 
 .main-container {
@@ -112,6 +133,8 @@ onMounted(async () => {
 .place-card-container{
     background-color: transparent !important; 
     flex: 0 0 40%; /* Take up exactly 40% of the space */
+    max-width:600px;
+    min-width:500px;
 }
 
 .place-view {
@@ -124,7 +147,7 @@ onMounted(async () => {
 
 .place-gallery-container {
     flex: 1;
-    padding: 30px;
+    padding: 30px 30px 100px 10px;
 }
 
 .dropdown {
@@ -133,6 +156,7 @@ onMounted(async () => {
     background-color:rgb(180,100,100);
     padding:3px 10px;
     margin-left:-0px;
+    margin-bottom:10px;
     width:auto;
     height:32px;
     background-image:none;
@@ -146,6 +170,7 @@ onMounted(async () => {
 
 .content-table td {
     padding: 15px;
+    padding-top: 2px;
     text-align:right;
 }
 
