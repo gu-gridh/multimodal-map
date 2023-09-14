@@ -5,6 +5,7 @@ import MapViewControls from "./MapViewControls.vue";
 import MapComponent from "@/components/MapComponent.vue";
 import DianaPlaceLayer from "@/components/DianaPlaceLayer.vue";
 import LocalGeoJSONLayer from "@/components/LocalGeoJSONLayer.vue";
+import LocalGeoJSONLayer2 from "@/components/LocalGeoJSONLayer2.vue";
 import FeatureSelection from "./FeatureSelection.vue";
 import MapViewPreview from "./MapViewPreview.vue";
 import { storeToRefs } from "pinia";
@@ -118,9 +119,15 @@ watch(showGrid, (newValue) => {
             <LocalGeoJSONLayer :zIndex="0">
               <!-- style components -->
                <ol-style>
-              <ol-style-stroke color="rgba(0,0,0,0.14)" :width="2"></ol-style-stroke>  
+              <ol-style-stroke color="rgba(0,0,0,0.1)" :width="2"></ol-style-stroke>  
               </ol-style>
             </LocalGeoJSONLayer>
+            <LocalGeoJSONLayer2 :zIndex="0">
+              <!-- style components -->
+               <ol-style>
+              <ol-style-stroke color="rgba(0,0,0,0.05)" :width="2"></ol-style-stroke>  
+              </ol-style>
+            </LocalGeoJSONLayer2>
           </template>
           
         </MapComponent>  

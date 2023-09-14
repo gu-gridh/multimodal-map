@@ -25,7 +25,7 @@ const geoJsonFormat = new GeoJSON();
 
 async function loadLocalGeoJson() {
   try {
-    const response = await fetch("/SGElevationMain.geojson");
+    const response = await fetch("/SGElevationEdge.geojson");
     const geojson = await response.json();
     features.value = geoJsonFormat.readFeatures(geojson, {
       dataProjection: "EPSG:4326",
