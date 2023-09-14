@@ -119,13 +119,13 @@ watch(showGrid, (newValue) => {
             <LocalGeoJSONLayer :zIndex="0">
               <!-- style components -->
                <ol-style>
-              <ol-style-stroke color="rgba(0,0,0,0.1)" :width="2"></ol-style-stroke>  
+              <ol-style-stroke color="rgba(0,0,0,0.05)" :width="2"></ol-style-stroke>  
               </ol-style>
             </LocalGeoJSONLayer>
             <LocalGeoJSONLayer2 :zIndex="0">
               <!-- style components -->
                <ol-style>
-              <ol-style-stroke color="rgba(0,0,0,0.05)" :width="2"></ol-style-stroke>  
+              <ol-style-stroke color="rgba(0,0,0,0.04)" :width="2"></ol-style-stroke>  
               </ol-style>
             </LocalGeoJSONLayer2>
           </template>
