@@ -12,8 +12,8 @@ let place = ref();
 
 //Blank squares
 const imageArray = ref([
-  { src: '', alt: 'Image 1' },
-  { src: '', alt: 'Image 2' },
+  { src: '', alt: '' },
+  { src: '', alt: '' },
 ]);
 
 onMounted(async () => {
@@ -44,8 +44,11 @@ onMounted(async () => {
                 <table class="content-table" v-if="sort == 'type'">
                     <tr>
                         <td>Documents</td>
-                           <div v-for="(image, index) in imageArray" :key="index" class="image-placeholder">
-                                <img :src="image.src" :alt="image.alt" class="image-square" />
+                           <div v-for="(image, index) in imageArray" :key="index" class="image-placeholder document-placeholder">
+                             <!-- Get this one from backend, title of document -->   
+                            <p>The tomb survey of san giovenale in 1971</p>
+                             <!-- Get this one from backend, type of text: report, survey etcetera -->
+                               <p>Type</p>
                             </div>
                     </tr>
                     <tr>
@@ -69,8 +72,20 @@ onMounted(async () => {
                     </tr>
                     <tr>
                         <td>Observations</td>
-                        <div v-for="(image, index) in imageArray" :key="index" class="image-placeholder">
-                            <img :src="image.src" :alt="image.alt" class="image-square" />
+                        <div v-for="(image, index) in imageArray" :key="index" class="image-placeholder observation-placeholder">
+                            
+                                <div class="observation-title">
+                                <!-- Get this one from backend -->
+                                Type of Observation
+                            </div>
+                               <div class="observation-date">
+                                 <!-- Get this one from backend -->
+                                Date
+                            </div>
+                            <div class="observation-body">
+                                 <!-- Get this one from backend -->
+                               Observation description 
+                            </div>
                         </div>
                     </tr>
                 </table>
@@ -95,19 +110,66 @@ onMounted(async () => {
     display: inline-block; 
     overflow:hidden;
     transition: all 0.2s ease-in-out;
+    cursor:pointer;
 }
+
+.document-placeholder {
+    width: 416px; 
+    height: 60px;
+    background-image:url("/file.png");
+    background-size:40px;
+    background-repeat:no-repeat;
+    background-position: 8px;
+    padding:11px 10px 5px 50px;
+}
+
+.document-placeholder p {
+line-height:1.2;;
+}
+
+.observation-placeholder {
+    width: 416px; 
+    height: 200px;
+    border-radius:8px;
+    padding:0px;
+}
+
+.observation-title{
+    color:rgb(180,100,100);
+    font-size:1.4em;
+    font-weight:500;
+    float:left;
+    padding:10px 10px 10px 20px;
+}
+
+.observation-date{
+    color:rgb(180,100,100);
+    font-size:1.1em;
+    float:right;
+    padding:15px 20px 10px 20px;
+}
+
+.observation-body{
+    width:100%;
+    float:left;
+    font-size:1.1em;
+    border-style: dotted;
+    border-color:rgb(180,100,100);
+    border-width:1.3px 0 0px 0;
+    padding:10px 10px 10px 20px;
+}
+
 
 .image-square {
     width: 100%;
     height: 100%;
-    object-fit: cover; 
+    object-fit: cover;
 }
 
 .image-square-plan {
     width: 100%;
     height: 100%;
     object-fit: contain; 
-    background-color:white;
 }
 .image-placeholder img {
   transform: scale(1.05);
@@ -116,7 +178,7 @@ onMounted(async () => {
 
 .image-placeholder:hover {
   transform: scale(1.03);
-  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.12);
 }
 
 .image-placeholder:hover img {
