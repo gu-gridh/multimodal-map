@@ -46,7 +46,7 @@ onMounted(async () => {
                         <td>Documents</td>
                            <div v-for="(image, index) in imageArray" :key="index" class="image-placeholder document-placeholder">
                              <!-- Get this one from backend, title of document -->   
-                            <p>The tomb survey of san giovenale in 1971</p>
+                            <p style="color:rgb(180,100,100); font-weight:500;">The Chamber Tomb Survey of San Giovenale in 1971</p>
                              <!-- Get this one from backend, type of text: report, survey etcetera -->
                                <p>Type</p>
                             </div>
