@@ -116,7 +116,7 @@ watch(showGrid, (newValue) => {
       <div class="map-container">
         <MapComponent 
           :shouldAutoMove="true" 
-          :min-zoom="10" 
+          :min-zoom="14" 
           :max-zoom="18" 
           :restrictExtent="[11.975, 57.92, 11.99, 57.694]"          
           :key="showGrid.toString()"
