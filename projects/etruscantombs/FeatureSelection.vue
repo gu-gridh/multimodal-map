@@ -21,7 +21,7 @@ const hoveredFeature = ref<Feature>();
 
 const selectConditions = inject("ol-selectconditions");
 
-//const hoverCondition = selectConditions.pointerMove;
+const hoverCondition = selectConditions.pointerMove;
 
 const selectCondition = selectConditions.click;
 

@@ -10,6 +10,7 @@ import FeatureSelection from "./FeatureSelection.vue";
 import MapViewPreview from "./MapViewPreview.vue";
 import { storeToRefs } from "pinia";
 import { etruscanStore } from "./store";
+import { mapStore } from "@/stores/store";
 import { clean } from "@/assets/utils";
 import markerIcon from "@/assets/marker-white.svg";
 import markerBlue from "@/assets/marker-blue.svg";
@@ -21,6 +22,22 @@ import { nextTick } from "vue";
 import GeoJSON from "ol/format/GeoJSON";
 
 const { categories, years, tags, placesLayerVisible, tagsLayerVisible } = storeToRefs(etruscanStore());
+const store = mapStore();
+const { selectedFeature } = storeToRefs(store);
+
+watch(
+  selectedFeature,
+  (newFeature, oldFeature) => {
+    if (newFeature && newFeature.getGeometry) {
+      const geometry = newFeature.getGeometry();
+      if (geometry) {
+        const coordinates = (geometry as any).getCoordinates();
+        store.updateCenter(coordinates);
+      }
+    }
+  },
+  { immediate: true }
+);
 
 const placeParams = computed(() =>
   clean({
@@ -98,8 +115,14 @@ watch(showGrid, (newValue) => {
 
     <template #background>
       <div class="map-container">
-        <MapComponent :min-zoom="15" :max-zoom="18" :restrictExtent="[11.9, 42.15, 12.2, 42.4]"
-          :key="showGrid.toString()"> <!-- 11.9, 42.15, 12.2, 42.4   11.975, 57.92, 11.99, 57.694-->
+        <MapComponent 
+          :shouldAutoMove="true" 
+          :min-zoom="10" 
+          :max-zoom="18" 
+          :restrictExtent="[11.975, 57.92, 11.99, 57.694]"          
+          :key="showGrid.toString()"
+        > 
+        <!-- 11.9, 42.15, 12.2, 42.4   11.975, 57.92, 11.99, 57.694-->
           
           <template #layers>
             <!-- Layer for testing -->

@@ -36,7 +36,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject, computed, onMounted } from "vue";
+import { ref, inject, computed, onMounted, watch} from "vue";
 import { fromLonLat, transformExtent } from "ol/proj";
 import { mapStore } from "@/stores/store";
 import { storeToRefs } from "pinia";
@@ -63,6 +63,10 @@ const scalelinecontrol = ref(true);
 const overviewmapcontrol = ref(true);
 
 const props = defineProps({
+   shouldAutoMove: {
+    type: Boolean,
+    default: false,
+  },
   minZoom: {
     type: Number,
     default: 0,
@@ -79,6 +83,7 @@ const props = defineProps({
 
 const minZoom = ref(props.minZoom);
 const maxZoom = ref(props.maxZoom);
+const shouldAutoMove = ref(props.shouldAutoMove);
 
 const transformedRestrictExtent = computed(() => {
   if (props.restrictExtent.length > 0) {
@@ -128,6 +133,26 @@ onMounted(() => {
 
   // Listen to the end of map movement.
   map.value.map.on('moveend', onMoveEnd);
+
+  watch(
+    () => store.center,
+    (newCenter) => {
+      if (shouldAutoMove.value && newCenter) {
+        map.value.map.getView().setCenter(newCenter);
+      }
+    },
+    { immediate: true }
+  );
+
+  watch(
+      () => store.zoom,
+      (newZoom) => {
+        if (shouldAutoMove.value && newZoom) {
+          map.value.map.getView().setZoom(newZoom);
+        }
+      },
+      { immediate: true }
+  );
 });
 
 function onMoveEnd() {
