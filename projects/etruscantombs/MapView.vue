@@ -221,8 +221,8 @@ z-index:100 !important;
   border-radius: 8px !important;
   border: 0px solid #cccccc;
   bottom: 40px;
-  left: -70px;
-  min-width: 150px;
+  left: -80px;
+  width: 170px;
 }
 
 .ol-popup:after, .ol-popup:before {
@@ -243,7 +243,7 @@ z-index:100 !important;
       .ol-popup:before {
         border-top-color: #cccccc;
         border-width: 11px;
-        left: 48px;
+        left: 55px;
         margin-left: 15px;
       }
 
