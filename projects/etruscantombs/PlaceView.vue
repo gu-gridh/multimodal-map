@@ -60,8 +60,10 @@ onMounted(async () => {
                     </tr>
                     <tr>
                         <td>Photos</td>
-                         <div v-for="(image, index) in images" :key="index" class="image-placeholder">
-                            <img :src="`${image.iiif_file}/full/500,/0/default.jpg`" :alt="image.title" class="image-square" />
+                        <div v-for="(image, index) in images" :key="index" class="image-placeholder">
+                            <router-link :to="`/detail/image/${image.id}`">
+                                <img :src="`${image.iiif_file}/full/500,/0/default.jpg`" :alt="image.title" class="image-square" />
+                            </router-link>
                         </div>
                     </tr>
                   
