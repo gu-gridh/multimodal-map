@@ -46,9 +46,10 @@ onMounted(async () => {
                         <td>Documents</td>
                            <div v-for="(image, index) in imageArray" :key="index" class="image-placeholder document-placeholder">
                              <!-- Get this one from backend, title of document -->   
-                            <p style="color:rgb(180,100,100); font-weight:500;">The Chamber Tomb Survey of San Giovenale in 1971</p>
-                             <!-- Get this one from backend, type of text: report, survey etcetera -->
-                               <p>Type: Report</p>
+                             <div class="document-title">The Chamber Tomb Survey of San Giovenale in 1971</div>
+                          
+                             <!-- Get these ones from backend, type of text: report, survey etcetera -->
+                            <p> Type: Report </p> <p>Size: 1.9 mb </p>
                             </div>
                     </tr>
                     <tr>
@@ -117,14 +118,25 @@ onMounted(async () => {
     width: 416px; 
     height: 60px;
     background-image:url("/file.png");
-    background-size:40px;
+    background-size:44px;
     background-repeat:no-repeat;
     background-position: 8px;
-    padding:11px 10px 5px 50px;
+    padding:11px 10px 5px 55px;
 }
 
 .document-placeholder p {
-line-height:1.2;;
+line-height:1.0;
+display:inline;
+margin-right:30px;
+}
+
+.document-title{
+color:rgb(180,100,100);
+font-weight:500;
+height:18px;
+overflow:hidden;
+width:100%;
+line-height:1.0;
 }
 
 .observation-placeholder {
