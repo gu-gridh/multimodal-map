@@ -214,7 +214,7 @@ z-index:100 !important;
   -webkit-user-select: none;
   -moz-user-select: none;
   user-select: none;
-  text-align: left!important;
+  text-align: center!important;
   position: absolute;
   box-shadow: 2 2px 8px rgba(0, 0, 0, 0.5);
   padding: 3px 10px;

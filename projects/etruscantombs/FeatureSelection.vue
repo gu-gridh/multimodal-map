@@ -21,12 +21,11 @@ const hoveredFeature = ref<Feature>();
 
 const selectConditions = inject("ol-selectconditions");
 
-//const hoverCondition = selectConditions.pointerMove;
-
+const hoverCondition = selectConditions.pointerMove;
 const selectCondition = selectConditions.click;
 
 // This list is connected to the ol-interaction-select element; this is to be able to deselect programmatically
-const selectedFeaturesCollection = new Collection(
+  const selectedFeaturesCollection = new Collection(
   selectedFeature.value ? [selectedFeature.value] : []
 );
 
