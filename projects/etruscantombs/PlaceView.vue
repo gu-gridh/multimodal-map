@@ -131,12 +131,23 @@ onMounted(async () => {
     border-radius:5px;
     background-color:rgb(180,100,100);
     padding:3px 10px;
+    padding-right:30px;
     margin-left:108px;
     margin-bottom:10px;
     width:auto;
     height:32px;
-    background-image:none;
+    background-image:url("/dropdown-arrow.png");
+    background-size:15px;
+    background-repeat:no-repeat;
+    background-position:90px 10px;
     -webkit-appearance: none;
+}
+
+.dropdown:hover {
+    
+    
+    background-color:rgb(160,80,80);
+    
 }
 
 .dropdown:focus {
