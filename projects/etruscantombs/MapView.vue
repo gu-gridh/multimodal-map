@@ -57,17 +57,6 @@ const visibleAbout = ref(false);
 const showGrid = ref(false);
 let visited = true; // Store the visited status outside of the hook
 
-onMounted(() => {
-  // Check if the "visited" key exists in session storage
-  visited = sessionStorage.getItem("visited") === "true"; // Retrieve the visited status from session storage
-
-  if (!visited) {
-    // Hide the about component
-    visibleAbout.value = true;
-    sessionStorage.setItem("visited", "true");
-  }
-})
-
 const toggleAboutVisibility = async () => {
   console.log('fired')
   await nextTick();
@@ -75,11 +64,20 @@ const toggleAboutVisibility = async () => {
 };
 
 onMounted(() => {
+  // Check if the "visited" key exists in session storage
+  visited = sessionStorage.getItem("visited") === "true"; // Retrieve the visited status from session storage
   const storedShowGrid = localStorage.getItem("showGrid");
+
+  if (!visited) {
+    // Hide the about component
+    visibleAbout.value = true;
+    sessionStorage.setItem("visited", "true");
+  }
+
   if (storedShowGrid) {
     showGrid.value = JSON.parse(storedShowGrid);
   }
-});
+})
 
 watch(showGrid, (newValue) => {
   localStorage.setItem("showGrid", JSON.stringify(newValue));
@@ -118,7 +116,7 @@ watch(showGrid, (newValue) => {
           :shouldAutoMove="true" 
           :min-zoom="14" 
           :max-zoom="18" 
-          :restrictExtent="[11.973, 57.93, 12.006, 57.690]"          
+          :restrictExtent="[11.973, 57.93, 12.006, 57.690]"       
           :key="showGrid.toString()"
         > 
         <!-- 11.9, 42.15, 12.2, 42.4   11.973, 57.93, 12.006, 57.690-->
