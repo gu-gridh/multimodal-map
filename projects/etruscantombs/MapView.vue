@@ -118,10 +118,10 @@ watch(showGrid, (newValue) => {
           :shouldAutoMove="true" 
           :min-zoom="14" 
           :max-zoom="18" 
-          :restrictExtent="[11.975, 57.92, 11.99, 57.694]"          
+          :restrictExtent="[11.973, 57.93, 12.006, 57.690]"          
           :key="showGrid.toString()"
         > 
-        <!-- 11.9, 42.15, 12.2, 42.4   11.975, 57.92, 11.99, 57.694-->
+        <!-- 11.9, 42.15, 12.2, 42.4   11.973, 57.93, 12.006, 57.690-->
           
           <template #layers>
             <!-- Layer for testing -->
