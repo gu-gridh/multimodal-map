@@ -96,7 +96,7 @@ import { ref, inject, onMounted, watchEffect} from "vue"
 <style scoped>
 .place-back-button {
   left: 40px;
-  top: 50px;
+  top: 80px;
   background: url(@/assets/backbutton.png);
   background-size: 100%;
   background-repeat: no-repeat;
@@ -121,13 +121,13 @@ import { ref, inject, onMounted, watchEffect} from "vue"
 }
 
 .place-card-full {
-  margin-top:50px;
+  margin-top:80px;
   margin-left:50px;
   color:black;
   background-color: white;
   padding: 0px;
   box-shadow: -3px 0px 25px rgba(0, 0, 0, 0.3);
-  height:calc(100vh - 200px);
+  height:calc(100vh - 230px);
   overflow:hidden;
   overflow-y:auto;
   margin-bottom: 10px;

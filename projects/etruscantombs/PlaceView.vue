@@ -98,9 +98,59 @@ onMounted(async () => {
 </template>
 
 <style scoped>
+
+.main-container {
+    display: flex;
+    flex-direction: row;
+    height: 100vh; 
+    overflow: hidden; 
+}
+
+.place-card-container{
+    background-color: transparent !important; 
+    flex: 0 0 40%; /* Take up exactly 40% of the space */
+    max-width:600px;
+    min-width:500px;
+}
+
+.place-view {
+    background-color: transparent !important;
+    color: black;
+    flex: 1;  /* Take up the remaining space */
+    padding-top: 20px;
+    overflow-y: auto; /* Enable vertical scrolling */
+}
+
+.place-gallery-container {
+    flex: 1;
+    padding: 10px 30px 100px 10px;
+}
+
+.dropdown {
+    color: white;
+    border-radius:5px;
+    background-color:rgb(180,100,100);
+    padding:3px 10px;
+    margin-left:108px;
+    margin-bottom:10px;
+    width:auto;
+    height:32px;
+    background-image:none;
+    -webkit-appearance: none;
+}
+
+.dropdown:focus {
+    outline: none;
+    outline-color: rgb(140,60,60) !important;
+      }
+
 .content-table td {
+    padding: 15px;
+    padding-top: 2px;
+    text-align:right;
     vertical-align: top;
 }
+
 
 .image-placeholder {
     width: 200px; 
@@ -196,58 +246,6 @@ line-height:1.0;
 .image-placeholder:hover img {
   transform: scale(1.1)
 }
-
-.main-container {
-    display: flex;
-    flex-direction: row;
-    height: 100vh; 
-    overflow: hidden; 
-}
-
-.place-card-container{
-    background-color: transparent !important; 
-    flex: 0 0 40%; /* Take up exactly 40% of the space */
-    max-width:600px;
-    min-width:500px;
-}
-
-.place-view {
-    background-color: transparent !important;
-    color: black;
-    flex: 1;  /* Take up the remaining space */
-    padding-top: 20px;
-    overflow-y: auto; /* Enable vertical scrolling */
-}
-
-.place-gallery-container {
-    flex: 1;
-    padding: 30px 30px 100px 10px;
-}
-
-.dropdown {
-    color: white;
-    border-radius:5px;
-    background-color:rgb(180,100,100);
-    padding:3px 10px;
-    margin-left:-0px;
-    margin-bottom:10px;
-    width:auto;
-    height:32px;
-    background-image:none;
-    -webkit-appearance: none;
-}
-
-.dropdown:focus {
-    outline: none;
-    outline-color: rgb(140,60,60) !important;
-      }
-
-.content-table td {
-    padding: 15px;
-    padding-top: 2px;
-    text-align:right;
-}
-
 
 .place-card-wrapper {
     width: 40%;
