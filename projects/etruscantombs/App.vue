@@ -46,11 +46,12 @@ body {
   width: 900px;
   background: url("@/assets/gradient-jubileum.png");
   background-size: contain;
-  z-index:500;
+  z-index:100;
 }
 #app .right-pane {
   width: 550px;
   right:0px;
+  z-index:601!important;
   overflow:auto!important;
   -ms-overflow-style: none!important;
   scrollbar-width: none!important;

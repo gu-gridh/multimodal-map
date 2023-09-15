@@ -25,11 +25,9 @@
     <div class="right-pane">
       <slot name="details">
         <div class="col-start-6 col-span-2 detail">
-          <div class="bg-black rounded-lg shadow-lg mb-4 mx-12 detail">
+          <div class="detail">
             <div class="px-8 py-6">
               <div>
-                Here you'll find more information and media on the selected
-                location.
               </div>
             </div>
           </div>
@@ -53,6 +51,7 @@ import MapComponent from "./components/MapComponent.vue";
 import type { Project } from "./types/project";
 
 const config = inject("config") as Project;
+
 </script>
 
 <style>
@@ -103,7 +102,7 @@ body {
   height:100vh;
   pointer-events: auto;
   width:500px;
-padding: 60px 50px 50px 60px;
+  padding: 60px 50px 50px 60px;
   overflow:hidden!important;
   overflow-y: scroll !important;
   -ms-overflow-style: none!important;
@@ -124,9 +123,14 @@ padding: 60px 50px 50px 60px;
   width: 350px;
   right: 0px;
   pointer-events: none;
-  z-index: 200;
+  z-index: 100 !important;
   overflow: hidden !important;
 }
+
+.right-to-left {
+  left: 0px;
+}
+
 
 .mapview-preview {
   padding-top: 5px;

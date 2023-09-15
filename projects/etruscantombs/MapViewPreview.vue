@@ -19,6 +19,10 @@ let text = ref(false)
 let place = ref()
 let description = ref("");
 
+
+
+
+
 //when a place is selected, fetch image and info
 watchEffect(async () => {
   if (selectedFeature.value) {
@@ -74,7 +78,7 @@ function deselectPlace() {
           <div class="center-button">
             <router-link :to="`/place/${place.id_}`">
               <button class="theme-button" style="margin-top:20px;">More Info</button>
-            </router-link>
+           </router-link>
       </div>
     </div>
   </div>
@@ -92,6 +96,7 @@ function deselectPlace() {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
 
 #app .mapview-preview::-webkit-scrollbar {
     width: 0 !important
@@ -122,6 +127,7 @@ function deselectPlace() {
     width: 0 !important
     }
 
+  
 
 .close-button {
   position: absolute;
