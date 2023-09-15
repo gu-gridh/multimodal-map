@@ -48,6 +48,7 @@ const store = mapStore();
 const { extent, center, zoom } = storeToRefs(store);
 
 let isInitialSettingDone = false; //don't fire the watchers before setting the map location
+const isAnimating = ref(false);
 
 const projection = ref(config.projection);
 const rotation = ref(0);
@@ -97,27 +98,6 @@ const transformedRestrictExtent = computed(() => {
   return undefined;
 });
 
-
-/* function zoomChanged() {
-  let newZoom = map.value.map.getView().getZoom();
-  console.log('Updating zoom:', newZoom);
-  store.updateZoom(newZoom);
-
-  let newExtent = map.value.map.getView().calculateExtent(map.value.map.getSize());
-  newExtent = transformExtent(newExtent, projection.value, "EPSG:4326");
-  extent.value = newExtent;
-}
-
-function onCenterChange() {
-  let newCenter = map.value.map.getView().getCenter();
-  console.log('Updating center:', newCenter);
-  store.updateCenter(newCenter);
-
-  let newExtent = map.value.map.getView().calculateExtent(map.value.map.getSize());
-  newExtent = transformExtent(newExtent, projection.value, "EPSG:4326");
-  extent.value = newExtent;
-} */
-
 onMounted(() => {
   let storeCenter = store.center;
   let storeZoom = store.zoom;
@@ -142,36 +122,71 @@ onMounted(() => {
   watch(
     () => store.center,
     (newCenter) => {
-      if (shouldAutoMove.value && newCenter && isInitialSettingDone) {
-        map.value.map.getView().setCenter(newCenter);
+      // Checking multiple conditions before animating the map.
+      if (
+        shouldAutoMove.value &&
+        newCenter &&
+        isInitialSettingDone &&
+        JSON.stringify(newCenter) !== JSON.stringify(map.value.map.getView().getCenter())
+      ) {
+        isAnimating.value = true; // Set the flag
+        map.value.map.getView().animate(
+          {
+            center: newCenter,
+            duration: 500,
+          },
+          () => {
+            nextTick(() => {
+              isAnimating.value = false; // Unset the flag
+            });
+          }
+        );
       }
     },
-    { immediate: true }
   );
 
   watch(
     () => store.zoom,
     (newZoom) => {
-      if (shouldAutoMove.value && newZoom && isInitialSettingDone) {
-        map.value.map.getView().setZoom(newZoom);
+      // Checking multiple conditions before animating the map.
+      if (
+        shouldAutoMove.value &&
+        newZoom !== null &&
+        isInitialSettingDone &&
+        newZoom !== map.value.map.getView().getZoom()
+      ) {
+        isAnimating.value = true; // Set the flag
+        map.value.map.getView().animate(
+          {
+            zoom: newZoom,
+            duration: 500,
+          },
+          () => {
+            // Using nextTick to update isAnimating after the DOM updates
+            nextTick(() => {
+              isAnimating.value = false; // Unset the flag
+            });
+          }
+        );
       }
     },
-    { immediate: true }
   );
 });
 
 function onMoveEnd() {
-  let newCenter = map.value.map.getView().getCenter();
-  store.updateCenter(newCenter);
-
-  let newZoom = map.value.map.getView().getZoom();
-  store.updateZoom(newZoom);
-
-/*   let newExtent = map.value.map.getView().calculateExtent(map.value.map.getSize());
-  newExtent = transformExtent(newExtent, projection.value, "EPSG:4326");
-  extent.value = newExtent; */
+  if (isAnimating.value) {
+    return;
+  }
+  const currentCenter = map.value.map.getView().getCenter();
+  const currentZoom = map.value.map.getView().getZoom();
+  // Only update the store if the values have actually changed.
+  if (JSON.stringify(currentCenter) !== JSON.stringify(store.center)) {
+    store.updateCenter(currentCenter);
+  }
+  if (currentZoom !== store.zoom) {
+    store.updateZoom(currentZoom);
+  }
 }
-
 </script>
 
 <style>
