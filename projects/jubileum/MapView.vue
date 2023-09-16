@@ -4,10 +4,11 @@ import MainLayout from "@/MainLayout.vue";
 import MapViewControls from "./MapViewControls.vue";
 import MapComponent from "@/components/MapComponent.vue";
 import DianaPlaceLayer from "@/components/DianaPlaceLayer.vue";
-import MapViewFeautureSelect from "./MapViewFeautureSelect.vue";
+import FeatureSelection from "./FeatureSelection.vue";
 import MapViewPreview from "./MapViewPreview.vue";
 import { storeToRefs } from "pinia";
 import { jubileumStore } from "./store";
+import { mapStore } from "@/stores/store";
 import { clean } from "@/assets/utils";
 import markerIcon from "@/assets/marker-white.svg";
 import MapViewGallery from "./MapViewGallery.vue";
@@ -18,10 +19,26 @@ import { nextTick } from "vue";
 
 const { categories } = storeToRefs(jubileumStore());
 const targetDiv = document.getElementById("third");
+const store = mapStore();
+const { selectedFeature } = storeToRefs(store);
 const placeParams = computed(() =>
   clean({
     type: categories.value.filter((x) => x !== "all").join(","),
   })
+);
+
+watch(
+  selectedFeature,
+  (newFeature, oldFeature) => {
+    if (newFeature && newFeature.getGeometry) {
+      const geometry = newFeature.getGeometry();
+      if (geometry) {
+        const coordinates = (geometry as any).getCoordinates();
+        store.updateCenter(coordinates);
+      }
+    }
+  },
+  { immediate: true }
 );
 
 const toggleAboutVisibility = async () => {
@@ -94,13 +111,12 @@ watch(showGrid, (newValue) => {
     </template>
     
     <template #background>
-    
       <div class="map-container">
-        
         <MapComponent
+         :shouldAutoMove="true" 
           :min-zoom="16"
           :max-zoom="18"
-          :restrictExtent="[11.922, 57.7215, 11.996, 57.69035]"
+          :restrictExtent="[11.922, 57.7215, 12.015, 57.685]"
           :key="showGrid.toString()"
         >
           <template #layers>
@@ -113,7 +129,7 @@ watch(showGrid, (newValue) => {
                   :anchor="[0.0, 0.0]"
                 ></ol-style-icon>
               </ol-style>
-              <MapViewFeautureSelect />
+              <FeatureSelection />
             </DianaPlaceLayer>
             <ol-tile-layer>
               <ol-source-xyz
@@ -153,14 +169,14 @@ watch(showGrid, (newValue) => {
 #gallery{}
 
 .ui-overlay {
-margin-top: 70px;
+margin-top: 20px;
 z-index: 250;
 position:absolute;
 border-radius: 8px;
 font-size: 18px;
 font-weight: 700;
 color: white;
-margin-left:450px;
+margin-left:200px;
 background-color: rgb(180, 100, 100, 0.8);
 backdrop-filter: blur(3px);
 transition: all 0.5s ease-in-out;
@@ -190,40 +206,54 @@ color: white;
 }
 
 #app .ol-popup {
-  font-size: 1.2em;
+  font-size: 1.1em !important;
   -webkit-user-select: none;
   -moz-user-select: none;
   user-select: none;
-  text-align: center;
-  line-height: 1.2;
+  text-align: center!important;
   position: absolute;
-  background-color: white;
   box-shadow: 2 2px 8px rgba(0, 0, 0, 0.5);
-  padding: 3px;
-  border-radius: 5px;
+  padding: 3px 10px;
+  border-radius: 8px !important;
   border: 0px solid #cccccc;
-  bottom: 35px;
-  left: -50px;
-  min-width: 100px;
+  bottom: 40px;
+  left: -80px;
+  width: 170px;
 }
 
-#app .ol-control button {
-  font-family: "Barlow Condensed", sans-serif;
-  border-radius: 50% !important;
-  background-color: rgb(248, 249, 228) !important;
-  color: black !important;
-}
+.ol-popup:after, .ol-popup:before {
+        top: 100%;
+        border: solid transparent;
+        content: " ";
+        height: 0;
+        width: 0;
+        position: absolute;
+        pointer-events: none;
+      }
+      .ol-popup:after {
+        border-top-color: white!important;
+        border-width: 0px!important;
+        left: 45px!important;
+        margin-left: 20px;
+      }
+      .ol-popup:before {
+        border-top-color: #cccccc;
+        border-width: 11px;
+        left: 55px;
+        margin-left: 15px;
+      }
+
 
 #app .ol-control button:hover,
 .ol-control button:focus {
-  background-color: rgb(220, 140, 140) !important;
+  background-color: rgb(120, 60, 60) !important;
   color: white !important;
   border-style: none !important;
   border-style: hidden !important;
 }
 
 #app .ol-control button:active {
-  background-color: rgb(180, 100, 100) !important;
+  background-color: rgb(120, 60, 60) !important;
   color: white !important;
   border-style: none !important;
   border-style: hidden !important;

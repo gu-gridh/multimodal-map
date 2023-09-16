@@ -7,7 +7,6 @@ import type { Project } from "@/types/project";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
 import markerIcon from "@/assets/marker-white.svg";
-import markerIconGreen from "@/assets/marker-green.svg";
 import markerIconRedOutline from "@/assets/marker-red-outline.svg";
 import Collection from "ol/Collection";
 
@@ -21,10 +20,12 @@ const hoverCoordinates = ref();
 const hoveredFeature = ref<Feature>();
 
 const selectConditions = inject("ol-selectconditions");
+
 const hoverCondition = selectConditions.pointerMove;
 const selectCondition = selectConditions.click;
+
 // This list is connected to the ol-interaction-select element; this is to be able to deselect programmatically
-const selectedFeaturesCollection = new Collection(
+  const selectedFeaturesCollection = new Collection(
   selectedFeature.value ? [selectedFeature.value] : []
 );
 
@@ -41,7 +42,7 @@ const onHover = (event: SelectEvent) => {
 };
 
 const onClick = (event: SelectEvent) => {
-  const features = event.selected;
+const features = event.selected;
 
   if (features.length === 1) {
     // Unselect the hovered feature

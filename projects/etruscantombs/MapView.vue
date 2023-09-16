@@ -12,7 +12,6 @@ import { etruscanStore } from "./store";
 import { mapStore } from "@/stores/store";
 import { clean } from "@/assets/utils";
 import markerIcon from "@/assets/marker-white.svg";
-import markerBlue from "@/assets/marker-blue.svg";
 import MapViewGallery from "./MapViewGallery.vue";
 import { ref } from "vue";
 import About from "./About.vue";

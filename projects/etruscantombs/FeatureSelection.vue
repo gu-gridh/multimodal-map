@@ -42,7 +42,8 @@ const onHover = (event: SelectEvent) => {
 };
 
 const onClick = (event: SelectEvent) => {
-  const features = event.selected;
+const features = event.selected;
+
   if (features.length === 1) {
     // Unselect the hovered feature
     hoverCoordinates.value = undefined;
