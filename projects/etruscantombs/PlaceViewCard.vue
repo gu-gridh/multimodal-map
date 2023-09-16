@@ -89,9 +89,10 @@ import markerIcon from "@/assets/marker-red.svg";
         </div>
         <div class="card-text">
           <div class="place-title">Title of place</div> 
-          <div class="place-type">Tumulus</div>         
+          <div class="place-type">Type of place</div>         
   
-          <div class="metadata-content">Here goes the metadata</div>    
+          <div class="metadata-content">Here goes the structured data</div>  
+          <div class="metadata-content">Here goes the description</div>    
         </div>
     </div>
       </div>
@@ -164,7 +165,7 @@ margin-bottom:5px;
 }
 
 .place-card-content .metadata-content{
-padding:20px 30px 30px 0px;
+padding:0px 30px 10px 0px;
 line-height:1.2;
 }
 
@@ -178,7 +179,8 @@ margin-bottom:20px;
 
 .mini-map{
   width:100%;
-  height:300px;
+  height:35vh;
+  max-height:300px;
   overflow:hidden;
   background-color:grey;
   margin-bottom:0px;
