@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import router from './router'
 import { ref, inject, onMounted, watchEffect} from "vue"
+import markerIcon from "@/assets/marker-red.svg";
 
     const props = defineProps<{
         id: number;
@@ -16,17 +17,17 @@ import { ref, inject, onMounted, watchEffect} from "vue"
     }
 
     const projection = ref("EPSG:4326");
-    const zoom = ref(14);
+    const zoom = ref(15);
     const rotation = ref(0);
     const strokeWidth = ref(5);
     const strokeColor = ref("red");
-    const center = ref([12.001323, 42.241995])
-    const minZoom = ref(10)
+    const center = ref([11.999722, 42.224444])
+    const minZoom = ref(12)
 
     const format = inject("ol-format");
     const geoJson = new format.GeoJSON();
 
-    const url = "https://diana.dh.gu.se/api/rwanda/geojson/place/"+ props.id
+    const url = "https://diana.dh.gu.se/api/jubileum/geojson/place/"+ props.id
 
     // watchEffect(async() => {
     //   const coords = props.place?.geometry.coordinates
@@ -77,15 +78,20 @@ import { ref, inject, onMounted, watchEffect} from "vue"
               <ol-source-vector :url="url" :format="geoJson">
               </ol-source-vector>
               <ol-style>
-                <ol-style-stroke :color="strokeColor" :width="strokeWidth"></ol-style-stroke>
+                <ol-style-icon 
+                :src="markerIcon" 
+                :scale="1.8" 
+                :displacement="[-10, 45]"
+                :anchor="[0.0, 0.0]"></ol-style-icon>
               </ol-style>
             </ol-vector-layer>
           </ol-map>
         </div>
         <div class="card-text">
-          <div class="place-title">Place Title</div>
-          
-          <button class="theme-button">3D model</button>
+          <div class="place-title">Title of place</div> 
+          <div class="place-type">Tumulus</div>         
+  
+          <div class="metadata-content">Here goes the metadata</div>    
         </div>
     </div>
       </div>
@@ -158,7 +164,7 @@ margin-bottom:5px;
 }
 
 .place-card-content .metadata-content{
-padding:20px 30px 30px 30px;
+padding:20px 30px 30px 0px;
 line-height:1.2;
 }
 
@@ -203,7 +209,7 @@ padding: 0px;
   text-align: left;
   color: rgb(180, 100, 100);
   width: calc(100% - 20px);
-  margin-bottom: 10px;
+  margin-bottom: 0px;
   margin-top:10px;
   float:left;
   font-size:35px;
@@ -221,6 +227,19 @@ padding: 0px;
   opacity: 0.99;
   box-shadow: 0px -5px 10px 0 rgba(0, 0, 0, 0.2),
     0 0px 0px 0 rgba(0, 0, 0, 0.19);
+}
+
+.place-type {
+  font-family: 'Teko', sans-serif;
+  letter-spacing: -0.0rem;
+  font-size:25px;
+  text-align: left;
+  color: rgb(180, 100, 100);
+  width: calc(100% - 20px);
+  margin-bottom: 10px;
+  margin-top:-5px;
+  float:left;
+
 }
 
 

@@ -100,7 +100,7 @@ body {
 
 .left-pane-layer {
   height:100vh;
-  pointer-events: auto;
+  pointer-events: none;
   width:500px;
   padding: 60px 50px 50px 60px;
   overflow:hidden!important;
