@@ -80,8 +80,8 @@ const getFeatureDisplayName: DisplayFunction =
     <ol-style>
       <ol-style-icon
         :src="markerIconRedOutline"
-        :scale="2.1"
-        :displacement="[-10, 50]"
+        :scale="1.9"
+        :displacement="[-10, 45]"
         :anchor="[0.0, 0.0]"
       ></ol-style-icon>
       <ol-style-stroke color="rgb(220,100,100)" :width="6"></ol-style-stroke>
@@ -91,9 +91,9 @@ const getFeatureDisplayName: DisplayFunction =
   <ol-interaction-select @select="onHover" :condition="hoverCondition">
     <ol-style>
       <ol-style-icon
-        :src="markerIcon"
-        :scale="2.1"
-        :displacement="[-10, 50]"
+        :src="markerIconRedOutline"
+        :scale="1.9"
+        :displacement="[-10, 45]"
         :anchor="[0.0, 0.0]"
       ></ol-style-icon>
       <ol-style-stroke color="rgb(220,100,100)" :width="6"></ol-style-stroke>

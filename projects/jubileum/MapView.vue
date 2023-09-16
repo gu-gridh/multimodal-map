@@ -120,6 +120,8 @@ watch(showGrid, (newValue) => {
           :key="showGrid.toString()"
         >
           <template #layers>
+        
+          
             <DianaPlaceLayer path="jubileum/geojson/place/" :params="placeParams">
               <ol-style>
                 <ol-style-icon
@@ -131,6 +133,7 @@ watch(showGrid, (newValue) => {
               </ol-style>
               <FeatureSelection />
             </DianaPlaceLayer>
+          
             <ol-tile-layer>
               <ol-source-xyz
                 url="https://data.dh.gu.se/tiles/gbg_1921b/{z}/{x}/{y}.png"
