@@ -101,7 +101,7 @@ body {
 .left-pane-layer {
   height:100vh;
   pointer-events: none;
-  width:500px;
+  width:490px;
   padding: 60px 50px 50px 60px;
   overflow:hidden!important;
   overflow-y: scroll !important;

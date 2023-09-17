@@ -41,6 +41,13 @@ body {
   margin-left:-10px;
 }
 
+.about {
+  padding-right: 40px;
+  line-height: 1.2;
+  text-align: left;
+  font-size:0.95em;
+}
+
 #app .left-pane {
   background-color: grey;
   width: 900px;
@@ -48,6 +55,13 @@ body {
   background-size: contain;
   z-index:100;
 }
+
+#app .left-pane-layer {
+  padding: 60px 50px 130px 60px!important;
+  pointer-events: auto!important;
+  width:460px!important;
+}
+
 #app .right-pane {
   width: 550px;
   right:0px;

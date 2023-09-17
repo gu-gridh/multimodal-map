@@ -8,6 +8,7 @@ import DianaPlaceLayer from "@/components/DianaPlaceLayer.vue";
 import DianaPlaceLayerRephoto from "@/components/DianaPlaceLayerRephoto.vue";
 import FeatureSelection from "@/components/FeatureSelectionRephoto.vue";
 import MapViewPreview from "./MapViewPreview.vue";
+import MapViewGallery from "./MapViewGallery.vue";
 import { storeToRefs } from "pinia";
 import { rephotographyStore } from "./store";
 import { mapStore } from "@/stores/store";
@@ -57,6 +58,7 @@ const tagParams = computed(() => {
 
 
 const visibleAbout = ref(false);
+const showGrid = ref(false);
 let visited = false; // Store the visited status outside of the hook
 
 onMounted(() => {
@@ -100,9 +102,23 @@ const toggleSection = () => {
 /*Colors for Vector Layer*/
 const layerColors = ["rgb(255,150,0)", "rgb(0,150,50)", "rgb(0,100,255)"];
 
+watch(showGrid, (newValue) => {
+  localStorage.setItem("showGrid", JSON.stringify(newValue));
+});
 </script>
 
 <template>
+  <div style="display:flex; align-items: center; justify-content: center;">
+    <div class="ui-mode ui-overlay">
+      <button class="item" v-bind:class="{ selected: !showGrid }" v-on:click="showGrid = false;">
+        Map
+      </button>
+      <button class="item" v-bind:class="{ selected: showGrid }" v-on:click="showGrid = true;">
+        Gallery
+      </button>
+    </div>
+  </div>
+  <MapViewGallery v-if="showGrid" />
  <About :visibleAbout="visibleAbout" @close="visibleAbout = false" />
   <MainLayout>
     <template #search>
@@ -231,6 +247,42 @@ const layerColors = ["rgb(255,150,0)", "rgb(0,150,50)", "rgb(0,100,255)"];
 </template>
 
 <style>
+.ui-overlay {
+  margin-top: 20px;
+  z-index: 250;
+  position: absolute;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: 700;
+  color: white;
+  margin-left: 200px;
+  background-color: rgb(0, 0, 0, 0.8);
+  backdrop-filter: blur(3px);
+  transition: all 0.5s ease-in-out;
+}
+
+.ui-mode {
+  top: 0px;
+  padding: 4px 10px 4px 10px;
+}
+
+.ui-mode .item {
+  cursor: pointer;
+  display: inline;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.5);
+  padding: 0px 15px 0px 15px;
+
+}
+
+.ui-mode .item:hover {
+  color: white;
+}
+
+.ui-mode .selected {
+  font-weight: 500;
+  color: rgba(255, 255, 255, 1.0);
+}
 
 #app .ol-popup {
   font-size: 1.1em !important;

@@ -73,6 +73,7 @@ body {
 width:450px;
 padding: 60px 0px 100px 60px;
 scrollbar-width: none;
+pointer-events: auto!important;
 }
 
 #app .right-pane {
