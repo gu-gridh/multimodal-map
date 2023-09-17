@@ -11,7 +11,7 @@ provide("diana", endpoint);
 </script>
 
 <template>
-      <Footer />
+  <Footer />
   <router-view />
 </template>
 
@@ -19,7 +19,7 @@ provide("diana", endpoint);
 html,
 body {
   font-family: "Barlow Condensed", sans-serif !important;
-  background-color:rgb(232,228,217)!important;
+  background-color: rgb(232, 228, 217) !important;
 }
 
 .map-container {
@@ -28,24 +28,24 @@ body {
 }
 
 .theme-color {
-  color:rgb(180,100,100);
+  color: rgb(180, 100, 100);
 }
 
 .main-title {
   font-family: 'Teko', sans-serif;
   font-size: 100px;
   line-height: 0.7;
-  font-weight:300;
-  letter-spacing:0.05rem;
-  color:rgb(180,100,100);
-  margin-left:-10px;
+  font-weight: 300;
+  letter-spacing: 0.05rem;
+  color: rgb(180, 100, 100);
+  margin-left: -10px;
 }
 
 .about {
   padding-right: 0px;
   line-height: 1.2;
   text-align: left;
-  font-size:0.95em;
+  font-size: 0.95em;
 }
 
 #app .left-pane {
@@ -53,86 +53,26 @@ body {
   width: 900px;
   background: url("@/assets/gradient-jubileum.png");
   background-size: contain;
-  z-index:100;
+  z-index: 100;
 }
 
 #app .left-pane-layer {
-  padding: 60px 0px 130px 60px!important;
-  pointer-events: auto!important;
-  width:410px!important;
+  padding: 60px 0px 130px 60px !important;
+  pointer-events: auto !important;
+  width: 410px !important;
 }
 
 #app .right-pane {
   width: 550px;
-  right:0px;
-  z-index:601!important;
-  overflow:auto!important;
-  -ms-overflow-style: none!important;
-  scrollbar-width: none!important;
+  right: 0px;
+  z-index: 601 !important;
+  overflow: auto !important;
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
 }
 
 #app .right-pane::-webkit-scrollbar {
-    width: 0 !important
-    }
-
-@media screen and (max-width: 1800px) {
-#app .right-pane {
-  width: 500px;
-}
-}
-
-@media screen and (max-width: 1700px) {
-#app .right-pane {
-  width: 450px;
-}
-}
-
-
-@media screen and (max-width: 1200px) {
-#app .right-pane {
-width: 400px!important;
-}
-
-#app .image-container {
-  height:40vh!important;
-  border-radius:0px!important;
-  margin-bottom: 0px!important;
-}
-
-.ui-overlay {
- 
-
-}
-}
-
-@media screen and (max-width: 900px) {
-#app .right-pane {
-width: 100%!important;
-}
-
-#app .place-card {
-margin-top:15px;
-}
-
-.ui-overlay {
-margin-top: 25px !important;
-margin-left:0px !important;
-font-size:120% !important;
-}
-
-#app .masonry-grid {
-  position: absolute;
-  top: 0px;
-  width: 100%;
-  height: 100%; /* Make the grid height responsive */
-  z-index: 200;
-  background-color: rgb(234, 228, 219);
-  padding: 0px 0px 230px 00px;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  grid-template-rows: masonry;
-  grid-gap: 5px;
-  overflow-y: scroll;
-}
+  width: 0 !important
 }
 
 #app .mapview-preview {
@@ -162,55 +102,134 @@ font-size:120% !important;
   background-color: rgb(140, 140, 140);
 }
 
-.theme-button{
+.theme-button {
   background-color: rgb(180, 100, 100);
-  border-radius:5px;
-  padding:5px 10px;
-  color:white;
+  border-radius: 5px;
+  padding: 5px 10px;
+  color: white;
 }
-
 
 
 #app .ol-zoom-in {
   left: calc(50% + 50px) !important;
-  top: calc(100vh - 140px)!important;
+  top: calc(100vh - 140px) !important;
   position: fixed;
-  border-radius: 10px 0px 0px 10px!important;
-  height:35px;
-  padding-bottom:3px!important;
-  width:50px;
+  border-radius: 10px 0px 0px 10px !important;
+  height: 35px;
+  padding-bottom: 3px !important;
+  width: 50px;
 }
 
-#app  .ol-zoom-out {
+#app .ol-zoom-out {
   left: calc(50% + 100px);
-  top: calc(100vh - 140px);
+  top: calc(100vh - 140px) !important;
   position: fixed;
   margin-top: 1px;
-  border-radius: 0px 10px 10px 0px!important;
-  height:35px;
-  padding-bottom:3px!important;
-  widtH:50px;
+  border-radius: 0px 10px 10px 0px !important;
+  height: 35px;
+  padding-bottom: 3px !important;
+  widtH: 50px;
 }
 
 #app .ol-control button:active,
 #app .ol-control button:hover,
 #app .ol-control button:focus {
-  background-color: rgba(0, 0, 0, 0.7)!important;
+  background-color: rgba(0, 0, 0, 0.7) !important;
 }
+
+
+@media screen and (max-width: 1800px) {
+  #app .right-pane {
+    width: 500px;
+  }
+}
+
+@media screen and (max-width: 1700px) {
+  #app .right-pane {
+    width: 500px;
+  }
+}
+
+@media screen and (max-width: 1350px) {
+  #app .right-pane {
+    width: 450px;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  #app .right-pane {
+    width: 400px !important;
+  }
+}
+
+  @media screen and (max-width: 1100px) {
+    #app .right-pane {
+      width: 350px !important;
+    }
+  }
+
+  #app .image-container {
+    height: 40vh !important;
+    border-radius: 0px !important;
+    margin-bottom: 0px !important;
+  }
+
+  
+
+@media screen and (max-width: 900px) {
+  #app .right-pane {
+    width: 100% !important;
+  }
+
+  #app .place-card {
+    margin-top: 15px;
+  }
+
+  .ui-overlay {
+    margin-top: 25px !important;
+    margin-left: 0px !important;
+    font-size: 120% !important;
+  }
+
+  #app .masonry-grid {
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    /* Make the grid height responsive */
+    z-index: 200;
+    background-color: rgb(234, 228, 219);
+    padding: 0px 0px 230px 00px;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    grid-template-rows: masonry;
+    grid-gap: 5px;
+    overflow-y: scroll;
+  }
+
+  #app .ol-zoom-in {
+    left: calc(50% - 50px) !important;
+    top: calc(100vh - 320px) !important;
+  }
+
+  #app .ol-zoom-out {
+    left: calc(50% + 0px) !important;
+    top: calc(100vh - 320px) !important;
+  }
+}
+
+
+
 
 @media screen and (min-width: 1900px) {
 
   #app .right-pane {
-    font-size:120%;
-  width: 600px!important;
+    font-size: 115%;
+    width: 600px !important;
+  }
+
+  #app .ui-overlay {
+    font-size: 120% !important;
+    margin-top: 20px !important;
+  }
 }
-
-
-#app .ui-overlay {
-  font-size:130%!important;
-  margin-top:20px !important;
-}
-}
-
-
 </style>

@@ -44,15 +44,11 @@ function deselectPlace() {
 
 <template>
   <div v-if="selectedFeature" class="mapview-preview">
-    <div class="place-card">
+    <div class="placecard">
       <div class="close-button" @click="deselectPlace">+</div>
-      <div  class="place-card-top">
+      <div class="placecard-top">
 
-        <OpenSeadragon
-          :src="imageUrls" 
-          :key="imageUrls.join(',')" 
-          class="flex-1" 
-        />
+        <OpenSeadragon :src="imageUrls" :key="imageUrls.join(',')" class="flex-1" />
 
         <!-- Code to list all images -->
         <!-- <router-link :to="`/place/${place.id_}`"
@@ -69,26 +65,47 @@ function deselectPlace() {
       </router-link> -->
       </div>
 
-      <div class="place-card-bottom">
-        <div class="card-text">
-          <div class="place-title">{{ selectedFeature.get("name") }}</div>
-          <div class="place-type">Type of place</div>   
+      <div class="placecard-bottom">
+        <div class="placecard-text">
+          <div class="placecard-title">{{ selectedFeature.get("name") }}</div>
+          <div class="placecard-subtitle">240</div>
           <button class="theme-button">3D model</button>
         </div>
         <div class="placecard-content">
-        <div class="metadata-content">Here goes some structured data in two rows</div>  
+          <div class="placecard-metadata-content" style="height:45px; overflow:hidden;">
+
+
+            <div class="metadata-item">
+              <div class="label">Necropolis:</div>
+              <div class="tag">Grotte Tufarina</div>
+            </div>
+            <div class="metadata-item">
+              <div class="label short">Type:</div>
+              <div class="tag">Tumulus</div>
+            </div>
+            <div class="metadata-item">
+              <div class="label">Chambers:</div>
+              <div class="tag">1</div>
+            </div>
+            <div class="metadata-item">
+              <div class="label short">Period:</div>
+              <div class="tag">Before 650 BC</div>
+            </div>
+
+
+          </div>
         </div>
       </div>
-          <div class="center-button">
-            <router-link :to="`/place/${place.id_}`">
-              <button class="theme-button" style="margin-top:20px;">More Info</button>
-           </router-link>
+      <div class="placecard-center-button">
+        <router-link :to="`/place/${place.id_}`">
+          <button class="theme-button" style="margin-top:20px;">More Info</button>
+        </router-link>
       </div>
     </div>
   </div>
 </template>
 
-<style scoped>
+<style>
 #app .mapview-preview {
   background-color: transparent;
   color: black;
@@ -103,10 +120,10 @@ function deselectPlace() {
 
 
 #app .mapview-preview::-webkit-scrollbar {
-    width: 0 !important
-    }
+  width: 0 !important
+}
 
-.place-card {
+.placecard {
   display: flex;
   flex-direction: column;
   align-items: left;
@@ -127,11 +144,12 @@ function deselectPlace() {
     0 0px 20px 0 rgba(0, 0, 0, 0.19);
   transition: all 0.1s ease-in-out;
 }
-.place-card::-webkit-scrollbar {
-    width: 0 !important
-    }
 
-  
+.place-card::-webkit-scrollbar {
+  width: 0 !important
+}
+
+
 
 .close-button {
   position: absolute;
@@ -152,16 +170,17 @@ function deselectPlace() {
   background-color: rgb(180, 100, 100);
   margin-bottom: 0px;
 }
+
 .close-button:hover {
   background-color: rgb(140, 60, 60);
 }
 
-.place-card-top {
+.placecard-top {
   display: flex;
-  height:50%;
+  height: 50%;
   border-radius: 0px !important;
-  min-height:150px;
-  background-color:rgb(60,60,60);
+  min-height: 150px;
+  background-color: rgb(60, 60, 60);
 }
 
 .image {
@@ -172,12 +191,13 @@ function deselectPlace() {
   transform: scale(1.2) !important;
 }
 
-.place-card-bottom {
+.placecard-bottom {
   flex-grow: 1 !important;
   border-radius: 0px !important;
 
 }
-.card-text {
+
+.placecard-text {
   font-family: "Barlow Condensed", sans-serif;
   color: black;
   font-size: 1.0em;
@@ -185,14 +205,14 @@ function deselectPlace() {
   hyphens: auto;
   line-height: 1.2;
   padding: 10px 20px 0px 20px;
- 
+
 }
 
-.card-text p {
+.placecard-text p {
   padding: 0px;
 }
 
-.place-title {
+.placecard-title {
   font-family: 'Teko', sans-serif;
   letter-spacing: -0.0rem;
   text-align: left;
@@ -202,7 +222,7 @@ function deselectPlace() {
   font-size: 35px;
 }
 
-.place-title p {
+.placecard-title p {
   color: white;
   font-size: 26px;
   font-weight: 600;
@@ -216,32 +236,118 @@ function deselectPlace() {
     0 0px 0px 0 rgba(0, 0, 0, 0.19);
 }
 
-.place-type {
+.placecard-subtitle {
   font-family: 'Teko', sans-serif;
   letter-spacing: -0.0rem;
-  font-size:25px;
+  font-size: 28px;
+  text-align: left;
+  color: rgb(180, 100, 100);
+  width: calc(100%);
+  margin-bottom: 10px;
+  margin-top: -5px;
+  float: left;
+
+}
+
+.placecard-type {
+  font-family: 'Teko', sans-serif;
+  letter-spacing: -0.0rem;
+  font-size: 25px;
   text-align: left;
   color: rgb(180, 100, 100);
   width: calc(100% - 20px);
   margin-bottom: 10px;
-  margin-top:-5px;
-  float:left;
+  margin-top: -5px;
+  float: left;
 
 }
 
-.placecard-content{
-padding:20px 30px 10px 20px;
-
-}
-.metadata-content{
-padding:0px 30px 10px 0px;
-line-height:1.2;
+.placecard-content {
+  padding: 20px 0px 10px 20px;
 }
 
-.center-button {
+.placecard-metadata-content {
+  padding: 0px 0px 10px 0px;
+  font-size: 1.0em;
+  line-height: 1.2;
+  float: left;
+  width: 100%;
+}
+
+.placecard-center-button {
   display: flex;
   justify-content: center;
   width: 100%;
   padding-bottom: 20px;
+}
+
+.metadata-item {
+  margin-bottom: 5px;
+  float: left;
+  width: 200px;
+
+}
+
+.placecard-metadata-content .label {
+  float: left;
+  text-align: left;
+  width: 60px;
+}
+
+.placecard-metadata-content .short {
+  width: 60px;
+  text-align: right;
+}
+
+.placecard-metadata-content .tag {
+  float: left;
+  color: rgb(180, 100, 100);
+  padding-left: 10px;
+  padding-right: 10px;
+  width: auto;
+
+  font-weight: 600;
+
+}
+
+@media screen and (max-width: 900px) {
+
+  .placecard {
+  height: calc(100vh - 300px);
+  margin-top: 10px;
+  
+}
+
+
+  .placecard-title {
+    font-size: 50px;
+  }
+
+  .placecard-subtitle {
+    font-size: 38px;
+  }
+
+  /*  .placecard-metadata-content .label {
+    font-size:1.3em;
+  float: left;
+  text-align: left;
+  width:80px;
+}
+
+.placecard-metadata-content .short {
+  width:60px;
+  text-align: right;
+}
+
+.placecard-metadata-content .tag {
+  font-size:1.3em;
+  float: left;
+  color: rgb(180, 100, 100);
+  padding-left: 10px;
+  padding-right:10px;
+  width:170px;
+  font-weight:600;
+
+} */
 }
 </style>

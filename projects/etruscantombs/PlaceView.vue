@@ -26,7 +26,7 @@ onMounted(async () => {
 <template>
    <div class="main-container">
     <div class="place-card-container">
-            <PlaceViewCard :id="id" />
+        <PlaceViewCard :id="id" />
     </div>
         <!-- Here we will show info of the place -->
         <div class="place-view">
@@ -113,6 +113,7 @@ onMounted(async () => {
     flex: 0 0 40%; /* Take up exactly 40% of the space */
     max-width:600px;
     min-width:500px;
+    height:100vh!important; 
 }
 
 .place-view {
@@ -260,51 +261,53 @@ line-height:1.0;
   transform: scale(1.1)
 }
 
-.place-card-wrapper {
-    width: 40%;
-    overflow: hidden;
-}
-
-.place-view-wrapper {
-    width: 60%;
-    overflow: auto;
-    padding: 20px;
-}
 
 @media screen and (max-width: 900px) {
-.main-container {
-    flex-direction: column;
-}
 
-.place-card-wrapper, .place-view-wrapper {
-    width: 100%;
-}
+
 /* Overwrites the body-container in MainLayout.vue */
-html,
+#app html,
 body {
-height: auto;
+height: auto !important;
 overflow: auto !important;
 }
 
-/* Overwrites the place-meta-container in MainLayout.vue */
-#app .place-meta-container {
-position:absolute;
-margin-top:50vh;
-height:auto;
-font-size:120%;
-width:100%;
-z-index:100;
-padding-right:0px !important;
-padding-left:0px !important;
-padding-bottom:0px !important;
-overflow-y:auto;
+
+#app .main-container {
+    position:relative!important; 
+    display: block!important; 
+    height: 100vh!important;
+    overflow-y: scroll!important; 
+    background-color: transparent!important; 
+    color:black!important;
+}
+
+.place-card-container{
+    position:relative!important; 
+    display: block!important; 
+    width:100%!important; 
+    max-width:100%!important; 
+    min-width:100%!important; 
+    height:auto !important;
+}
+
+#app .place-view {
+    display:block;
+    position:relative !important;
+    color: black !important;
+    width:calc(100% - 40px) !important;
+    height:auto!important;
+    margin-left:20px!important;
+    margin-top:0px!important;
+    padding-top:50px!important;
+    background-color:white!important;
 }
 
 .place-gallery-container {
-    color: white;
-    width: 100%;
-    float: left;
+    color: black;
+    overflow:hidden;
+    position:relative;
+    float:left;
 }   
-
 }
 </style>

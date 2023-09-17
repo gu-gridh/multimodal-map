@@ -50,11 +50,13 @@ import markerIcon from "@/assets/marker-red.svg";
 </script>
 
 <template>
-
-<button class="place-back-button" @click="router.push({path: '/'})"></button>
+   <button class="place-back-button" @click="router.push({path: '/'})"></button>
   <div class="place-meta-container">
-      <div class="place-card-full">
-        <div class="place-card-content">
+   
+      <div class="placecard-full">
+   
+        <div class="placecard-full-content">
+        
           <!-- mini map -->
         <div class="mini-map">
           <ol-map 
@@ -87,12 +89,29 @@ import markerIcon from "@/assets/marker-red.svg";
             </ol-vector-layer>
           </ol-map>
         </div>
-        <div class="card-text">
-          <div class="place-title">Title of place</div> 
-          <div class="place-type">Type of place</div>         
+        <div class="placecard-text">
+          <div class="placecard-title">Title of place</div> 
+          <div class="placecard-subtitle">Other title of place</div>       
   
-          <div class="metadata-content">Here goes the structured data in two rows</div>  
-          <div class="metadata-content">Here goes the description in one row</div>    
+          <div class="placecard-metadata-content">
+            <div class="metadata-item">
+              <div class="label">Necropolis:</div>
+              <div class="tag">Grotte Tufarina</div>
+            </div>
+            <div class="metadata-item">
+              <div class="label short">Type:</div>
+              <div class="tag">Tumulus</div>
+            </div>
+            <div class="metadata-item">
+              <div class="label">Chambers:</div>
+              <div class="tag">1</div>
+            </div>
+            <div class="metadata-item">
+              <div class="label short">Period:</div>
+              <div class="tag">Before 650 BC</div>
+            </div>
+          </div>  
+          <div class="placecard-metadata-content" style="margin-top:10px;">Here goes the description</div>    
         </div>
     </div>
       </div>
@@ -119,15 +138,17 @@ import markerIcon from "@/assets/marker-red.svg";
 
 .place-meta-container{
   overflow-y: auto;
-  overflow-x:auto;
-  overflow:auto;
   height:calc(100vh - 80px);
   padding-bottom:30px;
   padding-left:45px;
   padding-right:20px;
 }
 
-.place-card-full {
+#app .place-meta-container {
+
+}
+
+.placecard-full {
   margin-top:80px;
   margin-left:50px;
   color:black;
@@ -144,32 +165,23 @@ import markerIcon from "@/assets/marker-red.svg";
   transition: all 0.0s ease-in-out;
 }
 
-.place-card-full::-webkit-scrollbar {
+.placecard-full::-webkit-scrollbar {
     width: 0 !important
     }
 
-.lang{
-  font-size: 14px;
-}
-
-.place-card-content {
+.placecard-full-content {
 height:auto;
-
+width:100%;
+padding: 0px 0px 10px 0px;
 }
 
-.place-card-content h1{
+.placecard-full-content h1{
 font-size:2.5em;
 color:rgb(180,100,100);
 margin-bottom:5px;
-
 }
 
-.place-card-content .metadata-content{
-padding:0px 30px 10px 0px;
-line-height:1.2;
-}
-
-.place-card-full .category-button{
+.placecard-full .category-button{
   width:110px!important;
 padding:4px 18px!important;
 margin-top:15px;
@@ -185,69 +197,26 @@ margin-bottom:20px;
   background-color:grey;
   margin-bottom:0px;
 }
-.meta-item {
-  margin-bottom:5px;
+
+.placecard-metadata-content .label {
+  width:66px;
 }
 
-.card-text {
-  font-family: "Barlow Condensed", sans-serif;
-  color: black;
-  margin-top:0px;
-  font-size:1.0em;
-  text-align: left;
-  hyphens: auto;
-  line-height:1.2;
-  padding:10px 20px 20px 20px;
-  float:left;
+.placecard-metadata-content .short {
+  width:45px;
 }
 
-.card-text p{
-padding: 0px;
-}
-
-.place-title {
-  font-family: 'Teko', sans-serif;
-  letter-spacing: -0.0rem;
-  text-align: left;
-  color: rgb(180, 100, 100);
-  width: calc(100% - 20px);
-  margin-bottom: 0px;
-  margin-top:10px;
-  float:left;
-  font-size:35px;
-}
-
-.place-title p {
-  color: white;
-  font-size: 26px;
-  font-weight: 600;
-  line-height: 1.0;
-  background-color: rgb(180, 100, 100);
-  border-radius: 10px 10px 0 0;
-  padding: 20px 10px 15px 10px;
-  width: 100%;
-  opacity: 0.99;
-  box-shadow: 0px -5px 10px 0 rgba(0, 0, 0, 0.2),
-    0 0px 0px 0 rgba(0, 0, 0, 0.19);
-}
-
-.place-type {
-  font-family: 'Teko', sans-serif;
-  letter-spacing: -0.0rem;
-  font-size:25px;
-  text-align: left;
-  color: rgb(180, 100, 100);
-  width: calc(100% - 20px);
-  margin-bottom: 10px;
-  margin-top:-5px;
-  float:left;
+.placecard-metadata-content .tag {
+  width:115px;
 
 }
+
+
 
 
 @media screen and (min-width: 1900px) {
 
-.place-card-full .category-button{
+.placecard-full .category-button{
   width:125px!important;
   padding:6px 20px!important;
 }
@@ -255,7 +224,7 @@ padding: 0px;
 
 
 @media screen and (min-width: 1900px) {
-  .place-card-full .category-button{
+  .placecard-full .category-button{
   width:125px!important;
 padding:5px 18px!important;
 margin-top:15px;
@@ -265,33 +234,44 @@ margin-top:15px;
 
 @media screen and (max-width: 900px) {
 
+  #app .place-meta-container{
+position:relative !important;
+margin-top:0px  !important;
+top:20px!important;
+height:auto;
+font-size:100%;
+width:100%;
+z-index:100;
+padding-right:20px !important;
+padding-left:20px !important;
+padding-bottom:0px !important;
+overflow-y:auto;
+
+}
 
   .place-back-button {
-  left: 30px;
-  top: 53vh;
+    left: 30px;
+  top: 70px;
   width: 50px;
   height: 50px;
   z-index:1000;
-
 }
 
-
-
-.place-card-full {
-margin-top:0px;
+.placecard-full {
+margin-top:30px;
 color:black;
+margin-left:0px;
 background-color: white;
 padding-bottom: 30px;
-box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.5);
+box-shadow: 0px -15px 15px rgba(0, 0, 0, 0.1);
 transition: all 0.0s ease-in-out;
-max-height:10000px;
+height:auto;
 overflow:hidden;
-margin-bottom: 0px;
-border-radius: 30px 30px 0px 0px !important;
+border-radius: 20px 20px 0px 0px !important;
 }
 
 
-.place-card-full .category-button{
+.placecard-full .category-button{
 width:120px!important;
 padding:8px 15px!important;
 margin-top:15px;
@@ -299,6 +279,24 @@ padding:0px;
 padding-left:0px;
 margin-bottom:0px!important;
 }
+
+.metadata-item{
+  width:240px!important;
+}
+
+.placecard-metadata-content .label {
+  width:86px;
+}
+
+.placecard-metadata-content .short {
+  width:65px;
+}
+
+.placecard-metadata-content .tag {
+  width:145px;
+
+}
+
 }
 
 </style>
