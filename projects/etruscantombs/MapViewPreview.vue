@@ -72,7 +72,11 @@ function deselectPlace() {
       <div class="place-card-bottom">
         <div class="card-text">
           <div class="place-title">{{ selectedFeature.get("name") }}</div>
+          <div class="place-type">Type of place</div>   
           <button class="theme-button">3D model</button>
+        </div>
+        <div class="placecard-content">
+        <div class="metadata-content">Here goes some structured data in two rows</div>  
         </div>
       </div>
           <div class="center-button">
@@ -193,7 +197,7 @@ function deselectPlace() {
   letter-spacing: -0.0rem;
   text-align: left;
   color: rgb(180, 100, 100);
-  padding-bottom: 10px;
+  padding-bottom: 1px;
   padding-top: 10px;
   font-size: 35px;
 }
@@ -210,6 +214,28 @@ function deselectPlace() {
   opacity: 0.99;
   box-shadow: 0px -5px 10px 0 rgba(0, 0, 0, 0.2),
     0 0px 0px 0 rgba(0, 0, 0, 0.19);
+}
+
+.place-type {
+  font-family: 'Teko', sans-serif;
+  letter-spacing: -0.0rem;
+  font-size:25px;
+  text-align: left;
+  color: rgb(180, 100, 100);
+  width: calc(100% - 20px);
+  margin-bottom: 10px;
+  margin-top:-5px;
+  float:left;
+
+}
+
+.placecard-content{
+padding:20px 30px 10px 20px;
+
+}
+.metadata-content{
+padding:0px 30px 10px 0px;
+line-height:1.2;
 }
 
 .center-button {

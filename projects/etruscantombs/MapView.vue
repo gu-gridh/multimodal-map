@@ -102,7 +102,7 @@ watch(showGrid, (newValue) => {
         <div class="p-1 px-2 clickable category-button" style="
                 width: 90px;
                 text-align: center;
-                margin-top: 10px;
+                margin-top: 0px;
                 cursor: pointer;
               ">More info</div>
       </button>
@@ -114,7 +114,7 @@ watch(showGrid, (newValue) => {
         <MapComponent 
           :shouldAutoMove="true" 
           :min-zoom="14" 
-          :max-zoom="18" 
+          :max-zoom="20" 
           :restrictExtent="[11.9, 42.15, 12.2, 42.4]"       
           :key="showGrid.toString()"
         > 

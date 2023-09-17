@@ -42,7 +42,7 @@ body {
 }
 
 .about {
-  padding-right: 40px;
+  padding-right: 0px;
   line-height: 1.2;
   text-align: left;
   font-size:0.95em;
@@ -57,9 +57,9 @@ body {
 }
 
 #app .left-pane-layer {
-  padding: 60px 50px 130px 60px!important;
+  padding: 60px 0px 130px 60px!important;
   pointer-events: auto!important;
-  width:460px!important;
+  width:410px!important;
 }
 
 #app .right-pane {

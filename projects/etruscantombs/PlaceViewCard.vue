@@ -91,8 +91,8 @@ import markerIcon from "@/assets/marker-red.svg";
           <div class="place-title">Title of place</div> 
           <div class="place-type">Type of place</div>         
   
-          <div class="metadata-content">Here goes the structured data</div>  
-          <div class="metadata-content">Here goes the description</div>    
+          <div class="metadata-content">Here goes the structured data in two rows</div>  
+          <div class="metadata-content">Here goes the description in one row</div>    
         </div>
     </div>
       </div>
