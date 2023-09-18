@@ -24,11 +24,14 @@ body {
 
 .map-container {
   height: calc(100vh - 80px) !important;
-
 }
 
-.theme-color {
+.theme-color-text {
   color: rgb(180, 100, 100);
+}
+
+.theme-color-background {
+  background-color: rgb(232, 228, 217);
 }
 
 .main-title {
@@ -62,46 +65,6 @@ body {
   width: 410px !important;
 }
 
-#app .right-pane {
-  width: 550px;
-  right: 0px;
-  z-index: 601 !important;
-  overflow: auto !important;
-  -ms-overflow-style: none !important;
-  scrollbar-width: none !important;
-}
-
-#app .right-pane::-webkit-scrollbar {
-  width: 0 !important
-}
-
-#app .mapview-preview {
-  height: 100vh !important;
-  width: 100%;
-}
-
-.close-button {
-  width: 40px;
-  height: 40px;
-  margin-left: -10px;
-  margin-top: -5px;
-  padding: 16px 15px 10px 9px;
-  line-height: 1px;
-  font-size: 50px;
-  font-weight: 100;
-  border-radius: 50%;
-  background-color: rgb(100, 100, 100);
-  color: white;
-  transform: rotate(45deg);
-  cursor: pointer;
-  pointer-events: auto;
-  margin-bottom: 30px;
-}
-
-.close-button:hover {
-  background-color: rgb(140, 140, 140);
-}
-
 .theme-button {
   background-color: rgb(180, 100, 100);
   border-radius: 5px;
@@ -109,87 +72,7 @@ body {
   color: white;
 }
 
-
-#app .ol-zoom-in {
-  left: calc(50% + 50px) !important;
-  top: calc(100vh - 140px) !important;
-  position: fixed;
-  border-radius: 10px 0px 0px 10px !important;
-  height: 35px;
-  padding-bottom: 3px !important;
-  width: 50px;
-}
-
-#app .ol-zoom-out {
-  left: calc(50% + 100px);
-  top: calc(100vh - 140px) !important;
-  position: fixed;
-  margin-top: 1px;
-  border-radius: 0px 10px 10px 0px !important;
-  height: 35px;
-  padding-bottom: 3px !important;
-  widtH: 50px;
-}
-
-#app .ol-control button:active,
-#app .ol-control button:hover,
-#app .ol-control button:focus {
-  background-color: rgba(0, 0, 0, 0.7) !important;
-}
-
-
-@media screen and (max-width: 1800px) {
-  #app .right-pane {
-    width: 500px;
-  }
-}
-
-@media screen and (max-width: 1700px) {
-  #app .right-pane {
-    width: 500px;
-  }
-}
-
-@media screen and (max-width: 1350px) {
-  #app .right-pane {
-    width: 450px;
-  }
-}
-
-@media screen and (max-width: 1200px) {
-  #app .right-pane {
-    width: 400px !important;
-  }
-}
-
-  @media screen and (max-width: 1100px) {
-    #app .right-pane {
-      width: 350px !important;
-    }
-  }
-
-  #app .image-container {
-    height: 40vh !important;
-    border-radius: 0px !important;
-    margin-bottom: 0px !important;
-  }
-
-  
-
 @media screen and (max-width: 900px) {
-  #app .right-pane {
-    width: 100% !important;
-  }
-
-  #app .place-card {
-    margin-top: 15px;
-  }
-
-  .ui-overlay {
-    margin-top: 25px !important;
-    margin-left: 0px !important;
-    font-size: 120% !important;
-  }
 
   #app .masonry-grid {
     position: absolute;
@@ -205,31 +88,6 @@ body {
     grid-gap: 5px;
     overflow-y: scroll;
   }
-
-  #app .ol-zoom-in {
-    left: calc(50% - 50px) !important;
-    top: calc(100vh - 320px) !important;
-  }
-
-  #app .ol-zoom-out {
-    left: calc(50% + 0px) !important;
-    top: calc(100vh - 320px) !important;
-  }
 }
 
-
-
-
-@media screen and (min-width: 1900px) {
-
-  #app .right-pane {
-    font-size: 115%;
-    width: 600px !important;
-  }
-
-  #app .ui-overlay {
-    font-size: 120% !important;
-    margin-top: 20px !important;
-  }
-}
 </style>

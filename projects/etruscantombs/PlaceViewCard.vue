@@ -199,16 +199,7 @@ margin-bottom:20px;
 }
 
 
-
-@media screen and (min-width: 1900px) {
-
-.placecard-full .category-button{
-  width:125px!important;
-  padding:6px 20px!important;
-}
-}
-
-
+/* For big screens */
 @media screen and (min-width: 1900px) {
   .placecard-full .category-button{
   width:125px!important;
@@ -218,6 +209,7 @@ margin-top:15px;
 }
 
 
+/* For small screens */
 @media screen and (max-width: 900px) {
 
   #app .place-meta-container{
@@ -232,7 +224,6 @@ padding-right:20px !important;
 padding-left:20px !important;
 padding-bottom:0px !important;
 overflow-y:auto;
-
 }
 
   .place-back-button {
@@ -256,7 +247,6 @@ overflow:hidden;
 border-radius: 20px 20px 0px 0px !important;
 }
 
-
 .placecard-full .category-button{
 width:120px!important;
 padding:8px 15px!important;
@@ -265,9 +255,5 @@ padding:0px;
 padding-left:0px;
 margin-bottom:0px!important;
 }
-
-
-
 }
-
 </style>
