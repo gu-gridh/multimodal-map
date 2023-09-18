@@ -51,13 +51,11 @@ import type { EtruscanProjectProject } from "./types";
 const config = inject<EtruscanProject>("config");
 const { categories, years, tags, tagsLayerVisible, placesLayerVisible, mapLayerVisibility } = storeToRefs(etruscanStore());
 
-// See https://github.com/gu-gridh/rephotography/blob/master/views.py
 const CATEGORIES = {
-  all: "All Categories",
-  image: "Photographs",
-  models: "Models",
-  // documents: "Documents",
-  plans: "Plans",
+  all: "All Periods",
+  image: "Period 1",
+  models: "Period 2",
+  plans: "Period 3",
 };
 
 const TAGS = ref<Record<string, string>>({});
@@ -67,7 +65,7 @@ const YEARS = {
 };
 
 onMounted(async () => {
-  const response = await fetch("https://diana.dh.gu.se/api/rephotography/tag/"); /*To be changed*/
+  const response = await fetch("https://diana.dh.gu.se/api/etruscantombs/tag/");
   const data = await response.json();
   const tagTexts = data.results.filter(result => result.published).map(tag => tag.text);
   tagTexts.forEach(tagText => {
