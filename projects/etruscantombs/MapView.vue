@@ -22,6 +22,9 @@ import GeoJSON from "ol/format/GeoJSON";
 const { categories, years, tags, placesLayerVisible, tagsLayerVisible } = storeToRefs(etruscanStore());
 const store = mapStore();
 const { selectedFeature } = storeToRefs(store);
+const minZoom = 14;
+const maxZoom = 20;
+const featureZoom = 16; //value between minZoom and maxZoom when you select a point 
 
 watch(
   selectedFeature,
@@ -31,6 +34,10 @@ watch(
       if (geometry) {
         const coordinates = (geometry as any).getCoordinates();
         store.updateCenter(coordinates);
+        if (store.zoom < featureZoom)
+        {
+          store.updateZoom(featureZoom);
+        }
       }
     }
   },
@@ -113,8 +120,8 @@ watch(showGrid, (newValue) => {
       <div class="map-container">
         <MapComponent 
           :shouldAutoMove="true" 
-          :min-zoom="14" 
-          :max-zoom="20" 
+          :min-zoom=minZoom
+          :max-zoom=maxZoom 
           :restrictExtent="[11.9, 42.15, 12.2, 42.4]"       
           :key="showGrid.toString()"
         > 
