@@ -27,7 +27,7 @@ import markerIcon from "@/assets/marker-red.svg";
     const format = inject("ol-format");
     const geoJson = new format.GeoJSON();
 
-    const url = "https://diana.dh.gu.se/api/jubileum/geojson/place/"+ props.id
+    const url = "https://diana.dh.gu.se/api/etruscantombs/geojson/place/"+ props.id
 
     // watchEffect(async() => {
     //   const coords = props.place?.geometry.coordinates

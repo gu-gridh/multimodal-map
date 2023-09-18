@@ -23,7 +23,7 @@ const { categories, years, tags, placesLayerVisible, tagsLayerVisible } = storeT
 const store = mapStore();
 const { selectedFeature } = storeToRefs(store);
 const minZoom = 14;
-const maxZoom = 20;
+const maxZoom = 20  ;
 const featureZoom = 16; //value between minZoom and maxZoom when you select a point 
 
 watch(
@@ -130,7 +130,7 @@ watch(showGrid, (newValue) => {
           <template #layers>
             <!-- Layer for testing -->
              <!--it is possible to change color with :color="[180,100,100,1.0]", but then the marker becomes badly rasterized-->
-            <DianaPlaceLayer v-if="placesLayerVisible" path="jubileum/geojson/place/" :params="placeParams">
+            <DianaPlaceLayer v-if="placesLayerVisible" path="etruscantombs/geojson/place/" :params="placeParams">
               <ol-style>
                 <ol-style-icon 
                 :src="markerIcon" 
