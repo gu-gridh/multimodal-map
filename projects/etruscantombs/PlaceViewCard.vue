@@ -90,25 +90,25 @@ import markerIcon from "@/assets/marker-red.svg";
           </ol-map>
         </div>
         <div class="placecard-text">
-          <div class="placecard-title">Title of place</div> 
-          <div class="placecard-subtitle">Other title of place</div>       
+          <div class="placecard-title theme-color-text">Title of place</div> 
+          <div class="placecard-subtitle theme-color-text">Other title of place</div>       
   
           <div class="placecard-metadata-content">
             <div class="metadata-item">
               <div class="label">Necropolis:</div>
-              <div class="tag">Grotte Tufarina</div>
+              <div class="tag theme-color-text">Grotte Tufarina</div>
             </div>
             <div class="metadata-item">
               <div class="label">Type:</div>
-              <div class="tag">Tumulus</div>
+              <div class="tag theme-color-text">Tumulus</div>
             </div>
             <div class="metadata-item">
               <div class="label">Chambers:</div>
-              <div class="tag">1</div>
+              <div class="tag theme-color-text">1</div>
             </div>
             <div class="metadata-item">
               <div class="label">Period:</div>
-              <div class="tag">Before 650 BC</div>
+              <div class="tag theme-color-text">Before 650 BC</div>
             </div>
           </div>  
           <div class="placecard-metadata-content" style="margin-top:10px;">Here goes the description</div>    
