@@ -99,7 +99,7 @@ import markerIcon from "@/assets/marker-red.svg";
               <div class="tag">Grotte Tufarina</div>
             </div>
             <div class="metadata-item">
-              <div class="label short">Type:</div>
+              <div class="label">Type:</div>
               <div class="tag">Tumulus</div>
             </div>
             <div class="metadata-item">
@@ -107,7 +107,7 @@ import markerIcon from "@/assets/marker-red.svg";
               <div class="tag">1</div>
             </div>
             <div class="metadata-item">
-              <div class="label short">Period:</div>
+              <div class="label">Period:</div>
               <div class="tag">Before 650 BC</div>
             </div>
           </div>  
@@ -198,20 +198,6 @@ margin-bottom:20px;
   margin-bottom:0px;
 }
 
-.placecard-metadata-content .label {
-  width:66px;
-}
-
-.placecard-metadata-content .short {
-  width:45px;
-}
-
-.placecard-metadata-content .tag {
-  width:115px;
-
-}
-
-
 
 
 @media screen and (min-width: 1900px) {
@@ -280,22 +266,7 @@ padding-left:0px;
 margin-bottom:0px!important;
 }
 
-.metadata-item{
-  width:240px!important;
-}
 
-.placecard-metadata-content .label {
-  width:86px;
-}
-
-.placecard-metadata-content .short {
-  width:65px;
-}
-
-.placecard-metadata-content .tag {
-  width:145px;
-
-}
 
 }
 

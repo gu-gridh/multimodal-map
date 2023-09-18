@@ -80,7 +80,7 @@ function deselectPlace() {
               <div class="tag">Grotte Tufarina</div>
             </div>
             <div class="metadata-item">
-              <div class="label short">Type:</div>
+              <div class="label">Type:</div>
               <div class="tag">Tumulus</div>
             </div>
             <div class="metadata-item">
@@ -88,7 +88,7 @@ function deselectPlace() {
               <div class="tag">1</div>
             </div>
             <div class="metadata-item">
-              <div class="label short">Period:</div>
+              <div class="label">Period:</div>
               <div class="tag">Before 650 BC</div>
             </div>
 
@@ -290,13 +290,8 @@ function deselectPlace() {
 
 .placecard-metadata-content .label {
   float: left;
-  text-align: left;
-  width: 60px;
-}
-
-.placecard-metadata-content .short {
-  width: 60px;
   text-align: right;
+  width: 65px;
 }
 
 .placecard-metadata-content .tag {
