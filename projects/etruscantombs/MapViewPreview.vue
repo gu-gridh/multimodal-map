@@ -69,7 +69,7 @@ function deselectPlace() {
           <button class="theme-button theme-color-background">3D model</button>
         </div>
         <div class="placecard-content">
-          <div class="placecard-metadata-content" style="height:45px; overflow:hidden;">
+          <div class="placecard-metadata-content" style="height:49px; overflow:hidden;">
 
 
             <div class="metadata-item">
