@@ -4,36 +4,6 @@
 
 
 
-:root {
-
-    --color-0: rgba(38, 38, 38, 1);
-    --color-1: rgba(122, 129, 132, 1);
-    --color-2: rgba(48, 48, 48, 1);
-    --color-3: rgba(45, 109, 130, 1);
-    --color-4: rgba(16, 143, 185, 1);
-
-    --bg-color: var(--color-0);
-    --bg-color-2: rgb(60, 80, 85);
-    --bg-light-color: rgba(48, 61, 65, 1);
-    --bg-dark-color: rgba(24, 31, 33, 1);
-    --bg-hover-color: var(--color-2);
-
-    --font-color: #ffffff;
-    --font-color-2: #ddd;
-    --font-color: #cccccc;
-    --border-color: black;
-
-    --measurement-detail-node-bg-light: var(--color-1);
-    --measurement-detail-node-bg-dark: var(--color-2);
-    --measurement-detail-area-bg-color: #eee;
-
-    --viewer-bg: rgba(48, 48, 48, 1);
-    --sidebar-bg: rgba(38, 38, 38, 1);
-    --selected: #47cbf6;
-
-
-}
-
 #app .right-pane {
     display:block !important;
     width: 550px;
@@ -118,6 +88,8 @@
   .close-card-button:hover {
     background-color: rgb(140, 60, 60);
   }
+
+/* The top half of the placecard containing the graphics*/
   
   .placecard-top {
     display: flex;
@@ -141,6 +113,9 @@
     transform: scale(1.2) !important;
   }
   
+
+  /* The bottom half of the placecard containg the metadata */
+
   .placecard-bottom {
     flex-grow: 1 !important;
     border-radius: 0px !important;
@@ -220,13 +195,6 @@
     width: 100%;
   }
   
-  .placecard-center-button {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    padding-bottom: 20px;
-  }
-  
   .metadata-item {
     margin-bottom: 5px;
     float: left;
@@ -249,6 +217,16 @@
     font-weight: 600;
   
   }
+
+  .placecard-center-button {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding-bottom: 20px;
+  }
+  
+
+  /* Adaptations to various screen sizes */
 
   @media screen and (min-width: 1900px) {
     #app .right-pane {
