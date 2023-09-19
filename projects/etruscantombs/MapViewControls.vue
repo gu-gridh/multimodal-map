@@ -22,6 +22,12 @@
   </transition> -->
 
   <div class="tag-section">
+  <div class="section-title">Time period</div>
+  <div class="broad-controls">
+  </div>
+</div>
+
+  <div class="tag-section">
   <div class="section-title">Necropoli</div>
   <div class="broad-controls">
   </div>
@@ -150,7 +156,7 @@ const handleTagClick = (tag: string) => {
 .section-title {
   font-weight: 400;
   font-size: 20px;
-  margin-top: 30px;
+  margin-top: 20px;
   margin-bottom: 5px;
 }
 
