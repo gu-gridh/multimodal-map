@@ -25,7 +25,7 @@ watchEffect(async () => {
   if (selectedFeature.value) {
     place = JSON.parse(JSON.stringify(selectedFeature.value))
     const placeId = selectedFeature.value.getId();  // Get ID of selected place
-    images.value = await diana.listAll<Image>("image", { place: placeId });  // Use place ID to fetch images
+    images.value = await diana.listAll<Image>("image", { tomb: placeId });  // Use place ID to fetch images
     imageUrls.value = images.value.map(image => `${image.iiif_file}/info.json`);
   } else {
     images.value = [];
