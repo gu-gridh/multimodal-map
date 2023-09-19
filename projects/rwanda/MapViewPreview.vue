@@ -59,10 +59,7 @@ const {center, zoom} = storeToRefs(store);
           <p class="link">More</p>
         </div>
       </router-link>
-
-      <!-- image card -->
-    
-       
+      
       <MapViewPreviewImage
           v-for="image in images"
           :key="image.id"
@@ -72,7 +69,9 @@ const {center, zoom} = storeToRefs(store);
     
     </div>
   </div>
-
+  <div v-else class="mapview-preview">
+    No selectedFeature
+  </div>
 </template>
 
 <style>

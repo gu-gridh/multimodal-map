@@ -1,6 +1,3 @@
-
-
-
 <script lang="ts" setup>
 import { inject, provide, ref, nextTick, watch } from "vue";
 import configRaw from "./config";
@@ -71,15 +68,16 @@ function displayName(p: Place): string {
               "
             >More info</div>
           </button>
-      <div class="filter-container">
+      <div class="search-container">
         <AutocompleteComponent
-          placeholderText="Search..."
+          placeholderText="Search place names..."
           noResultsText="No results found."
           :displayFunction="displayName"
           :searchItems="searchText"
         />
       </div>
-      
+      <!--filter map-->
+      <MapViewControls />
     </template>
 
     <template #background>
@@ -121,11 +119,11 @@ function displayName(p: Place): string {
 </template>
 
 <style>
-.filter-container {
+.search-container {
   display:flex;
   flex-direction: column;
   height:auto;
-
+  margin-top: 20px;
 }
 .mapoverlay{
 z-index: 100;
