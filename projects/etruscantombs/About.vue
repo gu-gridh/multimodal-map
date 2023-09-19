@@ -19,9 +19,9 @@
     
     
       
-        <button @click="$emit('close')">
-            <div
-              class="p-1 px-2 clickable category-button"
+      <button @click="$emit('close')">
+        <div
+              class="p-1 px-2 category-button"
               style="width:auto; padding:5px 15px; text-align: center; cursor: pointer;"  v-bind:class="{fullopacityui: visibleAbout}">Explore</div>
           </button>
         </div>

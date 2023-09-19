@@ -91,7 +91,7 @@ watch(showGrid, (newValue) => {
 </script>
 
 <template>
-  <div style="display:flex; align-items: center; justify-content: center;">
+  <div style="display:flex; align-items: center; justify-content: center; pointer-events: none;">
     <div class="ui-mode ui-overlay">
       <button class="item" v-bind:class="{ selected: !showGrid }" v-on:click="showGrid = false;">
         Map
@@ -168,6 +168,7 @@ watch(showGrid, (newValue) => {
 
 <style>
 .map-container {
+  height: calc(100vh - 80px) !important;
   position: relative;
   width: 100%;
 }

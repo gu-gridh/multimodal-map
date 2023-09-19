@@ -22,27 +22,34 @@ body {
   background-color: rgb(232, 228, 217) !important;
 }
 
-.map-container {
-  height: calc(100vh - 80px) !important;
-}
-
 .theme-color-text {
   color: rgb(180, 100, 100);
 }
 
 .theme-color-background {
-  background-color: rgb(232, 228, 217);
+  background-color: rgb(180, 100, 100);
 }
 
 .main-title {
   font-family: 'Teko', sans-serif;
-  font-size: 100px;
+  font-size: 80px;
   line-height: 0.7;
+  width:50px;
   font-weight: 300;
   letter-spacing: 0.05rem;
   color: rgb(180, 100, 100);
-  margin-left: -10px;
+  margin-left: -6px;
+  transition: all 0.5s ease-in-out;
 }
+
+@media screen and (min-height: 800px) {
+  .main-title {
+    margin-left: -10px;
+  font-size: 100px;
+ 
+}
+}
+
 
 .about {
   padding-right: 0px;
@@ -52,7 +59,7 @@ body {
 }
 
 #app .left-pane {
-  background-color: grey;
+  background-color: transparent !important;
   width: 900px;
   background: url("@/assets/gradient-jubileum.png");
   background-size: contain;

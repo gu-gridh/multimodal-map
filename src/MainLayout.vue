@@ -252,11 +252,6 @@ padding: 60px 0px 50px 60px;
       background-position: 10px 10px;
 }
 
-#app .ui-overlay {
-  font-size:150%;
-  margin-top:70px;
-}
-
 #app .masonry-grid {
 
   padding: 0px 10px 10px 600px;

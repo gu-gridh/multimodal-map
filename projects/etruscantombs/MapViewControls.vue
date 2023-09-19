@@ -20,7 +20,20 @@
       />
     </div>
   </transition> -->
+
+  <div class="tag-section">
+  <div class="section-title">Necropoli</div>
+  <div class="broad-controls">
+  </div>
+</div>
+
 <div class="tag-section">
+  <div class="section-title">Type of tomb</div>
+  <div class="broad-controls">
+  </div>
+</div>
+
+<!-- <div class="tag-section">
   <div class="section-title">Tags</div>
   <div class="broad-controls">
   <CategoryButtonList
@@ -31,7 +44,7 @@
     @click="handleTagClick" 
   />
 </div>
-</div>
+</div> -->
 
 
 
@@ -52,10 +65,10 @@ const config = inject<EtruscanProject>("config");
 const { categories, years, tags, tagsLayerVisible, placesLayerVisible, mapLayerVisibility } = storeToRefs(etruscanStore());
 
 const CATEGORIES = {
-  all: "All Periods",
-  image: "Period 1",
-  models: "Period 2",
-  plans: "Period 3",
+  all: "All Documentation",
+  image: "Photographs",
+  models: "3D models",
+  plans: "Plans",
 };
 
 const TAGS = ref<Record<string, string>>({});

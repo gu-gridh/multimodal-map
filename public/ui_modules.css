@@ -6,6 +6,7 @@
 
 /* TOP UI widget for changing between map and gallery */
 #app .ui-overlay {
+  pointer-events: auto;
   margin-top: 20px;
   z-index: 250;
   position: absolute;
