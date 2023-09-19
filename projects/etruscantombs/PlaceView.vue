@@ -18,7 +18,7 @@ const imageArray = ref([
 
 onMounted(async () => {
   if (id) {
-    images.value = await diana.listAll<Image>("image", { place: id });
+    images.value = await diana.listAll<Image>("image", { tomb: id });
   }
 });
 </script>
