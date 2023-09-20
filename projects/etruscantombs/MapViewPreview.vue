@@ -24,14 +24,6 @@ const type = ref<string | null>(null);
 const period = ref<string | null>(null);
 const subtitle = ref<string | null>(null);
 
-const capitalize = (word: String) => {
-      if (word !== '') {
-        const first = word[0].toUpperCase()
-        const rest = word.slice(1)
-        return first + rest
-      }
-      else return word
-    }
 
 
 //when a place is selected, fetch image and info
@@ -96,7 +88,7 @@ function deselectPlace() {
       <div class="placecard-bottom">
         <div class="placecard-text">
           <div class="placecard-title theme-color-text">Tomb {{ selectedFeature.get("name") }}</div>
-          <div class="placecard-subtitle theme-color-text">{{ capitalize(selectedFeature.get("subtitle")) }}</div>
+          <div class="placecard-subtitle theme-color-text">{{ selectedFeature.get("subtitle") }}</div>
           <button class="theme-button theme-color-background">3D model</button>
         </div>
         <div class="placecard-content">
@@ -105,11 +97,11 @@ function deselectPlace() {
 
             <div class="metadata-item">
               <div class="label">Necropolis:</div>
-              <div class="tag theme-color-text">{{ capitalize(necropolisName) }}</div>
+              <div class="tag theme-color-text">{{ necropolisName }}</div>
             </div>
             <div class="metadata-item">
               <div class="label">Type:</div>
-              <div class="tag theme-color-text">{{ capitalize(type) }}</div>
+              <div class="tag theme-color-text">{{ type }}</div>
             </div>
             <div class="metadata-item">
               <div class="label">Chambers:</div>
@@ -117,7 +109,7 @@ function deselectPlace() {
             </div>
             <div class="metadata-item">
               <div class="label">Period:</div>
-              <div class="tag theme-color-text">{{ capitalize(period) }}</div>
+              <div class="tag theme-color-text">{{ period }}</div>
             </div>
 
 
