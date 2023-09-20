@@ -29,23 +29,26 @@ import markerIcon from "@/assets/marker-red.svg";
 
     const url = "https://diana.dh.gu.se/api/etruscantombs/geojson/place/"+ props.id
 
-    // watchEffect(async() => {
-    //   const coords = props.place?.geometry.coordinates
-    //   const feature = props.place?.geometry
-    //   console.log(coords)
-    //   await coords.forEach((coord: any) => {
-    //     if(feature.type === 'MultiLineString' || 'Polygon') {
-    //       center.value = JSON.parse(JSON.stringify(coord[0]))
-    //     }
-    //     if(feature.type === 'MultiPolygon') {
-    //       center.value = JSON.parse(JSON.stringify(coord[0][0]))
-    //     }
-    //     if(feature.type === 'LineString') {
-    //       center.value = JSON.parse(JSON.stringify(coord))
-    //     }
-    //     else {center.value = [30.05885, -1.94995 ]}
-    //   });
-    // })
+    const fetchPlaceData = async () => {
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const placeData = await response.json();
+
+        if (placeData && placeData.geometry && placeData.geometry.coordinates) {
+          center.value = placeData.geometry.coordinates;
+        }
+      } catch (error) {
+        console.error("Error fetching place data:", error);
+      }
+    };
+
+  // Center the map based on fetched data.
+  onMounted(() => {
+    fetchPlaceData();
+  });
    
 </script>
 
