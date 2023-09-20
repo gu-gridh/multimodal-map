@@ -59,12 +59,15 @@ const {center, zoom} = storeToRefs(store);
           <p class="link">More</p>
         </div>
       </router-link>
-      
+      <p>Interview</p>
+      <p>goes here...</p>
       <MapViewPreviewImage
           v-for="image in images"
           :key="image.id"
           :image="image"
         />
+
+        
       </div>
     
     </div>

@@ -38,18 +38,41 @@ const GeoJSONFormat = new format.GeoJSON({
 });
 
 const visibleAbout = ref(false);
-const toggleAboutVisibility = async () => {
+/* const toggleAboutVisibility = async () => {
   console.log('fired')
   await nextTick();
   visibleAbout.value = !visibleAbout.value;
-};
+}; */
 
 //MapViewControls
 const { searchText } = useRwandaMap();
-
 function displayName(p: Place): string {
   return formatNames(p.id, p.names);
 }
+
+//zoom on click
+const featureZoom = 17; // zoom level when clicking on a feature
+const { selectedFeature } = storeToRefs(store);
+watch(
+  selectedFeature,
+  (newFeature, oldFeature) => {
+    if (newFeature && newFeature.getGeometry) {
+      console.log('fired')
+      const geometry = newFeature.getGeometry();
+      if (geometry) {
+        const coordinates = (geometry as any).getFirstCoordinate(); //Since polygon - only get first coordinates
+        console.log(coordinates)
+        store.updateCenter(coordinates);
+        console.log('in store' + store.center)
+        if (store.zoom < featureZoom)
+        {
+          store.updateZoom(featureZoom);
+        }
+      }
+    }
+  },
+  { immediate: true }
+);
 
 </script>
 
@@ -83,11 +106,10 @@ function displayName(p: Place): string {
     <template #background>
      
       <div style="display:flex; align-items: center; justify-content: center;">
-<!--     <div class="mapoverlay">
-    <AreaSearch id="button-wrapper" class="clickable category-button" />
-  </div> -->
+
 </div>
-<MapComponent :min-zoom="14" :max-zoom="19" :restrictExtent="[30.1, -1.92, 30.01, -1.980]">
+<div class="map-container">
+  <MapComponent :min-zoom="14" :max-zoom="19" :restrictExtent="[30.1, -1.92, 30.01, -1.980]" :shouldAutoMove="true">
         <template #layers>
           <DianaPlaceLayer
             path="rwanda/geojson/place/"
@@ -110,6 +132,7 @@ function displayName(p: Place): string {
           </DianaPlaceLayer>
         </template>
       </MapComponent>
+    </div>
     </template>
 
     <template #details>
@@ -119,6 +142,11 @@ function displayName(p: Place): string {
 </template>
 
 <style>
+.map-container {
+  height: calc(100vh - 80px) !important;
+  position: relative;
+  width: 100%;
+}
 .search-container {
   display:flex;
   flex-direction: column;

@@ -1,16 +1,11 @@
 <script setup lang="ts">
-import AutocompleteComponent from "@/components/input/AutocompleteComponent.vue";
-import MapViewMapCard from "./MapViewMapCard.vue";
 import { mapStore } from "@/stores/store";
 import { storeToRefs } from "pinia";
 import { rwandaStore } from "./rwandaStore";
 import { useRwandaMap } from "./map.composable";
-import { formatNames } from "./names";
 import type { Place } from "./types";
-import { ref, watch, computed } from "vue";
-import router from './router'
+import { ref, watch } from "vue";
 import { watchEffect } from "vue";
-import { all } from "axios";
 
 //Filtering map controls
 const SOURCES = {
@@ -46,11 +41,11 @@ const {sources, placeTypes, informants, periods} = storeToRefs(rwandaStore());
 
 //TODO - Uncheck All when other is checked
 const updateAllSources =() => {
+  let sourceToggle = document.getElementById("sourceToggle")
   if(sources.value.length != 0){
-    allSources.value = false
-    console.log(allSources.value)
+    sourceToggle.checked = false
   } else {
-    allSources.value = true
+    sourceToggle.checked = true
   }
 }
 
@@ -61,7 +56,7 @@ const updateAllSources =() => {
   <div class="filter-container">
     <div class="filter-heading">Sources</div>
       <label class="checkboxes">
-        <input type="checkbox" :value="allSources" @click="allSources =!allSources " checked>All
+        <input type="checkbox" :value="allSources" id="sourceToggle" checked>All
         <div v-for="source in SOURCES" class="checkboxes">
           <input type="checkbox" :value="source" v-model="sources" @change="updateAllSources()">
           {{ source }}
