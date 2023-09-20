@@ -15,6 +15,34 @@ export type Image = {
   date: string;
   focus: number;
   tag: number[];
+  tomb: Tomb;
+};
+
+export type Tomb = {
+  id: number;
+  created_at: string;
+  updated_at: string;
+  published: boolean;
+  name: string;
+  geometry: {
+    type: string;
+    coordinates: number[];
+  };
+  number_of_chambers: number;
+  description: string;
+  necropolis: {
+    id: number;
+    text: string;
+  };
+  type: {
+    id: number;
+    text: string;
+  };
+  epoch: {
+    id: number;
+    text: string;
+  };
+  tags: any[];
 };
 
 export type ImageDeep = Omit<Image, "creator" | "place" | "focus" | "tag"> & {
@@ -28,14 +56,6 @@ export type Person = {
   id: number;
   name: string;
 };
-
-// export type Place = {
-//   id: number;
-//   geometry: Geometry;
-//   description: string;
-//   comment: string;
-//   tag: Tag[];
-// };
 
 export type Focus = {
   place: Geometry;

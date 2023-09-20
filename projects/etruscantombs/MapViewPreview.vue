@@ -5,6 +5,7 @@ import { mapStore } from "@/stores/store";
 import type {
   Image,
   ImageDeep,
+  Tomb
 } from "./types";
 import type { DianaClient } from "@/assets/diana";
 import OpenSeadragon from "@/components/OpenSeadragonSequence.vue";
@@ -17,19 +18,34 @@ const images = ref<Image[]>();
 const imageUrls = ref<string[]>([]);
 let text = ref(false)
 let place = ref()
-let description = ref("");
+const necropolisName = ref<string | null>(null);  
+const chambers = ref<number | null>(null);
+const type = ref<string | null>(null);
+const period = ref<string | null>(null);
 
 
 //when a place is selected, fetch image and info
 watchEffect(async () => {
   if (selectedFeature.value) {
-    place = JSON.parse(JSON.stringify(selectedFeature.value))
-    const placeId = selectedFeature.value.getId();  // Get ID of selected place
-    images.value = await diana.listAll<Image>("image", { tomb: placeId });  // Use place ID to fetch images
+    const placeId = selectedFeature.value.getId();
+    place.value = { id_: placeId };
+    images.value = await diana.listAll<Image>("image", { tomb: placeId, depth: 2 });
     imageUrls.value = images.value.map(image => `${image.iiif_file}/info.json`);
+    
+    // If the API also returns tomb details in this call, assign it to tombDetail here
+    if (images.value && images.value[0] && images.value[0].tomb) {
+      necropolisName.value = images.value[0].tomb.name;
+      chambers.value = images.value[0].tomb.number_of_chambers;
+      type.value = images.value[0].tomb.type.text;
+      period.value = images.value[0].tomb.epoch.text;
+    }
   } else {
     images.value = [];
     imageUrls.value = [];
+    necropolisName.value = null;
+    chambers.value = null;
+    type.value = null;
+    period.value = null;
   }
 });
 
@@ -74,19 +90,19 @@ function deselectPlace() {
 
             <div class="metadata-item">
               <div class="label">Necropolis:</div>
-              <div class="tag theme-color-text">Grotte Tufarina</div>
+              <div class="tag theme-color-text">{{ necropolisName }}</div>
             </div>
             <div class="metadata-item">
               <div class="label">Type:</div>
-              <div class="tag theme-color-text">Tumulus</div>
+              <div class="tag theme-color-text">{{ type }}</div>
             </div>
             <div class="metadata-item">
               <div class="label">Chambers:</div>
-              <div class="tag theme-color-text">1</div>
+              <div class="tag theme-color-text">{{ chambers }}</div>
             </div>
             <div class="metadata-item">
               <div class="label">Period:</div>
-              <div class="tag theme-color-text">Before 650 BC</div>
+              <div class="tag theme-color-text">{{ period }}</div>
             </div>
 
 
@@ -94,7 +110,7 @@ function deselectPlace() {
         </div>
       </div>
       <div class="placecard-center-button">
-        <router-link :to="`/place/${place.id_}`">
+        <router-link :to="`/place/${place?.id_}`">
           <button class="theme-button" style="margin-top:20px;">More Info</button>
         </router-link>
       </div>
