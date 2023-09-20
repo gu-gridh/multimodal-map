@@ -106,10 +106,9 @@ watch(showGrid, (newValue) => {
   <MainLayout>
     <template #search>
       <button class="item" @click="toggleAboutVisibility">
-        <div class="p-1 px-2 clickable category-button" style="
+        <div class="p-1 px-2 clickable category-button about-button" style="
                 width: 90px;
                 text-align: center;
-                margin-top: 0px;
                 cursor: pointer;
               ">More info</div>
       </button>

@@ -32,7 +32,7 @@ body {
 
 .main-title {
   font-family: 'Teko', sans-serif;
-  font-size: 80px;
+  font-size: 100px;
   line-height: 0.7;
   width:50px;
   font-weight: 300;
@@ -42,20 +42,30 @@ body {
   transition: all 0.5s ease-in-out;
 }
 
-@media screen and (min-height: 800px) {
-  .main-title {
-    margin-left: -10px;
-  font-size: 100px;
- 
+#app .about-button {
+  margin-top:-5px;
 }
-}
-
 
 .about {
   padding-right: 0px;
   line-height: 1.2;
   text-align: left;
   font-size: 0.95em;
+}
+
+@media screen and (max-height: 750px) {
+  .main-title {
+    margin-left: -5px;
+  font-size: 80px;
+ 
+}
+#app .about {
+  display:none;
+}
+
+#app .about-button {
+  margin-top:10px;
+}
 }
 
 #app .left-pane {
