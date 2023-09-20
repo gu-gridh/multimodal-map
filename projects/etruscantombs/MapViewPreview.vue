@@ -30,7 +30,11 @@ watchEffect(async () => {
     const placeId = selectedFeature.value.getId();
     place.value = { id_: placeId };
     images.value = await diana.listAll<Image>("image", { tomb: placeId, depth: 2 });
-    imageUrls.value = images.value.map(image => `${image.iiif_file}/info.json`);
+    const filteredImages = images.value.filter(image => {
+      return image.type_of_image.some(tag => tag.text === 'photograph'); //Only display images that are photographs
+    });
+
+    imageUrls.value = filteredImages.map(image => `${image.iiif_file}/info.json`);
     
     // If the API also returns tomb details in this call, assign it to tombDetail here
     if (images.value && images.value[0] && images.value[0].tomb) {

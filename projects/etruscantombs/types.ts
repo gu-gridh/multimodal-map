@@ -16,6 +16,7 @@ export type Image = {
   focus: number;
   tag: number[];
   tomb: Tomb;
+  type_of_image: { text: string }[];
 };
 
 export type Tomb = {
