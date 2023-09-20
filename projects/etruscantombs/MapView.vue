@@ -142,7 +142,7 @@ watch(showGrid, (newValue) => {
             </DianaPlaceLayer>
 
             <!-- Local layer for testing -->
-            <LocalGeoJSONLayer :zIndex="0" geoJsonPath="/SGElevationMain.geojson">
+            <!-- <LocalGeoJSONLayer :zIndex="0" geoJsonPath="/SGElevationMain.geojson">
               <ol-style>
                 <ol-style-stroke color="rgba(0,0,0,0.05)" :width="2"></ol-style-stroke>  
               </ol-style>
@@ -152,7 +152,7 @@ watch(showGrid, (newValue) => {
               <ol-style>
                 <ol-style-stroke color="rgba(0,0,0,0.04)" :width="2"></ol-style-stroke>  
               </ol-style>
-            </LocalGeoJSONLayer>
+            </LocalGeoJSONLayer> -->
           </template>
           
         </MapComponent>  
