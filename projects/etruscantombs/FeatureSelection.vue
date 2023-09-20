@@ -141,7 +141,7 @@ const getFeatureDisplayName: DisplayFunction =
   >
     <div
       class="ol-popup-content"
-      v-html="getFeatureDisplayName(hoveredFeature)"
+      v-html="'Tomb ' + getFeatureDisplayName(hoveredFeature)"
     ></div>
   </ol-overlay>
 
@@ -152,7 +152,7 @@ const getFeatureDisplayName: DisplayFunction =
   >
     <div
       class="ol-popup-content"
-      v-html="getFeatureDisplayName(selectedFeature as Feature)"
+      v-html="'Tomb ' + getFeatureDisplayName(selectedFeature as Feature)"
     ></div>
   </ol-overlay>
 </template>
