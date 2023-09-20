@@ -34,7 +34,7 @@ watchEffect(async () => {
     
     // If the API also returns tomb details in this call, assign it to tombDetail here
     if (images.value && images.value[0] && images.value[0].tomb) {
-      necropolisName.value = images.value[0].tomb.name;
+      necropolisName.value = images.value[0].tomb.necropolis.text;
       chambers.value = images.value[0].tomb.number_of_chambers;
       type.value = images.value[0].tomb.type.text;
       period.value = images.value[0].tomb.epoch.text;
