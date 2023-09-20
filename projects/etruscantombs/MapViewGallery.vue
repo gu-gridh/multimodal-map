@@ -30,7 +30,6 @@ import type { DianaClient } from "@/assets/diana";
 import VueMasonryWall from "@yeger/vue-masonry-wall";
 
 const diana = inject("diana") as DianaClient;
-
 const images = ref<Array<Image>>([]);
 
 let layoutKey = ref(0);
@@ -48,7 +47,23 @@ const refreshMasonry = () => {
 }
 
 onMounted(async () => {
-  images.value = await diana.listAll<Image>("image");
+  try {
+    const response = await fetch("https://diana.dh.gu.se/api/etruscantombs/geojson/place/");
+    const data = await response.json();
+
+    images.value = data.features.map((feature: any) => {
+      if (feature.properties.default_image) {
+        return {
+          ...feature.properties.default_image,
+          id: feature.properties.default_image.id
+        };
+      }
+      return null;
+    }).filter((img: Image | null) => img !== null);
+
+  } catch (error) {
+    console.error("Error fetching GeoJSON data:", error);
+  }
 });
 
 defineComponent({
