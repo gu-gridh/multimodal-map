@@ -22,6 +22,7 @@ const necropolisName = ref<string | null>(null);
 const chambers = ref<number | null>(null);
 const type = ref<string | null>(null);
 const period = ref<string | null>(null);
+const subtitle = ref<string | null>(null);
 
 
 //when a place is selected, fetch image and info
@@ -42,6 +43,7 @@ watchEffect(async () => {
       chambers.value = images.value[0].tomb.number_of_chambers || null;
       type.value = images.value[0].tomb.type.text || null;
       period.value = images.value[0].tomb.epoch.text || null;
+      subtitle.value = images.value[0].tomb.subtitle.text || null;
     }
   } else {
     images.value = [];
@@ -84,8 +86,8 @@ function deselectPlace() {
 
       <div class="placecard-bottom">
         <div class="placecard-text">
-          <div class="placecard-title theme-color-text">{{ selectedFeature.get("name") }}</div>
-          <div class="placecard-subtitle theme-color-text">240</div>
+          <div class="placecard-title theme-color-text">Tomb {{ selectedFeature.get("name") }}</div>
+          <div class="placecard-subtitle theme-color-text">{{ selectedFeature.get("subtitle") }}</div>
           <button class="theme-button theme-color-background">3D model</button>
         </div>
         <div class="placecard-content">
