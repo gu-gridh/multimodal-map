@@ -47,6 +47,15 @@ export type Tomb = {
   tags: any[];
 };
 
+export type Observastion = {
+  id: number,
+  title: string,
+  author: number,
+  observation: string,
+  date: string,
+  type: string,
+};
+
 export type ImageDeep = Omit<Image, "creator" | "place" | "focus" | "tag"> & {
   creator: Person;
   place: Place;
