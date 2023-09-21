@@ -24,9 +24,9 @@
     
     <div class="right-pane">
       <slot name="details">
-        <div class="col-start-6 col-span-2 detail">
-          <div class="bg-black rounded-lg shadow-lg mb-4 mx-12 detail">
-            <div class="px-8 py-6">
+        <div class="col-start-6 col-span-2 detail" id="transparent">
+          <div class="bg-black rounded-lg shadow-lg mb-4 mx-12 detail" id="transparent">
+            <div class="px-8 py-6" id="transparent">
               <div>
                 Here you'll find more information and media on the selected
                 location.

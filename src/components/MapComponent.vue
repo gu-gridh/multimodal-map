@@ -4,6 +4,7 @@
     :loadTilesWhileInteracting="true"
     style="height: 100%; width: calc(100% + 180px); z-index: !important"
     ref="map"
+    id="map-component"
   >
 
   <ol-view

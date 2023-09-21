@@ -17,7 +17,6 @@ import type { Place } from "./types";
 import About from "./About.vue";
 import AutocompleteComponent from "@/components/input/AutocompleteComponent.vue";
 import { useRwandaMap } from "./map.composable";
-import GeoJSON from 'ol/format/GeoJSON.js'
 
 function getName(f: Feature): string {
   const place = f.getProperties() as Place;
@@ -31,18 +30,7 @@ provide("config", config);
 const store = mapStore();
 const { params } = storeToRefs(store);
 
-// GeoJSON formatting
-const format = inject("ol-format");
-const GeoJSONFormat = new format.GeoJSON({
-  featureProjection: config.projection,
-});
-
 const visibleAbout = ref(false);
-/* const toggleAboutVisibility = async () => {
-  console.log('fired')
-  await nextTick();
-  visibleAbout.value = !visibleAbout.value;
-}; */
 
 //MapViewControls
 const { searchText } = useRwandaMap();
@@ -79,15 +67,15 @@ watch(
     <template #search>
       <button class="item"  @click="visibleAbout = true;">
         <div
-              class="p-1 px-3 clickable category-button"
-              style="
-                width: auto;
-                text-align: center;
-                margin-top: -5px;
-                cursor: pointer;
-              "
-            >More info</div>
-          </button>
+          class="p-1 px-3 clickable category-button"
+          style="
+            width: auto;
+            text-align: center;
+            margin-top: -5px;
+            cursor: pointer;"
+            >More info
+        </div>
+      </button>
       <div class="search-container">
         <AutocompleteComponent
           placeholderText="Search place names..."
@@ -99,14 +87,9 @@ watch(
       <!--filter map-->
       <MapViewControls />
     </template>
-
     <template #background>
-     
-<!--       <div style="display:flex; align-items: center; justify-content: center;">
-
-</div> -->
-<div class="map-container">
-  <MapComponent :min-zoom="14" :max-zoom="19" :restrictExtent="[30.1, -1.92, 30.01, -1.980]" :shouldAutoMove="true">
+    <div class="map-container">
+      <MapComponent :min-zoom="14" :max-zoom="19" :restrictExtent="[30.1, -1.92, 30.01, -1.980]" :shouldAutoMove="true">
         <template #layers>
           <DianaPlaceLayer
             path="rwanda/geojson/place/"
@@ -130,15 +113,21 @@ watch(
         </template>
       </MapComponent>
     </div>
-    </template>
-
-    <template #details>
-  <MapViewPreview />
-</template>
+  </template>
+    <!-- <template #details> -->
+  <!-- <MapViewPreview /> -->
+<!-- </template> -->
 </MainLayout>
 </template>
 
 <style>
+#app #map-component{
+  width: 100% !important;
+}
+#app #transparent {
+  background-color: transparent !important;
+  display: none !important;
+}
 .map-container {
   height: calc(100vh - 80px) !important;
   position: relative;
