@@ -36,19 +36,43 @@ const allPlaceTypes = ref(true)
 const allInformants = ref(true)
 const allPeriods = ref(true)
 
-//checked values are stored in store as arrays
+//checked values are stored in store as arrays(string). Change to id?
 const {sources, placeTypes, informants, periods} = storeToRefs(rwandaStore());
 
-//TODO - Uncheck All when other is checked
+//Uncheck All when other is checked
 const updateAllSources =() => {
-  let sourceToggle = document.getElementById("sourceToggle")
+  let sourceToggle = document.getElementById("sourceToggle") as HTMLInputElement
   if(sources.value.length != 0){
     sourceToggle.checked = false
   } else {
     sourceToggle.checked = true
   }
 }
-
+const updateAllPlaceTypes =() => {
+  let placeToggle = document.getElementById("placeToggle") as HTMLInputElement
+  if(placeTypes.value.length != 0){
+    placeToggle.checked = false
+  } else {
+    placeToggle.checked = true
+  }
+}
+const updateAllInformants =() => {
+  let infToggle = document.getElementById("infToggle") as HTMLInputElement
+  if(informants.value.length != 0){
+    infToggle.checked = false
+  } else {
+    infToggle.checked = true
+  }
+}
+const updateAllPeriods =() => {
+  let periodToggle = document.getElementById("periodToggle") as HTMLInputElement
+  if(periods.value.length != 0){
+    periodToggle.checked = false
+  } else {
+    periodToggle.checked = true
+  }
+}
+//TODO - Unckeck others when All is checked
 //TODO - Filter map on button click
 </script>
 
@@ -64,23 +88,23 @@ const updateAllSources =() => {
       </label>
       <div class="filter-heading">Place types</div>
       <label class="checkboxes">
-        <input type="checkbox" :value="allPlaceTypes" @click="allPlaceTypes =!allPlaceTypes " checked>All
+        <input id="placeToggle" type="checkbox" :value="allPlaceTypes" checked>All
         <div v-for="place in PLACE_TYPES" class="checkboxes">
-          <input type="checkbox" :value="place" v-model="placeTypes">
+          <input type="checkbox" :value="place" v-model="placeTypes" @change="updateAllPlaceTypes()">
           {{ place }}
         </div>
       </label>
       <div class="filter-heading">Informants</div>
       <label class="checkboxes">
-        <input type="checkbox" :value="allInformants" @click="allInformants =!allInformants " checked>All
+        <input id="infToggle" type="checkbox" :value="allInformants" checked>All
         <div v-for="informant in INFORMANTS" class="checkboxes">
-          <input type="checkbox" :value="informant" v-model="informants">
+          <input type="checkbox" :value="informant" v-model="informants" @change="updateAllInformants()">
           {{ informant }}
         </div>
       </label>
       <div class="filter-heading">Time periods</div>
       <label class="checkboxes">
-        <input type="checkbox" :value="allPeriods" @click="allPeriods =!allPeriods " checked>All
+        <input id="periodToggle" type="checkbox" :value="allPeriods" checked>All
         <div v-for="period in PERIODS" class="checkboxes">
           <input type="checkbox" :value="period" v-model="periods">
           {{ period }}
