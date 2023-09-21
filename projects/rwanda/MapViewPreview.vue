@@ -25,6 +25,8 @@ watchEffect(async () => {
 function deselectPlace() {
   selectedFeature.value = undefined;
   //change zoom to original state
+  store.updateCenter([3346522.1909503858, -217337.69352852934])
+  store.updateZoom(15)
 }
 
 //Capitalize first letter

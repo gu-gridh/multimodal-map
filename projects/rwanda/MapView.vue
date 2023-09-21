@@ -57,7 +57,6 @@ watch(
   selectedFeature,
   (newFeature, oldFeature) => {
     if (newFeature && newFeature.getGeometry) {
-      console.log('fired')
       const geometry = newFeature.getGeometry();
       if (geometry) {
         const coordinates = (geometry as any).getFirstCoordinate(); //Since polygon - only get first coordinates
