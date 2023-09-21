@@ -23,7 +23,7 @@ const { categories, years, tags, placesLayerVisible, tagsLayerVisible } = storeT
 const store = mapStore();
 const { selectedFeature } = storeToRefs(store);
 const minZoom = 14;
-const maxZoom = 20  ;
+const maxZoom = 20;
 const featureZoom = 16; //value between minZoom and maxZoom when you select a point 
 
 watch(

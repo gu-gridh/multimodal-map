@@ -26,6 +26,9 @@ const { categories, years, tags, tagsLayerVisible, placesLayerVisible, mapLayerV
 
 const store = mapStore();
 const { selectedFeature } = storeToRefs(store);
+const minZoom = 9;
+const maxZoom = 16;
+const featureZoom = 11; //value between minZoom and maxZoom when you select a point 
 
 const placeParams = computed(() =>
   clean({
@@ -43,6 +46,10 @@ watch(
       if (geometry) {
         const coordinates = (geometry as any).getCoordinates();
         store.updateCenter(coordinates);
+        if (store.zoom < featureZoom)
+        {
+          store.updateZoom(featureZoom);
+        }
       }
     }
   },
@@ -142,8 +149,8 @@ watch(showGrid, (newValue) => {
     <template #background>
       <MapComponent 
       :shouldAutoMove="true" 
-      :min-zoom="9" 
-      :max-zoom="16" 
+      :min-zoom=minZoom
+      :max-zoom=maxZoom 
       :restrictExtent="[0.0, 75.0, 30.0, 81.0]" >
         <template #layers>
           <NpolarLayer
