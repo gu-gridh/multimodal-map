@@ -1,6 +1,6 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
-
+// store for filtering map
 export const rwandaStore = defineStore("rwanda", () => {
     const sources = ref<Array<any>>([]);
     const placeTypes = ref<Array<string>>([]);

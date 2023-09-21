@@ -61,9 +61,7 @@ watch(
       const geometry = newFeature.getGeometry();
       if (geometry) {
         const coordinates = (geometry as any).getFirstCoordinate(); //Since polygon - only get first coordinates
-        console.log(coordinates)
         store.updateCenter(coordinates);
-        console.log('in store' + store.center)
         if (store.zoom < featureZoom)
         {
           store.updateZoom(featureZoom);
@@ -105,9 +103,9 @@ watch(
 
     <template #background>
      
-      <div style="display:flex; align-items: center; justify-content: center;">
+<!--       <div style="display:flex; align-items: center; justify-content: center;">
 
-</div>
+</div> -->
 <div class="map-container">
   <MapComponent :min-zoom="14" :max-zoom="19" :restrictExtent="[30.1, -1.92, 30.01, -1.980]" :shouldAutoMove="true">
         <template #layers>

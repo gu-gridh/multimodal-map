@@ -10,13 +10,13 @@ const { selectedFeature } = storeToRefs(mapStore());
 const diana = inject("diana") as DianaClient;
 
 const images = ref<Array<Image>>();
-let place = ref() 
+const place = ref() 
 
 watchEffect(async () => {
   if (selectedFeature.value) {
     const place_of_interest = selectedFeature.value.getId();
-    place = JSON.parse(JSON.stringify(selectedFeature.value))
-    console.log(place.values_)
+    place.value = JSON.parse(JSON.stringify(selectedFeature.value))
+    console.log(place.value)
     images.value = await diana.listAll<Image>("image/", { place_of_interest });
   } else {
     images.value = [];
@@ -24,6 +24,7 @@ watchEffect(async () => {
 });
 function deselectPlace() {
   selectedFeature.value = undefined;
+  //change zoom to original state
 }
 
 //Capitalize first letter
