@@ -220,6 +220,7 @@
         border-radius:8px;
         padding:0px;
         background-color:white;
+        cursor:auto;
     }
     
     .observation-title{
