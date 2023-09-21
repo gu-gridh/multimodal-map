@@ -47,7 +47,7 @@ export type Tomb = {
   tags: any[];
 };
 
-export type Observastion = {
+export type Observation = {
   id: number,
   title: string,
   author: number,

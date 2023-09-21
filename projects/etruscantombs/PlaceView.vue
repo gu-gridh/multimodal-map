@@ -1,15 +1,16 @@
 <script setup lang="ts">
     import { ref, defineProps, onMounted, inject } from 'vue';
-    import type { Image, Observastion } from './types';
+    import type { Image, Observation } from './types';
     import type { DianaClient } from "@/assets/diana";
     import PlaceViewCard from "./PlaceViewCard.vue";
     
     const sort = ref('type');
+    const groupedByYear = ref<{ [year: string]: (Image | Observation)[] }>({});
     const { id } = defineProps<{ id: number; }>();
     const diana = inject("diana") as DianaClient;
     const images = ref<Image[]>([]);
     const plans = ref<Image[]>([]);
-    let observations = ref<Observastion[]>([]);
+    let observations = ref<Observation[]>([]);
     let place = ref();
     
     //Blank squares
@@ -21,7 +22,7 @@
     onMounted(async () => {
       if (id) {
         images.value = await diana.listAll<Image>("image", { tomb: id, type_of_image: 2 });
-        observations.value = await diana.listAll<Observastion>("observation", { place: id });
+        observations.value = await diana.listAll<Observation>("observation", { place: id });
         //fetch for sections and plans
         const url = 'https://diana.dh.gu.se/api/etruscantombs/image/?tomb=' + id + '&type_of_image=1&type_of_image=5';
         const response = await fetch(url);
@@ -30,7 +31,17 @@
           plans.value = data.results;
         } else {
           console.error(`Failed to fetch data: ${response.statusText}`);
-        }    
+        }
+        
+        /* For sorting by year */
+        const allItems = [...images.value, ...plans.value, ...observations.value];
+        allItems.forEach((item) => {
+            const year = item.date;
+            if (!groupedByYear.value[year]) {
+            groupedByYear.value[year] = [];
+            }
+            groupedByYear.value[year].push(item);
+        });
       }
     });
     </script>
@@ -102,7 +113,30 @@
                         </tr>
                     </table>
     
-                    <!-- TODO Sort by year-table -->
+                    <table class="content-table" v-else-if="sort == 'year'">
+                            <tr v-for="(items, year) in groupedByYear" :key="year">
+                                <td>{{ year }}</td>
+                                <td>
+                                <div v-for="(item, index) in items" :key="index" :class="[item.iiif_file ? 'image-placeholder' : 'observation-placeholder']">
+                                    <!-- If the item is an image -->
+                                    <img v-if="item.iiif_file" :src="`${item.iiif_file}/full/500,/0/default.jpg`" :alt="item.title" class="image-square" />
+
+                                    <!-- If the item is an observation -->
+                                    <div v-else-if="item.title" class="observation-content">
+                                    <div class="observation-title">
+                                        {{ item.title }}
+                                    </div>
+                                    <div class="observation-date">
+                                        {{ item.date }}
+                                    </div>
+                                    <div class="observation-body">
+                                        {{ item.description }}
+                                    </div>
+                                    </div>
+                                </div>
+                                </td>
+                            </tr>
+                    </table>
                 </div>
             </div>
         </div>
@@ -170,7 +204,6 @@
     .content-table td {
         padding: 15px;
         padding-top: 2px;
-        text-align:right;
         vertical-align: top;
     }
     
