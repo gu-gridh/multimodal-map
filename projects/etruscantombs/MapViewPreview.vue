@@ -44,7 +44,7 @@ watchEffect(async () => {
       chambers.value = images.value[0].tomb.number_of_chambers || null;
       type.value = images.value[0].tomb.type.text || null;
       period.value = images.value[0].tomb.epoch.text || null;
-      subtitle.value = images.value[0].tomb.subtitle.text || null;
+      subtitle.value = images.value[0].tomb.subtitle || null;
     }
   } else {
     images.value = [];

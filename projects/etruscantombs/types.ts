@@ -25,6 +25,7 @@ export type Tomb = {
   updated_at: string;
   published: boolean;
   name: string;
+  subtitle: string;
   geometry: {
     type: string;
     coordinates: number[];
