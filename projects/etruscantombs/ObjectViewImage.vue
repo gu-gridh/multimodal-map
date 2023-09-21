@@ -30,7 +30,7 @@ const downloadImage = (fileUrl: string, fileName: string) => {
         Tags:
         {{ object.tag.map((tag) => tag.text).join(", ") }}
       </div>
-      <button class="category-button" @click="downloadImage(object.file, `${object.title}.tif`)">Download image</button>
+      <button class="category-button" @click="downloadImage(object.file, `${object.title}.tif`)">Download</button>
 
       <!-- This title should fetch the name of the place (but with tomb added in front of it) -->
       <h2>Tomb  </h2>
