@@ -180,6 +180,7 @@ onMounted(async () => {
     overflow:hidden;
     transition: all 0.2s ease-in-out;
     cursor:pointer;
+    background-color:white;
 }
 
 .document-placeholder {
@@ -189,6 +190,7 @@ onMounted(async () => {
     background-size:44px;
     background-repeat:no-repeat;
     background-position: 8px;
+    background-color:white;
     padding:11px 10px 5px 55px;
 }
 
@@ -212,6 +214,7 @@ line-height:1.0;
     height: 200px;
     border-radius:8px;
     padding:0px;
+    background-color:white;
 }
 
 .observation-title{
