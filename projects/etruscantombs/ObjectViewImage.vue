@@ -24,19 +24,19 @@ const downloadImage = (fileUrl: string, fileName: string) => {
       <div class="objects">
         <p v-html="object.description"></p>
 
-
-      <div v-if="object.creator?.name">By: {{ object.creator.name }}</div>
-      <div v-if="object.date">On: {{ object.date }}</div>
-      <div v-if="object.focus?.text">Focus: {{ object.focus.text }}</div>
+      <div v-if="object.creator?.name"><div class="label">By:</div>  <div class="data">{{ object.creator.name }}</div></div>
+      <div v-if="object.date"><div class="label">Date:</div> <div class="data">{{ object.date }}</div></div>
       <div v-if="object.tag?.length">
         Tags:
         {{ object.tag.map((tag) => tag.text).join(", ") }}
       </div>
-      <h2>Om platsen  </h2>
+      <button class="category-button" @click="downloadImage(object.file, `${object.title}.tif`)">Download image</button>
+
+      <!-- This title should fetch the name of the place (but with tomb added in front of it) -->
+      <h2>Tomb  </h2>
       <div v-if="object.place?.description" v-html="object.place.description"></div>
 
-      <button class="category-button" @click="downloadImage(object.file, `${object.title}.tif`)">Ladda ner bild</button>
-
+     
     </div>
     </ObjectViewComponent>
   </div>
@@ -61,7 +61,6 @@ const downloadImage = (fileUrl: string, fileName: string) => {
 
 <style scoped>
 .metadata .object-title {
-  font-family: "Josefin Sans", sans-serif !important;
 
 }
 
@@ -75,10 +74,18 @@ h2{
 .metadata .objects {
 margin-top:30px;
 font-weight:200;
-font-size:1.0em;
+font-size:1.2em;
 line-height:1.2;
 text-align:left;
 padding:0px 40px 0px 0px;
+}
+.metadata .objects .label {
+width:50px;
+float:left;
+}
+.metadata .objects .data {
+color:rgb(255,150,150);
+display:inline;
 }
 .illustration {
   height: calc(100vh - 80px);
@@ -86,14 +93,15 @@ padding:0px 40px 0px 0px;
 
 .category-button{
   margin-top:30px;
+  color:white !important;
   cursor:pointer;
   font-size:1.1em;
   padding:8px 16px;
+  background-color:rgb(180,100,100)!important;
   background: url("@/assets/interface/downloadbuttonwhite.png");
   background-size: 25px;
       background-repeat: no-repeat;
       padding-left: 45px;
-      background-position: 8px 5px;
-
+      background-position: 8px 8px;
 }
 </style>
