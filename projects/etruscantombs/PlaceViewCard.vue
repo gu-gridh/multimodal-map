@@ -25,7 +25,7 @@ const subtitle = ref<string | null>(null);
 const description = ref<string | null>(null);
 
 const projection = ref("EPSG:4326");
-const zoom = ref(15);
+const zoom = ref(16);
 const rotation = ref(0);
 const strokeWidth = ref(5);
 const strokeColor = ref("red");
