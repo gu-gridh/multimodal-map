@@ -73,7 +73,7 @@ onMounted(async () => {
                         <td>Plans</td>
                         <div v-for="(image, index) in plans" :key="index" class="image-placeholder">
                             <router-link :to="`/detail/image/${image.id}`">
-                                <img :src="`${image.iiif_file}/full/500,/0/default.jpg`" :alt="image.title" class="image-square" />
+                                <img :src="`${image.iiif_file}/full/500,/0/default.jpg`" :alt="image.title" class="image-square-plan" />
                             </router-link>
                         </div>
                     </tr>
@@ -249,7 +249,9 @@ line-height:1.0;
 .image-square-plan {
     width: 100%;
     height: 100%;
+    padding:10px;
     object-fit: contain; 
+    background-color:white;
 }
 .image-placeholder img {
   transform: scale(1.05);
