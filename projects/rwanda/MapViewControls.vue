@@ -106,7 +106,7 @@ const updateAllPeriods =() => {
       <label class="checkboxes">
         <input id="periodToggle" type="checkbox" :value="allPeriods" checked>All
         <div v-for="period in PERIODS" class="checkboxes">
-          <input type="checkbox" :value="period" v-model="periods">
+          <input type="checkbox" :value="period" v-model="periods" @changed="updateAllPeriods()">
           {{ period }}
         </div>
       </label>
