@@ -8,6 +8,7 @@ const sort = ref('type');
 const { id } = defineProps<{ id: number; }>();
 const diana = inject("diana") as DianaClient;
 const images = ref<Image[]>([]);
+const plans = ref<Image[]>([]);
 let place = ref();
 
 //Blank squares
@@ -18,7 +19,8 @@ const imageArray = ref([
 
 onMounted(async () => {
   if (id) {
-    images.value = await diana.listAll<Image>("image", { tomb: id });
+    images.value = await diana.listAll<Image>("image", { tomb: id, type_of_image: 2 });
+    plans.value = await diana.listAll<Image>("image", { tomb: id, type_of_image: 1 });
   }
 });
 </script>
@@ -69,8 +71,10 @@ onMounted(async () => {
                   
                     <tr>
                         <td>Plans</td>
-                        <div v-for="(image, index) in imageArray" :key="index" class="image-placeholder">
-                            <img :src="image.src" :alt="image.alt" class="image-square-plan" />
+                        <div v-for="(image, index) in plans" :key="index" class="image-placeholder">
+                            <router-link :to="`/detail/image/${image.id}`">
+                                <img :src="`${image.iiif_file}/full/500,/0/default.jpg`" :alt="image.title" class="image-square" />
+                            </router-link>
                         </div>
                     </tr>
                     <tr>
