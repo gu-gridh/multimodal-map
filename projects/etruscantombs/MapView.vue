@@ -18,6 +18,7 @@ import About from "./About.vue";
 import { onMounted, watch } from "vue";
 import { nextTick } from "vue";
 import GeoJSON from "ol/format/GeoJSON";
+import i18n from '../../src/translations/etruscan';
 
 const { categories, years, tags, placesLayerVisible, tagsLayerVisible } = storeToRefs(etruscanStore());
 const store = mapStore();
@@ -25,6 +26,9 @@ const { selectedFeature } = storeToRefs(store);
 const minZoom = 14;
 const maxZoom = 20;
 const featureZoom = 16; //value between minZoom and maxZoom when you select a point 
+const visibleAbout = ref(false);
+const showGrid = ref(false);
+let visited = true; // Store the visited status outside of the hook
 
 watch(
   selectedFeature,
@@ -59,9 +63,13 @@ const tagParams = computed(() => {
   });
 });
 
-const visibleAbout = ref(false);
-const showGrid = ref(false);
-let visited = true; // Store the visited status outside of the hook
+const toggleLanguage = () => {
+  if (i18n.global.locale === 'en') {
+    i18n.global.locale = 'it';
+  } else {
+    i18n.global.locale = 'en';
+  }
+};
 
 const toggleAboutVisibility = async () => {
   console.log('fired')
@@ -111,6 +119,13 @@ watch(showGrid, (newValue) => {
                 text-align: center;
                 cursor: pointer;
               ">More info</div>
+      </button>
+      <button @click="toggleLanguage">
+        <div class="p-1 px-2 clickable category-button about-button" style="
+                text-align: center;
+                margin-left: 10px;
+                cursor: pointer;
+              ">Toggle Language</div>
       </button>
       <MapViewControls />
     </template>

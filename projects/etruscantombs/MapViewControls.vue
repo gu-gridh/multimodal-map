@@ -1,5 +1,5 @@
 <template>
-  <div class="section-title">Documentation by category</div>
+  <div class="section-title"><h1>{{ $t('documentation') }}</h1></div>
   <CategoryButtonList
     v-model="categories"
     :categories="CATEGORIES"
@@ -22,7 +22,7 @@
   </transition> -->
 
   <div class="tag-section">
-  <div class="section-title">Time period</div>
+  <div class="section-title">{{ $t('period') }}</div>
   <div class="broad-controls">
     <CategoryButtonList
       v-model="tags"
@@ -41,7 +41,7 @@
 </div>
 
 <div class="tag-section">
-  <div class="section-title">Type of tomb</div>
+  <div class="section-title">{{ $t('tomb') }}</div>
   <div class="broad-controls">
   </div>
 </div>
@@ -58,10 +58,6 @@
   />
 </div>
 </div> -->
-
-
-
-
 
 </template>
 
