@@ -136,9 +136,9 @@ function groupAndSortByYear(allItems: (Image | Observation)[]) {
                 <table class="content-table-date" v-else-if="sort == 'year'">
                     <tr v-for="(items, year) in groupedByYear" :key="year">
                         <td>{{ year }}</td>
-                        <td>
+                       
                             <div v-for="(item, index) in items" :key="index"
-                                :class="[item.iiif_file ? 'image-placeholder' : 'observation-placeholder']">
+                                :class="[item.iiif_file ? 'image-placeholder' : 'image-placeholder observation-placeholder']">
                                 <!-- If the item is an image -->
                                 <router-link v-if="item.iiif_file" :to="`/detail/image/${item.id}`">
                                     <img :src="`${item.iiif_file}/full/500,/0/default.jpg`" :alt="item.title" class="image-square" />
@@ -157,7 +157,7 @@ function groupAndSortByYear(allItems: (Image | Observation)[]) {
                                     </div>
                                 </div>
                             </div>
-                        </td>
+                       
                     </tr>
                 </table>
             </div>
