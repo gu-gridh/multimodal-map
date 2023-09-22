@@ -83,7 +83,7 @@ onMounted(async () => {
                             <img :src="image.src" :alt="image.alt" class="image-square" />
                         </div>
                     </tr>
-                    <tr v-if="images.length > 0">
+                    <tr v-if="plans.length > 0">
                         <td>Plans</td>
                         <div v-for="(image, index) in plans" :key="index" class="image-placeholder">
                             <router-link :to="`/detail/image/${image.id}`">
@@ -119,7 +119,7 @@ onMounted(async () => {
                     </tr>
                 </table>
 
-                <table class="content-table" v-else-if="sort == 'year'">
+                <table class="content-table-date" v-else-if="sort == 'year'">
                     <tr v-for="(items, year) in groupedByYear" :key="year">
                         <td>{{ year }}</td>
                         <td>
@@ -217,6 +217,13 @@ onMounted(async () => {
     padding-right: 25px;
     vertical-align: top;
     text-align: right;
+}
+
+.content-table-date td {
+    padding: 15px;
+    padding-top: 2px;
+    padding-right: 25px;
+    vertical-align: top;
 }
 
 
