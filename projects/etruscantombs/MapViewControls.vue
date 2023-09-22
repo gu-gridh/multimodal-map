@@ -24,6 +24,13 @@
   <div class="tag-section">
   <div class="section-title">Time period</div>
   <div class="broad-controls">
+    <CategoryButtonList
+      v-model="tags"
+      :categories="TAGS"
+      :limit="1"
+      class="my-2"
+      @click="handleTagClick" 
+    />
   </div>
 </div>
 
@@ -78,17 +85,20 @@ const CATEGORIES = {
 };
 
 const TAGS = ref<Record<string, string>>({});
+const currentTag = ref(null);
+
 const YEARS = {
   MIN: config?.timeRange?.[0] || 0,
   MAX: config?.timeRange?.[1] || new Date().getFullYear(),
 };
 
 onMounted(async () => {
-  const response = await fetch("https://diana.dh.gu.se/api/etruscantombs/tag/");
-  const data = await response.json();
-  const tagTexts = data.results.filter(result => result.published).map(tag => tag.text);
-  tagTexts.forEach(tagText => {
-    TAGS.value[tagText] = tagText;
+  const response = await fetch("https://diana.dh.gu.se/api/etruscantombs/epoch/");
+  const data = await response.json();  
+  data.results.forEach(result => {
+    if (result.published) {
+      TAGS.value[result.id] = result.text;
+    }
   });
 });
 
@@ -103,8 +113,6 @@ const handleCategoryClick = (category: string) => {
 
   // If a category is clicked, clear tags
   tags.value = [];
-  isSliderVisible.value = true;
-
   // If the clicked category is the same as the last clicked one, default to "all"
   if (lastClickedCategory.value === category) {
     categories.value = ["all"];
@@ -120,36 +128,9 @@ const handleCategoryClick = (category: string) => {
   }
 };
 
-// Create a ref for last clicked tag
-const lastClickedTag = ref('');
-
-const handleTagClick = (tag: string) => {
-  if (placesLayerVisible.value) { 
-    placesLayerVisible.value = false;
-    tagsLayerVisible.value = true;
-  }
-
-  // If a tag is clicked, clear categories
-  categories.value = [];
-
-  // If the clicked tag is the same as the last clicked tag, return to the default view
-  if (lastClickedTag.value === tag) {
-    categories.value = ["all"];
-    tags.value = [];
-    placesLayerVisible.value = true;
-    tagsLayerVisible.value = false;
-    isSliderVisible.value = true;
-
-    // Clear the lastClickedTag since it was unselected
-    lastClickedTag.value = '';
-  } else {
-    // Add the clicked tag only if it's not the same as the last clicked one
-    tags.value = [tag];
-
-    // Update last clicked tag
-    lastClickedTag.value = tag;
-  }
-};
+function handleTagClick(tag) {
+  currentTag.value = tag;
+}
 </script>
 
 <style>

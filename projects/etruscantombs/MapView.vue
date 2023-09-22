@@ -44,18 +44,18 @@ watch(
   { immediate: true }
 );
 
-const placeParams = computed(() =>
-  clean({
-    type: categories.value.filter((x) => x !== "all").join(","),
-    start_date: years.value[0],
-    end_date: years.value[1],
-  })
-);
+// const placeParams = computed(() =>
+//   clean({
+//     type: categories.value.filter((x) => x !== "all").join(","),
+//     start_date: years.value[0],
+//     end_date: years.value[1],
+//   })
+// );
 
 const tagParams = computed(() => {
-  const tag_set = tags.value[0]; // Assuming that tags always contains at least one element
+  const epoch = tags.value[0];
   return clean({
-    tag_set,
+    epoch,
   });
 });
 
@@ -129,7 +129,7 @@ watch(showGrid, (newValue) => {
           <template #layers>
             <!-- Layer for testing -->
              <!--it is possible to change color with :color="[180,100,100,1.0]", but then the marker becomes badly rasterized-->
-            <DianaPlaceLayer v-if="placesLayerVisible" path="etruscantombs/geojson/place/" :params="placeParams">
+            <DianaPlaceLayer v-if="placesLayerVisible" path="etruscantombs/geojson/place/" :params="tagParams">
               <ol-style>
                 <ol-style-icon 
                 :src="markerIcon" 
