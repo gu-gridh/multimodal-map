@@ -34,16 +34,30 @@ onMounted(async () => {
         }
 
         /* For sorting by year */
-        const allItems = [...images.value, ...plans.value, ...observations.value];
-        allItems.forEach((item) => {
-            const year = item.date;
-            if (!groupedByYear.value[year]) {
-                groupedByYear.value[year] = [];
-            }
-            groupedByYear.value[year].push(item);
-        });
+        groupAndSortByYear([...images.value, ...plans.value, ...observations.value]);
     }
 });
+
+function groupAndSortByYear(allItems: (Image | Observation)[]) {
+  // Group items by year
+  allItems.forEach((item) => {
+    const year = item.date;
+    if (!groupedByYear.value[year]) {
+      groupedByYear.value[year] = [];
+    }
+    groupedByYear.value[year].push(item);
+  });
+
+  // Sort grouped items by date
+  const sortedGroupedByYear = Object.keys(groupedByYear.value)
+    .sort()
+    .reduce<{ [year: string]: (Image | Observation)[] }>((acc, key) => {
+        acc[key] = groupedByYear.value[key];
+        return acc;
+    }, {});
+
+  groupedByYear.value = sortedGroupedByYear;
+}
 </script>
     
 <template>
@@ -126,8 +140,9 @@ onMounted(async () => {
                             <div v-for="(item, index) in items" :key="index"
                                 :class="[item.iiif_file ? 'image-placeholder' : 'observation-placeholder']">
                                 <!-- If the item is an image -->
-                                <img v-if="item.iiif_file" :src="`${item.iiif_file}/full/500,/0/default.jpg`"
-                                    :alt="item.title" class="image-square" />
+                                <router-link v-if="item.iiif_file" :to="`/detail/image/${item.id}`">
+                                    <img :src="`${item.iiif_file}/full/500,/0/default.jpg`" :alt="item.title" class="image-square" />
+                                </router-link>
 
                                 <!-- If the item is an observation -->
                                 <div v-else-if="item.title" class="observation-content">
