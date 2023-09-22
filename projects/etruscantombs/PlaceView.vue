@@ -166,6 +166,10 @@ function groupAndSortByYear(allItems: (Image | Observation)[]) {
 </template>
     
 <style scoped>
+
+table td{
+    width:110px!important;
+}
 .main-container {
     display: flex;
     flex-direction: row;
@@ -194,7 +198,7 @@ function groupAndSortByYear(allItems: (Image | Observation)[]) {
 
 .place-gallery-container {
     flex: 1;
-    padding: 10px 30px 100px 10px;
+    padding: 10px 30px 100px 0px;
 }
 
 .dropdown {
@@ -203,7 +207,7 @@ function groupAndSortByYear(allItems: (Image | Observation)[]) {
     background-color: rgb(180, 100, 100);
     padding: 3px 10px;
     padding-right: 30px;
-    margin-left: 100px;
+    margin-left: 110px;
     margin-bottom: 10px;
     width: auto;
     height: 32px;
@@ -215,10 +219,7 @@ function groupAndSortByYear(allItems: (Image | Observation)[]) {
 }
 
 .dropdown:hover {
-
-
     background-color: rgb(160, 80, 80);
-
 }
 
 .dropdown:focus {
@@ -241,13 +242,11 @@ function groupAndSortByYear(allItems: (Image | Observation)[]) {
     vertical-align: top;
 }
 
-
 .image-placeholder {
     width: 200px;
     height: 200px;
     background-color: #eee;
     margin: 8px 16px 8px 0px;
-
     display: inline-block;
     overflow: hidden;
     transition: all 0.2s ease-in-out;
@@ -314,7 +313,6 @@ function groupAndSortByYear(allItems: (Image | Observation)[]) {
     border-width: 1.3px 0 0px 0;
     padding: 10px 10px 10px 20px;
 }
-
 
 .image-square {
     width: 100%;
