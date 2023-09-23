@@ -102,10 +102,10 @@ watch(showGrid, (newValue) => {
   <div style="display:flex; align-items: center; justify-content: center; pointer-events: none;">
     <div class="ui-mode ui-overlay">
       <button class="item" v-bind:class="{ selected: !showGrid }" v-on:click="showGrid = false;">
-        Map
+        {{ $t('map') }}
       </button>
       <button class="item" v-bind:class="{ selected: showGrid }" v-on:click="showGrid = true;">
-        Gallery
+        {{ $t('gallery') }}
       </button>
     </div>
   </div>
@@ -113,19 +113,21 @@ watch(showGrid, (newValue) => {
   <About :visibleAbout="visibleAbout" @close="visibleAbout = false" />
   <MainLayout>
     <template #search>
+      <div class="main-title">{{ $t('etruscantitle') }}</div>
+      <div class="about">{{ $t('etruscanabout') }}</div>
       <button class="item" @click="toggleAboutVisibility">
         <div class="p-1 px-2 clickable category-button about-button" style="
                 width: 90px;
                 text-align: center;
                 cursor: pointer;
-              ">More info</div>
+              ">{{ $t('infobutton') }}</div>
       </button>
       <button @click="toggleLanguage">
         <div class="p-1 px-2 clickable category-button about-button" style="
                 text-align: center;
                 margin-left: 10px;
                 cursor: pointer;
-              ">Toggle Language</div>
+              ">{{ $t('languagebutton') }}</div>
       </button>
       <MapViewControls />
     </template>

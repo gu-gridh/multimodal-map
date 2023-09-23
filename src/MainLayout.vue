@@ -4,6 +4,7 @@
       <div class="left-pane-layer">
         <div class="left-pane-content">
           <div class="mobile-ui-drag">
+          
           </div>
           <slot name="title">
             <!--<div v-if="config" class="px-8 py-6 bg-white rounded-t-lg shadow-lg">-->
@@ -20,6 +21,7 @@
           <slot name="search"></slot>
         </div>
       </div>
+      <div class="atlas-gradient"></div>
     </div>
     
     <div class="right-pane">
@@ -39,7 +41,7 @@
     <slot name="background">
       <MapComponent />
     </slot>
-    <div class="atlas-gradient"></div>
+   
   </div>
  
   </div>
@@ -401,12 +403,13 @@ body {
 }
 /* This one makes the map appear to fade out under the transparent left-pane */
 .atlas-gradient {
-  height: 250px;
+  left:0px;
+  height: 100%;
   width: 100%;
   position:absolute;
-  background: linear-gradient(0deg, rgba(255,255,255,1) 20%, rgba(255,255,255,0) 100%);
-  bottom: 100px;
-  z-index:201;
+  background: linear-gradient(180deg, rgba(255,255,255,0) 0px, rgba(255,255,255,1) 300px);
+  bottom: 0px;
+  z-index:-100;
   pointer-events:none;
 }
 
@@ -603,6 +606,11 @@ overflow-y:auto;
 
 }
 
+/* The Gallery */
+
+#app .masonry-wall {
+  padding: 0px 0px 270px 0px; 
+}
 }
 
 @media screen and (max-width: 400px) {

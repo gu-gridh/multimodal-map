@@ -34,16 +34,13 @@ body {
   font-family: 'Teko', sans-serif;
   font-size: 100px;
   line-height: 0.7;
-  width:50px;
+  width:280px;
   font-weight: 300;
   letter-spacing: 0.05rem;
   color: rgb(180, 100, 100);
   margin-left: -6px;
+  margin-top: -30px;
   transition: all 0.5s ease-in-out;
-}
-
-#app .about-button {
-  margin-top:-5px;
 }
 
 .about {
@@ -51,14 +48,23 @@ body {
   line-height: 1.2;
   text-align: left;
   font-size: 0.95em;
+  margin-bottom:15px;
 }
+
+#app .about-button {
+  margin-top:-5px;
+  width:auto !important;
+}
+
+
 
 @media screen and (max-height: 750px) {
   .main-title {
     margin-left: -5px;
   font-size: 80px;
- 
+  width:220px;
 }
+
 #app .about {
   display:none;
 }
@@ -105,6 +111,21 @@ body {
     grid-gap: 5px;
     overflow-y: scroll;
   }
+
+  #app .left-pane-layer {
+  padding: 20px 0px 20px 0px !important;
+  width: 100% !important;
+}
+
+.main-title {
+  font-size:100px!important;
+  width:260px!important;
+  margin-top:-10px!important;
+}
+
+  .atlas-gradient {
+    background: linear-gradient(180deg, rgba(232, 228, 217, 0) 0px, rgba(232, 228, 217, 1) 300px) !important;
+}
 }
 
 </style>
