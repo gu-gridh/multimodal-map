@@ -95,7 +95,7 @@ function groupAndSortByYear(allItems: (Image | Observation)[]) {
                         <td>3D Models</td>
                         <div v-for="(image, index) in imageArray" :key="index" class="image-placeholder">
 
-                            <div class="meta-data-overlay"><div class="meta-data-overlay-text">Placeholder text</div></div>
+                            <div class="meta-data-overlay"><div class="meta-data-overlay-text">{{image.title}}</div></div>
                             <img :src="image.src" :alt="image.alt" class="image-square" />
                         
                         </div>
@@ -105,7 +105,7 @@ function groupAndSortByYear(allItems: (Image | Observation)[]) {
                         <div v-for="(image, index) in plans" :key="index" class="image-placeholder plan-placeholder">
                          
                             <router-link :to="`/detail/image/${image.id}`">
-                                <div class="meta-data-overlay"><div class="meta-data-overlay-text">Placeholder text</div></div>
+                                <div class="meta-data-overlay"><div class="meta-data-overlay-text">{{image.title}}</div></div>
                                 <img :src="`${image.iiif_file}/full/500,/0/default.jpg`" :alt="image.title"
                                     class="image-square-plan" />
                             </router-link>
@@ -116,7 +116,7 @@ function groupAndSortByYear(allItems: (Image | Observation)[]) {
                         <div v-for="(image, index) in images" :key="index" class="image-placeholder">
                            
                             <router-link :to="`/detail/image/${image.id}`">
-                                <div class="meta-data-overlay"><div class="meta-data-overlay-text">Placeholder text</div></div>
+                                <div class="meta-data-overlay"><div class="meta-data-overlay-text">{{image.title}}</div></div>
                                 <img :src="`${image.iiif_file}/full/500,/0/default.jpg`" :alt="image.title"
                                     class="image-square" />
                             </router-link>
@@ -149,7 +149,7 @@ function groupAndSortByYear(allItems: (Image | Observation)[]) {
                                 <!-- If the item is an image -->
                                
                                 <router-link v-if="item.iiif_file" :to="`/detail/image/${item.id}`">
-                                    <div class="meta-data-overlay"><div class="meta-data-overlay-text">Placeholder text</div></div>
+                                    <div class="meta-data-overlay"><div class="meta-data-overlay-text">{{item.title}}</div></div>
                                     <img :src="`${item.iiif_file}/full/500,/0/default.jpg`" :alt="item.title" class="image-square" />
                                   
                                 </router-link>
