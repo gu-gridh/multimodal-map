@@ -94,14 +94,18 @@ function groupAndSortByYear(allItems: (Image | Observation)[]) {
                     <tr>
                         <td>3D Models</td>
                         <div v-for="(image, index) in imageArray" :key="index" class="image-placeholder">
-                           
+
+                            <div class="meta-data-overlay"><div class="meta-data-overlay-text">Placeholder text</div></div>
                             <img :src="image.src" :alt="image.alt" class="image-square" />
+                        
                         </div>
                     </tr>
                     <tr v-if="plans.length > 0">
                         <td>Plans</td>
-                        <div v-for="(image, index) in plans" :key="index" class="image-placeholder">
+                        <div v-for="(image, index) in plans" :key="index" class="image-placeholder plan-placeholder">
+                         
                             <router-link :to="`/detail/image/${image.id}`">
+                                <div class="meta-data-overlay"><div class="meta-data-overlay-text">Placeholder text</div></div>
                                 <img :src="`${image.iiif_file}/full/500,/0/default.jpg`" :alt="image.title"
                                     class="image-square-plan" />
                             </router-link>
@@ -110,8 +114,9 @@ function groupAndSortByYear(allItems: (Image | Observation)[]) {
                     <tr v-if="images.length > 0">
                         <td>Photos</td>
                         <div v-for="(image, index) in images" :key="index" class="image-placeholder">
-                            <div class="meta-data-overlay"><div class="meta-data-overlay-text">Placeholder text</div></div>
+                           
                             <router-link :to="`/detail/image/${image.id}`">
+                                <div class="meta-data-overlay"><div class="meta-data-overlay-text">Placeholder text</div></div>
                                 <img :src="`${image.iiif_file}/full/500,/0/default.jpg`" :alt="image.title"
                                     class="image-square" />
                             </router-link>
@@ -142,8 +147,11 @@ function groupAndSortByYear(allItems: (Image | Observation)[]) {
                             <div v-for="(item, index) in items" :key="index"
                                 :class="[item.iiif_file ? 'image-placeholder' : 'image-placeholder observation-placeholder']">
                                 <!-- If the item is an image -->
+                               
                                 <router-link v-if="item.iiif_file" :to="`/detail/image/${item.id}`">
+                                    <div class="meta-data-overlay"><div class="meta-data-overlay-text">Placeholder text</div></div>
                                     <img :src="`${item.iiif_file}/full/500,/0/default.jpg`" :alt="item.title" class="image-square" />
+                                  
                                 </router-link>
 
                                 <!-- If the item is an observation -->
@@ -350,25 +358,33 @@ table td{
 }
 
 .image-placeholder .meta-data-overlay{
+    pointer-events:none;
     position:relative;
-    margin-top:-100px;
+    margin-top:-150px;
     bottom:-200px;
     opacity:0.0;
     z-index:10;
     padding:0px;
-    height:100px;
+    height:150px;
     width:100%;
-   background: linear-gradient(rgba(0, 0, 0, 0.0) 50%, rgba(0, 0, 0, 0.5) 100%);  
+    color:white;
+    background: linear-gradient(rgba(0, 0, 0, 0.0) 50%, rgba(0, 0, 0, 0.5) 100%);  
     transition: all 0.5s ease-in-out;
 }
 
 .meta-data-overlay .meta-data-overlay-text{
     position:absolute;
     bottom: 0px;
-    padding:20px;
-    color:white;
+    padding-bottom:10px;
+    padding-left:15px;
     transition: all 0.5s ease-in-out;
     opacity:1.0;
+}
+
+.plan-placeholder .meta-data-overlay{
+    color:black;
+   background: linear-gradient(rgba(255, 255, 255, 0.0) 50%, rgba(255, 255, 255, 0.8) 100%);  
+    transition: all 0.5s ease-in-out;
 }
 
 .image-placeholder:hover .meta-data-overlay {
