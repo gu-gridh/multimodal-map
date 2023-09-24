@@ -94,6 +94,7 @@ function groupAndSortByYear(allItems: (Image | Observation)[]) {
                     <tr>
                         <td>3D Models</td>
                         <div v-for="(image, index) in imageArray" :key="index" class="image-placeholder">
+                           
                             <img :src="image.src" :alt="image.alt" class="image-square" />
                         </div>
                     </tr>
@@ -109,6 +110,7 @@ function groupAndSortByYear(allItems: (Image | Observation)[]) {
                     <tr v-if="images.length > 0">
                         <td>Photos</td>
                         <div v-for="(image, index) in images" :key="index" class="image-placeholder">
+                            <div class="meta-data-overlay"><div class="meta-data-overlay-text">Placeholder text</div></div>
                             <router-link :to="`/detail/image/${image.id}`">
                                 <img :src="`${image.iiif_file}/full/500,/0/default.jpg`" :alt="image.title"
                                     class="image-square" />
@@ -242,10 +244,13 @@ table td{
     vertical-align: top;
 }
 
+
+
 .image-placeholder {
     width: 200px;
     height: 200px;
     background-color: #eee;
+    border-radius:4px;
     margin: 8px 16px 8px 0px;
     display: inline-block;
     overflow: hidden;
@@ -253,6 +258,8 @@ table td{
     cursor: pointer;
     background-color: white;
 }
+
+
 
 .document-placeholder {
     width: 416px;
@@ -339,7 +346,33 @@ table td{
 }
 
 .image-placeholder:hover img {
-    transform: scale(1.1)
+    transform: scale(1.1);
+}
+
+.image-placeholder .meta-data-overlay{
+    position:relative;
+    margin-top:-100px;
+    bottom:-200px;
+    opacity:0.0;
+    z-index:10;
+    padding:0px;
+    height:100px;
+    width:100%;
+   background: linear-gradient(rgba(0, 0, 0, 0.0) 50%, rgba(0, 0, 0, 0.5) 100%);  
+    transition: all 0.5s ease-in-out;
+}
+
+.meta-data-overlay .meta-data-overlay-text{
+    position:absolute;
+    bottom: 0px;
+    padding:20px;
+    color:white;
+    transition: all 0.5s ease-in-out;
+    opacity:1.0;
+}
+
+.image-placeholder:hover .meta-data-overlay {
+    opacity:1.0;
 }
 
 
