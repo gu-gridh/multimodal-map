@@ -32,7 +32,7 @@ const visibleAbout = ref(false);
 
 const store = mapStore();
 const { params } = storeToRefs(store);
-const { allSources, allInformants, allPeriods, allPlaceTypes, periodsLayer, periods, sourcesLayer } = storeToRefs(rwandaStore());
+const { allSources, allInformants, allPeriods, allPlaceTypes, periodsLayer, periods, sourcesLayer, placeTypeLayer, placeTypes } = storeToRefs(rwandaStore());
 
 //MapViewControls
 const { searchText } = useRwandaMap();
@@ -93,12 +93,24 @@ watch(
     <div class="map-container">
       <MapComponent :min-zoom="14" :max-zoom="19" :restrictExtent="[30.1, -1.92, 30.01, -1.980]" :shouldAutoMove="true">
         <template #layers>
+          <!-- Sources layer -->
           <DianaPlaceLayer 
             v-if="sourcesLayer"
             path="rwanda/search/"
           >
             <FeatureSelection/>
           </DianaPlaceLayer>
+          <!-- Place types layer -->
+          <DianaPlaceLayer 
+            v-if="placeTypeLayer"
+            path="rwanda/search/type/"
+            :params = "{
+              text: placeTypes[0],
+            }"
+            >
+              <FeatureSelection/>
+            </DianaPlaceLayer>  
+          <!-- Periods layer -->
            <DianaPlaceLayer 
             v-if="periodsLayer"
             path="rwanda/search/period/"
@@ -108,6 +120,7 @@ watch(
             >
               <FeatureSelection/>
             </DianaPlaceLayer>  
+            <!-- Initial layer -->
           <DianaPlaceLayer
             v-else
             path="rwanda/geojson/place/"
