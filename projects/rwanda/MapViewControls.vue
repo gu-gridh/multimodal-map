@@ -6,6 +6,7 @@ import { useRwandaMap } from "./map.composable";
 import type { Place } from "./types";
 import { ref, watch } from "vue";
 import { watchEffect } from "vue";
+import CategoryButtonList from "@/components/input/CategoryButtonList.vue";
 
 //Filtering map controls
 const SOURCES = {
@@ -25,94 +26,65 @@ const INFORMANTS = {
   ow: "Old women"
 }
 const PERIODS = {
-  colonial: "Colonial",
-  postind: "Post-indenpendence",
-  postgeno: "Post-genocide",
-  after: "After 2012"
+  "colonial": "Colonial",
+  "post-independence": "Post-indenpendence",
+  "post-genocide": "Post-genocide",
+  "after-2012": "After 2012"
 }
-//if true - show all
-const allSources = ref(true)
-const allPlaceTypes = ref(true)
-const allInformants = ref(true)
-const allPeriods = ref(true)
 
-//checked values are stored in store as arrays(string). Change to id?
-const {sources, placeTypes, informants, periods} = storeToRefs(rwandaStore());
+const { sources, placeTypes, periods, sourcesLayer, placeTypeLayer, periodsLayer } = storeToRefs(rwandaStore());
 
-//Uncheck All when other is checked
-const updateAllSources =() => {
-  let sourceToggle = document.getElementById("sourceToggle") as HTMLInputElement
-  if(sources.value.length != 0){
-    sourceToggle.checked = false
-  } else {
-    sourceToggle.checked = true
-  }
+//handle category button click
+const handleSourcesClick = (key: string) => {
+  console.log("Clicked: ", key);
+  sourcesLayer.value = true
+  placeTypeLayer.value = false
+  periodsLayer.value = false
 }
-const updateAllPlaceTypes =() => {
-  let placeToggle = document.getElementById("placeToggle") as HTMLInputElement
-  if(placeTypes.value.length != 0){
-    placeToggle.checked = false
-  } else {
-    placeToggle.checked = true
-  }
+
+const handlePlaceTypeClick = (key: string) => {
+  console.log("Clicked: ", key);
+  placeTypeLayer.value = true
+  sourcesLayer.value = false
+  periodsLayer.value = false
 }
-const updateAllInformants =() => {
-  let infToggle = document.getElementById("infToggle") as HTMLInputElement
-  if(informants.value.length != 0){
-    infToggle.checked = false
-  } else {
-    infToggle.checked = true
-  }
+
+const handlePeriodClick = (key: string) => {
+  console.log("Clicked: ", key);
+  periodsLayer.value = true
+  sourcesLayer.value = false
+  placeTypeLayer.value = false
 }
-const updateAllPeriods =() => {
-  let periodToggle = document.getElementById("periodToggle") as HTMLInputElement
-  if(periods.value.length != 0){
-    periodToggle.checked = false
-  } else {
-    periodToggle.checked = true
-  }
-}
-//TODO - Unckeck others when All is checked
-//TODO - Filter map on button click
 </script>
 
 <template>
   <div class="filter-container">
     <div class="filter-heading">Sources</div>
-      <label class="checkboxes">
-        <input type="checkbox" :value="allSources" id="sourceToggle" checked>All
-        <div v-for="source in SOURCES" class="checkboxes">
-          <input type="checkbox" :value="source" v-model="sources" @change="updateAllSources()">
-          {{ source }}
-        </div>
-      </label>
-      <div class="filter-heading">Place types</div>
-      <label class="checkboxes">
-        <input id="placeToggle" type="checkbox" :value="allPlaceTypes" checked>All
-        <div v-for="place in PLACE_TYPES" class="checkboxes">
-          <input type="checkbox" :value="place" v-model="placeTypes" @change="updateAllPlaceTypes()">
-          {{ place }}
-        </div>
-      </label>
-      <div class="filter-heading">Informants</div>
-      <label class="checkboxes">
-        <input id="infToggle" type="checkbox" :value="allInformants" checked>All
-        <div v-for="informant in INFORMANTS" class="checkboxes">
-          <input type="checkbox" :value="informant" v-model="informants" @change="updateAllInformants()">
-          {{ informant }}
-        </div>
-      </label>
-      <div class="filter-heading">Time periods</div>
-      <label class="checkboxes">
-        <input id="periodToggle" type="checkbox" :value="allPeriods" checked>All
-        <div v-for="period in PERIODS" class="checkboxes">
-          <input type="checkbox" :value="period" v-model="periods" @changed="updateAllPeriods()">
-          {{ period }}
-        </div>
-      </label>
-      <div style="margin-top: 10px;">
-        <button class="p-1 px-3 clickable category-button">Filter map</button>
-      </div>
+      <CategoryButtonList 
+        v-model="sources"
+        :categories="SOURCES"
+        :limit="1"
+        class=""
+        @click="handleSourcesClick"
+      />
+    <div class="filter-heading">Place types</div>
+      <CategoryButtonList 
+        v-model="placeTypes"
+        :categories="PLACE_TYPES"
+        :limit="1"
+        class=""
+        @click="handlePlaceTypeClick"
+      />
+    <div class="filter-heading">Informants</div>
+      
+    <div class="filter-heading">Time periods</div>
+      <CategoryButtonList 
+        v-model="periods"
+        :categories="PERIODS"
+        :limit="1"
+        class=""
+        @click="handlePeriodClick"
+      />
   </div>
 </template>
 

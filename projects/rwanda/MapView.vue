@@ -17,6 +17,7 @@ import type { Place } from "./types";
 import About from "./About.vue";
 import AutocompleteComponent from "@/components/input/AutocompleteComponent.vue";
 import { useRwandaMap } from "./map.composable";
+import { rwandaStore } from "./rwandaStore";
 
 function getName(f: Feature): string {
   const place = f.getProperties() as Place;
@@ -27,10 +28,11 @@ const config: Project = { ...configRaw };
 config.getFeatureDisplayName = getName;
 provide("config", config);
 
+const visibleAbout = ref(false);
+
 const store = mapStore();
 const { params } = storeToRefs(store);
-
-const visibleAbout = ref(false);
+const { allSources, allInformants, allPeriods, allPlaceTypes, periodsLayer, periods, sourcesLayer } = storeToRefs(rwandaStore());
 
 //MapViewControls
 const { searchText } = useRwandaMap();
@@ -38,7 +40,7 @@ function displayName(p: Place): string {
   return formatNames(p.id, p.names);
 }
 
-//zoom on click
+//zoom to place on click
 const featureZoom = 17; // zoom level when clicking on a feature
 const { selectedFeature } = storeToRefs(store);
 watch(
@@ -91,7 +93,23 @@ watch(
     <div class="map-container">
       <MapComponent :min-zoom="14" :max-zoom="19" :restrictExtent="[30.1, -1.92, 30.01, -1.980]" :shouldAutoMove="true">
         <template #layers>
+          <DianaPlaceLayer 
+            v-if="sourcesLayer"
+            path="rwanda/search/"
+          >
+            <FeatureSelection/>
+          </DianaPlaceLayer>
+           <DianaPlaceLayer 
+            v-if="periodsLayer"
+            path="rwanda/search/period/"
+            :params = "{
+              period_name: periods[0],
+            }"
+            >
+              <FeatureSelection/>
+            </DianaPlaceLayer>  
           <DianaPlaceLayer
+            v-else
             path="rwanda/geojson/place/"
             :params="{
               has_no_name: false,
