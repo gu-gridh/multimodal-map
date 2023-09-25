@@ -39,9 +39,14 @@ onMounted(async () => {
 });
 
 function groupAndSortByYear(allItems: (Image | Observation)[]) {
+  // Reset groupedByYear
+  groupedByYear.value = {};
+
   // Group items by year
   allItems.forEach((item) => {
-    const year = item.date;
+    const fullDate = new Date(item.date);
+    const year = fullDate.getFullYear().toString(); // Extract the year and convert it to string
+
     if (!groupedByYear.value[year]) {
       groupedByYear.value[year] = [];
     }
@@ -52,12 +57,13 @@ function groupAndSortByYear(allItems: (Image | Observation)[]) {
   const sortedGroupedByYear = Object.keys(groupedByYear.value)
     .sort()
     .reduce<{ [year: string]: (Image | Observation)[] }>((acc, key) => {
-        acc[key] = groupedByYear.value[key];
-        return acc;
+      acc[key] = groupedByYear.value[key];
+      return acc;
     }, {});
 
   groupedByYear.value = sortedGroupedByYear;
 }
+
 </script>
     
 <template>
@@ -250,9 +256,8 @@ table td{
     padding-top: 2px;
     padding-right: 25px;
     vertical-align: top;
+    text-align: center;
 }
-
-
 
 .image-placeholder {
     width: 200px;
