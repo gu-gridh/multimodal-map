@@ -18,7 +18,7 @@ import About from "./About.vue";
 import { onMounted, watch } from "vue";
 import { nextTick } from "vue";
 import GeoJSON from "ol/format/GeoJSON";
-import i18n from '../../src/translations/etruscan';
+import Title from "./Title.vue"
 
 const { categories, years, tags, placesLayerVisible, tagsLayerVisible } = storeToRefs(etruscanStore());
 const store = mapStore();
@@ -63,16 +63,7 @@ const tagParams = computed(() => {
   });
 });
 
-const toggleLanguage = () => {
-  if (i18n.global.locale === 'en') {
-    i18n.global.locale = 'it';
-  } else {
-    i18n.global.locale = 'en';
-  }
-};
-
 const toggleAboutVisibility = async () => {
-  console.log('fired')
   await nextTick();
   visibleAbout.value = !visibleAbout.value;
 };
@@ -113,22 +104,7 @@ watch(showGrid, (newValue) => {
   <About :visibleAbout="visibleAbout" @close="visibleAbout = false" />
   <MainLayout>
     <template #search>
-      <div class="main-title">{{ $t('etruscantitle') }}</div>
-      <div class="about">{{ $t('etruscanabout') }}</div>
-      <button class="item" @click="toggleAboutVisibility">
-        <div class="p-1 px-2 clickable category-button about-button" style="
-                width: 90px;
-                text-align: center;
-                cursor: pointer;
-              ">{{ $t('infobutton') }}</div>
-      </button>
-      <button @click="toggleLanguage">
-        <div class="p-1 px-2 clickable category-button about-button" style="
-                text-align: center;
-                margin-left: 10px;
-                cursor: pointer;
-              ">{{ $t('languagebutton') }}</div>
-      </button>
+      <Title @toggle-about="toggleAboutVisibility"/>
       <MapViewControls />
     </template>
 
