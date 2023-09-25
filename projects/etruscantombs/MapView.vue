@@ -20,7 +20,7 @@ import { nextTick } from "vue";
 import GeoJSON from "ol/format/GeoJSON";
 import Title from "./Title.vue"
 
-const { categories, years, tags, placesLayerVisible, tagsLayerVisible } = storeToRefs(etruscanStore());
+const { categories, years, tags, necropoli, tombType, placesLayerVisible, tagsLayerVisible } = storeToRefs(etruscanStore());
 const store = mapStore();
 const { selectedFeature } = storeToRefs(store);
 const minZoom = 14;
@@ -58,9 +58,24 @@ watch(
 
 const tagParams = computed(() => {
   const epoch = tags.value[0];
-  return clean({
+  const necropolis = necropoli.value[0];
+  const type = tombType.value[0];
+  
+  const params = clean({
     epoch,
+    necropolis,
+    type,
   });
+
+  // Convert the params object to a URL search string
+  const queryString = new URLSearchParams(params).toString();
+
+  // Concatenate the base URL with the search string to form the full URL
+  const fullUrl = `https://diana.dh.gu.se/api/etruscantombs/geojson/place/?page_size=500&${queryString}`;
+  
+  console.log("Generated URL:", fullUrl); // Debug line
+  
+  return params;
 });
 
 const toggleAboutVisibility = async () => {

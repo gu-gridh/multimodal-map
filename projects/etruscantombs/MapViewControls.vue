@@ -29,7 +29,7 @@
       :categories="TAGS"
       :limit="1"
       class="my-2"
-      @click="handleTagClick" 
+      @click="handleSelectionClick($event, currentTag)"
     />
   </div>
 </div>
@@ -37,12 +37,26 @@
   <div class="tag-section">
   <div class="section-title">Necropoli</div>
   <div class="broad-controls">
+    <CategoryButtonList
+      v-model="necropoli"
+      :categories="NECRPOLI"
+      :limit="1"
+      class="my-2"
+      @click="handleSelectionClick($event, currentNecropolis)"
+    />
   </div>
 </div>
 
 <div class="tag-section">
   <div class="section-title">{{ $t('tomb') }}</div>
   <div class="broad-controls">
+    <CategoryButtonList
+    v-model="tombType"
+    :categories="TOMBTYPE"
+    :limit="1"
+    class="my-2"
+    @click="handleSelectionClick($event, currentTombType)"
+  />
   </div>
 </div>
 
@@ -69,9 +83,13 @@ import CategoryButtonList from "@/components/input/CategoryButtonList.vue";
 import { storeToRefs } from "pinia";
 import { etruscanStore } from "./store";
 import type { EtruscanProjectProject } from "./types";
+import { DianaClient } from "@/assets/diana";
 
 const config = inject<EtruscanProject>("config");
-const { categories, years, tags, tagsLayerVisible, placesLayerVisible, mapLayerVisibility } = storeToRefs(etruscanStore());
+const dianaClient = new DianaClient("etruscantombs"); // Initialize DianaClient
+const { categories, years, tags, necropoli, tombType } = storeToRefs(etruscanStore());
+// Create a ref for last clicked category
+const lastClickedCategory = ref('');
 
 const CATEGORIES = {
   all: "All Documentation",
@@ -81,7 +99,11 @@ const CATEGORIES = {
 };
 
 const TAGS = ref<Record<string, string>>({});
+const NECRPOLI = ref<Record<string, string>>({});
+const TOMBTYPE = ref<Record<string, string>>({});
 const currentTag = ref(null);
+const currentNecropolis = ref(null);
+const currentTombType = ref(null);
 
 const YEARS = {
   MIN: config?.timeRange?.[0] || 0,
@@ -89,24 +111,25 @@ const YEARS = {
 };
 
 onMounted(async () => {
-  const response = await fetch("https://diana.dh.gu.se/api/etruscantombs/epoch/");
-  const data = await response.json();  
-  data.results.forEach(result => {
-    if (result.published) {
-      TAGS.value[result.id] = result.text;
-    }
-  });
+  await fetchDataAndPopulateRef("epoch", TAGS);
+  await fetchDataAndPopulateRef("necropolis", NECRPOLI);
+  await fetchDataAndPopulateRef("typeoftomb", TOMBTYPE);
 });
 
-// Create a ref for last clicked category
-const lastClickedCategory = ref('');
+async function fetchDataAndPopulateRef<T>(type: string, refToPopulate: any) {
+  try {
+    const data = await dianaClient.listAll<T>(type);
+    data.forEach((result: any) => {
+      if (result.published) {
+        refToPopulate.value[result.id] = result.text;
+      }
+    });
+  } catch (error) {
+    console.error(`Error fetching data for type ${type}:`, error);
+  }
+}
 
 const handleCategoryClick = (category: string) => {
-  if (tagsLayerVisible.value) { 
-    tagsLayerVisible.value = false;
-    placesLayerVisible.value = true;
-  }
-
   // If a category is clicked, clear tags
   tags.value = [];
   // If the clicked category is the same as the last clicked one, default to "all"
@@ -124,9 +147,14 @@ const handleCategoryClick = (category: string) => {
   }
 };
 
-function handleTagClick(tag) {
-  currentTag.value = tag;
+function handleSelectionClick(selectedValue, targetRef) {
+  if (targetRef) {
+    targetRef.value = selectedValue;
+  } else {
+    console.warn('targetRef is null or undefined.');
+  }
 }
+
 </script>
 
 <style>
