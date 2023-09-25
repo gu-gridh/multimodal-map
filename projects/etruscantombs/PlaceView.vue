@@ -197,7 +197,7 @@ table td{
     background-color: transparent !important;
     flex: 0 0 40%;
     /* Take up exactly 40% of the space */
-    max-width: 600px;
+    max-width: 800px;
     min-width: 500px;
     height: 100vh !important;
 }

@@ -9,7 +9,7 @@ const messages = {
       tomb: "Type of tomb",
       map: "map",
       gallery: "gallery",
-      infobutton: "More Info",
+      infobutton: "About the portal",
       languagebutton: "Italiano",
   
     },
@@ -21,7 +21,7 @@ const messages = {
       tomb: "Tipo di tomba",
       map: "mappa",
       gallery: "galleria",
-      infobutton: "Piú Info",
+      infobutton: "About the portal",
       languagebutton: "English",
           },
 };  

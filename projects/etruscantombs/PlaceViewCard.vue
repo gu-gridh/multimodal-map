@@ -113,7 +113,7 @@ onMounted(() => {
           <div class="placecard-title theme-color-text">Tomb {{ title }}</div>
           <div class="placecard-subtitle theme-color-text">{{ subtitle }}</div>
 
-          <div class="placecard-metadata-content">
+          <div class="placecard-metadata-content" style="">
             <div class="metadata-item">
               <div class="label">Necropolis:</div>
               <div class="tag theme-color-text">{{ necropolisName }}</div>

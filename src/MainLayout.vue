@@ -187,7 +187,6 @@ font-size:1.6em;
 
 #app .left-pane {
   width:1300px;
-  font-size:120%;
   }
 
   #app .left-pane-layer {
@@ -198,12 +197,11 @@ padding: 60px 0px 50px 60px;
 
 
   #app .right-pane {
-    font-size:120%;
   width: 450px;
 }
 
   .main-title {
-    font-size:105px;
+    font-size:125px;
   transition: all 0.2s ease-in-out;
 }
 
@@ -230,11 +228,11 @@ padding: 60px 0px 50px 60px;
 
 }
 #app .place-meta-container{
-  font-size:120%;
+
 }
 
 #app .meta-container{
-  font-size:120%;
+
 }
 #app .meta-title{
   font-size:40px;

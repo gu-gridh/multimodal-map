@@ -1,14 +1,11 @@
 <template>
-  <div class="section-title"><h1>{{ $t('documentation') }}</h1></div>
-  <CategoryButtonList
-    v-model="categories"
-    :categories="CATEGORIES"
-    :limit="1"
-    class="my-2"
-    @click="handleCategoryClick" 
-  />
-  
-<!--   <transition name="slide">
+  <div class="section-title">
+    <h1>{{ $t('documentation') }}</h1>
+  </div>
+  <CategoryButtonList v-model="categories" :categories="CATEGORIES" :limit="1" class="my-2"
+    @click="handleCategoryClick" />
+
+  <!--   <transition name="slide">
     <div class="slideinactive" v-bind:class="{slideactive: isSliderVisible}">
       <div class="section-title">Time span</div>
       <RangeSlider
@@ -22,45 +19,30 @@
   </transition> -->
 
   <div class="tag-section">
-  <div class="section-title">{{ $t('period') }}</div>
-  <div class="broad-controls">
-    <CategoryButtonList
-      v-model="tags"
-      :categories="TAGS"
-      :limit="1"
-      class="my-2"
-      @click="handleSelectionClick($event, currentTag)"
-    />
+    <div class="section-title">{{ $t('period') }}</div>
+    <div class="broad-controls">
+      <CategoryButtonList v-model="tags" :categories="TAGS" :limit="1" class="my-2"
+        @click="handleSelectionClick($event, currentTag)" />
+    </div>
   </div>
-</div>
 
-  <div class="tag-section">
-  <div class="section-title">Necropoli</div>
-  <div class="broad-controls">
-    <CategoryButtonList
-      v-model="necropoli"
-      :categories="NECRPOLI"
-      :limit="1"
-      class="my-2"
-      @click="handleSelectionClick($event, currentNecropolis)"
-    />
+  <div class="tag-section" style="float:left;">
+    <div class="section-title">Necropoli</div>
+    <!-- <div class="broad-controls">
+      <CategoryButtonList v-model="necropoli" :categories="NECRPOLI" :limit="1" class="my-2"
+        @click="handleSelectionClick($event, currentNecropolis)" />
+    </div> -->
   </div>
-</div>
 
-<div class="tag-section">
-  <div class="section-title">{{ $t('tomb') }}</div>
-  <div class="broad-controls">
-    <CategoryButtonList
-    v-model="tombType"
-    :categories="TOMBTYPE"
-    :limit="1"
-    class="my-2"
-    @click="handleSelectionClick($event, currentTombType)"
-  />
+  <div class="tag-section" style="float:left; margin-left:60px;">
+    <div class="section-title">{{ $t('tomb') }}</div>
+   <!--  <div class="broad-controls">
+      <CategoryButtonList v-model="tombType" :categories="TOMBTYPE" :limit="1" class="my-2"
+        @click="handleSelectionClick($event, currentTombType)" />
+    </div> -->
   </div>
-</div>
 
-<!-- <div class="tag-section">
+  <!-- <div class="tag-section">
   <div class="section-title">Tags</div>
   <div class="broad-controls">
   <CategoryButtonList
@@ -73,6 +55,39 @@
 </div>
 </div> -->
 
+
+
+  <!-- Data Section -->
+  <div class="data-widget">
+    <div class="data-widget-section">
+      <div class="data-widget-item">
+        <h3>Tombs shown:</h3>
+        <p>#123</p>
+      </div>
+      <div class="data-widget-item">|</div>
+      <div class="data-widget-item">
+        <h3>Tombs hidden:</h3>
+        <p>#123</p>
+      </div>
+    </div>
+
+    <div class="data-widget-divider"></div>
+
+    <div class="data-widget-section">
+      <div class="data-widget-item">
+        <h3>Photographs:</h3>
+        <p>#123</p>
+      </div>
+      <div class="data-widget-item">
+        <h3>Plans:</h3>
+        <p>#123</p>
+      </div>
+      <div class="data-widget-item">
+        <h3>3D models:</h3>
+        <p>#123</p>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -172,12 +187,12 @@ function handleSelectionClick(selectedValue, targetRef) {
 }
 
 #app .category-button:hover {
-  background-color: rgb(140,80,80);
+  background-color: rgb(140, 80, 80);
   color: white;
 }
 
 #app .category-button.active {
-  background-color:rgb(180,100,100);
+  background-color: rgb(180, 100, 100);
   color: white;
 }
 
@@ -208,37 +223,81 @@ function handleSelectionClick(selectedValue, targetRef) {
   border-radius: 10px;
 }
 
-#app .broad-controls{
-  width:100%;
+#app .broad-controls {
+  width: 100%;
 
 }
 
 @media screen and (max-width: 900px) {
-  #app .broad-controls{
-  width:100%;
+  #app .broad-controls {
+    width: 100%;
 
-}
+  }
 }
 
 .slide-leave-active {
   transition: all 0.4s;
-  opacity:1.0;
+  opacity: 1.0;
 }
 
 .slide-leave-to {
-  opacity:0.5;
+  opacity: 0.5;
 }
 
 .slideinactive {
-  opacity:0.4;
+  opacity: 0.4;
   pointer-events: none !important;
   transition: all 0.4s;
 }
 
 .slideactive {
   transition: all 0.4s;
-  opacity:1.0;
+  opacity: 1.0;
 }
 
 
+.data-widget {
+  float:left;
+  pointer-events: none;
+  width: 98%;
+  margin-top: 20px;
+  padding: 15px 25px;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 1);
+  min-height: 50px;
+}
+
+.data-widget-section {
+  width:100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.data-widget-divider {
+  margin-top:10px;
+  margin-bottom:10px;
+  margin-left:-25px;
+  width: calc(100% + 50px);
+  border-style: dotted;
+  border-color: rgb(180, 100, 100);
+  border-width: 1px 0px 0px 0px;
+  height: 1px;
+}
+
+
+.data-widget-item {
+
+}
+
+.data-widget-item h3 {
+  display: inline;
+}
+
+.data-widget-item p {
+  display: inline;
+  color: rgb(180, 100, 100);
+  margin-left: 3px;
+  font-weight:500;
+}
 </style>
