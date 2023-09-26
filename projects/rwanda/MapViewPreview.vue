@@ -2,7 +2,7 @@
 import { watchEffect, ref, inject } from "vue";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
-import type { Image, Place } from "./types";
+import type { Image } from "./types";
 import MapViewPreviewImage from "./MapViewPreviewImage.vue";
 import type { DianaClient } from "@/assets/diana";
 
@@ -11,13 +11,25 @@ const diana = inject("diana") as DianaClient;
 
 const images = ref<Array<Image>>();
 const place = ref() 
+const interview = ref()
+const informants = ref()
 
 watchEffect(async () => {
   if (selectedFeature.value) {
     const place_of_interest = selectedFeature.value.getId();
     place.value = JSON.parse(JSON.stringify(selectedFeature.value))
     console.log(place.value)
+    //fetch images
     images.value = await diana.listAll<Image>("image/", { place_of_interest });
+    //fetch all interviews
+    const data = await diana.listAll("text/");
+    //find interview with place_of_interest
+    try {
+      interview.value = data.find((interview: any) => interview.place_of_interest === place_of_interest)
+      informants.value = await diana.get("informant", interview.value.informants[0] );
+    } catch (error) {
+      console.log(error)
+    }
   } else {
     images.value = [];
   }
@@ -63,9 +75,13 @@ const store = mapStore();
         </div>
       </router-link>
       <!-- Interview if avaliable -->
-      <p>Interview</p>
-      <p>goes here...</p>
-      <!-- Images -->
+      <span v-if="interview != undefined">
+        <p>{{ interview.title }}</p>
+        <p style="font-style: italic;">{{ interview.text}}</p>
+        <p v-if="informants != undefined">/{{ informants.custom_id}}</p>
+      
+      </span>
+      <!-- Images TODO change to gallery -->
       <MapViewPreviewImage
           v-for="image in images"
           :key="image.id"
@@ -78,7 +94,6 @@ const store = mapStore();
   </div>
   <div v-else class="mapview-preview">
     No selectedFeature
-    <p>&#9792;</p>
   </div>
 </template>
 
