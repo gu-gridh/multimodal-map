@@ -1,9 +1,9 @@
 <template>
-  <div class="section-title">
+  <!-- <div class="section-title">
     <h1>{{ $t('documentation') }}</h1>
-  </div>
-  <CategoryButtonList v-model="categories" :categories="CATEGORIES" :limit="1" class="my-2"
-    @click="handleCategoryClick" />
+  </div> -->
+  <!-- <CategoryButtonList v-model="categories" :categories="CATEGORIES" :limit="1" class="my-2"
+    @click="handleCategoryClick" /> -->
 
   <!--   <transition name="slide">
     <div class="slideinactive" v-bind:class="{slideactive: isSliderVisible}">
@@ -21,13 +21,29 @@
   <div class="tag-section">
     <div class="section-title">{{ $t('period') }}</div>
     <div class="broad-controls">
-      <CategoryButtonList v-model="tags" :categories="TAGS" :limit="1" class="my-2"
-        @click="handleSelectionClick($event, currentTag)" />
+         <CategoryButtonList 
+          v-model="tags" 
+          :categories="TAGS" 
+          :limit="1" 
+          styleType="button"
+          class="my-2"
+          @click="handleSelectionClick($event, currentTombType)"
+        />
     </div>
   </div>
 
   <div class="tag-section" style="float:left;">
     <div class="section-title">Necropoli</div>
+    <div class="broad-controls">
+        <CategoryButtonList 
+          v-model="necropoli" 
+          :categories="NECRPOLI" 
+          :limit="1" 
+          styleType="dropdown"
+          class="my-2"
+          @click="handleSelectionClick($event, currentTombType)"
+        />
+    </div>
     <!-- <div class="broad-controls">
       <CategoryButtonList v-model="necropoli" :categories="NECRPOLI" :limit="1" class="my-2"
         @click="handleSelectionClick($event, currentNecropolis)" />
@@ -36,10 +52,16 @@
 
   <div class="tag-section" style="float:left; margin-left:60px;">
     <div class="section-title">{{ $t('tomb') }}</div>
-   <!--  <div class="broad-controls">
-      <CategoryButtonList v-model="tombType" :categories="TOMBTYPE" :limit="1" class="my-2"
-        @click="handleSelectionClick($event, currentTombType)" />
-    </div> -->
+    <div class="broad-controls">
+        <CategoryButtonList 
+          v-model="tombType" 
+          :categories="TOMBTYPE" 
+          :limit="1" 
+          styleType="dropdown"
+          class="my-2"
+          @click="handleSelectionClick($event, currentTombType)"
+        />
+    </div>
   </div>
 
   <!-- <div class="tag-section">
@@ -93,7 +115,7 @@
 <script setup lang="ts">
 // @ts-nocheck
 import { inject, ref, onMounted, computed } from "vue";
-import CategoryButtonList from "@/components/input/CategoryButtonList.vue";
+import CategoryButtonList from "@/components/input/CategoryButtonDropdown.vue";
 // import RangeSlider from "@/components/input/RangeSlider.vue";
 import { storeToRefs } from "pinia";
 import { etruscanStore } from "./store";
@@ -163,11 +185,7 @@ const handleCategoryClick = (category: string) => {
 };
 
 function handleSelectionClick(selectedValue, targetRef) {
-  if (targetRef) {
-    targetRef.value = selectedValue;
-  } else {
-    console.warn('targetRef is null or undefined.');
-  }
+  // console.log("Selected value:", selectedValue);
 }
 
 </script>

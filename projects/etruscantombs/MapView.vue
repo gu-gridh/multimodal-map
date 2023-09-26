@@ -56,23 +56,34 @@ watch(
 //   })
 // );
 
+/* Response for generating the URL for filtering map points down */
 const tagParams = computed(() => {
   const epoch = tags.value[0];
   const necropolis = necropoli.value[0];
   const type = tombType.value[0];
+
+  const initialParams = { epoch, necropolis, type };
   
-  const params = clean({
-    epoch,
-    necropolis,
-    type,
-  });
+  // Remove parameters that are set to "all"
+  const cleanedParams = Object.keys(initialParams)
+  .filter((key) => initialParams[key as keyof typeof initialParams] !== "all")
+  .reduce((obj, key) => {
+    obj[key as keyof typeof initialParams] = initialParams[key as keyof typeof initialParams];
+    return obj;
+  }, {} as typeof initialParams);
+
+  
+  // Further clean to remove null or undefined values
+  const params = clean(cleanedParams);
 
   // Convert the params object to a URL search string
   const queryString = new URLSearchParams(params).toString();
 
   // Concatenate the base URL with the search string to form the full URL
-  const fullUrl = `https://diana.dh.gu.se/api/etruscantombs/geojson/place/?page_size=500&${queryString}`;
-  
+  const fullUrl = queryString ? 
+    `https://diana.dh.gu.se/api/etruscantombs/geojson/place/?page_size=500&${queryString}` :
+    `https://diana.dh.gu.se/api/etruscantombs/geojson/place/?page_size=500`;
+
   console.log("Generated URL:", fullUrl); // Debug line
   
   return params;
