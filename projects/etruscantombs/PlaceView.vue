@@ -139,8 +139,8 @@ function groupAndSortByYear(allItems: (Image | Observation)[]) {
                             <div class="observation-date">
                                 {{ observation.date }}
                             </div>
-                            <div class="observation-body">
-                                {{ observation.description }}
+                            <div class="observation-body" 
+                                v-html="observation.observation">
                             </div>
                         </div>
                     </tr>
@@ -168,8 +168,8 @@ function groupAndSortByYear(allItems: (Image | Observation)[]) {
                                     <div class="observation-date">
                                         {{ item.date }}
                                     </div>
-                                    <div class="observation-body">
-                                        {{ item.description }}
+                                     <div class="observation-body" 
+                                        v-html="item.observation">
                                     </div>
                                 </div>
                             </div>
@@ -332,6 +332,8 @@ table td{
     border-color: rgb(180, 100, 100);
     border-width: 1.3px 0 0px 0;
     padding: 10px 10px 10px 20px;
+    height: 12vw;
+    overflow-y: auto;
 }
 
 .image-square {
