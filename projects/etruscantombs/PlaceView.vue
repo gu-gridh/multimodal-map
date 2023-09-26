@@ -1,16 +1,17 @@
 <script setup lang="ts">
 import { ref, defineProps, onMounted, inject } from 'vue';
-import type { Image, Observation } from './types';
+import type { Image, Observation, Document } from './types';
 import type { DianaClient } from "@/assets/diana";
 import PlaceViewCard from "./PlaceViewCard.vue";
 
 const sort = ref('type');
-const groupedByYear = ref<{ [year: string]: (Image | Observation)[] }>({});
+const groupedByYear = ref<{ [year: string]: (Image | Observation | Document)[] }>({});
 const { id } = defineProps<{ id: number; }>();
 const diana = inject("diana") as DianaClient;
 const images = ref<Image[]>([]);
 const plans = ref<Image[]>([]);
 let observations = ref<Observation[]>([]);
+let documents = ref<Document[]>([]);
 let place = ref();
 
 //Blank squares
@@ -23,6 +24,7 @@ onMounted(async () => {
     if (id) {
         images.value = await diana.listAll<Image>("image", { tomb: id, type_of_image: 2 });
         observations.value = await diana.listAll<Observation>("observation", { place: id });
+        documents.value = await diana.listAll<Document>("document", { place: id });
         //fetch for sections and plans
         const url = 'https://diana.dh.gu.se/api/etruscantombs/image/?tomb=' + id + '&type_of_image=1&type_of_image=5';
         const response = await fetch(url);
@@ -34,11 +36,11 @@ onMounted(async () => {
         }
 
         /* For sorting by year */
-        groupAndSortByYear([...images.value, ...plans.value, ...observations.value]);
+        groupAndSortByYear([...images.value, ...plans.value, ...observations.value, ...documents.value]);
     }
 });
 
-function groupAndSortByYear(allItems: (Image | Observation)[]) {
+function groupAndSortByYear(allItems: (Image | Observation | Document)[]) {
   // Reset groupedByYear
   groupedByYear.value = {};
 
@@ -56,7 +58,7 @@ function groupAndSortByYear(allItems: (Image | Observation)[]) {
   // Sort grouped items by date
   const sortedGroupedByYear = Object.keys(groupedByYear.value)
     .sort()
-    .reduce<{ [year: string]: (Image | Observation)[] }>((acc, key) => {
+    .reduce<{ [year: string]: (Image | Observation | Document)[] }>((acc, key) => {
       acc[key] = groupedByYear.value[key];
       return acc;
     }, {});
@@ -85,17 +87,15 @@ function groupAndSortByYear(allItems: (Image | Observation)[]) {
                 </div>
                 <!-- Sort by TYPE table-->
                 <table class="content-table" v-if="sort == 'type'">
-                    <tr>
+                    <tr v-if="documents.length > 0">
                         <td>Documents</td>
-                        <div v-for="(image, index) in imageArray" :key="index"
-                            class="image-placeholder document-placeholder">
-                            <!-- Get this one from backend, title of document -->
-                            <div class="document-title">The Chamber Tomb Survey of San Giovenale in 1971</div>
-
-                            <!-- Get these ones from backend, type of text: report, survey etcetera -->
-                            <p> Type: Report </p>
-                            <p>Size: 1.9 mb </p>
-                        </div>
+                        <a v-for="(document, index) in documents" :key="index" :href="document.upload" target="_blank" download>
+                            <div class="image-placeholder document-placeholder">
+                                <div class="document-title">{{document.title}}</div>
+                                <p>Type: {{document.type}}</p>
+                                <p>Size: {{document.size}}</p>
+                            </div>
+                        </a>
                     </tr>
                     <tr>
                         <td>3D Models</td>
@@ -150,18 +150,16 @@ function groupAndSortByYear(allItems: (Image | Observation)[]) {
                     <tr v-for="(items, year) in groupedByYear" :key="year">
                         <td>{{ year }}</td>
                        
-                            <div v-for="(item, index) in items" :key="index"
-                                :class="[item.iiif_file ? 'image-placeholder' : 'image-placeholder observation-placeholder']">
+                            <div v-for="(item, index) in items" :key="index" :class="item.iiif_file ? 'image-placeholder' : ''">
                                 <!-- If the item is an image -->
                                
                                 <router-link v-if="item.iiif_file" :to="`/detail/image/${item.id}`">
                                     <div class="meta-data-overlay"><div class="meta-data-overlay-text">{{item.title}}</div></div>
                                     <img :src="`${item.iiif_file}/full/500,/0/default.jpg`" :alt="item.title" class="image-square" />
-                                  
                                 </router-link>
 
                                 <!-- If the item is an observation -->
-                                <div v-else-if="item.title" class="observation-content">
+                                <div v-else-if="item.title && !item.size" class="image-placeholder observation-placeholder">
                                     <div class="observation-title">
                                         {{ item.title }}
                                     </div>
@@ -172,6 +170,15 @@ function groupAndSortByYear(allItems: (Image | Observation)[]) {
                                         v-html="item.observation">
                                     </div>
                                 </div>
+
+                                 <!-- If the item is an document -->
+                                <a v-else-if="item.title && item.size" :href="item.upload" target="_blank" download>
+                                    <div class="image-placeholder document-placeholder">
+                                        <div class="document-title">{{item.title}}</div>
+                                        <p>Type: {{item.type}}</p>
+                                        <p>Size: {{item.size}}</p>
+                                    </div>
+                                </a>
                             </div>
                        
                     </tr>
@@ -182,8 +189,11 @@ function groupAndSortByYear(allItems: (Image | Observation)[]) {
 </template>
     
 <style scoped>
+table p {
+  font-weight: normal;
+}
 
-table td{
+table td {
     width:110px!important;
 }
 .main-container {

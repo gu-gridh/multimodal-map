@@ -56,6 +56,14 @@ export type Observation = {
   type: string,
 };
 
+export type Document = {
+  title: string,
+  size: number,
+  type: string,
+  upload: string,
+  date: string,
+};
+
 export type ImageDeep = Omit<Image, "creator" | "place" | "focus" | "tag"> & {
   creator: Person;
   place: Place;
