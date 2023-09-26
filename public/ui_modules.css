@@ -72,7 +72,7 @@
 }
 
 #app .ol-popup:after {
-  border-top-color: white!important;
+  border-top-color: transparent!important;
   border-width: 1px!important;
   left: 45px!important;
   margin-left: 20px!important;

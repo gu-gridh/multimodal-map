@@ -75,6 +75,8 @@ function handleToggle(key: string) {
     background-repeat: no-repeat;
     background-position: calc(100% - 10px) 10px;
     -webkit-appearance: none;
+    text-transform: capitalize;
+  
 }
 
 .dropdown:hover {

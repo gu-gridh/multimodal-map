@@ -87,9 +87,9 @@ function deselectPlace() {
 
       <div class="placecard-bottom">
         <div class="placecard-text">
-          <div class="placecard-title theme-color-text">Tomb {{ selectedFeature.get("name") }}</div>
+          <div class="placecard-title theme-color-text">{{ $t('tomb') }} {{ selectedFeature.get("name") }}</div>
           <div class="placecard-subtitle theme-color-text">{{ selectedFeature.get("subtitle") }}</div>
-          <button class="theme-button theme-color-background">3D model</button>
+          <button class="theme-button theme-color-background">{{ $t('threedmodel') }}</button>
         </div>
         <div class="placecard-content">
           <div class="placecard-metadata-content" style="height:49px; overflow:hidden;">
@@ -100,15 +100,15 @@ function deselectPlace() {
               <div class="tag theme-color-text">{{ necropolisName }}</div>
             </div>
             <div class="metadata-item">
-              <div class="label">Type:</div>
+              <div class="label">{{ $t('type') }}:</div>
               <div class="tag theme-color-text">{{ type }}</div>
             </div>
             <div class="metadata-item">
-              <div class="label">Chambers:</div>
+              <div class="label">{{ $t('chambers') }}:</div>
               <div class="tag theme-color-text">{{ chambers }}</div>
             </div>
             <div class="metadata-item">
-              <div class="label">Period:</div>
+              <div class="label">{{ $t('period') }}:</div>
               <div class="tag theme-color-text">{{ period }}</div>
             </div>
 
@@ -118,7 +118,7 @@ function deselectPlace() {
       </div>
       <div class="placecard-center-button">
         <router-link :to="`/place/${place?.id_}`">
-          <button class="theme-button" style="margin-top:20px;">More Info</button>
+          <button class="theme-button" style="margin-top:20px;">{{ $t('moreinfo') }}</button>
         </router-link>
       </div>
     </div>

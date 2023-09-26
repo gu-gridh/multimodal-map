@@ -18,6 +18,7 @@
     </div>
   </transition> -->
 
+
   <div class="tag-section">
     <div class="section-title">{{ $t('period') }}</div>
     <div class="broad-controls">
@@ -32,12 +33,13 @@
     </div>
   </div>
 
+  <div style="width:98%; float:left; display:flex; flex-direction:row; justify-content:space-between;">
   <div class="tag-section" style="float:left;">
-    <div class="section-title">Necropoli</div>
+    <div class="section-title">Necropolis</div>
     <div class="broad-controls">
         <CategoryButtonList 
           v-model="necropoli" 
-          :categories="NECRPOLI" 
+          :categories="NECROPOLI" 
           :limit="1" 
           styleType="dropdown"
           class="my-2"
@@ -45,13 +47,13 @@
         />
     </div>
     <!-- <div class="broad-controls">
-      <CategoryButtonList v-model="necropoli" :categories="NECRPOLI" :limit="1" class="my-2"
+      <CategoryButtonList v-model="necropoli" :categories="NECROPOLI" :limit="1" class="my-2"
         @click="handleSelectionClick($event, currentNecropolis)" />
     </div> -->
   </div>
 
   <div class="tag-section" style="float:left; margin-left:60px;">
-    <div class="section-title">{{ $t('tomb') }}</div>
+    <div class="section-title">{{ $t('tombtype') }}</div>
     <div class="broad-controls">
         <CategoryButtonList 
           v-model="tombType" 
@@ -63,6 +65,8 @@
         />
     </div>
   </div>
+
+</div>
 
   <!-- <div class="tag-section">
   <div class="section-title">Tags</div>
@@ -136,7 +140,7 @@ const CATEGORIES = {
 };
 
 const TAGS = ref<Record<string, string>>({});
-const NECRPOLI = ref<Record<string, string>>({});
+const NECROPOLI = ref<Record<string, string>>({});
 const TOMBTYPE = ref<Record<string, string>>({});
 const currentTag = ref(null);
 const currentNecropolis = ref(null);
@@ -149,7 +153,7 @@ const YEARS = {
 
 onMounted(async () => {
   await fetchDataAndPopulateRef("epoch", TAGS);
-  await fetchDataAndPopulateRef("necropolis", NECRPOLI);
+  await fetchDataAndPopulateRef("necropolis", NECROPOLI);
   await fetchDataAndPopulateRef("typeoftomb", TOMBTYPE);
 });
 
@@ -195,7 +199,7 @@ function handleSelectionClick(selectedValue, targetRef) {
   font-weight: 400;
   font-size: 20px;
   margin-top: 20px;
-  margin-bottom: 5px;
+  margin-bottom: 0px;
 }
 
 #app .category-button {
@@ -281,7 +285,7 @@ function handleSelectionClick(selectedValue, targetRef) {
   margin-top: 20px;
   padding: 15px 25px;
   border-radius: 10px;
-  background-color: rgba(255, 255, 255, 1);
+  background-color: rgba(255, 255, 255, 0.8);
   min-height: 50px;
 }
 

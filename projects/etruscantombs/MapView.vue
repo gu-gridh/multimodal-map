@@ -190,4 +190,17 @@ watch(showGrid, (newValue) => {
   position: relative;
   width: 100%;
 }
+
+/* Overides the settings in ui_modules.css */
+#app .ol-popup {
+  left: -55px;
+  width: 110px;
+  min-width: 90px;
+}
+
+
+
+#app .ol-popup:before {
+  left: 30px;
+}
 </style>

@@ -148,7 +148,7 @@ function groupAndSortByYear(allItems: (Image | Observation | Document)[]) {
 
                 <table class="content-table-date" v-else-if="sort == 'year'">
                     <tr v-for="(items, year) in groupedByYear" :key="year">
-                        <td>{{ year }}</td>
+                        <td style="font-size:1.5em; font-weight:200;">{{ year }}</td>
                        
                             <div v-for="(item, index) in items" :key="index" :class="item.iiif_file ? 'image-placeholder' : ''">
                                 <!-- If the item is an image -->
@@ -242,6 +242,7 @@ table td {
     background-repeat: no-repeat;
     background-position: 90px 10px;
     -webkit-appearance: none;
+  
 }
 
 .dropdown:hover {
@@ -337,7 +338,9 @@ table td {
 .observation-body {
     width: 100%;
     float: left;
-    font-size: 1.1em;
+    font-size: 1.0em;
+    line-height:1.3;
+    font-weight:300;
     border-style: dotted;
     border-color: rgb(180, 100, 100);
     border-width: 1.3px 0 0px 0;
