@@ -78,6 +78,7 @@ const store = mapStore();
   </div>
   <div v-else class="mapview-preview">
     No selectedFeature
+    <p>&#9792;</p>
   </div>
 </template>
 

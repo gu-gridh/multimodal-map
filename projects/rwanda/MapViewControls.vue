@@ -11,7 +11,7 @@ import CategoryButtonList from "@/components/input/CategoryButtonList.vue";
 //Filtering map controls
 const SOURCES = {
   images: "Images",
-  places: "Places",
+  places: "Place names",
   interviews: "Interviews",
 }
 const PLACE_TYPES = {
@@ -20,19 +20,20 @@ const PLACE_TYPES = {
   building: "Buildings",
 }
 const INFORMANTS = {
-  ym: "Young males",
-  om: "Old males",
-  yw: "Young women",
-  ow: "Old women"
+  "Young male": "Young 	&#9794;",
+  "Old male": "Old 	&#9794;",
+  "Young female": "Young &#9792;",
+  "Old female": "Old &#9792;"
 }
 const PERIODS = {
-  "colonial": "Colonial",
+  "colonial period": "Colonial",
   "post-independence": "Post-indenpendence",
   "post-genocide": "Post-genocide",
-  "after-2012": "After 2012"
+  "after 2012": "After 2012"
 }
 
-const { sources, placeTypes, periods, sourcesLayer, placeTypeLayer, periodsLayer } = storeToRefs(rwandaStore());
+const { sources, placeTypes, periods, informants, sourcesLayer, placeTypeLayer, periodsLayer, allLayer, informantsLayer } = storeToRefs(rwandaStore());
+const activeButton = ref(false)
 
 //handle category button click
 const handleSourcesClick = (key: string) => {
@@ -40,6 +41,7 @@ const handleSourcesClick = (key: string) => {
   sourcesLayer.value = true
   placeTypeLayer.value = false
   periodsLayer.value = false
+  allLayer.value = false
 }
 
 const handlePlaceTypeClick = (key: string) => {
@@ -47,6 +49,7 @@ const handlePlaceTypeClick = (key: string) => {
   placeTypeLayer.value = true
   sourcesLayer.value = false
   periodsLayer.value = false
+  allLayer.value = false
 }
 
 const handlePeriodClick = (key: string) => {
@@ -54,6 +57,16 @@ const handlePeriodClick = (key: string) => {
   periodsLayer.value = true
   sourcesLayer.value = false
   placeTypeLayer.value = false
+  allLayer.value = false
+}
+
+const handleInformantClick = (key: string) => {
+  console.log("Clicked: ", key);
+  informantsLayer.value = true
+  sourcesLayer.value = false
+  placeTypeLayer.value = false
+  periodsLayer.value = false
+  allLayer.value = false
 }
 </script>
 
@@ -64,7 +77,7 @@ const handlePeriodClick = (key: string) => {
         v-model="sources"
         :categories="SOURCES"
         :limit="1"
-        class=""
+        class="filter-button"
         @click="handleSourcesClick"
       />
     <div class="filter-heading">Place types</div>
@@ -72,24 +85,32 @@ const handlePeriodClick = (key: string) => {
         v-model="placeTypes"
         :categories="PLACE_TYPES"
         :limit="1"
-        class=""
+        class="filter-button"
         @click="handlePlaceTypeClick"
       />
     <div class="filter-heading">Informants</div>
-      
+      <CategoryButtonList 
+        v-model="informants"
+        :categories="INFORMANTS"
+        :limit="1"
+        class="filter-button"
+        @click="handleInformantClick"
+      />
     <div class="filter-heading">Time periods</div>
       <CategoryButtonList 
         v-model="periods"
         :categories="PERIODS"
         :limit="1"
-        class=""
+        class="filter-button"
         @click="handlePeriodClick"
       />
   </div>
 </template>
 
 <style>
-
+.filter-button {
+  font-size: 14px;
+}
 .filter-heading {
   font-size: 16px;
   margin-bottom: 8px;

@@ -32,7 +32,7 @@ const visibleAbout = ref(false);
 
 const store = mapStore();
 const { params } = storeToRefs(store);
-const { allSources, allInformants, allPeriods, allPlaceTypes, periodsLayer, periods, sourcesLayer, placeTypeLayer, placeTypes } = storeToRefs(rwandaStore());
+const { periodsLayer, periods, sources, informants, sourcesLayer, placeTypeLayer, placeTypes, allLayer, informantsLayer } = storeToRefs(rwandaStore());
 
 //MapViewControls
 const { searchText } = useRwandaMap();
@@ -93,10 +93,10 @@ watch(
     <div class="map-container">
       <MapComponent :min-zoom="14" :max-zoom="19" :restrictExtent="[30.1, -1.92, 30.01, -1.980]" :shouldAutoMove="true">
         <template #layers>
-          <!-- Sources layer -->
+          <!-- Sources layer just filtering interviews atm -->
           <DianaPlaceLayer 
             v-if="sourcesLayer"
-            path="rwanda/search/"
+            path="rwanda/search/text"
           >
             <FeatureSelection/>
           </DianaPlaceLayer>
@@ -106,6 +106,16 @@ watch(
             path="rwanda/search/type/"
             :params = "{
               text: placeTypes[0],
+            }"
+            >
+              <FeatureSelection/>
+            </DianaPlaceLayer>  
+            <!-- Informants layer -->
+          <DianaPlaceLayer 
+            v-if="informantsLayer"
+            path="rwanda/search/informant/"
+            :params = "{
+              text: informants[0],
             }"
             >
               <FeatureSelection/>
@@ -122,7 +132,7 @@ watch(
             </DianaPlaceLayer>  
             <!-- Initial layer -->
           <DianaPlaceLayer
-            v-else
+            v-if="allLayer"
             path="rwanda/geojson/place/"
             :params="{
               has_no_name: false,
@@ -155,6 +165,9 @@ watch(
 #app #map-component{
   width: 100% !important;
 }
+/* #app .ol-layers {
+  filter: grayscale(100%) !important;
+} */
 #app #transparent {
   background-color: transparent !important;
   display: none !important;
