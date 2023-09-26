@@ -1,18 +1,28 @@
 <script lang="ts" setup>
-import { watchEffect, ref, inject } from "vue";
+import { watchEffect, ref, inject, defineComponent } from "vue";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
 import type { Image } from "./types";
 import MapViewPreviewImage from "./MapViewPreviewImage.vue";
 import type { DianaClient } from "@/assets/diana";
+import VueMasonryWall from "@yeger/vue-masonry-wall";
 
 const { selectedFeature } = storeToRefs(mapStore());
 const diana = inject("diana") as DianaClient;
 
-const images = ref<Array<Image>>();
+const images = ref<Array<Image>>([]);
 const place = ref() 
 const interview = ref()
 const informants = ref()
+
+defineComponent({
+  components: {
+    VueMasonryWall,
+  },
+});
+
+let layoutKey = ref(0);
+let loadedImagesCount = ref(0);
 
 watchEffect(async () => {
   if (selectedFeature.value) {
@@ -79,14 +89,37 @@ const store = mapStore();
         <p>{{ interview.title }}</p>
         <p style="font-style: italic;">{{ interview.text}}</p>
         <p v-if="informants != undefined">/{{ informants.custom_id}}</p>
-      
       </span>
+      <div class="masonry">
+      <VueMasonryWall
+        :key="layoutKey"
+        class="masonry-wall"
+        :items="images"
+        :column-width="200" 
+        :gap="10"
+      >
+        <template v-slot:default="{ item }">
+          <router-link
+            :key="item.uuid"
+            :to="`/image/${item.id}`"
+            class="grid-item"
+          >
+            <img :src="`${item.iiif_file}/full/450,/0/default.jpg`" />
+            <div class="grid-item-info">
+              <div class="grid-item-info-meta">
+                <h1>{{item.title}}</h1>
+              </div>
+            </div>
+          </router-link>
+        </template>
+      </VueMasonryWall>
+    </div>
       <!-- Images TODO change to gallery -->
-      <MapViewPreviewImage
+      <!-- <MapViewPreviewImage
           v-for="image in images"
           :key="image.id"
           :image="image"
-        />
+        /> -->
 
       </div>
     
@@ -101,6 +134,11 @@ const store = mapStore();
 .mapview-preview-container{
   height:calc(100vh - 80px);
 }
+
+.masonry {
+  
+}
+
 #app h3 {
   font-size: 35px;
   font-weight: 100;
