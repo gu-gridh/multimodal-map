@@ -97,6 +97,7 @@ function groupAndSortByYear(allItems: (Image | Observation | Document)[]) {
                                 <div class="document-title">{{document.title}}</div>
                                 <p>Type: {{document.type[0].text}}</p>
                                 <p>Size: {{document.size}} MB</p>
+                                <p>Published: {{document.date}}</p>
                             </div>
                         </a>
                     </tr>
