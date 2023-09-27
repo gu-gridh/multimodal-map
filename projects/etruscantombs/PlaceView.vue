@@ -10,6 +10,7 @@ const { id } = defineProps<{ id: number; }>();
 const diana = inject("diana") as DianaClient;
 const images = ref<Image[]>([]);
 const plans = ref<Image[]>([]);
+const documentTypeMapping = ref<{ [id: number]: string }>({});
 let observations = ref<Observation[]>([]);
 let documents = ref<Document[]>([]);
 let place = ref();
@@ -37,6 +38,17 @@ onMounted(async () => {
 
         /* For sorting by year */
         groupAndSortByYear([...images.value, ...plans.value, ...observations.value, ...documents.value]);
+
+        /* Fetch document type text */
+        const documentTypeResponse = await fetch('https://diana.dh.gu.se/api/etruscantombs/typeofdocument/');
+        if (documentTypeResponse.ok) {
+            const documentTypeData = await documentTypeResponse.json();
+            documentTypeData.results.forEach((typeObj: { id: number, text: string }) => {
+                documentTypeMapping.value[typeObj.id] = typeObj.text;
+            });
+        } else {
+            console.error(`Failed to fetch document types: ${documentTypeResponse.statusText}`);
+        }
     }
 });
 
@@ -92,8 +104,8 @@ function groupAndSortByYear(allItems: (Image | Observation | Document)[]) {
                         <a v-for="(document, index) in documents" :key="index" :href="document.upload" target="_blank" download>
                             <div class="image-placeholder document-placeholder">
                                 <div class="document-title">{{document.title}}</div>
-                                <p>Type: {{document.type}}</p>
-                                <p>Size: {{document.size}}</p>
+                                <p>Type: {{documentTypeMapping[document.type] || 'Unknown'}}</p>
+                                <p>Size: {{document.size}} MB</p>
                             </div>
                         </a>
                     </tr>
@@ -175,8 +187,8 @@ function groupAndSortByYear(allItems: (Image | Observation | Document)[]) {
                                 <a v-else-if="item.title && item.size" :href="item.upload" target="_blank" download>
                                     <div class="image-placeholder document-placeholder">
                                         <div class="document-title">{{item.title}}</div>
-                                        <p>Type: {{item.type}}</p>
-                                        <p>Size: {{item.size}}</p>
+                                        <p>Type: {{documentTypeMapping[item.type] || 'Unknown'}}</p>
+                                        <p>Size: {{item.size}} MB</p>
                                     </div>
                                 </a>
                             </div>
