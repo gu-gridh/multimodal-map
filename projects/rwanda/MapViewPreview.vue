@@ -7,6 +7,7 @@ import type { DianaClient } from "@/assets/diana";
 import VueMasonryWall from "@yeger/vue-masonry-wall";
 
 const { selectedFeature } = storeToRefs(mapStore());
+
 const diana = inject("diana") as DianaClient;
 
 const images = ref<Array<Image>>([]);
@@ -25,15 +26,14 @@ let layoutKey = ref(0);
 const fetchInformants = () => {
   informants.value = []
   for(let j = 0; j < interview.value.length; j++){
-    for(let i = 0; i < interview.value[0].informants.length; i++){
+    for(let i: number = 0; i < interview.value[0].informants.length; i++){
     fetch(`https://diana.dh.gu.se/api/rwanda/informant/${interview.value[i].informants[i]}`)
     .then(response => response.json())
       .then(data => {
           informants.value.push(data)
       })
   }
-  }
-  
+  } 
 }
 
 watchEffect(async () => {
@@ -45,7 +45,7 @@ watchEffect(async () => {
     const data = await diana.listAll("text/");
     const newInterview = data.find((interview: any) => interview.place_of_interest === place_of_interest);
     if (newInterview) {
-      const seenInterviews = new Set(interview.value.map(i => i.id));
+      const seenInterviews = new Set(interview.value.map((i: { id: any }) => i.id));
       if (!seenInterviews.has(newInterview.id)) {
         interview.value.push(newInterview);
       }

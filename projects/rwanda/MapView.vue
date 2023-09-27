@@ -8,11 +8,9 @@ import { formatNames } from "./names";
 import type Feature from "ol/Feature";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
-// import AreaSearch from "@/components/AreaSearch.vue";
 import MapComponent from "@/components/MapComponent.vue";
 import DianaPlaceLayer from "@/components/DianaPlaceLayer.vue";
 import FeatureSelection from "@/components/FeatureSelection.vue";
-import MapViewPreview from "./MapViewPreview.vue";
 import type { Place } from "./types";
 import About from "./About.vue";
 import AutocompleteComponent from "@/components/input/AutocompleteComponent.vue";
@@ -32,7 +30,8 @@ const visibleAbout = ref(false);
 
 const store = mapStore();
 const { params } = storeToRefs(store);
-const { periodsLayer, periods, sources, informants, sourcesLayer, placeTypeLayer, placeTypes, allLayer, informantsLayer } = storeToRefs(rwandaStore());
+const { periodsLayer, periods, sources, informants, sourcesLayer, placeTypeLayer, placeTypes, allLayer, informantsLayer, coordinate } = storeToRefs(rwandaStore());
+const { selectedFeature } = storeToRefs(store);
 
 //MapViewControls
 const { searchText } = useRwandaMap();
@@ -40,9 +39,22 @@ function displayName(p: Place): string {
   return formatNames(p.id, p.names);
 }
 
+const strokeWidth = ref(10);
+const strokeColor = ref("red");
+
+//when selectedFeature changes, draw geometry on map
+const drawGeometry = () => {
+  if (selectedFeature.value) {
+    coordinate.value = selectedFeature.value.getGeometry();
+    console.log(coordinate.value)
+      
+    
+  }
+}
+
 //zoom to place on click
 const featureZoom = 17; // zoom level when clicking on a feature
-const { selectedFeature } = storeToRefs(store);
+
 watch(
   selectedFeature,
   (newFeature, oldFeature) => {
@@ -60,7 +72,6 @@ watch(
   },
   { immediate: true }
 );
-
 </script>
 
 <template>

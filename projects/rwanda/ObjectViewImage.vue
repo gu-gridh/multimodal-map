@@ -8,11 +8,6 @@ const props = defineProps<{
   object: Image;
   id: Number;
 }>();
-
-const pushToPage = () => {
-  router.push({path: `/place/${props.object.place_of_interest.id}`})
-  .then(() => {router.go(0)})
-}
 </script>
 
 <template>
@@ -22,7 +17,6 @@ const pushToPage = () => {
       <div v-if="object.informants && object.informants.length > 0">
         <p v-for="info in object?.informants">Informants: {{ info.custom_id }}</p>
       </div>
-      <div class="toPlace category-button" @click="pushToPage">Place of interest</div>
     </ObjectViewComponent>
   </div>
 
