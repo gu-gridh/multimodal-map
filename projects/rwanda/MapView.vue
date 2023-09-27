@@ -39,9 +39,6 @@ function displayName(p: Place): string {
   return formatNames(p.id, p.names);
 }
 
-const strokeWidth = ref(10);
-const strokeColor = ref("red");
-
 //when selectedFeature changes, draw geometry on map
 const drawGeometry = () => {
   if (selectedFeature.value) {

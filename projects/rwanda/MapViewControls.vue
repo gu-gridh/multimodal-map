@@ -7,9 +7,11 @@ import type { Place } from "./types";
 import { ref, watch } from "vue";
 import { watchEffect } from "vue";
 import CategoryButtonList from "@/components/input/CategoryButtonList.vue";
+import CategoryButton from "@/components/input/CategoryButton.vue";
 
 //Filtering map controls
 const SOURCES = {
+  all: "All",
   images: "Images",
   places: "Place names",
   interviews: "Interviews",
@@ -33,15 +35,23 @@ const PERIODS = {
 }
 
 const { sources, placeTypes, periods, informants, sourcesLayer, placeTypeLayer, periodsLayer, allLayer, informantsLayer } = storeToRefs(rwandaStore());
-const activeButton = ref(false)
 
 //handle category button click
 const handleSourcesClick = (key: string) => {
-  console.log("Clicked: ", key);
-  sourcesLayer.value = true
-  placeTypeLayer.value = false
-  periodsLayer.value = false
-  allLayer.value = false
+  if(key == "all"){
+    sourcesLayer.value = false
+    placeTypeLayer.value = false
+    periodsLayer.value = false
+    informantsLayer.value = false
+    allLayer.value = true
+  }
+  else {
+    sourcesLayer.value = true
+    placeTypeLayer.value = false
+    periodsLayer.value = false
+    allLayer.value = false
+    informantsLayer.value = false
+  }
 }
 
 const handlePlaceTypeClick = (key: string) => {
@@ -50,6 +60,7 @@ const handlePlaceTypeClick = (key: string) => {
   sourcesLayer.value = false
   periodsLayer.value = false
   allLayer.value = false
+  informantsLayer.value = false
 }
 
 const handlePeriodClick = (key: string) => {
@@ -58,6 +69,7 @@ const handlePeriodClick = (key: string) => {
   sourcesLayer.value = false
   placeTypeLayer.value = false
   allLayer.value = false
+  informantsLayer.value = false
 }
 
 const handleInformantClick = (key: string) => {
