@@ -87,12 +87,12 @@
   <div class="data-widget">
     <div class="data-widget-section">
       <div class="data-widget-item">
-        <h3>Tombs shown:</h3>
+        <h3>{{ $t('tombshown') }}:</h3>
         <p>{{ currentTombCount }}</p>
       </div>
       <div class="data-widget-item">|</div>
       <div class="data-widget-item">
-        <h3>Tombs hidden:</h3>
+        <h3>{{ $t('tombshidden') }}:</h3>
         <p>{{ initialTombCount - currentTombCount }}</p>
       </div>
     </div>
@@ -101,15 +101,15 @@
 
     <div class="data-widget-section">
       <div class="data-widget-item">
-        <h3>Photographs:</h3>
+        <h3>{{ $t('photographs') }}:</h3>
         <p>{{ totalPhotographs }}</p>
       </div>
       <div class="data-widget-item">
-        <h3>Plans:</h3>
+        <h3>{{ $t('plans') }}:</h3>
         <p>{{ totalPlans }}</p>
       </div>
       <div class="data-widget-item">
-        <h3>3D models:</h3>
+        <h3>{{ $t('threedmodels') }}:</h3>
         <p>{{ totalThreedhop + totalPointcloud }}</p> 
       </div>
     </div>
