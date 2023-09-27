@@ -2,7 +2,7 @@
 import { watchEffect, ref, inject, defineComponent } from "vue";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
-import type { Image } from "./types";
+import type { Image, Interview, Informant } from "./types";
 import MapViewPreviewImage from "./MapViewPreviewImage.vue";
 import type { DianaClient } from "@/assets/diana";
 import VueMasonryWall from "@yeger/vue-masonry-wall";
@@ -12,8 +12,8 @@ const diana = inject("diana") as DianaClient;
 
 const images = ref<Array<Image>>([]);
 const place = ref() 
-const interview = ref()
-const informants = ref()
+const interview: any = ref([]);
+const informants:any = ref([]);
 
 defineComponent({
   components: {
@@ -22,25 +22,28 @@ defineComponent({
 });
 
 let layoutKey = ref(0);
-let loadedImagesCount = ref(0);
 
 watchEffect(async () => {
   if (selectedFeature.value) {
+    informants.value = []
+    interview.value = []
     const place_of_interest = selectedFeature.value.getId();
     place.value = JSON.parse(JSON.stringify(selectedFeature.value))
-    console.log(place.value)
     //fetch images
     images.value = await diana.listAll<Image>("image/", { place_of_interest });
-    //fetch all interviews
+    //find interviews with place_of_interest id
     const data = await diana.listAll("text/");
-    //find interview with place_of_interest
-    try {
-      interview.value = data.find((interview: any) => interview.place_of_interest === place_of_interest)
-      informants.value = await diana.get("informant", interview.value.informants[0] );
-    } catch (error) {
-      console.log(error)
+    interview.value.push(data.find((interview: any) => interview.place_of_interest === place_of_interest))
+    //fetch informants
+    if (interview.value[0].informants.length > 0) {
+      for(let i = 0; i < interview.value[0].informants.length; i++){
+        const info = await diana.get("informant", interview.value[0].informants[i] );
+        informants.value.push(info)
+      }
     }
-  } else {
+    else console.log("no informant")
+  }
+   else {
     images.value = [];
   }
 });
@@ -85,10 +88,12 @@ const store = mapStore();
         </div>
       </router-link>
       <!-- Interview if avaliable -->
-      <span v-if="interview != undefined">
-        <p>{{ interview.title }}</p>
-        <p style="font-style: italic;">{{ interview.text}}</p>
-        <p v-if="informants != undefined">/{{ informants.custom_id}}</p>
+      <span v-for="text in interview">
+        <div>
+          <p>{{ text.title }}</p>
+          <p style="font-style: italic;">{{ text.text}}</p>
+          <p v-if="informants != undefined" v-for="informant in informants">/{{ informant.custom_id }}</p>
+        </div>
       </span>
       <div class="masonry">
       <VueMasonryWall
