@@ -10,5 +10,7 @@ export const etruscanStore = defineStore("etruscan", () => {
   const tombType = ref<Array<string>>(["all"]);
   const tagsLayerVisible = ref(false); // Default visibility state for tags layer
   const placesLayerVisible = ref(true); // Default visibility state for places layer
-  return { categories, years, tags, tagsLayerVisible, placesLayerVisible, necropoli, tombType };
+  const dataParams = ref<Record<string, string | number | null>>({});
+
+  return { categories, years, tags, tagsLayerVisible, placesLayerVisible, necropoli, tombType,  dataParams};
 });

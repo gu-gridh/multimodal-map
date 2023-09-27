@@ -88,12 +88,12 @@
     <div class="data-widget-section">
       <div class="data-widget-item">
         <h3>Tombs shown:</h3>
-        <p>#123</p>
+        <p>{{ currentTombCount }}</p>
       </div>
       <div class="data-widget-item">|</div>
       <div class="data-widget-item">
         <h3>Tombs hidden:</h3>
-        <p>#123</p>
+        <p>{{ initialTombCount - currentTombCount }}</p>
       </div>
     </div>
 
@@ -102,15 +102,15 @@
     <div class="data-widget-section">
       <div class="data-widget-item">
         <h3>Photographs:</h3>
-        <p>#123</p>
+        <p>{{ totalPhotographs }}</p>
       </div>
       <div class="data-widget-item">
         <h3>Plans:</h3>
-        <p>#123</p>
+        <p>{{ totalPlans }}</p>
       </div>
       <div class="data-widget-item">
         <h3>3D models:</h3>
-        <p>#123</p>
+        <p>{{ totalThreedhop + totalPointcloud }}</p> 
       </div>
     </div>
   </div>
@@ -118,7 +118,7 @@
 
 <script setup lang="ts">
 // @ts-nocheck
-import { inject, ref, onMounted, computed } from "vue";
+import { inject, ref, onMounted, computed, defineProps, watch } from "vue";
 import CategoryButtonList from "@/components/input/CategoryButtonDropdown.vue";
 // import RangeSlider from "@/components/input/RangeSlider.vue";
 import { storeToRefs } from "pinia";
@@ -128,9 +128,17 @@ import { DianaClient } from "@/assets/diana";
 
 const config = inject<EtruscanProject>("config");
 const dianaClient = new DianaClient("etruscantombs"); // Initialize DianaClient
-const { categories, years, tags, necropoli, tombType } = storeToRefs(etruscanStore());
+const { categories, years, tags, necropoli, tombType, dataParams } = storeToRefs(etruscanStore());
 // Create a ref for last clicked category
 const lastClickedCategory = ref('');
+
+//initialize variables for data section
+const totalPhotographs = ref(0);
+const totalPlans = ref(0);
+const totalThreedhop = ref(0);
+const totalPointcloud = ref(0);
+const initialTombCount = ref(289);
+const currentTombCount = ref(0);
 
 const CATEGORIES = {
   all: "All Documentation",
@@ -151,10 +159,15 @@ const YEARS = {
   MAX: config?.timeRange?.[1] || new Date().getFullYear(),
 };
 
-onMounted(async () => {
+onMounted(async () => { 
   await fetchDataAndPopulateRef("epoch", TAGS);
   await fetchDataAndPopulateRef("necropolis", NECROPOLI);
   await fetchDataAndPopulateRef("typeoftomb", TOMBTYPE);
+
+  const url = `https://diana.dh.gu.se/api/etruscantombs/geojson/place/?page_size=500`;
+  const response = await fetch(url);
+  const data = await response.json();
+  initialTombCount.value = data.count //set total tombcount
 });
 
 async function fetchDataAndPopulateRef<T>(type: string, refToPopulate: any) {
@@ -186,6 +199,53 @@ const handleCategoryClick = (category: string) => {
     // Update last clicked category
     lastClickedCategory.value = category;
   }
+};
+
+//Fetch to return count of each type based on the tagParams
+const fetchData = async (url: string) => {
+  const response = await fetch(url);
+  if (!response.ok) {
+    console.error(`Failed to fetch data: ${response.status}`);
+    return;
+  }
+  
+  const data = await response.json();
+  const { count, features } = data;
+
+  currentTombCount.value = count;
+  totalPhotographs.value = 0;
+  totalPlans.value = 0;
+  totalThreedhop.value = 0;
+  totalPointcloud.value = 0;
+
+  for (const feature of features) {
+    const {
+      photographs_count,
+      plans_count,
+      threedhop_count,
+      pointcloud_count
+    } = feature.properties;
+
+    totalPhotographs.value += photographs_count;
+    totalPlans.value += plans_count;
+    totalThreedhop.value += threedhop_count;
+    totalPointcloud.value += pointcloud_count;
+
+  }
+};
+
+watch(
+  () => dataParams.value,
+  async (newTagParams, oldTagParams) => {
+    const url = `https://diana.dh.gu.se/api/etruscantombs/geojson/place/?page_size=500&${new URLSearchParams(newTagParams).toString()}`;
+    await fetchData(url);
+  },
+  { immediate: true }
+);
+
+const toggleAboutVisibility = async () => {
+  await nextTick();
+  visibleAbout.value = !visibleAbout.value;
 };
 
 function handleSelectionClick(selectedValue, targetRef) {

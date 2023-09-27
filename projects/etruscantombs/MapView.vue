@@ -20,7 +20,7 @@ import { nextTick } from "vue";
 import GeoJSON from "ol/format/GeoJSON";
 import Title from "./Title.vue"
 
-const { categories, years, tags, necropoli, tombType, placesLayerVisible, tagsLayerVisible } = storeToRefs(etruscanStore());
+const { categories, years, tags, necropoli, tombType, placesLayerVisible, tagsLayerVisible, dataParams } = storeToRefs(etruscanStore());
 const store = mapStore();
 const { selectedFeature } = storeToRefs(store);
 const minZoom = 14;
@@ -47,14 +47,6 @@ watch(
   },
   { immediate: true }
 );
-
-// const placeParams = computed(() =>
-//   clean({
-//     type: categories.value.filter((x) => x !== "all").join(","),
-//     start_date: years.value[0],
-//     end_date: years.value[1],
-//   })
-// );
 
 /* Response for generating the URL for filtering map points down */
 const tagParams = computed(() => {
@@ -89,10 +81,13 @@ const tagParams = computed(() => {
   return params;
 });
 
-const toggleAboutVisibility = async () => {
-  await nextTick();
-  visibleAbout.value = !visibleAbout.value;
-};
+watch(
+  tagParams, 
+  (newParams) => {
+    dataParams.value = newParams;
+  }, 
+  { immediate: true }
+);
 
 onMounted(() => {
   // Check if the "visited" key exists in session storage
@@ -131,7 +126,7 @@ watch(showGrid, (newValue) => {
   <MainLayout>
     <template #search>
       <Title @toggle-about="toggleAboutVisibility"/>
-      <MapViewControls />
+      <MapViewControls/>
     </template>
 
     <template #background>
