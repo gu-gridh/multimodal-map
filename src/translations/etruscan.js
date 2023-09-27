@@ -39,7 +39,7 @@ const messages = {
       threedmodel: "Modello 3D",
       threedmodels: "Modelli 3D",
       tombshown: "Tombe mostrate",
-      tombshidden: "Tombs nascoste",
+      tombshidden: "Tombe nascoste",
       photographs: "Fotografie",
       plans: "Piani",
       type: "Tipo",
