@@ -20,7 +20,7 @@
 
 
   <div class="tag-section">
-    <div class="section-title">{{ $t('period') }}</div>
+    <div class="section-title">{{ $t('timeperiod') }}</div>
     <div class="broad-controls">
          <CategoryButtonList 
           v-model="tags" 
