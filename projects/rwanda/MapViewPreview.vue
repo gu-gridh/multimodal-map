@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { watchEffect, ref, inject, defineComponent } from "vue";
+import { watchEffect, ref, inject, defineComponent, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
 import type { Image, Interview, Informant } from "./types";
@@ -23,25 +23,46 @@ defineComponent({
 
 let layoutKey = ref(0);
 
+const fetchInformants = () => {
+  informants.value = []
+  for(let i = 0; i < interview.value[0].informants.length; i++){
+    fetch(`https://diana.dh.gu.se/api/rwanda/informant/${interview.value[0].informants[i]}`)
+    .then(response => response.json())
+      .then(data => {
+          informants.value.push(data)
+      })
+  }
+}
+
 watchEffect(async () => {
   if (selectedFeature.value) {
-    informants.value = []
-    interview.value = []
     const place_of_interest = selectedFeature.value.getId();
     place.value = JSON.parse(JSON.stringify(selectedFeature.value))
     //fetch images
     images.value = await diana.listAll<Image>("image/", { place_of_interest });
     //find interviews with place_of_interest id
+    interview.value = [];
     const data = await diana.listAll("text/");
+    //find matching interviews with place_of_interest id
     interview.value.push(data.find((interview: any) => interview.place_of_interest === place_of_interest))
-    //fetch informants
-    if (interview.value[0].informants.length > 0) {
-      for(let i = 0; i < interview.value[0].informants.length; i++){
-        const info = await diana.get("informant", interview.value[0].informants[i] );
-        informants.value.push(info)
-      }
+    //if no interviews, set to empty array
+    if (interview.value[0] == undefined) {
+      interview.value = []
+      informants.value = []
     }
-    else console.log("no informant")
+    //fetch informants if interview exists
+    else {
+      //check for duplicates - this needs to be checked since sometimes it was duplicates
+      let valuesAlreadySeen: any = []
+      for (let i = 0; i < interview.value.length; i++) {
+        let value = interview.value.length[i]
+        if (valuesAlreadySeen.indexOf(value) !== -1) {
+          //remove duplicate
+          interview.value.splice(-1)
+        }
+      }
+      fetchInformants()
+    }
   }
    else {
     images.value = [];
@@ -88,13 +109,18 @@ const store = mapStore();
         </div>
       </router-link>
       <!-- Interview if avaliable -->
+      <div v-if="interview && interview.length != 0">
       <span v-for="text in interview">
-        <div>
           <p>{{ text.title }}</p>
           <p style="font-style: italic;">{{ text.text}}</p>
-          <p v-if="informants != undefined" v-for="informant in informants">/{{ informant.custom_id }}</p>
-        </div>
       </span>
+      </div>
+      <!-- Informants if avaliable -->
+      <div v-if="informants && informants.length != 0">
+        <span v-for="informant in informants">
+          <p>/{{ informant.custom_id }}</p>
+        </span>
+      </div>
       <div class="masonry">
       <VueMasonryWall
         :key="layoutKey"
