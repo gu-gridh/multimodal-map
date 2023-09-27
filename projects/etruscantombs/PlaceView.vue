@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, defineProps, onMounted, inject } from 'vue';
-import type { Image, Observation, Document } from './types';
+import type { Image, Observation, Document, Pointcloud } from './types';
 import type { DianaClient } from "@/assets/diana";
 import PlaceViewCard from "./PlaceViewCard.vue";
 
@@ -10,9 +10,9 @@ const { id } = defineProps<{ id: number; }>();
 const diana = inject("diana") as DianaClient;
 const images = ref<Image[]>([]);
 const plans = ref<Image[]>([]);
-const documentTypeMapping = ref<{ [id: number]: string }>({});
 let observations = ref<Observation[]>([]);
 let documents = ref<Document[]>([]);
+let pointcloud = ref<Pointcloud[]>([]);
 let place = ref();
 
 //Blank squares
@@ -25,7 +25,9 @@ onMounted(async () => {
     if (id) {
         images.value = await diana.listAll<Image>("image", { tomb: id, type_of_image: 2 });
         observations.value = await diana.listAll<Observation>("observation", { place: id });
-        documents.value = await diana.listAll<Document>("document", { place: id });
+        documents.value = await diana.listAll<Document>("document", { place: id, depth: 2 });
+        pointcloud.value = await diana.listAll<Pointcloud>("objectpointcloud", { tomb: id, depth: 2});
+        
         //fetch for sections and plans
         const url = 'https://diana.dh.gu.se/api/etruscantombs/image/?tomb=' + id + '&type_of_image=1&type_of_image=5';
         const response = await fetch(url);
@@ -38,17 +40,6 @@ onMounted(async () => {
 
         /* For sorting by year */
         groupAndSortByYear([...images.value, ...plans.value, ...observations.value, ...documents.value]);
-
-        /* Fetch document type text */
-        const documentTypeResponse = await fetch('https://diana.dh.gu.se/api/etruscantombs/typeofdocument/');
-        if (documentTypeResponse.ok) {
-            const documentTypeData = await documentTypeResponse.json();
-            documentTypeData.results.forEach((typeObj: { id: number, text: string }) => {
-                documentTypeMapping.value[typeObj.id] = typeObj.text;
-            });
-        } else {
-            console.error(`Failed to fetch document types: ${documentTypeResponse.statusText}`);
-        }
     }
 });
 
@@ -104,11 +95,12 @@ function groupAndSortByYear(allItems: (Image | Observation | Document)[]) {
                         <a v-for="(document, index) in documents" :key="index" :href="document.upload" target="_blank" download>
                             <div class="image-placeholder document-placeholder">
                                 <div class="document-title">{{document.title}}</div>
-                                <p>Type: {{documentTypeMapping[document.type] || 'Unknown'}}</p>
+                                <p>Type: {{document.type[0].text}}</p>
                                 <p>Size: {{document.size}} MB</p>
                             </div>
                         </a>
                     </tr>
+                    <!--
                     <tr>
                         <td>3D Models</td>
                         <div v-for="(image, index) in imageArray" :key="index" class="image-placeholder">
@@ -118,6 +110,16 @@ function groupAndSortByYear(allItems: (Image | Observation | Document)[]) {
                         
                         </div>
                     </tr>
+                    <tr v-if="pointcloud.length > 0">
+                        <td>3D Models</td>
+                        <div v-for="(model, index) in pointcloud" :key="index" class="image-placeholder">
+                            <div class="meta-data-overlay">
+                            <div class="meta-data-overlay-text">{{ model.title }}</div>
+                            </div>
+                            <img :src="`${model.preview_image.file}`" :alt="model.title" class="image-square" />
+                        </div>
+                    </tr>
+                    -->
                     <tr v-if="plans.length > 0">
                         <td>Plans</td>
                         <div v-for="(image, index) in plans" :key="index" class="image-placeholder plan-placeholder">
@@ -187,7 +189,7 @@ function groupAndSortByYear(allItems: (Image | Observation | Document)[]) {
                                 <a v-else-if="item.title && item.size" :href="item.upload" target="_blank" download>
                                     <div class="image-placeholder document-placeholder">
                                         <div class="document-title">{{item.title}}</div>
-                                        <p>Type: {{documentTypeMapping[item.type] || 'Unknown'}}</p>
+                                        <p>Type: {{item.type[0].text}}</p>
                                         <p>Size: {{item.size}} MB</p>
                                     </div>
                                 </a>

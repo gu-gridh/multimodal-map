@@ -59,9 +59,30 @@ export type Observation = {
 export type Document = {
   title: string,
   size: number,
-  type: string,
+  type: Array<{ text: string }>;
   upload: string,
   date: string,
+};
+
+export type Technique = {
+  id: number;
+  text: string;
+};
+
+export type PreviewImage = {
+  id: number;
+  file: string;
+};
+
+export type Pointcloud = {
+  title: string;
+  points_optimized: string;
+  points_full_resolution: string;
+  description: string;
+  date: string;
+  technique: Technique;
+  preview_image: PreviewImage; 
+  author?: Array<{ id: number, firstname: string, lastname: string }>;
 };
 
 export type ImageDeep = Omit<Image, "creator" | "place" | "focus" | "tag"> & {
