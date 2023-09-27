@@ -2,8 +2,7 @@
 import { watchEffect, ref, inject, defineComponent, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
-import type { Image, Interview, Informant } from "./types";
-import MapViewPreviewImage from "./MapViewPreviewImage.vue";
+import type { Image } from "./types";
 import type { DianaClient } from "@/assets/diana";
 import VueMasonryWall from "@yeger/vue-masonry-wall";
 
@@ -25,13 +24,16 @@ let layoutKey = ref(0);
 
 const fetchInformants = () => {
   informants.value = []
-  for(let i = 0; i < interview.value[0].informants.length; i++){
+  for(let j = 0; j < interview.value.length; j++){
+    for(let i = 0; i < interview.value[0].informants.length; i++){
     fetch(`https://diana.dh.gu.se/api/rwanda/informant/${interview.value[i].informants[i]}`)
     .then(response => response.json())
       .then(data => {
           informants.value.push(data)
       })
   }
+  }
+  
 }
 
 watchEffect(async () => {
@@ -55,6 +57,7 @@ watchEffect(async () => {
     images.value = [];
   }
 });
+
 function deselectPlace() {
   selectedFeature.value = undefined;
   //change zoom to original state
@@ -132,19 +135,11 @@ const store = mapStore();
         </template>
       </VueMasonryWall>
     </div>
-      <!-- Images TODO change to gallery -->
-      <!-- <MapViewPreviewImage
-          v-for="image in images"
-          :key="image.id"
-          :image="image"
-        /> -->
-
-      </div>
-    
-    </div>
+  </div>
+</div>
   </div>
   <div v-else class="mapview-preview">
-    No selectedFeature
+    No selectedFeature - what to have here?
   </div>
 </template>
 
