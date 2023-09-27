@@ -26,7 +26,7 @@ let layoutKey = ref(0);
 const fetchInformants = () => {
   informants.value = []
   for(let i = 0; i < interview.value[0].informants.length; i++){
-    fetch(`https://diana.dh.gu.se/api/rwanda/informant/${interview.value[0].informants[i]}`)
+    fetch(`https://diana.dh.gu.se/api/rwanda/informant/${interview.value[i].informants[i]}`)
     .then(response => response.json())
       .then(data => {
           informants.value.push(data)
@@ -37,34 +37,21 @@ const fetchInformants = () => {
 watchEffect(async () => {
   if (selectedFeature.value) {
     const place_of_interest = selectedFeature.value.getId();
-    place.value = JSON.parse(JSON.stringify(selectedFeature.value))
-    //fetch images
+    place.value = JSON.parse(JSON.stringify(selectedFeature.value));
     images.value = await diana.listAll<Image>("image/", { place_of_interest });
-    //find interviews with place_of_interest id
     interview.value = [];
     const data = await diana.listAll("text/");
-    //find matching interviews with place_of_interest id
-    interview.value.push(data.find((interview: any) => interview.place_of_interest === place_of_interest))
-    //if no interviews, set to empty array
-    if (interview.value[0] == undefined) {
-      interview.value = []
-      informants.value = []
-    }
-    //fetch informants if interview exists
-    else {
-      //check for duplicates - this needs to be checked since sometimes it was duplicates
-      let valuesAlreadySeen: any = []
-      for (let i = 0; i < interview.value.length; i++) {
-        let value = interview.value.length[i]
-        if (valuesAlreadySeen.indexOf(value) !== -1) {
-          //remove duplicate
-          interview.value.splice(-1)
-        }
+    const newInterview = data.find((interview: any) => interview.place_of_interest === place_of_interest);
+    if (newInterview) {
+      const seenInterviews = new Set(interview.value.map(i => i.id));
+      if (!seenInterviews.has(newInterview.id)) {
+        interview.value.push(newInterview);
       }
-      fetchInformants()
+      fetchInformants();
+    } else {
+      informants.value = [];
     }
-  }
-   else {
+  } else {
     images.value = [];
   }
 });
