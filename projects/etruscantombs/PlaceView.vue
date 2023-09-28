@@ -99,7 +99,8 @@ function groupAndSortByYear(allItems: (Image | Observation | Document | Pointclo
                         <td>3D Models</td>
                         <div v-for="(model, index) in pointcloud" :key="index" class="image-placeholder">
                             <div class="meta-data-overlay">
-                            <div class="meta-data-overlay-text">{{ model.title }}</div>
+                                <div class="meta-data-overlay-text">{{ model.technique ? model.technique.text : 'N/A' }}</div>
+                                <div class="meta-data-overlay-text">{{ model.title }}</div>
                             </div>
                             <img :src="`${model.preview_image.file}`" :alt="model.title" class="image-square" />
                         </div>
@@ -398,11 +399,18 @@ table td {
 
 .meta-data-overlay .meta-data-overlay-text{
     position:absolute;
-    bottom: 0px;
     padding-bottom:10px;
     padding-left:15px;
     transition: all 0.5s ease-in-out;
     opacity:1.0;
+}
+
+.meta-data-overlay .meta-data-overlay-text:first-child {
+    bottom: 20px;
+}
+
+.meta-data-overlay .meta-data-overlay-text:last-child {
+    bottom: 0px;
 }
 
 .plan-placeholder .meta-data-overlay{
