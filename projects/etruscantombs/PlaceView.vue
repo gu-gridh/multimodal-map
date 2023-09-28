@@ -5,7 +5,7 @@ import type { DianaClient } from "@/assets/diana";
 import PlaceViewCard from "./PlaceViewCard.vue";
 
 const sort = ref('type');
-const groupedByYear = ref<{ [year: string]: (Image | Observation | Document)[] }>({});
+const groupedByYear = ref<{ [year: string]: (Image | Observation | Document | Pointcloud)[] }>({});
 const { id } = defineProps<{ id: number; }>();
 const diana = inject("diana") as DianaClient;
 const images = ref<Image[]>([]);
@@ -14,12 +14,6 @@ let observations = ref<Observation[]>([]);
 let documents = ref<Document[]>([]);
 let pointcloud = ref<Pointcloud[]>([]);
 let place = ref();
-
-//Blank squares
-const imageArray = ref([
-    { src: '', alt: '' },
-    { src: '', alt: '' },
-]);
 
 onMounted(async () => {
     if (id) {
@@ -39,11 +33,11 @@ onMounted(async () => {
         }
 
         /* For sorting by year */
-        groupAndSortByYear([...images.value, ...plans.value, ...observations.value, ...documents.value]);
+        groupAndSortByYear([...images.value, ...plans.value, ...observations.value, ...documents.value, ...pointcloud.value]);
     }
 });
 
-function groupAndSortByYear(allItems: (Image | Observation | Document)[]) {
+function groupAndSortByYear(allItems: (Image | Observation | Document | Pointcloud)[]) {
   // Reset groupedByYear
   groupedByYear.value = {};
 
@@ -61,7 +55,7 @@ function groupAndSortByYear(allItems: (Image | Observation | Document)[]) {
   // Sort grouped items by date
   const sortedGroupedByYear = Object.keys(groupedByYear.value)
     .sort()
-    .reduce<{ [year: string]: (Image | Observation | Document)[] }>((acc, key) => {
+    .reduce<{ [year: string]: (Image | Observation | Document | Pointcloud)[] }>((acc, key) => {
       acc[key] = groupedByYear.value[key];
       return acc;
     }, {});
@@ -101,16 +95,6 @@ function groupAndSortByYear(allItems: (Image | Observation | Document)[]) {
                             </div>
                         </a>
                     </tr>
-                    <!--
-                    <tr>
-                        <td>3D Models</td>
-                        <div v-for="(image, index) in imageArray" :key="index" class="image-placeholder">
-
-                            <div class="meta-data-overlay"><div class="meta-data-overlay-text">{{image.title}}</div></div>
-                            <img :src="image.src" :alt="image.alt" class="image-square" />
-                        
-                        </div>
-                    </tr>
                     <tr v-if="pointcloud.length > 0">
                         <td>3D Models</td>
                         <div v-for="(model, index) in pointcloud" :key="index" class="image-placeholder">
@@ -120,7 +104,7 @@ function groupAndSortByYear(allItems: (Image | Observation | Document)[]) {
                             <img :src="`${model.preview_image.file}`" :alt="model.title" class="image-square" />
                         </div>
                     </tr>
-                    -->
+                
                     <tr v-if="plans.length > 0">
                         <td>Plans</td>
                         <div v-for="(image, index) in plans" :key="index" class="image-placeholder plan-placeholder">
@@ -165,16 +149,16 @@ function groupAndSortByYear(allItems: (Image | Observation | Document)[]) {
                     <tr v-for="(items, year) in groupedByYear" :key="year">
                         <td style="font-size:1.5em; font-weight:200;">{{ year }}</td>
                        
-                            <div v-for="(item, index) in items" :key="index" :class="item.iiif_file ? 'image-placeholder' : ''">
+                            <div v-for="(item, index) in items" :key="index" :class="item.iiif_file || item.camera_position ? 'image-placeholder' : ''">
+
                                 <!-- If the item is an image -->
-                               
                                 <router-link v-if="item.iiif_file" :to="`/detail/image/${item.id}`">
                                     <div class="meta-data-overlay"><div class="meta-data-overlay-text">{{item.title}}</div></div>
                                     <img :src="`${item.iiif_file}/full/500,/0/default.jpg`" :alt="item.title" class="image-square" />
                                 </router-link>
 
                                 <!-- If the item is an observation -->
-                                <div v-else-if="item.title && !item.size" class="image-placeholder observation-placeholder">
+                                <div v-else-if="item.observation" class="image-placeholder observation-placeholder">
                                     <div class="observation-title">
                                         {{ item.title }}
                                     </div>
@@ -186,12 +170,19 @@ function groupAndSortByYear(allItems: (Image | Observation | Document)[]) {
                                     </div>
                                 </div>
 
+                                 <!-- If the item is a pointcloud -->
+                                 <a v-else-if="item.camera_position" target="_blank">
+                                    <div class="meta-data-overlay"><div class="meta-data-overlay-text">{{item.title}}</div></div>
+                                    <img :src="`${item.preview_image.iiif_file}/full/500,/0/default.jpg`" :alt="item.title" class="image-square" />
+                                </a>
+
                                  <!-- If the item is an document -->
-                                <a v-else-if="item.title && item.size" :href="item.upload" target="_blank" download>
+                                <a v-else-if="item.upload" :href="item.upload" target="_blank" download>
                                     <div class="image-placeholder document-placeholder">
                                         <div class="document-title">{{item.title}}</div>
                                         <p>Type: {{item.type[0].text}}</p>
                                         <p>Size: {{item.size}} MB</p>
+                                        <p>Published: {{item.date}}</p>
                                     </div>
                                 </a>
                             </div>
@@ -297,8 +288,6 @@ table td {
     cursor: pointer;
     background-color: white;
 }
-
-
 
 .document-placeholder {
     width: 416px;
