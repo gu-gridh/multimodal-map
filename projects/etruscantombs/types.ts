@@ -85,6 +85,16 @@ export type Pointcloud = {
   author?: Array<{ id: number, firstname: string, lastname: string }>;
 };
 
+export type Mesh = {
+  title: string;
+  date: string;
+  triangles_optimized: string;
+  triangles_full_resolution: string;
+  technique: Technique;
+  preview_image: PreviewImage; 
+  author?: Array<{ id: number, firstname: string, lastname: string }>;
+};
+
 export type ImageDeep = Omit<Image, "creator" | "place" | "focus" | "tag"> & {
   creator: Person;
   place: Place;

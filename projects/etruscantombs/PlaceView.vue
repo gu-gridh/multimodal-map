@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { ref, defineProps, onMounted, inject } from 'vue';
-import type { Image, Observation, Document, Pointcloud } from './types';
+import { ref, defineProps, onMounted, inject, computed } from 'vue';
+import type { Image, Observation, Document, Pointcloud, Mesh } from './types';
 import type { DianaClient } from "@/assets/diana";
 import PlaceViewCard from "./PlaceViewCard.vue";
 
 const sort = ref('type');
-const groupedByYear = ref<{ [year: string]: (Image | Observation | Document | Pointcloud)[] }>({});
+const groupedByYear = ref<{ [year: string]: (Image | Observation | Document | Pointcloud | Mesh )[] }>({});
 const { id } = defineProps<{ id: number; }>();
 const diana = inject("diana") as DianaClient;
 const images = ref<Image[]>([]);
@@ -13,7 +13,12 @@ const plans = ref<Image[]>([]);
 let observations = ref<Observation[]>([]);
 let documents = ref<Document[]>([]);
 let pointcloud = ref<Pointcloud[]>([]);
+let mesh = ref<Mesh[]>([]);
 let place = ref();
+
+const combined3DModels = computed(() => {
+  return [...pointcloud.value, ...mesh.value];
+});
 
 onMounted(async () => {
     if (id) {
@@ -21,6 +26,7 @@ onMounted(async () => {
         observations.value = await diana.listAll<Observation>("observation", { place: id });
         documents.value = await diana.listAll<Document>("document", { place: id, depth: 2 });
         pointcloud.value = await diana.listAll<Pointcloud>("objectpointcloud", { tomb: id, depth: 2});
+        mesh.value = await diana.listAll<Mesh>("object3dhop", { tomb: id, depth: 2});
         
         //fetch for sections and plans
         const url = 'https://diana.dh.gu.se/api/etruscantombs/image/?tomb=' + id + '&type_of_image=1&type_of_image=5';
@@ -33,11 +39,11 @@ onMounted(async () => {
         }
 
         /* For sorting by year */
-        groupAndSortByYear([...images.value, ...plans.value, ...observations.value, ...documents.value, ...pointcloud.value]);
+        groupAndSortByYear([...images.value, ...plans.value, ...observations.value, ...documents.value, ...pointcloud.value, ...mesh.value]);
     }
 });
 
-function groupAndSortByYear(allItems: (Image | Observation | Document | Pointcloud)[]) {
+function groupAndSortByYear(allItems: (Image | Observation | Document | Pointcloud | Mesh)[]) {
   // Reset groupedByYear
   groupedByYear.value = {};
 
@@ -55,7 +61,7 @@ function groupAndSortByYear(allItems: (Image | Observation | Document | Pointclo
   // Sort grouped items by date
   const sortedGroupedByYear = Object.keys(groupedByYear.value)
     .sort()
-    .reduce<{ [year: string]: (Image | Observation | Document | Pointcloud)[] }>((acc, key) => {
+    .reduce<{ [year: string]: (Image | Observation | Document | Pointcloud | Mesh)[] }>((acc, key) => {
       acc[key] = groupedByYear.value[key];
       return acc;
     }, {});
@@ -95,9 +101,10 @@ function groupAndSortByYear(allItems: (Image | Observation | Document | Pointclo
                             </div>
                         </a>
                     </tr>
-                    <tr v-if="pointcloud.length > 0">
+
+                    <tr v-if="combined3DModels.length > 0">
                         <td>3D Models</td>
-                        <div v-for="(model, index) in pointcloud" :key="index" class="image-placeholder">
+                        <div v-for="(model, index) in combined3DModels" :key="index" class="image-placeholder">
                             <div class="meta-data-overlay">
                                 <div class="meta-data-overlay-text">{{ model.technique ? model.technique.text : 'N/A' }}</div>
                                 <div class="meta-data-overlay-text">{{ model.title }}</div>
@@ -150,7 +157,7 @@ function groupAndSortByYear(allItems: (Image | Observation | Document | Pointclo
                     <tr v-for="(items, year) in groupedByYear" :key="year">
                         <td style="font-size:1.5em; font-weight:200;">{{ year }}</td>
                        
-                            <div v-for="(item, index) in items" :key="index" :class="item.iiif_file || item.camera_position ? 'image-placeholder' : ''">
+                            <div v-for="(item, index) in items" :key="index" :class="item.iiif_file || item.camera_position || item.triangles_optimized ? 'image-placeholder' : ''">
 
                                 <!-- If the item is an image -->
                                 <router-link v-if="item.iiif_file" :to="`/detail/image/${item.id}`">
@@ -172,8 +179,18 @@ function groupAndSortByYear(allItems: (Image | Observation | Document | Pointclo
                                 </div>
 
                                  <!-- If the item is a pointcloud -->
-                                 <a v-else-if="item.camera_position" target="_blank">
-                                    <div class="meta-data-overlay"><div class="meta-data-overlay-text">{{item.title}}</div></div>
+                                <a v-else-if="item.camera_position" target="_blank">
+                                    <div class="meta-data-overlay">
+                                        <div class="meta-data-overlay-text">{{ item.technique ? item.technique.text : 'N/A' }}</div>
+                                        <div class="meta-data-overlay-text">{{item.title}}</div></div>
+                                    <img :src="`${item.preview_image.iiif_file}/full/500,/0/default.jpg`" :alt="item.title" class="image-square" />
+                                </a>
+
+                                 <!-- If the item is a mesh -->
+                                <a v-else-if="item.triangles_optimized" target="_blank">
+                                    <div class="meta-data-overlay">
+                                        <div class="meta-data-overlay-text">{{ item.technique ? item.technique.text : 'N/A' }}</div>
+                                        <div class="meta-data-overlay-text">{{item.title}}</div></div>
                                     <img :src="`${item.preview_image.iiif_file}/full/500,/0/default.jpg`" :alt="item.title" class="image-square" />
                                 </a>
 
