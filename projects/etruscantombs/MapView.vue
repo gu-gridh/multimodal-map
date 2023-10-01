@@ -103,7 +103,14 @@ onMounted(() => {
   if (storedShowGrid) {
     showGrid.value = JSON.parse(storedShowGrid);
   }
+
 })
+
+const toggleAboutVisibility = async () => {
+  console.log('fired')
+  await nextTick();
+  visibleAbout.value = !visibleAbout.value;
+};
 
 watch(showGrid, (newValue) => {
   localStorage.setItem("showGrid", JSON.stringify(newValue));
