@@ -1,18 +1,13 @@
 <template>
     <div class="main-title">{{ $t('etruscantitle') }}</div>
-    <div class="about-text">{{ $t('etruscanabout') }}</div>
+    <div class="about">{{ $t('etruscanabout') }}</div>
     <button class="item" @click="$emit('toggle-about')">
-      <div class="p-1 px-2 clickable category-button about-button" style="
-                width: 90px;
-                text-align: center;
-                cursor: pointer;
-              ">{{ $t('infobutton') }}</div>
+      <div class="p-1 px-2 clickable category-button about-button">
+        {{ $t('infobutton') }}</div>
     </button>
     <button @click="toggleLanguage">
         <div class="p-1 px-2 clickable category-button about-button" style="
-                text-align: center;
                 margin-left: 10px;
-                cursor: pointer;
               ">{{ $t('languagebutton') }}</div>
     </button>
 </template>

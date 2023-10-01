@@ -37,6 +37,8 @@ body {
 #app .about-button {
   margin-top: -5px;
   width: auto !important;
+  text-align: center;
+  cursor: pointer;
 }
 
 /* The colour of the gradients is added as an image to this class mapview.vue */

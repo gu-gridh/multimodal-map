@@ -72,7 +72,7 @@ body{
 
 .fullopacity{
   backdrop-filter:blur(5px);
-  opacity:1.0;
+  opacity:1;
   pointer-events:auto;
   transform:scale(1.0);
   translate: 0px 0px;
