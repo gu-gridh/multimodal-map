@@ -183,7 +183,7 @@ onMounted(() => {
   overflow: hidden;
   overflow-y: auto;
   margin-bottom: 10px;
-  border-radius: 10px !important;
+  border-radius: 15px !important;
   -ms-overflow-style: none;
   scrollbar-width: none;
   transition: all 0.0s ease-in-out;
