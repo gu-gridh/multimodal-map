@@ -117,7 +117,7 @@ function deselectPlace() {
           </div>
           
         </div>
-        <div class="placecard-metadata-content" style="margin-top:10px;">
+        <div class="placecard-metadata-content">
             <div class="preview" v-html="description">
             </div>
           </div>
@@ -125,7 +125,7 @@ function deselectPlace() {
       
       <div class="placecard-center-button">
         <router-link :to="`/place/${place?.id_}`">
-          <button class="theme-button" style="margin-top:20px;">{{ $t('moreinfo') }}</button>
+          <button class="theme-button" style="margin-top:0px;">{{ $t('moreinfo') }}</button>
         </router-link>
       </div>
     </div>

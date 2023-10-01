@@ -172,7 +172,9 @@
 }
 
 .placecard-metadata-content .preview{
-  height:100px;
+  height:auto;
+  margin-top:10px;
+  max-height:100px;
   padding-right:10px;
   overflow:hidden;
   font-size:90%;
