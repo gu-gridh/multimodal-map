@@ -92,129 +92,13 @@ body {
   width: inherit;
 }
 
-.left-pane {
-  position: absolute;
-  height: 100vh;
-  z-index: 100;
-  pointer-events: none;
-
-}
-
-.left-pane-layer {
-  height:100vh;
-  pointer-events: none;
-  width:490px;
-  padding: 60px 50px 50px 60px;
-  overflow:hidden!important;
-  overflow-y: scroll !important;
-  -ms-overflow-style: none!important;
-  overflow-style: none!important;
-  -webkit-user-select: none; /* Safari */
-  -ms-user-select: none; /* IE 10 and IE 11 */
-  user-select: none; /* Standard syntax */
-  scrollbar-width: none!important;
-}
-
-.left-pane-layer::-webkit-scrollbar {
-    width: 0px !important;
-    }
-
-.right-pane {
-  position: absolute;
-  height: 100vh;
-  width: 350px;
-  right: 0px;
-  pointer-events: none;
-  z-index: 100 !important;
-  overflow: hidden !important;
-}
-
-.right-to-left {
-  left: 0px;
-}
-
-
-.mapview-preview {
-  padding-top: 5px;
-  width: 100%;
-  pointer-events: auto !important;
-  overflow-y: scroll !important;
-  -webkit-user-select: none; /* Safari */
-  -ms-user-select: none; /* IE 10 and IE 11 */
-  user-select: none; /* Standard syntax */
-}
-
-/* .mapview-preview::-webkit-scrollbar {
-    width: 0px !important;
-    } */
-
-/* body::-webkit-scrollbar{
-    width: 0px  !important;
-  }
-
-  body {
-    -ms-overflow-style: none;
-  }
-
-  .mapview-preview {
-    -ms-overflow-style: none;
-  }
-
-  html {
-    scrollbar-width: none;
-  } */
-
-  /* .mapview-preview {
-    scrollbar-width: none;
-  } */
-
   
 
 /* Adaption for various screen sizes */
 
 /* If your screen is very large */
 
-@media screen and (min-width: 1900px) {
-  #app .about-main-title {
-    font-size:140px;
-  }
-
-  #app .article{
-column-gap:30px;
-width:1200px;
-font-size:1.6em;
-}
-
-#app .left-pane {
-  width:1300px;
-  }
-
-  #app .left-pane-layer {
-  width:600px;
-padding: 60px 0px 50px 60px;
-}
-
-
-
-  #app .right-pane {
-  width: 450px;
-}
-
-  .main-title {
-    font-size:125px;
-  transition: all 0.2s ease-in-out;
-}
-
-.sub-title {
-  font-size: 95px;
-
-  margin-top: 15px;
-  margin-bottom: 20px;
-}
-
-#app .mapview-preview {
-  width: 100%;
-}
+ @media screen and (min-width: 1900px) {
 
 #app .image-container {
   overflow: hidden;
@@ -252,10 +136,9 @@ padding: 60px 0px 50px 60px;
       background-position: 10px 10px;
 }
 
+/* This one is also in mapview.css */
 #app .masonry-grid {
-
   padding: 0px 10px 10px 600px;
-
 }
 
 #app .filter-container {
@@ -288,15 +171,11 @@ max-width:1900px;
 
 
 }
-}
+} 
 
 /* If your screen is smallish */
 
 @media screen and (max-width: 1200px) {
-#app .right-pane {
-width: 250px;
-}
-
 .image-card {
   width: auto;
   pointer-events: auto !important;
@@ -305,7 +184,6 @@ width: 250px;
   padding: 20px!important;
   margin-bottom: 20px;
   overflow:hidden!important;
-
 }
 
 #app .image-container {
@@ -327,7 +205,6 @@ width: 250px;
 }
 .image-card:hover .image-container {
   transform:scale(1.0)!important;
-
 }
 }
 

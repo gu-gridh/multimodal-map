@@ -52,7 +52,7 @@
     </div> -->
   </div>
 
-  <div class="tag-section" style="float:left; margin-left:60px;">
+  <div class="tag-section" style="float:left; margin-left:20px;">
     <div class="section-title">{{ $t('tombtype') }}</div>
     <div class="broad-controls">
         <CategoryButtonList 
@@ -255,13 +255,6 @@ function handleSelectionClick(selectedValue, targetRef) {
 </script>
 
 <style>
-.section-title {
-  font-weight: 400;
-  font-size: 20px;
-  margin-top: 20px;
-  margin-bottom: 0px;
-}
-
 #app .category-button {
   background-color: rgba(255, 255, 255, 0.6);
   color: rgb(71, 85, 105);
@@ -382,4 +375,6 @@ function handleSelectionClick(selectedValue, targetRef) {
   margin-left: 3px;
   font-weight:500;
 }
+
+
 </style>

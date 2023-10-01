@@ -69,7 +69,7 @@ function handleToggle(key: string) {
     padding: 3px 10px;
     padding-right: 30px;
     width: auto;
-    height: 32px;
+    height: auto;
     background-image: url("/dropdown-arrow.png");
     background-size: 15px;
     background-repeat: no-repeat;

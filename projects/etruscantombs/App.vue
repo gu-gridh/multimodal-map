@@ -32,71 +32,17 @@ body {
 
 .main-title {
   font-family: 'Teko', sans-serif;
-  font-size: 100px;
-  line-height: 0.7;
-  width:280px;
-  font-weight: 300;
-  letter-spacing: 0.05rem;
   color: rgb(180, 100, 100);
-  margin-left: -6px;
-  margin-top: -15px;
-  margin-bottom:20px;
-  transition: all 0.5s ease-in-out;
 }
 
 .about {
   display:none;
-  padding-right: 0px;
-  line-height: 1.2;
-  text-align: left;
-  font-size: 0.95em;
-  margin-bottom:15px;
 }
 
-#app .about-button {
-  margin-top:-5px;
-  width:auto !important;
-}
-
-
-@media screen and (min-width: 1900px) {
-  .main-title {
-    margin-left: 0px;
-  font-size: 125px!important;
-  width:350px!important;
-
-}
-}
-
-@media screen and (max-height: 750px) {
-  .main-title {
-    margin-left: -5px;
-    margin-top: -25px;
-  font-size: 80px;
-  width:220px;
-}
-
-#app .about {
-  display:none;
-}
-
-#app .about-button {
-
-}
-}
 
 #app .left-pane {
-  background-color: transparent !important;
-  width: 900px;
   background: url("@/assets/gradient-jubileum.png");
   background-size: contain;
-  z-index: 100;
-}
-
-#app .left-pane-layer {
-  padding: 60px 0px 130px 60px !important;
-  pointer-events: auto !important;
-  width: 410px !important;
 }
 
 .theme-button {
@@ -107,33 +53,6 @@ body {
 }
 
 @media screen and (max-width: 900px) {
-
-  #app .masonry-grid {
-    position: absolute;
-    top: 0px;
-    width: 100%;
-    height: 100%;
-    /* Make the grid height responsive */
-    z-index: 200;
-    background-color: rgb(234, 228, 219);
-    padding: 0px 0px 230px 00px;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    grid-template-rows: masonry;
-    grid-gap: 5px;
-    overflow-y: scroll;
-  }
-
-  #app .left-pane-layer {
-  padding: 20px 0px 20px 0px !important;
-  width: 100% !important;
-}
-
-.main-title {
-  font-size:100px!important;
-  width:260px!important;
-  margin-top:-10px!important;
-}
-
   .atlas-gradient {
     background: linear-gradient(180deg, rgba(232, 228, 217, 0) 0px, rgba(232, 228, 217, 1) 300px) !important;
 }

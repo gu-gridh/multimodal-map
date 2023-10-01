@@ -1,8 +1,8 @@
 <template>
     <div class="main-title">{{ $t('etruscantitle') }}</div>
-    <div class="about">{{ $t('etruscanabout') }}</div>
+    <div class="about-text">{{ $t('etruscanabout') }}</div>
     <button class="item" @click="$emit('toggle-about')">
-        <div class="p-1 px-2 clickable category-button about-button" style="
+      <div class="p-1 px-2 clickable category-button about-button" style="
                 width: 90px;
                 text-align: center;
                 cursor: pointer;

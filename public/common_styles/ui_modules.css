@@ -11,7 +11,6 @@
   z-index: 250;
   position: absolute;
   border-radius: 8px;
-  font-size: 18px;
   font-weight: 700;
   color: white;
   margin-left: 200px;
@@ -46,19 +45,19 @@
 /* UI item shown on hover over map marker */
 
 #app .ol-popup {
-  font-size: 1.1em !important;
+  font-size: 18px !important;
   -webkit-user-select: none;
   -moz-user-select: none;
   user-select: none;
   text-align: center!important;
   position: absolute;
   box-shadow: 2 2px 8px rgba(0, 0, 0, 0.5);
-  padding: 3px 10px;
+  padding: 3px 5px;
   border-radius: 8px !important;
   border: 0px solid #cccccc;
   bottom: 40px;
-  left: -80px;
-  width: 170px;
+  left: -100px;
+  width:6em!important;
 }
 
 #app .ol-popup:after, .ol-popup:before {
@@ -74,15 +73,15 @@
 #app .ol-popup:after {
   border-top-color: transparent!important;
   border-width: 1px!important;
-  left: 45px!important;
-  margin-left: 20px!important;
+  left: 0px!important;
+  margin-left: 0px!important;
 }
 
 #app .ol-popup:before {
   border-top-color: #cccccc;
   border-width: 11px;
-  left: 55px;
-  margin-left: 15px;
+  left: 0px;
+  margin-left: 10%;
 }
 
 

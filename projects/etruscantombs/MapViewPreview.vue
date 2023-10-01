@@ -23,6 +23,7 @@ const chambers = ref<number | null>(null);
 const type = ref<string | null>(null);
 const period = ref<string | null>(null);
 const subtitle = ref<string | null>(null);
+const description = ref<string | null>(null);
 
 
 
@@ -45,6 +46,7 @@ watchEffect(async () => {
       type.value = images.value[0].tomb.type.text || null;
       period.value = images.value[0].tomb.epoch.text || null;
       subtitle.value = images.value[0].tomb.subtitle || null;
+      description.value = images.value[0].tomb.description || null;
     }
   } else {
     images.value = [];
@@ -89,10 +91,10 @@ function deselectPlace() {
         <div class="placecard-text">
           <div class="placecard-title theme-color-text">{{ $t('tomb') }} {{ selectedFeature.get("name") }}</div>
           <div class="placecard-subtitle theme-color-text">{{ selectedFeature.get("subtitle") }}</div>
-          <button class="theme-button theme-color-background">{{ $t('threedmodel') }}</button>
+          <!-- <button class="theme-button theme-color-background">{{ $t('threedmodel') }}</button> -->
         </div>
         <div class="placecard-content">
-          <div class="placecard-metadata-content" style="height:49px; overflow:hidden;">
+          <div class="placecard-metadata-content">
 
 
             <div class="metadata-item">
@@ -111,11 +113,16 @@ function deselectPlace() {
               <div class="label">{{ $t('period') }}:</div>
               <div class="tag theme-color-text">{{ period }}</div>
             </div>
-
-
+            
           </div>
+          
         </div>
+        <div class="placecard-metadata-content" style="margin-top:10px;">
+            <div class="preview" v-html="description">
+            </div>
+          </div>
       </div>
+      
       <div class="placecard-center-button">
         <router-link :to="`/place/${place?.id_}`">
           <button class="theme-button" style="margin-top:20px;">{{ $t('moreinfo') }}</button>

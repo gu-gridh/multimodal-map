@@ -87,8 +87,11 @@ onMounted(() => {
   <div class="place-meta-container">
 
     <div class="placecard-full">
+  
 
       <div class="placecard-full-content">
+
+        <div class="placecard-text-overlay"></div>
 
         <!-- mini map -->
         <div class="mini-map">
@@ -119,7 +122,7 @@ onMounted(() => {
               <div class="tag theme-color-text">{{ necropolisName }}</div>
             </div>
             <div class="metadata-item">
-              <div class="label">Type:</div>
+              <div class="short-label">Type:</div>
               <div class="tag theme-color-text">{{ type }} </div>
             </div>
             <div class="metadata-item">
@@ -127,7 +130,7 @@ onMounted(() => {
               <div class="tag theme-color-text">{{ chambers }}</div>
             </div>
             <div class="metadata-item">
-              <div class="label">Period:</div>
+              <div class="short-label">Period:</div>
               <div class="tag theme-color-text">{{ period }}</div>
             </div>
           </div>
@@ -196,11 +199,6 @@ onMounted(() => {
   padding: 0px 0px 10px 0px;
 }
 
-.placecard-full-content h1 {
-  font-size: 2.5em;
-  color: rgb(180, 100, 100);
-  margin-bottom: 5px;
-}
 
 .placecard-full .category-button {
   width: 110px !important;
@@ -223,15 +221,11 @@ onMounted(() => {
   margin-bottom: 0px;
 }
 
-
-/* For big screens */
-@media screen and (min-width: 1900px) {
-  .placecard-full .category-button {
-    width: 125px !important;
-    padding: 5px 18px !important;
-    margin-top: 15px;
-  }
+.placecard-metadata-description{
+  font-size:1.0em;
 }
+
+
 
 
 /* For small screens */
@@ -242,7 +236,6 @@ onMounted(() => {
     margin-top: 0px !important;
     top: 20px !important;
     height: auto;
-    font-size: 100%;
     width: 100%;
     z-index: 100;
     padding-right: 20px !important;
