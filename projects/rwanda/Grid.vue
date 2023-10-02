@@ -3,6 +3,7 @@
 import Split from 'split.js'
 import MapView from './MapView.vue'
 import MapViewPreview from './MapViewPreview.vue'
+import RightPanel from './RightPanel.vue'
 import { onMounted } from 'vue'
 
 onMounted(() => {
@@ -18,7 +19,7 @@ onMounted(() => {
             <MapView/>
         </div>
         <div id="split-1">
-            <MapViewPreview/>
+            <RightPanel/>
         </div>
     </div>
 </template>

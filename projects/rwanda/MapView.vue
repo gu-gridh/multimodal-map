@@ -16,19 +16,6 @@ import About from "./About.vue";
 import AutocompleteComponent from "@/components/input/AutocompleteComponent.vue";
 import { useRwandaMap } from "./map.composable";
 import { rwandaStore } from "./rwandaStore";
-import { useRoute } from 'vue-router'
-import type { DianaClient } from "@/assets/diana";
-//for routing
-const props = defineProps({
-  type: {
-    type: String,
-    required: true,
-  },
-  id: {
-    type: [String, Number],
-    required: true,
-  },
-});
 
 function getName(f: Feature): string {
   const place = f.getProperties() as Place;
@@ -59,21 +46,6 @@ const drawGeometry = () => {
     console.log(coordinate.value)    
   }
 }
-
-//if routing directly to a place, zoom to it
-// const route = useRoute()
-// const diana = inject("diana") as DianaClient;
-// onMounted(() => {
-//   const id = route.params.id;
-//   console.log(id)
-//   if (id){
-//     console.log("Routing to place: ", id)
-//     //fetch Feature with id and set selectedFeature
-//     const feature = diana.get("geojson/place/", id);
-//     selectedFeature.value = feature as Feature;
-//     console.log(feature)
-//   }
-// })
 
 //zoom to place on click
 const featureZoom = 17; // zoom level when clicking on a feature
@@ -206,6 +178,18 @@ watch(
 </template>
 
 <style>
+#app .ol-zoom {
+  display: flex;
+}
+#app .ol-zoom-in {
+  position: fixed;
+  left: 50%;
+}
+#app .ol-zoom-out {
+  position: fixed;
+  right: 45%;
+  top: 20px;
+}
 #app #map-component{
   width: 100% !important;
 }

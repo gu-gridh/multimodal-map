@@ -40,6 +40,7 @@ watchEffect(async () => {
   if (selectedFeature.value) {
     const place_of_interest = selectedFeature.value.getId();
     place.value = JSON.parse(JSON.stringify(selectedFeature.value));
+    console.log(place.value.values_)
     images.value = await diana.listAll<Image>("image/", { place_of_interest });
     interview.value = [];
     const data = await diana.listAll("text/");
@@ -76,15 +77,14 @@ const store = mapStore();
 </script>
 
 <template>
-  <div v-if="selectedFeature" class="mapview-preview">
+  <div class="mapview-preview">
     <div class="py-6">
-      <div class="close-button" @click="deselectPlace">+</div>
-      
+      <div class="close-button" @click="deselectPlace">+</div> 
       <!-- place card -->
       <router-link :to="`/place/${place.id_}`">
         <div class="place-card">
           <div style="width:100%;">
-          <p>{{ capitalize(place.values_.type.text) }}</p>
+          <p>{{ capitalize(place.values_.type.text) }} <span v-if="(place.values_.description != '')">- {{ place.values_.description }}</span></p>
           <div v-for="name in place.values_.names">
             <div style="width:100%; display:flex;">
             <span class="lang" v-if="name.languages && name.languages.length > 0">{{ name.languages[0].abbreviation }}</span> 
@@ -95,7 +95,6 @@ const store = mapStore();
           </div>
         </div>
       </div>
-          <p class="link">More</p>
         </div>
       </router-link>
       <!-- Interview if avaliable -->
@@ -138,9 +137,7 @@ const store = mapStore();
     </div>
   </div>
 </div>
-  <div v-else class="mapview-preview">
-    No selectedFeature - what to have here?
-  </div>
+
 </template>
 
 <style>
