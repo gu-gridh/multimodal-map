@@ -33,8 +33,16 @@ const PERIODS = {
   "post-genocide": "Post-genocide",
   "after 2012": "After 2012"
 }
-
-const { sources, placeTypes, periods, informants, sourcesLayer, placeTypeLayer, periodsLayer, allLayer, informantsLayer } = storeToRefs(rwandaStore());
+const LANGUAGES = {
+  "kinyarwanda-english": "KE",
+  "arabic-english": "AE",
+  "french-kinyarwanda": "FK",
+  "Kiswahili": "SW",
+  "kinyarwanda": "RW",
+  "french": "FR",
+  "english": "EN",
+}
+const { sources, placeTypes, periods, informants, sourcesLayer, placeTypeLayer, periodsLayer, allLayer, informantsLayer, languages } = storeToRefs(rwandaStore());
 
 //handle category button click
 const handleSourcesClick = (key: string) => {
@@ -115,6 +123,13 @@ const handleInformantClick = (key: string) => {
         :limit="1"
         class="filter-button"
         @click="handlePeriodClick"
+      />
+      <div class="filter-heading">Languages</div>
+      <CategoryButtonList 
+        v-model="languages"
+        :categories="LANGUAGES"
+        :limit="1"
+        class="filter-button lang-buttons"
       />
   </div>
 </template>
@@ -207,6 +222,9 @@ const handleInformantClick = (key: string) => {
   color: white;
   border-radius: 4px;
   transition: all 0.2s ease-in-out;
+  width: auto !important;
+  padding-left: 20px !important;
+  padding-right: 20px !important;
 }
 
 #app .category-button:hover {
@@ -215,8 +233,12 @@ const handleInformantClick = (key: string) => {
 }
 
 #app .category-button.active {
-  background-color: rgb(180, 100, 100);
+  background-color: rgb(220, 140, 140);
   color: white;
+}
+
+.lang-buttons {
+  margin-bottom: 20px;
 }
 
 #app .rounded {

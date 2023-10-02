@@ -52,8 +52,6 @@ function displayName(p: Place): string {
   return formatNames(p.id, p.names);
 }
 
-const fillColor = "red"
-const strokeColor = "red"
 //when selectedFeature changes, draw geometry on map - TODO
 const drawGeometry = () => {
   if (selectedFeature.value) {
@@ -135,6 +133,9 @@ watch(
             v-if="sourcesLayer"
             path="rwanda/search/text"
           >
+          <ol-style>
+              <ol-style-stroke color="rgb(180,100,100)" :width="3"></ol-style-stroke>
+            </ol-style>
             <FeatureSelection/>
           </DianaPlaceLayer>
           <!-- Place types layer -->
@@ -146,11 +147,7 @@ watch(
             }"
             >
             <ol-style>
-              <ol-style-circle :radius="8">
-                <ol-style-fill :color=fillColor></ol-style-fill>
-                <ol-style-stroke :color=strokeColor></ol-style-stroke>
-              </ol-style-circle>
-              <ol-style-stroke :color=fillColor :width="3"></ol-style-stroke>
+              <ol-style-stroke color="#64b464" :width="3"></ol-style-stroke>
             </ol-style>
               <FeatureSelection/>
             </DianaPlaceLayer>  
@@ -162,6 +159,9 @@ watch(
               text: informants[0],
             }"
             >
+            <ol-style>
+              <ol-style-stroke color="#6464b4" :width="3"></ol-style-stroke>
+            </ol-style>
               <FeatureSelection/>
             </DianaPlaceLayer>  
           <!-- Periods layer -->
@@ -172,8 +172,12 @@ watch(
               period_name: periods[0],
             }"
             >
+            <ol-style>
+              <ol-style-stroke color="#64b4b4" :width="3"></ol-style-stroke>
+            </ol-style>
               <FeatureSelection/>
             </DianaPlaceLayer>  
+            <!-- TODO Lamguage layer -->
             <!-- Initial layer -->
           <DianaPlaceLayer
             v-if="allLayer"
@@ -185,14 +189,9 @@ watch(
                 params.bbox && !params.searchIds ? params.bbox.toString() : '',
               page_size: 500,
             }"
-            class="markers"
           >
             <ol-style>
-              <ol-style-circle :radius="10">
-                <ol-style-fill color="red"></ol-style-fill>
-                <ol-style-stroke color="red"></ol-style-stroke>
-              </ol-style-circle>
-              <ol-style-stroke color="red" :width="5"></ol-style-stroke>
+              <ol-style-stroke color="rgb(180,100,100)" :width="3"></ol-style-stroke>
             </ol-style>
             <FeatureSelection />
           </DianaPlaceLayer>

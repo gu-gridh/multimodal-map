@@ -6,11 +6,7 @@ export const rwandaStore = defineStore("rwanda", () => {
     const placeTypes = ref<Array<string>>([]);
     const informants = ref<Array<string>>([]);
     const periods = ref<Array<string>>([]);
-
-    // const allSources = ref(true)
-    // const allPlaceTypes = ref(true)
-    // const allInformants = ref(true)
-    // const allPeriods = ref(true)
+    const languages = ref<Array<string>>([]);
 
     const sourcesLayer = ref(false)
     const periodsLayer = ref(false)
@@ -20,5 +16,5 @@ export const rwandaStore = defineStore("rwanda", () => {
 
     const coordinate = ref()
 
-    return {sources, placeTypes, informants, periods, /* allSources, allPlaceTypes, allInformants, allPeriods,  */periodsLayer, placeTypeLayer, sourcesLayer, allLayer, informantsLayer, coordinate}
+    return {languages, sources, placeTypes, informants, periods, /* allSources, allPlaceTypes, allInformants, allPeriods,  */periodsLayer, placeTypeLayer, sourcesLayer, allLayer, informantsLayer, coordinate}
 })
