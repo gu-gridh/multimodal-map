@@ -14,8 +14,8 @@ const router = createRouter({
     {
       path: "/:type/:id",
       name: "detail",
-      component: ObjectView,
-      props: true,
+      component: Grid,
+      props: router => ({id: router.params.id, type: router.params.type})
     },
     
   ],

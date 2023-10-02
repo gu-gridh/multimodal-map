@@ -77,9 +77,9 @@ const store = mapStore();
 
 <template>
   <div v-if="selectedFeature" class="mapview-preview">
-    <div class="px-2 py-6">
+    <div class="py-6">
       <div class="close-button" @click="deselectPlace">+</div>
-      <div class="">
+      
       <!-- place card -->
       <router-link :to="`/place/${place.id_}`">
         <div class="place-card">
@@ -111,6 +111,7 @@ const store = mapStore();
           <p>/{{ informant.custom_id }}</p>
         </span>
       </div>
+      <br/>
       <div class="masonry">
       <VueMasonryWall
         :key="layoutKey"
@@ -137,7 +138,6 @@ const store = mapStore();
     </div>
   </div>
 </div>
-  </div>
   <div v-else class="mapview-preview">
     No selectedFeature - what to have here?
   </div>
@@ -149,7 +149,6 @@ const store = mapStore();
 }
 
 .masonry {
-  
 }
 
 #app h3 {

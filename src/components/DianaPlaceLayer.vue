@@ -29,7 +29,7 @@ const url = computed(() => {
 
 <template>
   <ol-vector-layer :z-index="1">
-    <ol-source-vector :url="url" :format="geoJsonFormat" ref="source" />
+    <ol-source-vector :url="url" :format="geoJsonFormat" ref="source"/>
     <slot />
   </ol-vector-layer>
 </template>

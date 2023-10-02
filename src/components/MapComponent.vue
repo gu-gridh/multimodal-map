@@ -28,7 +28,7 @@
     <ol-zoom-control v-if="zoomcontrol" />
     <!-- <ol-zoomslider-control v-if="zoomslidercontrol" /> -->
 
-    <ol-tile-layer>
+    <ol-tile-layer className="tile-layer">
       <ol-source-osm />
     </ol-tile-layer>
 
@@ -99,10 +99,11 @@ const transformedRestrictExtent = computed(() => {
   return undefined;
 });
 
+
+
 onMounted(() => {
   let storeCenter = store.center;
   let storeZoom = store.zoom;
-  
   
   if (storeCenter[0] !== 0 && storeZoom !== 1) {
     map.value.map.getView().setCenter(storeCenter);
@@ -191,6 +192,7 @@ function onMoveEnd() {
 </script>
 
 <style>
+
 .ol-control button {
   font-family: "Barlow Condensed", sans-serif;
   border-radius: 50% !important;

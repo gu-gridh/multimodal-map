@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { inject, provide, ref, nextTick, watch } from "vue";
+import { inject, provide, ref, nextTick, watch , onMounted} from "vue";
 import configRaw from "./config";
 import MainLayout from "@/MainLayout.vue";
 import MapViewControls from "./MapViewControls.vue";
@@ -16,6 +16,19 @@ import About from "./About.vue";
 import AutocompleteComponent from "@/components/input/AutocompleteComponent.vue";
 import { useRwandaMap } from "./map.composable";
 import { rwandaStore } from "./rwandaStore";
+import { useRoute } from 'vue-router'
+import type { DianaClient } from "@/assets/diana";
+//for routing
+const props = defineProps({
+  type: {
+    type: String,
+    required: true,
+  },
+  id: {
+    type: [String, Number],
+    required: true,
+  },
+});
 
 function getName(f: Feature): string {
   const place = f.getProperties() as Place;
@@ -39,15 +52,30 @@ function displayName(p: Place): string {
   return formatNames(p.id, p.names);
 }
 
-//when selectedFeature changes, draw geometry on map
+const fillColor = "red"
+const strokeColor = "red"
+//when selectedFeature changes, draw geometry on map - TODO
 const drawGeometry = () => {
   if (selectedFeature.value) {
     coordinate.value = selectedFeature.value.getGeometry();
-    console.log(coordinate.value)
-      
-    
+    console.log(coordinate.value)    
   }
 }
+
+//if routing directly to a place, zoom to it
+// const route = useRoute()
+// const diana = inject("diana") as DianaClient;
+// onMounted(() => {
+//   const id = route.params.id;
+//   console.log(id)
+//   if (id){
+//     console.log("Routing to place: ", id)
+//     //fetch Feature with id and set selectedFeature
+//     const feature = diana.get("geojson/place/", id);
+//     selectedFeature.value = feature as Feature;
+//     console.log(feature)
+//   }
+// })
 
 //zoom to place on click
 const featureZoom = 17; // zoom level when clicking on a feature
@@ -97,9 +125,10 @@ watch(
       <!--filter map-->
       <MapViewControls />
     </template>
+
     <template #background>
     <div class="map-container">
-      <MapComponent :min-zoom="14" :max-zoom="19" :restrictExtent="[30.1, -1.92, 30.01, -1.980]" :shouldAutoMove="true">
+      <MapComponent :min-zoom="14" :max-zoom="19" :restrictExtent="[30.1, -1.92, 30.01, -1.980]" :shouldAutoMove="true" class="greyscale">
         <template #layers>
           <!-- Sources layer just filtering interviews atm -->
           <DianaPlaceLayer 
@@ -116,6 +145,13 @@ watch(
               text: placeTypes[0],
             }"
             >
+            <ol-style>
+              <ol-style-circle :radius="8">
+                <ol-style-fill :color=fillColor></ol-style-fill>
+                <ol-style-stroke :color=strokeColor></ol-style-stroke>
+              </ol-style-circle>
+              <ol-style-stroke :color=fillColor :width="3"></ol-style-stroke>
+            </ol-style>
               <FeatureSelection/>
             </DianaPlaceLayer>  
             <!-- Informants layer -->
@@ -149,13 +185,14 @@ watch(
                 params.bbox && !params.searchIds ? params.bbox.toString() : '',
               page_size: 500,
             }"
+            class="markers"
           >
             <ol-style>
               <ol-style-circle :radius="10">
-                <ol-style-fill color="rgb(255,255,255,0.7)"></ol-style-fill>
-                <ol-style-stroke color="gray"></ol-style-stroke>
+                <ol-style-fill color="red"></ol-style-fill>
+                <ol-style-stroke color="red"></ol-style-stroke>
               </ol-style-circle>
-              <ol-style-stroke color="rgba(100,100,100,0.8)" :width="5"></ol-style-stroke>
+              <ol-style-stroke color="red" :width="5"></ol-style-stroke>
             </ol-style>
             <FeatureSelection />
           </DianaPlaceLayer>
@@ -173,9 +210,9 @@ watch(
 #app #map-component{
   width: 100% !important;
 }
-/* #app .ol-layers {
-  filter: grayscale(100%) !important;
-} */
+#app .tile-layer {
+  filter: grayscale(100%);
+}
 #app #transparent {
   background-color: transparent !important;
   display: none !important;
