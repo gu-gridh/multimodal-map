@@ -52,12 +52,12 @@
   text-align: center!important;
   position: absolute;
   box-shadow: 2 2px 8px rgba(0, 0, 0, 0.5);
-  padding: 3px 5px;
+  padding: 3px 10px;
   border-radius: 8px !important;
   border: 0px solid #cccccc;
   bottom: 40px;
-  left: -100px;
-  width:6em!important;
+  left: -80px;
+  width: 170px;
 }
 
 #app .ol-popup:after, .ol-popup:before {
@@ -73,15 +73,15 @@
 #app .ol-popup:after {
   border-top-color: transparent!important;
   border-width: 1px!important;
-  left: 0px!important;
-  margin-left: 0px!important;
+  left: 45px!important;
+  margin-left: 20px!important;
 }
 
 #app .ol-popup:before {
   border-top-color: #cccccc;
   border-width: 11px;
-  left: 0px;
-  margin-left: 10%;
+  left: 55px;
+  margin-left: 15px;
 }
 
 
