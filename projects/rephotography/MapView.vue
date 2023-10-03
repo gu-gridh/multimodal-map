@@ -133,10 +133,7 @@ watch(showGrid, (newValue) => {
             <div
               class="p-1 px-2 clickable category-button"
               style="
-                width: 90px;
-                text-align: center;
                 margin-top: -10px;
-                cursor: pointer;
               "
             >More info</div>
           </button>
