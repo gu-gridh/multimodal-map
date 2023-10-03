@@ -30,7 +30,8 @@ body {
   line-height: 0.9;
   font-weight: 100;
   margin-bottom: 15px;
-  font-size: 5.5vw !important;
+  font-size: 4.9vw !important;
+  width:auto!important;
 }
 
 
@@ -58,7 +59,8 @@ body {
 }
 
 .left-pane-content {
-  overflow: visible !important;
+  overflow-y: scroll  !important; /* Add vertical scrollbar */
+
 }
 
 
