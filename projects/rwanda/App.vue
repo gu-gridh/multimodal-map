@@ -3,6 +3,7 @@ import { provide } from "vue";
 import config from "./config";
 import Footer from './Footer.vue';
 import { DianaClient } from "@/assets/diana";
+import Grid from "./Grid.vue";
 
 const endpoint = new DianaClient("rwanda");
 
@@ -12,7 +13,7 @@ provide("diana", endpoint);
 
 <template>
      <Footer />
-  <router-view />
+     <RouterView/>
 </template>
 <style>
 

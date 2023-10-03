@@ -19,7 +19,10 @@ onMounted(() => {
             <MapView/>
         </div>
         <div id="split-1">
+         <router-view>
             <RightPanel/>
+        </router-view>
+            
         </div>
     </div>
 </template>

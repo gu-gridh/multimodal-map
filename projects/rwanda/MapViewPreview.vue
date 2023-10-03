@@ -5,6 +5,7 @@ import { mapStore } from "@/stores/store";
 import type { Image } from "./types";
 import type { DianaClient } from "@/assets/diana";
 import VueMasonryWall from "@yeger/vue-masonry-wall";
+import { useRouter } from "vue-router";
 
 const { selectedFeature } = storeToRefs(mapStore());
 
@@ -14,6 +15,12 @@ const images = ref<Array<Image>>([]);
 const place = ref() 
 const interview: any = ref([]);
 const informants:any = ref([]);
+
+const props = defineProps({
+  placeId: {
+    type: String,
+  },
+});
 
 defineComponent({
   components: {
@@ -36,11 +43,12 @@ const fetchInformants = () => {
   } 
 }
 
+const router = useRouter();
+//if place is selected on map, fetch place data
 watchEffect(async () => {
   if (selectedFeature.value) {
     const place_of_interest = selectedFeature.value.getId();
     place.value = JSON.parse(JSON.stringify(selectedFeature.value));
-    console.log(place.value.values_)
     images.value = await diana.listAll<Image>("image/", { place_of_interest });
     interview.value = [];
     const data = await diana.listAll("text/");
@@ -57,6 +65,8 @@ watchEffect(async () => {
   } else {
     images.value = [];
   }
+  console.log(place.value)
+  router.push(`/place/${place.value.id_}`)
 });
 
 function deselectPlace() {
@@ -64,6 +74,7 @@ function deselectPlace() {
   //change zoom to original state
   store.updateCenter([3346522.1909503858, -217337.69352852934])
   store.updateZoom(15)
+  router.push(`/`)
 }
 
 //Capitalize first letter
@@ -74,6 +85,7 @@ const capitalize = (word: String) => {
 }
 
 const store = mapStore();
+
 </script>
 
 <template>
@@ -81,7 +93,6 @@ const store = mapStore();
     <div class="py-6">
       <div class="close-button" @click="deselectPlace">+</div> 
       <!-- place card -->
-      <router-link :to="`/place/${place.id_}`">
         <div class="place-card">
           <div style="width:100%;">
           <p>{{ capitalize(place.values_.type.text) }} <span v-if="(place.values_.description != '')">- {{ place.values_.description }}</span></p>
@@ -94,9 +105,9 @@ const store = mapStore();
             <!-- <p v-if="name.languages[0].note">Notes: {{ name.languages[0].note }}</p> -->
           </div>
         </div>
-      </div>
+      
         </div>
-      </router-link>
+      </div>
       <!-- Interview if avaliable -->
       <div v-if="interview && interview.length != 0">
       <span v-for="text in interview">
@@ -112,6 +123,7 @@ const store = mapStore();
       </div>
       <br/>
       <div class="masonry">
+      <!-- Image gallery -->
       <VueMasonryWall
         :key="layoutKey"
         class="masonry-wall"
@@ -206,7 +218,6 @@ const store = mapStore();
 }
 
 .place-card:hover {
-  cursor:pointer;
   transform:scale(1.05);
 }
 

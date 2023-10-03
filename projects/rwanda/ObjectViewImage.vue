@@ -2,26 +2,42 @@
 import ObjectViewComponent from "@/components/ObjectViewComponent.vue";
 import OpenSeadragon from "@/components/OpenSeadragon.vue";
 import type { Image } from "./types";
-import router from './router'
+import { onMounted, ref, inject } from "vue";
+import type { DianaClient } from "@/assets/diana";
 
 const props = defineProps<{
-  object: Image;
   id: Number;
 }>();
+
+const diana = inject("diana") as DianaClient;
+
+const object = ref<Image>();
+const iiif_url = ref<string>();
+
+onMounted(async() => {
+  if (props.id) {
+    object.value = await diana.get("image", props.id.toString(), { depth: 1 });
+    iiif_url.value = object.value.iiif_file + "/info.json"
+    console.log(object.value)
+    console.log(iiif_url.value)
+  }
+  else console.log("no image id")
+})
+
 </script>
 
 <template>
   <div class="metadata">
     <ObjectViewComponent :title="object?.title" back="/">
-      <p v-if="object.description" class="my-5 object-title">{{ object?.description }}</p>
-      <div v-if="object.informants && object.informants.length > 0">
+      <p v-if="object?.description" class="my-5 object-title">{{ object?.description }}</p>
+<!--       <div v-if="object?.informants && object.informants.length > 0">
         <p v-for="info in object?.informants">Informants: {{ info.custom_id }}</p>
-      </div>
+      </div> -->
     </ObjectViewComponent>
   </div>
 
   <section class="illustration flex">
-    <OpenSeadragon :src="`${object.iiif_file}/info.json`" class="flex-1" />
+    <OpenSeadragon v-if="iiif_url" :src="iiif_url" class="flex-1" />
 
     <div id="ToolbarVertical">
       <a id="full-page" href="#full-page">

@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import ObjectView from "./ObjectView.vue";
 import Grid from "./Grid.vue";
 import ObjectViewImage from "./ObjectViewImage.vue";
+import RightPanel from "./RightPanel.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -12,17 +13,17 @@ const router = createRouter({
       component: Grid,
     },
     {
-      path: "/:type/:id",
-      name: "detail",
-      component: ObjectView,
-      props: router => ({id: router.params.id, type: router.params.type})
-    },
-/*     {
+      path: "/place/:placeId",
+      name: "place",
+      component: Grid,
+      props: true
+    }, 
+    {
       path: "/image/:id",
       name: "image",
-      component: ObjectView,
-      props: router => ({id: router.params.id})
-    } */
+      component: ObjectViewImage,
+      props: true
+    }
     
   ],
 });
