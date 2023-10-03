@@ -30,15 +30,24 @@ const placeType = ref('')
 const placeDescription = ref('')
 const placeNames = ref([])
 
+//Capitalize first letter since some are lowercase in database
+const capitalize = (word: String) => {
+  const first = word[0].toUpperCase()
+  const rest = word.slice(1)
+  return first + rest
+}
+
 //fetch place data
 const fetchPlaceData =async () => {
+    //if place is selected on map
     if(selectedFeature.value != undefined || null) {
         place.value = selectedFeature.value
         console.log('place', place.value)
-        placeType.value = place.value.values_.type.text
-        placeDescription.value = place.value.values_.description
+        placeType.value = capitalize(place.value.values_.type.text)
+        placeDescription.value = capitalize(place.value.values_.description)
         placeNames.value = place.value.values_.names
     }
+    //if routing from url
     else {
         console.log('fetching place data')
         await fetch(`https://diana.dh.gu.se/api/rwanda/geojson/place/${route.params.placeId}`)
@@ -46,6 +55,9 @@ const fetchPlaceData =async () => {
         .then(data => {
             place.value = data.properties
             console.log('props place', place.value)
+            placeType.value = capitalize(place.value.type.text)
+            placeDescription.value = capitalize(place.value.description)
+            placeNames.value = place.value.names
         }) 
     } 
 }
@@ -66,12 +78,7 @@ function deselectPlace() {
   router.push(`/`)
 }
 
-//Capitalize first letter since some are lowercase in database
-const capitalize = (word: String) => {
-  const first = word[0].toUpperCase()
-  const rest = word.slice(1)
-  return first + rest
-}
+
 </script>
 
 <template>
