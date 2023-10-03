@@ -66,7 +66,7 @@ defineComponent({
   top: 0px;
   width: 100%; 
   height: 100%; 
-  z-index: 101;
+  z-index: 99;
   background-color: rgb(234, 228, 219);
   padding: 0px 0px 0px 0px; 
   overflow-y: scroll;

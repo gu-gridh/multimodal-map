@@ -141,6 +141,11 @@ function deselectPlace() {
   padding-bottom: 80px;
 }
 
+#app .mapview-preview {
+  pointer-events: auto !important;
+  padding-left: 0px;
+}
+
 #app h3 {
   font-size: 35px;
   font-weight: 100;

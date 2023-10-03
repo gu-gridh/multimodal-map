@@ -176,7 +176,6 @@ const toggleMapLayer = () => {
 <style>
 .section-title {
   font-weight: 400;
-  font-size: 20px;
   margin-top: 20px;
   margin-bottom: 0px;
 }

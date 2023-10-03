@@ -63,7 +63,6 @@ body {
   padding: 60px 0px 30px 60px !important;
   position: relative;
   height: calc(100vh - 75px) !important;
-  overflow: scroll;
   margin-top: -5px;
   margin-left: -5px;
   padding: 5px;

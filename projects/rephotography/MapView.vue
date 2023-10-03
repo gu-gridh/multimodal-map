@@ -254,78 +254,27 @@ watch(showGrid, (newValue) => {
 </template>
 
 <style>
-.ui-overlay {
-  margin-top: 20px;
-  z-index: 250;
-  position: absolute;
-  border-radius: 8px;
-  font-size: 18px;
-  font-weight: 700;
-  color: white;
-  margin-left: 200px;
-  background-color: rgb(0, 0, 0, 0.8);
-  backdrop-filter: blur(3px);
-  transition: all 0.5s ease-in-out;
+
+.main-title{
+  font-size: 4.5vw;
+  margin-bottom:30px;
 }
 
-.ui-mode {
-  top: 0px;
-  padding: 4px 10px 4px 10px;
+#app .left-pane {
+  width: 50%;
+  min-width: 900px;
 }
 
-.ui-mode .item {
-  cursor: pointer;
-  display: inline;
-  font-weight: 400;
-  color: rgba(255, 255, 255, 0.5);
-  padding: 0px 15px 0px 15px;
-
+#app .mapview-preview {
+overflow-y:scroll!important;
 }
 
-.ui-mode .item:hover {
-  color: white;
+
+.map-container {
+  height: calc(100vh - 80px) !important;
+  position: relative;
+  width: 100%;
 }
 
-.ui-mode .selected {
-  font-weight: 500;
-  color: rgba(255, 255, 255, 1.0);
-}
 
-#app .ol-popup {
-  font-size: 1.1em !important;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  user-select: none;
-  text-align: center!important;
-  position: absolute;
-  box-shadow: 2 2px 8px rgba(0, 0, 0, 0.5);
-  padding: 3px 10px;
-  border-radius: 8px !important;
-  border: 0px solid #cccccc;
-  bottom: 40px;
-  left: -80px;
-  width: 170px;
-}
-
-.ol-popup:after, .ol-popup:before {
-        top: 100%;
-        border: solid transparent;
-        content: " ";
-        height: 0;
-        width: 0;
-        position: absolute;
-        pointer-events: none;
-      }
-      .ol-popup:after {
-        border-top-color: white!important;
-        border-width: 0px!important;
-        left: 45px!important;
-        margin-left: 20px;
-      }
-      .ol-popup:before {
-        border-top-color: #cccccc;
-        border-width: 11px;
-        left: 55px;
-        margin-left: 15px;
-      }
 </style>
