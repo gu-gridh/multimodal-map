@@ -28,7 +28,7 @@ const route = useRoute();
 //values
 const placeType = ref('')
 const placeDescription = ref('')
-const placeNames = ref([])
+const placeNames: any = ref([])
 
 //Capitalize first letter since some are lowercase in database
 const capitalize = (word: String) => {
