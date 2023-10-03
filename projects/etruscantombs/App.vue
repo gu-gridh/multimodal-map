@@ -45,6 +45,11 @@ body {
   background-size: contain;
 }
 
+#app .right-pane {
+  background: url("@/assets/gradient-jubileum.png");
+  background-size: contain;
+}
+
 .theme-button {
   background-color: rgb(180, 100, 100);
   border-radius: 5px;
@@ -55,6 +60,10 @@ body {
 @media screen and (max-width: 900px) {
   .atlas-gradient {
     background: linear-gradient(180deg, rgba(232, 228, 217, 0) 0px, rgba(232, 228, 217, 1) 300px) !important;
+}
+
+#app .right-pane {
+z-index: 0 !important;
 }
 }
 

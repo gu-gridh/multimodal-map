@@ -148,6 +148,7 @@ function deselectPlace() {
 
 #app h3 {
   font-size: 35px;
+  line-height:1;
   font-weight: 100;
   margin-left: -2px;
   margin-bottom: 10px;
@@ -181,9 +182,11 @@ function deselectPlace() {
 #app .image-container {
   border-radius: 8px;
   overflow: hidden;
-  margin-bottom: 10px;
+  margin-bottom: 10px!important;
   width:100%;
-  height:auto;
+  height:auto!important;
+  border-radius:8px!important;
+  content:contain;
   padding:0px;
 }
 

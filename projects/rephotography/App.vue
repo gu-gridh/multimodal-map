@@ -19,6 +19,7 @@ provide("diana", endpoint);
 html,
 body {
   font-family: "Barlow Condensed", sans-serif !important;
+  background-color: rgb(200, 200, 200) !important;
 }
 
 .theme-color {
@@ -28,21 +29,22 @@ body {
 .main-title {
   line-height: 0.9;
   font-weight: 100;
-  margin-bottom:15px;
+  margin-bottom: 15px;
+  font-size: 5.5vw !important;
 }
 
 
 @media screen and (max-width: 1500px) {
 
 
-.main-title {
-  font-size: 80px !important;
-  width: 75%;
-}
+  .main-title {
+    font-size: 80px !important;
+    width: 75%;
+  }
 }
 
 .about {
-  display:none;
+  display: none;
 }
 
 
@@ -52,11 +54,11 @@ body {
 }
 
 .left-pane-layer {
-  padding: 0px 450px 0px 0px !important;
+  padding: 0px 420px 0px 0px !important;
 }
 
 .left-pane-content {
-  overflow:visible!important;
+  overflow: visible !important;
 }
 
 
@@ -68,11 +70,13 @@ body {
 }
 
 
+
+
 #app .mapview-preview {
   height: 100vh !important;
   background-color: rgba(0, 0, 0, 0.85);
   width: 75%;
-  margin-left:25%;
+  margin-left: 25%;
   color: white;
   backdrop-filter: blur(7px);
 }
@@ -100,7 +104,57 @@ body {
 }
 
 
+@media screen and (max-width: 900px) {
+  #app .left-pane {
+    width: 100% !important;
+    min-width: 300px !important;
+  }
 
+  #app .right-pane {
+    width: 100% !important;
 
+    left: 0px !important;
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+    padding: 0px !important;
+    z-index: 400 !important;
+    height: calc(100% + 50px) !important;
+    padding-bottom: 0px !important;
 
+  }
+
+  #app .mapview-preview {
+    width: 100% !important;
+    height: 100% !important;
+    padding: 20px !important;
+
+    padding-top: 5px;
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+    padding-bottom: 1000px !important;
+  }
+
+  #app .image-card {
+    border-radius: 8px !important;
+  }
+
+  #app .image-container {
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 10px !important;
+    width: 100%;
+    height: auto !important;
+    border-radius: 8px !important;
+    content: contain;
+    padding: 0px;
+  }
+
+  #app .left-pane-container {
+    width: 100%;
+  }
+
+  .atlas-gradient {
+    background: linear-gradient(180deg, rgba(220, 220, 220, 0) 0px, rgba(220, 220, 220, 1) 300px) !important;
+  }
+}
 </style>

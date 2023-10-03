@@ -265,11 +265,6 @@ watch(showGrid, (newValue) => {
   min-width: 900px;
 }
 
-#app .mapview-preview {
-overflow-y:scroll!important;
-}
-
-
 .map-container {
   height: calc(100vh - 80px) !important;
   position: relative;

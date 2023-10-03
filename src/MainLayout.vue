@@ -302,14 +302,42 @@ body {
   overflow:hidden;
  padding-top:20px;
  padding-bottom:35vh !important;
- 
 }
 
 #app .image-card {
   width: auto;
-  border-radius: 10px;
+  border-radius: 80px;
   margin-right: 30px;
   margin-bottom: 20px;
+}
+
+#app .image-card {
+  float:left;
+  overflow: hidden;
+  margin-bottom: 30px;
+  width:100%;
+  height:auto;
+  padding:0px!important;
+  transition: all 0.2s ease-in-out;
+}
+
+#app .image-container {
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 10px;
+  width:100%;
+  height:auto;
+  padding:0px;
+}
+
+#app .image-card:hover {
+transform:scale(1.03);
+border-radius: 8px;
+}
+
+#app .image {
+  display: block;
+  transform:scale(1.3);
 }
 
 #app .place-title {
