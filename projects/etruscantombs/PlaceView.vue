@@ -16,9 +16,10 @@ let pointcloud = ref<Pointcloud[]>([]);
 let mesh = ref<Mesh[]>([]);
 let place = ref();
 
-const combined3DModels = computed(() => {
-  return [...pointcloud.value, ...mesh.value];
-});
+const combined3DModels = computed(() => [
+  ...mesh.value.map(m => ({ ...m, modelType: 'mesh' })),
+  ...pointcloud.value.map(p => ({ ...p, modelType: 'pointcloud' }))
+]);
 
 onMounted(async () => {
     if (id) {
@@ -105,11 +106,28 @@ function groupAndSortByYear(allItems: (Image | Observation | Document | Pointclo
                     <tr v-if="combined3DModels.length > 0">
                         <td>3D Models</td>
                         <div v-for="(model, index) in combined3DModels" :key="index" class="image-placeholder">
-                            <div class="meta-data-overlay">
-                                <div class="meta-data-overlay-text">{{ model.technique ? model.technique.text : 'N/A' }}</div>
-                                <div class="meta-data-overlay-text">{{ model.title }}</div>
-                            </div>
-                            <img :src="`${model.preview_image.file}`" :alt="model.title" class="image-square" />
+                            <a 
+                            v-if="model.modelType === 'mesh'" 
+                            :href="`https://modelviewer.dh.gu.se/mesh/?q=${model.id}`" 
+                            target="_blank"
+                            >
+                                <div class="meta-data-overlay">
+                                    <div class="meta-data-overlay-text">{{ model.technique ? model.technique.text : 'N/A' }}</div>
+                                    <div class="meta-data-overlay-text">{{ model.title }}</div>
+                                </div>
+                                <img :src="`${model.preview_image.file}`" :alt="model.title" class="image-square" />
+                            </a>
+                            <a 
+                            v-else-if="model.modelType === 'pointcloud'" 
+                            :href="`https://modelviewer.dh.gu.se/pointcloud/?q=${model.id}`" 
+                            target="_blank"
+                            >
+                                <div class="meta-data-overlay">
+                                    <div class="meta-data-overlay-text">{{ model.technique ? model.technique.text : 'N/A' }}</div>
+                                    <div class="meta-data-overlay-text">{{ model.title }}</div>
+                                </div>
+                                <img :src="`${model.preview_image.file}`" :alt="model.title" class="image-square" />
+                            </a>
                         </div>
                     </tr>
                 
@@ -179,15 +197,24 @@ function groupAndSortByYear(allItems: (Image | Observation | Document | Pointclo
                                 </div>
 
                                  <!-- If the item is a pointcloud -->
-                                <a v-else-if="item.camera_position" target="_blank">
+                                <a 
+                                    v-else-if="item.camera_position" 
+                                    :href="`https://modelviewer.dh.gu.se/pointcloud/?q=${item.id}`" 
+                                    target="_blank"
+                                >
                                     <div class="meta-data-overlay">
                                         <div class="meta-data-overlay-text">{{ item.technique ? item.technique.text : 'N/A' }}</div>
-                                        <div class="meta-data-overlay-text">{{item.title}}</div></div>
+                                        <div class="meta-data-overlay-text">{{ item.title }}</div>
+                                    </div>
                                     <img :src="`${item.preview_image.iiif_file}/full/500,/0/default.jpg`" :alt="item.title" class="image-square" />
                                 </a>
 
                                  <!-- If the item is a mesh -->
-                                <a v-else-if="item.triangles_optimized" target="_blank">
+                                <a 
+                                    v-else-if="item.triangles_optimized" 
+                                    :href="`https://modelviewer.dh.gu.se/mesh/?q=${item.id}`" 
+                                    target="_blank"
+                                >
                                     <div class="meta-data-overlay">
                                         <div class="meta-data-overlay-text">{{ item.technique ? item.technique.text : 'N/A' }}</div>
                                         <div class="meta-data-overlay-text">{{item.title}}</div></div>
