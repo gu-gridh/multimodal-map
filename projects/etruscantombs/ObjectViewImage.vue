@@ -20,7 +20,7 @@ const downloadImage = (fileUrl: string, fileName: string) => {
 
 <template>
   <div class="metadata">
-    <ObjectViewComponent :title="object.title">
+    <ObjectViewComponent :title="'Tomb ' + object.tomb.name + ': ' + object.title">
       <div class="objects">
       
       <div><div class="label">Type:</div> <div class="data">{{ object.type_of_image }}</div></div>
