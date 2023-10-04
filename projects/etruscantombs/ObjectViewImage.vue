@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import ObjectViewComponent from "@/components/ObjectViewComponent.vue";
+import ObjectViewComponent from "@/components/ObjectViewComponentReturn.vue";
 import OpenSeadragon from "@/components/OpenSeadragon.vue";
 import type { ImageDeep } from "./types";
 
-defineProps<{
+const props = defineProps<{
   object: ImageDeep;
   id: Number;
 }>();
@@ -20,11 +20,10 @@ const downloadImage = (fileUrl: string, fileName: string) => {
 
 <template>
   <div class="metadata">
-    <ObjectViewComponent :title="object.title" back="/">
+    <ObjectViewComponent :title="object.title">
       <div class="objects">
-        <p v-html="object.description"></p>
-
-      <div v-if="object.creator?.name"><div class="label">By:</div>  <div class="data">{{ object.creator.name }}</div></div>
+      <p v-html="object.description"></p>
+      <div v-if="object.author?.firstname"><div class="label">Author:</div>  <div class="data">{{ object.author.lastname }}, {{ object.author.firstname }}</div></div>
       <div v-if="object.date"><div class="label">Date:</div> <div class="data">{{ object.date }}</div></div>
       <div v-if="object.tag?.length">
         Tags:
@@ -32,11 +31,8 @@ const downloadImage = (fileUrl: string, fileName: string) => {
       </div>
       <button class="category-button" @click="downloadImage(object.file, `${object.title}.tif`)">Download</button>
 
-      <!-- This title should fetch the name of the place (but with tomb added in front of it) -->
-      <h2>Tomb  </h2>
-      <div v-if="object.place?.description" v-html="object.place.description"></div>
-
-     
+      <div v-if="object.tomb?.name"><h2>Tomb:</h2>  <div class="data">{{ object.tomb.name }}</div></div>
+      <div v-if="object.tomb?.description" v-html="object.tomb.description"></div>
     </div>
     </ObjectViewComponent>
   </div>
@@ -68,6 +64,7 @@ h2{
   font-size:1.5em;
   margin-top:30px;
   margin-bottom:5px;
+  display: inline-block;
 }
 
 
