@@ -23,16 +23,17 @@ const downloadImage = (fileUrl: string, fileName: string) => {
     <ObjectViewComponent :title="object.title">
       <div class="objects">
       <p v-html="object.description"></p>
-      <div v-if="object.author?.firstname"><div class="label">Author:</div>  <div class="data">{{ object.author.lastname }}, {{ object.author.firstname }}</div></div>
+      <div><div class="label">Type:</div> <div class="data">{{ object.type_of_image.text }}</div></div>
+      <div v-if="object.author?.firstname"><div class="label">Creator:</div>  <div class="data">{{ object.author.lastname }}, {{ object.author.firstname }}</div></div>
       <div v-if="object.date"><div class="label">Date:</div> <div class="data">{{ object.date }}</div></div>
       <div v-if="object.tag?.length">
         Tags:
         {{ object.tag.map((tag) => tag.text).join(", ") }}
       </div>
-      <button class="category-button" @click="downloadImage(object.file, `${object.title}.tif`)">Download</button>
+      <button class="theme-button download-button" @click="downloadImage(object.file, `${object.title}.tif`)">Download</button>
 
-      <div v-if="object.tomb?.name"><h2>Tomb:</h2>  <div class="data">{{ object.tomb.name }}</div></div>
-      <div v-if="object.tomb?.description" v-html="object.tomb.description"></div>
+      <div v-if="object.tomb?.name"><h2>Tomb {{ object.tomb.name }}</h2> </div>
+      <div class="description" v-if="object.tomb?.description" v-html="object.tomb.description"></div>
     </div>
     </ObjectViewComponent>
   </div>
@@ -56,49 +57,15 @@ const downloadImage = (fileUrl: string, fileName: string) => {
 </template>
 
 <style scoped>
-.metadata .object-title {
 
-}
-
-h2{
-  font-size:1.5em;
-  margin-top:30px;
-  margin-bottom:5px;
-  display: inline-block;
+.data{
+  color:rgb(255,150,150);
 }
 
-
-.metadata .objects {
-margin-top:30px;
-font-weight:200;
-font-size:1.2em;
-line-height:1.2;
-text-align:left;
-padding:0px 40px 0px 0px;
-}
-.metadata .objects .label {
-width:50px;
-float:left;
-}
-.metadata .objects .data {
-color:rgb(255,150,150);
-display:inline;
-}
-.illustration {
-  height: calc(100vh - 80px);
+.theme-button{
+  margin-top:20px;
+  margin-bottom:10px;
 }
 
-.category-button{
-  margin-top:30px;
-  color:white !important;
-  cursor:pointer;
-  font-size:1.1em;
-  padding:8px 16px;
-  background-color:rgb(180,100,100)!important;
-  background: url("@/assets/interface/downloadbuttonwhite.png");
-  background-size: 25px;
-      background-repeat: no-repeat;
-      padding-left: 45px;
-      background-position: 8px 8px;
-}
+
 </style>

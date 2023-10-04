@@ -9,8 +9,6 @@ import type {
 } from "./types";
 import type { DianaClient } from "@/assets/diana";
 import OpenSeadragon from "@/components/OpenSeadragonSequence.vue";
-import MapViewPreviewImage from "./MapViewPreviewImage.vue";
-import MapViewPreviewModel from "./MapViewPreviewModel.vue";
 
 const { selectedFeature } = storeToRefs(mapStore());
 const diana = inject("diana") as DianaClient;
