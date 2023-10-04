@@ -24,7 +24,7 @@ watchEffect(async () => {
     featureId.value = selectedFeature.value.getId();
     console.log('featureId', featureId.value)
     //change url
-    router.push(`/place/${featureId}`)
+    router.push(`/place/${featureId.value}`)
   }
 })
 </script>

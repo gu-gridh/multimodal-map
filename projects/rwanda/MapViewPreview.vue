@@ -45,7 +45,7 @@ const fetchInformants = () => {
 
 const router = useRouter();
 //if place is selected on map, fetch place data
-watchEffect(async () => {
+/* watchEffect(async () => {
   if (selectedFeature.value) {
     const place_of_interest = selectedFeature.value.getId();
     place.value = JSON.parse(JSON.stringify(selectedFeature.value));
@@ -67,7 +67,7 @@ watchEffect(async () => {
   }
   console.log(place.value)
   router.push(`/place/${place.value.id_}`)
-});
+}); */
 
 function deselectPlace() {
   selectedFeature.value = undefined;

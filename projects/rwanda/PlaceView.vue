@@ -6,7 +6,6 @@ import type { Image } from "./types";
 import type { DianaClient } from "@/assets/diana";
 import VueMasonryWall from "@yeger/vue-masonry-wall";
 import { useRouter, useRoute } from "vue-router";
-import type { Place } from "./types";
 
 const props = defineProps({
   id: {
@@ -26,9 +25,16 @@ const images = ref<Array<Image>>([]);
 const place = ref() 
 const interviews: any = ref([]);
 const informants:any = ref([]);
-const placeType = ref('')
-const placeDescription = ref('')
+const placeType = ref()
+const placeDescription = ref()
 const placeNames: any = ref([])
+
+//kan tas bort?
+defineComponent({
+  components: {
+    VueMasonryWall,
+  },
+});
 
 //Capitalize first letter since some are lowercase in database
 const capitalize = (word: String) => {
@@ -181,13 +187,14 @@ function deselectPlace() {
 </template>
 
 <style>
+
 .mapview-preview-container{
-  height:calc(100vh - 80px);
-  display: block !important;
+  height:calc(100vh - 80px); 
 }
 
 .masonry {
     width: 100%;
+    bottom: 5px;
 }
 
 #app h3 {
