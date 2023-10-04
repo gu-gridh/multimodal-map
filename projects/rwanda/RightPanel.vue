@@ -43,7 +43,7 @@ watchEffect(async () => {
 
 <style>
 .right-panel {
-    height:calc(100vh - 80px);
+    height:100%;
 }
 .right-panel-inititial {
     height:calc(100vh - 80px);

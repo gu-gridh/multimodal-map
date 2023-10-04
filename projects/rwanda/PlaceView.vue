@@ -32,9 +32,12 @@ const placeNames: any = ref([])
 
 //Capitalize first letter since some are lowercase in database
 const capitalize = (word: String) => {
-  const first = word[0].toUpperCase()
-  const rest = word.slice(1)
-  return first + rest
+    if (word[0]) {
+        const first = word[0].toUpperCase()
+        const rest = word.slice(1)
+        return first + rest
+    }
+    else return
 }
 
 //fetch informants
@@ -123,6 +126,7 @@ function deselectPlace() {
 <div class="mapview-preview">
     <div class="py-6">
         <div class="close-button" @click="deselectPlace">+</div> 
+    </div>
         <!-- place card with place info -->
         <div class="place-card">
             <div style="width:100%;">
@@ -173,13 +177,17 @@ function deselectPlace() {
             </template>
         </VueMasonryWall>
     </div>
-    </div>
 </div>
 </template>
 
 <style>
 .mapview-preview-container{
   height:calc(100vh - 80px);
+  display: block !important;
+}
+
+.masonry {
+    width: 100%;
 }
 
 #app h3 {
