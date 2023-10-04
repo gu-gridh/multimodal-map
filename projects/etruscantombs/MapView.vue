@@ -4,6 +4,7 @@ import MainLayout from "@/MainLayout.vue";
 import MapViewControls from "./MapViewControls.vue";
 import MapComponent from "@/components/MapComponent.vue";
 import DianaPlaceLayer from "@/components/DianaPlaceLayer.vue";
+import DianaPlaceLayerRephoto from "@/components/DianaPlaceLayerRephoto.vue";
 import LocalGeoJSONLayer from "@/components/LocalGeoJSONLayer.vue";
 import FeatureSelection from "./FeatureSelection.vue";
 import MapViewPreview from "./MapViewPreview.vue";
@@ -148,9 +149,17 @@ watch(showGrid, (newValue) => {
         <!-- 11.9, 42.15, 12.2, 42.4   11.973, 57.93, 12.006, 57.690-->
           
           <template #layers>
-            <!-- Layer for testing -->
+            <DianaPlaceLayerRephoto
+              :externalUrl="'https://data.dh.gu.se/geography/SGElevationMain.geojson'"
+              :zIndex=1
+            >
+              <ol-style>
+                <ol-style-stroke color="rgba(255,255,255,0.6)" :width="1"></ol-style-stroke>
+              </ol-style>
+            </DianaPlaceLayerRephoto>
+      
              <!--it is possible to change color with :color="[180,100,100,1.0]", but then the marker becomes badly rasterized-->
-            <DianaPlaceLayer v-if="placesLayerVisible" path="etruscantombs/geojson/place/" :params="tagParams">
+            <DianaPlaceLayer v-if="placesLayerVisible" path="etruscantombs/geojson/place/" :params="tagParams" :zIndex=2>
               <ol-style>
                 <ol-style-icon 
                 :src="markerIcon" 
@@ -160,19 +169,6 @@ watch(showGrid, (newValue) => {
               </ol-style>
               <FeatureSelection />
             </DianaPlaceLayer>
-
-            <!-- Local layer for testing -->
-            <!-- <LocalGeoJSONLayer :zIndex="0" geoJsonPath="/SGElevationMain.geojson">
-              <ol-style>
-                <ol-style-stroke color="rgba(0,0,0,0.05)" :width="2"></ol-style-stroke>  
-              </ol-style>
-            </LocalGeoJSONLayer>
-
-            <LocalGeoJSONLayer :zIndex="0" geoJsonPath="/SGElevationEdge.geojson">
-              <ol-style>
-                <ol-style-stroke color="rgba(0,0,0,0.04)" :width="2"></ol-style-stroke>  
-              </ol-style>
-            </LocalGeoJSONLayer> -->
           </template>
           
         </MapComponent>  
