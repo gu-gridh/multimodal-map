@@ -215,6 +215,7 @@ width:130px;
     padding-left:15px;
     transition: all 0.5s ease-in-out;
     opacity:1.0;
+    text-transform: capitalize;
 }
 
 .meta-data-overlay .meta-data-overlay-text:first-child {
