@@ -1,7 +1,7 @@
 import type { RwandaProject } from "./types";
 
 export default <RwandaProject>{
-  title: "Streets of Rwanda",
+  title: "READING THE SIGNS",
   urls: {
     baseURL: "https://diana.dh.gu.se/api/rwanda",
     place: "geojson/place",
@@ -10,7 +10,7 @@ export default <RwandaProject>{
   },
   moreinfo: "Learn more...",
   about:
-    "How recent renaming of streets and the use of the exogenous language English in Rwanda affects citizens who move and navigate in the also physically reconstructed urban space.",
+    "Renaming and transformative processes in urban Rwanda",
   projection: "EPSG:3857",
   center: [30.0636, -1.9520],
   zoom: 15,
