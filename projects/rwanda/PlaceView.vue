@@ -16,16 +16,16 @@ const props = defineProps({
 
 const { selectedFeature } = storeToRefs(mapStore());
 const diana = inject("diana") as DianaClient;
-const images = ref<Array<Image>>([]);
-const place = ref() 
-const interview: any = ref([]);
-const informants:any = ref([]);
 let layoutKey = ref(0);
 const router = useRouter();
 const store = mapStore();
 const route = useRoute();
 
 //values
+const images = ref<Array<Image>>([]);
+const place = ref() 
+const interviews: any = ref([]);
+const informants:any = ref([]);
 const placeType = ref('')
 const placeDescription = ref('')
 const placeNames: any = ref([])
@@ -37,28 +37,60 @@ const capitalize = (word: String) => {
   return first + rest
 }
 
+//fetch informants
+const fetchInformants = () => {
+    informants.value = []
+    for(let j = 0; j < interviews.value.length; j++){
+        for(let i: number = 0; i < interviews.value[0].informants.length; i++){
+            fetch(`https://diana.dh.gu.se/api/rwanda/informant/${interviews.value[i].informants[i]}`)
+            .then(response => response.json())
+            .then(data => {
+                informants.value.push(data)
+            })
+          }
+    } 
+}
+
+//fetch interviews and informants
+const fetchInterviews = async (id: any) => {
+    interviews.value = []
+    const data = await diana.listAll("text/");
+    //this doesnt find the interview
+    const newInterview = data.find((interview: any) => interview.place_of_interest === id);
+    if (newInterview) {
+      const seenInterviews = new Set(interviews.value.map((i: { id: any }) => i.id));
+      if (!seenInterviews.has(newInterview.id)) {
+        interviews.value.push(newInterview);
+      }
+      fetchInformants();
+    } else {
+      informants.value = [];
+    }
+}
+
 //fetch place data
 const fetchPlaceData =async () => {
     //if place is selected on map
     if(selectedFeature.value != undefined || null) {
         place.value = selectedFeature.value
-        console.log('place', place.value)
         placeType.value = capitalize(place.value.values_.type.text)
         placeDescription.value = capitalize(place.value.values_.description)
         placeNames.value = place.value.values_.names
+        const placeId = selectedFeature.value.getId()
+        fetchInterviews(placeId)
     }
     //if routing from url
     else {
-        console.log('fetching place data')
         await fetch(`https://diana.dh.gu.se/api/rwanda/geojson/place/${route.params.placeId}`)
         .then(response => response.json())
         .then(data => {
             place.value = data.properties
-            console.log('props place', place.value)
             placeType.value = capitalize(place.value.type.text)
             placeDescription.value = capitalize(place.value.description)
             placeNames.value = place.value.names
-        }) 
+        })
+        const placeId = Number(route.params.placeId)
+        fetchInterviews(placeId)
     } 
 }
 
@@ -78,11 +110,10 @@ function deselectPlace() {
   router.push(`/`)
 }
 
-
 </script>
 
-<template>
- <div class="mapview-preview">
+<template> 
+<div class="mapview-preview">
     <div class="py-6">
         <div class="close-button" @click="deselectPlace">+</div> 
         <!-- place card with place info -->
@@ -91,23 +122,32 @@ function deselectPlace() {
                 <p>{{ placeType }} <span>- {{ placeDescription }}</span></p>
                 <div v-for="name in placeNames">
                     <div style="width:100%; display:flex;">
-                        <span class="lang" v-if="name.languages && name.languages.length > 0">{{ name.languages[0].abbreviation }}</span><span v-else></span>
+                        <span class="lang" v-if="name.languages && name.languages.length > 0">{{ name.languages[0].abbreviation }}</span>
                         <div class="long-name"><span class="centered-name">{{ name.text }}</span><span style="font-weight: lighter;" v-if="name.period?.text">- {{ name.period.text }}</span></div>
                     </div>
                 </div>
             </div>
         </div>
         <!-- Interview if avaliable -->
+        <div class="place-card" v-if="interviews && interviews.length != 0">
+            <span v-for="text in interviews">
+                <p>{{ text.title }}</p>
+                <p style="font-style: italic;">{{ text.text}}</p>
+            </span>
+            <!-- Informants if avaliable -->
+            <div v-if="informants && informants.length != 0">
+                 <span v-for="informant in informants">
+                    <p>/{{ informant.custom_id }}</p>
+                </span>
+            </div>
+        </div>
     </div>
- </div>
+</div>
 </template>
 
 <style>
 .mapview-preview-container{
   height:calc(100vh - 80px);
-}
-
-.masonry {
 }
 
 #app h3 {
