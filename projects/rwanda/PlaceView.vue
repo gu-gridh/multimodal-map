@@ -51,7 +51,7 @@ const fetchInformants = () => {
     } 
 }
 
-//fetch interviews and informants
+//fetch interviews
 const fetchInterviews = async (id: any) => {
     interviews.value = []
     const data = await diana.listAll("text/");
@@ -68,6 +68,11 @@ const fetchInterviews = async (id: any) => {
     }
 }
 
+const fetchImages = async (id: Number) => {
+    images.value = await diana.listAll<Image>("image/", { place_of_interest: id });
+    console.log(images.value)
+}
+
 //fetch place data
 const fetchPlaceData =async () => {
     //if place is selected on map
@@ -78,6 +83,7 @@ const fetchPlaceData =async () => {
         placeNames.value = place.value.values_.names
         const placeId = selectedFeature.value.getId()
         fetchInterviews(placeId)
+        fetchImages(Number(placeId))
     }
     //if routing from url
     else {
@@ -91,6 +97,7 @@ const fetchPlaceData =async () => {
         })
         const placeId = Number(route.params.placeId)
         fetchInterviews(placeId)
+        fetchImages(placeId)
     } 
 }
 
@@ -141,6 +148,31 @@ function deselectPlace() {
                 </span>
             </div>
         </div>
+        <div v-if="images.length != 0" class="masonry">
+        <!-- Image gallery -->
+        <VueMasonryWall
+            :key="layoutKey"
+            class="masonry-wall"
+            :items="images"
+            :column-width="200" 
+            :gap="10"
+        >
+            <template v-slot:default="{ item }">
+                <router-link
+                    :key="item.uuid"
+                    :to="`/image/${item.id}`"
+                    class="grid-item"
+                >
+                    <img :src="`${item.iiif_file}/full/450,/0/default.jpg`" />
+                    <div class="grid-item-info">
+                        <div class="grid-item-info-meta">
+                            <h1>{{item.title}}</h1>
+                        </div>
+                    </div>
+                </router-link>
+            </template>
+        </VueMasonryWall>
+    </div>
     </div>
 </div>
 </template>
