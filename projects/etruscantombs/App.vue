@@ -45,11 +45,6 @@ body {
   background-size: contain;
 }
 
-#app .right-pane {
-  background: url("@/assets/gradient-jubileum.png");
-  background-size: contain;
-}
-
 .theme-button {
   background-color: rgb(180, 100, 100);
   border-radius: 5px;
