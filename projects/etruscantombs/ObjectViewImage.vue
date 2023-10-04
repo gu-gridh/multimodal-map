@@ -22,10 +22,11 @@ const downloadImage = (fileUrl: string, fileName: string) => {
   <div class="metadata">
     <ObjectViewComponent :title="object.title">
       <div class="objects">
-      <p v-html="object.description"></p>
-      <div><div class="label">Type:</div> <div class="data">{{ object.type_of_image.text }}</div></div>
+      
+      <div><div class="label">Type:</div> <div class="data">{{ object.type_of_image }}</div></div>
       <div v-if="object.author?.firstname"><div class="label">Creator:</div>  <div class="data">{{ object.author.lastname }}, {{ object.author.firstname }}</div></div>
       <div v-if="object.date"><div class="label">Date:</div> <div class="data">{{ object.date }}</div></div>
+      <div class="description" v-html="object.description"></div>
       <div v-if="object.tag?.length">
         Tags:
         {{ object.tag.map((tag) => tag.text).join(", ") }}
