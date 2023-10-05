@@ -21,6 +21,26 @@ const combined3DModels = computed(() => [
   ...pointcloud.value.map(p => ({ ...p, modelType: 'pointcloud' }))
 ]);
 
+function isImage(item: any): item is Image {
+  return 'iiif_file' in item;
+}
+
+function isObservation(item: any): item is Observation {
+  return 'observation' in item;
+}
+
+function isPointcloud(item: any): item is Pointcloud {
+  return 'camera_position' in item;
+}
+
+function isMesh(item: any): item is Mesh {
+  return 'triangles_optimized' in item;
+}
+
+function isDocument(item: any): item is Mesh {
+  return 'upload' in item;
+}
+
 onMounted(async () => {
     if (id) {
         images.value = await diana.listAll<Image>("image", { tomb: id, type_of_image: 2 });
@@ -134,23 +154,25 @@ function groupAndSortByYear(allItems: (Image | Observation | Document | Pointclo
                     <tr v-if="plans.length > 0">
                         <td>Plans</td>
                         <div v-for="(image, index) in plans" :key="index" class="image-placeholder plan-placeholder">
-                         
-                            <router-link :to="`/detail/image/${image.id}`">
-                                <div class="meta-data-overlay"><div class="meta-data-overlay-text">{{image.title}}</div></div>
-                                <img :src="`${image.iiif_file}/full/500,/0/default.jpg`" :alt="image.title"
-                                    class="image-square-plan" />
-                            </router-link>
+                            <div v-if="'iiif_file' in image">
+                                <router-link :to="`/detail/image/${image.id}`">
+                                    <div class="meta-data-overlay"><div class="meta-data-overlay-text">{{image.title}}</div></div>
+                                    <img :src="`${image.iiif_file}/full/500,/0/default.jpg`" :alt="image.title"
+                                        class="image-square-plan" />
+                                </router-link>
+                            </div>
                         </div>
                     </tr>
                     <tr v-if="images.length > 0">
                         <td>Photos</td>
                         <div v-for="(image, index) in images" :key="index" class="image-placeholder">
-                           
-                            <router-link :to="`/detail/image/${image.id}`">
-                                <div class="meta-data-overlay"><div class="meta-data-overlay-text">{{image.title}}</div></div>
-                                <img :src="`${image.iiif_file}/full/500,/0/default.jpg`" :alt="image.title"
-                                    class="image-square" />
-                            </router-link>
+                            <div v-if="'iiif_file' in image">
+                                <router-link :to="`/detail/image/${image.id}`">
+                                    <div class="meta-data-overlay"><div class="meta-data-overlay-text">{{image.title}}</div></div>
+                                    <img :src="`${image.iiif_file}/full/500,/0/default.jpg`" :alt="image.title"
+                                        class="image-square" />
+                                </router-link>
+                            </div>
                         </div>
                     </tr>
                     
@@ -175,16 +197,17 @@ function groupAndSortByYear(allItems: (Image | Observation | Document | Pointclo
                     <tr v-for="(items, year) in groupedByYear" :key="year">
                         <td style="font-size:1.5em; font-weight:200; text-align:right;">{{ year }}</td>
                        
-                            <div v-for="(item, index) in items" :key="index" :class="item.iiif_file || item.camera_position || item.triangles_optimized ? 'image-placeholder' : ''">
-
+                            <div v-for="(item, index) in items" :key="index" :class="(isImage(item) || isPointcloud(item) || isMesh(item)) ? 'image-placeholder' : ''">
                                 <!-- If the item is an image -->
-                                <router-link v-if="item.iiif_file" :to="`/detail/image/${item.id}`">
-                                    <div class="meta-data-overlay"><div class="meta-data-overlay-text">{{item.title}}</div></div>
-                                    <img :src="`${item.iiif_file}/full/500,/0/default.jpg`" :alt="item.title" class="image-square" />
-                                </router-link>
+                                <div v-if="'iiif_file' in item">
+                                    <router-link v-if="item.iiif_file" :to="`/detail/image/${item.id}`">
+                                        <div class="meta-data-overlay"><div class="meta-data-overlay-text">{{item.title}}</div></div>
+                                        <img :src="`${item.iiif_file}/full/500,/0/default.jpg`" :alt="item.title" class="image-square" />
+                                    </router-link>
+                                </div>
 
                                 <!-- If the item is an observation -->
-                                <div v-else-if="item.observation" class="image-placeholder observation-placeholder">
+                                <div v-else-if="isObservation(item)" class="image-placeholder observation-placeholder">
                                     <div class="observation-title">
                                         {{ item.title }}
                                     </div>
@@ -198,7 +221,7 @@ function groupAndSortByYear(allItems: (Image | Observation | Document | Pointclo
 
                                  <!-- If the item is a pointcloud -->
                                 <a 
-                                    v-else-if="item.camera_position" 
+                                    v-else-if="isPointcloud(item)" 
                                     :href="`https://modelviewer.dh.gu.se/pointcloud/?q=${item.id}`" 
                                     target="_blank"
                                 >
@@ -211,7 +234,7 @@ function groupAndSortByYear(allItems: (Image | Observation | Document | Pointclo
 
                                  <!-- If the item is a mesh -->
                                 <a 
-                                    v-else-if="item.triangles_optimized" 
+                                    v-else-if="isMesh(item)" 
                                     :href="`https://modelviewer.dh.gu.se/mesh/?q=${item.id}`" 
                                     target="_blank"
                                 >
@@ -222,7 +245,7 @@ function groupAndSortByYear(allItems: (Image | Observation | Document | Pointclo
                                 </a>
 
                                  <!-- If the item is an document -->
-                                <a v-else-if="item.upload" :href="item.upload" target="_blank" download>
+                                <a v-else-if="isDocument(item)" :href="item.upload" target="_blank" download>
                                     <div class="image-placeholder document-placeholder">
                                         <div class="document-title">{{item.title}}</div>
                                         <p>Type: {{item.type[0].text}}</p>

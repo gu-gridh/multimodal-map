@@ -72,9 +72,11 @@ export type Technique = {
 export type PreviewImage = {
   id: number;
   file: string;
+  iiif_file: string;
 };
 
 export type Pointcloud = {
+  id?: number;
   title: string;
   points_optimized: string;
   points_full_resolution: string;
@@ -86,6 +88,7 @@ export type Pointcloud = {
 };
 
 export type Mesh = {
+  id?: number;
   title: string;
   date: string;
   triangles_optimized: string;
