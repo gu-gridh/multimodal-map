@@ -159,12 +159,13 @@ function deselectPlace() {
             </div>
         </div>
         <div v-if="images.length != 0" class="masonry">
-        <!-- Image gallery -->
-        <VueMasonryWall
+        <div>
+            <p>Images</p>
+            <VueMasonryWall
             :key="layoutKey"
             class="masonry-wall"
             :items="images"
-            :column-width="200" 
+            :column-width="150" 
             :gap="10"
         >
             <template v-slot:default="{ item }">
@@ -182,6 +183,7 @@ function deselectPlace() {
                 </router-link>
             </template>
         </VueMasonryWall>
+        </div>
     </div>
 </div>
 </template>
@@ -191,10 +193,11 @@ function deselectPlace() {
 .mapview-preview-container{
   height:calc(100vh - 80px); 
 }
-
+#app .masonry-wall {
+    z-index: auto !important;
+}
 .masonry {
     width: 100%;
-    bottom: 5px;
 }
 
 #app h3 {
