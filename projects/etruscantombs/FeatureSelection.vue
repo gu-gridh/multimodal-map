@@ -32,7 +32,7 @@ const selectCondition = selectConditions.click;
 const onHover = (event: SelectEvent) => {
   const features = event.selected;
 
-  if (features.length === 1) {
+  if (features.length === 1 && features[0].get('name')) {
     hoverCoordinates.value = event.mapBrowserEvent.coordinate;
     hoveredFeature.value = features[0];
   } else {
@@ -44,7 +44,7 @@ const onHover = (event: SelectEvent) => {
 const onClick = (event: SelectEvent) => {
 const features = event.selected;
 
-  if (features.length === 1) {
+  if (features.length === 1 && features[0].get('name')) {
     // Unselect the hovered feature
     hoverCoordinates.value = undefined;
     hoveredFeature.value = undefined;
@@ -57,7 +57,6 @@ const features = event.selected;
     selectedFeature.value = undefined;
   }
 };
-
 
 // Sync selected feature from store to OL
 watch(selectedFeature, () => {
@@ -116,10 +115,9 @@ const getFeatureDisplayName: DisplayFunction =
         :displacement="[-9, 47]"
         :anchor="[0.0, 0.0]"
       ></ol-style-icon>
-      <ol-style-stroke color="rgb(220,100,100)" :width="6"></ol-style-stroke>
     </ol-style>
   </ol-interaction-select>
-  
+
   <ol-interaction-select @select="onHover" :condition="hoverCondition">
     <ol-style>
       <ol-style-icon
@@ -128,8 +126,8 @@ const getFeatureDisplayName: DisplayFunction =
         :displacement="[-9, 47]"
         :anchor="[0.0, 0.0]"
       ></ol-style-icon>
-      <ol-style-stroke color="rgb(220,100,100)" :width="6"></ol-style-stroke>
-      <ol-style-fill color="rgba(0,0,0,0)"></ol-style-fill> 
+      <ol-style-stroke color="rgb(0,0,0,0.2)" :width="1"></ol-style-stroke>
+      <ol-style-fill color="rgba(0,0,0,0)"></ol-style-fill>
     </ol-style>
   </ol-interaction-select>
 
