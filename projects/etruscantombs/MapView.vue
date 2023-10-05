@@ -21,7 +21,7 @@ import { nextTick } from "vue";
 import GeoJSON from "ol/format/GeoJSON";
 import Title from "./Title.vue"
 
-const { categories, years, tags, necropoli, tombType, placesLayerVisible, tagsLayerVisible, dataParams } = storeToRefs(etruscanStore());
+const { categories, tags, necropoli, tombType, placesLayerVisible, tagsLayerVisible, dataParams } = storeToRefs(etruscanStore());
 const store = mapStore();
 const { selectedFeature } = storeToRefs(store);
 const minZoom = 14;

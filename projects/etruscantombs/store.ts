@@ -4,7 +4,6 @@ import config from "./config";
 
 export const etruscanStore = defineStore("etruscan", () => {
   const categories = ref<Array<string>>(["all"]);
-  const years = ref<[number, number]>(config.timeRange);
   const tags = ref<Array<string>>(["all"]);
   const necropoli = ref<Array<string>>(["all"]);
   const tombType = ref<Array<string>>(["all"]);
@@ -12,5 +11,5 @@ export const etruscanStore = defineStore("etruscan", () => {
   const placesLayerVisible = ref(true); // Default visibility state for places layer
   const dataParams = ref<Record<string, string | number | null>>({});
 
-  return { categories, years, tags, tagsLayerVisible, placesLayerVisible, necropoli, tombType,  dataParams};
+  return { categories, tags, tagsLayerVisible, placesLayerVisible, necropoli, tombType,  dataParams};
 });
