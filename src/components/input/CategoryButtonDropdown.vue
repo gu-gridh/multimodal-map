@@ -8,7 +8,7 @@
       @toggle="toggle(key)"
     />
   </div>
-  <select v-else :value="modelValue[0]" class="dropdown" @change="dropdownToggle($event.target.value)">
+  <select v-else :value="modelValue[0]" class="dropdown" @change="dropdownToggle($event)">
     <option value="all">all</option>
     <option 
       v-for="(label, key) in categories"
@@ -35,8 +35,13 @@ function toggle(key: string) {
   handleToggle(key);
 }
 
-function dropdownToggle(selectedKey: string) {
-  handleToggle(selectedKey);
+function dropdownToggle(event: Event) {
+  const selectElement = event.target as HTMLSelectElement | null;
+  
+  if (selectElement) {
+    const selectedKey = selectElement.value;
+    handleToggle(selectedKey);
+  }
 }
 
 function handleToggle(key: string) {

@@ -95,11 +95,17 @@ export type Mesh = {
   author?: Array<{ id: number, firstname: string, lastname: string }>;
 };
 
+interface Author {
+  firstname: string;
+  lastname: string;
+}
+
 export type ImageDeep = Omit<Image, "creator" | "place" | "focus" | "tag"> & {
   creator: Person;
   place: Place;
   focus: Focus;
   tag: Tag[];
+  author?: Author;
 };
 
 export type Person = {

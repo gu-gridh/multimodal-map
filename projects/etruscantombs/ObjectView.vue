@@ -1,5 +1,4 @@
 <script setup lang="ts">
-console.log("Setup is running");
 import { inject, ref, watchEffect } from "vue";
 import type { Image } from "./types";
 import type { DianaClient } from "@/assets/diana";
