@@ -2,7 +2,6 @@
 //component for splitting view
 import Split from 'split.js'
 import MapView from './MapView.vue'
-import MapViewPreview from './MapViewPreview.vue'
 import RightPanel from './RightPanel.vue'
 import { onMounted } from 'vue'
 

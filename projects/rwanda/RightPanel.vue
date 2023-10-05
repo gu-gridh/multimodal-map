@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import MapViewPreview from './MapViewPreview.vue'
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
 import { watchEffect, watch, onMounted, ref } from "vue";

@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from "vue-router";
-import ObjectView from "./ObjectView.vue";
 import Grid from "./Grid.vue";
 import ObjectViewImage from "./ObjectViewImage.vue";
 import RightPanel from "./RightPanel.vue";

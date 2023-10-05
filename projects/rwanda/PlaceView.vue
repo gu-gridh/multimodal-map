@@ -90,7 +90,7 @@ const fetchPlaceData =async () => {
         placeType.value = capitalize(place.value.values_.type.text)
         placeDescription.value = capitalize(place.value.values_.description)
         placeNames.value = place.value.values_.names
-        const placeId = selectedFeature.value.getId()
+        const placeId = selectedFeature.value?.getId()
         fetchInterviews(placeId)
         fetchImages(Number(placeId))
     }
@@ -189,6 +189,14 @@ function deselectPlace() {
 </template>
 
 <style>
+#app .mapview-preview {
+  height: calc(100vh - 80px) !important;
+  pointer-events: auto !important;
+  overflow-y: scroll !important;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 80px;
+}
 
 .mapview-preview-container{
   height:calc(100vh - 80px); 
