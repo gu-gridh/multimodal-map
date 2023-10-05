@@ -23,7 +23,7 @@ const downloadImage = (fileUrl: string, fileName: string) => {
     <ObjectViewComponent :title="'Tomb ' + object.tomb.name + ': ' + object.title">
       <div class="objects">
       
-      <div><div class="label">Type:</div> <div class="data">{{ object.type_of_image }}</div></div>
+      <div><div class="label">Type:</div> <div class="data">{{ object.type_of_image[0].text }}</div></div>
       <div v-if="object.author?.firstname"><div class="label">Creator:</div>  <div class="data">{{ object.author.lastname }}, {{ object.author.firstname }}</div></div>
       <div v-if="object.date"><div class="label">Date:</div> <div class="data">{{ object.date }}</div></div>
       <div class="description" v-html="object.description"></div>
