@@ -166,11 +166,10 @@ function groupAndSortByYear(allItems: (Image | Observation | Document | Pointclo
                     <tr v-if="images.length > 0">
                         <td>Photos</td>
                         <div v-for="(image, index) in images" :key="index" class="image-placeholder">
-                            <div v-if="'iiif_file' in image">
+                            <div v-if="'iiif_file' in image" >
                                 <router-link :to="`/detail/image/${image.id}`">
                                     <div class="meta-data-overlay"><div class="meta-data-overlay-text">{{image.title}}</div></div>
-                                    <img :src="`${image.iiif_file}/full/500,/0/default.jpg`" :alt="image.title"
-                                        class="image-square" />
+                                    <img :src="`${image.iiif_file}/full/500,/0/default.jpg`" :alt="image.title" class="image-square" style=""/>
                                 </router-link>
                             </div>
                         </div>

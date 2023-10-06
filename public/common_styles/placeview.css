@@ -167,8 +167,9 @@ width:130px;
 }
 
 .image-square {
-    width: 100%;
-    height: 100%;
+    width: 200px !important;
+    height: 50px !important;
+    overflow:hidden !important;
     object-fit: cover;
 }
 
@@ -181,6 +182,7 @@ width:130px;
 }
 
 .image-placeholder img {
+    height: 200px !important;
     transform: scale(1.05);
     transition: all 0.2s ease-in-out;
 }
