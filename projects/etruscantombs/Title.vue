@@ -25,7 +25,8 @@ export default {
         i18n.global.locale = 'en';
       }
     },
-  }
+  },
+  emits: ['toggle-about'],
 };
 </script>
 

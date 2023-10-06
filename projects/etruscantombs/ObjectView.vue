@@ -20,7 +20,6 @@ const object = ref<Image>();
 
 watchEffect(async () => {
   object.value = await diana.get(props.type, props.id, { depth: 1 });
-  console.log("Props passed to ObjectViewImage: ", { object: object.value, id: Number(props.id) });
 });
 
 const objectComponent = {

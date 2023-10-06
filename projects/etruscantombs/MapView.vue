@@ -3,7 +3,7 @@ import { computed } from "vue";
 import MainLayout from "@/MainLayout.vue";
 import MapViewControls from "./MapViewControls.vue";
 import MapComponent from "@/components/MapComponent.vue";
-import DianaPlaceLayer from "@/components/DianaPlaceLayer.vue";
+import DianaPlaceLayer from "@/components/DianaPlaceLayerEtruscan.vue";
 import DianaPlaceLayerRephoto from "@/components/DianaPlaceLayerRephoto.vue";
 import LocalGeoJSONLayer from "@/components/LocalGeoJSONLayer.vue";
 import FeatureSelection from "./FeatureSelection.vue";
@@ -160,13 +160,6 @@ watch(showGrid, (newValue) => {
       
              <!--it is possible to change color with :color="[180,100,100,1.0]", but then the marker becomes badly rasterized-->
             <DianaPlaceLayer v-if="placesLayerVisible" path="etruscantombs/geojson/place/" :params="tagParams" :zIndex=2>
-              <ol-style>
-                <ol-style-icon 
-                :src="markerIcon" 
-                :scale="1.8" 
-                :displacement="[-10, 45]"
-                :anchor="[0.0, 0.0]"></ol-style-icon>
-              </ol-style>
               <FeatureSelection />
             </DianaPlaceLayer>
           </template>
