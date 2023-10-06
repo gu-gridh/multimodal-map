@@ -154,7 +154,7 @@ function groupAndSortByYear(allItems: (Image | Observation | Document | Pointclo
                     <tr v-if="plans.length > 0">
                         <td>Plans</td>
                         <div v-for="(image, index) in plans" :key="index" class="image-placeholder plan-placeholder">
-                            <div v-if="'iiif_file' in image">
+                            <div class="image-square" v-if="'iiif_file' in image">
                                 <router-link :to="`/detail/image/${image.id}`">
                                     <div class="meta-data-overlay"><div class="meta-data-overlay-text">{{image.title}}</div></div>
                                     <img :src="`${image.iiif_file}/full/500,/0/default.jpg`" :alt="image.title"
@@ -166,11 +166,11 @@ function groupAndSortByYear(allItems: (Image | Observation | Document | Pointclo
                     <tr v-if="images.length > 0">
                         <td>Photos</td>
                         <div v-for="(image, index) in images" :key="index" class="image-placeholder">
-                            <div v-if="'iiif_file' in image">
+                            <div class="image-square" v-if="'iiif_file' in image">
                                 <router-link :to="`/detail/image/${image.id}`">
                                     <div class="meta-data-overlay"><div class="meta-data-overlay-text">{{image.title}}</div></div>
                                     <img :src="`${image.iiif_file}/full/500,/0/default.jpg`" :alt="image.title"
-                                        class="image-square" />
+                                        class="image-square-inner" />
                                 </router-link>
                             </div>
                         </div>
@@ -199,10 +199,10 @@ function groupAndSortByYear(allItems: (Image | Observation | Document | Pointclo
                        
                             <div v-for="(item, index) in items" :key="index" :class="(isImage(item) || isPointcloud(item) || isMesh(item)) ? 'image-placeholder' : ''">
                                 <!-- If the item is an image -->
-                                <div v-if="'iiif_file' in item">
+                                 <div class="image-square" v-if="'iiif_file' in item">
                                     <router-link v-if="item.iiif_file" :to="`/detail/image/${item.id}`">
                                         <div class="meta-data-overlay"><div class="meta-data-overlay-text">{{item.title}}</div></div>
-                                        <img :src="`${item.iiif_file}/full/500,/0/default.jpg`" :alt="item.title" class="image-square" />
+                                        <img :src="`${item.iiif_file}/full/500,/0/default.jpg`" :alt="item.title" class="image-square-inner"/>
                                     </router-link>
                                 </div>
 
