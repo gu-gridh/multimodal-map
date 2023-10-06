@@ -157,6 +157,14 @@ watch(showGrid, (newValue) => {
                 <ol-style-stroke color="rgba(0,0,0,0.2)" :width="1"></ol-style-stroke>
               </ol-style>
             </DianaPlaceLayerRephoto>
+             <DianaPlaceLayerRephoto
+              :externalUrl="'https://data.dh.gu.se/geography/SGElevationEdge.geojson'"
+              :zIndex=1
+            >
+              <ol-style>
+                <ol-style-stroke color="rgba(0,0,0,0.2)" :width="1"></ol-style-stroke>
+              </ol-style>
+            </DianaPlaceLayerRephoto>
       
              <!--it is possible to change color with :color="[180,100,100,1.0]", but then the marker becomes badly rasterized-->
             <DianaPlaceLayer v-if="placesLayerVisible" path="etruscantombs/geojson/place/" :params="tagParams" :zIndex=2>
