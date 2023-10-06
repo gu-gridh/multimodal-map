@@ -21,6 +21,11 @@ const combined3DModels = computed(() => [
   ...pointcloud.value.map(p => ({ ...p, modelType: 'pointcloud' }))
 ]);
 
+const sortedGroupedByYear = computed(() => {
+  return Object.entries(groupedByYear.value)
+    .sort((a, b) => parseInt(b[0]) - parseInt(a[0]));
+});
+
 function isImage(item: any): item is Image {
   return 'iiif_file' in item;
 }
@@ -69,25 +74,15 @@ function groupAndSortByYear(allItems: (Image | Observation | Document | Pointclo
   groupedByYear.value = {};
 
   // Group items by year
-  allItems.forEach((item) => {
+  allItems.forEach((item: Image | Observation | Document | Pointcloud | Mesh) => {
     const fullDate = new Date(item.date);
-    const year = fullDate.getFullYear().toString(); // Extract the year and convert it to string
+    const year = fullDate.getFullYear().toString();
 
     if (!groupedByYear.value[year]) {
       groupedByYear.value[year] = [];
     }
     groupedByYear.value[year].push(item);
   });
-
-  // Sort grouped items by date
-  const sortedGroupedByYear = Object.keys(groupedByYear.value)
-    .sort()
-    .reduce<{ [year: string]: (Image | Observation | Document | Pointcloud | Mesh)[] }>((acc, key) => {
-      acc[key] = groupedByYear.value[key];
-      return acc;
-    }, {});
-
-  groupedByYear.value = sortedGroupedByYear;
 }
 
 </script>
@@ -194,7 +189,7 @@ function groupAndSortByYear(allItems: (Image | Observation | Document | Pointclo
                 </table>
 
                 <table class="content-table-date" v-else-if="sort == 'year'">
-                    <tr v-for="(items, year) in groupedByYear" :key="year">
+                    <tr v-for="[year, items] in sortedGroupedByYear" :key="year">
                         <td style="font-size:1.5em; font-weight:200; text-align:right;">{{ year }}</td>
                        
                             <div v-for="(item, index) in items" :key="index" :class="(isImage(item) || isPointcloud(item) || isMesh(item)) ? 'image-placeholder' : ''">
