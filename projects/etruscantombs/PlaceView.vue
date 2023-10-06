@@ -6,7 +6,7 @@ import PlaceViewCard from "./PlaceViewCard.vue";
 
 const sort = ref('type');
 const groupedByYear = ref<{ [year: string]: (Image | Observation | Document | Pointcloud | Mesh )[] }>({});
-const { id } = defineProps<{ id: number; }>();
+const { id } = defineProps<{ id: string; }>();
 const diana = inject("diana") as DianaClient;
 const images = ref<Image[]>([]);
 const plans = ref<Image[]>([]);

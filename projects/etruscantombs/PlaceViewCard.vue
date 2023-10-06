@@ -4,7 +4,7 @@ import { ref, inject, onMounted } from "vue"
 import markerIcon from "@/assets/marker-red.svg";
 
 const props = defineProps<{
-  id: number;
+  id: string;
 }>();
 
 const capitalize = (word: String) => {
