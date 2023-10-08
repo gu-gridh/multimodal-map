@@ -14,9 +14,10 @@ body {
 /* Left Pane */
 
 .main-title {
+  white-space: pre-line;
   font-size: 7vw;
   line-height: 0.7;
-  width: 88%;
+  width: auto;
   font-weight: 300;
   letter-spacing: 0.05rem;
   margin-left: -6px;
@@ -221,7 +222,6 @@ body {
 
   .main-title {
     font-size: 100px;
-    width: 75%;
   }
 
   .section-title {

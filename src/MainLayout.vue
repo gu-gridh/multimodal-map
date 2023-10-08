@@ -145,32 +145,6 @@ body {
   height:calc(100vh - 480px);
 
 }
-
-#app .about-container {
-  font-size:90%;
-}
-
-#app .about-main-title {
-  margin-top:120px;
- 
-  font-size: 155px;
-  
-
-}
-
-#app .about-article-main{
-  margin-top:50px;
-width:1350px;
-
-}
-
-#app .about-article-sub{
-  
-width:1500px;
-max-width:1900px;
-
-
-}
 } 
 
 /* If your screen is smallish */
@@ -390,42 +364,6 @@ box-shadow: inset 0px 2px 2px 0 rgba(0, 0, 0, 0.3),
   display:none!important;
 }
 
-/* The about screen */
-
-#app .about-main-title {
-    font-size:70px;
-    width:100%;
-    margin-top:50px;
-  }
-
-  #app .about-article-main{
-columns:1;
-width:100%;
-padding:0px 40px;
-font-size:1.8em;
-}
-
-#app .about-article-sub{
-columns:1;
-width:100%;
-margin-top:10px;
-font-size:1.6em;
-padding:20px 40px;
-}
-
-#app .about-container {
-  position:fixed;
-  color: white;
-  line-height: 1;
-  height: 100%;
-  width: 100%;
-  padding:0px 0px;
-
-}
-
-#app .about-logo-top-right{
-  display:none;
-}
 
 /* The object viewer */
 

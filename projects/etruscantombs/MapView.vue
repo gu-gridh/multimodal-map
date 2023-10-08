@@ -154,7 +154,7 @@ watch(showGrid, (newValue) => {
               :zIndex=1
             >
               <ol-style>
-                <ol-style-stroke color="rgba(0,0,0,0.2)" :width="1"></ol-style-stroke>
+                <ol-style-stroke color="rgba(0,0,0,0.1)" :width="1"></ol-style-stroke>
               </ol-style>
             </DianaPlaceLayerRephoto>
              <DianaPlaceLayerRephoto
@@ -162,7 +162,7 @@ watch(showGrid, (newValue) => {
               :zIndex=1
             >
               <ol-style>
-                <ol-style-stroke color="rgba(0,0,0,0.2)" :width="1"></ol-style-stroke>
+                <ol-style-stroke color="rgba(0,0,0,0.1)" :width="1"></ol-style-stroke>
               </ol-style>
             </DianaPlaceLayerRephoto>
       
