@@ -146,8 +146,7 @@ watch(showGrid, (newValue) => {
           :restrictExtent="[11.9, 42.15, 12.2, 42.4]"       
           :key="showGrid.toString()"
         > 
-        <!-- 11.9, 42.15, 12.2, 42.4   11.973, 57.93, 12.006, 57.690-->
-          
+                  
           <template #layers>
             <DianaPlaceLayerRephoto
               :externalUrl="'https://data.dh.gu.se/geography/SGElevationMain.geojson'"
@@ -166,7 +165,6 @@ watch(showGrid, (newValue) => {
               </ol-style>
             </DianaPlaceLayerRephoto>
       
-             <!--it is possible to change color with :color="[180,100,100,1.0]", but then the marker becomes badly rasterized-->
             <DianaPlaceLayer v-if="placesLayerVisible" path="etruscantombs/geojson/place/" :params="tagParams" :zIndex=2>
               <FeatureSelection />
             </DianaPlaceLayer>
