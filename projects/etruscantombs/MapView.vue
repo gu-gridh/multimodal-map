@@ -150,22 +150,22 @@ watch(showGrid, (newValue) => {
           <template #layers>
             <DianaPlaceLayerRephoto
               :externalUrl="'https://data.dh.gu.se/geography/SGElevationMain.geojson'"
-              :zIndex=1
+              :zIndex=0
             >
               <ol-style>
-                <ol-style-stroke color="rgba(0,0,0,0.1)" :width="1"></ol-style-stroke>
+                <ol-style-stroke color="rgba(0,0,0,0.18)" :width="1"></ol-style-stroke>
               </ol-style>
             </DianaPlaceLayerRephoto>
              <DianaPlaceLayerRephoto
               :externalUrl="'https://data.dh.gu.se/geography/SGElevationEdge.geojson'"
-              :zIndex=1
+              :zIndex=0
             >
               <ol-style>
-                <ol-style-stroke color="rgba(0,0,0,0.1)" :width="1"></ol-style-stroke>
+                <ol-style-stroke color="rgba(0,0,0,0.08)" :width="1"></ol-style-stroke>
               </ol-style>
             </DianaPlaceLayerRephoto>
       
-            <DianaPlaceLayer v-if="placesLayerVisible" path="etruscantombs/geojson/place/" :params="tagParams" :zIndex=2>
+            <DianaPlaceLayer v-if="placesLayerVisible" path="etruscantombs/geojson/place/" :params="tagParams" :zIndex=20>
               <FeatureSelection />
             </DianaPlaceLayer>
           </template>
