@@ -149,7 +149,7 @@ watch(showGrid, (newValue) => {
                   
           <template #layers>
             <DianaPlaceLayerRephoto
-              :externalUrl="'https://data.dh.gu.se/geography/SGElevationMain.geojson'"
+              :externalUrl="'https://data.dh.gu.se/geography/SGElevationMainSimplified.geojson'"
               :zIndex=0
             >
               <ol-style>
