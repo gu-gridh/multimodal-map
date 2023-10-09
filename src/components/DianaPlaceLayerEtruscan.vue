@@ -1,13 +1,29 @@
 <script lang="ts" setup>
+import { computed, ref, defineProps, onMounted, inject, watch } from "vue";
+import GeoJSON from 'ol/format/GeoJSON.js';
+import VectorSource from 'ol/source/Vector';
+import WebGLPointsLayer from 'ol/layer/WebGLPoints.js';
+import { fromLonLat } from 'ol/proj';
 import { DIANA_BASE } from "@/assets/diana";
-import { computed, inject } from "vue";
+import markerIcon from "@/assets/marker-white.svg";
+import markerGold from "@/assets/marker-gold.svg";
 import Style from 'ol/style/Style';
 import type Feature from 'ol/Feature';
 import Icon from 'ol/style/Icon';
-import markerIcon from "@/assets/marker-white.svg";
-import markerGold from "@/assets/marker-gold.svg";
+import { mapStore } from "@/stores/store";
+import { storeToRefs } from "pinia";
+import Select from 'ol/interaction/Select';
+import { pointerMove } from 'ol/events/condition';
+
+const { selectedFeature } = storeToRefs(mapStore());
+
+let selectHover; // Select interaction for hover
+const hoveredFeature = ref(null);
+const hoverCoordinates = ref(null);
+const selectedCoordinates = ref(null);
 
 const props = defineProps({
+  map: Object,
   path: {
     type: String,
     required: true,
@@ -22,41 +38,108 @@ const props = defineProps({
   },
 });
 
-const format = inject("ol-format");
-const geoJsonFormat = new format.GeoJSON();
+const map = inject('map');
 
-const featureStyle = (feature: Feature) => {
-  const properties = feature.getProperties();
-  let iconSrc;
+const vectorSource = ref(new VectorSource({
+  url: computed(() => {
+    const params = { page_size: "500", ...props.params };
+    return DIANA_BASE + props.path + "?" + new URLSearchParams(params).toString();
+  }).value,
+  format: new GeoJSON(),
+}));
 
-  if (
-    properties.threedhop_count > 0 ||
-    properties.pointcloud_count > 0
-  ) {
-    iconSrc = markerGold;
+// Create a WebGLPointsLayer
+const webGLPointsLayer = ref(
+  new WebGLPointsLayer({
+    source: vectorSource.value,
+    style: {
+      symbol: {
+        symbolType: 'image',
+        color: '#ffffff',
+        offset: [0, 0], 
+        size: [16.56, 24.17],
+        src: markerIcon,  // Use white marker
+      },
+    },
+  })
+);
+
+onMounted(() => {
+  if (map) {
+    map.addLayer(webGLPointsLayer.value);
+
+    // Initialize the select interaction for hover
+    selectHover = new Select({
+      condition: pointerMove,
+      layers: [webGLPointsLayer.value],
+    });
+
+    // Add select interaction to the map for hover
+    map.addInteraction(selectHover);
+
+    // Add an event listener for when a feature is hovered over
+    selectHover.on('select', (event) => {
+      if (event.selected.length > 0) {
+        const feature = event.selected[0];
+        hoveredFeature.value = feature;
+        hoverCoordinates.value = feature.getGeometry().getCoordinates();
+      }
+    });
+
+    // Listen to map clicks to handle selection
+    map.on('click', function(evt) {
+      map.forEachFeatureAtPixel(evt.pixel, function(feature) {
+        // Unselect the hovered feature
+        hoverCoordinates.value = null;
+        hoveredFeature.value = null;
+        
+        // Select the clicked feature
+        selectedFeature.value = feature;
+        selectedCoordinates.value = feature.getGeometry().getCoordinates();
+      });
+    });
+
   } else {
-    iconSrc = markerIcon;
+    console.error("Map object is not initialized.");
   }
-
-  return new Style({
-    image: new Icon({
-      src: iconSrc,
-      scale: 1.8,
-      displacement: [-10, 45],
-      anchor: [0.0, 0.0]
-    })
-  });
-};
-
-const url = computed(() => {
-  const params = { page_size: "500", ...props.params };
-  return DIANA_BASE + props.path + "?" + new URLSearchParams(params).toString();
 });
-</script>
 
+watch(
+  () => props.params,
+  (newParams) => {
+    const params = { page_size: "500", ...newParams };
+    const newUrl = DIANA_BASE + props.path + "?" + new URLSearchParams(params).toString();
+    
+    // Debug log
+    // console.log("New URL:", newUrl);
+
+    vectorSource.value.setUrl(newUrl);
+    vectorSource.value.refresh();  // Force a reload
+  },
+  { immediate: true }
+);
+</script>
 <template>
-  <ol-vector-layer :z-index="props.zIndex" :style="featureStyle">
-    <ol-source-vector :url="url" :format="geoJsonFormat" ref="source" />
-    <slot />
-  </ol-vector-layer>
+    <ol-overlay
+      class="ol-popup"
+      v-if="hoveredFeature"
+      :position="hoverCoordinates"
+    >
+      <div
+        class="ol-popup-content"
+        v-html="'Tomb: ' + (hoveredFeature ? hoveredFeature.getId() : '')"
+      >
+      </div>
+    </ol-overlay>
+    <ol-overlay
+      class="ol-popup"
+      v-if="selectedFeature"
+      :position="selectedCoordinates"
+    >
+      <div
+        class="ol-popup-content"
+        v-html="'Tomb: ' + (selectedFeature ? selectedFeature.getId() : '')"
+      >
+      </div>
+    </ol-overlay>
 </template>
