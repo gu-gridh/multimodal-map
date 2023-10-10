@@ -4,8 +4,7 @@ import MainLayout from "@/MainLayout.vue";
 import MapViewControls from "./MapViewControls.vue";
 import MapComponent from "@/components/MapComponent.vue";
 import DianaPlaceLayer from "@/components/DianaPlaceLayerEtruscan.vue";
-import DianaPlaceLayerRephoto from "@/components/DianaPlaceLayerRephoto.vue";
-import LocalGeoJSONLayer from "@/components/LocalGeoJSONLayer.vue";
+import GeoJsonWebGLRenderer from "@/components/GeoJsonWebGLRenderer.vue";
 import FeatureSelection from "./FeatureSelection.vue";
 import MapViewPreview from "./MapViewPreview.vue";
 import { storeToRefs } from "pinia";
@@ -148,22 +147,16 @@ watch(showGrid, (newValue) => {
         > 
                   
           <template #layers>
-            <DianaPlaceLayerRephoto
+            <GeoJsonWebGLRenderer
               :externalUrl="'https://data.dh.gu.se/geography/SGElevationMainSimplified.geojson'"
               :zIndex=0
             >
-              <ol-style>
-                <ol-style-stroke color="rgba(0,0,0,0.18)" :width="1"></ol-style-stroke>
-              </ol-style>
-            </DianaPlaceLayerRephoto>
-             <DianaPlaceLayerRephoto
+            </GeoJsonWebGLRenderer>
+             <GeoJsonWebGLRenderer
               :externalUrl="'https://data.dh.gu.se/geography/SGElevationEdge.geojson'"
               :zIndex=0
             >
-              <ol-style>
-                <ol-style-stroke color="rgba(0,0,0,0.08)" :width="1"></ol-style-stroke>
-              </ol-style>
-            </DianaPlaceLayerRephoto>
+            </GeoJsonWebGLRenderer>
       
             <DianaPlaceLayer v-if="placesLayerVisible" path="etruscantombs/geojson/place/" :params="tagParams" :zIndex=20>
             </DianaPlaceLayer>
