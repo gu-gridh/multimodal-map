@@ -56,7 +56,7 @@ const webGLPointsLayer = ref(
       symbol: {
         symbolType: 'image',
         color: '#ffffff',
-        offset: [0, 0], 
+        offset: [0, 20], 
         size: [30, 45],
         src: markerIcon,  // Use white marker
       },
