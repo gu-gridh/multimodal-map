@@ -166,7 +166,6 @@ watch(showGrid, (newValue) => {
             </DianaPlaceLayerRephoto>
       
             <DianaPlaceLayer v-if="placesLayerVisible" path="etruscantombs/geojson/place/" :params="tagParams" :zIndex=20>
-              <FeatureSelection />
             </DianaPlaceLayer>
           </template>
           
