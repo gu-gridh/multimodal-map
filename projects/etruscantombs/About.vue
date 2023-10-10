@@ -33,7 +33,7 @@
               style="width:auto; padding:5px 15px; text-align: center; cursor: pointer;"  v-bind:class="{fullopacityui: visibleAbout}"> {{ $t('explore') }}</div>
           </button>
         </div>
-        <div class="about-lower-border"> </div>
+        <!-- <div class="about-lower-border"> </div> -->
       </div>
        
         <div class="about-logo-top-right"> </div>
@@ -76,12 +76,14 @@ export default {
 .about-container {
   color: black;
   overflow-y:auto;
-  background: linear-gradient(90deg, rgba(245, 235, 225,1) 0%, rgba(245, 235, 225,0.8) 30%);
+  background: linear-gradient(90deg, rgba(245, 235, 225,1) 0%, rgba(245, 235, 225,0.8) 100%) !important;
+  padding-bottom:40px !important;
+
 }
 
 .fullopacity{
   backdrop-filter:blur(5px);
-  background: linear-gradient(90deg, rgba(245, 235, 225,1) 0%, rgba(245, 235, 225,0.8) 100%);
+  background: linear-gradient(90deg, rgba(245, 235, 225,1) 0%, rgba(245, 235, 225,0.8) 100%) !important;
 }
 
 .category-button{
@@ -93,7 +95,6 @@ export default {
   padding:8px 20px !important;
   z-index:1000;
   opacity:1.0;
-  margin-bottom:0px;
 }
 
 .about-main-title {
@@ -112,8 +113,7 @@ export default {
 @media screen and (max-width: 900px) {
 .category-button{
 margin-top:30px;
-  font-size:1.9em!important;
-
+font-size:1.9em!important;
 }
 }
 
