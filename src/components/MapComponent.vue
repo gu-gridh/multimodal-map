@@ -2,7 +2,7 @@
   <ol-map
     :loadTilesWhileAnimating="true"
     :loadTilesWhileInteracting="true"
-    style="height: 100%; width: calc(100% + 180px); z-index: !important"
+    style="height: 100%; width: calc(100% + 205px); z-index: !important"
     ref="map"
   >
 
