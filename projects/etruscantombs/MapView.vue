@@ -148,8 +148,8 @@ watch(showGrid, (newValue) => {
                   
           <template #layers>
             <GeoJsonWebGLRenderer
-              :externalUrl="'https://data.dh.gu.se/geography/SGElevationMainSimplified.geojson'"
-              :zIndex=0
+              :externalUrl="'https://data.dh.gu.se/geography/SGElevationMain.geojson'"
+              :zIndex=-0
             >
             </GeoJsonWebGLRenderer>
              <GeoJsonWebGLRenderer
