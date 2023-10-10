@@ -192,9 +192,8 @@ watch(showGrid, (newValue) => {
   left: -55px;
   width: 110px;
   min-width: 90px;
+  bottom:55px;
 }
-
-
 
 #app .ol-popup:before {
   left: 30px;

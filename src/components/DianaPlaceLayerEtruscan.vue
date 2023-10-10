@@ -142,6 +142,7 @@ watch(
       >
       </div>
     </ol-overlay>
+    
     <ol-overlay
       class="ol-popup"
       v-if="selectedFeature"
