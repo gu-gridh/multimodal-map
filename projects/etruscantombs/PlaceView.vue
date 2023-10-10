@@ -127,10 +127,10 @@ function groupAndSortByYear(allItems: (Image | Observation | Document | Pointclo
                             target="_blank"
                             >
                                 <div class="meta-data-overlay">
-                                    <div class="meta-data-overlay-text">{{ model.technique ? model.technique.text : 'N/A' }}</div>
                                     <div class="meta-data-overlay-text">{{ model.title }}</div>
+                                    <div class="meta-data-overlay-text">{{ model.technique ? model.technique.text : 'N/A' }}</div>
                                 </div>
-                                <img :src="`${model.preview_image.file}`" :alt="model.title" class="image-square" />
+                                <img :src="`${model.preview_image.iiif_file}/full/400,/0/default.jpg`" :alt="model.title" class="image-square" />
                             </a>
                             <a 
                             v-else-if="model.modelType === 'pointcloud'" 
@@ -138,10 +138,10 @@ function groupAndSortByYear(allItems: (Image | Observation | Document | Pointclo
                             target="_blank"
                             >
                                 <div class="meta-data-overlay">
-                                    <div class="meta-data-overlay-text">{{ model.technique ? model.technique.text : 'N/A' }}</div>
                                     <div class="meta-data-overlay-text">{{ model.title }}</div>
+                                    <div class="meta-data-overlay-text">{{ model.technique ? model.technique.text : 'N/A' }}</div>
                                 </div>
-                                <img :src="`${model.preview_image.file}`" :alt="model.title" class="image-square" />
+                                <img :src="`${model.preview_image.iiif_file}/full/400,/0/default.jpg`" :alt="model.title" class="image-square" />
                             </a>
                         </div>
                     </tr>
@@ -151,8 +151,9 @@ function groupAndSortByYear(allItems: (Image | Observation | Document | Pointclo
                         <div v-for="(image, index) in plans" :key="index" class="image-placeholder plan-placeholder">
                             <div class="image-square" v-if="'iiif_file' in image">
                                 <router-link :to="`/detail/image/${image.id}`">
-                                    <div class="meta-data-overlay"><div class="meta-data-overlay-text">{{image.title}}</div></div>
-                                    <img :src="`${image.iiif_file}/full/500,/0/default.jpg`" :alt="image.title"
+                                    <div class="meta-data-overlay"><div class="meta-data-overlay-text">{{image.title}}</div>
+                                </div>
+                                    <img :src="`${image.iiif_file}/full/400,/0/default.jpg`" :alt="image.title"
                                         class="image-square-plan" />
                                 </router-link>
                             </div>
@@ -164,7 +165,7 @@ function groupAndSortByYear(allItems: (Image | Observation | Document | Pointclo
                             <div class="image-square" v-if="'iiif_file' in image">
                                 <router-link :to="`/detail/image/${image.id}`">
                                     <div class="meta-data-overlay"><div class="meta-data-overlay-text">{{image.title}}</div></div>
-                                    <img :src="`${image.iiif_file}/full/500,/0/default.jpg`" :alt="image.title"
+                                    <img :src="`${image.iiif_file}/full/400,/0/default.jpg`" :alt="image.title"
                                         class="image-square-inner" />
                                 </router-link>
                             </div>
@@ -197,7 +198,7 @@ function groupAndSortByYear(allItems: (Image | Observation | Document | Pointclo
                                  <div class="image-square" v-if="'iiif_file' in item">
                                     <router-link v-if="item.iiif_file" :to="`/detail/image/${item.id}`">
                                         <div class="meta-data-overlay"><div class="meta-data-overlay-text">{{item.title}}</div></div>
-                                        <img :src="`${item.iiif_file}/full/500,/0/default.jpg`" :alt="item.title" class="image-square-inner"/>
+                                        <img :src="`${item.iiif_file}/full/400,/0/default.jpg`" :alt="item.title" class="image-square-inner"/>
                                     </router-link>
                                 </div>
 
@@ -221,10 +222,10 @@ function groupAndSortByYear(allItems: (Image | Observation | Document | Pointclo
                                     target="_blank"
                                 >
                                     <div class="meta-data-overlay">
-                                        <div class="meta-data-overlay-text">{{ item.technique ? item.technique.text : 'N/A' }}</div>
                                         <div class="meta-data-overlay-text">{{ item.title }}</div>
+                                        <div class="meta-data-overlay-text">{{ item.technique ? item.technique.text : 'N/A' }}</div> 
                                     </div>
-                                    <img :src="`${item.preview_image.iiif_file}/full/500,/0/default.jpg`" :alt="item.title" class="image-square" />
+                                    <img :src="`${item.preview_image.iiif_file}/full/400,/0/default.jpg`" :alt="item.title" class="image-square" />
                                 </a>
 
                                  <!-- If the item is a mesh -->
@@ -234,9 +235,10 @@ function groupAndSortByYear(allItems: (Image | Observation | Document | Pointclo
                                     target="_blank"
                                 >
                                     <div class="meta-data-overlay">
+                                        <div class="meta-data-overlay-text">{{item.title}}</div>
                                         <div class="meta-data-overlay-text">{{ item.technique ? item.technique.text : 'N/A' }}</div>
-                                        <div class="meta-data-overlay-text">{{item.title}}</div></div>
-                                    <img :src="`${item.preview_image.iiif_file}/full/500,/0/default.jpg`" :alt="item.title" class="image-square" />
+                                    </div>
+                                    <img :src="`${item.preview_image.iiif_file}/full/400,/0/default.jpg`" :alt="item.title" class="image-square" />
                                 </a>
 
                                  <!-- If the item is an document -->
