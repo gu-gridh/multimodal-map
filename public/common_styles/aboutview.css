@@ -29,7 +29,7 @@ body {
   pointer-events: auto;
   transform: scale(1.0);
   translate: 0px 0px;
-  transition: all 0.0s ease-in-out;
+  transition: all 0.1s ease-in-out;
 }
 
 .flex-machine {
