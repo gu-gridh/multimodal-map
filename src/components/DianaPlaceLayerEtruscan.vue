@@ -85,8 +85,8 @@ onMounted(() => {
         hoverCoordinates.value = feature.getGeometry().getCoordinates();
       }
       else {
-        hoverCoordinates.value =  undefined as any;
-        hoveredFeature.value =  undefined as any;
+        // hoverCoordinates.value =  undefined as any;
+        // hoveredFeature.value =  undefined as any;
       }
     });
 
