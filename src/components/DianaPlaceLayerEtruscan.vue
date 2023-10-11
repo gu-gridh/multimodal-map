@@ -64,6 +64,12 @@ const webGLPointsLayer = ref(
   })
 );
 
+const clearPopups = () => {
+  hoverCoordinates.value = null;
+  hoveredFeature.value = null;
+  selectedCoordinates.value = null;
+};
+
 onMounted(() => {
   if (map) {
     map.addLayer(webGLPointsLayer.value);
@@ -83,10 +89,6 @@ onMounted(() => {
         const feature = event.selected[0];
         hoveredFeature.value = feature;
         hoverCoordinates.value = feature.getGeometry().getCoordinates();
-      }
-      else {
-        // hoverCoordinates.value =  undefined as any;
-        // hoveredFeature.value =  undefined as any;
       }
     });
 
@@ -126,6 +128,8 @@ watch(
 
     vectorSource.value.setUrl(newUrl);
     vectorSource.value.refresh();  // Force a reload
+    
+    clearPopups(); // Clear the popups
   },
   { immediate: true }
 );
