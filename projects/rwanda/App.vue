@@ -68,7 +68,7 @@ body {
   width: 40px;
   height: 40px;
   margin-left: 0px;
-  margin-top: -25px;
+  margin-top: -15px;
   padding: 16px 15px 10px 9px;
   line-height: 1px;
   font-size: 50px;
