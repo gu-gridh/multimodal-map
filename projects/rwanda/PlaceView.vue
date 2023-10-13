@@ -146,7 +146,7 @@ function deselectPlace() {
             </div>
         </div>
         <!-- Interview if avaliable -->
-        <div class="place-card" v-if="interviews && interviews.length != 0">
+        <div class="place-card citation" v-if="interviews && interviews.length != 0">
             <span v-for="text in interviews">
                 <p>{{ text.title }}</p>
                 <p style="font-style: italic;">{{ text.text}}</p>
@@ -256,7 +256,7 @@ function deselectPlace() {
   width:100%;
   color:black;
   background-color: white;
-  font-size: 0.7vw;
+  font-size: 1.0vw;
   line-height:1.2;
   margin-bottom: 40px;
   padding: 10px 10px 10px 10px;
@@ -264,6 +264,10 @@ function deselectPlace() {
   transition: all 0.2s ease-in-out;
   border-radius: 10px !important;
   overflow:hidden;
+}
+
+.citation {
+  font-size: 0.7vw;
 }
 
 .place-card:hover {
