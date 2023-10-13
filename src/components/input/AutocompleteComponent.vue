@@ -134,3 +134,10 @@ watch(selectedItem, () => {
   .then(() => {router.go(0)})
 })
 </script>
+
+<style scoped>
+.rounded-lg{
+  border-radius:8px;
+
+}
+</style>

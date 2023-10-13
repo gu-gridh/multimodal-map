@@ -75,7 +75,7 @@ watch(
     <template #search>
       <button class="item"  @click="visibleAbout = true;">
         <div
-          class="p-1 px-3 clickable category-button"
+          class="p-1 px-3 clickable category-button about-button"
           style="
             width: auto;
             text-align: center;
