@@ -8,7 +8,7 @@ import { formatNames } from "./names";
 import type Feature from "ol/Feature";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
-import MapComponent from "@/components/MapComponent.vue";
+import MapComponent from "@/components/MapComponentRwanda.vue";
 import DianaPlaceLayer from "@/components/DianaPlaceLayer.vue";
 import FeatureSelection from "@/components/FeatureSelection.vue";
 import type { Place } from "./types";
@@ -178,18 +178,7 @@ watch(
 </template>
 
 <style>
-#app .ol-zoom {
-  display: flex;
-}
-#app .ol-zoom-in {
-  position: fixed;
-  left: 50%;
-}
-#app .ol-zoom-out {
-  position: fixed;
-  right: 45%;
-  top: 20px;
-}
+
 #app #map-component{
   width: 100% !important;
 }
@@ -237,25 +226,5 @@ bottom:100px;
   min-width: 200px;
 }
 
-#app .ol-control button {
-  font-family: "Barlow Condensed", sans-serif;
-  border-radius: 50% !important;
-  background-color: rgb(50, 50, 50) !important;
-  color: white !important;
-}
 
-#app .ol-control button:hover,
-.ol-control button:focus {
-  background-color: rgb(180, 100, 100) !important;
-  color: white !important;
-  border-style: none !important;
-  border-style: hidden !important;
-}
-
-#app .ol-control button:active {
-  background-color: rgb(180, 100, 100) !important;
-  color: white !important;
-  border-style: none !important;
-  border-style: hidden !important;
-}
 </style>
