@@ -1,7 +1,7 @@
 import type { RwandaProject } from "./types";
 
 export default <RwandaProject>{
-  title: "READING THE SIGNS",
+  title: "READING \nTHE \nSIGNS",
   urls: {
     baseURL: "https://diana.dh.gu.se/api/rwanda",
     place: "geojson/place",

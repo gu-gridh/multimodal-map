@@ -150,10 +150,14 @@ const handleInformantClick = (key: string) => {
   padding-right: 5px;
 }
 
+#app .searchbox-container{
+  width:85%;
+}
+
 #app .searchbox{
-  background-color:black !important;
+  background-color:white !important;
   width:100%;
-  color:white;
+  color:black;
   padding:15px  !important;
   font-size: 25px;
 }
@@ -161,33 +165,25 @@ const handleInformantClick = (key: string) => {
 #app .searchbox-menu{
   z-index:10;
   margin-top:-5px;
+  width:85%;
   padding:10px 0px 0px 0px;
   border-radius:0 0 8px 8px;
-  background-color:rgb(45,45,45);
-  color:white;
+  background-color:rgb(255,255,255);
+  color:black;
   max-height:calc(100vh - 550px);
-
-
 }
 
 #app .searchbox-menu-text{
-  
   padding:15px  !important;
   font-size: 16px;
-
 }
 
-#app .searchbox-menu-text-active{
-  
+#app .searchbox-menu-text-active{ 
  background-color:rgb(180,100,100);
-
 }
 
-
 #app .searchbox-menu-text-active{
-  
   color:white;
- 
  }
 
 
@@ -200,14 +196,13 @@ const handleInformantClick = (key: string) => {
   align-items: flex-start;
 }
 
-
-
 .section-title {
   font-weight: 400;
   font-size: 20px;
   margin-top: 30px;
   margin-bottom: 5px;
 }
+
 #app .mapcard-container {
   margin-top:10px;
 }
@@ -218,8 +213,8 @@ const handleInformantClick = (key: string) => {
 }
 
 #app .category-button {
-  background-color: rgba(180, 100, 100, 1.0);
-  color: white;
+  background-color: rgba(250, 250, 250, 1.0);
+  color: black;
   border-radius: 4px;
   transition: all 0.2s ease-in-out;
   width: auto !important;
@@ -228,12 +223,12 @@ const handleInformantClick = (key: string) => {
 }
 
 #app .category-button:hover {
-  background-color: rgb(220, 140, 140);
+  background-color: rgb(180, 100, 100);
   color: white;
 }
 
 #app .category-button.active {
-  background-color: rgb(220, 140, 140);
+  background-color: rgb(180, 100, 100);
   color: white;
 }
 

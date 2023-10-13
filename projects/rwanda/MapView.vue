@@ -178,6 +178,9 @@ watch(
 </template>
 
 <style>
+.about{
+  display:none;
+}
 
 #app #map-component{
   width: 100% !important;
