@@ -40,9 +40,9 @@ const url = computed(() => {
 });
 
 const style = {
-  'stroke-color': [0, 0, 0, 0.18],
+  'stroke-color': [0, 0, 0, 0.2],
   'stroke-width': 1,
-  'stroke-offset': -1,
+  'stroke-offset': 0,
   'fill-color': [255, 255, 255, 0.6],
 };
 

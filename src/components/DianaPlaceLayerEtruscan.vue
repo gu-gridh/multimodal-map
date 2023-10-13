@@ -34,7 +34,7 @@ const props = defineProps({
   },
   zIndex: {
     type: Number,
-    default: 1,
+    default: 2,
   },
 });
 
@@ -120,7 +120,7 @@ onMounted(() => {
 watch(
   () => props.params,
   (newParams) => {
-    const params = { page_size: "500", ...newParams };
+    const params = { page_size: "1000", ...newParams };
     const newUrl = DIANA_BASE + props.path + "?" + new URLSearchParams(params).toString();
     
     // Debug log
