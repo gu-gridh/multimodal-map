@@ -59,7 +59,7 @@ body {
 .close-button {
   width: 40px;
   height: 40px;
-  margin-left: -10px;
+  margin-left: 0px;
   margin-top: -5px;
   padding: 16px 15px 10px 9px;
   line-height: 1px;
@@ -72,6 +72,18 @@ body {
   cursor: pointer;
   pointer-events: auto;
   margin-bottom: 30px;
+}
+
+#app .ol-zoom-in {
+  left: calc(50% + 0px) !important;
+
+
+}
+
+#app .ol-zoom-out {
+  left: calc(50% + 50px);
+
+
 }
 
 .close-button:hover {
