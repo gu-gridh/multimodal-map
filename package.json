@@ -13,6 +13,8 @@
   "dependencies": {
     "@headlessui/vue": "^1.7.2",
     "@heroicons/vue": "^2.0.11",
+    "@turf/centroid": "^6.5.0",
+    "@turf/turf": "^6.5.0",
     "@types/geojson": "^7946.0.10",
     "@types/openseadragon": "^3.0.5",
     "@vueform/multiselect": "^2.5.7",

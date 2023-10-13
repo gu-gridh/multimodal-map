@@ -6,6 +6,8 @@ import type { Image } from "./types";
 import type { DianaClient } from "@/assets/diana";
 import VueMasonryWall from "@yeger/vue-masonry-wall";
 import { useRouter, useRoute } from "vue-router";
+import centroid from '@turf/centroid';
+import * as turf from '@turf/turf'
 
 const props = defineProps({
   id: {
@@ -28,7 +30,9 @@ const informants:any = ref([]);
 const placeType = ref()
 const placeDescription = ref()
 const placeNames: any = ref([])
-
+const placeGeoJson = ref()
+const coordinates: any = ref([])
+const placeId = ref(route.params.placeId)
 //kan tas bort?
 defineComponent({
   components: {
@@ -81,6 +85,53 @@ const fetchImages = async (id: Number) => {
     images.value = await diana.listAll<Image>("image/", { place_of_interest: id });
     console.log(images.value)
 }
+const featureZoom = 17;
+
+const zoomMap = () => {
+    const geometry = placeGeoJson.value.geometry
+    console.log(geometry.type)
+    if (geometry.type == "Point") {
+        const center = geometry.coordinates
+        coordinates.value = center.geometry.coordinates
+        coordinates.value[0] = coordinates.value.splice(1, 1, coordinates.value[0])[0];
+        store.updateCenter(coordinates.value)
+        store.updateZoom(featureZoom)
+    }
+    if(geometry.type == "MultiPolygon" ) {
+        const multipolygon = turf.multiPolygon(geometry.coordinates)
+        const center = turf.pointOnSurface(multipolygon)
+        coordinates.value = center.geometry.coordinates
+        coordinates.value[0] = coordinates.value.splice(1, 1, coordinates.value[0])[0];
+        store.updateCenter(coordinates.value)
+        store. updateZoom(featureZoom)
+    }
+    if (geometry.type == "MultiLineString") {
+        const multilinestring = turf.multiLineString(geometry.coordinates)
+        const center = turf.pointOnSurface(multilinestring)
+        console.log("turf center", center)
+        coordinates.value = center.geometry.coordinates
+        coordinates.value[0] = coordinates.value.splice(1, 1, coordinates.value[0])[0];
+        store.updateCenter(coordinates.value)
+        store. updateZoom(featureZoom)
+    }
+    if (geometry.type == "Polygon" ) {
+        const polygon = turf.polygon(geometry.coordinates)
+        const center = turf.pointOnSurface(polygon)
+        coordinates.value = center.geometry.coordinates
+        coordinates.value[0] = coordinates.value.splice(1, 1, coordinates.value[0])[0];
+        store.updateCenter(coordinates.value)
+        store. updateZoom(featureZoom)
+    }
+    if (geometry.type == "LineString" ) {
+        const polygon = turf.lineString(geometry.coordinates)
+        const center = turf.pointOnSurface(polygon)
+        coordinates.value = center.geometry.coordinates
+        coordinates.value[0] = coordinates.value.splice(1, 1, coordinates.value[0])[0];
+        store.updateCenter(coordinates.value)
+        store. updateZoom(featureZoom)
+    }
+    else console.log("not found")
+}
 
 //fetch place data
 const fetchPlaceData =async () => {
@@ -99,6 +150,8 @@ const fetchPlaceData =async () => {
         await fetch(`https://diana.dh.gu.se/api/rwanda/geojson/place/${route.params.placeId}`)
         .then(response => response.json())
         .then(data => {
+            placeGeoJson.value = data
+            console.log(placeGeoJson.value)
             place.value = data.properties
             placeType.value = capitalize(place.value.type.text)
             placeDescription.value = capitalize(place.value.description)
@@ -107,6 +160,7 @@ const fetchPlaceData =async () => {
         const placeId = Number(route.params.placeId)
         fetchInterviews(placeId)
         fetchImages(placeId)
+        zoomMap()
     } 
 }
 
@@ -117,6 +171,14 @@ onMounted(() => {
 watch(selectedFeature, () => {
   fetchPlaceData()
 })
+
+/* watch(
+    route.params,
+    () => {
+      console.log(route.params.placeId);
+    },
+    {deep: true, immediate: true,}
+    ) */
 
 function deselectPlace() {
   selectedFeature.value = undefined;
@@ -133,6 +195,7 @@ function deselectPlace() {
     <div class="py-6">
         <div class="close-button" @click="deselectPlace">+</div> 
     </div>
+    <!-- <p>{{ coordinates }}</p> -->
         <!-- place card with place info -->
         <div class="place-card">
             <div style="width:100%;">

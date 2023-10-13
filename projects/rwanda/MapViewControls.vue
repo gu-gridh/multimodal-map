@@ -13,8 +13,8 @@ import CategoryButton from "@/components/input/CategoryButton.vue";
 const SOURCES = {
   all: "All",
   images: "Images",
-  places: "Place names",
   interviews: "Interviews",
+  documents: "Documents",
 }
 const PLACE_TYPES = {
   area: "Areas",

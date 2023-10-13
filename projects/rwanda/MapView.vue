@@ -16,6 +16,7 @@ import About from "./About.vue";
 import AutocompleteComponent from "@/components/input/AutocompleteComponent.vue";
 import { useRwandaMap } from "./map.composable";
 import { rwandaStore } from "./rwandaStore";
+import { useRoute } from "vue-router";
 
 function getName(f: Feature): string {
   const place = f.getProperties() as Place;
@@ -67,6 +68,7 @@ watch(
   },
   { immediate: true }
 );
+
 </script>
 
 <template>
