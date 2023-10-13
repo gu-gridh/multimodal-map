@@ -150,7 +150,6 @@ const handleInformantClick = (key: string) => {
   padding-right: 5px;
 }
 
-
 #app .searchbox{
   background-color:white !important;
   width:100%;

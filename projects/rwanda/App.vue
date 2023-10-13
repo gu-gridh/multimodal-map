@@ -38,7 +38,6 @@ body {
   margin-top:15px;
 }
 
-
 #app .left-pane {
   font-size:1.2vw;
   background: url("@/assets/gradient-rephotography.png");
