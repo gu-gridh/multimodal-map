@@ -136,7 +136,7 @@ const handleInformantClick = (key: string) => {
 
 <style>
 .filter-button {
-  font-size: 14px;
+  font-size: 0.8vw;
 }
 .filter-heading {
   font-size: 16px;
@@ -214,8 +214,8 @@ const handleInformantClick = (key: string) => {
   border-radius: 4px;
   transition: all 0.2s ease-in-out;
   width: auto !important;
-  padding-left: 20px !important;
-  padding-right: 20px !important;
+  padding-left: 10px !important;
+  padding-right: 10px !important;
 }
 
 #app .category-button:hover {

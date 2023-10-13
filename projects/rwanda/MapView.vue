@@ -182,18 +182,7 @@ watch(
   display:none;
 }
 
-.main-title {
-  white-space: pre-line;
-  font-size: 7vw;
-  line-height: 0.7;
-  width: auto;
-  font-weight: 300;
-  letter-spacing: 0.05rem;
-  margin-left: -6px;
-  margin-top: -15px;
-  margin-bottom: 30px;
-  transition: all 0.5s ease-in-out;
-}
+
 
 
 

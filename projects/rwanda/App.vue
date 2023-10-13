@@ -25,7 +25,7 @@ body {
 }
 
 .main-title {
-  font-size: 80px;
+  font-size:5vw;
   line-height: 0.8;
   font-weight: 600;
   color:rgb(180,100,100);
@@ -38,9 +38,9 @@ body {
   margin-top:15px;
 }
 
+
 #app .left-pane {
-  background-color: grey;
-  width: 900px;
+  font-size:1.2vw;
   background: url("@/assets/gradient-rephotography.png");
   background-size: contain;
 }

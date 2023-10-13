@@ -140,25 +140,6 @@ body {
   width: 0 !important
 }
 
-/* Masonry settings for the gallery */
-#app .masonry-wall {
-  position: absolute;
-  top: 0px;
-  width: 100%; 
-  height: 100%; 
-  z-index: 99;
-  background-color: rgb(234, 228, 219);
-  overflow-y: scroll;
-  transition: all 0.5s ease-in-out;
-  padding-left:33%;
-}
-
-@media (max-width: 1500px) {
-  #app .masonry-wall {
-    padding-left:540px !important;
-  }
-}
-
 
 .grid-item:hover .grid-item-info {
   opacity: 0.9;
