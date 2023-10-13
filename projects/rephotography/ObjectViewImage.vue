@@ -46,5 +46,8 @@ defineProps<{
 
 <style scoped>
 
+.illustration {
+  height: calc(100vh - 80px);
+}
 
 </style>

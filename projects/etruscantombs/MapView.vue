@@ -3,52 +3,107 @@ import { computed } from "vue";
 import MainLayout from "@/MainLayout.vue";
 import MapViewControls from "./MapViewControls.vue";
 import MapComponent from "@/components/MapComponent.vue";
-import DianaPlaceLayer from "@/components/DianaPlaceLayer.vue";
-import FeatureSelection from "@/components/FeatureSelection.vue";
+import DianaPlaceLayer from "@/components/DianaPlaceLayerEtruscan.vue";
+import GeoJsonWebGLRenderer from "@/components/GeoJsonWebGLRenderer.vue";
+import FeatureSelection from "./FeatureSelection.vue";
 import MapViewPreview from "./MapViewPreview.vue";
 import { storeToRefs } from "pinia";
-import { rephotographyStore } from "./store";
+import { etruscanStore } from "./store";
+import { mapStore } from "@/stores/store";
 import { clean } from "@/assets/utils";
-import markerIcon from "@/assets/marker-gold.svg";
-import markerBlue from "@/assets/marker-blue.svg";
+import markerIcon from "@/assets/marker-white.svg";
+import MapViewGallery from "./MapViewGallery.vue";
 import { ref } from "vue";
 import About from "./About.vue";
 import { onMounted, watch } from "vue";
 import { nextTick } from "vue";
 import GeoJSON from "ol/format/GeoJSON";
+import Title from "./Title.vue"
 
+const { categories, tags, necropoli, tombType, placesLayerVisible, tagsLayerVisible, dataParams } = storeToRefs(etruscanStore());
+const store = mapStore();
+const { selectedFeature } = storeToRefs(store);
+const minZoom = 14;
+const maxZoom = 20;
+const featureZoom = 16; //value between minZoom and maxZoom when you select a point 
+const visibleAbout = ref(false);
+const showGrid = ref(false);
+let visited = true; // Store the visited status outside of the hook
 
-const { categories, years, tags, tagsLayerVisible, placesLayerVisible, mapLayerVisibility } = storeToRefs(rephotographyStore());
-
-
-const placeParams = computed(() =>
-  clean({
-    type: categories.value.filter((x) => x !== "all").join(","),
-    start_date: years.value[0],
-    end_date: years.value[1],
-  })
+watch(
+  selectedFeature,
+  (newFeature, oldFeature) => {
+    if (newFeature && newFeature.getGeometry) {
+      const geometry = newFeature.getGeometry();
+      if (geometry) {
+        const coordinates = (geometry as any).getCoordinates();
+        store.updateCenter(coordinates);
+        if (store.zoom < featureZoom)
+        {
+          store.updateZoom(featureZoom);
+        }
+      }
+    }
+  },
+  { immediate: true }
 );
 
+/* Response for generating the URL for filtering map points down */
 const tagParams = computed(() => {
-  const tag_set = tags.value[0]; // Assuming that tags always contains at least one element
-  return clean({
-    tag_set,
-  });
+  const epoch = tags.value[0];
+  const necropolis = necropoli.value[0];
+  const type = tombType.value[0];
+
+  const initialParams = { epoch, necropolis, type };
+  
+  // Remove parameters that are set to "all"
+  const cleanedParams = Object.keys(initialParams)
+  .filter((key) => initialParams[key as keyof typeof initialParams] !== "all")
+  .reduce((obj, key) => {
+    obj[key as keyof typeof initialParams] = initialParams[key as keyof typeof initialParams];
+    return obj;
+  }, {} as typeof initialParams);
+
+  
+  // Further clean to remove null or undefined values
+  const params = clean(cleanedParams);
+
+  // Convert the params object to a URL search string
+  const queryString = new URLSearchParams(params).toString();
+
+  // Concatenate the base URL with the search string to form the full URL
+  const fullUrl = queryString ? 
+    `https://diana.dh.gu.se/api/etruscantombs/geojson/place/?page_size=500&${queryString}` :
+    `https://diana.dh.gu.se/api/etruscantombs/geojson/place/?page_size=500`;
+
+  console.log("Generated URL:", fullUrl); // Debug line
+  
+  return params;
 });
 
-
-const visibleAbout = ref(false);
-let visited = true; // Store the visited status outside of the hook
+watch(
+  tagParams, 
+  (newParams) => {
+    dataParams.value = newParams;
+  }, 
+  { immediate: true }
+);
 
 onMounted(() => {
   // Check if the "visited" key exists in session storage
   visited = sessionStorage.getItem("visited") === "true"; // Retrieve the visited status from session storage
+  const storedShowGrid = localStorage.getItem("showGrid");
 
   if (!visited) {
     // Hide the about component
     visibleAbout.value = true;
     sessionStorage.setItem("visited", "true");
-  } 
+  }
+
+  if (storedShowGrid) {
+    showGrid.value = JSON.parse(storedShowGrid);
+  }
+
 })
 
 const toggleAboutVisibility = async () => {
@@ -57,154 +112,83 @@ const toggleAboutVisibility = async () => {
   visibleAbout.value = !visibleAbout.value;
 };
 
-const vectorLayers = computed(() => [
-  {
-    url: "https://data.dh.gu.se/geography/glacier_front_2022.geojson",
-    geoJsonFormat: new GeoJSON(),
-  },
-  {
-  url: "https://data.dh.gu.se/geography/glacier_front_2021.geojson",
-  geoJsonFormat: new GeoJSON(),
-  },
-  {
-  url: "https://data.dh.gu.se/geography/glacier_front_2008.geojson",
-  geoJsonFormat: new GeoJSON(),
-  },
-]);
-
-const showSection = ref(false);
-
-const toggleSection = () => {
-  showSection.value = !showSection.value;
-};
-
-/*Colors for Vector Layer*/
-const layerColors = ["red", "green", "blue"];
-
-const toggleMapLayer = () => {
-  mapLayerVisibility.value = !mapLayerVisibility.value; // Toggle the map layer visibility
-};
-
+watch(showGrid, (newValue) => {
+  localStorage.setItem("showGrid", JSON.stringify(newValue));
+});
 </script>
 
 <template>
- <About :visibleAbout="visibleAbout" @close="visibleAbout = false" />
+  <div style="display:flex; align-items: center; justify-content: center; pointer-events: none;">
+    <div class="ui-mode ui-overlay">
+      <button class="item" v-bind:class="{ selected: !showGrid }" v-on:click="showGrid = false;">
+        {{ $t('map') }}
+      </button>
+      <button class="item" v-bind:class="{ selected: showGrid }" v-on:click="showGrid = true;">
+        {{ $t('gallery') }}
+      </button>
+    </div>
+  </div>
+  <MapViewGallery v-if="showGrid" />
+  <About :visibleAbout="visibleAbout" @close="visibleAbout = false" />
   <MainLayout>
     <template #search>
-      <button class="item"  @click="toggleAboutVisibility">
-            <div
-              class="p-1 px-2 clickable category-button"
-              style="
-                width: 90px;
-                text-align: center;
-                margin-top: -10px;
-                cursor: pointer;
-              "
-            >More info</div>
-          </button>
-      <MapViewControls />
+      <Title @toggle-about="toggleAboutVisibility"/>
+      <MapViewControls/>
     </template>
-
-  
-   
 
     <template #background>
       <div class="map-container">
-      <MapComponent :min-zoom="10" :max-zoom="18" :restrictExtent="[11.9, 42.15, 12.2, 42.4]" >
-        <template #layers>
-          <NpolarLayer
-            capabilitiesUrl="https://geodata.npolar.no/arcgis/rest/services/Basisdata/NP_Ortofoto_Svalbard_WMTS_25833/MapServer/WMTS/1.0.0/WMTSCapabilities.xml"
-          />
-
-        <!-- places -->
-        <DianaPlaceLayer
-          v-if="placesLayerVisible"
-          path="rephotography/geojson/place/"
-          :params="placeParams"
-        >
-          <ol-style>
-            <ol-style-icon
-              :src="markerIcon"
-              :scale="1.8"
-              :displacement="[-10, 45]"
-              :anchor="[0.0, 0.0]"
-            ></ol-style-icon>
-          </ol-style>
-          <FeatureSelection />
-        </DianaPlaceLayer>
-
-        <!-- tags -->
-        <DianaPlaceLayer
-          v-if="tagsLayerVisible"
-          path="rephotography/search/tag/"
-          :params="tagParams"
-        >
-          <ol-style>
-            <ol-style-icon
-              :src="markerIcon"
-              :scale="1.8"
-              :displacement="[-10, 45]"
-              :anchor="[0.0, 0.0]"
-            ></ol-style-icon>
-          </ol-style>
-          <FeatureSelection />
-        </DianaPlaceLayer>
-
-          <DianaPlaceLayer
-          path="rephotography/geojson/focus/"
-          >
-          <ol-style>
-            <ol-style-icon
-              :src="markerBlue"
-              :scale="1.8"
-              :displacement="[-10, 45]"
-              :anchor="[0.0, 0.0]"
-            ></ol-style-icon>
-          </ol-style>
-          <FeatureSelection />
-        </DianaPlaceLayer>
-
-        <div v-if="mapLayerVisibility">
-       <ol-vector-layer v-for="(layer, index) in vectorLayers" :key="layer.url" :z-index="1">
-        <ol-source-vector :url="layer.url" :format="layer.geoJsonFormat" ref="source" />
-        <ol-style>
-          <ol-style-stroke :color="layerColors[index % layerColors.length]" width="4"></ol-style-stroke>
-        </ol-style>
-      </ol-vector-layer>
-      </div>
-
-        </template>
-      </MapComponent>
-    </div>
+        <MapComponent 
+          :shouldAutoMove="true" 
+          :min-zoom=minZoom
+          :max-zoom=maxZoom 
+          :restrictExtent="[11.9, 42.15, 12.2, 42.4]"       
+          :key="showGrid.toString()"
+        > 
+                  
+          <template #layers>
+            <GeoJsonWebGLRenderer
+              :externalUrl="'https://data.dh.gu.se/geography/SGElevationMain.geojson'"
+              :zIndex=-0
+            >
+            </GeoJsonWebGLRenderer>
+             <GeoJsonWebGLRenderer
+              :externalUrl="'https://data.dh.gu.se/geography/SGElevationEdge.geojson'"
+              :zIndex=0
+            >
+            </GeoJsonWebGLRenderer>
+      
+            <DianaPlaceLayer v-if="placesLayerVisible" path="etruscantombs/geojson/place/" :params="tagParams" :zIndex=20>
+            </DianaPlaceLayer>
+          </template>
+          
+        </MapComponent>  
+      </div> 
     </template>
 
     <template #details>
-      <MapViewPreview />
+      <MapViewPreview v-if="!showGrid"/>
     </template>
+
   </MainLayout>
 </template>
 
 <style>
 .map-container {
+  height: calc(100vh - 80px) !important;
   position: relative;
-  width:100%;
+  width: 100%;
 }
 
-
+/* Overides the settings in ui_modules.css */
 #app .ol-popup {
-  font-size: 1.2em;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  user-select: none;
-  text-align: center;
-  position: absolute;
-  background-color: white;
-  box-shadow: 2 2px 8px rgba(0, 0, 0, 0.5);
-  padding: 3px;
-  border-radius: 5px;
-  border: 0px solid #cccccc;
-  bottom: 35px;
-  left: -50px;
-  min-width: 100px;
+  left: -55px;
+  width: 110px;
+  min-width: 90px;
+  bottom:55px;
+}
+
+#app .ol-popup:before {
+  left: 30px;
 }
 </style>

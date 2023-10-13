@@ -1,0 +1,185 @@
+/*CSS here will be used by any file that has added the stylesheet*/
+
+/* CSS - Cascading Style Sheet */
+
+
+
+/* About */
+body {
+  border: 0px;
+}
+
+.about-container {
+  position: fixed;
+  line-height: 1;
+  width: 100%;
+  height: calc(100vh - 80px);
+  z-index: 2000;
+  backdrop-filter: blur(0px);
+  pointer-events: none;
+  transform: scale(1.5);
+  translate: 0px 100px;
+  transition: all 1.5s ease-in-out;
+  opacity: 0.0;
+  overflow-y: auto;
+}
+
+.fullopacity {
+  opacity: 1.0;
+  pointer-events: auto;
+  transform: scale(1.0);
+  translate: 0px 0px;
+  transition: all 0.1s ease-in-out;
+}
+
+.flex-machine {
+  height: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.red-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+  width: auto;
+}
+
+.about-main-title {
+  white-space: pre-line;
+  margin-top: 5%;
+  flex-basis: auto;
+  width: 100%;
+  font-size: 7vw;
+  line-height: 0.75;
+  font-weight: 100;
+  letter-spacing: 0rem;
+  text-align: center;
+  margin-bottom: 30px;
+  transition: all 0.4s ease-in-out;
+}
+
+.about-sub-title {
+  margin-top: -30px;
+  flex-basis: auto;
+  width: 100%;
+  font-size: 65px;
+  line-height: 0.9;
+  font-weight: 100;
+  letter-spacing: -0.2rem;
+  text-align: center;
+  margin-bottom: 40px;
+  transition: all 0.4s ease-in-out;
+}
+
+
+
+.about-article-main {
+  position: relative;
+  float: left;
+  text-align: center;
+  color: black;
+  font-weight: 200;
+  columns: 1;
+  column-gap: 30px;
+  width: 60%;
+  font-size: 1.3vw;
+  padding: 0px 30px;
+  transition: all 0.4s ease-in-out;
+
+}
+
+.about-article-sub {
+  position: relative;
+  float: left;
+  text-align: justify;
+  color: black;
+  columns: 2;
+  column-gap: 30px;
+  width: 60%;
+  font-size: 1.0vw;
+  font-weight: 300;
+  padding: 30px;
+  transition: all 0.4s ease-in-out;
+}
+
+.fullopacityui {
+  opacity: 1.0;
+}
+
+a {
+  font-weight: bold;
+}
+
+.about-logo-top-right {
+  display: block;
+  pointer-events: none;
+  width: 250px;
+  height: 150px;
+  position: absolute;
+  background: url(/images/logo-isvroma.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  top: 30px;
+  right: 60px;
+  opacity: 0.7;
+
+}
+
+@media screen and (max-width: 1500px) {
+
+
+  .about-main-title {
+    font-size: 100px;
+
+  }
+
+  .about-article-main {
+    font-size: 1.8em;
+    width: 850px;
+  }
+
+  .about-article-sub {
+    font-size: 1.3em;
+    width: 850px;
+  }
+}
+
+
+@media screen and (max-width: 900px) {
+  #app .about-main-title {
+    font-size: 100px;
+    width: 100%;
+    margin-top: 50px;
+  }
+
+  #app .about-article-main {
+    columns: 1;
+    width: 100%;
+    padding: 0px 40px;
+    font-size: 1.8em;
+  }
+
+  #app .about-article-sub {
+    columns: 1;
+    width: 100%;
+    margin-top: 10px;
+    font-size: 1.6em;
+    padding: 20px 40px;
+  }
+
+  #app .about-container {
+    position: fixed;
+    color: white;
+    line-height: 1;
+    height: 100%;
+    width: 100%;
+    padding: 0px 0px;
+
+  }
+
+  #app .about-logo-top-right {
+    display: none;
+  }
+}

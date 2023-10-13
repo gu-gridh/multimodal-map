@@ -35,5 +35,7 @@ const guplayId = computed(() => props.object.link.split("/").pop());
 </template>
 
 <style scoped>
-
+#app .illustration{
+  pointer-events:auto !important;
+}
 </style>
