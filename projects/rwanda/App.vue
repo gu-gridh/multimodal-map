@@ -39,7 +39,7 @@ body {
 }
 
 .about-button {
-  font-size:0.8vw!important
+  font-size:1.0vw!important
 }
 
 #app .left-pane {

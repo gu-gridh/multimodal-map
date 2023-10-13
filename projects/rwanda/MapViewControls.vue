@@ -139,10 +139,11 @@ const handleInformantClick = (key: string) => {
   font-size: 0.8vw;
 }
 .filter-heading {
-  font-size: 16px;
-  margin-bottom: 8px;
+  font-size: 1.1vw;
+  margin-bottom: 4px;
   margin-top: 10px;
-  font-weight: 500;
+  font-weight: 400;
+
 }
 .checkboxes {
   display: inline-block;
@@ -184,8 +185,6 @@ const handleInformantClick = (key: string) => {
 
 .filter-container {
   padding: 1.5rem 0 1.5rem 0;
-  border-bottom-right-radius: 0.5rem /* 8px */;
-  border-bottom-left-radius: 0.5rem /* 8px */;
   display: flex;
   flex-direction: column;
   align-items: flex-start;

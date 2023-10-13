@@ -207,7 +207,7 @@ watch(
   flex-direction: column;
   height:auto;
   margin-top: 30px;
-  width:85%;
+  width:80%;
 }
 .mapoverlay{
 z-index: 100;
