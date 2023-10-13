@@ -195,7 +195,7 @@ function deselectPlace() {
   overflow-y: scroll !important;
   padding-left: 20px;
   padding-right: 20px;
-  padding-bottom: 80px;
+  padding-bottom: 100px;
 }
 
 .mapview-preview-container{
@@ -256,7 +256,8 @@ function deselectPlace() {
   width:100%;
   color:black;
   background-color: white;
-  font-size: 14px;
+  font-size: 0.7vw;
+  line-height:1.2;
   margin-bottom: 40px;
   padding: 10px 10px 10px 10px;
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.5);
@@ -266,7 +267,7 @@ function deselectPlace() {
 }
 
 .place-card:hover {
-  transform:scale(1.05);
+  /* transform:scale(1.05); */
 }
 
 .place-card p{

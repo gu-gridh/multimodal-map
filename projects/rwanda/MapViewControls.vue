@@ -116,6 +116,13 @@ const handleInformantClick = (key: string) => {
         class="filter-button"
         @click="handleInformantClick"
       />
+      <div class="filter-heading">Languages</div>
+      <CategoryButtonList 
+        v-model="languages"
+        :categories="LANGUAGES"
+        :limit="1"
+        class="filter-button lang-buttons"
+      />
     <div class="filter-heading">Time periods</div>
       <CategoryButtonList 
         v-model="periods"
@@ -124,14 +131,7 @@ const handleInformantClick = (key: string) => {
         class="filter-button"
         @click="handlePeriodClick"
       />
-      <div class="filter-heading">Languages</div>
-      <CategoryButtonList 
-        v-model="languages"
-        :categories="LANGUAGES"
-        :limit="1"
-        class="filter-button lang-buttons"
-      />
-  </div>
+    </div>
 </template>
 
 <style>
@@ -227,7 +227,7 @@ const handleInformantClick = (key: string) => {
 }
 
 .lang-buttons {
-  margin-bottom: 20px;
+  margin-bottom: 0px;
 }
 
 #app .rounded {
