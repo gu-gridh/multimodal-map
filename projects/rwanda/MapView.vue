@@ -182,6 +182,22 @@ watch(
   display:none;
 }
 
+.main-title {
+  white-space: pre-line;
+  font-size: 7vw;
+  line-height: 0.7;
+  width: auto;
+  font-weight: 300;
+  letter-spacing: 0.05rem;
+  margin-left: -6px;
+  margin-top: -15px;
+  margin-bottom: 30px;
+  transition: all 0.5s ease-in-out;
+}
+
+
+
+
 #app #map-component{
   width: 100% !important;
 }
@@ -201,7 +217,8 @@ watch(
   display:flex;
   flex-direction: column;
   height:auto;
-  margin-top: 20px;
+  margin-top: 30px;
+  width:85%;
 }
 .mapoverlay{
 z-index: 100;

@@ -1,8 +1,8 @@
 <template>
   <Combobox v-model="selectedItem">
-    <div class="mt-0 non-clickable">
+    <div class="mt-0 non-clickable w-full">
       <div
-        class="searchbox-container clickable relative cursor-default overflow-hidden rounded-lg text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 sm:text-sm"
+        class="clickable relative cursor-default overflow-hidden rounded-lg text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 sm:text-sm"
       >
         <ComboboxInput
           class="searchbox"
