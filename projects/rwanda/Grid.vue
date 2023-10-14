@@ -42,10 +42,40 @@ onMounted(() => {
     background-color: #eee;
     background-repeat: no-repeat;
     background-position: 50%;
+    width:100px;
 }
 
 .gutter.gutter-horizontal {
+  background-color: transparent;
+  border-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+}
+
+.gutter.gutter-horizontal::after {
+  content: " ";
+  margin-left: -30px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: rgb(180,100,100);
+  z-index: 1000;
+  background-image: url(@/assets/horizontal.png);
+  background-size: 30px 30px;
+  background-repeat: no-repeat;
+  background-position: center;
+  box-shadow: 0rem 0rem 0.5rem rgba(0, 0, 0, 0.3);
+}
+
+.gutter.gutter-horizontal:hover {
+  cursor: ew-resize;
+}
+
+
+/* .gutter.gutter-horizontal {
     background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==');
     cursor: col-resize;
-}
+} */
 </style>

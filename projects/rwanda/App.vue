@@ -59,7 +59,6 @@ body {
   height: 100vh !important;
   pointer-events: auto !important;
   overflow-y: scroll !important;
-
   width: 100%;
   color: white;
   transition: all 0.5s ease-in-out;
