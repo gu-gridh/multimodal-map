@@ -43,7 +43,7 @@ onMounted(() => {
     background-color: #eee;
     background-repeat: no-repeat;
     background-position: 50%;
-    width:100px;
+    width:10px!important;
 }
 
 .gutter.gutter-horizontal {
@@ -64,7 +64,7 @@ onMounted(() => {
   background-color: rgb(180,100,100);
   z-index: 1000;
   background-image: url(@/assets/horizontal.png);
-  background-size: 30px 30px;
+  background-size: 25px 25px;
   background-repeat: no-repeat;
   background-position: center;
   box-shadow: 0rem 0rem 0.5rem rgba(0, 0, 0, 0.3);
