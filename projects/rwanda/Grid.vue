@@ -31,6 +31,11 @@ onMounted(() => {
 .split {
     display: flex;
     flex-direction: row;
+
+}
+
+#split-1 {
+    background-color:rgb(45,45,45) !important;
 }
 
 .gutter {
