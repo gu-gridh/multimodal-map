@@ -7,7 +7,7 @@ import { onMounted } from 'vue'
 
 onMounted(() => {
     Split(['#split-0', '#split-1'], {
-        sizes: [80,20]
+        sizes: [75,25]
     })
 })
 </script>
