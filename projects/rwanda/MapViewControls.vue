@@ -140,7 +140,7 @@ const handleInformantClick = (key: string) => {
 }
 .filter-heading {
   font-size: 1.1vw;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
   margin-top: 10px;
   font-weight: 400;
 
