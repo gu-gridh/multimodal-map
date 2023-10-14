@@ -182,17 +182,15 @@ watch(
   display:none;
 }
 
-
-
-
-
-
 #app #map-component{
   width: 100% !important;
+  height: 100% !important;
 }
+
 #app .tile-layer {
   filter: grayscale(100%);
 }
+
 #app #transparent {
   background-color: transparent !important;
   display: none !important;
@@ -200,7 +198,7 @@ watch(
 .map-container {
   height: calc(100vh - 80px) !important;
   position: relative;
-  width: 100%;
+  width: 100%!important;
 }
 .search-container {
   display:flex;
