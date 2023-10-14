@@ -90,16 +90,15 @@ defineComponent({
 
 @media (min-width: 900px) {
   #app .masonry-wall {
-    padding: 0px 0px 0px 450px; 
+    padding: 0px 0px 0px 480px; 
   }
 }
 
-@media (min-width: 1900px) {
+@media (min-width: 1500px) {
   #app .masonry-wall {
-    padding: 0px 0px 0px 600px; 
+    padding: 0px 0px 0px 30%; 
   }
 }
-
 
 .grid-item:hover .grid-item-info {
   opacity: 0.9;
