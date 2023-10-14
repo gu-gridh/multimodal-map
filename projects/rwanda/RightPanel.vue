@@ -3,7 +3,7 @@ import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
 import { watchEffect, watch, onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import PlaceView from './PlaceView.vue'
+import MapViewPreview from './MapViewPreview.vue'
 
 const props = defineProps({
     placeId: {
@@ -17,7 +17,7 @@ const featureId = ref()
 const route = useRoute();
 const router = useRouter();
 
-//if slected feature
+//if selected feature
 watchEffect(async () => {
   if (selectedFeature.value) {
     featureId.value = selectedFeature.value.getId();
@@ -31,10 +31,10 @@ watchEffect(async () => {
 <template>
 <router-view>
     <div v-if="selectedFeature" class="right-panel">
-        <PlaceView :id="featureId"/>
+        <MapViewPreview :id="featureId"/>
     </div>
     <div v-if="route.params.placeId" class="right-panel">
-        <PlaceView :id="props.placeId || ''" />
+        <MapViewPreview :id="props.placeId || ''" />
     </div>
     <div v-else class="right-panel-initial"></div>
 </router-view>
