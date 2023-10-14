@@ -21,7 +21,7 @@ provide("diana", endpoint);
 html,
 body {
   font-family: "Barlow Condensed", sans-serif !important;
-  background-color:rgb(45,45,45)!important;
+  background-color:rgb(200,200,200)!important;
 }
 
 .main-title {
