@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
-import MapView from "./MapView.vue";
-import ObjectView from "./ObjectView.vue";
+import Grid from "./Grid.vue";
+import ObjectViewImage from "./ObjectViewImage.vue";
+import RightPanel from "./RightPanel.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -8,14 +9,20 @@ const router = createRouter({
     {
       path: "/",
       name: "home",
-      component: MapView,
+      component: Grid,
     },
     {
-      path: "/:type/:id",
-      name: "detail",
-      component: ObjectView,
-      props: true,
-    },
+      path: "/place/:placeId",
+      name: "place",
+      component: Grid,
+      props: true
+    }, 
+    {
+      path: "/image/:id",
+      name: "image",
+      component: ObjectViewImage,
+      props: true
+    }
     
   ],
 });

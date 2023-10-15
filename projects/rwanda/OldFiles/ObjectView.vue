@@ -45,7 +45,7 @@ watchEffect(async () => {
 
 <style>
 #app .mapview-preview {
-  height: 100% !important;
+  height: calc(100vh - 80px) !important;
   pointer-events: auto !important;
   overflow-y: scroll !important;
   padding-left: 20px;

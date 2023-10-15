@@ -196,14 +196,11 @@ function deselectPlace() {
   padding-left: 20px;
   padding-right: 20px;
   padding-bottom: 100px;
-  background:transparent !important;
 }
 
 .mapview-preview-container{
   height:calc(100vh - 80px); 
-  background:transparent !important;
 }
-
 #app .masonry-wall {
     z-index: auto !important;
 }

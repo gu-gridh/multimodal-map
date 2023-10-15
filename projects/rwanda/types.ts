@@ -26,6 +26,13 @@ interface PlaceType {
 
 interface Informant {
   id?: number;
+  created_at: string;
+  updated_at: string;
+  published: boolean;
+  gender: string;
+  custom_id: string;
+  age: string;
+  note: string;
 }
 
 interface Language {
@@ -64,4 +71,16 @@ interface Place {
   geometry: any
 }
 
-export type { Place, PlaceType, Name, Informant, Language };
+interface Interview {
+  id?: number;
+  created_at: string;
+  updated_at: string;
+  published: boolean;
+  title: string;
+  place_of_interest: number;
+  text: string;
+  authors: Array<Informant>;
+  informants: Array<Informant>;
+} 
+
+export type { Place, PlaceType, Name, Informant, Language, Interview };

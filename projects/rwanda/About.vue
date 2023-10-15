@@ -2,18 +2,18 @@
   <div class="about-container" v-bind:class="{fullopacity: visibleAbout}">
     <div class="flex-machine">
       <div class="red-content">
-    <div class="about-main-title" v-bind:class="{fullopacityui: visibleAbout}">Streets of<br>Rwanda</div>
+    <div class="about-main-title" v-bind:class="{fullopacityui: visibleAbout}">READING THE SIGNS</div>
     <div class="about-sub-title" v-bind:class="{fullopacityui: visibleAbout}"></div>
 
     <div class="about-article-main" v-bind:class="{fullopacityui: visibleAbout}">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+      This map is a part of the research project Reading the signs. The map visualizes some of the data of the project: it shows names of streets , building and areas. It also contains photos of signs and buildings, in addition to texts about them.  The map is a free and collaborative  OpenStreet  map.
     </div>
 
 
  
 
       <div class="about-article-sub" v-bind:class="{fullopacityui: visibleAbout}">
-      Projektet leddes av xxx och är ett samarbete mellan xxx och Göteborgs infrastruktur i Digital Humaniora (GRIDH). Namn på alla som varit med: Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn.
+        This project is a collaboration between University of Gothenburg, Sweden, and University of Kigali, Rwanda and financed by Vetenskapsrådet (VR). The map is under development in collaboration with Gothenburg Research Infrastructure in Digital Humanities (GRIDH) at the University of Gothenburg. Namn på alla som varit med: Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn.
       </div>
   
     

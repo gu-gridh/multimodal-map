@@ -11,10 +11,6 @@ const props = defineProps({
     type: Object,
     default: () => ({}),
   },
-  zIndex: {
-    type: Number,
-    default: 1,
-  },
 });
 
 const format = inject("ol-format");
@@ -22,7 +18,9 @@ const geoJsonFormat = new format.GeoJSON();
 
 const url = computed(() => {
   const params = { page_size: "500", ...props.params };
+  console.log(DIANA_BASE + props.path + "?" + new URLSearchParams(params).toString())
   return DIANA_BASE + props.path + "?" + new URLSearchParams(params).toString();
+  
  /*  const finalUrl = DIANA_BASE + props.path + "?" + new URLSearchParams(params).toString();
   console.log("Generated URL: ", finalUrl);  // This will log the generated URL
   return finalUrl; */
@@ -30,8 +28,8 @@ const url = computed(() => {
 </script>
 
 <template>
-  <ol-vector-layer :z-index="props.zIndex">
-    <ol-source-vector :url="url" :format="geoJsonFormat" ref="source" />
+  <ol-vector-layer :z-index="1">
+    <ol-source-vector :url="url" :format="geoJsonFormat" ref="source"/>
     <slot />
   </ol-vector-layer>
 </template>
