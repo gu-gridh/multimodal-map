@@ -142,6 +142,5 @@ watch(selectedItem, () => {
 }
 .rounded-lg{
   border-radius:8px;
-
 }
 </style>
