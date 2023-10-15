@@ -117,6 +117,21 @@ font-size:1.9em!important;
 }
 }
 
+.about-logo-top-right {
+  display: block;
+  pointer-events: none;
+  width: 250px;
+  height: 150px;
+  position: absolute;
+  background: url(/images/logo-isvroma.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  top: 30px;
+  right: 60px;
+  opacity: 0.7;
+}
+
+
 .about-lower-border{
   flex-grow: 1;
   margin-top:0px;
