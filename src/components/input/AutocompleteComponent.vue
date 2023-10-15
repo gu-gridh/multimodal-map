@@ -26,7 +26,7 @@
         >
           <div
             v-if="searchResults.length === 0 && searchTerm !== ''"
-            class=""
+            class="no-results"
           >
             {{ noResultsText }}
           </div>
@@ -136,6 +136,10 @@ watch(selectedItem, () => {
 </script>
 
 <style scoped>
+.no-results{
+  padding-left:18px;
+  padding-bottom:10px;
+}
 .rounded-lg{
   border-radius:8px;
 
