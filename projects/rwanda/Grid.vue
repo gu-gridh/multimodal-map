@@ -58,6 +58,7 @@ onMounted(() => {
   width: 30px;
   height: 30px;
   border-radius: 50%;
+  margin-top:-80px;
   background-color: rgb(180,100,100);
   z-index: 1000;
   background-image: url(@/assets/horizontal.png);
