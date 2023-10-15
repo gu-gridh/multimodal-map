@@ -98,7 +98,7 @@ watch(
 
     <template #background>
     <div class="map-container">
-      <MapComponent :min-zoom="14" :max-zoom="19" :restrictExtent="[30.1, -1.92, 30.01, -1.980]" :shouldAutoMove="true" class="greyscale">
+      <MapComponent :min-zoom="14" :max-zoom="19" :restrictExtent="[30.01, -1.98, 30.1, -1.92]" :shouldAutoMove="true" class="greyscale">
         <template #layers>
           <!-- Sources layer just filtering interviews atm -->
           <DianaPlaceLayer 

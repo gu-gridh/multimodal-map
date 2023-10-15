@@ -40,10 +40,11 @@ onMounted(() => {
 }
 
 .gutter {
-    background-color: #eee;
+    background-color: rgb(45,45,45)!important;
     background-repeat: no-repeat;
     background-position: 50%;
-    width:10px!important;
+    width:15px!important;
+
 }
 
 .gutter.gutter-horizontal {
@@ -57,7 +58,7 @@ onMounted(() => {
 
 .gutter.gutter-horizontal::after {
   content: " ";
-  margin-left: -30px;
+  margin-left: -15px;
   width: 30px;
   height: 30px;
   border-radius: 50%;
