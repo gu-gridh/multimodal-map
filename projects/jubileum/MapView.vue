@@ -116,7 +116,7 @@ watch(showGrid, (newValue) => {
          :shouldAutoMove="true" 
           :min-zoom="16"
           :max-zoom="18"
-          :restrictExtent="[11.922, 57.7215, 12.015, 57.685]"
+          :restrictExtent="[11.922, 57.685, 12.015, 57.7215]"
           :key="showGrid.toString()"
         >
           <template #layers>
@@ -126,7 +126,7 @@ watch(showGrid, (newValue) => {
               <ol-style>
                 <ol-style-icon
                   :src="markerIcon"
-                  :scale="2.0"
+                  :scale="1.0"
                   :displacement="[-10, 45]"
                   :anchor="[0.0, 0.0]"
                 ></ol-style-icon>
@@ -180,7 +180,7 @@ font-size: 18px;
 font-weight: 700;
 color: white;
 margin-left:200px;
-background-color: rgb(180, 100, 100, 0.8);
+background-color: rgb(180, 100, 100, 0.8) !important;
 backdrop-filter: blur(3px);
 transition: all 0.5s ease-in-out;
 }

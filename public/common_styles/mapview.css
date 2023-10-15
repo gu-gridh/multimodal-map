@@ -26,6 +26,18 @@ body {
   transition: all 0.5s ease-in-out;
 }
 
+.sub-title {
+  font-size: 4vw;
+  line-height: 0.8;
+  font-weight: 200;
+  letter-spacing: -0.2rem;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 15px;
+  margin-left:-50px;
+  transition: all 0.5s ease-in-out;
+}
+
 .about-text {
   display: none;
   padding-right: 0px;
@@ -205,11 +217,12 @@ body {
     font-size: 100px;
   }
 
+  .sub-title {
+    font-size: 70px;
+  }
+
   .section-title {
-
     font-size: 1.2em;
-
-
   }
 }
 
@@ -270,6 +283,11 @@ body {
     font-size: 100px !important;
     width: 260px !important;
     margin-top: -10px !important;
+  }
+
+
+  .sub-title {
+    text-align:left!important;
   }
 
 }
