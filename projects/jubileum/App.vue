@@ -30,8 +30,8 @@ body {
 
 .main-title {
   font-family: "Josefin Sans", sans-serif !important;
-  font-size:500%;
   line-height: 0.85;
+  font-size:500%;
   font-weight: 200;
   letter-spacing: -0.2rem;
   margin-left:-50px;
@@ -63,7 +63,7 @@ body {
 }
 
 .left-pane-layer {
-  padding: 0px 350px 0px 0px !important;
+  padding: 0px 420px 0px 0px !important;
   pointer-events: none !important;
   height: 100vh !important;
   width: 100% !important;

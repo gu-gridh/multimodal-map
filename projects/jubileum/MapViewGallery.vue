@@ -66,27 +66,24 @@ defineComponent({
   top: 0px;
   width: 100%; 
   height: 100%; 
-  z-index: 200;
+  z-index: 99;
   background-color: rgb(234, 228, 219);
   padding: 0px 0px 0px 0px; 
   overflow-y: scroll;
   transition: all 0.5s ease-in-out;
 }
 
-
-
 @media (min-width: 900px) {
   #app .masonry-wall {
-    padding: 0px 0px 0px 450px; 
+    padding: 0px 0px 0px 550px; 
   }
 }
 
-@media (min-width: 1900px) {
+@media (min-width: 1500px) {
   #app .masonry-wall {
-    padding: 0px 0px 0px 600px; 
+    padding: 0px 0px 0px 35%; 
   }
 }
-
 
 .grid-item:hover .grid-item-info {
   opacity: 0.9;
