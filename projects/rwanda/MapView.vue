@@ -188,7 +188,7 @@ watch(
 }
 
 #app .tile-layer {
-  filter: grayscale(100%);
+  filter: grayscale(80%);
 }
 
 #app #transparent {
