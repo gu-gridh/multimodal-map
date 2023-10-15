@@ -30,8 +30,8 @@ body {
 
 .main-title {
   font-family: "Josefin Sans", sans-serif !important;
+  font-size:500%;
   line-height: 0.85;
-
   font-weight: 200;
   letter-spacing: -0.2rem;
   margin-left:-50px;
