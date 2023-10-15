@@ -234,4 +234,8 @@ const handleInformantClick = (key: string) => {
   border-radius: 10px;
 }
 
+.no-results{
+color:rgb(180,100,100);
+}
+
 </style>
