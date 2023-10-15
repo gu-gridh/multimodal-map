@@ -62,6 +62,79 @@ defineComponent({
 
 <style>
 .masonry-wall {
+  position: absolute;
+  top: 0px;
+  width: 100%; 
+  height: 100%; 
+  z-index: 99;
   background-color: rgb(234, 228, 219);
+  padding: 0px 0px 0px 0px; 
+  overflow-y: scroll;
+  transition: all 0.5s ease-in-out;
+}
+
+@media (min-width: 900px) {
+  #app .masonry-wall {
+    padding: 0px 0px 0px 520px; 
+  }
+}
+
+@media (min-width: 1500px) {
+  #app .masonry-wall {
+    padding: 0px 0px 0px 33%; 
+  }
+}
+
+
+
+
+.grid-item:hover .grid-item-info {
+  opacity: 0.9;
+}
+
+.grid-item {
+  width:100%;
+  display: flex;
+  position: relative;
+  overflow: hidden;
+  width: auto;
+}
+
+.grid-item img {
+  width:100%;
+  transition: all 0.2s ease-in-out;
+}
+
+.grid-item:hover img {
+  transform: scale(1.05);
+  z-index: 300; 
+}
+
+
+.grid-item-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.7) 100%);
+  color: rgb(255, 255, 255);
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transition: all 0.5s ease-in-out;
+  cursor:pointer;
+  z-index: 400; 
+  overflow-wrap: break-word;
+  line-height:1.0;
+}
+
+.grid-item:hover .grid-item-info {
+  opacity: 0.9;
+}
+
+.grid-item-info-meta {
+  padding: 10px;
 }
 </style>
