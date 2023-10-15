@@ -34,6 +34,7 @@ h2{
 
 .container{
   height:auto;
+  max-height:(100vh - 80px);
   background-color:none;
 }
 </style>

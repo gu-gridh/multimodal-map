@@ -3,11 +3,13 @@ import { computed } from "vue";
 import MainLayout from "@/MainLayout.vue";
 import MapViewControls from "./MapViewControls.vue";
 import MapComponent from "@/components/MapComponent.vue";
-import DianaPlaceLayer from "@/components/DianaPlaceLayer.vue";
-import MapViewFeautureSelect from "./MapViewFeautureSelect.vue";
+import DianaPlaceLayer from "@/components/DianaPlaceLayerEtruscan.vue";
+import GeoJsonWebGLRenderer from "@/components/GeoJsonWebGLRenderer.vue";
+import FeatureSelection from "./FeatureSelection.vue";
 import MapViewPreview from "./MapViewPreview.vue";
 import { storeToRefs } from "pinia";
-import { jubileumStore } from "./store";
+import { etruscanStore } from "./store";
+import { mapStore } from "@/stores/store";
 import { clean } from "@/assets/utils";
 import markerIcon from "@/assets/marker-white.svg";
 import MapViewGallery from "./MapViewGallery.vue";
@@ -15,14 +17,94 @@ import { ref } from "vue";
 import About from "./About.vue";
 import { onMounted, watch } from "vue";
 import { nextTick } from "vue";
+import GeoJSON from "ol/format/GeoJSON";
+import Title from "./Title.vue"
 
-const { categories } = storeToRefs(jubileumStore());
-const targetDiv = document.getElementById("third");
-const placeParams = computed(() =>
-  clean({
-    type: categories.value.filter((x) => x !== "all").join(","),
-  })
+const { categories, tags, necropoli, tombType, placesLayerVisible, tagsLayerVisible, dataParams } = storeToRefs(etruscanStore());
+const store = mapStore();
+const { selectedFeature } = storeToRefs(store);
+const minZoom = 14;
+const maxZoom = 20;
+const featureZoom = 16; //value between minZoom and maxZoom when you select a point 
+const visibleAbout = ref(false);
+const showGrid = ref(false);
+let visited = true; // Store the visited status outside of the hook
+
+watch(
+  selectedFeature,
+  (newFeature, oldFeature) => {
+    if (newFeature && newFeature.getGeometry) {
+      const geometry = newFeature.getGeometry();
+      if (geometry) {
+        const coordinates = (geometry as any).getCoordinates();
+        store.updateCenter(coordinates);
+        if (store.zoom < featureZoom)
+        {
+          store.updateZoom(featureZoom);
+        }
+      }
+    }
+  },
+  { immediate: true }
 );
+
+/* Response for generating the URL for filtering map points down */
+const tagParams = computed(() => {
+  const epoch = tags.value[0];
+  const necropolis = necropoli.value[0];
+  const type = tombType.value[0];
+
+  const initialParams = { epoch, necropolis, type };
+  
+  // Remove parameters that are set to "all"
+  const cleanedParams = Object.keys(initialParams)
+  .filter((key) => initialParams[key as keyof typeof initialParams] !== "all")
+  .reduce((obj, key) => {
+    obj[key as keyof typeof initialParams] = initialParams[key as keyof typeof initialParams];
+    return obj;
+  }, {} as typeof initialParams);
+
+  
+  // Further clean to remove null or undefined values
+  const params = clean(cleanedParams);
+
+  // Convert the params object to a URL search string
+  const queryString = new URLSearchParams(params).toString();
+
+  // Concatenate the base URL with the search string to form the full URL
+  const fullUrl = queryString ? 
+    `https://diana.dh.gu.se/api/etruscantombs/geojson/place/?page_size=500&${queryString}` :
+    `https://diana.dh.gu.se/api/etruscantombs/geojson/place/?page_size=500`;
+
+  console.log("Generated URL:", fullUrl); // Debug line
+  
+  return params;
+});
+
+watch(
+  tagParams, 
+  (newParams) => {
+    dataParams.value = newParams;
+  }, 
+  { immediate: true }
+);
+
+onMounted(() => {
+  // Check if the "visited" key exists in session storage
+  visited = sessionStorage.getItem("visited") === "true"; // Retrieve the visited status from session storage
+  const storedShowGrid = localStorage.getItem("showGrid");
+
+  if (!visited) {
+    // Hide the about component
+    visibleAbout.value = true;
+    sessionStorage.setItem("visited", "true");
+  }
+
+  if (storedShowGrid) {
+    showGrid.value = JSON.parse(storedShowGrid);
+  }
+
+})
 
 const toggleAboutVisibility = async () => {
   console.log('fired')
@@ -30,203 +112,83 @@ const toggleAboutVisibility = async () => {
   visibleAbout.value = !visibleAbout.value;
 };
 
-const showGrid = ref(false);
-const visibleAbout = ref(false);
-
-onMounted(() => {
-  const storedShowGrid = localStorage.getItem("showGrid");
-  if (storedShowGrid) {
-    showGrid.value = JSON.parse(storedShowGrid);
-  }
-});
-
 watch(showGrid, (newValue) => {
   localStorage.setItem("showGrid", JSON.stringify(newValue));
 });
-
 </script>
 
 <template>
- 
-        <div style="display:flex; align-items: center; justify-content: center;">
-        <div class="ui-mode ui-overlay">
-          <button class="item" v-bind:class="{ selected: !showGrid}" v-on:click="showGrid = false;">
-          Karta
-        </button>
-        <button class="item" v-bind:class="{ selected: showGrid}" v-on:click="showGrid = true;">
-         Galleri
-        </button>
-      </div>
+  <div style="display:flex; align-items: center; justify-content: center; pointer-events: none;">
+    <div class="ui-mode ui-overlay">
+      <button class="item" v-bind:class="{ selected: !showGrid }" v-on:click="showGrid = false;">
+        {{ $t('map') }}
+      </button>
+      <button class="item" v-bind:class="{ selected: showGrid }" v-on:click="showGrid = true;">
+        {{ $t('gallery') }}
+      </button>
     </div>
-  
-<About :visibleAbout="visibleAbout" @close="visibleAbout = false" />
+  </div>
+  <MapViewGallery v-if="showGrid" />
+  <About :visibleAbout="visibleAbout" @close="visibleAbout = false" />
   <MainLayout>
-    
     <template #search>
-    <button class="item" @click="toggleAboutVisibility">
-            <div
-              class="p-1 px-2 clickable category-button"
-              style="
-                width: auto;
-                text-align: center;
-                margin-top: -10px;
-                cursor: pointer;
-              "
-            >Om jubileumsutställningen och portalen</div>
-          </button>
-<div style="width:100%; margin-top:20px;">
-  <a href="https://gupea.ub.gu.se/handle/2077/74634">
-          <button class="item">
-            <div
-              class="p-1 px-2 clickable category-button"
-              style="
-                width: auto;
-                text-align: center;
-                margin-top: -10px;
-                cursor: pointer;
-                font-weight:400;
-              "
-            >Publikationer i GUPEA</div>
-          </button>
-        </a>
-        </div>
-      <MapViewControls />
+      <Title @toggle-about="toggleAboutVisibility"/>
+      <MapViewControls/>
     </template>
-    
+
     <template #background>
-    
       <div class="map-container">
-        
-        <MapComponent
-          :min-zoom="16"
-          :max-zoom="18"
-          :restrictExtent="[11.922, 57.7215, 11.996, 57.69035]"
+        <MapComponent 
+          :shouldAutoMove="true" 
+          :min-zoom=minZoom
+          :max-zoom=maxZoom 
+          :restrictExtent="[11.9, 42.15, 12.2, 42.4]"       
           :key="showGrid.toString()"
-        >
+        > 
+                  
           <template #layers>
-            <DianaPlaceLayer path="jubileum/geojson/place/" :params="placeParams">
-              <ol-style>
-                <ol-style-icon
-                  :src="markerIcon"
-                  :scale="2.0"
-                  :displacement="[-10, 45]"
-                  :anchor="[0.0, 0.0]"
-                ></ol-style-icon>
-              </ol-style>
-              <MapViewFeautureSelect />
+            <GeoJsonWebGLRenderer
+              :externalUrl="'https://data.dh.gu.se/geography/SGElevationMain.geojson'"
+              :zIndex=-0
+            >
+            </GeoJsonWebGLRenderer>
+             <GeoJsonWebGLRenderer
+              :externalUrl="'https://data.dh.gu.se/geography/SGElevationEdge.geojson'"
+              :zIndex=0
+            >
+            </GeoJsonWebGLRenderer>
+      
+            <DianaPlaceLayer v-if="placesLayerVisible" path="etruscantombs/geojson/place/" :params="tagParams" :zIndex=20>
             </DianaPlaceLayer>
-            <ol-tile-layer>
-              <ol-source-xyz
-                url="https://data.dh.gu.se/tiles/gbg_1921b/{z}/{x}/{y}.png"
-              />
-            </ol-tile-layer>
-            
           </template>
           
-        </MapComponent>
-        
-        <MapViewGallery v-if="showGrid" />
+        </MapComponent>  
+      </div> 
+    </template>
 
-      </div>
-    </template>
-    
     <template #details>
-      
-      <MapViewPreview />
-      
+      <MapViewPreview v-if="!showGrid"/>
     </template>
-    
-    <template>
-   
-  </template>
-  
+
   </MainLayout>
-  
 </template>
 
 <style>
 .map-container {
+  height: calc(100vh - 80px) !important;
   position: relative;
-  width:100%;
+  width: 100%;
 }
 
-#gallery{}
-
-.ui-overlay {
-margin-top: 70px;
-z-index: 250;
-position:absolute;
-border-radius: 8px;
-font-size: 18px;
-font-weight: 700;
-color: white;
-margin-left:450px;
-background-color: rgb(180, 100, 100, 0.8);
-backdrop-filter: blur(3px);
-transition: all 0.5s ease-in-out;
-}
-
-.ui-mode {
-top: 0px;
-padding: 4px 10px 4px 10px;
-}
-
-.ui-mode .item {
-cursor: pointer;
-display: inline;
-font-weight: 400;
-color:black;
-padding: 0px 15px 0px 15px;
-
-}
-
-.ui-mode .item:hover {
-  color:white;
-}
-
-.ui-mode .selected{
-font-weight: 500;
-color: white;
-}
-
+/* Overides the settings in ui_modules.css */
 #app .ol-popup {
-  font-size: 1.2em;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  user-select: none;
-  text-align: center;
-  line-height: 1.2;
-  position: absolute;
-  background-color: white;
-  box-shadow: 2 2px 8px rgba(0, 0, 0, 0.5);
-  padding: 3px;
-  border-radius: 5px;
-  border: 0px solid #cccccc;
-  bottom: 35px;
-  left: -50px;
-  min-width: 100px;
+  left: -55px;
+  width: 110px;
+  min-width: 90px;
+  bottom:55px;
 }
 
-#app .ol-control button {
-  font-family: "Barlow Condensed", sans-serif;
-  border-radius: 50% !important;
-  background-color: rgb(248, 249, 228) !important;
-  color: black !important;
+#app .ol-popup:before {
+  left: 30px;
 }
-
-#app .ol-control button:hover,
-.ol-control button:focus {
-  background-color: rgb(220, 140, 140) !important;
-  color: white !important;
-  border-style: none !important;
-  border-style: hidden !important;
-}
-
-#app .ol-control button:active {
-  background-color: rgb(180, 100, 100) !important;
-  color: white !important;
-  border-style: none !important;
-  border-style: hidden !important;
-}
-
 </style>

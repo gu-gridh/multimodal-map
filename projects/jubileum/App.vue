@@ -16,7 +16,6 @@ provide("diana", endpoint);
 </template>
 
 <style>
-
 /* Project theme in regards to colour and fonts */
 html,
 body {
@@ -31,56 +30,49 @@ body {
 
 .main-title {
   font-family: "Josefin Sans", sans-serif !important;
-  font-size: 85px;
   line-height: 0.85;
-  font-weight: 100;
+
+  font-weight: 200;
   letter-spacing: -0.2rem;
+  margin-left:-50px;
   text-align: center;
-  margin-left: -50px;
   color: rgb(180, 100, 100);
-  transition: all 0.2s ease-in-out;
 }
 
 .sub-title {
   font-family: "Josefin Sans", sans-serif !important;
-  font-size: 75px;
   line-height: 0.8;
-  font-weight: 100;
+  font-weight: 200;
   letter-spacing: -0.2rem;
   text-align: center;
-  margin-left: -50px;
   color: rgb(180, 100, 100);
   margin-top: 10px;
   margin-bottom: 15px;
+  margin-left:-50px;
 }
 
-.about {
-  padding-right: 40px;
-  line-height: 1.2;
-  text-align: left;
-  font-size:0.95em;
+#app .about {
+  width:90%
 }
 
 #app .left-pane {
-  background-color: grey;
-  width: 900px;
   background: url("@/assets/gradient-jubileum.png");
   background-size: contain;
-  z-index:500;
+  z-index: 500;
+  width:50%
 }
 
-#app .left-pane-layer {
-width:450px;
-padding: 60px 0px 100px 60px;
-scrollbar-width: none;
+.left-pane-layer {
+  padding: 0px 350px 0px 0px !important;
+  pointer-events: none !important;
+  height: 100vh !important;
+  width: 100% !important;
 }
 
 #app .right-pane {
-  position: absolute;
   height: 100vh;
-  width: 360px;
+  width: 360px !important;
   pointer-events: none;
-  z-index: 100;
   transition: all 0.5s ease-in-out;
 }
 
@@ -93,44 +85,77 @@ scrollbar-width: none;
   pointer-events: none;
 }
 
+#app .ol-zoom-in {
+  left: calc(50% + 50px) !important;
+  top: calc(100vh - 140px) !important;
+  position: fixed;
+  border-radius: 10px 0px 0px 10px !important;
+  height: 35px;
+  padding-bottom: 3px !important;
+  width: 50px;
+  background-color: rgba(160, 80, 80, 1.0) !important;
+}
 
-@media screen and (max-width: 1250px) {
+#app .ol-zoom-out {
+  left: calc(50% + 100px);
+  top: calc(100vh - 140px);
+  position: fixed;
+  margin-top: 1px;
+  border-radius: 0px 10px 10px 0px !important;
+  height: 35px;
+  padding-bottom: 3px !important;
+  widtH: 50px;
+  background-color: rgba(160, 80, 80, 1.0) !important;
+}
 
-.ui-overlay {
-margin-left:200px !important;
-
+@media screen and (max-width: 1200px) {
+#app .right-pane {
+ width:280px !important;
+ overflow:hidden!important;
 }
 }
 
 
 @media screen and (max-width: 900px) {
+  #app .right-pane {
+    width: 100% !important;
+    padding:0px;
+    z-index:10!important;
+  }
 
   #app .mapview-preview {
- padding-top:70px !important;
+    padding-top: 70px !important;
+  }
+
+  .ui-overlay {
+    margin-top: 25px !important;
+    margin-left: 0px !important;
+    font-size: 120% !important;
+  }
+
+  #app .masonry-grid {
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    /* Make the grid height responsive */
+    z-index: 200;
+    background-color: rgb(234, 228, 219);
+    padding: 0px 0px 230px 00px;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    grid-template-rows: masonry;
+    grid-gap: 5px;
+    overflow-y: scroll;
+  }
+
+  #app .ol-zoom-in {
+    left: calc(50% - 50px) !important;
+    top: calc(100vh - 320px) !important;
+  }
+
+  #app .ol-zoom-out {
+    left: calc(50% + 0px);
+    top: calc(100vh - 320px);
+  }
 }
-
-.ui-overlay {
-margin-top: 25px !important;
-margin-left:0px !important;
-font-size:120% !important;
-}
-
-#app .masonry-grid {
-  position: absolute;
-  top: 0px;
-  width: 100%;
-  height: 100%; /* Make the grid height responsive */
-  z-index: 200;
-  background-color: rgb(234, 228, 219);
-  padding: 0px 0px 230px 00px;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  grid-template-rows: masonry;
-  grid-gap: 5px;
-  overflow-y: scroll;
-}
-}
-
-
-
-
 </style>

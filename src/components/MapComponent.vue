@@ -2,7 +2,7 @@
   <ol-map
     :loadTilesWhileAnimating="true"
     :loadTilesWhileInteracting="true"
-    style="height: 100%; width: 100%; z-index: !important"
+    style="height: 100%; width: calc(100% + 200px); z-index: !important"
     ref="map"
   >
 
@@ -36,7 +36,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject, computed, onMounted } from "vue";
+import { ref, inject, computed, onMounted, watch, nextTick, provide } from "vue";
 import { fromLonLat, transformExtent } from "ol/proj";
 import { mapStore } from "@/stores/store";
 import { storeToRefs } from "pinia";
@@ -47,6 +47,8 @@ const config = inject("config") as Project;
 const store = mapStore();
 const { extent, center, zoom } = storeToRefs(store);
 
+let isInitialSettingDone = false; //don't fire the watchers before setting the map location
+const isAnimating = ref(false);
 
 const projection = ref(config.projection);
 const rotation = ref(0);
@@ -63,6 +65,10 @@ const scalelinecontrol = ref(true);
 const overviewmapcontrol = ref(true);
 
 const props = defineProps({
+   shouldAutoMove: {
+    type: Boolean,
+    default: false,
+  },
   minZoom: {
     type: Number,
     default: 0,
@@ -79,6 +85,7 @@ const props = defineProps({
 
 const minZoom = ref(props.minZoom);
 const maxZoom = ref(props.maxZoom);
+const shouldAutoMove = ref(props.shouldAutoMove);
 
 const transformedRestrictExtent = computed(() => {
   if (props.restrictExtent.length > 0) {
@@ -91,31 +98,12 @@ const transformedRestrictExtent = computed(() => {
   return undefined;
 });
 
-
-/* function zoomChanged() {
-  let newZoom = map.value.map.getView().getZoom();
-  console.log('Updating zoom:', newZoom);
-  store.updateZoom(newZoom);
-
-  let newExtent = map.value.map.getView().calculateExtent(map.value.map.getSize());
-  newExtent = transformExtent(newExtent, projection.value, "EPSG:4326");
-  extent.value = newExtent;
-}
-
-function onCenterChange() {
-  let newCenter = map.value.map.getView().getCenter();
-  console.log('Updating center:', newCenter);
-  store.updateCenter(newCenter);
-
-  let newExtent = map.value.map.getView().calculateExtent(map.value.map.getSize());
-  newExtent = transformExtent(newExtent, projection.value, "EPSG:4326");
-  extent.value = newExtent;
-} */
-
 onMounted(() => {
   let storeCenter = store.center;
   let storeZoom = store.zoom;
-  
+
+  // Provide the map object for child components
+  provide('map', map.value);
   
   if (storeCenter[0] !== 0 && storeZoom !== 1) {
     map.value.map.getView().setCenter(storeCenter);
@@ -128,20 +116,79 @@ onMounted(() => {
 
   // Listen to the end of map movement.
   map.value.map.on('moveend', onMoveEnd);
+
+  nextTick(() => {
+    isInitialSettingDone = true;
+  });
+
+  watch(
+    () => store.center,
+    (newCenter) => {
+      // Checking multiple conditions before animating the map.
+      if (
+        shouldAutoMove.value &&
+        newCenter &&
+        isInitialSettingDone &&
+        JSON.stringify(newCenter) !== JSON.stringify(map.value.map.getView().getCenter())
+      ) {
+        isAnimating.value = true; // Set the flag
+        map.value.map.getView().animate(
+          {
+            center: newCenter,
+            duration: 500,
+          },
+          () => {
+            nextTick(() => {
+              isAnimating.value = false; // Unset the flag
+            });
+          }
+        );
+      }
+    },
+  );
+
+  watch(
+    () => store.zoom,
+    (newZoom) => {
+      // Checking multiple conditions before animating the map.
+      if (
+        shouldAutoMove.value &&
+        newZoom !== null &&
+        isInitialSettingDone &&
+        newZoom !== map.value.map.getView().getZoom()
+      ) {
+        isAnimating.value = true; // Set the flag
+        map.value.map.getView().animate(
+          {
+            zoom: newZoom,
+            duration: 500,
+          },
+          () => {
+            // Using nextTick to update isAnimating after the DOM updates
+            nextTick(() => {
+              isAnimating.value = false; // Unset the flag
+            });
+          }
+        );
+      }
+    },
+  );
 });
 
 function onMoveEnd() {
-  let newCenter = map.value.map.getView().getCenter();
-  store.updateCenter(newCenter);
-
-  let newZoom = map.value.map.getView().getZoom();
-  store.updateZoom(newZoom);
-
-/*   let newExtent = map.value.map.getView().calculateExtent(map.value.map.getSize());
-  newExtent = transformExtent(newExtent, projection.value, "EPSG:4326");
-  extent.value = newExtent; */
+  if (isAnimating.value) {
+    return;
+  }
+  const currentCenter = map.value.map.getView().getCenter();
+  const currentZoom = map.value.map.getView().getZoom();
+  // Only update the store if the values have actually changed.
+  if (JSON.stringify(currentCenter) !== JSON.stringify(store.center)) {
+    store.updateCenter(currentCenter);
+  }
+  if (currentZoom !== store.zoom) {
+    store.updateZoom(currentZoom);
+  }
 }
-
 </script>
 
 <style>
@@ -157,6 +204,7 @@ function onMoveEnd() {
 .ol-control button:focus {
   background: #ff9900 !important;
   border-width: 0px !important;
+  outline:0px solid var(--ol-subtle-foreground-color)!important;
 }
 
 .ol-scaleline-control {

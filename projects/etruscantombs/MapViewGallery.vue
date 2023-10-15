@@ -30,7 +30,6 @@ import type { DianaClient } from "@/assets/diana";
 import VueMasonryWall from "@yeger/vue-masonry-wall";
 
 const diana = inject("diana") as DianaClient;
-
 const images = ref<Array<Image>>([]);
 
 let layoutKey = ref(0);
@@ -48,7 +47,23 @@ const refreshMasonry = () => {
 }
 
 onMounted(async () => {
-  images.value = await diana.listAll<Image>("image");
+  try {
+    const response = await fetch("https://diana.dh.gu.se/api/etruscantombs/geojson/place/");
+    const data = await response.json();
+
+    images.value = data.features.map((feature: any) => {
+      if (feature.properties.default_image) {
+        return {
+          ...feature.properties.default_image,
+          id: feature.properties.default_image.id
+        };
+      }
+      return null;
+    }).filter((img: Image | null) => img !== null);
+
+  } catch (error) {
+    console.error("Error fetching GeoJSON data:", error);
+  }
 });
 
 defineComponent({
@@ -66,27 +81,24 @@ defineComponent({
   top: 0px;
   width: 100%; 
   height: 100%; 
-  z-index: 200;
+  z-index: 99;
   background-color: rgb(234, 228, 219);
   padding: 0px 0px 0px 0px; 
   overflow-y: scroll;
   transition: all 0.5s ease-in-out;
 }
 
-
-
 @media (min-width: 900px) {
   #app .masonry-wall {
-    padding: 0px 0px 0px 450px; 
+    padding: 0px 0px 0px 480px; 
   }
 }
 
-@media (min-width: 1900px) {
+@media (min-width: 1500px) {
   #app .masonry-wall {
-    padding: 0px 0px 0px 600px; 
+    padding: 0px 0px 0px 30%; 
   }
 }
-
 
 .grid-item:hover .grid-item-info {
   opacity: 0.9;

@@ -1,0 +1,156 @@
+/*CSS here will be used by any file that has added the stylesheet*/
+
+/* CSS - Cascading Style Sheet */
+
+
+
+/* TOP UI widget for changing between map and gallery */
+#app .ui-overlay {
+  pointer-events: auto;
+  margin-top: 20px;
+  z-index: 250;
+  position: absolute;
+  border-radius: 8px;
+  font-weight: 700;
+  color: white;
+  margin-left: 200px;
+  background-color: rgb(0, 0, 0, 0.8);
+  backdrop-filter: blur(3px);
+  transition: all 0.5s ease-in-out;
+}
+
+#app .ui-mode {
+  top: 0px;
+  padding: 4px 10px 4px 10px;
+}
+
+#app .ui-mode .item {
+  cursor: pointer;
+  display: inline;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.5);
+  padding: 0px 15px 0px 15px;
+}
+
+#app .ui-mode .item:hover {
+  color: white;
+}
+
+#app .ui-mode .selected {
+  font-weight: 500;
+  color: rgba(255, 255, 255, 1.0);
+}
+
+
+/* UI item shown on hover over map marker */
+
+#app .ol-popup {
+  font-size: 18px !important;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  text-align: center!important;
+  position: absolute;
+  box-shadow: 2 2px 8px rgba(0, 0, 0, 0.5);
+  padding: 3px 10px;
+  border-radius: 8px !important;
+  border: 0px solid #cccccc;
+  bottom: 40px;
+  left: -80px;
+  width: 170px;
+}
+
+#app .ol-popup:after, .ol-popup:before {
+  top: 100%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+
+#app .ol-popup:after {
+  border-top-color: transparent!important;
+  border-width: 1px!important;
+  left: 45px!important;
+  margin-left: 20px!important;
+}
+
+#app .ol-popup:before {
+  border-top-color: #cccccc;
+  border-width: 11px;
+  left: 55px;
+  margin-left: 15px;
+}
+
+
+/* The open layer zoom and zoom out buttons */
+      
+#app .ol-zoom-in {
+  left: calc(50% + 50px) !important;
+  top: calc(100vh - 140px) !important;
+  position: fixed;
+  border-radius: 10px 0px 0px 10px !important;
+  height: 35px;
+  padding-bottom: 3px !important;
+  width: 50px;
+}
+
+#app .ol-zoom-out {
+  left: calc(50% + 100px);
+  top: calc(100vh - 140px) !important;
+  position: fixed;
+  margin-top: 1px;
+  border-radius: 0px 10px 10px 0px !important;
+  height: 35px;
+  padding-bottom: 3px !important;
+  widtH: 50px;
+}
+
+#app .ol-control button:active,
+#app .ol-control button:hover,
+#app .ol-control button:focus {
+  background-color: rgba(0, 0, 0, 0.7) !important;
+}
+
+
+
+/* Changes for mobile screens */
+
+@media screen and (max-width: 900px) {
+
+  .ui-overlay {
+    margin-top: 25px !important;
+    margin-left: 0px !important;
+    font-size: 120% !important;
+  }
+
+ 
+  #app .ol-zoom-in {
+    display:none!important;
+    left: calc(50% - 50px) !important;
+    top: calc(100vh - 320px) !important;
+  }
+
+  #app .ol-zoom-out {
+    display:none!important;
+    left: calc(50% + 0px) !important;
+    top: calc(100vh - 320px) !important;
+  }
+}
+
+/* Changes for large screens screens */
+
+@media screen and (min-width: 1900px) {
+
+  #app .right-pane {
+    font-size: 115%;
+    width: 600px !important;
+  }
+
+  #app .ui-overlay {
+    font-size: 120% !important;
+    margin-top: 20px !important;
+  }
+}

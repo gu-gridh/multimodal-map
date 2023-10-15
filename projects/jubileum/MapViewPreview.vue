@@ -91,6 +91,7 @@ function deselectPlace() {
   overflow-y: scroll !important;
   padding-left: 30px;
   padding-bottom: 80px;
+  right:0px!important;
 }
 
 .place-title {
@@ -122,7 +123,6 @@ function deselectPlace() {
   display:flex;
   flex-direction:column;
   align-items:center;
-  width: auto;
   pointer-events: auto !important;
   border-radius: 10px;
   margin-right: 20px;
@@ -157,12 +157,12 @@ function deselectPlace() {
   background-color: rgba(248, 249, 229, 1);
 }
 
- .image-container {
-  border-radius:50%;
+ #app .image-container {
+  border-radius:50%!important;
   overflow: hidden;
   margin-bottom: 8px;
-  height: 250px;
-  width: 250px;
+  height: 250px!important;
+  width: 250px!important;
 }
 
 .image {
@@ -208,6 +208,7 @@ function deselectPlace() {
   padding:5px 5px;
 }
 
+
 @media screen and (min-width: 1900px) {
 
   #app .image-container {
@@ -252,6 +253,17 @@ function deselectPlace() {
 }
 
 @media screen and (max-width: 900px) {
+
+ #app .image-card {
+    width:calc(100% - 30px)!important;
+  border-radius: 10px!important;
+  margin-bottom: 30px!important;
+  padding:20px !important;
+}
+
+#app .image-card:hover {
+ transform:scale(1.0)!important;
+}
 
 #app .image-container {
 border-radius:8px!important;

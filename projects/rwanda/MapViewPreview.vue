@@ -1,84 +1,216 @@
-<script lang="ts" setup>
-import { watchEffect, ref, inject } from "vue";
+<script setup lang="ts">
+import { watchEffect, ref, inject, defineComponent, watch, onMounted } from "vue";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
-import type { Image, Place } from "./types";
-import MapViewPreviewImage from "./MapViewPreviewImage.vue";
+import type { Image } from "./types";
 import type { DianaClient } from "@/assets/diana";
+import VueMasonryWall from "@yeger/vue-masonry-wall";
+import { useRouter, useRoute } from "vue-router";
+
+const props = defineProps({
+  id: {
+    type: [String, Number],
+  },
+});
 
 const { selectedFeature } = storeToRefs(mapStore());
 const diana = inject("diana") as DianaClient;
+let layoutKey = ref(0);
+const router = useRouter();
+const store = mapStore();
+const route = useRoute();
 
-const images = ref<Array<Image>>();
-let place = ref() 
+//values
+const images = ref<Array<Image>>([]);
+const place = ref() 
+const interviews: any = ref([]);
+const informants:any = ref([]);
+const placeType = ref()
+const placeDescription = ref()
+const placeNames: any = ref([])
 
-watchEffect(async () => {
-  if (selectedFeature.value) {
-    const place_of_interest = selectedFeature.value.getId();
-    place = JSON.parse(JSON.stringify(selectedFeature.value))
-    images.value = await diana.listAll<Image>("image/", { place_of_interest });
-  } else {
-    images.value = [];
-  }
+//kan tas bort?
+defineComponent({
+  components: {
+    VueMasonryWall,
+  },
 });
+
+//Capitalize first letter since some are lowercase in database
+const capitalize = (word: String) => {
+    if (word[0]) {
+        const first = word[0].toUpperCase()
+        const rest = word.slice(1)
+        return first + rest
+    }
+    else return
+}
+
+//fetch informants
+const fetchInformants = () => {
+    informants.value = []
+    for(let j = 0; j < interviews.value.length; j++){
+        for(let i: number = 0; i < interviews.value[0].informants.length; i++){
+            fetch(`https://diana.dh.gu.se/api/rwanda/informant/${interviews.value[i].informants[i]}`)
+            .then(response => response.json())
+            .then(data => {
+                informants.value.push(data)
+            })
+          }
+    } 
+}
+
+//fetch interviews
+const fetchInterviews = async (id: any) => {
+    interviews.value = []
+    const data = await diana.listAll("text/");
+    //this doesnt find the interview
+    const newInterview = data.find((interview: any) => interview.place_of_interest === id);
+    if (newInterview) {
+      const seenInterviews = new Set(interviews.value.map((i: { id: any }) => i.id));
+      if (!seenInterviews.has(newInterview.id)) {
+        interviews.value.push(newInterview);
+      }
+      fetchInformants();
+    } else {
+      informants.value = [];
+    }
+}
+
+const fetchImages = async (id: Number) => {
+    images.value = await diana.listAll<Image>("image/", { place_of_interest: id });
+    console.log(images.value)
+}
+
+//fetch place data
+const fetchPlaceData =async () => {
+    //if place is selected on map
+    if(selectedFeature.value != undefined || null) {
+        place.value = selectedFeature.value
+        placeType.value = capitalize(place.value.values_.type.text)
+        placeDescription.value = capitalize(place.value.values_.description)
+        placeNames.value = place.value.values_.names
+        const placeId = selectedFeature.value?.getId()
+        fetchInterviews(placeId)
+        fetchImages(Number(placeId))
+    }
+    //if routing from url
+    else {
+        await fetch(`https://diana.dh.gu.se/api/rwanda/geojson/place/${route.params.placeId}`)
+        .then(response => response.json())
+        .then(data => {
+            place.value = data.properties
+            placeType.value = capitalize(place.value.type.text)
+            placeDescription.value = capitalize(place.value.description)
+            placeNames.value = place.value.names
+        })
+        const placeId = Number(route.params.placeId)
+        fetchInterviews(placeId)
+        fetchImages(placeId)
+    } 
+}
+
+onMounted(() => {
+  fetchPlaceData()
+})
+
+watch(selectedFeature, () => {
+  fetchPlaceData()
+})
+
 function deselectPlace() {
   selectedFeature.value = undefined;
+  //change zoom to original state
+  store.updateCenter([3346522.1909503858, -217337.69352852934])
+  store.updateZoom(15)
+  router.push(`/`)
 }
 
-//Capitalize first letter
-const capitalize = (word: String) => {
-  const first = word[0].toUpperCase()
-  const rest = word.slice(1)
-  return first + rest
-}
-
-const store = mapStore();
-const {center, zoom} = storeToRefs(store);
 </script>
 
-<template>
-  <div v-if="selectedFeature" class="mapview-preview">
- 
-    <div class="px-2 py-6">
-      <div class="close-button" @click="deselectPlace">+</div>
-      <div class="">
-        
-      <!-- place card -->
-      <router-link :to="`/place/${place.id_}`">
-        <div class="place-card">
-          <div style="width:100%;">
-          <p>{{ capitalize(place.values_.type.text) }}</p>
-          <div v-for="name in place.values_.names">
-            <div style="width:100%; display:flex;">
-            <span class="lang" v-if="name.languages && name.languages.length > 0">{{ name.languages[0].abbreviation }}</span> 
-            <span v-else></span>
-            <div class="long-name"><span class="centered-name">{{ name.text }}</span></div>
-          </div>
-        </div>
-      </div>
-          <p class="link">More</p>
-        </div>
-      </router-link>
-
-      <!-- image card -->
-    
-       
-      <MapViewPreviewImage
-          v-for="image in images"
-          :key="image.id"
-          :image="image"
-        />
-      </div>
-    
+<template> 
+<div class="mapview-preview">
+    <div class="py-6">
+        <div class="close-button" @click="deselectPlace">+</div> 
     </div>
-  </div>
-
+        <!-- place card with place info -->
+        <div class="place-card">
+            <div style="width:100%;">
+                <p>{{ placeType }} <span>- {{ placeDescription }}</span></p>
+                <div v-for="name in placeNames">
+                    <div style="width:100%; display:flex;">
+                        <span class="lang" v-if="name.languages && name.languages.length > 0">{{ name.languages[0].abbreviation }}</span>
+                        <div class="long-name"><span class="centered-name">{{ name.text }}</span><span style="font-weight: lighter;" v-if="name.period?.text">- {{ name.period.text }}</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Interview if avaliable -->
+        <div class="place-card citation" v-if="interviews && interviews.length != 0">
+            <span v-for="text in interviews">
+                <p>{{ text.title }}</p>
+                <p style="font-style: italic;">{{ text.text}}</p>
+            </span>
+            <!-- Informants if avaliable -->
+            <div v-if="informants && informants.length != 0">
+                 <span v-for="informant in informants">
+                    <p>/{{ informant.custom_id }}</p>
+                </span>
+            </div>
+        </div>
+        <div v-if="images.length != 0" class="masonry">
+        <div>
+            <p>Images</p>
+            <VueMasonryWall
+            :key="layoutKey"
+            class="masonry-wall"
+            :items="images"
+            :column-width="150" 
+            :gap="10"
+        >
+            <template v-slot:default="{ item }">
+                <router-link
+                    :key="item.uuid"
+                    :to="`/image/${item.id}`"
+                    class="grid-item"
+                >
+                    <img :src="`${item.iiif_file}/full/450,/0/default.jpg`" />
+                    <div class="grid-item-info">
+                        <div class="grid-item-info-meta">
+                            <h1>{{item.title}}</h1>
+                        </div>
+                    </div>
+                </router-link>
+            </template>
+        </VueMasonryWall>
+        </div>
+    </div>
+</div>
 </template>
 
 <style>
-.mapview-preview-container{
-  height:calc(100vh - 80px);
+#app .mapview-preview {
+  height: calc(100vh - 80px) !important;
+  pointer-events: auto !important;
+  overflow-y: scroll !important;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 100px;
+  background:transparent !important;
 }
+
+.mapview-preview-container{
+  height:calc(100vh - 80px); 
+  background:transparent !important;
+}
+
+#app .masonry-wall {
+    z-index: auto !important;
+}
+.masonry {
+    width: 100%;
+}
+
 #app h3 {
   font-size: 35px;
   font-weight: 100;
@@ -127,7 +259,8 @@ const {center, zoom} = storeToRefs(store);
   width:100%;
   color:black;
   background-color: white;
-  font-size: 14px;
+  font-size: 1.0vw;
+  line-height:1.2;
   margin-bottom: 40px;
   padding: 10px 10px 10px 10px;
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.5);
@@ -136,9 +269,12 @@ const {center, zoom} = storeToRefs(store);
   overflow:hidden;
 }
 
+.citation {
+  font-size: 0.7vw;
+}
+
 .place-card:hover {
-  cursor:pointer;
-  transform:scale(1.05);
+  /* transform:scale(1.05); */
 }
 
 .place-card p{
@@ -196,7 +332,4 @@ width:70%;
  
 }
 }
-
-
-
 </style>

@@ -1,7 +1,7 @@
 import type { JubileumProject } from "./types";
 
 export default <JubileumProject>{
-  title: "Göteborgs Jubileum",
+  title: "Göteborgs \nJubileum",
   subtitle: "1923",
   moreinfo: "Läs mer...",
   about:

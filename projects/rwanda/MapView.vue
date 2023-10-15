@@ -1,8 +1,5 @@
-
-
-
 <script lang="ts" setup>
-import { inject, provide, ref, nextTick, watch } from "vue";
+import { inject, provide, ref, nextTick, watch , onMounted} from "vue";
 import configRaw from "./config";
 import MainLayout from "@/MainLayout.vue";
 import MapViewControls from "./MapViewControls.vue";
@@ -11,16 +8,14 @@ import { formatNames } from "./names";
 import type Feature from "ol/Feature";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
-// import AreaSearch from "@/components/AreaSearch.vue";
-import MapComponent from "@/components/MapComponent.vue";
+import MapComponent from "@/components/MapComponentRwanda.vue";
 import DianaPlaceLayer from "@/components/DianaPlaceLayer.vue";
 import FeatureSelection from "@/components/FeatureSelection.vue";
-import MapViewPreview from "./MapViewPreview.vue";
 import type { Place } from "./types";
 import About from "./About.vue";
 import AutocompleteComponent from "@/components/input/AutocompleteComponent.vue";
 import { useRwandaMap } from "./map.composable";
-import GeoJSON from 'ol/format/GeoJSON.js'
+import { rwandaStore } from "./rwandaStore";
 
 function getName(f: Feature): string {
   const place = f.getProperties() as Place;
@@ -31,29 +26,47 @@ const config: Project = { ...configRaw };
 config.getFeatureDisplayName = getName;
 provide("config", config);
 
+const visibleAbout = ref(false);
+
 const store = mapStore();
 const { params } = storeToRefs(store);
-
-// GeoJSON formatting
-const format = inject("ol-format");
-const GeoJSONFormat = new format.GeoJSON({
-  featureProjection: config.projection,
-});
-
-const visibleAbout = ref(false);
-const toggleAboutVisibility = async () => {
-  console.log('fired')
-  await nextTick();
-  visibleAbout.value = !visibleAbout.value;
-};
+const { periodsLayer, periods, sources, informants, sourcesLayer, placeTypeLayer, placeTypes, allLayer, informantsLayer, coordinate } = storeToRefs(rwandaStore());
+const { selectedFeature } = storeToRefs(store);
 
 //MapViewControls
 const { searchText } = useRwandaMap();
-
 function displayName(p: Place): string {
   return formatNames(p.id, p.names);
 }
 
+//when selectedFeature changes, draw geometry on map - TODO
+const drawGeometry = () => {
+  if (selectedFeature.value) {
+    coordinate.value = selectedFeature.value.getGeometry();
+    console.log(coordinate.value)    
+  }
+}
+
+//zoom to place on click
+const featureZoom = 17; // zoom level when clicking on a feature
+
+watch(
+  selectedFeature,
+  (newFeature, oldFeature) => {
+    if (newFeature && newFeature.getGeometry) {
+      const geometry = newFeature.getGeometry();
+      if (geometry) {
+        const coordinates = (geometry as any).getFirstCoordinate(); //Since polygon - only get first coordinates
+        store.updateCenter(coordinates);
+        if (store.zoom < featureZoom)
+        {
+          store.updateZoom(featureZoom);
+        }
+      }
+    }
+  },
+  { immediate: true }
+);
 </script>
 
 <template>
@@ -62,36 +75,84 @@ function displayName(p: Place): string {
     <template #search>
       <button class="item"  @click="visibleAbout = true;">
         <div
-              class="p-1 px-3 clickable category-button"
-              style="
-                width: auto;
-                text-align: center;
-                margin-top: -5px;
-                cursor: pointer;
-              "
-            >More info</div>
-          </button>
-      <div class="filter-container">
+          class="p-1 px-3 clickable category-button about-button"
+          style="
+            width: auto;
+            text-align: center;
+            margin-top: -5px;
+            cursor: pointer;"
+            >More info
+        </div>
+      </button>
+      <div class="search-container">
         <AutocompleteComponent
-          placeholderText="Search..."
+          placeholderText="Search place names..."
           noResultsText="No results found."
           :displayFunction="displayName"
           :searchItems="searchText"
         />
       </div>
-      
+      <!--filter map-->
+      <MapViewControls />
     </template>
 
     <template #background>
-     
-      <div style="display:flex; align-items: center; justify-content: center;">
-<!--     <div class="mapoverlay">
-    <AreaSearch id="button-wrapper" class="clickable category-button" />
-  </div> -->
-</div>
-<MapComponent :min-zoom="14" :max-zoom="19" :restrictExtent="[30.1, -1.92, 30.01, -1.980]">
+    <div class="map-container">
+      <MapComponent :min-zoom="14" :max-zoom="19" :restrictExtent="[30.01, -1.98, 30.1, -1.92]" :shouldAutoMove="true" class="greyscale">
         <template #layers>
+          <!-- Sources layer just filtering interviews atm -->
+          <DianaPlaceLayer 
+            v-if="sourcesLayer"
+            path="rwanda/search/text"
+          >
+          <ol-style>
+              <ol-style-stroke color="rgb(180,100,100)" :width="3"></ol-style-stroke>
+            </ol-style>
+            <FeatureSelection/>
+          </DianaPlaceLayer>
+          <!-- Place types layer -->
+          <DianaPlaceLayer 
+            v-if="placeTypeLayer"
+            path="rwanda/search/type/"
+            :params = "{
+              text: placeTypes[0],
+            }"
+            >
+            <ol-style>
+              <ol-style-stroke color="#64b464" :width="3"></ol-style-stroke>
+            </ol-style>
+              <FeatureSelection/>
+            </DianaPlaceLayer>  
+            <!-- Informants layer -->
+          <DianaPlaceLayer 
+            v-if="informantsLayer"
+            path="rwanda/search/informant/"
+            :params = "{
+              text: informants[0],
+            }"
+            >
+            <ol-style>
+              <ol-style-stroke color="#6464b4" :width="3"></ol-style-stroke>
+            </ol-style>
+              <FeatureSelection/>
+            </DianaPlaceLayer>  
+          <!-- Periods layer -->
+           <DianaPlaceLayer 
+            v-if="periodsLayer"
+            path="rwanda/search/period/"
+            :params = "{
+              period_name: periods[0],
+            }"
+            >
+            <ol-style>
+              <ol-style-stroke color="#64b4b4" :width="3"></ol-style-stroke>
+            </ol-style>
+              <FeatureSelection/>
+            </DianaPlaceLayer>  
+            <!-- TODO Lamguage layer -->
+            <!-- Initial layer -->
           <DianaPlaceLayer
+            v-if="allLayer"
             path="rwanda/geojson/place/"
             :params="{
               has_no_name: false,
@@ -102,30 +163,50 @@ function displayName(p: Place): string {
             }"
           >
             <ol-style>
-              <ol-style-circle :radius="10">
-                <ol-style-fill color="rgb(255,255,255,0.7)"></ol-style-fill>
-                <ol-style-stroke color="gray"></ol-style-stroke>
-              </ol-style-circle>
-              <ol-style-stroke color="rgba(100,100,100,0.8)" :width="5"></ol-style-stroke>
+              <ol-style-stroke color="rgb(180,100,100)" :width="3"></ol-style-stroke>
             </ol-style>
             <FeatureSelection />
           </DianaPlaceLayer>
         </template>
       </MapComponent>
-    </template>
-
-    <template #details>
-  <MapViewPreview />
-</template>
+    </div>
+  </template>
+    <!-- <template #details> -->
+  <!-- <MapViewPreview /> -->
+<!-- </template> -->
 </MainLayout>
 </template>
 
 <style>
-.filter-container {
+.about{
+  display:none;
+}
+
+#app #map-component{
+  width: 100% !important;
+  height: 100% !important;
+}
+
+#app .tile-layer {
+  filter: grayscale(80%);
+}
+
+#app #transparent {
+  background-color: transparent !important;
+  display: none !important;
+}
+
+.map-container {
+  height: calc(100vh - 80px) !important;
+  position: relative;
+  width: 100%!important;
+}
+.search-container {
   display:flex;
   flex-direction: column;
   height:auto;
-
+  margin-top: 30px;
+  width:80%;
 }
 .mapoverlay{
 z-index: 100;
@@ -153,25 +234,5 @@ bottom:100px;
   min-width: 200px;
 }
 
-#app .ol-control button {
-  font-family: "Barlow Condensed", sans-serif;
-  border-radius: 50% !important;
-  background-color: rgb(50, 50, 50) !important;
-  color: white !important;
-}
 
-#app .ol-control button:hover,
-.ol-control button:focus {
-  background-color: rgb(180, 100, 100) !important;
-  color: white !important;
-  border-style: none !important;
-  border-style: hidden !important;
-}
-
-#app .ol-control button:active {
-  background-color: rgb(180, 100, 100) !important;
-  color: white !important;
-  border-style: none !important;
-  border-style: hidden !important;
-}
 </style>

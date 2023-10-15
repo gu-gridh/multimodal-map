@@ -1,12 +1,13 @@
-import type { JubileumProject } from "./types";
+import type { EtruscanProject } from "./types";
 
-export default <JubileumProject>{
-  title: "Etruscan Tombs",
-  subtitle: "3D",
-  moreinfo: "Läs mer...",
+export default <EtruscanProject>{
+  title: "",
+  subtitle: "",
+  moreinfo: "Learn more...",
   about:
-    "Jonathan Westin's favorite project, and excuse to keep visiting La Parolaccia in Trastevere (seriously, go there).",
+    "",
   projection: "EPSG:3857",
-  center: [11.982, 57.696],
-  zoom: 16.5,
+  center: [11.999722, 42.224444],
+  zoom: 17,
+  timeRange: [1600, new Date().getFullYear()],
 };

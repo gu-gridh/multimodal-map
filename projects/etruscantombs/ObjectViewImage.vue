@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import ObjectViewComponent from "@/components/ObjectViewComponent.vue";
+import ObjectViewComponent from "@/components/ObjectViewComponentReturn.vue";
 import OpenSeadragon from "@/components/OpenSeadragon.vue";
 import type { ImageDeep } from "./types";
 
-defineProps<{
+const props = defineProps<{
   object: ImageDeep;
   id: Number;
 }>();
@@ -20,23 +20,21 @@ const downloadImage = (fileUrl: string, fileName: string) => {
 
 <template>
   <div class="metadata">
-    <ObjectViewComponent :title="object.title" back="/">
+    <ObjectViewComponent :title="'Tomb ' + object.tomb.name + ': ' + object.title">
       <div class="objects">
-        <p v-html="object.description"></p>
-
-
-      <div v-if="object.creator?.name">By: {{ object.creator.name }}</div>
-      <div v-if="object.date">On: {{ object.date }}</div>
-      <div v-if="object.focus?.text">Focus: {{ object.focus.text }}</div>
+      
+      <div><div class="label">Type:</div> <div class="data">{{ object.type_of_image[0].text }}</div></div>
+      <div v-if="object.author?.firstname"><div class="label">Creator:</div>  <div class="data">{{ object.author.lastname }}, {{ object.author.firstname }}</div></div>
+      <div v-if="object.date"><div class="label">Date:</div> <div class="data">{{ object.date }}</div></div>
+      <div class="description" v-html="object.description"></div>
       <div v-if="object.tag?.length">
         Tags:
         {{ object.tag.map((tag) => tag.text).join(", ") }}
       </div>
-      <h2>Om platsen  </h2>
-      <div v-if="object.place?.description" v-html="object.place.description"></div>
+      <button class="theme-button download-button" @click="downloadImage(object.file, `${object.title}.tif`)">Download</button>
 
-      <button class="category-button" @click="downloadImage(object.file, `${object.title}.tif`)">Ladda ner bild</button>
-
+      <div v-if="object.tomb?.name"><h2>Tomb {{ object.tomb.name }}</h2> </div>
+      <div class="description" v-if="object.tomb?.description" v-html="object.tomb.description"></div>
     </div>
     </ObjectViewComponent>
   </div>
@@ -60,40 +58,15 @@ const downloadImage = (fileUrl: string, fileName: string) => {
 </template>
 
 <style scoped>
-.metadata .object-title {
-  font-family: "Josefin Sans", sans-serif !important;
 
+.data{
+  color:rgb(255,150,150);
 }
 
-h2{
-  font-size:1.5em;
-  margin-top:30px;
-  margin-bottom:5px;
+.theme-button{
+  margin-top:20px;
+  margin-bottom:10px;
 }
 
 
-.metadata .objects {
-margin-top:30px;
-font-weight:200;
-font-size:1.0em;
-line-height:1.2;
-text-align:left;
-padding:0px 40px 0px 0px;
-}
-.illustration {
-  height: calc(100vh - 80px);
-}
-
-.category-button{
-  margin-top:30px;
-  cursor:pointer;
-  font-size:1.1em;
-  padding:8px 16px;
-  background: url("@/assets/interface/downloadbuttonwhite.png");
-  background-size: 25px;
-      background-repeat: no-repeat;
-      padding-left: 45px;
-      background-position: 8px 5px;
-
-}
 </style>

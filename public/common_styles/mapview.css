@@ -1,0 +1,293 @@
+/*CSS here will be used by any file that has added the stylesheet*/
+
+/* CSS - Cascading Style Sheet */
+
+
+
+/* Main */
+html,
+body {
+  font-size: 1vw !important;
+}
+
+
+/* Left Pane */
+
+.main-title {
+  white-space: pre-line;
+  font-size: 7vw;
+  line-height: 0.7;
+  width: auto;
+  font-weight: 300;
+  letter-spacing: 0.05rem;
+  margin-left: -6px;
+  margin-top: -15px;
+  margin-bottom: 20px;
+  transition: all 0.5s ease-in-out;
+}
+
+.sub-title {
+  font-size: 4vw;
+  line-height: 0.8;
+  font-weight: 200;
+  letter-spacing: -0.2rem;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 15px;
+  margin-left:-50px;
+  transition: all 0.5s ease-in-out;
+}
+
+.about-text {
+  display: none;
+  padding-right: 0px;
+  line-height: 1.2;
+  text-align: left;
+  font-size: 0.95em;
+  margin-bottom: 15px;
+}
+
+#app .about-button {
+  margin-top: -5px;
+  width: auto !important;
+  text-align: center;
+  cursor: pointer;
+}
+
+/* The colour of the gradients is added as an image to this class mapview.vue */
+#app .left-pane {
+  background-color: transparent !important;
+  position: absolute;
+  height: 100vh;
+  width: 50%;
+  min-width: 900px;
+  z-index: 100;
+  pointer-events: none;
+}
+
+.left-pane-layer {
+  padding: 0px 480px 0px 0px !important;
+  pointer-events: none !important;
+  height: 100vh !important;
+  width: 100% !important;
+}
+
+.left-pane-content {
+  padding: 60px 0px 30px 60px !important;
+  position: relative;
+  height: calc(100vh - 75px) !important;
+  margin-top: -5px;
+  margin-left: -5px;
+  padding: 5px;
+  pointer-events: auto !important;
+  overflow: hidden !important;
+  overflow-y: scroll !important;
+  -ms-overflow-style: none !important;
+  overflow-style: none !important;
+  -webkit-user-select: none;
+  /* Safari */
+  -ms-user-select: none;
+  /* IE 10 and IE 11 */
+  user-select: none;
+  /* Standard syntax */
+  scrollbar-width: none !important;
+}
+
+.left-pane-content::-webkit-scrollbar {
+  width: 0px !important;
+}
+
+.section-title {
+  font-weight: 400;
+  font-size: 1.2vw;
+  margin-top: 15px;
+  margin-bottom: 0px;
+}
+
+
+
+/* Right Pane */
+
+#app .right-pane {
+  display: block !important;
+  position: absolute;
+  height: 100vh;
+  width: 32% !important;
+  right: 0px;
+  z-index: 601 !important;
+  overflow: auto !important;
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+  pointer-events: none;
+  overflow: hidden !important;
+}
+
+#app .right-pane::-webkit-scrollbar {
+  width: 0 !important
+}
+
+#app .mapview-preview {
+  height: 100vh !important;
+  width: 100%;
+  background-color: transparent;
+  color: black;
+  /* height: 100% !important; */
+  pointer-events: none !important;
+  overflow: hidden !important;
+  padding-top: 5px;
+  padding-left: 30px;
+  padding-bottom: 80px;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  overflow-y: scroll !important;
+  -webkit-user-select: none;
+  /* Safari */
+  -ms-user-select: none;
+  /* IE 10 and IE 11 */
+  user-select: none;
+  /* Standard syntax */
+}
+
+#app .mapview-preview::-webkit-scrollbar {
+  width: 0 !important
+}
+
+
+.grid-item:hover .grid-item-info {
+  opacity: 0.9;
+}
+
+.grid-item {
+  width:100%;
+  display: flex;
+  position: relative;
+  overflow: hidden;
+  width: auto;
+}
+
+.grid-item img {
+  width:100%;
+  transition: all 0.2s ease-in-out;
+}
+
+.grid-item:hover img {
+  transform: scale(1.05);
+  z-index: 300; 
+}
+
+.grid-item-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.7) 100%);
+  color: rgb(255, 255, 255);
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transition: all 0.5s ease-in-out;
+  cursor:pointer;
+  z-index: 400; 
+  overflow-wrap: break-word;
+  line-height:1.0;
+}
+
+.grid-item:hover .grid-item-info {
+  opacity: 0.9;
+}
+
+.grid-item-info-meta {
+  padding: 10px;
+}
+
+
+/* Smaller screens - settings to not make text too small*/
+
+
+@media screen and (max-width: 1500px) {
+
+  html,
+  body {
+    font-size: 1em !important;
+  }
+
+  .main-title {
+    font-size: 100px;
+  }
+
+  .sub-title {
+    font-size: 70px;
+  }
+
+  .section-title {
+    font-size: 1.2em;
+  }
+}
+
+@media screen and (max-height: 750px) {
+
+  .main-title {
+    font-size: 80px;
+    width: 60%;
+  }
+
+}
+
+
+
+/* Mobile screen */
+
+@media screen and (max-width: 900px) {
+  #app .left-pane {
+    min-width: 300px;
+  }
+
+  #app .right-pane {
+    width: 100% !important;
+    right: 0px;
+  }
+
+  .section-title {
+    font-size: 1.2em;
+  }
+
+  #app .masonry-grid {
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    /* Make the grid height responsive */
+    z-index: 200;
+    background-color: rgb(234, 228, 219);
+    padding: 0px 0px 230px 00px;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    grid-template-rows: masonry;
+    grid-gap: 5px;
+    overflow-y: scroll;
+  }
+
+  #app .left-pane-layer {
+    padding: 20px 0px 0px 0px !important;
+    height: auto !important;
+  }
+
+  #app .left-pane-content {
+    padding: 20px 0px 20px 0px !important;
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  .main-title {
+    font-size: 100px !important;
+    width: 260px !important;
+    margin-top: -10px !important;
+  }
+
+
+  .sub-title {
+    text-align:left!important;
+  }
+
+}
