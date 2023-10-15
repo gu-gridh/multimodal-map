@@ -195,6 +195,7 @@ watch(
   background-color: transparent !important;
   display: none !important;
 }
+
 .map-container {
   height: calc(100vh - 80px) !important;
   position: relative;
