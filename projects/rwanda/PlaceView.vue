@@ -9,11 +9,7 @@ import { useRouter, useRoute } from "vue-router";
 import {fromLonLat} from 'ol/proj.js';
 import * as turf from '@turf/turf'
 
-const props = defineProps({
-  id: {
-    type: [String, Number],
-  },
-});
+
 const { selectedFeature } = storeToRefs(mapStore());
 const diana = inject("diana") as DianaClient;
 let layoutKey = ref(0);
@@ -30,7 +26,6 @@ const placeDescription = ref()
 const placeNames: any = ref([])
 const placeGeoJson = ref()
 const coordinates: any = ref([])
-const placeId = ref(route.params.placeId)
 
 //Capitalize first letter since some are lowercase in database
 const capitalize = (word: String) => {
