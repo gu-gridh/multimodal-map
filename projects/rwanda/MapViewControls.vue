@@ -116,6 +116,13 @@ const handleInformantClick = (key: string) => {
         class="filter-button"
         @click="handleInformantClick"
       />
+      <div class="filter-heading">Languages</div>
+      <CategoryButtonList 
+        v-model="languages"
+        :categories="LANGUAGES"
+        :limit="1"
+        class="filter-button lang-buttons"
+      />
     <div class="filter-heading">Time periods</div>
       <CategoryButtonList 
         v-model="periods"
@@ -124,25 +131,19 @@ const handleInformantClick = (key: string) => {
         class="filter-button"
         @click="handlePeriodClick"
       />
-      <div class="filter-heading">Languages</div>
-      <CategoryButtonList 
-        v-model="languages"
-        :categories="LANGUAGES"
-        :limit="1"
-        class="filter-button lang-buttons"
-      />
-  </div>
+    </div>
 </template>
 
 <style>
 .filter-button {
-  font-size: 14px;
+  font-size: 0.8vw;
 }
 .filter-heading {
-  font-size: 16px;
-  margin-bottom: 8px;
+  font-size: 1.1vw;
+  margin-bottom: 2px;
   margin-top: 10px;
-  font-weight: 500;
+  font-weight: 400;
+
 }
 .checkboxes {
   display: inline-block;
@@ -151,9 +152,9 @@ const handleInformantClick = (key: string) => {
 }
 
 #app .searchbox{
-  background-color:black !important;
+  background-color:white !important;
   width:100%;
-  color:white;
+  color:black;
   padding:15px  !important;
   font-size: 25px;
 }
@@ -163,44 +164,31 @@ const handleInformantClick = (key: string) => {
   margin-top:-5px;
   padding:10px 0px 0px 0px;
   border-radius:0 0 8px 8px;
-  background-color:rgb(45,45,45);
-  color:white;
+  background-color:rgb(255,255,255);
+  color:black;
   max-height:calc(100vh - 550px);
-
-
 }
 
 #app .searchbox-menu-text{
-  
   padding:15px  !important;
   font-size: 16px;
-
 }
 
-#app .searchbox-menu-text-active{
-  
+#app .searchbox-menu-text-active{ 
  background-color:rgb(180,100,100);
-
 }
 
-
 #app .searchbox-menu-text-active{
-  
   color:white;
- 
  }
 
 
 .filter-container {
   padding: 1.5rem 0 1.5rem 0;
-  border-bottom-right-radius: 0.5rem /* 8px */;
-  border-bottom-left-radius: 0.5rem /* 8px */;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 }
-
-
 
 .section-title {
   font-weight: 400;
@@ -208,6 +196,7 @@ const handleInformantClick = (key: string) => {
   margin-top: 30px;
   margin-bottom: 5px;
 }
+
 #app .mapcard-container {
   margin-top:10px;
 }
@@ -218,31 +207,35 @@ const handleInformantClick = (key: string) => {
 }
 
 #app .category-button {
-  background-color: rgba(180, 100, 100, 1.0);
-  color: white;
+  background-color: rgba(250, 250, 250, 1.0);
+  color: black;
   border-radius: 4px;
   transition: all 0.2s ease-in-out;
   width: auto !important;
-  padding-left: 20px !important;
-  padding-right: 20px !important;
+  padding-left: 10px !important;
+  padding-right: 10px !important;
 }
 
 #app .category-button:hover {
-  background-color: rgb(220, 140, 140);
+  background-color: rgb(180, 100, 100);
   color: white;
 }
 
 #app .category-button.active {
-  background-color: rgb(220, 140, 140);
+  background-color: rgb(180, 100, 100);
   color: white;
 }
 
 .lang-buttons {
-  margin-bottom: 20px;
+  margin-bottom: 0px;
 }
 
 #app .rounded {
   border-radius: 10px;
+}
+
+.no-results{
+color:rgb(180,100,100);
 }
 
 </style>

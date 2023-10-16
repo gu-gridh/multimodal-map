@@ -92,3 +92,17 @@ export type Focus = {
 export type Tag = {
   text: string;
 };
+
+export type Observation = {
+  published: boolean;
+  title: string;
+  creator: number;
+  document: number | null;
+  place: number;
+  description: string;
+  date: string;
+  focus: number | null;
+  tag: number[];
+  id: number;
+};
+

@@ -2,9 +2,8 @@
   <ol-map
     :loadTilesWhileAnimating="true"
     :loadTilesWhileInteracting="true"
-    style="height: 100%; width: calc(100% + 180px); z-index: !important"
+    style="height: 100%; width: calc(100% + 200px); z-index: !important"
     ref="map"
-    id="map-component"
   >
 
   <ol-view
@@ -28,7 +27,7 @@
     <ol-zoom-control v-if="zoomcontrol" />
     <!-- <ol-zoomslider-control v-if="zoomslidercontrol" /> -->
 
-    <ol-tile-layer className="tile-layer">
+    <ol-tile-layer>
       <ol-source-osm />
     </ol-tile-layer>
 
@@ -37,7 +36,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject, computed, onMounted, watch, nextTick} from "vue";
+import { ref, inject, computed, onMounted, watch, nextTick, provide } from "vue";
 import { fromLonLat, transformExtent } from "ol/proj";
 import { mapStore } from "@/stores/store";
 import { storeToRefs } from "pinia";
@@ -99,11 +98,12 @@ const transformedRestrictExtent = computed(() => {
   return undefined;
 });
 
-
-
 onMounted(() => {
   let storeCenter = store.center;
   let storeZoom = store.zoom;
+
+  // Provide the map object for child components
+  provide('map', map.value);
   
   if (storeCenter[0] !== 0 && storeZoom !== 1) {
     map.value.map.getView().setCenter(storeCenter);
@@ -192,7 +192,6 @@ function onMoveEnd() {
 </script>
 
 <style>
-
 .ol-control button {
   font-family: "Barlow Condensed", sans-serif;
   border-radius: 50% !important;

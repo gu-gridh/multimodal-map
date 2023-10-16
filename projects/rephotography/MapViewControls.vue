@@ -1,9 +1,31 @@
 <template>
-        <!-- <div class="section-title">Glacier data layer</div>  -->
-<button class="item" @click="toggleMapLayer">
-  <div :class="['p-1', 'px-2', 'clickable', 'category-button', { 'active': mapLayerVisibility}]" style="width: auto; margin-left:10px; text-align: center; cursor: pointer;">Glacier data layer</div>
-</button>
+  <div class="section-title">Glacier data</div>
+ <div class="button-container">
+  <button class="item" @click="toggleMapLayerTwo">
+      <div
+        :class="['p-1', 'px-2', 'clickable', 'category-button', { 'active': mapLayerVisibilityTwo}]"
+      >
+        1936-1972
+      </div>
+    </button>
+    <button class="item" @click="toggleMapLayer">
+      <div
+        :class="['p-1', 'px-2', 'clickable', 'category-button', { 'active': mapLayerVisibility}]"
+      >
+        2008-2022
+      </div>
+    </button>
 
+   
+
+    <!-- <button class="item" @click="toggleMapLayerThree">
+      <div
+        :class="['p-1', 'px-2', 'clickable', 'category-button', { 'active': mapLayerVisibilityThree}]"
+      >
+        CryoClim_GAO_SJ_2001-2010 layer
+      </div>
+    </button> -->
+  </div>
 
   <div class="section-title">Documentation by category</div>
   <CategoryButtonList
@@ -23,6 +45,7 @@
         :max="YEARS.MAX"
         :step="1"
         class="my-2"
+        :isSliderVisible="isSliderVisible" 
       />
     </div>
   </transition>
@@ -54,7 +77,7 @@ import { rephotographyStore } from "./store";
 import type { RephotographyProject } from "./types";
 
 const config = inject<RephotographyProject>("config");
-const { categories, years, tags, tagsLayerVisible, placesLayerVisible, mapLayerVisibility } = storeToRefs(rephotographyStore());
+const { categories, years, tags, tagsLayerVisible, placesLayerVisible, mapLayerVisibility, mapLayerVisibilityTwo, mapLayerVisibilityThree } = storeToRefs(rephotographyStore());
 
 // See https://github.com/gu-gridh/rephotography/blob/master/views.py
 const CATEGORIES = {
@@ -85,8 +108,10 @@ onMounted(async () => {
 
 const isSliderVisible = ref(true);
 
-// Create a ref for last clicked category
-const lastClickedCategory = ref('');
+const lastClickedElementType = ref(''); // can be either 'tag' or 'category'
+const lastClickedElement = ref(''); // the last clicked tag or category
+
+const lastClickedValue = ref('');
 
 const handleCategoryClick = (category: string) => {
   if (tagsLayerVisible.value) { 
@@ -98,23 +123,16 @@ const handleCategoryClick = (category: string) => {
   tags.value = [];
   isSliderVisible.value = true;
 
-  // If the clicked category is the same as the last clicked one, default to "all"
-  if (lastClickedCategory.value === category) {
+  if (lastClickedElementType.value === 'category' && lastClickedValue.value === category) {
     categories.value = ["all"];
-
-    // Clear the lastClickedCategory since it was unselected
-    lastClickedCategory.value = '';
+    lastClickedValue.value = '';
   } else {
-    // Add the clicked category only if it's not the same as the last clicked one
     categories.value = [category];
-
-    // Update last clicked category
-    lastClickedCategory.value = category;
+    lastClickedValue.value = category;
   }
-};
 
-// Create a ref for last clicked tag
-const lastClickedTag = ref('');
+  lastClickedElementType.value = 'category'; // Update the type of the last clicked element
+};
 
 const handleTagClick = (tag: string) => {
   if (placesLayerVisible.value) { 
@@ -126,36 +144,40 @@ const handleTagClick = (tag: string) => {
   categories.value = [];
   isSliderVisible.value = false;
 
-  // If the clicked tag is the same as the last clicked tag, return to the default view
-  if (lastClickedTag.value === tag) {
+  if (lastClickedElementType.value === 'tag' && lastClickedValue.value === tag) {
     categories.value = ["all"];
     tags.value = [];
     placesLayerVisible.value = true;
     tagsLayerVisible.value = false;
     isSliderVisible.value = true;
-
-    // Clear the lastClickedTag since it was unselected
-    lastClickedTag.value = '';
+    lastClickedValue.value = '';
   } else {
-    // Add the clicked tag only if it's not the same as the last clicked one
     tags.value = [tag];
-
-    // Update last clicked tag
-    lastClickedTag.value = tag;
+    lastClickedValue.value = tag;
   }
+
+  lastClickedElementType.value = 'tag'; // Update the type of the last clicked element
 };
+
 
 const toggleMapLayer = () => {
    mapLayerVisibility.value = !mapLayerVisibility.value; // Toggle the map layer visibility
+ };
+
+ const toggleMapLayerTwo = () => {
+   mapLayerVisibilityTwo.value = !mapLayerVisibilityTwo.value; // Toggle the map layer visibility
+ };
+
+ const toggleMapLayerThree = () => {
+   mapLayerVisibilityThree.value = !mapLayerVisibilityThree.value; // Toggle the map layer visibility
  };
 </script>
 
 <style>
 .section-title {
   font-weight: 400;
-  font-size: 20px;
-  margin-top: 30px;
-  margin-bottom: 5px;
+  margin-top: 20px;
+  margin-bottom: 0px;
 }
 
 #app .category-button {
@@ -247,14 +269,24 @@ const toggleMapLayer = () => {
 
 .slideinactive {
   opacity:0.4;
-  pointer-events: none !important;
   transition: all 0.4s;
+  filter: grayscale(100%);
 }
 
 .slideactive {
   transition: all 0.4s;
   opacity:1.0;
+  filter: grayscale(0%);
 }
 
+.button-container {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
 
+.button-container .item {
+  margin-right: 10px;
+}
 </style>

@@ -1,31 +1,39 @@
 <template>
   <div class="about-container" v-bind:class="{fullopacity: visibleAbout}">
+    <button @click="toggleLanguage">
+        <div class="p-1 px-2 clickable category-button about-button" style="
+                left: 20px !important;
+                top: 20px !important;
+                font-size:1.1em!important;
+              ">{{ $t('languagebutton') }}</div>
+    </button>
     <div class="flex-machine">
       <div class="red-content">
-    <div class="about-main-title" v-bind:class="{fullopacityui: visibleAbout}">Etruscan<br>Chamber Tombs</div>
-    <div class="about-sub-title" v-bind:class="{fullopacityui: visibleAbout}"></div>
+        
+    <div class="about-main-title theme-color-text" v-bind:class="{fullopacityui: visibleAbout}">{{ $t('etruscantitle') }}</div>
+    <div class="about-sub-title theme-color-text" v-bind:class="{fullopacityui: visibleAbout}"></div>
 
     <div class="about-article-main" v-bind:class="{fullopacityui: visibleAbout}">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+      {{ $t('aboutportalmain') }}
     </div>
 
 
- 
+
 
       <div class="about-article-sub" v-bind:class="{fullopacityui: visibleAbout}">
-      Projektet leddes av xxx och är ett samarbete mellan universitetsbiblioteket och Göteborgs infrastruktur i Digital Humaniora (GRIDH). Namn på alla som varit med: Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn.
-      </div>
+        {{ $t('aboutportal') }}
+    </div>
   
     
     
       
-        <button @click="$emit('close')">
-            <div
-              class="p-1 px-2 clickable category-button"
-              style="width:auto; padding:5px 15px; text-align: center; cursor: pointer;"  v-bind:class="{fullopacityui: visibleAbout}">Explore</div>
+      <button @click="$emit('close')">
+        <div
+              class="p-1 px-2 category-button"
+              style="width:auto; padding:5px 15px; text-align: center; cursor: pointer;"  v-bind:class="{fullopacityui: visibleAbout}"> {{ $t('explore') }}</div>
           </button>
         </div>
-        <div class="about-lower-border"> </div>
+        <!-- <div class="about-lower-border"> </div> -->
       </div>
        
         <div class="about-logo-top-right"> </div>
@@ -35,7 +43,12 @@
 
 </template>
 
+
+
 <script lang="ts">
+
+import i18n from '../../src/translations/etruscan';
+
 export default {
   name: "aboutview",
   props: {
@@ -44,143 +57,78 @@ export default {
       required: true,
     },
   },
+  methods: {
+    toggleLanguage() {
+      if (i18n.global.locale === 'en') {
+        i18n.global.locale = 'it';
+      } else {
+        i18n.global.locale = 'en';
+      }
+    },
+  },
 };
+
+
+
 </script>
 
 <style scoped>
-body{
-  border:0px;
-}
 .about-container {
-  position:fixed;
-  color: white;
-  line-height: 1;
-  height: calc(100%);
-  width: 100%;
-  font-size: 12px;
-  z-index: 2000;
-  backdrop-filter:blur(0px);
-  pointer-events:none;
-  transform:scale(1.5);
-  translate: 0px 100px;
-  transition: all 1.5s ease-in-out;
-  opacity:0.0;
+  color: black;
   overflow-y:auto;
-  background: linear-gradient(90deg, rgba(245, 235, 225,1) 0%, rgba(245, 235, 225,0.8) 30%);
+  background: linear-gradient(90deg, rgba(245, 235, 225,1) 0%, rgba(245, 235, 225,0.8) 100%) !important;
+  padding-bottom:40px !important;
 
 }
 
 .fullopacity{
   backdrop-filter:blur(5px);
-  opacity:1.0;
-  pointer-events:auto;
-  transform:scale(1.0);
-  translate: 0px 0px;
-  background: linear-gradient(90deg, rgba(245, 235, 225,1) 0%, rgba(245, 235, 225,0.8) 100%);
-}
-
-.flex-machine{
-  height:100%;
-  display:flex;
-  flex-direction:column;
- 
-
-}
-
-.red-content{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content: start;
-  width:auto;
-
-}
-
-.about-main-title {
-  font-family: 'Geo', sans-serif;
-  margin-top:100px;
-  flex-basis:auto;
-  width:100%;
-  font-size: 105px;
-  line-height: 0.85;
-  font-weight: 100;
-  letter-spacing: -0.2rem;
-  text-align: center;
-  color:rgb(180,100,100);
-  opacity:0.0;
-  margin-bottom:40px;
-  transition: all 0.4s ease-in-out;
-
-}
-
-.about-sub-title {
-  font-family: "Josefin Sans", sans-serif !important;
-  margin-top:-30px;
-  flex-basis:auto;
-  width:100%;
-  font-size: 65px;
-  line-height: 0.9;
-  font-weight: 100;
-  letter-spacing: -0.2rem;
-  text-align: center;
-  color:rgb(180,100,100);
-  opacity:0.0;
-  margin-bottom:40px;
-  transition: all 0.4s ease-in-out;
-
-}
-
-.about-article-main{
-  position:relative;
-  float:left;
-text-align:center;
- color:black;
- font-weight: 100;
-columns:1;
-column-gap:30px;
-width:850px;
-font-size:1.8em;
-opacity:0.0;
-padding:00px 30px;
-transition: all 0.4s ease-in-out;
-
-}
-
-.about-article-sub{
-  position:relative;
-  float:left;
-text-align:justify;
- color:black;
-columns:2;
-column-gap:30px;
-width:950px;
-font-size:1.4em;
-font-weight: 200;
-opacity:0.0;
-padding:30px;
-transition: all 0.4s ease-in-out;
-
+  background: linear-gradient(90deg, rgba(245, 235, 225,1) 0%, rgba(245, 235, 225,0.8) 100%) !important;
 }
 
 .category-button{
   position:relative;
   float:left;
-  font-size:2em;
+  font-size:1.4vw!important;
   font-weight:400;
   transition: all 0.4s ease-in-out;
-  background-color:rgb(230,230,230);
   padding:8px 20px !important;
   z-index:1000;
   opacity:1.0;
-  margin-bottom:50px;
 }
 
-.fullopacityui{
-  opacity:1.0;
+.about-main-title {
+  font-family: 'Teko', sans-serif;
 }
 
-a {
-  font-weight: bold;
+
+@media screen and (max-width: 1500px) {
+.category-button{
+
+  font-size:1.2em!important;
+
+}
+}
+
+@media screen and (max-width: 900px) {
+.category-button{
+margin-top:30px;
+font-size:1.9em!important;
+}
+}
+
+.about-logo-top-right {
+  display: block;
+  pointer-events: none;
+  width: 250px;
+  height: 150px;
+  position: absolute;
+  background: url(/images/logo-isvroma.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  top: 30px;
+  right: 60px;
+  opacity: 0.7;
 }
 
 .about-lower-border{
@@ -190,29 +138,10 @@ a {
   width:100%;
   height:300px;
   position:relative;
-  background:url(./images/about-mountains.png);
+  background:url(./images/about-etruscans.png);
   background-repeat: no-repeat;
   background-size: cover;
   opacity:0.7;
-
 }
-
-.about-logo-top-right{
-  display:block;
-  pointer-events:none;
-  width:200px;
-  height:90px;
-  position:absolute;
-  background:url(./images/xxx.png);
-  background-repeat: no-repeat;
-  background-size: contain;
-  top:30px;
-  right:60px;
-  opacity:0.7;
-
-}
-
-
-
 
 </style>

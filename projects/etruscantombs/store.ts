@@ -1,13 +1,15 @@
-import { ref, watch } from "vue";
+import { ref } from "vue";
 import { defineStore } from "pinia";
 import config from "./config";
 
-export const rephotographyStore = defineStore("rephotography", () => {
+export const etruscanStore = defineStore("etruscan", () => {
   const categories = ref<Array<string>>(["all"]);
-  const years = ref<[number, number]>(config.timeRange);
-  const tags = ref<Array<string>>([]);  
+  const tags = ref<Array<string>>(["all"]);
+  const necropoli = ref<Array<string>>(["all"]);
+  const tombType = ref<Array<string>>(["all"]);
   const tagsLayerVisible = ref(false); // Default visibility state for tags layer
   const placesLayerVisible = ref(true); // Default visibility state for places layer
-  const mapLayerVisibility = ref(false); // Default visibility state for map layer
-  return { categories, years, tags, tagsLayerVisible, placesLayerVisible, mapLayerVisibility };
+  const dataParams = ref<Record<string, string | number | null>>({});
+
+  return { categories, tags, tagsLayerVisible, placesLayerVisible, necropoli, tombType,  dataParams};
 });

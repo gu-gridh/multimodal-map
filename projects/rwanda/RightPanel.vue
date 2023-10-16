@@ -17,7 +17,7 @@ const featureId = ref()
 const route = useRoute();
 const router = useRouter();
 
-//if slected feature
+//if selected feature
 watchEffect(async () => {
   if (selectedFeature.value) {
     featureId.value = selectedFeature.value.getId();
@@ -41,13 +41,13 @@ watchEffect(async () => {
 </template>
 
 <style>
-.right-panel {
+#app .right-panel {
     height:100%;
+    background-color:transparent!important;
 }
 .right-panel-inititial {
     height:calc(100vh - 80px);
     display: flex;
     color: white !important;
-    background-color: #222;
 }
 </style>

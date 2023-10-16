@@ -1,6 +1,9 @@
 <template>
   <footer id="footer">
     <a href="https://dh.gu.se/">
+      <div id="PartnerLogo">+ ISVROMA</div>
+    </a>
+    <a href="https://dh.gu.se/">
       <div id="CDHLogo">#GRIDH</div>
     </a>
   </footer>
@@ -30,7 +33,7 @@ a {
 #CDHLogo {
   float: right;
   margin-top: 0px;
-  margin-right: 30px;
+  margin-right: 10px;
   width: auto;
   height: auto;
   text-align: left;
@@ -43,7 +46,7 @@ a {
   font-family: "Barlow Condensed", sans-serif;
 }
 
-#GUBLogo {
+#PartnerLogo {
   float: right;
   margin-top: 0px;
   margin-right: 60px;
@@ -52,9 +55,9 @@ a {
   text-align: left;
   font-weight: 100;
   font-style: normal;
-  font-size: 35px;
+  font-size: 45px;
   line-height: 0.4;
-  padding: 33px 0px 10px 0px;
+  padding: 30px 0px 10px 0px;
   vertical-align: middle;
   font-family: "Barlow Condensed", sans-serif;
 }

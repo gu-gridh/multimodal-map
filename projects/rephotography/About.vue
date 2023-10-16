@@ -50,20 +50,12 @@ export default {
 
 <style scoped>
 .about-container {
-  position:fixed;
-  color: white;
-  line-height: 1;
-  height: 100%;
-  width: 100%;
-  font-size: 12px;
-  z-index: 2000;
   backdrop-filter:blur(0px);
   pointer-events:auto;
   transform:scale(1.0);
   translate: 0px 0px;
   transition: all 0.0s ease-in-out;
   opacity:1.0;
-  overflow-y:auto;
   background: linear-gradient(90deg, rgba(250, 250, 250,1) 0%, rgba(250, 250, 250,0.9) 100%);
 }
 
@@ -89,53 +81,15 @@ export default {
   opacity:0.0; 
 }
 
-.red-content{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content: start;
-  width:auto;
-}
 
 .about-main-title {
-  margin-top:100px;
-  flex-basis:auto;
-  width:100%;
-  font-size: 105px;
-  line-height: 0.9;
-  font-weight: 100;
-  letter-spacing: -0.2rem;
-  text-align: center;
-  color:black;
-  margin-bottom:40px;
-}
-
-.about-article-main{
-  position:relative;
-  float:left;
-text-align:center;
- color:black;
- font-weight: 100;
-columns:1;
-column-gap:30px;
-width:850px;
-font-size:1.8em;
-padding:00px 30px;
-transition: all 0.4s ease-in-out;
-}
-
-.about-article-sub{
-  position:relative;
-  float:left;
-text-align:justify;
- color:black;
-columns:2;
-column-gap:30px;
-width:950px;
-font-size:1.4em;
-font-weight: 200;
-padding:30px;
-transition: all 0.4s ease-in-out;
+font-family: "Barlow Condensed", sans-serif !important;
+line-height: 0.9;
+font-weight: 100;
+letter-spacing: -0.2rem;
+text-align: center;
+color:black;
+margin-bottom:50px;
 }
 
 .category-button{
@@ -183,6 +137,40 @@ a {
   opacity:1.0;
   transition: all 0.4s ease-in-out;
 }
+
+.category-button{
+  position:relative;
+  float:left;
+  font-size:1.4vw!important;
+  font-weight:400;
+  transition: all 0.4s ease-in-out;
+  padding:8px 20px !important;
+  z-index:1000;
+  opacity:1.0;
+  margin-bottom:0px;
+}
+
+.about-main-title {
+  font-family: 'Teko', sans-serif;
+}
+
+
+@media screen and (max-width: 1500px) {
+.category-button{
+
+  font-size:1.2em!important;
+
+}
+}
+
+@media screen and (max-width: 900px) {
+.category-button{
+margin-top:30px;
+  font-size:1.9em!important;
+
+}
+}
+
 
 
 

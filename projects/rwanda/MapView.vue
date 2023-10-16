@@ -8,7 +8,7 @@ import { formatNames } from "./names";
 import type Feature from "ol/Feature";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
-import MapComponent from "@/components/MapComponent.vue";
+import MapComponent from "@/components/MapComponentRwanda.vue";
 import DianaPlaceLayer from "@/components/DianaPlaceLayer.vue";
 import FeatureSelection from "@/components/FeatureSelection.vue";
 import type { Place } from "./types";
@@ -75,7 +75,7 @@ watch(
     <template #search>
       <button class="item"  @click="visibleAbout = true;">
         <div
-          class="p-1 px-3 clickable category-button"
+          class="p-1 px-3 clickable category-button about-button"
           style="
             width: auto;
             text-align: center;
@@ -98,7 +98,7 @@ watch(
 
     <template #background>
     <div class="map-container">
-      <MapComponent :min-zoom="14" :max-zoom="19" :restrictExtent="[30.1, -1.92, 30.01, -1.980]" :shouldAutoMove="true" class="greyscale">
+      <MapComponent :min-zoom="14" :max-zoom="19" :restrictExtent="[30.01, -1.98, 30.1, -1.92]" :shouldAutoMove="true" class="greyscale">
         <template #layers>
           <!-- Sources layer just filtering interviews atm -->
           <DianaPlaceLayer 
@@ -178,38 +178,35 @@ watch(
 </template>
 
 <style>
-#app .ol-zoom {
-  display: flex;
+.about{
+  display:none;
 }
-#app .ol-zoom-in {
-  position: fixed;
-  left: 50%;
-}
-#app .ol-zoom-out {
-  position: fixed;
-  right: 45%;
-  top: 20px;
-}
+
 #app #map-component{
   width: 100% !important;
+  height: 100% !important;
 }
+
 #app .tile-layer {
-  filter: grayscale(100%);
+  filter: grayscale(80%);
 }
+
 #app #transparent {
   background-color: transparent !important;
   display: none !important;
 }
+
 .map-container {
   height: calc(100vh - 80px) !important;
   position: relative;
-  width: 100%;
+  width: 100%!important;
 }
 .search-container {
   display:flex;
   flex-direction: column;
   height:auto;
-  margin-top: 20px;
+  margin-top: 30px;
+  width:80%;
 }
 .mapoverlay{
 z-index: 100;
@@ -237,25 +234,5 @@ bottom:100px;
   min-width: 200px;
 }
 
-#app .ol-control button {
-  font-family: "Barlow Condensed", sans-serif;
-  border-radius: 50% !important;
-  background-color: rgb(50, 50, 50) !important;
-  color: white !important;
-}
 
-#app .ol-control button:hover,
-.ol-control button:focus {
-  background-color: rgb(180, 100, 100) !important;
-  color: white !important;
-  border-style: none !important;
-  border-style: hidden !important;
-}
-
-#app .ol-control button:active {
-  background-color: rgb(180, 100, 100) !important;
-  color: white !important;
-  border-style: none !important;
-  border-style: hidden !important;
-}
 </style>
