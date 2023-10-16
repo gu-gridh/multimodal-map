@@ -20,7 +20,7 @@ import { nextTick } from "vue";
 import GeoJSON from "ol/format/GeoJSON";
 import Title from "./Title.vue"
 
-const { categories, tags, necropoli, tombType, placesLayerVisible, tagsLayerVisible, dataParams } = storeToRefs(etruscanStore());
+const { categories, tags, necropoli, tombType, placesLayerVisible, tagsLayerVisible, dataParams, selectedNecropolisCoordinates } = storeToRefs(etruscanStore());
 const store = mapStore();
 const { selectedFeature } = storeToRefs(store);
 const minZoom = 14;
@@ -30,6 +30,7 @@ const visibleAbout = ref(false);
 const showGrid = ref(false);
 let visited = true; // Store the visited status outside of the hook
 
+// Watcher for selectedFeature changes
 watch(
   selectedFeature,
   (newFeature, oldFeature) => {
@@ -39,10 +40,22 @@ watch(
         const coordinates = (geometry as any).getCoordinates();
         store.updateCenter(coordinates);
         if (store.zoom < featureZoom)
-        {
-          store.updateZoom(featureZoom);
-        }
+          {          
+            store.updateZoom(featureZoom);
+          }
       }
+    }
+  },
+  { immediate: true }
+);
+
+// Watcher for selectedNecropolisCoordinates changes
+watch(
+  selectedNecropolisCoordinates,
+  (newCoordinates, oldCoordinates) => {
+    if (newCoordinates !== oldCoordinates && newCoordinates) {
+      store.updateCenter(newCoordinates);
+      store.updateZoom(16);
     }
   },
   { immediate: true }
@@ -142,7 +155,7 @@ watch(showGrid, (newValue) => {
           :shouldAutoMove="true" 
           :min-zoom=minZoom
           :max-zoom=maxZoom 
-          :restrictExtent="[11.9, 42.15, 12.2, 42.4]"       
+          :restrictExtent="[11.9, 42.15, 12.2, 42.4]"    
           :key="showGrid.toString()"
         > 
                   

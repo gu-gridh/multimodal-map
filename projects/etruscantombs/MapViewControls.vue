@@ -1,24 +1,4 @@
 <template>
-  <!-- <div class="section-title">
-    <h1>{{ $t('documentation') }}</h1>
-  </div> -->
-  <!-- <CategoryButtonList v-model="categories" :categories="CATEGORIES" :limit="1" class="my-2"
-    @click="handleCategoryClick" /> -->
-
-  <!--   <transition name="slide">
-    <div class="slideinactive" v-bind:class="{slideactive: isSliderVisible}">
-      <div class="section-title">Time span</div>
-      <RangeSlider
-        v-model="years"
-        :min="YEARS.MIN"
-        :max="YEARS.MAX"
-        :step="1"
-        class="my-2"
-      />
-    </div>
-  </transition> -->
-
-
   <div class="tag-section">
     <div class="section-title">{{ $t('timeperiod') }}</div>
     <div class="broad-controls">
@@ -28,7 +8,6 @@
           :limit="1" 
           styleType="button"
           class="my-2"
-          @click="handleSelectionClick($event, currentTombType)"
         />
     </div>
   </div>
@@ -43,13 +22,10 @@
           :limit="1" 
           styleType="dropdown"
           class="my-2"
+          type="necropolis"
           @click="handleSelectionClick($event, currentTombType)"
         />
     </div>
-    <!-- <div class="broad-controls">
-      <CategoryButtonList v-model="necropoli" :categories="NECROPOLI" :limit="1" class="my-2"
-        @click="handleSelectionClick($event, currentNecropolis)" />
-    </div> -->
   </div>
 
   <div class="tag-section" style="float:left; margin-left:20px;">
@@ -61,27 +37,12 @@
           :limit="1" 
           styleType="dropdown"
           class="my-2"
-          @click="handleSelectionClick($event, currentTombType)"
+          type="tombType"
         />
     </div>
   </div>
 
 </div>
-
-  <!-- <div class="tag-section">
-  <div class="section-title">Tags</div>
-  <div class="broad-controls">
-  <CategoryButtonList
-    v-model="tags"
-    :categories="TAGS"
-    :limit="1"
-    class="my-2"
-    @click="handleTagClick" 
-  />
-</div>
-</div> -->
-
-
 
   <!-- Data Section -->
   <div class="data-widget">
@@ -119,16 +80,17 @@
 <script setup lang="ts">
 // @ts-nocheck
 import { inject, ref, onMounted, computed, defineProps, watch } from "vue";
-import CategoryButtonList from "@/components/input/CategoryButtonDropdown.vue";
+import CategoryButtonList from "./CategoryButtonDropdown.vue";
 // import RangeSlider from "@/components/input/RangeSlider.vue";
 import { storeToRefs } from "pinia";
 import { etruscanStore } from "./store";
 import type { EtruscanProjectProject } from "./types";
 import { DianaClient } from "@/assets/diana";
+import { transform } from 'ol/proj';
 
 const config = inject<EtruscanProject>("config");
 const dianaClient = new DianaClient("etruscantombs"); // Initialize DianaClient
-const { categories, years, tags, necropoli, tombType, dataParams } = storeToRefs(etruscanStore());
+const { categories, years, tags, necropoli, tombType, dataParams, selectedNecropolisCoordinates } = storeToRefs(etruscanStore());
 // Create a ref for last clicked category
 const lastClickedCategory = ref('');
 
@@ -170,12 +132,19 @@ onMounted(async () => {
   initialTombCount.value = data.count //set total tombcount
 });
 
+const NECROPOLICoordinates = ref<Record<string, [number, number]>>({});
+
 async function fetchDataAndPopulateRef<T>(type: string, refToPopulate: any) {
   try {
     const data = await dianaClient.listAll<T>(type);
     data.forEach((result: any) => {
       if (result.published) {
         refToPopulate.value[result.id] = result.text;
+        
+        // If the type is necropolis, store its coordinates
+        if (type === "necropolis" && result.geometry && result.geometry.coordinates) {
+          NECROPOLICoordinates.value[result.id] = result.geometry.coordinates;
+        }
       }
     });
   } catch (error) {
@@ -249,9 +218,19 @@ const toggleAboutVisibility = async () => {
 };
 
 function handleSelectionClick(selectedValue, targetRef) {
-  // console.log("Selected value:", selectedValue);
-}
+  const selectedCoordinates = NECROPOLICoordinates.value[selectedValue];
+  if (selectedCoordinates) {
+    const [x, y] = selectedCoordinates;
 
+    // Convert them to Web Mercator (EPSG:3857)
+    const webMercatorCoordinates = transform([x, y], 'EPSG:4326', 'EPSG:3857');
+    
+    // Update the selectedNecropolisCoordinates in the store
+    selectedNecropolisCoordinates.value = webMercatorCoordinates;
+  } else {
+    console.log("Coordinates for selected necropolis not found");
+  }
+}
 </script>
 
 <style>
