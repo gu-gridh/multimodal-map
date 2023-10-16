@@ -5,10 +5,13 @@ import MapViewControls from "./MapViewControls.vue";
 import MapComponent from "@/components/MapComponent.vue";
 import NpolarLayer from "./NpolarLayer.vue";
 import DianaPlaceLayer from "@/components/DianaPlaceLayer.vue";
-import FeatureSelection from "@/components/FeatureSelection.vue";
+import DianaPlaceLayerRephoto from "@/components/DianaPlaceLayerRephoto.vue";
+import FeatureSelection from "@/components/FeatureSelectionRephoto.vue";
 import MapViewPreview from "./MapViewPreview.vue";
+import MapViewGallery from "./MapViewGallery.vue";
 import { storeToRefs } from "pinia";
 import { rephotographyStore } from "./store";
+import { mapStore } from "@/stores/store";
 import { clean } from "@/assets/utils";
 import markerIcon from "@/assets/marker-gold.svg";
 import markerBlue from "@/assets/marker-blue.svg";
@@ -19,8 +22,13 @@ import { nextTick } from "vue";
 import GeoJSON from "ol/format/GeoJSON";
 
 
-const { categories, years, tags, tagsLayerVisible, placesLayerVisible, mapLayerVisibility } = storeToRefs(rephotographyStore());
+const { categories, years, tags, tagsLayerVisible, placesLayerVisible, mapLayerVisibility, mapLayerVisibilityTwo, mapLayerVisibilityThree } = storeToRefs(rephotographyStore());
 
+const store = mapStore();
+const { selectedFeature } = storeToRefs(store);
+const minZoom = 9;
+const maxZoom = 16;
+const featureZoom = 11; //value between minZoom and maxZoom when you select a point 
 
 const placeParams = computed(() =>
   clean({
@@ -28,6 +36,24 @@ const placeParams = computed(() =>
     start_date: years.value[0],
     end_date: years.value[1],
   })
+);
+
+watch(
+  selectedFeature,
+  (newFeature, oldFeature) => {
+    if (newFeature && newFeature.getGeometry) {
+      const geometry = newFeature.getGeometry();
+      if (geometry) {
+        const coordinates = (geometry as any).getCoordinates();
+        store.updateCenter(coordinates);
+        if (store.zoom < featureZoom)
+        {
+          store.updateZoom(featureZoom);
+        }
+      }
+    }
+  },
+  { immediate: true }
 );
 
 const tagParams = computed(() => {
@@ -39,6 +65,7 @@ const tagParams = computed(() => {
 
 
 const visibleAbout = ref(false);
+const showGrid = ref(false);
 let visited = false; // Store the visited status outside of the hook
 
 onMounted(() => {
@@ -80,15 +107,25 @@ const toggleSection = () => {
 };
 
 /*Colors for Vector Layer*/
-const layerColors = ["red", "green", "blue"];
+const layerColors = ["rgb(255,150,0)", "rgb(0,150,50)", "rgb(0,100,255)"];
 
-const toggleMapLayer = () => {
-  mapLayerVisibility.value = !mapLayerVisibility.value; // Toggle the map layer visibility
-};
-
+watch(showGrid, (newValue) => {
+  localStorage.setItem("showGrid", JSON.stringify(newValue));
+});
 </script>
 
 <template>
+  <div style="display:flex; align-items: center; justify-content: center;">
+    <div class="ui-mode ui-overlay">
+      <button class="item" v-bind:class="{ selected: !showGrid }" v-on:click="showGrid = false;">
+        Map
+      </button>
+      <button class="item" v-bind:class="{ selected: showGrid }" v-on:click="showGrid = true;">
+        Gallery
+      </button>
+    </div>
+  </div>
+  <MapViewGallery v-if="showGrid" />
  <About :visibleAbout="visibleAbout" @close="visibleAbout = false" />
   <MainLayout>
     <template #search>
@@ -96,10 +133,7 @@ const toggleMapLayer = () => {
             <div
               class="p-1 px-2 clickable category-button"
               style="
-                width: 90px;
-                text-align: center;
                 margin-top: -10px;
-                cursor: pointer;
               "
             >More info</div>
           </button>
@@ -110,7 +144,11 @@ const toggleMapLayer = () => {
    
 
     <template #background>
-      <MapComponent :min-zoom="9" :max-zoom="16" :restrictExtent="[0.0, 75.0, 30.0, 81.0]" >
+      <MapComponent 
+      :shouldAutoMove="true" 
+      :min-zoom=minZoom
+      :max-zoom=maxZoom 
+      :restrictExtent="[0.0, 75.0, 30.0, 81.0]" >
         <template #layers>
           <NpolarLayer
             capabilitiesUrl="https://geodata.npolar.no/arcgis/rest/services/Basisdata/NP_Ortofoto_Svalbard_WMTS_25833/MapServer/WMTS/1.0.0/WMTSCapabilities.xml"
@@ -121,6 +159,7 @@ const toggleMapLayer = () => {
           v-if="placesLayerVisible"
           path="rephotography/geojson/place/"
           :params="placeParams"
+          :z-index=2
         >
           <ol-style>
             <ol-style-icon
@@ -138,6 +177,7 @@ const toggleMapLayer = () => {
           v-if="tagsLayerVisible"
           path="rephotography/search/tag/"
           :params="tagParams"
+          :z-index=2
         >
           <ol-style>
             <ol-style-icon
@@ -152,6 +192,7 @@ const toggleMapLayer = () => {
 
           <DianaPlaceLayer
           path="rephotography/geojson/focus/"
+          :z-index=2
           >
           <ol-style>
             <ol-style-icon
@@ -161,17 +202,43 @@ const toggleMapLayer = () => {
               :anchor="[0.0, 0.0]"
             ></ol-style-icon>
           </ol-style>
-          <FeatureSelection />
         </DianaPlaceLayer>
 
         <div v-if="mapLayerVisibility">
-       <ol-vector-layer v-for="(layer, index) in vectorLayers" :key="layer.url" :z-index="1">
-        <ol-source-vector :url="layer.url" :format="layer.geoJsonFormat" ref="source" />
-        <ol-style>
-          <ol-style-stroke :color="layerColors[index % layerColors.length]" width="4"></ol-style-stroke>
-        </ol-style>
-      </ol-vector-layer>
+          <DianaPlaceLayerRephoto
+          v-for="(layer, index) in vectorLayers"
+          :key="layer.url"
+          :externalUrl="layer.url"
+          :zIndex=2
+        >
+          <ol-style>
+            <ol-style-stroke :color="layerColors[index % layerColors.length]" :width="4"></ol-style-stroke>
+          </ol-style>
+        </DianaPlaceLayerRephoto>
       </div>
+
+      <div v-if="mapLayerVisibilityTwo">
+        <DianaPlaceLayerRephoto
+          :externalUrl="'https://data.dh.gu.se/geography/CryoClim_GAO_SJ_1936-1972.geojson'"
+          :zIndex=1
+        >
+          <ol-style>
+              <ol-style-fill color="rgba(255,255,255,0.4)"></ol-style-fill>
+          </ol-style>
+        </DianaPlaceLayerRephoto>
+      </div>
+
+      <div v-if="mapLayerVisibilityThree">
+        <DianaPlaceLayerRephoto
+          :externalUrl="'https://data.dh.gu.se/geography/CryoClim_GAO_SJ_2001-2010.geojson'"
+          :zIndex=1
+        >
+          <ol-style>
+            <ol-style-stroke color="purple" :width="4"></ol-style-stroke>
+          </ol-style>
+        </DianaPlaceLayerRephoto>
+      </div>
+
 
         </template>
       </MapComponent>
@@ -185,20 +252,21 @@ const toggleMapLayer = () => {
 
 <style>
 
-#app .ol-popup {
-  font-size: 1.2em;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  user-select: none;
-  text-align: center;
-  position: absolute;
-  background-color: white;
-  box-shadow: 2 2px 8px rgba(0, 0, 0, 0.5);
-  padding: 3px;
-  border-radius: 5px;
-  border: 0px solid #cccccc;
-  bottom: 35px;
-  left: -50px;
-  min-width: 100px;
+.main-title{
+  font-size: 4.5vw;
+  margin-bottom:30px;
 }
+
+#app .left-pane {
+  width: 50%;
+  min-width: 900px;
+}
+
+.map-container {
+  height: calc(100vh - 80px) !important;
+  position: relative;
+  width: 100%;
+}
+
+
 </style>

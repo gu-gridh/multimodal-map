@@ -1,36 +1,48 @@
 <script setup lang="ts">
-import ObjectViewComponent from "@/components/ObjectViewComponent.vue";
-import OpenSeadragon from "@/components/OpenSeadragonURL.vue";
+import ObjectViewComponent from "@/components/ObjectViewComponentReturn.vue";
+import OpenSeadragon from "@/components/OpenSeadragon.vue";
 import type { ImageDeep } from "./types";
 
-defineProps<{
+const props = defineProps<{
   object: ImageDeep;
   id: Number;
 }>();
+
+const downloadImage = (fileUrl: string, fileName: string) => {
+  const link = document.createElement('a');
+  link.href = fileUrl;
+  link.download = fileName;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
 </script>
 
 <template>
   <div class="metadata">
-    <ObjectViewComponent :title="object.title" back="/">
-      <p class="my-5 object-title">{{ object.description }}</p>
-      <div v-if="object.photographer?.name">
-        By: {{ object.photographer.name }}
-      </div>
-      <div v-if="object.place?.name">At: {{ object.place.name }}</div>
-      <div v-if="object.date?.length">On: {{ object.date }}</div>
-      <div v-if="object.focus?.text">Focus: {{ object.focus.text }}</div>
+    <ObjectViewComponent :title="'Tomb ' + object.tomb.name + ': ' + object.title">
+      <div class="objects">
+      
+      <div><div class="label">Type:</div> <div class="data">{{ object.type_of_image[0].text }}</div></div>
+      <div v-if="object.author?.firstname"><div class="label">Creator:</div>  <div class="data">{{ object.author.lastname }}, {{ object.author.firstname }}</div></div>
+      <div v-if="object.date"><div class="label">Date:</div> <div class="data">{{ object.date }}</div></div>
+      <div class="description" v-html="object.description"></div>
       <div v-if="object.tag?.length">
         Tags:
         {{ object.tag.map((tag) => tag.text).join(", ") }}
       </div>
+      <button class="theme-button download-button" @click="downloadImage(object.file, `${object.title}.tif`)">Download</button>
+
+      <div v-if="object.tomb?.name"><h2>Tomb {{ object.tomb.name }}</h2> </div>
+      <div class="description" v-if="object.tomb?.description" v-html="object.tomb.description"></div>
+    </div>
     </ObjectViewComponent>
   </div>
 
   <section class="illustration flex">
-
     <OpenSeadragon :src="`${object.iiif_file}/info.json`" class="flex-1" />
-
-  <div id="ToolbarVertical">
+    
+    <div id="ToolbarVertical">
       <a id="full-page" href="#full-page">
         <div id="FullPage" class="NavButton"></div>
       </a>
@@ -41,10 +53,20 @@ defineProps<{
         <div id="ZoomOut" class="NavButton"></div>
       </a>
     </div>
+
   </section>
 </template>
 
 <style scoped>
+
+.data{
+  color:rgb(255,150,150);
+}
+
+.theme-button{
+  margin-top:20px;
+  margin-bottom:10px;
+}
 
 
 </style>

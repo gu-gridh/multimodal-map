@@ -70,7 +70,7 @@ const images = {
 
 #app .illustration{
   width:calc(100% - 450px)!important;
-  height:100%!important;
+  height:calc(100% - 80px)!important;
   pointer-events:none !important;
   overflow:hidden;
 }

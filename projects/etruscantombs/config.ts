@@ -1,13 +1,13 @@
-import type { EtrusanTombsProject } from "./types";
+import type { EtruscanProject } from "./types";
 
-export default <EtrusanTombsProject>{
-  title: "Etruscan Chamber Tombs",
+export default <EtruscanProject>{
+  title: "",
   subtitle: "",
   moreinfo: "Learn more...",
   about:
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "",
   projection: "EPSG:3857",
-  center: [12.03131, 42.27144],
-  zoom: 15,
+  center: [11.999722, 42.224444],
+  zoom: 17,
   timeRange: [1600, new Date().getFullYear()],
 };

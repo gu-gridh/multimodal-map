@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import MapView from "./MapView.vue";
-import ObjectView from "./ObjectView.vue";
+import PlaceView from "./PlaceView.vue";
+import ObjectView from "./ObjectView.vue"
 
 const router = createRouter({
   history: createWebHistory(),
@@ -9,6 +10,12 @@ const router = createRouter({
       path: "/",
       name: "home",
       component: MapView,
+    },
+    {
+      path: "/place/:id",
+      name: "place",
+      component: PlaceView,
+      props: true
     },
     {
       path: "/detail/:type/:id",

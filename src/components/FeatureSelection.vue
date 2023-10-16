@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, inject, watch } from "vue";
+import { ref, inject, watch} from "vue";
 import type Feature from "ol/Feature";
 import type { SelectEvent } from "ol/interaction/Select";
 import type { DisplayFunction } from "@/types/diana";
@@ -41,12 +41,11 @@ const onHover = (event: SelectEvent) => {
 
 const onClick = (event: SelectEvent) => {
   const features = event.selected;
-
   if (features.length === 1) {
     // Unselect the hovered feature
     hoverCoordinates.value = undefined;
     hoveredFeature.value = undefined;
-
+    
     // Select the clicked feature
     selectedCoordinates.value = event.mapBrowserEvent.coordinate;
     selectedFeature.value = features[0];
@@ -55,6 +54,7 @@ const onClick = (event: SelectEvent) => {
     selectedFeature.value = undefined;
   }
 };
+
 
 // Sync selected feature from store to OL
 watch(selectedFeature, () => {
@@ -66,7 +66,38 @@ watch(selectedFeature, () => {
 
 const getFeatureDisplayName: DisplayFunction =
   config.getFeatureDisplayName ||
-  ((feature) => feature.get("name") || String(feature.getId()));
+((feature) => {
+  let name = feature.get("Name") || feature.get("name") || feature.get("NAME") || '';
+  let rawDate = feature.get("Date");
+  let rawYear = feature.get("YEAR_")
+  // Check if rawDate is available
+  if (rawDate) {
+    let date = rawDate.toString(); 
+
+    // Break the date into component parts
+    let year = date.substr(0, 4);
+    let month = date.substr(4, 2);
+    let day = date.substr(6, 2);
+
+    // Parse the date string into a Date object
+    let dateObject = new Date(`${year}-${month}-${day}`);
+
+    // Format the date for display
+    let formattedDate = dateObject.toLocaleDateString(undefined, {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+    
+    return `${name} ${formattedDate}`;
+  } else if (rawYear)
+  {
+    return `${name} ${rawYear}`;
+  } else {
+    // Return only name if Date is not available
+    return `${name}`;
+  }
+})
 </script>
 
 <template>
@@ -78,23 +109,24 @@ const getFeatureDisplayName: DisplayFunction =
     <ol-style>
       <ol-style-icon
         :src="markerIconRed"
-        :scale="2.0"
-        :displacement="[-12, 50]"
+        :scale="1.9"
+        :displacement="[-9, 47]"
         :anchor="[0.0, 0.0]"
       ></ol-style-icon>
       <ol-style-stroke color="rgb(220,100,100)" :width="6"></ol-style-stroke>
     </ol-style>
   </ol-interaction-select>
   
-  <ol-interaction-select @select="onHover" :condition="hoverCondition">
+  <ol-interaction-select @select="onHover" :condition="hoverCondition" :features="selectedFeaturesCollection">
     <ol-style>
       <ol-style-icon
         :src="markerIconRed"
-        :scale="2.0"
-        :displacement="[-12, 50]"
+        :scale="1.9"
+        :displacement="[-9, 47]"
         :anchor="[0.0, 0.0]"
       ></ol-style-icon>
       <ol-style-stroke color="rgb(220,100,100)" :width="6"></ol-style-stroke>
+      <ol-style-fill color="rgba(0,0,0,0)"></ol-style-fill> 
     </ol-style>
   </ol-interaction-select>
 
