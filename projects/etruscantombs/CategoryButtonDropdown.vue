@@ -20,13 +20,18 @@
 </template>
 
 <script setup lang="ts">
-import CategoryButton from "./CategoryButton.vue";
+import { storeToRefs } from "pinia";
+import CategoryButton from "../../src/components/input/CategoryButton.vue";
+import { etruscanStore } from "./store";
+const { selectedNecropolisCoordinates } = storeToRefs(etruscanStore());
+
 
 const props = defineProps<{
   modelValue: string[];
   categories: Record<string, string>;
   limit?: 1;
   styleType?: "button" | "dropdown";
+  type?: "necropolis" | "tombType";
 }>();
 
 const emit = defineEmits(["update:modelValue", "click"]);
@@ -47,6 +52,12 @@ function dropdownToggle(event: Event) {
 function handleToggle(key: string) {
   if (key === 'all') {
     emit("update:modelValue", ['all']); // Set modelValue to ['all']
+    
+    // If this dropdown is for "Necropolis", then move the map
+    if (props.type === 'necropolis') {
+      selectedNecropolisCoordinates.value = [1335733.925763396, 5194636.579769473];
+    }
+
     emit('click', 'all'); // Emit the special 'all' value
     return;
   }

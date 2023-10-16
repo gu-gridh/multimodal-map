@@ -22,6 +22,7 @@
           :limit="1" 
           styleType="dropdown"
           class="my-2"
+          type="necropolis"
           @click="handleSelectionClick($event, currentTombType)"
         />
     </div>
@@ -36,6 +37,7 @@
           :limit="1" 
           styleType="dropdown"
           class="my-2"
+          type="tombType"
         />
     </div>
   </div>
@@ -78,7 +80,7 @@
 <script setup lang="ts">
 // @ts-nocheck
 import { inject, ref, onMounted, computed, defineProps, watch } from "vue";
-import CategoryButtonList from "@/components/input/CategoryButtonDropdown.vue";
+import CategoryButtonList from "./CategoryButtonDropdown.vue";
 // import RangeSlider from "@/components/input/RangeSlider.vue";
 import { storeToRefs } from "pinia";
 import { etruscanStore } from "./store";
