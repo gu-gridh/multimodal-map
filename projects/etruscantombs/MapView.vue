@@ -58,7 +58,6 @@ watch(
       store.updateZoom(16);
     }
   },
-  { immediate: true }
 );
 
 /* Response for generating the URL for filtering map points down */
