@@ -11,6 +11,7 @@ export const etruscanStore = defineStore("etruscan", () => {
   const placesLayerVisible = ref(true); // Default visibility state for places layer
   const dataParams = ref<Record<string, string | number | null>>({});
   const selectedNecropolisCoordinates = ref<[number, number] | null>(null);
+  const enable3D = ref<boolean>(false);
 
-  return { categories, tags, tagsLayerVisible, placesLayerVisible, necropoli, tombType,  dataParams, selectedNecropolisCoordinates };
+  return { categories, tags, tagsLayerVisible, placesLayerVisible, necropoli, tombType,  dataParams, selectedNecropolisCoordinates, enable3D };
 });

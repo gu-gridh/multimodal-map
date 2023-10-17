@@ -20,7 +20,7 @@ import { nextTick } from "vue";
 import GeoJSON from "ol/format/GeoJSON";
 import Title from "./Title.vue"
 
-const { categories, tags, necropoli, tombType, placesLayerVisible, tagsLayerVisible, dataParams, selectedNecropolisCoordinates } = storeToRefs(etruscanStore());
+const { categories, tags, necropoli, tombType, placesLayerVisible, tagsLayerVisible, dataParams, selectedNecropolisCoordinates, enable3D } = storeToRefs(etruscanStore());
 const store = mapStore();
 const { selectedFeature } = storeToRefs(store);
 const minZoom = 14;
@@ -75,10 +75,16 @@ const tagParams = computed(() => {
     obj[key as keyof typeof initialParams] = initialParams[key as keyof typeof initialParams];
     return obj;
   }, {} as typeof initialParams);
-
   
   // Further clean to remove null or undefined values
   const params = clean(cleanedParams);
+
+  //filter for just 3D points
+  if (enable3D.value) {
+    params['with_3D'] = 'true';
+  } else {
+    delete params['with_3D'];
+  }
 
   // Convert the params object to a URL search string
   const queryString = new URLSearchParams(params).toString();
@@ -144,7 +150,7 @@ watch(showGrid, (newValue) => {
   <About :visibleAbout="visibleAbout" @close="visibleAbout = false" />
   <MainLayout>
     <template #search>
-      <Title @toggle-about="toggleAboutVisibility"/>
+      <Title @toggle-about="toggleAboutVisibility" />
       <MapViewControls/>
     </template>
 

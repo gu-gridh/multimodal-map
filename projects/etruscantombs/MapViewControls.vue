@@ -1,4 +1,13 @@
 <template>
+  <div class="section-title">Documentation by category</div>
+  <CategoryButton
+    v-model="categories"
+    :categories="CATEGORIES"
+    :limit="1"
+    class="my-2"
+    @click="handleCategoryClick" 
+  />
+
   <div class="tag-section">
     <div class="section-title">{{ $t('timeperiod') }}</div>
     <div class="broad-controls">
@@ -81,6 +90,7 @@
 // @ts-nocheck
 import { inject, ref, onMounted, computed, defineProps, watch } from "vue";
 import CategoryButtonList from "./CategoryButtonDropdown.vue";
+import CategoryButton from "@/components/input/CategoryButtonList.vue";
 // import RangeSlider from "@/components/input/RangeSlider.vue";
 import { storeToRefs } from "pinia";
 import { etruscanStore } from "./store";
@@ -90,7 +100,7 @@ import { transform } from 'ol/proj';
 
 const config = inject<EtruscanProject>("config");
 const dianaClient = new DianaClient("etruscantombs"); // Initialize DianaClient
-const { categories, years, tags, necropoli, tombType, dataParams, selectedNecropolisCoordinates } = storeToRefs(etruscanStore());
+const { categories, years, tags, necropoli, tombType, dataParams, selectedNecropolisCoordinates, enable3D } = storeToRefs(etruscanStore());
 // Create a ref for last clicked category
 const lastClickedCategory = ref('');
 
@@ -103,10 +113,8 @@ const initialTombCount = ref(289);
 const currentTombCount = ref(0);
 
 const CATEGORIES = {
-  all: "All Documentation",
-  image: "Photographs",
+  all: "All Data",
   models: "3D models",
-  plans: "Plans",
 };
 
 const TAGS = ref<Record<string, string>>({});
@@ -161,12 +169,18 @@ const handleCategoryClick = (category: string) => {
 
     // Clear the lastClickedCategory since it was unselected
     lastClickedCategory.value = '';
+    if (category === 'models') {
+      enable3D.value = !enable3D.value;  // Toggle between true and false
+    } else {
+      enable3D.value = false;
+    }
   } else {
     // Add the clicked category only if it's not the same as the last clicked one
     categories.value = [category];
-
+    
     // Update last clicked category
     lastClickedCategory.value = category;
+    enable3D.value = (category === 'models');
   }
 };
 
