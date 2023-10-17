@@ -1,5 +1,5 @@
 <template>
-  <div class="section-title">Documentation by category</div>
+  <div class="section-title" style="">Type of data</div>
   <CategoryButton
     v-model="categories"
     :categories="CATEGORIES"
@@ -246,6 +246,16 @@ function handleSelectionClick(selectedValue, targetRef) {
 </script>
 
 <style>
+#app .section-title {
+  margin-top:10px;
+  margin-bottom:-3px;
+}
+
+#app .tag-section {
+  margin-top:0px;
+}
+
+
 #app .category-button {
   background-color: rgba(255, 255, 255, 0.6);
   color: rgb(71, 85, 105);
@@ -326,11 +336,12 @@ function handleSelectionClick(selectedValue, targetRef) {
   float:left;
   pointer-events: none;
   width: 98%;
-  margin-top: 20px;
+  margin-top: 10px;
   padding: 15px 25px;
   border-radius: 10px;
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(255, 255, 255, 0.5);
   min-height: 50px;
+  backdrop-filter: blur(5px);
 }
 
 .data-widget-section {
