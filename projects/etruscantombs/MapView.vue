@@ -169,7 +169,7 @@ watch(showGrid, (newValue) => {
               :externalUrl="'https://data.dh.gu.se/geography/SGElevationMain.geojson'"
               :zIndex=-0
               :style="{
-                'stroke-color': [255, 0, 0, 1],
+                'stroke-color': [0, 0, 0, 0.18],
                 'stroke-width': 1,
                 'fill-color': [255, 0, 0, 1]
               }"
@@ -179,7 +179,7 @@ watch(showGrid, (newValue) => {
               :externalUrl="'https://data.dh.gu.se/geography/SGElevationEdge.geojson'"
               :zIndex=0
               :style="{
-                'stroke-color': [0, 0, 255, 0.3],
+                'stroke-color': [0, 0, 0, 0.1],
                 'stroke-width': 1,
                 'fill-color': [0, 255, 0, 1]
               }"
