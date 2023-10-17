@@ -161,8 +161,6 @@ async function fetchDataAndPopulateRef<T>(type: string, refToPopulate: any) {
 }
 
 const handleCategoryClick = (category: string) => {
-  // If a category is clicked, clear tags
-  tags.value = [];
   // If the clicked category is the same as the last clicked one, default to "all"
   if (lastClickedCategory.value === category) {
     categories.value = ["all"];
