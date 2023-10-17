@@ -24,6 +24,14 @@ const props = defineProps({
     type: Number,
     default: 0,
   },
+  style: {
+    type: Object,
+    default: () => ({
+      'stroke-color': [0, 0, 0, 0.2],
+      'stroke-width': 1,
+      'fill-color': [255, 255, 255, 0.6]
+    }),
+  },
 });
 
 const map = inject('map');
@@ -39,17 +47,10 @@ const url = computed(() => {
   return DIANA_BASE + props.path + "?" + new URLSearchParams(params).toString();
 });
 
-const style = {
-  'stroke-color': [0, 0, 0, 0.2],
-  'stroke-width': 1,
-  'stroke-offset': 0,
-  'fill-color': [255, 255, 255, 0.6],
-};
-
 class WebGLVectorLayer extends Layer {
   createRenderer() {
     try {
-      return new WebGLVectorLayerRenderer(this, { style });
+      return new WebGLVectorLayerRenderer(this, { style: props.style });
     } catch (error) {
       console.error('Failed to create WebGLVectorLayerRenderer:', error.message);
       return null;
