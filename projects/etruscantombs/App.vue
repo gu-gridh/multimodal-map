@@ -58,7 +58,7 @@ body {
 }
 
 #app .right-pane {
-z-index: 0 !important;
+/* z-index: 0 !important; */
 }
 }
 

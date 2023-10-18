@@ -53,13 +53,13 @@ onMounted(() => {
 
     <div id="ToolbarHorizontal">
       
-      <a id="prev-button" href="#prev-button">
+      <a id="prev-button">
         <div id="Prev" class="NavButton"></div>
       </a>
 
       <span id="currentpage">{{ currentPage }} / {{ src.length }}</span>
        
-      <a id="next-button" href="#next-button">
+      <a id="next-button">
         <div id="Next" class="NavButton"></div>
       </a>
     </div>
