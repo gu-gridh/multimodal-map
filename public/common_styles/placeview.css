@@ -296,7 +296,7 @@ table td {
         height: auto !important;
         margin-left: 20px !important;
         margin-top: 0px !important;
-        padding-top: 50px !important;
+        padding-top: 0px !important;
         padding-left: 15px;
         background-color: white !important;
         overflow: hidden !important;
@@ -321,9 +321,14 @@ table td {
         background-color: white;
     }
 
-    .document-placeholder {}
+
 
     @media screen and (max-width: 400px) {
+
+        .document-placeholder {
+            width:100% !important;
+        }
+
         .document-title {
             margin-top: 5px;
             height: 35px;
@@ -357,6 +362,7 @@ table td {
         .observation-placeholder {
          
             height: auto;
+            width:100% !important;
        
         }
     }
@@ -373,6 +379,7 @@ table td {
     }
 
     .place-gallery-container .dropdown {
-        margin-left: 10px;
+        margin-left: 3px;
+        margin-bottom:10px;
     }
 }

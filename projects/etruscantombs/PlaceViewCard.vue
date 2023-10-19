@@ -246,9 +246,9 @@ onMounted(() => {
 
   .place-back-button {
     left: 30px;
-    top: 70px;
-    width: 50px;
-    height: 50px;
+    top: 0px;
+    width: 40px;
+    height: 40px;
     z-index: 1000;
   }
 
