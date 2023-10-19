@@ -2,57 +2,63 @@
 
 /* CSS - Cascading Style Sheet */
 
-
-.metadata .object-title {
-
+#app .back-button {
+  width: 30px;
+  height: 30px;
+  margin-top:5px;
 }
 
-.metadata .objects h2{
-  font-size:2.0vw;
-  margin-top:30px;
-  margin-bottom:5px;
+
+.metadata .object-title {}
+
+.metadata .objects h2 {
+  font-size: 2.0vw;
+  margin-top: 30px;
+  margin-bottom: 5px;
   display: inline-block;
 }
 
 .metadata .objects {
-margin-top:30px;
-font-weight:200;
-font-size:1.2em;
-line-height:1.2;
-text-align:left;
-padding:0px 40px 0px 0px;
+  margin-top: 30px;
+  font-weight: 200;
+  font-size: 1.2em;
+  line-height: 1.2;
+  text-align: left;
+  padding: 0px 40px 0px 0px;
 }
+
 .metadata .objects .label {
-width:auto;
-float:left;
-margin-right:10px;
+  width: auto;
+  float: left;
+  margin-right: 10px;
 }
+
 .metadata .objects .data {
-display:inline;
+  display: inline;
 }
 
 .metadata .objects .description {
-   font-size:1vw;
-    }
+  font-size: 1vw;
+}
 
-    @media screen and (max-width: 1500px) {
-    .metadata .objects .description {
-      font-size:0.9em;
-       }
+@media screen and (max-width: 1500px) {
+  .metadata .objects .description {
+    font-size: 0.9em;
+  }
 
-       .metadata .objects h2 {
-        font-size:1.5em;
-         }
-      }
-    
+  .metadata .objects h2 {
+    font-size: 1.5em;
+  }
+}
+
 .illustration {
   height: calc(100vh - 80px);
 }
 
-.download-button{
+.download-button {
   background: url("@/assets/interface/downloadbuttonwhite.png");
   background-size: 25px;
-      background-repeat: no-repeat;
-      padding-left: 45px;
-      background-position: 8px 8px;
+  background-repeat: no-repeat;
+  padding-left: 45px;
+  background-position: 8px 8px;
 }

@@ -63,6 +63,8 @@ const downloadImage = (fileUrl: string, fileName: string) => {
   color:rgb(255,150,150);
 }
 
+
+
 .theme-button{
   margin-top:20px;
   margin-bottom:10px;
