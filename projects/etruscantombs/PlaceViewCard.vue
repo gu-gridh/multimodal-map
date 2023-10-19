@@ -149,11 +149,11 @@ onMounted(() => {
 .place-back-button {
   left: 40px;
   top: 80px;
-  background: url(@/assets/backbutton.png);
+  background: url(@/assets/interface/backbutton.png);
   background-size: 100%;
   background-repeat: no-repeat;
   background-position: center;
-  background-color: rgba(35, 35, 35, 0.9);
+
   border-radius: 50%;
   width: 35px;
   height: 35px;
@@ -222,7 +222,7 @@ onMounted(() => {
 }
 
 .placecard-metadata-description{
-  font-size:1.0em;
+  font-size:0.9em;
 }
 
 
