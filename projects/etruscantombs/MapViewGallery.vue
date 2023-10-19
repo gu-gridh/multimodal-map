@@ -9,7 +9,7 @@
     <template v-slot:default="{ item }">
       <router-link
         :key="item.uuid"
-        :to="`/detail/image/${item.id}`"
+        :to="`/place/${item.featureId}`"
         class="grid-item"
       >
         <img :src="`${item.iiif_file}/full/450,/0/default.jpg`" @load="imageLoaded" />
@@ -55,7 +55,7 @@ onMounted(async () => {
       if (feature.properties.default_image) {
         return {
           ...feature.properties.default_image,
-          id: feature.properties.default_image.id
+          featureId: feature.id
         };
       }
       return null;
