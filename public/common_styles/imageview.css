@@ -34,6 +34,16 @@ display:inline;
 .metadata .objects .description {
    font-size:1vw;
     }
+
+    @media screen and (max-width: 1500px) {
+    .metadata .objects .description {
+      font-size:0.9em;
+       }
+
+       .metadata .objects h2 {
+        font-size:1.5em;
+         }
+      }
     
 .illustration {
   height: calc(100vh - 80px);
