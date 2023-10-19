@@ -326,7 +326,7 @@ table td {
     @media screen and (max-width: 400px) {
 
         .document-placeholder {
-            width:100% !important;
+            width: 100% !important;
         }
 
         .document-title {
@@ -350,20 +350,18 @@ table td {
 
     }
 
-    @media screen and (max-width: 400px) {
+    @media screen and (max-width: 500px) {
         .observation-title {
             display: none;
         }
 
         .observation-date {
-            float:left;;
+            float: left;
         }
 
         .observation-placeholder {
-         
             height: auto;
-            width:100% !important;
-       
+            width: 100% !important;
         }
     }
 
@@ -380,6 +378,6 @@ table td {
 
     .place-gallery-container .dropdown {
         margin-left: 3px;
-        margin-bottom:10px;
+        margin-bottom: 10px;
     }
 }

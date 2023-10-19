@@ -230,7 +230,9 @@ onMounted(() => {
 
 /* For small screens */
 @media screen and (max-width: 900px) {
-
+  .placecard-full {
+    margin-top:40px!important;
+  }
   #app .place-meta-container {
     position: relative !important;
     margin-top: 0px !important;
@@ -246,7 +248,7 @@ onMounted(() => {
 
   .place-back-button {
     left: 30px;
-    top: 0px;
+    top: 10px;
     width: 40px;
     height: 40px;
     z-index: 1000;
