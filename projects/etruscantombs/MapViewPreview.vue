@@ -23,28 +23,43 @@ const period = ref<string | null>(null);
 const subtitle = ref<string | null>(null);
 const description = ref<string | null>(null);
 
-
-
 //when a place is selected, fetch image and info
 watchEffect(async () => {
   if (selectedFeature.value) {
     const placeId = selectedFeature.value.getId();
     place.value = { id_: placeId };
     images.value = await diana.listAll<Image>("image", { tomb: placeId, depth: 2 });
-    const filteredImages = images.value.filter(image => {
-      return image.type_of_image.some(tag => tag.text === 'photograph'); //Only display images that are photographs
-    });
 
-    imageUrls.value = filteredImages.map(image => `${image.iiif_file}/info.json`);
-    
-    // If the API also returns tomb details in this call, assign it to tombDetail here
-    if (images.value && images.value[0] && images.value[0].tomb) {
-      necropolisName.value = images.value[0].tomb?.necropolis?.text || null;
-      chambers.value = images.value[0].tomb.number_of_chambers || null;
-      type.value = images.value[0].tomb.type.text || null;
-      period.value = images.value[0].tomb.epoch.text || null;
-      subtitle.value = images.value[0].tomb.subtitle || null;
-      description.value = images.value[0].tomb.description || null;
+    // If images are available
+    if (images.value.length > 0) {
+      const filteredImages = images.value.filter(image => {
+        return image.type_of_image.some(tag => tag.text === 'photograph'); //Only display images that are photographs
+      });
+      imageUrls.value = filteredImages.map(image => `${image.iiif_file}/info.json`);
+      
+      // Populate place details
+      if (images.value[0].tomb) {
+        necropolisName.value = images.value[0].tomb?.necropolis?.text || null;
+        chambers.value = images.value[0].tomb.number_of_chambers || null;
+        type.value = images.value[0].tomb.type.text || null;
+        period.value = images.value[0].tomb.epoch.text || null;
+        subtitle.value = images.value[0].tomb.subtitle || null;
+        description.value = images.value[0].tomb.description || null;
+      }
+    } else {
+      imageUrls.value = [];
+      // If no images are available, fetch details from `geojson/place` endpoint
+      const response = await fetch(`https://diana.dh.gu.se/api/etruscantombs/geojson/place/?id=${placeId}`);
+      const geojsonData = await response.json();
+      if (geojsonData.features.length > 0) {
+        const feature = geojsonData.features[0];
+        necropolisName.value = feature.properties.necropolis.text || null;
+        chambers.value = feature.properties.number_of_chambers || null;
+        type.value = feature.properties.type.text || null;
+        period.value = feature.properties.epoch.text || null;
+        subtitle.value = feature.properties.subtitle || null;
+        description.value = feature.properties.description || null;
+      }
     }
   } else {
     images.value = [];
