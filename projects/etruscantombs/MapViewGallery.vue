@@ -142,14 +142,14 @@ export default {
 
 <style scoped>
 #galleryapp{
-  padding-left:33%;
+  padding-left:28%;
   z-index:0!important;
   background-color:transparent !important;
 }
 
 @media screen and (max-width: 1500px) {
   #galleryapp{ 
-    padding-left:420px;
+    padding-left:460px;
 }
   }
 
