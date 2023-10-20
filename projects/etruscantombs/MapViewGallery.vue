@@ -8,15 +8,16 @@
         :key="item.uuid"
         class="grid__item"
       >
+      
         <router-link
           :to="`/place/${item.featureId}`"
         >
-        <img v-if="item.iiif_file" :src="`https://img.dh.gu.se/diana/static/${item.iiif_file}/full/450,/0/default.jpg`" loading="lazy" @load="imageLoaded" />
-          <div class="grid__item-info">
-            <div class="grid__item-info-meta">
-              <h1>{{ item.title }}</h1>
+        <div class="item-info">
+            <div class="item-info-meta">
+              <h1>{{ $t('tomb') }} {{ item.title }}</h1>
             </div>
-          </div>
+        </div>
+        <img v-if="item.iiif_file" :src="`https://img.dh.gu.se/diana/static/${item.iiif_file}/full/450,/0/default.jpg`" loading="lazy" @load="imageLoaded" />
         </router-link>
       </div>
     </div>
@@ -209,23 +210,46 @@ export default {
 
 .grid__item--width2 { width: 66%; }
 
+.item-info{
+  pointer-events:none;
+  position:absolute!important;
+  height:100%!important;
+  width:100%!important;
+  z-index:1000!important;
+  bottom:0px;
+  transition: all 0.5s ease-in-out;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.0) 0px, rgba(0, 0, 0, 0)50%) !important;
+}
+
+.item-info-meta{
+  position:absolute;
+  color:white;
+  bottom:0px;
+  padding:10px 15px;
+  display:none;
+}
+
 .grid__item img {
   display: block;
   max-width: 100%;
   transition: all 0.2s ease-in-out;
 }
+
+
 .grid__item img:hover {
   display: block;
   transform:scale(1.05);
 }
 
-.grid__item-info{
-  position:absolute!important;
-  height:100%!important;
-  background-color:black!important;
-  width:100%!important;
-  z-index:1000!important;
+.grid__item:hover .item-info{
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.7) 0px, rgba(0, 0, 0, 0)50%) !important;
 }
+
+.grid__item:hover .item-info-meta{
+ display:block;
+}
+
+
 
 
 .page-load-status {
