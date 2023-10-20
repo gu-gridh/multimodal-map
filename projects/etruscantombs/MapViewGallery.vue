@@ -1,155 +1,206 @@
 <template>
-  <VueMasonryWall
-    :key="layoutKey"
-    class="masonry-wall"
-    :items="images"
-    :column-width="300" 
-    :gap="10"
-  >
-    <template v-slot:default="{ item }">
-      <router-link
+  <div id="app">
+    <div class="grid">
+      <div class="grid__col-sizer"></div>
+      <div class="grid__gutter-sizer"></div>
+      <div
+        v-for="item in images"
         :key="item.uuid"
-        :to="`/place/${item.featureId}`"
-        class="grid-item"
+        class="grid__item"
       >
-        <img :src="`${item.iiif_file}/full/450,/0/default.jpg`" @load="imageLoaded" />
-         <div class="grid-item-info">
-          <div class="grid-item-info-meta">
-            <h1>{{item.title}}</h1>
+        <router-link
+          :to="`/place/${item.featureId}`"
+        >
+        <img v-if="item.iiif_file" :src="`https://img.dh.gu.se/diana/static/${item.iiif_file}/full/450,/0/default.jpg`" @load="imageLoaded" />
+          <div class="grid__item-info">
+            <div class="grid__item-info-meta">
+              <h1>{{ item.title }}</h1>
+            </div>
           </div>
-        </div>
-      </router-link>
-    </template>
-  </VueMasonryWall>
+        </router-link>
+      </div>
+    </div>
+    <div class="page-load-status">
+      <div class="loader-ellips infinite-scroll-request">
+        <span class="loader-ellips__dot"></span>
+        <span class="loader-ellips__dot"></span>
+        <span class="loader-ellips__dot"></span>
+        <span class="loader-ellips__dot"></span>
+      </div>
+    </div>
+  </div>
 </template>
 
-<script lang="ts" setup>
-import { ref, inject, onMounted, defineComponent } from "vue";
-import type { Image } from "./types";
-import type { DianaClient } from "@/assets/diana";
-import VueMasonryWall from "@yeger/vue-masonry-wall";
+<script>
+import { onMounted, ref, watchEffect } from 'vue';
+import Masonry from 'masonry-layout';
+import imagesLoaded from 'imagesloaded';
+import InfiniteScroll from 'infinite-scroll';
 
-const diana = inject("diana") as DianaClient;
-const images = ref<Array<Image>>([]);
+export default {
+  setup() {
+    const images = ref([]);
+    let msnry;
 
-let layoutKey = ref(0);
-let loadedImagesCount = ref(0);
-
-const imageLoaded = () => {
-  loadedImagesCount.value++;
-  if (loadedImagesCount.value === images.value?.length) {
-    refreshMasonry();
-  }
-};
-
-const refreshMasonry = () => {
-  layoutKey.value++;
-}
-
-onMounted(async () => {
-  try {
-    const response = await fetch("https://diana.dh.gu.se/api/etruscantombs/geojson/place/");
-    const data = await response.json();
-
-    images.value = data.features.map((feature: any) => {
-      if (feature.properties.default_image) {
-        return {
-          ...feature.properties.default_image,
-          featureId: feature.id
-        };
+    const fetchData = async (pageIndex) => {
+      try {
+        const res = await fetch(`https://diana.dh.gu.se/api/etruscantombs/geojson/place/?page=${pageIndex}`);
+        const data = await res.json();
+        const newImages = data.features.map(feature => ({
+                ...feature.properties.first_photograph_id,
+                featureId: feature.id,
+              })).filter(img => img && Object.keys(img).length > 0);
+        images.value = [...images.value, ...newImages];
+      } catch (error) {
+        console.error("Error fetching additional images:", error);
       }
-      return null;
-    }).filter((img: Image | null) => img !== null);
+    };
 
-  } catch (error) {
-    console.error("Error fetching GeoJSON data:", error);
-  }
-});
+    const initMasonry = () => {
+      const grid = document.querySelector('.grid');
+      if (!grid) {
+        console.error('Grid element not found.');
+        return;
+      }
 
-defineComponent({
-  components: {
-    VueMasonryWall,
+      msnry = new Masonry(grid, {
+        itemSelector: '.grid__item',
+        columnWidth: '.grid__col-sizer',
+        gutter: '.grid__gutter-sizer',
+        percentPosition: true,
+      });
+
+    let pageIndex = 1;  // Initialize pageIndex to 1
+    let canIncrement = true;  // Flag to control the increment
+
+    const infScroll = new InfiniteScroll(grid, {
+      path: () => {
+      if (canIncrement) {
+          pageIndex++;  // Increment pageIndex for the next set of data
+        }
+        canIncrement = false; // Disable further increments
+        return `https://diana.dh.gu.se/api/etruscantombs/geojson/place/?page=${pageIndex}`;
+      },
+      outlayer: msnry,
+      status: '.page-load-status',
+      history: false,
+      scrollThreshold: 700,
+      elementScroll: true,
+    });
+
+    infScroll.on('load', async function(response) {    
+      try {
+          // Extract the body content from the HTML response
+          let bodyContent = response.querySelector("body").textContent;
+          
+          // Convert the body content to JSON
+          const data = JSON.parse(bodyContent);
+
+          if (!data.features) {
+              console.error("JSON object doesn't have 'features' property");
+              return;
+          }
+          
+          const newImages = data.features.map(feature => ({
+                ...feature.properties.first_photograph_id,
+                featureId: feature.id,
+              })).filter(img => img !== null);        
+
+          images.value = [...images.value, ...newImages];
+
+          imagesLoaded(document.querySelector('.grid'), () => {
+            msnry.reloadItems();
+            msnry.layout();
+          });
+      } catch (e) {
+          console.error("JSON Parsing failed or other error: ", e);
+      }
+        canIncrement = true;
+    });
+  };
+
+  onMounted(() => {
+  fetchData(1).then(() => {
+    imagesLoaded(document.querySelector('.grid'), () => {
+      initMasonry();
+
+      // After the initial Masonry initialization, reload and layout again
+      // to make sure the first batch of images obeys the Masonry layout.
+      msnry.reloadItems();
+      msnry.layout();
+    });
+  });
+  });
+
+  return {
+      images,
+    };
   },
-});
-
-
+};
 </script>
 
-<style>
-.masonry-wall {
-  position: absolute;
-  top: 0px;
-  width: 100%; 
-  height: 100%; 
-  z-index: 99;
-  background-color: rgb(234, 228, 219);
-  padding: 0px 0px 0px 0px; 
-  overflow-y: scroll;
-  transition: all 0.5s ease-in-out;
+
+<style scoped>
+.grid {
+  max-height: 100vh;
+  overflow-y: auto;
+  max-width: 90%; /* Maximum width of the grid */
+  margin: 0 auto; /* Top and bottom margin 0, left and right margin auto */  
 }
 
-@media (min-width: 900px) {
-  #app .masonry-wall {
-    padding: 0px 0px 0px 480px; 
-  }
+.grid::-webkit-scrollbar {
+  display: none;
 }
 
-@media (min-width: 1500px) {
-  #app .masonry-wall {
-    padding: 0px 0px 0px 30%; 
-  }
+body {
+  font-family: sans-serif;
+  line-height: 1.4;
+  font-size: 18px;
+  padding: 20px;
+  max-width: 640px;
+  margin: 0 auto;
 }
 
-.grid-item:hover .grid-item-info {
-  opacity: 0.9;
-}
-
-.grid-item {
-  width:100%;
-  display: flex;
-  position: relative;
-  overflow: hidden;
-  width: auto;
-}
-
-.grid-item img {
-  width:100%;
-  transition: all 0.2s ease-in-out;
-}
-
-.grid-item:hover img {
-  transform: scale(1.05);
-  z-index: 300; 
-}
-
-
-.grid-item-info {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  height: 100%;
-  width: 100%;
-  background: linear-gradient(rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.7) 100%);
-  color: rgb(255, 255, 255);
-  position: absolute;
-  top: 0;
-  left: 0;
+/* reveal grid after images loaded */
+.grid.are-images-unloaded {
   opacity: 0;
-  transition: all 0.5s ease-in-out;
-  cursor:pointer;
-  z-index: 400; 
-  overflow-wrap: break-word;
-  line-height:1.0;
 }
 
-.grid-item:hover .grid-item-info {
-  opacity: 0.9;
+.grid__item,
+.grid__col-sizer {
+  width: 32%;
 }
 
-.grid-item-info-meta {
-  padding: 10px;
+.grid__gutter-sizer { width: 2%; }
+
+/* hide by default */
+.grid.are-images-unloaded .image-grid__item {
+  opacity: 0;
+}
+
+.grid__item {
+  margin-bottom: 20px;
+  float: left;
+}
+
+.grid__item--height1 { height: 140px; background: #EA0; }
+.grid__item--height2 { height: 220px; background: #C25; }
+.grid__item--height3 { height: 300px; background: #19F; }
+
+.grid__item--width2 { width: 66%; }
+
+.grid__item img {
+  display: block;
+  max-width: 100%;
 }
 
 
+.page-load-status {
+  display: none; /* hidden by default */
+  padding-top: 20px;
+  border-top: 1px solid #DDD;
+  text-align: center;
+  color: #777;
+}
 
 </style>
