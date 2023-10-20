@@ -200,7 +200,7 @@ export default {
 .grid__item {
   margin-bottom: 10px;
   float: left;
-  overflow:hidden;
+  overflow:hidden !important;
 }
 
 .grid__item--height1 { height: 140px; background: #EA0; }
@@ -212,12 +212,19 @@ export default {
 .grid__item img {
   display: block;
   max-width: 100%;
+  transition: all 0.2s ease-in-out;
+}
+.grid__item img:hover {
+  display: block;
+  transform:scale(1.05);
 }
 
 .grid__item-info{
-  height:50%;
-  background-color:black;
-  width:100%;
+  position:absolute!important;
+  height:100%!important;
+  background-color:black!important;
+  width:100%!important;
+  z-index:1000!important;
 }
 
 
