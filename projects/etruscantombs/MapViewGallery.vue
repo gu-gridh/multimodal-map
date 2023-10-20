@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="galleryapp">
     <div class="grid">
       <div class="grid__col-sizer"></div>
       <div class="grid__gutter-sizer"></div>
@@ -141,10 +141,22 @@ export default {
 
 
 <style scoped>
+#galleryapp{
+  padding-left:33%;
+  z-index:0!important;
+  background-color:transparent !important;
+}
+
+@media screen and (max-width: 1500px) {
+  #galleryapp{ 
+    padding-left:420px;
+}
+  }
+
 .grid {
   max-height: 100vh;
   overflow-y: auto;
-  max-width: 90%; /* Maximum width of the grid */
+  max-width: 100%; /* Maximum width of the grid */
   margin: 0 auto; /* Top and bottom margin 0, left and right margin auto */  
 }
 
@@ -168,10 +180,10 @@ body {
 
 .grid__item,
 .grid__col-sizer {
-  width: 32%;
+  width: 24%;
 }
 
-.grid__gutter-sizer { width: 2%; }
+.grid__gutter-sizer { width: 1%; }
 
 /* hide by default */
 .grid.are-images-unloaded .image-grid__item {
@@ -179,7 +191,7 @@ body {
 }
 
 .grid__item {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   float: left;
 }
 
