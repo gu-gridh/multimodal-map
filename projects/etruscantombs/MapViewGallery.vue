@@ -11,7 +11,7 @@
         <router-link
           :to="`/place/${item.featureId}`"
         >
-        <img v-if="item.iiif_file" :src="`https://img.dh.gu.se/diana/static/${item.iiif_file}/full/450,/0/default.jpg`" @load="imageLoaded" />
+        <img v-if="item.iiif_file" :src="`https://img.dh.gu.se/diana/static/${item.iiif_file}/full/450,/0/default.jpg`" loading="lazy" @load="imageLoaded" />
           <div class="grid__item-info">
             <div class="grid__item-info-meta">
               <h1>{{ item.title }}</h1>
@@ -84,7 +84,7 @@ export default {
       outlayer: msnry,
       status: '.page-load-status',
       history: false,
-      scrollThreshold: 700,
+      scrollThreshold: 1200,
       elementScroll: true,
     });
 
