@@ -146,14 +146,14 @@ export default {
   position:absolute;
   width:100%;
   height:calc(100% - 80px);
-  padding-left:28%;
+  padding-left:30%;
   z-index:100!important;
   background-color: rgb(232, 228, 217) !important;
 }
 
 @media screen and (max-width: 1500px) {
   #galleryapp{ 
-    padding-left:460px;
+    padding-left:480px;
 }
   }
 
@@ -181,13 +181,19 @@ export default {
 
 .grid__item,
 .grid__col-sizer {
-  width: 24.36%;
+  width: calc(25% - 10px);
 }
 .grid__gutter-sizer { width: 10px;}
 
+@media screen and (max-width: 1500px) {
+  .grid__item, .grid__col-sizer {
+    width: calc(33% - 8px);
+  }
+}
+
 @media screen and (max-width: 900px) {
   .grid__item, .grid__col-sizer {
-  width: 49.0%;
+    width: calc(50% - 8px);
 }
   }
 
