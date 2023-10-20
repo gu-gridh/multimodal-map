@@ -142,14 +142,23 @@ export default {
 
 <style scoped>
 #galleryapp{
+  position:absolute;
+  width:100%;
+  height:calc(100% - 80px);
   padding-left:28%;
-  z-index:0!important;
-  background-color:transparent !important;
+  z-index:100!important;
+  background-color: rgb(232, 228, 217) !important;
 }
 
 @media screen and (max-width: 1500px) {
   #galleryapp{ 
     padding-left:460px;
+}
+  }
+
+  @media screen and (max-width: 900px) {
+  #galleryapp{ 
+    padding-left:5px;
 }
   }
 
@@ -164,15 +173,6 @@ export default {
   display: none;
 }
 
-body {
-  font-family: sans-serif;
-  line-height: 1.4;
-  font-size: 18px;
-  padding: 20px;
-  max-width: 640px;
-  margin: 0 auto;
-}
-
 /* reveal grid after images loaded */
 .grid.are-images-unloaded {
   opacity: 0;
@@ -180,10 +180,17 @@ body {
 
 .grid__item,
 .grid__col-sizer {
-  width: 24%;
+  width: 24.36%;
 }
+.grid__gutter-sizer { width: 10px;}
 
-.grid__gutter-sizer { width: 1%; }
+@media screen and (max-width: 900px) {
+  .grid__item, .grid__col-sizer {
+  width: 49.0%;
+}
+  }
+
+
 
 /* hide by default */
 .grid.are-images-unloaded .image-grid__item {
@@ -193,6 +200,7 @@ body {
 .grid__item {
   margin-bottom: 10px;
   float: left;
+  overflow:hidden;
 }
 
 .grid__item--height1 { height: 140px; background: #EA0; }
@@ -204,6 +212,12 @@ body {
 .grid__item img {
   display: block;
   max-width: 100%;
+}
+
+.grid__item-info{
+  height:50%;
+  background-color:black;
+  width:100%;
 }
 
 
