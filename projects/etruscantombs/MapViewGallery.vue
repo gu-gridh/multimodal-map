@@ -148,7 +148,7 @@ export default {
   height:calc(100% - 80px);
   padding-left:30%;
   z-index:100!important;
-  background-color: rgb(232, 228, 217) !important;
+  background-color: rgba(232, 228, 217, 0.6) !important;
 }
 
 @media screen and (max-width: 1500px) {
