@@ -1,5 +1,5 @@
 <template>
-  <div class="section-title" style="">Type of data</div>
+  <div class="section-title" style="">{{ $t('typeofdata') }}</div>
   <CategoryButton
     v-model="categories"
     :categories="CATEGORIES"
@@ -23,7 +23,7 @@
 
   <div style="width:98%; float:left; display:flex; flex-direction:row; justify-content:space-between;">
   <div class="tag-section" style="float:left;">
-    <div class="section-title">Necropolis</div>
+    <div class="section-title">{{ $t('necropolisname') }}</div>
     <div class="broad-controls">
         <CategoryButtonList 
           v-model="necropoli" 
