@@ -2,6 +2,7 @@
 import router from './router'
 import { ref, inject, onMounted } from "vue"
 import markerIcon from "@/assets/marker-red.svg";
+import i18n from '../../src/translations/etruscan';
 
 const props = defineProps<{
   id: string;
@@ -88,13 +89,13 @@ onMounted(() => {
 
     <div class="placecard-full">
   
-
+ 
       <div class="placecard-full-content">
-
+      
         <div class="placecard-text-overlay"></div>
-
         <!-- mini map -->
         <div class="mini-map">
+       
           <ol-map :loadTilesWhileAnimating="true" :loadTilesWhileInteracting="true" style="height:300px">
             <ol-view ref="view" :center="center" :rotation="rotation" :zoom="zoom" :projection="projection"
               :minZoom="minZoom" />
@@ -111,26 +112,29 @@ onMounted(() => {
               </ol-style>
             </ol-vector-layer>
           </ol-map>
+          <div class="placeview-main-title">{{ $t('etruscantitle') }}</div>
         </div>
+   
         <div class="placecard-text">
-          <div class="placecard-title theme-color-text">Tomb {{ title }}</div>
+      
+          <div class="placecard-title theme-color-text">{{ $t('tomb') }} {{ title }}</div>
           <div class="placecard-subtitle theme-color-text">{{ subtitle }}</div>
 
           <div class="placecard-metadata-content" style="">
             <div class="metadata-item">
-              <div class="label">Necropolis:</div>
+              <div class="label">{{ $t('necropolisname') }}:</div>
               <div class="tag theme-color-text">{{ necropolisName }}</div>
             </div>
             <div class="metadata-item">
-              <div class="short-label">Type:</div>
+              <div class="short-label">{{ $t('type') }}:</div>
               <div class="tag theme-color-text">{{ type }} </div>
             </div>
             <div class="metadata-item">
-              <div class="label">Chambers:</div>
+              <div class="label">{{ $t('chambers') }}:</div>
               <div class="tag theme-color-text">{{ chambers }}</div>
             </div>
             <div class="metadata-item">
-              <div class="short-label">Period:</div>
+              <div class="short-label">{{ $t('period') }}:</div>
               <div class="tag theme-color-text">{{ period }}</div>
             </div>
           </div>
@@ -146,6 +150,23 @@ onMounted(() => {
 </template>
 
 <style scoped>
+
+.placeview-main-title{
+  position:relative;
+  font-family: 'Teko', sans-serif;
+  color: rgb(180, 100, 100);
+  z-index:1000;
+  font-size:60px;
+  padding:25px 25px;
+  margin-top:-300px;
+  text-shadow: 0px 0px 50px rgba(255,255,255,0.8);
+  white-space: pre-line;
+  line-height: 0.7;
+  width: auto;
+  font-weight: 300;
+  letter-spacing: 0.05rem;
+  transition: all 0.5s ease-in-out;
+}
 .place-back-button {
   left: 40px;
   top: 80px;
@@ -173,7 +194,7 @@ onMounted(() => {
 #app .place-meta-container {}
 
 .placecard-full {
-  margin-top: 80px;
+  margin-top: 60px;
   margin-left: 50px;
   color: black;
   background-color: white;
@@ -230,7 +251,11 @@ onMounted(() => {
 
 /* For small screens */
 @media screen and (max-width: 900px) {
-  .placecard-full {
+  .main-title{
+  font-size:60px !important;
+}
+
+.placecard-full {
     margin-top:40px!important;
   }
   #app .place-meta-container {
@@ -248,7 +273,7 @@ onMounted(() => {
 
   .place-back-button {
     left: 30px;
-    top: 10px;
+    top: 18px;
     width: 40px;
     height: 40px;
     z-index: 1000;

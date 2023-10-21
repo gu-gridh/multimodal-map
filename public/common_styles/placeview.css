@@ -5,6 +5,12 @@
 
 
 /* Main */
+.placeview-language{
+    margin-left: 95px !important; 
+    margin-top: 15px !important; 
+    margin-bottom: 0px !important; 
+    position:absolute !important; 
+}
 
 table p {
     font-weight: normal;
@@ -38,7 +44,7 @@ table td {
     color: black;
     width: 100%;
     /* Take up the remaining space */
-    padding-top: 35px;
+    padding-top: 25px;
     overflow-y: auto;
     /* Enable vertical scrolling */
 }
@@ -64,6 +70,7 @@ table td {
     -webkit-appearance: none;
     text-transform: capitalize;
     margin-left: 130px;
+    margin-bottom:15px;
 }
 
 
@@ -118,10 +125,15 @@ table td {
     padding: 11px 10px 5px 55px;
 }
 
-.document-placeholder p {
+.document-placeholder .documentlabel {
     line-height: 1.0;
     display: inline;
-    margin-right: 33px;
+}
+
+.document-placeholder .documentdata {
+    line-height: 1.0;
+    display: inline;
+    margin-right: 20px;
 }
 
 .document-title {
@@ -272,7 +284,13 @@ table td {
 
 
 @media screen and (max-width: 900px) {
-
+    .placeview-language{
+        margin-left: 95px !important; 
+        margin-top: 0px !important; 
+        margin-bottom: 0px !important; 
+        position:absolute !important; 
+        font-size:20px;
+    }
 
     #app html,
     body {
