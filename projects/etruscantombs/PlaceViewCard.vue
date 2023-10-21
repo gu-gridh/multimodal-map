@@ -152,6 +152,7 @@ onMounted(() => {
 <style scoped>
 
 .placeview-main-title{
+  pointer-events:none;
   position:relative;
   font-family: 'Teko', sans-serif;
   color: rgb(180, 100, 100);
