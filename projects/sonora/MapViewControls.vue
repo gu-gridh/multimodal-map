@@ -1,29 +1,23 @@
 <template>
-  <div class="section-title" style="">{{ $t('typeofdata') }}</div>
-  <CategoryButton
-    v-model="categories"
-    :categories="CATEGORIES"
-    :limit="1"
-    class="my-2"
-    @click="handleCategoryClick" 
-  />
+
+<div class="tag-section">
+
+    <div class="broad-controls" style="height:60px;">
+        
+    </div>
+  </div>
+
 
   <div class="tag-section">
-    <div class="section-title">{{ $t('timeperiod') }}</div>
-    <div class="broad-controls">
-         <CategoryButtonList 
-          v-model="tags" 
-          :categories="TAGS" 
-          :limit="1" 
-          styleType="button"
-          class="my-2"
-        />
+    <div class="section-title">Tidsperiod</div>
+    <div class="broad-controls" style="height:100px;">
+  
     </div>
   </div>
 
   <div style="width:98%; float:left; display:flex; flex-direction:row; justify-content:space-between;">
   <div class="tag-section" style="float:left;">
-    <div class="section-title">{{ $t('necropolisname') }}</div>
+    <div class="section-title">Konstruktör</div>
     <div class="broad-controls">
         <CategoryButtonList 
           v-model="necropoli" 
@@ -38,7 +32,7 @@
   </div>
 
   <div class="tag-section" style="float:left; margin-left:20px;">
-    <div class="section-title">{{ $t('tombtype') }}</div>
+    <div class="section-title">Orgeltyp</div>
     <div class="broad-controls">
         <CategoryButtonList 
           v-model="tombType" 
@@ -57,12 +51,12 @@
   <div class="data-widget">
     <div class="data-widget-section">
       <div class="data-widget-item">
-        <h3>{{ $t('tombshown') }}:</h3>
+        <h3>Visade orglar:</h3>
         <p>{{ currentTombCount }}</p>
       </div>
       <div class="data-widget-item">|</div>
       <div class="data-widget-item">
-        <h3>{{ $t('tombshidden') }}:</h3>
+        <h3>Gömde orglar:</h3>
         <p>{{ initialTombCount - currentTombCount }}</p>
       </div>
     </div>
@@ -71,15 +65,15 @@
 
     <div class="data-widget-section">
       <div class="data-widget-item">
-        <h3>{{ $t('photographs') }}:</h3>
+        <h3>Dokument:</h3>
         <p>{{ totalPhotographs }}</p>
       </div>
       <div class="data-widget-item">
-        <h3>{{ $t('plans') }}:</h3>
+        <h3>Ritningar:</h3>
         <p>{{ totalPlans }}</p>
       </div>
       <div class="data-widget-item">
-        <h3>{{ $t('threedmodels') }}:</h3>
+        <h3>Inspelningar:</h3>
         <p>{{ totalThreedhop + totalPointcloud }}</p> 
       </div>
     </div>
@@ -249,6 +243,7 @@ function handleSelectionClick(selectedValue, targetRef) {
 #app .section-title {
   margin-top:10px;
   margin-bottom:-3px;
+  color:white;
 }
 
 #app .tag-section {

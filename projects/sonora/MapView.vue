@@ -2,7 +2,7 @@
 import { computed } from "vue";
 import MainLayout from "@/MainLayout.vue";
 import MapViewControls from "./MapViewControls.vue";
-import MapComponent from "@/components/MapComponent.vue";
+import MapComponent from "@/components/MapComponentRwanda.vue";
 import DianaPlaceLayer from "@/components/DianaPlaceLayerEtruscan.vue";
 import GeoJsonWebGLRenderer from "@/components/GeoJsonWebGLRenderer.vue";
 import FeatureSelection from "./FeatureSelection.vue";
@@ -23,7 +23,7 @@ import Title from "./Title.vue"
 const { categories, tags, necropoli, tombType, placesLayerVisible, tagsLayerVisible, dataParams, selectedNecropolisCoordinates, enable3D } = storeToRefs(etruscanStore());
 const store = mapStore();
 const { selectedFeature } = storeToRefs(store);
-const minZoom = 14;
+const minZoom = 9;
 const maxZoom = 20;
 const featureZoom = 16; //value between minZoom and maxZoom when you select a point 
 const visibleAbout = ref(false);
@@ -139,10 +139,10 @@ watch(showGrid, (newValue) => {
   <div style="display:flex; align-items: center; justify-content: center; pointer-events: none;">
     <div class="ui-mode ui-overlay">
       <button class="item" v-bind:class="{ selected: !showGrid }" v-on:click="showGrid = false;">
-        {{ $t('map') }}
+        Karta
       </button>
       <button class="item" v-bind:class="{ selected: showGrid }" v-on:click="showGrid = true;">
-        {{ $t('gallery') }}
+       Galleri
       </button>
     </div>
   </div>
@@ -160,10 +160,10 @@ watch(showGrid, (newValue) => {
           :shouldAutoMove="true" 
           :min-zoom=minZoom
           :max-zoom=maxZoom 
-          :restrictExtent="[11.9, 42.15, 12.2, 42.4]"    
+            
           :key="showGrid.toString()"
         > 
-                  
+        <!-- :restrictExtent="[11.9, 42.15, 12.2, 42.4]"      -->
           <template #layers>
             <GeoJsonWebGLRenderer
               :externalUrl="'https://data.dh.gu.se/geography/SGElevationMain.geojson'"
@@ -201,6 +201,11 @@ watch(showGrid, (newValue) => {
 </template>
 
 <style>
+
+#app .tile-layer {
+  filter: grayscale(80%);
+}
+
 .map-container {
   height: calc(100vh - 80px) !important;
   position: relative;

@@ -23,16 +23,16 @@ body {
 }
 
 .theme-color-text {
-  color: rgb(180, 100, 100);
+  color: rgb(100, 100, 100);
 }
 
 .theme-color-background {
-  background-color: rgb(180, 100, 100);
+  background-color: rgb(100, 100, 100);
 }
 
 .main-title {
   font-family: 'Teko', sans-serif;
-  color: rgb(180, 100, 100);
+  color: rgb(250, 250, 250);
 }
 
 .about {
@@ -41,12 +41,12 @@ body {
 
 
 #app .left-pane {
-  background: url("@/assets/gradient-jubileum.png");
+  background: url("images/gradient-sonora.png");
   background-size: contain;
 }
 
 .theme-button {
-  background-color: rgb(180, 100, 100);
+  background-color: rgb(100, 100, 100);
   border-radius: 5px;
   padding: 5px 10px;
   color: white;
