@@ -1,5 +1,5 @@
 <template>
-  <div id="galleryapp">
+  <div id="gallery-container">
     <div class="grid">
       <div class="grid__col-sizer"></div>
       <div class="grid__gutter-sizer"></div>
@@ -14,7 +14,7 @@
         >
         <div class="item-info">
             <div class="item-info-meta">
-              <h1>{{ $t('tomb') }} {{ item.title }}</h1>
+              <h1>{{ $t('tomb') }} {{ item.name }}</h1>
             </div>
         </div>
         <img v-if="item.iiif_file" :src="`https://img.dh.gu.se/diana/static/${item.iiif_file}/full/450,/0/default.jpg`" loading="lazy" @load="imageLoaded" />
@@ -142,23 +142,24 @@ export default {
 
 
 <style scoped>
-#galleryapp{
+#gallery-container{
   position:absolute;
   width:100%;
   height:calc(100% - 80px);
   padding-left:30%;
   z-index:100!important;
-  background-color: rgba(232, 228, 217, 0.6) !important;
+  background-color: rgba(232, 228, 217, 0.5) !important;
+  backdrop-filter:blur(5px);
 }
 
 @media screen and (max-width: 1500px) {
-  #galleryapp{ 
+  #gallery-container{ 
     padding-left:480px;
 }
   }
 
   @media screen and (max-width: 900px) {
-  #galleryapp{ 
+  #gallery-container{ 
     padding-left:5px;
 }
   }

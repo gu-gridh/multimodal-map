@@ -15,9 +15,12 @@ table td {
 }
 
 .main-container {
+    position:absolute;
     display: flex;
     flex-direction: row;
-    height: 100vh;
+    height: 100%;
+    width: 100%;
+    z-index:100;
     overflow: hidden;
 }
 
@@ -243,6 +246,15 @@ table td {
     opacity: 1.0;
 }
 
+/* hides the zoom controls for the background map*/
+#app .ol-zoom-in {
+    display:none !important;
+}
+
+#app .ol-zoom-out {
+    display:none !important;
+}
+
 @media screen and (max-width: 1300px) {
 
     .placecard-full-content .placecard-metadata-content {
@@ -262,12 +274,15 @@ table td {
 @media screen and (max-width: 900px) {
 
 
-    /* Overwrites the body-container in MainLayout.vue */
     #app html,
     body {
         height: auto !important;
         overflow: auto !important;
     }
+
+    .content-table td {
+        color:black!important;
+     }
 
 
     #app .main-container {

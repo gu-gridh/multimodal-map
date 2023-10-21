@@ -3,6 +3,7 @@ import { ref, defineProps, onMounted, inject, computed } from 'vue';
 import type { Image, Observation, Document, Pointcloud, Mesh } from './types';
 import type { DianaClient } from "@/assets/diana";
 import PlaceViewCard from "./PlaceViewCard.vue";
+import MapComponent from "@/components/MapComponent.vue";
 
 const sort = ref('type');
 const groupedByYear = ref<{ [year: string]: (Image | Observation | Document | Pointcloud | Mesh )[] }>({});
@@ -88,7 +89,8 @@ function groupAndSortByYear(allItems: (Image | Observation | Document | Pointclo
 </script>
     
 <template>
-    <div class="main-container">
+   
+    <div class="main-container">   
         <div class="place-card-container">
             <PlaceViewCard :id="id" />
         </div>
@@ -257,8 +259,19 @@ function groupAndSortByYear(allItems: (Image | Observation | Document | Pointclo
             </div>
         </div>
     </div>
+
+    <MapComponent/>   
 </template>
     
 <style scoped>
+
+.main-container {
+    background-color: rgba(232, 228, 217, 0.5) !important;
+    backdrop-filter:blur(10px) saturate(50%) brightness(100%);
+}
+
+.content-table td {
+   color:black;
+}
 </style>
     
