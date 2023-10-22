@@ -133,12 +133,14 @@ table td {
 .document-placeholder .documentlabel {
     line-height: 1.0;
     display: inline;
+    margin-right: 5px;
 }
 
 .document-placeholder .documentdata {
     line-height: 1.0;
     display: inline;
     margin-right: 20px;
+
 }
 
 .document-title {
