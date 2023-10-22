@@ -195,7 +195,7 @@ onMounted(() => {
 #app .place-meta-container {}
 
 .placecard-full {
-  margin-top: 60px;
+  margin-top: 80px;
   margin-left: 50px;
   color: black;
   background-color: white;
@@ -257,7 +257,7 @@ onMounted(() => {
 }
 
 .placecard-full {
-    margin-top:40px!important;
+    margin-top:60px!important;
   }
   #app .place-meta-container {
     position: relative !important;

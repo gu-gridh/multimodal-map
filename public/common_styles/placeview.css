@@ -5,11 +5,16 @@
 
 
 /* Main */
-.placeview-language{
+.placeview-topbutton-container{
     margin-left: 95px !important; 
-    margin-top: 15px !important; 
+    margin-top: 40px !important; 
     margin-bottom: 0px !important; 
     position:absolute !important; 
+}
+
+.placeview-topbutton{
+  float:left;
+  margin-right:10px;
 }
 
 table p {
@@ -282,11 +287,13 @@ table td {
 
 
 @media screen and (max-width: 900px) {
-    .placeview-language{
+
+    .placeview-topbutton-container{
         margin-left: 95px !important; 
-        margin-top: 0px !important; 
-        margin-bottom: 0px !important; 
-        position:absolute !important; 
+        margin-top: 25px !important; 
+    }
+    
+    .placeview-topbutton{
         font-size:20px;
     }
 

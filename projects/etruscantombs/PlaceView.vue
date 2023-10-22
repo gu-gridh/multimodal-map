@@ -12,6 +12,7 @@ const { id } = defineProps<{ id: string; }>();
 const diana = inject("diana") as DianaClient;
 const images = ref<Image[]>([]);
 const plans = ref<Image[]>([]);
+
 let observations = ref<Observation[]>([]);
 let documents = ref<Document[]>([]);
 let pointcloud = ref<Pointcloud[]>([]);
@@ -96,24 +97,30 @@ function groupAndSortByYear(allItems: (Image | Observation | Document | Pointclo
     });
 }
 
-function createPlaceURL() { 
-var url = "https://diana.dh.gu.se/admin/etruscantombs/place/" + id; 
-window.location.href = url; 
+function createPlaceURL() {
+    var url = "https://diana.dh.gu.se/admin/etruscantombs/place/" + id;
+    window.open(url, "_blank");
+}
+
+function createPhotoListURL() {
+    var url = "https://diana.dh.gu.se/admin/etruscantombs/image/?q=" + id;
+    window.open(url, "_blank");
 }
 </script>
     
 <template>
     <div class="main-container">
         <div class="place-card-container">
-            <button @click="toggleLanguage">
-                <div class="p-1 px-2 clickable category-button about-button placeview-language" style="float:left;">
-                    {{ $t('languagebutton') }}</div>
-            </button>
-            <button @click="createPlaceURL()">
-                <div class="p-1 px-2 clickable category-button about-button placeview-language" style="float:left; left:80px;">
-                    {{ $t('editplace') }}</div>
-            </button>
-
+            <div class="placeview-topbutton-container">
+                <button @click="toggleLanguage">
+                    <div class="p-1 px-2 clickable category-button about-button placeview-topbutton" style="float:left;">
+                        {{ $t('languagebutton') }}</div>
+                </button>
+                <button @click="createPlaceURL()">
+                    <div class="p-1 px-2 clickable category-button about-button placeview-topbutton" style="float:left;">
+                        {{ $t('editplace') }}</div>
+                </button>
+            </div>
             <PlaceViewCard :id="id" />
 
         </div>
@@ -138,9 +145,12 @@ window.location.href = url;
                             download>
                             <div class="image-placeholder document-placeholder">
                                 <div class="document-title">{{ document.title }}</div>
-                                <p class="documentlabel">{{ $t('type') }}:</p>       <p class="documentdata theme-color-text">{{ document.type[0].text }}</p>
-                                <p class="documentlabel">{{ $t('size') }}:</p>       <p class="documentdata theme-color-text">{{ document.size }} MB</p>
-                                <p class="documentlabel">{{ $t('published') }}:</p>  <p class="documentdata theme-color-text">{{ document.date }}</p>
+                                <p class="documentlabel">{{ $t('type') }}:</p>
+                                <p class="documentdata theme-color-text">{{ document.type[0].text }}</p>
+                                <p class="documentlabel">{{ $t('size') }}:</p>
+                                <p class="documentdata theme-color-text">{{ document.size }} MB</p>
+                                <p class="documentlabel">{{ $t('published') }}:</p>
+                                <p class="documentdata theme-color-text">{{ document.date }}</p>
                             </div>
                         </a>
                     </tr>
@@ -186,7 +196,9 @@ window.location.href = url;
                         </div>
                     </tr>
                     <tr v-if="images.length > 0">
-                        <td>{{ $t('photographs') }}</td>
+
+                        <td @click="createPhotoListURL()" style="cursor:pointer;">{{ $t('photographs') }}</td>
+
                         <div v-for="(image, index) in images" :key="index" class="image-placeholder">
                             <div class="image-square" v-if="'iiif_file' in image">
                                 <router-link :to="`/detail/image/${image.id}`">
@@ -301,11 +313,11 @@ window.location.href = url;
 
 /* hides the zoom controls for the background map*/
 #app .ol-zoom-in {
-    display:none !important;
+    display: none !important;
 }
 
 #app .ol-zoom-out {
-    display:none !important;
+    display: none !important;
 }
 </style>
     
