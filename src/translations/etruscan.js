@@ -32,6 +32,7 @@ const messages = {
       sortbyyear: "Sort by: YEAR",
       size: "Size",
       published: "Published",
+      editplace: "Edit place",
     
     },
 
@@ -65,7 +66,8 @@ const messages = {
       sortbytype: "Ordina per: TIPO",
       sortbyyear: "Ordina per: ANNO",
       size: "Misura",
-      published: "Pubblicata",   
+      published: "Pubblicata",  
+      editplace: "Edit place", 
     },
 };  
 

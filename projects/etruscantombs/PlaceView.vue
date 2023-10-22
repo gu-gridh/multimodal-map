@@ -96,15 +96,24 @@ function groupAndSortByYear(allItems: (Image | Observation | Document | Pointclo
     });
 }
 
+function createPlaceURL() { 
+var url = "https://diana.dh.gu.se/admin/etruscantombs/place/" + id; 
+window.location.href = url; 
+}
 </script>
     
 <template>
     <div class="main-container">
         <div class="place-card-container">
             <button @click="toggleLanguage">
-                <div class="p-1 px-2 clickable category-button about-button placeview-language" style="">
+                <div class="p-1 px-2 clickable category-button about-button placeview-language" style="float:left;">
                     {{ $t('languagebutton') }}</div>
             </button>
+            <button @click="createPlaceURL()">
+                <div class="p-1 px-2 clickable category-button about-button placeview-language" style="float:left; left:80px;">
+                    {{ $t('editplace') }}</div>
+            </button>
+
             <PlaceViewCard :id="id" />
 
         </div>
@@ -288,6 +297,15 @@ function groupAndSortByYear(allItems: (Image | Observation | Document | Pointclo
 
 .content-table td {
     color: black;
+}
+
+/* hides the zoom controls for the background map*/
+#app .ol-zoom-in {
+    display:none !important;
+}
+
+#app .ol-zoom-out {
+    display:none !important;
 }
 </style>
     
