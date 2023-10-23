@@ -272,6 +272,7 @@ export default {
 }
 
 .item-info-meta{
+  text-transform: capitalize;
   position:absolute;
   color:white;
   bottom:0px;
