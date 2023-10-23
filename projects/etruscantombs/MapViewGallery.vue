@@ -15,6 +15,7 @@
         <div class="item-info">
             <div class="item-info-meta">
               <h1>{{ $t('tomb') }} {{ item.name }}</h1>
+              <h1> {{ item.necropolis }} necropolis</h1>
             </div>
         </div>
           <img v-if="item.published && item.iiif_file" :src="`https://img.dh.gu.se/diana/static/${item.iiif_file}/full/450,/0/default.jpg`" loading="lazy" @load="imageLoaded" />
@@ -50,6 +51,8 @@ export default {
         const newImages = data.features.map(feature => ({
                 ...feature.properties.first_photograph_id,
                 featureId: feature.id,
+                name: feature.properties.name,
+                necropolis: feature.properties.necropolis.text
               })).filter(img => img && Object.keys(img).length > 0);
         images.value = [...images.value, ...newImages];
       } catch (error) {
@@ -107,6 +110,8 @@ infScroll.on('load', async function(response) {
       const newImages = data.features.map(feature => ({
             ...feature.properties.first_photograph_id,
             featureId: feature.id,
+            name: feature.properties.name,
+            necropolis: feature.properties.necropolis.text
           })).filter(img => img !== null);        
 
       images.value = [...images.value, ...newImages];
