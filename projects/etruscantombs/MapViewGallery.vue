@@ -89,35 +89,37 @@ export default {
       elementScroll: true,
     });
 
-    infScroll.on('load', async function(response) {    
-      try {
-          // Extract the body content from the HTML response
-          let bodyContent = response.querySelector("body").textContent;
-          
-          // Convert the body content to JSON
-          const data = JSON.parse(bodyContent);
+infScroll.on('load', async function(response) {    
+  try {
+      // Extract the body content from the HTML response
+      let bodyContent = response.querySelector("body").textContent;
+      
+      // Convert the body content to JSON
+      const data = JSON.parse(bodyContent);
 
-          if (!data.features) {
-              console.error("JSON object doesn't have 'features' property");
-              return;
-          }
-          
-          const newImages = data.features.map(feature => ({
-                ...feature.properties.first_photograph_id,
-                featureId: feature.id,
-              })).filter(img => img !== null);        
-
-          images.value = [...images.value, ...newImages];
-
-          imagesLoaded(document.querySelector('.grid'), () => {
-            msnry.reloadItems();
-            msnry.layout();
-          });
-      } catch (e) {
-          console.error("JSON Parsing failed or other error: ", e);
+      // Check if the data is empty and still refresh the Masonry layout
+      if (data.next === null) {
+          console.error("No more images to load");
+          msnry.layout();
+          return;
       }
-        canIncrement = true;
-    });
+      
+      const newImages = data.features.map(feature => ({
+            ...feature.properties.first_photograph_id,
+            featureId: feature.id,
+          })).filter(img => img !== null);        
+
+      images.value = [...images.value, ...newImages];
+
+      imagesLoaded(document.querySelector('.grid'), () => {
+        msnry.reloadItems();
+        msnry.layout();
+      });
+  } catch (e) {
+      console.error("JSON Parsing failed or other error: ", e);
+  }
+    canIncrement = true;
+});
   };
 
   onMounted(() => {
@@ -165,7 +167,7 @@ export default {
   }
 
 .grid {
-  max-height: 100vh;
+  max-height: 100%;
   overflow-y: auto;
   max-width: 100%; /* Maximum width of the grid */
   margin: 0 auto; /* Top and bottom margin 0, left and right margin auto */  
