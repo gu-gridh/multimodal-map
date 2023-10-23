@@ -39,19 +39,46 @@
 </template>
 
 <script>
-import { onMounted, ref, watchEffect } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import Masonry from 'masonry-layout';
 import imagesLoaded from 'imagesloaded';
 import InfiniteScroll from 'infinite-scroll';
+import { etruscanStore } from "./store";
 
 export default {
   setup() {
     const images = ref([]);
     let msnry;
+    const store = etruscanStore();
+    let pageIndex = 1;  // Initialize pageIndex to 1
+    let canIncrement = true;  // Flag to control the increment
+
+    watch(
+      () => store.imgParams,
+      async (newParams, oldParams) => {
+        pageIndex = 1;
+
+        images.value = [];
+        
+        await fetchData(1);
+
+        // Make sure to wait until all images have loaded
+        imagesLoaded(document.querySelector('.grid'), () => {
+          msnry.reloadItems();
+          msnry.layout();
+        });
+      }
+    );
 
     const fetchData = async (pageIndex) => {
       try {
-        const res = await fetch(`https://diana.dh.gu.se/api/etruscantombs/geojson/place/?page=${pageIndex}`);
+        const params = new URLSearchParams(store.imgParams).toString();
+        
+        // Create the URL string as a separate variable
+        const urlToFetch = `https://diana.dh.gu.se/api/etruscantombs/geojson/place/?page=${pageIndex}&${params}`;
+        
+        // Fetch the data
+        const res = await fetch(urlToFetch);
         const data = await res.json();
         const newImages = data.features.map(feature => ({
                 ...feature.properties.first_photograph_id,
@@ -81,59 +108,59 @@ export default {
         percentPosition: true,
       });
 
-    let pageIndex = 1;  // Initialize pageIndex to 1
-    let canIncrement = true;  // Flag to control the increment
-
-    const infScroll = new InfiniteScroll(grid, {
-      path: () => {
+   const infScroll = new InfiniteScroll(grid, {
+    path: () => {
       if (canIncrement) {
-          pageIndex++;  // Increment pageIndex for the next set of data
-        }
-        canIncrement = false; // Disable further increments
-        return `https://diana.dh.gu.se/api/etruscantombs/geojson/place/?page=${pageIndex}`;
-      },
-      outlayer: msnry,
-      status: '.page-load-status',
-      history: false,
-      scrollThreshold: 1200,
-      elementScroll: true,
-    });
-
-infScroll.on('load', async function(response) {    
-  try {
-      // Extract the body content from the HTML response
-      let bodyContent = response.querySelector("body").textContent;
-      
-      // Convert the body content to JSON
-      const data = JSON.parse(bodyContent);
-
-      // Check if the data is empty and still refresh the Masonry layout
-      if (data.next === null) {
-          console.error("No more images to load");
-          msnry.layout();
-          return;
+        pageIndex++;  // Increment pageIndex for the next set of data
       }
-      
-      const newImages = data.features.map(feature => ({
-            ...feature.properties.first_photograph_id,
-            featureId: feature.id,
-            default_image: feature.properties.default_image ? feature.properties.default_image.iiif_file : null,
-            first_photograph_id: feature.properties.first_photograph_id ? feature.properties.first_photograph_id.iiif_file : null,
-            name: feature.properties.name,
-            necropolis: feature.properties.necropolis.text
-          })).filter(img => img !== null);        
+      canIncrement = false; // Disable further increments
+      const params = new URLSearchParams(store.imgParams).toString();
+      const url = `https://diana.dh.gu.se/api/etruscantombs/geojson/place/?page=${pageIndex}&${params}`;
 
-      images.value = [...images.value, ...newImages];
+      return url;
+    },
+    outlayer: msnry,
+    status: '.page-load-status',
+    history: false,
+    scrollThreshold: 1200,
+    elementScroll: true,
+  });
 
-      imagesLoaded(document.querySelector('.grid'), () => {
-        msnry.reloadItems();
-        msnry.layout();
-      });
-  } catch (e) {
-      console.error("JSON Parsing failed or other error: ", e);
-  }
-    canIncrement = true;
-});
+  infScroll.on('load', async function(response) {    
+    try {
+        // Extract the body content from the HTML response
+        let bodyContent = response.querySelector("body").textContent;
+        
+        // Convert the body content to JSON
+        const data = JSON.parse(bodyContent);
+
+        // Check if the data is empty and still refresh the Masonry layout
+        if (data.next === null) {
+            console.error("No more images to load");
+            msnry.layout();
+            return;
+        }
+        
+        const newImages = data.features.map(feature => ({
+              ...feature.properties.first_photograph_id,
+              featureId: feature.id,
+              default_image: feature.properties.default_image ? feature.properties.default_image.iiif_file : null,
+              first_photograph_id: feature.properties.first_photograph_id ? feature.properties.first_photograph_id.iiif_file : null,
+              name: feature.properties.name,
+              necropolis: feature.properties.necropolis.text
+            })).filter(img => img !== null);        
+
+        images.value = [...images.value, ...newImages];
+
+        imagesLoaded(document.querySelector('.grid'), () => {
+          msnry.reloadItems();
+          msnry.layout();
+        });
+    } catch (e) {
+        console.error("JSON Parsing failed or other error: ", e);
+    }
+      canIncrement = true;
+  });
   };
 
   onMounted(() => {

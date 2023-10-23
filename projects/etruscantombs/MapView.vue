@@ -20,8 +20,9 @@ import { nextTick } from "vue";
 import GeoJSON from "ol/format/GeoJSON";
 import Title from "./Title.vue"
 
-const { categories, tags, necropoli, tombType, placesLayerVisible, tagsLayerVisible, dataParams, selectedNecropolisCoordinates, enable3D } = storeToRefs(etruscanStore());
+const { categories, tags, necropoli, tombType, placesLayerVisible, tagsLayerVisible, dataParams, imgParams, selectedNecropolisCoordinates, enable3D } = storeToRefs(etruscanStore());
 const store = mapStore();
+const etruscan = etruscanStore();  // Get the instance of etruscanStore
 const { selectedFeature } = storeToRefs(store);
 const minZoom = 14;
 const maxZoom = 20;
@@ -94,8 +95,8 @@ const tagParams = computed(() => {
     `https://diana.dh.gu.se/api/etruscantombs/geojson/place/?page_size=500&${queryString}` :
     `https://diana.dh.gu.se/api/etruscantombs/geojson/place/?page_size=500`;
 
-  console.log("Generated URL:", fullUrl); // Debug line
-  
+  // console.log("Generated URL:", fullUrl); // Debug line
+  etruscan.imgParams = params;
   return params;
 });
 
