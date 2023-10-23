@@ -15,10 +15,15 @@
         <div class="item-info">
             <div class="item-info-meta">
               <h1>{{ $t('tomb') }} {{ item.name }}</h1>
-              <h1> {{ item.necropolis }} necropolis</h1>
+              <h1> {{ item.necropolis }}</h1>
             </div>
         </div>
-          <img v-if="item.published && item.iiif_file" :src="`https://img.dh.gu.se/diana/static/${item.iiif_file}/full/450,/0/default.jpg`" loading="lazy" @load="imageLoaded" />
+        <img 
+          v-if="item.published && (item.first_photograph_id || item.default_image)" 
+          :src="item.default_image ? `${item.default_image}/full/450,/0/default.jpg` : `https://img.dh.gu.se/diana/static/${item.first_photograph_id}/full/450,/0/default.jpg`" 
+          loading="lazy" 
+          @load="imageLoaded"
+        />
         </router-link>
       </div>
     </div>
@@ -51,6 +56,8 @@ export default {
         const newImages = data.features.map(feature => ({
                 ...feature.properties.first_photograph_id,
                 featureId: feature.id,
+                default_image: feature.properties.default_image ? feature.properties.default_image.iiif_file : null,
+                first_photograph_id: feature.properties.first_photograph_id ? feature.properties.first_photograph_id.iiif_file : null,
                 name: feature.properties.name,
                 necropolis: feature.properties.necropolis.text
               })).filter(img => img && Object.keys(img).length > 0);
@@ -110,6 +117,8 @@ infScroll.on('load', async function(response) {
       const newImages = data.features.map(feature => ({
             ...feature.properties.first_photograph_id,
             featureId: feature.id,
+            default_image: feature.properties.default_image ? feature.properties.default_image.iiif_file : null,
+            first_photograph_id: feature.properties.first_photograph_id ? feature.properties.first_photograph_id.iiif_file : null,
             name: feature.properties.name,
             necropolis: feature.properties.necropolis.text
           })).filter(img => img !== null);        
