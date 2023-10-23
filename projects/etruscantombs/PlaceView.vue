@@ -101,11 +101,6 @@ function createPlaceURL() {
     var url = "https://diana.dh.gu.se/admin/etruscantombs/place/" + id;
     window.open(url, "_blank");
 }
-
-function createPhotoListURL() {
-    var url = "https://diana.dh.gu.se/admin/etruscantombs/image/?q=" + id;
-    window.open(url, "_blank");
-}
 </script>
     
 <template>
@@ -197,7 +192,7 @@ function createPhotoListURL() {
                     </tr>
                     <tr v-if="images.length > 0">
 
-                        <td @click="createPhotoListURL()" style="cursor:pointer;">{{ $t('photographs') }}</td>
+                        <td><a :href="`https://diana.dh.gu.se/admin/etruscantombs/image/?q=${id}`">{{ $t('photographs') }}</a></td>
 
                         <div v-for="(image, index) in images" :key="index" class="image-placeholder">
                             <div class="image-square" v-if="'iiif_file' in image">
@@ -307,6 +302,25 @@ function createPhotoListURL() {
     backdrop-filter: blur(10px) saturate(50%) brightness(100%);
 }
 
+/* unvisited link */
+a:link {
+    font-weight:normal !important;
+}
+
+/* visited link */
+a:visited {
+  font-weight:normal !important;
+}
+
+/* mouse over link */
+a:hover {
+
+}
+
+/* selected link */
+a:active {
+
+}
 .content-table td {
     color: black;
 }
