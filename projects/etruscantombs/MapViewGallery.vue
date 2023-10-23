@@ -17,7 +17,7 @@
               <h1>{{ $t('tomb') }} {{ item.name }}</h1>
             </div>
         </div>
-        <img v-if="item.iiif_file" :src="`https://img.dh.gu.se/diana/static/${item.iiif_file}/full/450,/0/default.jpg`" loading="lazy" @load="imageLoaded" />
+          <img v-if="item.published && item.iiif_file" :src="`https://img.dh.gu.se/diana/static/${item.iiif_file}/full/450,/0/default.jpg`" loading="lazy" @load="imageLoaded" />
         </router-link>
       </div>
     </div>
