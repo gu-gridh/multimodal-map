@@ -300,9 +300,6 @@ export default {
  display:block;
 }
 
-
-
-
 .page-load-status {
   display: none; /* hidden by default */
   padding-top: 20px;
