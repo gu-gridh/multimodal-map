@@ -60,7 +60,8 @@ function toggleLanguage() {
 
 onMounted(async () => {
     if (id) {
-        images.value = await diana.listAll<Image>("image", { tomb: id, type_of_image: 2 });
+        const fetchedImages = await diana.listAll<Image>("image", { tomb: id, type_of_image: 2 });
+        images.value = fetchedImages.filter(image => image.published);
         observations.value = await diana.listAll<Observation>("observation", { place: id });
         documents.value = await diana.listAll<Document>("document", { place: id, depth: 2 });
         pointcloud.value = await diana.listAll<Pointcloud>("objectpointcloud", { tomb: id, depth: 2 });
