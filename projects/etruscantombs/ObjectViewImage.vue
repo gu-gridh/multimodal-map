@@ -58,17 +58,17 @@ const downloadImage = (fileUrl: string, fileName: string) => {
 </template>
 
 <style scoped>
+  .description ::v-deep * {
+    color: white !important;
+  }
 
-.data{
-  color:rgb(255,150,150);
-}
+  .data {
+    color: rgb(255, 150, 150);
+  }
 
-
-
-.theme-button{
-  margin-top:20px;
-  margin-bottom:10px;
-}
-
-
+  .theme-button {
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
 </style>
+
