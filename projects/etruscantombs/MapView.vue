@@ -56,7 +56,7 @@ watch(
   (newCoordinates, oldCoordinates) => {
     if (newCoordinates !== oldCoordinates && newCoordinates) {
       store.updateCenter(newCoordinates);
-      store.updateZoom(16);
+      store.updateZoom(17);
     }
   },
 );
