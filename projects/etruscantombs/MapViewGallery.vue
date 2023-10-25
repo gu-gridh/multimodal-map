@@ -52,6 +52,7 @@ export default {
     const store = etruscanStore();
     let pageIndex = 1;  // Initialize pageIndex to 1
     let canIncrement = true;  // Flag to control the increment
+    let infScroll;
 
     watch(
       () => store.imgParams,
@@ -64,8 +65,9 @@ export default {
 
         // Make sure to wait until all images have loaded
         imagesLoaded(document.querySelector('.grid'), () => {
-          msnry.reloadItems();
-          msnry.layout();
+          // msnry.reloadItems();
+          // msnry.layout();
+          reinitInfiniteScroll();
         });
       }
     );
@@ -94,7 +96,7 @@ export default {
       }
     };
 
-    const initMasonry = () => {
+  const initMasonry = () => {
       const grid = document.querySelector('.grid');
       if (!grid) {
         console.error('Grid element not found.');
@@ -108,7 +110,20 @@ export default {
         percentPosition: true,
       });
 
-   const infScroll = new InfiniteScroll(grid, {
+    const checkFor404 = async (url) => {
+      try {
+        const res = await fetch(url);
+        if (res.status === 404) {
+          msnry.layout();
+          return true; // Indicates that a 404 was found
+        }
+      } catch (error) {
+        console.error("Error in 404 fetch:", error);
+      }
+      return false; // Indicates that a 404 was not found
+    };
+
+   infScroll = new InfiniteScroll(grid, {
     path: () => {
       if (canIncrement) {
         pageIndex++;  // Increment pageIndex for the next set of data
@@ -117,8 +132,20 @@ export default {
       const params = new URLSearchParams(store.imgParams).toString();
       const url = `https://diana.dh.gu.se/api/etruscantombs/geojson/place/?page=${pageIndex}&${params}`;
 
-      return url;
-    },
+       // Use Promise syntax to handle the asynchronous 404 check
+  checkFor404(url).then(async (is404) => {
+      if (is404) {
+        // Here, first ensure all images are fully loaded
+        await new Promise((resolve) => {
+          imagesLoaded(document.querySelector('.grid'), resolve);
+        });
+        msnry.reloadItems();
+        msnry.layout();
+      }
+    });
+
+    return url;
+  },
     outlayer: msnry,
     status: '.page-load-status',
     history: false,
@@ -126,20 +153,13 @@ export default {
     elementScroll: true,
   });
 
-  infScroll.on('load', async function(response) {    
+  infScroll.on('load', async function(response)   {    
     try {
         // Extract the body content from the HTML response
         let bodyContent = response.querySelector("body").textContent;
         
         // Convert the body content to JSON
         const data = JSON.parse(bodyContent);
-
-        // Check if the data is empty and still refresh the Masonry layout
-        if (data.next === null) {
-            console.error("No more images to load");
-            msnry.layout();
-            return;
-        }
         
         const newImages = data.features.map(feature => ({
               ...feature.properties.first_photograph_id,
@@ -162,6 +182,13 @@ export default {
       canIncrement = true;
   });
   };
+
+    const reinitInfiniteScroll = () => {
+      if (infScroll) {
+        infScroll.destroy(); // Destroy the existing InfiniteScroll instance
+      }
+      initMasonry(); // Reinitialize Masonry and InfiniteScroll
+    };
 
   onMounted(() => {
   fetchData(1).then(() => {
