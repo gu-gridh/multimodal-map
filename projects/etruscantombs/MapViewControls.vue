@@ -100,7 +100,7 @@ import { transform } from 'ol/proj';
 
 const config = inject<EtruscanProject>("config");
 const dianaClient = new DianaClient("etruscantombs"); // Initialize DianaClient
-const { categories, years, tags, necropoli, tombType, dataParams, selectedNecropolisCoordinates, enable3D } = storeToRefs(etruscanStore());
+const { categories, years, tags, necropoli, tombType, dataParams, selectedNecropolisCoordinates, enable3D, enablePlans } = storeToRefs(etruscanStore());
 // Create a ref for last clicked category
 const lastClickedCategory = ref('');
 
@@ -114,7 +114,9 @@ const currentTombCount = ref(0);
 
 const CATEGORIES = {
   all: "All Data",
+  plans: "Plans",
   models: "3D models",
+  
 };
 
 const TAGS = ref<Record<string, string>>({});
@@ -172,6 +174,11 @@ const handleCategoryClick = (category: string) => {
     } else {
       enable3D.value = false;
     }
+    if (category === 'plans') {
+      enablePlans.value = !enablePlans.value;  // Toggle between true and false
+    } else {
+      enablePlans.value = false;
+    }
   } else {
     // Add the clicked category only if it's not the same as the last clicked one
     categories.value = [category];
@@ -179,6 +186,7 @@ const handleCategoryClick = (category: string) => {
     // Update last clicked category
     lastClickedCategory.value = category;
     enable3D.value = (category === 'models');
+    enablePlans.value = (category === 'plans');
   }
 };
 

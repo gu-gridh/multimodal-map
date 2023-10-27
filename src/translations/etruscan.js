@@ -13,7 +13,7 @@ const messages = {
       map: "map",
       gallery: "gallery",
       infobutton: "About the portal",
-      languagebutton: "In italiano",
+      languagebutton: "In Italiano",
       moreinfo: "More Info",
       threedmodel: "3D Model",
       threedmodels: "3D models",
