@@ -53,11 +53,13 @@ export default {
     let pageIndex = 1;  // Initialize pageIndex to 1
     let canIncrement = true;  // Flag to control the increment
     let infScroll;
+    let lastFetchedPageIndex = 0;
 
     watch(
       () => store.imgParams,
       async (newParams, oldParams) => {
         pageIndex = 1;
+        lastFetchedPageIndex = 0;
 
         images.value = [];
         
@@ -72,29 +74,32 @@ export default {
       }
     );
 
-    const fetchData = async (pageIndex) => {
-      try {
-        const params = new URLSearchParams(store.imgParams).toString();
-        
-        // Create the URL string as a separate variable
-        const urlToFetch = `https://diana.dh.gu.se/api/etruscantombs/geojson/place/?page=${pageIndex}&${params}`;
-        
-        // Fetch the data
-        const res = await fetch(urlToFetch);
-        const data = await res.json();
-        const newImages = data.features.map(feature => ({
-                ...feature.properties.first_photograph_id,
-                featureId: feature.id,
-                default_image: feature.properties.default_image ? feature.properties.default_image.iiif_file : null,
-                first_photograph_id: feature.properties.first_photograph_id ? feature.properties.first_photograph_id.iiif_file : null,
-                name: feature.properties.name,
-                necropolis: feature.properties.necropolis.text
-              })).filter(img => img && Object.keys(img).length > 0);
-        images.value = [...images.value, ...newImages];
-      } catch (error) {
-        console.error("Error fetching additional images:", error);
-      }
-    };
+
+const fetchData = async (requestedPageIndex) => {
+  if (requestedPageIndex > lastFetchedPageIndex) {
+    try {
+      const params = new URLSearchParams(store.imgParams).toString();
+      const urlToFetch = `https://diana.dh.gu.se/api/etruscantombs/geojson/place/?page=${requestedPageIndex}&${params}`;
+      
+      const res = await fetch(urlToFetch);
+      const data = await res.json();
+      const newImages = data.features.map(feature => ({
+          ...feature.properties.first_photograph_id,
+          featureId: feature.id,
+          default_image: feature.properties.default_image ? feature.properties.default_image.iiif_file : null,
+          first_photograph_id: feature.properties.first_photograph_id ? feature.properties.first_photograph_id.iiif_file : null,
+          name: feature.properties.name,
+          necropolis: feature.properties.necropolis.text
+        })).filter(img => img && Object.keys(img).length > 0);
+      
+      images.value = [...images.value, ...newImages];
+      
+      lastFetchedPageIndex = requestedPageIndex;  // Update the lastFetchedPageIndex
+    } catch (error) {
+      console.error("Error fetching additional images:", error);
+    }
+  }
+};
 
   const initMasonry = () => {
       const grid = document.querySelector('.grid');
@@ -153,32 +158,35 @@ export default {
     elementScroll: true,
   });
 
-  infScroll.on('load', async function(response)   {    
-    try {
-        // Extract the body content from the HTML response
-        let bodyContent = response.querySelector("body").textContent;
-        
-        // Convert the body content to JSON
-        const data = JSON.parse(bodyContent);
-        
-        const newImages = data.features.map(feature => ({
-              ...feature.properties.first_photograph_id,
-              featureId: feature.id,
-              default_image: feature.properties.default_image ? feature.properties.default_image.iiif_file : null,
-              first_photograph_id: feature.properties.first_photograph_id ? feature.properties.first_photograph_id.iiif_file : null,
-              name: feature.properties.name,
-              necropolis: feature.properties.necropolis.text
-            })).filter(img => img !== null);        
+  infScroll.on('load', async function(response)   {
+    if (pageIndex > lastFetchedPageIndex) {
+      try {
+          // Extract the body content from the HTML response
+          let bodyContent = response.querySelector("body").textContent;
+          
+          // Convert the body content to JSON
+          const data = JSON.parse(bodyContent);
+          
+          const newImages = data.features.map(feature => ({
+                ...feature.properties.first_photograph_id,
+                featureId: feature.id,
+                default_image: feature.properties.default_image ? feature.properties.default_image.iiif_file : null,
+                first_photograph_id: feature.properties.first_photograph_id ? feature.properties.first_photograph_id.iiif_file : null,
+                name: feature.properties.name,
+                necropolis: feature.properties.necropolis.text
+              })).filter(img => img !== null);        
 
-        images.value = [...images.value, ...newImages];
+          images.value = [...images.value, ...newImages];
 
-        imagesLoaded(document.querySelector('.grid'), () => {
-          msnry.reloadItems();
-          msnry.layout();
-        });
-    } catch (e) {
-        console.error("JSON Parsing failed or other error: ", e);
-    }
+          imagesLoaded(document.querySelector('.grid'), () => {
+            msnry.reloadItems();
+            msnry.layout();
+          });
+      }
+      catch (e) {
+          console.error("JSON Parsing failed or other error: ", e);
+      }
+    } 
       canIncrement = true;
   });
   };
