@@ -331,7 +331,6 @@ border-style:solid;
 margin-left:auto;
 margin-right:auto;
 margin-bottom:25px;
-margin-top:-15px;
 box-shadow: inset 0px 2px 2px 0 rgba(0, 0, 0, 0.2),
     0 0px 0px 0 rgba(0, 0, 0, 0.19);
 }

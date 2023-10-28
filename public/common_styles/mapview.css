@@ -274,7 +274,7 @@ body {
   }
 
   #app .left-pane-content {
-    padding: 20px 0px 20px 0px !important;
+    padding: 0px 0px 20px 0px !important;
     width: 100% !important;
     height: auto !important;
   }
