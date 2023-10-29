@@ -281,9 +281,12 @@ function createPlaceURL() {
                             <a v-else-if="isDocument(item)" :href="item.upload" target="_blank" download>
                                 <div class="image-placeholder document-placeholder">
                                     <div class="document-title">{{ item.title }}</div>
-                                    <p>Type: {{ item.type[0].text }}</p>
-                                    <p>Size: {{ item.size }} MB</p>
-                                    <p>Published: {{ item.date }}</p>
+                                <p class="documentlabel">{{ $t('type') }}:</p>
+                                <p class="documentdata theme-color-text">{{ item.type[0].text }}</p>
+                                <p class="documentlabel">{{ $t('size') }}:</p>
+                                <p class="documentdata theme-color-text">{{ item.size }} MB</p>
+                                <p class="documentlabel">{{ $t('published') }}:</p>
+                                <p class="documentdata theme-color-text">{{ item.date }}</p>
                                 </div>
                             </a>
                         </div>
