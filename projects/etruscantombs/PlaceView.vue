@@ -184,6 +184,7 @@ function createPlaceURL() {
                                 <router-link :to="`/detail/image/${image.id}`">
                                     <div class="meta-data-overlay">
                                         <div class="meta-data-overlay-text">{{ image.title }}</div>
+                                        <div class="meta-data-overlay-text">{{ image.type }}</div>
                                     </div>
                                     <img :src="`${image.iiif_file}/full/400,/0/default.jpg`" :alt="image.title"
                                         class="image-square-plan" />
@@ -200,6 +201,7 @@ function createPlaceURL() {
                                 <router-link :to="`/detail/image/${image.id}`">
                                     <div class="meta-data-overlay">
                                         <div class="meta-data-overlay-text">{{ image.title }}</div>
+                                        <div class="meta-data-overlay-text">{{ image.type }}</div>
                                     </div>
                                     <img :src="`${image.iiif_file}/full/400,/0/default.jpg`" :alt="image.title"
                                         class="image-square-inner" />
@@ -235,6 +237,7 @@ function createPlaceURL() {
                                 <router-link v-if="item.iiif_file" :to="`/detail/image/${item.id}`">
                                     <div class="meta-data-overlay">
                                         <div class="meta-data-overlay-text">{{ item.title }}</div>
+                                        <div class="meta-data-overlay-text">{{ item.type }}</div>
                                     </div>
                                     <img :src="`${item.iiif_file}/full/400,/0/default.jpg`" :alt="item.title"
                                         class="image-square-inner" />
