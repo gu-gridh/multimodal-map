@@ -14,6 +14,7 @@ import Icon from 'ol/style/Icon';
 import { mapStore } from "@/stores/store";
 import { storeToRefs } from "pinia";
 import Select from 'ol/interaction/Select';
+import { etruscanStore } from "../../projects/etruscantombs/store";
 import { pointerMove } from 'ol/events/condition';
 
 const { selectedFeature } = storeToRefs(mapStore());
@@ -22,6 +23,7 @@ let selectHover; // Select interaction for hover
 const hoveredFeature = ref(null);
 const hoverCoordinates = ref(null);
 const selectedCoordinates = ref(null);
+const { areMapPointsLoaded } = storeToRefs(etruscanStore());
 
 const props = defineProps({
   map: Object,
@@ -66,6 +68,7 @@ const fetchData = async (initialUrl, params) => {
 
     nextUrl = data.next ? data.next.replace(/^http:/, 'https:') : null;
   }
+  areMapPointsLoaded.value = true; // Set to true once all points are loaded
 };
 
 const map = inject('map');
@@ -144,6 +147,7 @@ onMounted(() => {
 watch(
   () => props.params,
   async (newParams) => {
+    areMapPointsLoaded.value = false;  // Reset before fetching new data
     const initialUrl = "https://diana.dh.gu.se/api/etruscantombs/geojson/place/";
 
     vectorSource.value.clear();
