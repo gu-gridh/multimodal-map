@@ -256,6 +256,12 @@ onMounted(() => {
   font-size:60px !important;
 }
 
+.placeview-main-title{
+
+  font-size:45px;
+
+}
+
 .placecard-full {
     margin-top:60px!important;
   }
