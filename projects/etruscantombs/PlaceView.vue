@@ -60,22 +60,21 @@ function toggleLanguage() {
 
 onMounted(async () => {
     if (id) {
-        const fetchedImages = await diana.listAll<Image>("image", { tomb: id, type_of_image: 2 });
-        images.value = fetchedImages.filter(image => image.published);
-        observations.value = await diana.listAll<Observation>("observation", { place: id });
-        documents.value = await diana.listAll<Document>("document", { place: id, depth: 2 });
-        pointcloud.value = await diana.listAll<Pointcloud>("objectpointcloud", { tomb: id, depth: 2 });
-        mesh.value = await diana.listAll<Mesh>("object3dhop", { tomb: id, depth: 2 });
+        const [fetchedImages, fetchedObservations, fetchedDocuments, fetchedPointclouds, fetchedMeshes, fetchedPlans] = await Promise.all([
+            diana.listAll<Image>("image", { tomb: id, type_of_image: 2 }),
+            diana.listAll<Observation>("observation", { place: id }),
+            diana.listAll<Document>("document", { place: id, depth: 2 }),
+            diana.listAll<Pointcloud>("objectpointcloud", { tomb: id, depth: 2 }),
+            diana.listAll<Mesh>("object3dhop", { tomb: id, depth: 2 }),
+            fetch('https://diana.dh.gu.se/api/etruscantombs/image/?tomb=' + id + '&type_of_image=1&type_of_image=5').then(res => res.json())
+        ]);
 
-        //fetch for sections and plans
-        const url = 'https://diana.dh.gu.se/api/etruscantombs/image/?tomb=' + id + '&type_of_image=1&type_of_image=5';
-        const response = await fetch(url);
-        if (response.ok) {
-            const data = await response.json();
-            plans.value = data.results;
-        } else {
-            console.error(`Failed to fetch data: ${response.statusText}`);
-        }
+        images.value = fetchedImages.filter(image => image.published);
+        observations.value = fetchedObservations;
+        documents.value = fetchedDocuments;
+        pointcloud.value = fetchedPointclouds;
+        mesh.value = fetchedMeshes;
+        plans.value = fetchedPlans.results;
 
         /* For sorting by year */
         groupAndSortByYear([...images.value, ...plans.value, ...observations.value, ...documents.value, ...pointcloud.value, ...mesh.value]);
