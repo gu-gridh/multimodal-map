@@ -61,12 +61,12 @@ function toggleLanguage() {
 onMounted(async () => {
     if (id) {
         const [fetchedImages, fetchedObservations, fetchedDocuments, fetchedPointclouds, fetchedMeshes, fetchedPlans] = await Promise.all([
-            diana.listAll<Image>("image", { tomb: id, type_of_image: 2 }),
+            diana.listAll<Image>("image", { tomb: id, type_of_image: 2, depth: 2 }),
             diana.listAll<Observation>("observation", { place: id }),
             diana.listAll<Document>("document", { place: id, depth: 2 }),
             diana.listAll<Pointcloud>("objectpointcloud", { tomb: id, depth: 2 }),
             diana.listAll<Mesh>("object3dhop", { tomb: id, depth: 2 }),
-            fetch('https://diana.dh.gu.se/api/etruscantombs/image/?tomb=' + id + '&type_of_image=1&type_of_image=5').then(res => res.json())
+            fetch('https://diana.dh.gu.se/api/etruscantombs/image/?tomb=' + id + '&type_of_image=1&type_of_image=5&depth=2').then(res => res.json())
         ]);
 
         images.value = fetchedImages.filter(image => image.published);
@@ -183,7 +183,7 @@ function createPlaceURL() {
                                 <router-link :to="`/detail/image/${image.id}`">
                                     <div class="meta-data-overlay">
                                         <div class="meta-data-overlay-text">{{ image.title }}</div>
-                                        <div class="meta-data-overlay-text">{{ image.type }}</div>
+                                        <div class="meta-data-overlay-text">  {{ image.type_of_image[0].text }}</div>
                                     </div>
                                     <img :src="`${image.iiif_file}/full/400,/0/default.jpg`" :alt="image.title"
                                         class="image-square-plan" />
@@ -200,7 +200,7 @@ function createPlaceURL() {
                                 <router-link :to="`/detail/image/${image.id}`">
                                     <div class="meta-data-overlay">
                                         <div class="meta-data-overlay-text">{{ image.title }}</div>
-                                        <div class="meta-data-overlay-text">{{ image.type }}</div>
+                                        <div class="meta-data-overlay-text">{{ image.type_of_image[0].text }}</div>
                                     </div>
                                     <img :src="`${image.iiif_file}/full/400,/0/default.jpg`" :alt="image.title"
                                         class="image-square-inner" />
@@ -236,7 +236,7 @@ function createPlaceURL() {
                                 <router-link v-if="item.iiif_file" :to="`/detail/image/${item.id}`">
                                     <div class="meta-data-overlay">
                                         <div class="meta-data-overlay-text">{{ item.title }}</div>
-                                        <div class="meta-data-overlay-text">{{ item.type }}</div>
+                                        <div class="meta-data-overlay-text">{{ item.type_of_image[0].text }}</div>
                                     </div>
                                     <img :src="`${item.iiif_file}/full/400,/0/default.jpg`" :alt="item.title"
                                         class="image-square-inner" />
