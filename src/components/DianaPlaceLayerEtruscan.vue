@@ -39,15 +39,38 @@ const props = defineProps({
   },
 });
 
+const updateFeatures = (features) => {
+  const geoJSONFormat = new GeoJSON({ featureProjection: "EPSG:3857" });
+  const transformedFeatures = geoJSONFormat.readFeatures(
+    { type: "FeatureCollection", features }
+  );
+  
+  vectorSource.value.addFeatures(transformedFeatures);
+};
+
+const fetchData = async (initialUrl, params) => {
+  let nextUrl = initialUrl;
+  let initialParams = new URLSearchParams({ page_size: 100, ...params }).toString();
+
+  if (nextUrl && initialParams) {
+    nextUrl = `${nextUrl}?${initialParams}`;
+  }
+
+  while (nextUrl) {
+    const res = await fetch(nextUrl.replace(/^http:/, 'https:'));
+    const data = await res.json();
+    const features = data.features || [];
+
+    // Update features immediately after fetching a batch
+    updateFeatures(features);
+
+    nextUrl = data.next ? data.next.replace(/^http:/, 'https:') : null;
+  }
+};
+
 const map = inject('map');
 
-const vectorSource = ref(new VectorSource({
-  url: computed(() => {
-    const params = { page_size: "500", ...props.params };
-    return DIANA_BASE + props.path + "?" + new URLSearchParams(params).toString();
-  }).value,
-  format: new GeoJSON(),
-}));
+const vectorSource = ref(new VectorSource());
 
 // Create a WebGLPointsLayer
 const webGLPointsLayer = ref(
@@ -120,20 +143,17 @@ onMounted(() => {
 
 watch(
   () => props.params,
-  (newParams) => {
-    const params = { page_size: "1000", ...newParams };
-    const newUrl = DIANA_BASE + props.path + "?" + new URLSearchParams(params).toString();
-    
-    // Debug log
-    // console.log("New URL:", newUrl);
+  async (newParams) => {
+    const initialUrl = "https://diana.dh.gu.se/api/etruscantombs/geojson/place/";
 
-    vectorSource.value.setUrl(newUrl);
-    vectorSource.value.refresh();  // Force a reload
-    
+    vectorSource.value.clear();
     clearPopups(); // Clear the popups
+
+    await fetchData(initialUrl, newParams);
   },
   { immediate: true }
 );
+
 </script>
 <template>
     <ol-overlay
