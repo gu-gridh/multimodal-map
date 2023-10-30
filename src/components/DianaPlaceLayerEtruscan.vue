@@ -50,7 +50,7 @@ const updateFeatures = (features) => {
 
 const fetchData = async (initialUrl, params) => {
   let nextUrl = initialUrl;
-  let initialParams = new URLSearchParams({ page_size: 100, ...params }).toString();
+  let initialParams = new URLSearchParams({ page_size: 75, ...params }).toString();
 
   if (nextUrl && initialParams) {
     nextUrl = `${nextUrl}?${initialParams}`;
