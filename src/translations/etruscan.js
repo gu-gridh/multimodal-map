@@ -33,6 +33,7 @@ const messages = {
       size: "Size",
       published: "Published",
       editplace: "Edit place",
+      nophoto: "No photographs available",
     
     },
 
@@ -67,7 +68,8 @@ const messages = {
       sortbyyear: "Ordina per: ANNO",
       size: "Misura",
       published: "Pubblicata",  
-      editplace: "Edit place", 
+      editplace: "Modifica posto", 
+      nophoto: "Nessuna fotografia disponibile",
     },
 };  
 

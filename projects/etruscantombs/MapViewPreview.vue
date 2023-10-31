@@ -90,7 +90,7 @@ function deselectPlace() {
 
           <!-- Render "No images available" div if hasImages is false -->
           <div v-else class="no-images">
-            No images available
+            {{ $t('nophoto') }}
           </div>
         </div>
 
