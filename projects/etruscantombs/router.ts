@@ -12,7 +12,7 @@ const router = createRouter({
       component: MapView,
     },
     {
-      path: "/place/:id",
+      path: "/place/:name",
       name: "place",
       component: PlaceView,
       props: true

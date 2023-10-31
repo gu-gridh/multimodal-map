@@ -14,6 +14,7 @@ export const etruscanStore = defineStore("etruscan", () => {
   const selectedNecropolisCoordinates = ref<[number, number] | null>(null);
   const enable3D = ref<boolean>(false);
   const areMapPointsLoaded = ref<boolean>(false);
+  const placeId = ref<string | null>(null);
 
-  return { categories, tags, tagsLayerVisible, placesLayerVisible, necropoli, tombType,  dataParams, selectedNecropolisCoordinates, enable3D, areMapPointsLoaded, imgParams };
+  return { categories, tags, tagsLayerVisible, placesLayerVisible, necropoli, tombType,  dataParams, selectedNecropolisCoordinates, enable3D, areMapPointsLoaded, imgParams, placeId };
 });

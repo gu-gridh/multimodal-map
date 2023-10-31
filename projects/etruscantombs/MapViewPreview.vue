@@ -2,15 +2,16 @@
 import { watchEffect, ref, inject } from "vue";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
+import { etruscanStore } from "./store";
 import type {
   Image,
-  ImageDeep,
-  Tomb
 } from "./types";
 import type { DianaClient } from "@/assets/diana";
 import OpenSeadragon from "@/components/OpenSeadragonSequence.vue";
 
 const { selectedFeature } = storeToRefs(mapStore());
+const { placeId } = storeToRefs(etruscanStore());
+const etruscan = etruscanStore();
 const diana = inject("diana") as DianaClient;
 const images = ref<Image[]>();
 const imageUrls = ref<string[]>([]);
@@ -27,8 +28,10 @@ const hasImages = ref<boolean>(false);
 //when a place is selected, fetch image and info
 watchEffect(async () => {
   if (selectedFeature.value) {
+    const placeName = selectedFeature.value.get("name");
     const placeId = selectedFeature.value.getId();
-    place.value = { id_: placeId };
+    etruscan.placeId = placeId;
+    place.value = { id_: placeName };
     images.value = await diana.listAll<Image>("image", { tomb: placeId, depth: 2 });
 
     // If images are available
