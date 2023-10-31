@@ -262,14 +262,20 @@ function handleSelectionClick(selectedValue, targetRef) {
 
 <style>
 .loading-svg {
-  width: 60px;
-  height: 60px;
+  width: 100%;
+  height: 200px;
   background:url("/90-ring-with-bg.svg");
-  background-size:contain;
+  background-size:60px;
+  background-repeat:no-repeat;
+  background-position:50% 50%;
   display: block;
   margin: auto;
-  margin-top: 24%;
-  margin-bottom: 25%;
+  transition: all 0.4s;
+
+}
+.loading-svg:hover {
+  height: 240px;
+  transform:scale(1.5);
 }
 
 #app .section-title {
