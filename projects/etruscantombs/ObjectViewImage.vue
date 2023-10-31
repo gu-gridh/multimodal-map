@@ -33,7 +33,7 @@ const downloadImage = (fileUrl: string, fileName: string) => {
       </div>
       <button class="theme-button download-button" @click="downloadImage(object.file, `${object.title}.tif`)">Download</button>
 
-      <div v-if="object.tomb?.name"><h2>Tomb {{ object.tomb.name }}</h2> </div>
+      <div v-if="object.tomb?.name"><h2>Description</h2> </div>
       <div class="description" v-if="object.tomb?.description" v-html="object.tomb.description"></div>
     </div>
     </ObjectViewComponent>
@@ -58,17 +58,17 @@ const downloadImage = (fileUrl: string, fileName: string) => {
 </template>
 
 <style scoped>
+  .description ::v-deep * {
+    color: white !important;
+  }
 
-.data{
-  color:rgb(255,150,150);
-}
+  .data {
+    color: rgb(255, 150, 150);
+  }
 
-
-
-.theme-button{
-  margin-top:20px;
-  margin-bottom:10px;
-}
-
-
+  .theme-button {
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
 </style>
+

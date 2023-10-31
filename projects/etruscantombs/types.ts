@@ -15,6 +15,7 @@ export type Image = {
   date: string;
   focus: number;
   tag: number[];
+  published: boolean;
   tomb: Tomb;
   type_of_image: { text: string }[];
 };

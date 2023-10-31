@@ -15,7 +15,7 @@ body {
 
 .main-title {
   white-space: pre-line;
-  font-size: 7vw;
+  font-size: 6.6vw;
   line-height: 0.7;
   width: auto;
   font-weight: 300;
@@ -99,8 +99,8 @@ body {
 
 .section-title {
   font-weight: 400;
-  font-size: 1.2vw;
-  margin-top: 15px;
+  font-size: 1.1vw;
+  margin-top: 12px;
   margin-bottom: 0px;
 }
 
@@ -273,7 +273,7 @@ body {
   }
 
   #app .left-pane-content {
-    padding: 20px 0px 20px 0px !important;
+    padding: 0px 0px 20px 0px !important;
     width: 100% !important;
     height: auto !important;
   }

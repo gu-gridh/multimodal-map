@@ -152,6 +152,7 @@ onMounted(() => {
 <style scoped>
 
 .placeview-main-title{
+  pointer-events:none;
   position:relative;
   font-family: 'Teko', sans-serif;
   color: rgb(180, 100, 100);
@@ -194,7 +195,7 @@ onMounted(() => {
 #app .place-meta-container {}
 
 .placecard-full {
-  margin-top: 60px;
+  margin-top: 80px;
   margin-left: 50px;
   color: black;
   background-color: white;
@@ -255,8 +256,14 @@ onMounted(() => {
   font-size:60px !important;
 }
 
+.placeview-main-title{
+
+  font-size:45px;
+
+}
+
 .placecard-full {
-    margin-top:40px!important;
+    margin-top:60px!important;
   }
   #app .place-meta-container {
     position: relative !important;

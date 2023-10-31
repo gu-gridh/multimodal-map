@@ -1,56 +1,63 @@
 <template>
-  <div class="section-title" style="">{{ $t('typeofdata') }}</div>
-  <CategoryButton
-    v-model="categories"
-    :categories="CATEGORIES"
-    :limit="1"
-    class="my-2"
-    @click="handleCategoryClick" 
-  />
+  <div :class="{ 'non-interactive': !areMapPointsLoaded }">
+  <div v-if="areMapPointsLoaded">
+    <div class="section-title" style="">{{ $t('typeofdata') }}</div>
+      <CategoryButton
+        v-model="categories"
+        :categories="CATEGORIES"
+        :limit="1"
+        class="my-2"
+        @click="handleCategoryClick" 
+      />
 
-  <div class="tag-section">
-    <div class="section-title">{{ $t('timeperiod') }}</div>
-    <div class="broad-controls">
-         <CategoryButtonList 
-          v-model="tags" 
-          :categories="TAGS" 
-          :limit="1" 
-          styleType="button"
-          class="my-2"
-        />
+      <div class="tag-section">
+        <div class="section-title">{{ $t('timeperiod') }}</div>
+        <div class="broad-controls">
+            <CategoryButtonList 
+              v-model="tags" 
+              :categories="TAGS" 
+              :limit="1" 
+              styleType="button"
+              class="my-2"
+            />
+        </div>
+      </div>
+
+      <div style="width:98%; float:left; display:flex; flex-direction:row; justify-content:space-between;">
+      <div class="tag-section" style="float:left;">
+        <div class="section-title">{{ $t('necropolisname') }}</div>
+        <div class="broad-controls">
+            <CategoryButtonList 
+              v-model="necropoli" 
+              :categories="NECROPOLI" 
+              :limit="1" 
+              styleType="dropdown"
+              class="my-2"
+              type="necropolis"
+              @click="handleSelectionClick($event, currentTombType)"
+            />
+        </div>
+      </div>
+
+      <div class="tag-section" style="float:left; margin-left:20px;">
+        <div class="section-title">{{ $t('tombtype') }}</div>
+        <div class="broad-controls">
+            <CategoryButtonList 
+              v-model="tombType" 
+              :categories="TOMBTYPE" 
+              :limit="1" 
+              styleType="dropdown"
+              class="my-2"
+              type="tombType"
+            />
+        </div>
+      </div>
     </div>
   </div>
 
-  <div style="width:98%; float:left; display:flex; flex-direction:row; justify-content:space-between;">
-  <div class="tag-section" style="float:left;">
-    <div class="section-title">{{ $t('necropolisname') }}</div>
-    <div class="broad-controls">
-        <CategoryButtonList 
-          v-model="necropoli" 
-          :categories="NECROPOLI" 
-          :limit="1" 
-          styleType="dropdown"
-          class="my-2"
-          type="necropolis"
-          @click="handleSelectionClick($event, currentTombType)"
-        />
-    </div>
+  <div v-else> 
+    <div alt="Loading..." class="loading-svg" />
   </div>
-
-  <div class="tag-section" style="float:left; margin-left:20px;">
-    <div class="section-title">{{ $t('tombtype') }}</div>
-    <div class="broad-controls">
-        <CategoryButtonList 
-          v-model="tombType" 
-          :categories="TOMBTYPE" 
-          :limit="1" 
-          styleType="dropdown"
-          class="my-2"
-          type="tombType"
-        />
-    </div>
-  </div>
-
 </div>
 
   <!-- Data Section -->
@@ -100,7 +107,7 @@ import { transform } from 'ol/proj';
 
 const config = inject<EtruscanProject>("config");
 const dianaClient = new DianaClient("etruscantombs"); // Initialize DianaClient
-const { categories, years, tags, necropoli, tombType, dataParams, selectedNecropolisCoordinates, enable3D } = storeToRefs(etruscanStore());
+const { categories, years, tags, necropoli, tombType, dataParams, selectedNecropolisCoordinates, enable3D, enablePlans, areMapPointsLoaded } = storeToRefs(etruscanStore());
 // Create a ref for last clicked category
 const lastClickedCategory = ref('');
 
@@ -114,7 +121,9 @@ const currentTombCount = ref(0);
 
 const CATEGORIES = {
   all: "All Data",
+  plans: "Plans",
   models: "3D models",
+  
 };
 
 const TAGS = ref<Record<string, string>>({});
@@ -172,6 +181,11 @@ const handleCategoryClick = (category: string) => {
     } else {
       enable3D.value = false;
     }
+    if (category === 'plans') {
+      enablePlans.value = !enablePlans.value;  // Toggle between true and false
+    } else {
+      enablePlans.value = false;
+    }
   } else {
     // Add the clicked category only if it's not the same as the last clicked one
     categories.value = [category];
@@ -179,6 +193,7 @@ const handleCategoryClick = (category: string) => {
     // Update last clicked category
     lastClickedCategory.value = category;
     enable3D.value = (category === 'models');
+    // enablePlans.value = (category === 'plans');
   }
 };
 
@@ -246,6 +261,23 @@ function handleSelectionClick(selectedValue, targetRef) {
 </script>
 
 <style>
+.loading-svg {
+  width: 100%;
+  height: 200px;
+  background:url("/90-ring-with-bg.svg");
+  background-size:60px;
+  background-repeat:no-repeat;
+  background-position:50% 50%;
+  display: block;
+  margin: auto;
+  transition: all 0.4s;
+
+}
+.loading-svg:hover {
+  height: 240px;
+  transform:scale(1.5);
+}
+
 #app .section-title {
   margin-top:10px;
   margin-bottom:-3px;

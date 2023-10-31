@@ -16,7 +16,7 @@ const images = ref<Image[]>();
 const imageUrls = ref<string[]>([]);
 let text = ref(false)
 let place = ref()
-const necropolisName = ref<string | null>(null);  
+const necropolisName = ref<string | null>(null);
 const chambers = ref<number | null>(null);
 const type = ref<string | null>(null);
 const period = ref<string | null>(null);
@@ -36,7 +36,7 @@ watchEffect(async () => {
         return image.type_of_image.some(tag => tag.text === 'photograph'); //Only display images that are photographs
       });
       imageUrls.value = filteredImages.map(image => `${image.iiif_file}/info.json`);
-      
+
       // Populate place details
       if (images.value[0].tomb) {
         necropolisName.value = images.value[0].tomb?.necropolis?.text || null;
@@ -85,19 +85,6 @@ function deselectPlace() {
 
         <OpenSeadragon :src="imageUrls" :key="imageUrls.join(',')" class="flex-1" />
 
-        <!-- Code to list all images -->
-        <!-- <router-link :to="`/place/${place.id_}`"
-        v-for="image in images"
-        :key="image.uuid"
-        class="clickable"
-      >
-        <div class="image-container">
-          <img
-            :src="`${image.iiif_file}/full/500,/0/default.jpg`"
-            class="image"
-          />
-        </div>
-      </router-link> -->
       </div>
 
       <div class="placecard-bottom">
@@ -126,16 +113,16 @@ function deselectPlace() {
               <div class="label">{{ $t('period') }}:</div>
               <div class="tag theme-color-text">{{ period }}</div>
             </div>
-            
+
           </div>
-          
+
         </div>
         <div class="placecard-metadata-content">
-            <div class="preview" v-html="description">
-            </div>
+          <div class="preview" v-html="description">
           </div>
+        </div>
       </div>
-      
+
       <div class="placecard-center-button">
         <router-link :to="`/place/${place?.id_}`">
           <button class="theme-button" style="margin-top:0px;">{{ $t('moreinfo') }}</button>
@@ -145,6 +132,4 @@ function deselectPlace() {
   </div>
 </template>
 
-<style>
-
-</style>
+<style></style>

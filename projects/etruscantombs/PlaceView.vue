@@ -12,6 +12,7 @@ const { id } = defineProps<{ id: string; }>();
 const diana = inject("diana") as DianaClient;
 const images = ref<Image[]>([]);
 const plans = ref<Image[]>([]);
+
 let observations = ref<Observation[]>([]);
 let documents = ref<Document[]>([]);
 let pointcloud = ref<Pointcloud[]>([]);
@@ -59,21 +60,21 @@ function toggleLanguage() {
 
 onMounted(async () => {
     if (id) {
-        images.value = await diana.listAll<Image>("image", { tomb: id, type_of_image: 2 });
-        observations.value = await diana.listAll<Observation>("observation", { place: id });
-        documents.value = await diana.listAll<Document>("document", { place: id, depth: 2 });
-        pointcloud.value = await diana.listAll<Pointcloud>("objectpointcloud", { tomb: id, depth: 2 });
-        mesh.value = await diana.listAll<Mesh>("object3dhop", { tomb: id, depth: 2 });
+        const [fetchedImages, fetchedObservations, fetchedDocuments, fetchedPointclouds, fetchedMeshes, fetchedPlans] = await Promise.all([
+            diana.listAll<Image>("image", { tomb: id, type_of_image: 2, depth: 2 }),
+            diana.listAll<Observation>("observation", { place: id }),
+            diana.listAll<Document>("document", { place: id, depth: 2 }),
+            diana.listAll<Pointcloud>("objectpointcloud", { tomb: id, depth: 2 }),
+            diana.listAll<Mesh>("object3dhop", { tomb: id, depth: 2 }),
+            fetch('https://diana.dh.gu.se/api/etruscantombs/image/?tomb=' + id + '&type_of_image=1&type_of_image=5&depth=2').then(res => res.json())
+        ]);
 
-        //fetch for sections and plans
-        const url = 'https://diana.dh.gu.se/api/etruscantombs/image/?tomb=' + id + '&type_of_image=1&type_of_image=5';
-        const response = await fetch(url);
-        if (response.ok) {
-            const data = await response.json();
-            plans.value = data.results;
-        } else {
-            console.error(`Failed to fetch data: ${response.statusText}`);
-        }
+        images.value = fetchedImages.filter(image => image.published);
+        observations.value = fetchedObservations;
+        documents.value = fetchedDocuments;
+        pointcloud.value = fetchedPointclouds;
+        mesh.value = fetchedMeshes;
+        plans.value = fetchedPlans.results;
 
         /* For sorting by year */
         groupAndSortByYear([...images.value, ...plans.value, ...observations.value, ...documents.value, ...pointcloud.value, ...mesh.value]);
@@ -96,15 +97,25 @@ function groupAndSortByYear(allItems: (Image | Observation | Document | Pointclo
     });
 }
 
+function createPlaceURL() {
+    var url = "https://diana.dh.gu.se/admin/etruscantombs/place/" + id;
+    window.open(url, "_blank");
+}
 </script>
     
 <template>
     <div class="main-container">
         <div class="place-card-container">
-            <button @click="toggleLanguage">
-                <div class="p-1 px-2 clickable category-button about-button placeview-language" style="">
-                    {{ $t('languagebutton') }}</div>
-            </button>
+            <div class="placeview-topbutton-container">
+                <button @click="toggleLanguage">
+                    <div class="p-1 px-2 clickable category-button about-button placeview-topbutton" style="float:left;">
+                        {{ $t('languagebutton') }}</div>
+                </button>
+                <button @click="createPlaceURL()">
+                    <div class="p-1 px-2 clickable category-button about-button placeview-topbutton" style="float:left;">
+                        {{ $t('editplace') }}</div>
+                </button>
+            </div>
             <PlaceViewCard :id="id" />
 
         </div>
@@ -129,9 +140,12 @@ function groupAndSortByYear(allItems: (Image | Observation | Document | Pointclo
                             download>
                             <div class="image-placeholder document-placeholder">
                                 <div class="document-title">{{ document.title }}</div>
-                                <p class="documentlabel">{{ $t('type') }}:</p>       <p class="documentdata theme-color-text">{{ document.type[0].text }}</p>
-                                <p class="documentlabel">{{ $t('size') }}:</p>       <p class="documentdata theme-color-text">{{ document.size }} MB</p>
-                                <p class="documentlabel">{{ $t('published') }}:</p>  <p class="documentdata theme-color-text">{{ document.date }}</p>
+                                <p class="documentlabel">{{ $t('type') }}:</p>
+                                <p class="documentdata theme-color-text">{{ document.type[0].text }}</p>
+                                <p class="documentlabel">{{ $t('size') }}:</p>
+                                <p class="documentdata theme-color-text">{{ document.size }} MB</p>
+                                <p class="documentlabel">{{ $t('published') }}:</p>
+                                <p class="documentdata theme-color-text">{{ document.date }}</p>
                             </div>
                         </a>
                     </tr>
@@ -169,6 +183,7 @@ function groupAndSortByYear(allItems: (Image | Observation | Document | Pointclo
                                 <router-link :to="`/detail/image/${image.id}`">
                                     <div class="meta-data-overlay">
                                         <div class="meta-data-overlay-text">{{ image.title }}</div>
+                                        <div class="meta-data-overlay-text">  {{ image.type_of_image[0].text }}</div>
                                     </div>
                                     <img :src="`${image.iiif_file}/full/400,/0/default.jpg`" :alt="image.title"
                                         class="image-square-plan" />
@@ -177,12 +192,15 @@ function groupAndSortByYear(allItems: (Image | Observation | Document | Pointclo
                         </div>
                     </tr>
                     <tr v-if="images.length > 0">
-                        <td>{{ $t('photographs') }}</td>
+
+                        <td><a :href="`https://diana.dh.gu.se/admin/etruscantombs/image/?q=${id}`">{{ $t('photographs') }}</a></td>
+
                         <div v-for="(image, index) in images" :key="index" class="image-placeholder">
                             <div class="image-square" v-if="'iiif_file' in image">
                                 <router-link :to="`/detail/image/${image.id}`">
                                     <div class="meta-data-overlay">
                                         <div class="meta-data-overlay-text">{{ image.title }}</div>
+                                        <div class="meta-data-overlay-text">{{ image.type_of_image[0].text }}</div>
                                     </div>
                                     <img :src="`${image.iiif_file}/full/400,/0/default.jpg`" :alt="image.title"
                                         class="image-square-inner" />
@@ -218,6 +236,7 @@ function groupAndSortByYear(allItems: (Image | Observation | Document | Pointclo
                                 <router-link v-if="item.iiif_file" :to="`/detail/image/${item.id}`">
                                     <div class="meta-data-overlay">
                                         <div class="meta-data-overlay-text">{{ item.title }}</div>
+                                        <div class="meta-data-overlay-text">{{ item.type_of_image[0].text }}</div>
                                     </div>
                                     <img :src="`${item.iiif_file}/full/400,/0/default.jpg`" :alt="item.title"
                                         class="image-square-inner" />
@@ -264,9 +283,12 @@ function groupAndSortByYear(allItems: (Image | Observation | Document | Pointclo
                             <a v-else-if="isDocument(item)" :href="item.upload" target="_blank" download>
                                 <div class="image-placeholder document-placeholder">
                                     <div class="document-title">{{ item.title }}</div>
-                                    <p>Type: {{ item.type[0].text }}</p>
-                                    <p>Size: {{ item.size }} MB</p>
-                                    <p>Published: {{ item.date }}</p>
+                                <p class="documentlabel">{{ $t('type') }}:</p>
+                                <p class="documentdata theme-color-text">{{ item.type[0].text }}</p>
+                                <p class="documentlabel">{{ $t('size') }}:</p>
+                                <p class="documentdata theme-color-text">{{ item.size }} MB</p>
+                                <p class="documentlabel">{{ $t('published') }}:</p>
+                                <p class="documentdata theme-color-text">{{ item.date }}</p>
                                 </div>
                             </a>
                         </div>
@@ -286,8 +308,36 @@ function groupAndSortByYear(allItems: (Image | Observation | Document | Pointclo
     backdrop-filter: blur(10px) saturate(50%) brightness(100%);
 }
 
+/* unvisited link */
+a:link {
+    font-weight:normal !important;
+}
+
+/* visited link */
+a:visited {
+  font-weight:normal !important;
+}
+
+/* mouse over link */
+a:hover {
+
+}
+
+/* selected link */
+a:active {
+
+}
 .content-table td {
     color: black;
+}
+
+/* hides the zoom controls for the background map*/
+#app .ol-zoom-in {
+    display: none !important;
+}
+
+#app .ol-zoom-out {
+    display: none !important;
 }
 </style>
     

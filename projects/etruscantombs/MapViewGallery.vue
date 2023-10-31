@@ -15,9 +15,15 @@
         <div class="item-info">
             <div class="item-info-meta">
               <h1>{{ $t('tomb') }} {{ item.name }}</h1>
+              <h1> {{ item.necropolis }}</h1>
             </div>
         </div>
-        <img v-if="item.iiif_file" :src="`https://img.dh.gu.se/diana/static/${item.iiif_file}/full/450,/0/default.jpg`" loading="lazy" @load="imageLoaded" />
+        <img 
+          v-if="item.published && (item.first_photograph_id || item.default_image)" 
+          :src="item.default_image ? `${item.default_image}/full/450,/0/default.jpg` : `https://img.dh.gu.se/diana/static/${item.first_photograph_id}/full/450,/0/default.jpg`" 
+          loading="lazy" 
+          @load="imageLoaded"
+        />
         </router-link>
       </div>
     </div>
@@ -33,31 +39,69 @@
 </template>
 
 <script>
-import { onMounted, ref, watchEffect } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import Masonry from 'masonry-layout';
 import imagesLoaded from 'imagesloaded';
 import InfiniteScroll from 'infinite-scroll';
+import { etruscanStore } from "./store";
 
 export default {
   setup() {
     const images = ref([]);
     let msnry;
+    const store = etruscanStore();
+    let pageIndex = 1;  // Initialize pageIndex to 1
+    let canIncrement = true;  // Flag to control the increment
+    let infScroll;
+    let lastFetchedPageIndex = 0;
 
-    const fetchData = async (pageIndex) => {
-      try {
-        const res = await fetch(`https://diana.dh.gu.se/api/etruscantombs/geojson/place/?page=${pageIndex}`);
-        const data = await res.json();
-        const newImages = data.features.map(feature => ({
-                ...feature.properties.first_photograph_id,
-                featureId: feature.id,
-              })).filter(img => img && Object.keys(img).length > 0);
-        images.value = [...images.value, ...newImages];
-      } catch (error) {
-        console.error("Error fetching additional images:", error);
+    watch(
+      () => store.imgParams,
+      async (newParams, oldParams) => {
+        pageIndex = 1;
+        lastFetchedPageIndex = 0;
+
+        images.value = [];
+        
+        await fetchData(1);
+
+        // Make sure to wait until all images have loaded
+        imagesLoaded(document.querySelector('.grid'), () => {
+          // msnry.reloadItems();
+          // msnry.layout();
+          reinitInfiniteScroll();
+        });
       }
-    };
+    );
 
-    const initMasonry = () => {
+
+const fetchData = async (requestedPageIndex) => {
+  if (requestedPageIndex > lastFetchedPageIndex) {
+    try {
+      const params = new URLSearchParams(store.imgParams).toString();
+      const urlToFetch = `https://diana.dh.gu.se/api/etruscantombs/geojson/place/?page=${requestedPageIndex}&${params}`;
+      
+      const res = await fetch(urlToFetch);
+      const data = await res.json();
+      const newImages = data.features.map(feature => ({
+          ...feature.properties.first_photograph_id,
+          featureId: feature.id,
+          default_image: feature.properties.default_image ? feature.properties.default_image.iiif_file : null,
+          first_photograph_id: feature.properties.first_photograph_id ? feature.properties.first_photograph_id.iiif_file : null,
+          name: feature.properties.name,
+          necropolis: feature.properties.necropolis.text
+        })).filter(img => img && (img.default_image || img.first_photograph_id));
+      
+      images.value = [...images.value, ...newImages];
+      
+      lastFetchedPageIndex = requestedPageIndex;  // Update the lastFetchedPageIndex
+    } catch (error) {
+      console.error("Error fetching additional images:", error);
+    }
+  }
+};
+
+  const initMasonry = () => {
       const grid = document.querySelector('.grid');
       if (!grid) {
         console.error('Grid element not found.');
@@ -71,40 +115,65 @@ export default {
         percentPosition: true,
       });
 
-    let pageIndex = 1;  // Initialize pageIndex to 1
-    let canIncrement = true;  // Flag to control the increment
-
-    const infScroll = new InfiniteScroll(grid, {
-      path: () => {
-      if (canIncrement) {
-          pageIndex++;  // Increment pageIndex for the next set of data
+    const checkFor404 = async (url) => {
+      try {
+        const res = await fetch(url);
+        if (res.status === 404) {
+          msnry.layout();
+          return true; // Indicates that a 404 was found
         }
-        canIncrement = false; // Disable further increments
-        return `https://diana.dh.gu.se/api/etruscantombs/geojson/place/?page=${pageIndex}`;
-      },
-      outlayer: msnry,
-      status: '.page-load-status',
-      history: false,
-      scrollThreshold: 1200,
-      elementScroll: true,
+      } catch (error) {
+        console.error("Error in 404 fetch:", error);
+      }
+      return false; // Indicates that a 404 was not found
+    };
+
+   infScroll = new InfiniteScroll(grid, {
+    path: () => {
+      if (canIncrement) {
+        pageIndex++;  // Increment pageIndex for the next set of data
+      }
+      canIncrement = false; // Disable further increments
+      const params = new URLSearchParams(store.imgParams).toString();
+      const url = `https://diana.dh.gu.se/api/etruscantombs/geojson/place/?page=${pageIndex}&${params}`;
+
+       // Use Promise syntax to handle the asynchronous 404 check
+  checkFor404(url).then(async (is404) => {
+      if (is404) {
+        // Here, first ensure all images are fully loaded
+        await new Promise((resolve) => {
+          imagesLoaded(document.querySelector('.grid'), resolve);
+        });
+        msnry.reloadItems();
+        msnry.layout();
+      }
     });
 
-    infScroll.on('load', async function(response) {    
+    return url;
+  },
+    outlayer: msnry,
+    status: '.page-load-status',
+    history: false,
+    scrollThreshold: 1200,
+    elementScroll: true,
+  });
+
+  infScroll.on('load', async function(response)   {
+    if (pageIndex > lastFetchedPageIndex) {
       try {
           // Extract the body content from the HTML response
           let bodyContent = response.querySelector("body").textContent;
           
           // Convert the body content to JSON
           const data = JSON.parse(bodyContent);
-
-          if (!data.features) {
-              console.error("JSON object doesn't have 'features' property");
-              return;
-          }
           
           const newImages = data.features.map(feature => ({
                 ...feature.properties.first_photograph_id,
                 featureId: feature.id,
+                default_image: feature.properties.default_image ? feature.properties.default_image.iiif_file : null,
+                first_photograph_id: feature.properties.first_photograph_id ? feature.properties.first_photograph_id.iiif_file : null,
+                name: feature.properties.name,
+                necropolis: feature.properties.necropolis.text
               })).filter(img => img !== null);        
 
           images.value = [...images.value, ...newImages];
@@ -113,12 +182,21 @@ export default {
             msnry.reloadItems();
             msnry.layout();
           });
-      } catch (e) {
+      }
+      catch (e) {
           console.error("JSON Parsing failed or other error: ", e);
       }
-        canIncrement = true;
-    });
+    } 
+      canIncrement = true;
+  });
   };
+
+    const reinitInfiniteScroll = () => {
+      if (infScroll) {
+        infScroll.destroy(); // Destroy the existing InfiniteScroll instance
+      }
+      initMasonry(); // Reinitialize Masonry and InfiniteScroll
+    };
 
   onMounted(() => {
   fetchData(1).then(() => {
@@ -165,7 +243,7 @@ export default {
   }
 
 .grid {
-  max-height: 100vh;
+  max-height: 100%;
   overflow-y: auto;
   max-width: 100%; /* Maximum width of the grid */
   margin: 0 auto; /* Top and bottom margin 0, left and right margin auto */  
@@ -229,6 +307,7 @@ export default {
 }
 
 .item-info-meta{
+  text-transform: capitalize;
   position:absolute;
   color:white;
   bottom:0px;
@@ -255,9 +334,6 @@ export default {
 .grid__item:hover .item-info-meta{
  display:block;
 }
-
-
-
 
 .page-load-status {
   display: none; /* hidden by default */

@@ -5,11 +5,17 @@
 
 
 /* Main */
-.placeview-language{
+.placeview-topbutton-container{
     margin-left: 95px !important; 
-    margin-top: 15px !important; 
+    margin-top: 40px !important; 
     margin-bottom: 0px !important; 
     position:absolute !important; 
+    z-index:1000;
+}
+
+.placeview-topbutton{
+  float:left;
+  margin-right:10px;
 }
 
 table p {
@@ -114,7 +120,7 @@ table td {
 
 .document-placeholder {
     font-size: 16px;
-    width: auto;
+    width: 420px;
     max-width: 416px;
     height: 60px;
     background-image: url("/file.png");
@@ -128,12 +134,14 @@ table td {
 .document-placeholder .documentlabel {
     line-height: 1.0;
     display: inline;
+    margin-right: 3px;
 }
 
 .document-placeholder .documentdata {
     line-height: 1.0;
     display: inline;
     margin-right: 20px;
+
 }
 
 .document-title {
@@ -258,15 +266,6 @@ table td {
     opacity: 1.0;
 }
 
-/* hides the zoom controls for the background map*/
-#app .ol-zoom-in {
-    display:none !important;
-}
-
-#app .ol-zoom-out {
-    display:none !important;
-}
-
 @media screen and (max-width: 1300px) {
 
     .placecard-full-content .placecard-metadata-content {
@@ -282,13 +281,22 @@ table td {
     }
 }
 
+@media screen and (max-width: 1100px) {
+
+    .document-placeholder {
+        width: 100% !important;
+    }
+}
+
 
 @media screen and (max-width: 900px) {
-    .placeview-language{
+
+    .placeview-topbutton-container{
         margin-left: 95px !important; 
-        margin-top: 0px !important; 
-        margin-bottom: 0px !important; 
-        position:absolute !important; 
+        margin-top: 25px !important; 
+    }
+    
+    .placeview-topbutton{
         font-size:20px;
     }
 
@@ -358,9 +366,6 @@ table td {
 
     @media screen and (max-width: 400px) {
 
-        .document-placeholder {
-            width: 100% !important;
-        }
 
         .document-title {
             margin-top: 5px;
