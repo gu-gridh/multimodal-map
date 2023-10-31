@@ -56,7 +56,7 @@
   </div>
 
   <div v-else> 
-    <img src="/90-ring-with-bg.svg" alt="Loading..." class="loading-svg" />
+    <div alt="Loading..." class="loading-svg" />
   </div>
 </div>
 
@@ -262,12 +262,14 @@ function handleSelectionClick(selectedValue, targetRef) {
 
 <style>
 .loading-svg {
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
+  background:url("/90-ring-with-bg.svg");
+  background-size:contain;
   display: block;
   margin: auto;
-  margin-top: 5%;
-  margin-bottom: 5%;
+  margin-top: 24%;
+  margin-bottom: 25%;
 }
 
 #app .section-title {
