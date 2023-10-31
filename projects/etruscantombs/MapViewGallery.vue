@@ -90,7 +90,7 @@ const fetchData = async (requestedPageIndex) => {
           first_photograph_id: feature.properties.first_photograph_id ? feature.properties.first_photograph_id.iiif_file : null,
           name: feature.properties.name,
           necropolis: feature.properties.necropolis.text
-        })).filter(img => img && Object.keys(img).length > 0);
+        })).filter(img => img && (img.default_image || img.first_photograph_id));
       
       images.value = [...images.value, ...newImages];
       
