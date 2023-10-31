@@ -1,12 +1,12 @@
 <template>
   <div id="gallery-container">
-    <div class="grid">
-      <div class="grid__col-sizer"></div>
-      <div class="grid__gutter-sizer"></div>
+    <div class="gallery">
+      <div class="gallery__col-sizer"></div>
+      <div class="gallery__gutter-sizer"></div>
       <div
         v-for="item in images"
         :key="item.uuid"
-        class="grid__item"
+        class="gallery__item"
       >
       
         <router-link
@@ -66,7 +66,7 @@ export default {
         await fetchData(1);
 
         // Make sure to wait until all images have loaded
-        imagesLoaded(document.querySelector('.grid'), () => {
+        imagesLoaded(document.querySelector('.gallery'), () => {
           // msnry.reloadItems();
           // msnry.layout();
           reinitInfiniteScroll();
@@ -102,16 +102,16 @@ const fetchData = async (requestedPageIndex) => {
 };
 
   const initMasonry = () => {
-      const grid = document.querySelector('.grid');
-      if (!grid) {
-        console.error('Grid element not found.');
+      const gallery = document.querySelector('.gallery');
+      if (!gallery) {
+        console.error('gallery element not found.');
         return;
       }
 
-      msnry = new Masonry(grid, {
-        itemSelector: '.grid__item',
-        columnWidth: '.grid__col-sizer',
-        gutter: '.grid__gutter-sizer',
+      msnry = new Masonry(gallery, {
+        itemSelector: '.gallery__item',
+        columnWidth: '.gallery__col-sizer',
+        gutter: '.gallery__gutter-sizer',
         percentPosition: true,
       });
 
@@ -128,7 +128,7 @@ const fetchData = async (requestedPageIndex) => {
       return false; // Indicates that a 404 was not found
     };
 
-   infScroll = new InfiniteScroll(grid, {
+   infScroll = new InfiniteScroll(gallery, {
     path: () => {
       if (canIncrement) {
         pageIndex++;  // Increment pageIndex for the next set of data
@@ -142,7 +142,7 @@ const fetchData = async (requestedPageIndex) => {
       if (is404) {
         // Here, first ensure all images are fully loaded
         await new Promise((resolve) => {
-          imagesLoaded(document.querySelector('.grid'), resolve);
+          imagesLoaded(document.querySelector('.gallery'), resolve);
         });
         msnry.reloadItems();
         msnry.layout();
@@ -178,7 +178,7 @@ const fetchData = async (requestedPageIndex) => {
 
           images.value = [...images.value, ...newImages];
 
-          imagesLoaded(document.querySelector('.grid'), () => {
+          imagesLoaded(document.querySelector('.gallery'), () => {
             msnry.reloadItems();
             msnry.layout();
           });
@@ -200,7 +200,7 @@ const fetchData = async (requestedPageIndex) => {
 
   onMounted(() => {
   fetchData(1).then(() => {
-    imagesLoaded(document.querySelector('.grid'), () => {
+    imagesLoaded(document.querySelector('.gallery'), () => {
       initMasonry();
 
       // After the initial Masonry initialization, reload and layout again
@@ -242,36 +242,36 @@ const fetchData = async (requestedPageIndex) => {
 }
   }
 
-.grid {
+.gallery {
   max-height: 100%;
   overflow-y: auto;
-  max-width: 100%; /* Maximum width of the grid */
+  max-width: 100%; /* Maximum width of the gallery */
   margin: 0 auto; /* Top and bottom margin 0, left and right margin auto */  
 }
 
-.grid::-webkit-scrollbar {
+.gallery::-webkit-scrollbar {
   display: none;
 }
 
-/* reveal grid after images loaded */
-.grid.are-images-unloaded {
+/* reveal gallery after images loaded */
+.gallery.are-images-unloaded {
   opacity: 0;
 }
 
-.grid__item,
-.grid__col-sizer {
+.gallery__item,
+.gallery__col-sizer {
   width: calc(25% - 10px);
 }
-.grid__gutter-sizer { width: 10px;}
+.gallery__gutter-sizer { width: 10px;}
 
 @media screen and (max-width: 1500px) {
-  .grid__item, .grid__col-sizer {
+  .gallery__item, .gallery__col-sizer {
     width: calc(33% - 8px);
   }
 }
 
 @media screen and (max-width: 900px) {
-  .grid__item, .grid__col-sizer {
+  .gallery__item, .gallery__col-sizer {
     width: calc(50% - 8px);
 }
   }
@@ -279,21 +279,21 @@ const fetchData = async (requestedPageIndex) => {
 
 
 /* hide by default */
-.grid.are-images-unloaded .image-grid__item {
+.gallery.are-images-unloaded .image-gallery__item {
   opacity: 0;
 }
 
-.grid__item {
+.gallery__item {
   margin-bottom: 10px;
   float: left;
   overflow:hidden !important;
 }
 
-.grid__item--height1 { height: 140px; background: #EA0; }
-.grid__item--height2 { height: 220px; background: #C25; }
-.grid__item--height3 { height: 300px; background: #19F; }
+.gallery__item--height1 { height: 140px; background: #EA0; }
+.gallery__item--height2 { height: 220px; background: #C25; }
+.gallery__item--height3 { height: 300px; background: #19F; }
 
-.grid__item--width2 { width: 66%; }
+.gallery__item--width2 { width: 66%; }
 
 .item-info{
   pointer-events:none;
@@ -315,23 +315,23 @@ const fetchData = async (requestedPageIndex) => {
   display:none;
 }
 
-.grid__item img {
+.gallery__item img {
   display: block;
   max-width: 100%;
   transition: all 0.2s ease-in-out;
 }
 
 
-.grid__item img:hover {
+.gallery__item img:hover {
   display: block;
   transform:scale(1.05);
 }
 
-.grid__item:hover .item-info{
+.gallery__item:hover .item-info{
   background: linear-gradient(0deg, rgba(0, 0, 0, 0.7) 0px, rgba(0, 0, 0, 0)50%) !important;
 }
 
-.grid__item:hover .item-info-meta{
+.gallery__item:hover .item-info-meta{
  display:block;
 }
 
