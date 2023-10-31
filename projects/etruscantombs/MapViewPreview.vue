@@ -22,6 +22,7 @@ const type = ref<string | null>(null);
 const period = ref<string | null>(null);
 const subtitle = ref<string | null>(null);
 const description = ref<string | null>(null);
+const hasImages = ref<boolean>(false);
 
 //when a place is selected, fetch image and info
 watchEffect(async () => {
@@ -32,6 +33,7 @@ watchEffect(async () => {
 
     // If images are available
     if (images.value.length > 0) {
+      hasImages.value = true;
       const filteredImages = images.value.filter(image => {
         return image.type_of_image.some(tag => tag.text === 'photograph'); //Only display images that are photographs
       });
@@ -47,6 +49,7 @@ watchEffect(async () => {
         description.value = images.value[0].tomb.description || null;
       }
     } else {
+      hasImages.value = false;
       imageUrls.value = [];
       // If no images are available, fetch details from `geojson/place` endpoint
       const response = await fetch(`https://diana.dh.gu.se/api/etruscantombs/geojson/place/?id=${placeId}`);
@@ -81,11 +84,15 @@ function deselectPlace() {
   <div v-if="selectedFeature" class="mapview-preview">
     <div class="placecard">
       <div class="close-card-button" @click="deselectPlace">+</div>
-      <div class="placecard-top">
+        <div class="placecard-top">
+          <!-- Render OpenSeadragon viewer only if hasImages is true -->
+          <OpenSeadragon v-if="hasImages" :src="imageUrls" :key="imageUrls.join(',')" class="flex-1" />
 
-        <OpenSeadragon :src="imageUrls" :key="imageUrls.join(',')" class="flex-1" />
-
-      </div>
+          <!-- Render "No images available" div if hasImages is false -->
+          <div v-else class="no-images">
+            No images available
+          </div>
+        </div>
 
       <div class="placecard-bottom">
         <div class="placecard-text">
@@ -132,4 +139,5 @@ function deselectPlace() {
   </div>
 </template>
 
-<style></style>
+<style>
+</style>
