@@ -212,7 +212,7 @@ function createPlaceURL() {
                     </tr>
                     <tr v-if="images.length > 0">
 
-                        <td><a :href="`https://diana.dh.gu.se/admin/etruscantombs/image/?q=${id}`">{{ $t('photographs') }}</a></td>
+                        <td><a :href="`https://diana.dh.gu.se/admin/etruscantombs/image/?q=${route.params.name}`">{{ $t('photographs') }}</a></td>
 
                         <div v-for="(image, index) in images" :key="index" class="image-placeholder">
                             <div class="image-square" v-if="'iiif_file' in image">
