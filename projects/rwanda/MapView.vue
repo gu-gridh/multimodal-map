@@ -31,7 +31,7 @@ const visibleAbout = ref(false);
 
 const store = mapStore();
 const { params } = storeToRefs(store);
-const { periodsLayer, periods, sources, informants, sourcesLayer, placeTypeLayer, placeTypes, allLayer, informantsLayer, coordinate } = storeToRefs(rwandaStore());
+const { periodsLayer, periods, sources, informants, sourcesLayer, placeTypeLayer, placeTypes, allLayer, informantsLayer, coordinate, languagesLayer, languages } = storeToRefs(rwandaStore());
 const { selectedFeature } = storeToRefs(store);
 
 //MapViewControls
@@ -151,7 +151,19 @@ watch(
             </ol-style>
               <FeatureSelection/>
             </DianaPlaceLayer>  
-            <!-- TODO Lamguage layer -->
+            <!-- Language layer -->
+            <DianaPlaceLayer 
+            v-if="languagesLayer"
+            path="rwanda/search/language/"
+            :params = "{
+              text: languages[0],
+            }"
+            >
+            <ol-style>
+              <ol-style-stroke color="#64b4b4" :width="3"></ol-style-stroke>
+            </ol-style>
+              <FeatureSelection/>
+            </DianaPlaceLayer>  
             <!-- Initial layer -->
           <DianaPlaceLayer
             v-if="allLayer"

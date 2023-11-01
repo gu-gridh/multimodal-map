@@ -13,8 +13,9 @@ export const rwandaStore = defineStore("rwanda", () => {
     const placeTypeLayer = ref(false)
     const informantsLayer = ref(false)
     const allLayer = ref(true)
+    const languagesLayer = ref(false)
 
     const coordinate = ref()
 
-    return {languages, sources, placeTypes, informants, periods, /* allSources, allPlaceTypes, allInformants, allPeriods,  */periodsLayer, placeTypeLayer, sourcesLayer, allLayer, informantsLayer, coordinate}
+    return {languages, sources, placeTypes, informants, periods, /* allSources, allPlaceTypes, allInformants, allPeriods,  */periodsLayer, placeTypeLayer, sourcesLayer, allLayer, informantsLayer, coordinate, languagesLayer}
 })
