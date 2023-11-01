@@ -20,7 +20,7 @@ import { nextTick } from "vue";
 import GeoJSON from "ol/format/GeoJSON";
 import Title from "./Title.vue"
 
-const { categories, tags, necropoli, tombType, placesLayerVisible, tagsLayerVisible, dataParams, imgParams, selectedNecropolisCoordinates, enable3D } = storeToRefs(etruscanStore());
+const { categories, tags, necropoli, tombType, tagsLayerVisible, dataParams, imgParams, selectedNecropolisCoordinates, enable3D } = storeToRefs(etruscanStore());
 const store = mapStore();
 const etruscan = etruscanStore();  // Get the instance of etruscanStore
 const { selectedFeature } = storeToRefs(store);
@@ -162,9 +162,7 @@ watch(showGallery, (newValue) => {
           :min-zoom=minZoom
           :max-zoom=maxZoom 
           :restrictExtent="[11.9, 42.15, 12.2, 42.4]"    
-          :key="showGallery.toString()"
         > 
-                  
           <template #layers>
             <GeoJsonWebGLRenderer
               :externalUrl="'https://data.dh.gu.se/geography/SGElevationMain.geojson'"
@@ -186,7 +184,7 @@ watch(showGallery, (newValue) => {
               }"
             >
             </GeoJsonWebGLRenderer>
-            <DianaPlaceLayer v-if="placesLayerVisible" path="etruscantombs/geojson/place/" :params="tagParams" :zIndex=20>
+            <DianaPlaceLayer path="etruscantombs/geojson/place/" :params="tagParams" :zIndex=20>
             </DianaPlaceLayer>
           </template>
           

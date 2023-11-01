@@ -255,7 +255,7 @@ function handleSelectionClick(selectedValue, targetRef) {
     // Update the selectedNecropolisCoordinates in the store
     selectedNecropolisCoordinates.value = webMercatorCoordinates;
   } else {
-    console.log("Coordinates for selected necropolis not found");
+    // console.log("Coordinates for selected necropolis not found");
   }
 }
 </script>
