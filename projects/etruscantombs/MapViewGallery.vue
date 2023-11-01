@@ -10,7 +10,8 @@
       >
       
         <router-link
-          :to="`/place/${item.featureId}`"
+          :to="`/place/${item.name}`"
+          @click="updatePlaceId(item)"
         >
         <div class="item-info">
             <div class="item-info-meta">
@@ -74,6 +75,9 @@ export default {
       }
     );
 
+const updatePlaceId = (item) => {
+      store.placeId = item.featureId;
+};
 
 const fetchData = async (requestedPageIndex) => {
   if (requestedPageIndex > lastFetchedPageIndex) {
@@ -213,6 +217,7 @@ const fetchData = async (requestedPageIndex) => {
 
   return {
       images,
+      updatePlaceId
     };
   },
 };
