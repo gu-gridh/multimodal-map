@@ -3,11 +3,8 @@ import { mapStore } from "@/stores/store";
 import { storeToRefs } from "pinia";
 import { rwandaStore } from "./rwandaStore";
 import { useRwandaMap } from "./map.composable";
-import type { Place } from "./types";
-import { ref, watch } from "vue";
-import { watchEffect } from "vue";
 import CategoryButtonList from "@/components/input/CategoryButtonList.vue";
-import CategoryButton from "@/components/input/CategoryButton.vue";
+import ButtonList from "./input/ButtonList.vue";
 
 //Filtering map controls
 const SOURCES = {
@@ -117,7 +114,7 @@ const handleInformantClick = (key: string) => {
         @click="handleInformantClick"
       />
       <div class="filter-heading">Languages</div>
-      <CategoryButtonList 
+      <ButtonList 
         v-model="languages"
         :categories="LANGUAGES"
         :limit="1"
