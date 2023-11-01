@@ -29,13 +29,13 @@ const PERIODS = {
   "after 2012": "After 2012"
 }
 const LANGUAGES = {
-  "kinyarwanda-english": "KE",
-  "arabic-english": "AE",
-  "french-kinyarwanda": "FK",
+  "Kinyarwanda-English": "KE",
+  "Arabic-English": "AE",
+  "French-Kinyarwanda": "FK",
   "Kiswahili": "SW",
-  "kinyarwanda": "RW",
-  "french": "FR",
-  "english": "EN",
+  "Kinyarwanda": "RW",
+  "French": "FR",
+  "English": "EN",
 }
 const { sources, placeTypes, periods, informants, sourcesLayer, placeTypeLayer, periodsLayer, allLayer, informantsLayer, languages, languagesLayer } = storeToRefs(rwandaStore());
 

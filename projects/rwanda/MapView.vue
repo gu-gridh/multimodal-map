@@ -156,11 +156,11 @@ watch(
             v-if="languagesLayer"
             path="rwanda/search/language/"
             :params = "{
-              text: languages[0],
+              name: languages[0],
             }"
             >
             <ol-style>
-              <ol-style-stroke color="#64b4b4" :width="3"></ol-style-stroke>
+              <ol-style-stroke color="#b464b4" :width="3"></ol-style-stroke>
             </ol-style>
               <FeatureSelection/>
             </DianaPlaceLayer>  
