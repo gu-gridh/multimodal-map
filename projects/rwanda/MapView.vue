@@ -40,14 +40,6 @@ function displayName(p: Place): string {
   return formatNames(p.id, p.names);
 }
 
-//when selectedFeature changes, draw geometry on map - TODO
-const drawGeometry = () => {
-  if (selectedFeature.value) {
-    coordinate.value = selectedFeature.value.getGeometry();
-    console.log(coordinate.value)    
-  }
-}
-
 //zoom to place on click
 const featureZoom = 17; // zoom level when clicking on a feature
 

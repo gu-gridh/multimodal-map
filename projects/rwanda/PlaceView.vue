@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, inject, watch, onMounted } from "vue";
+import { ref, inject, watch, onMounted, nextTick } from "vue";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
 import type { Image } from "./types";
@@ -105,7 +105,10 @@ const zoomMap = () => {
         store.updateCenter(fromLonLat(coordinates.value))
         store. updateZoom(featureZoom)
     }
-    else console.log("not found")
+    else {
+      store.updateCenter([3346522.1909503858, -217337.69352852934])
+      store.updateZoom(15)
+    }
 }
 //fetch place data
 const fetchPlaceData =async () => {
