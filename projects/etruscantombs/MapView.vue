@@ -20,7 +20,7 @@ import { nextTick } from "vue";
 import GeoJSON from "ol/format/GeoJSON";
 import Title from "./Title.vue"
 
-const { categories, tags, necropoli, tombType, tagsLayerVisible, dataParams, imgParams, selectedNecropolisCoordinates, enable3D } = storeToRefs(etruscanStore());
+const { categories, tags, necropoli, tombType, tagsLayerVisible, dataParams, imgParams, selectedNecropolisCoordinates, enable3D, enablePlan } = storeToRefs(etruscanStore());
 const store = mapStore();
 const etruscan = etruscanStore();  // Get the instance of etruscanStore
 const { selectedFeature } = storeToRefs(store);
@@ -85,6 +85,14 @@ const tagParams = computed(() => {
     params['with_3D'] = 'true';
   } else {
     delete params['with_3D'];
+  }
+
+
+  //filter for just 3D points
+  if (enablePlan.value) {
+    params['with_plan'] = 'true';
+  } else {
+    delete params['with_plan'];
   }
 
   // Convert the params object to a URL search string
