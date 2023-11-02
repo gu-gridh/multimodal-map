@@ -4,8 +4,8 @@
         v-for="(label, key) in categories"
         :key="key"
         :text="label"
-        :value="!!modelValue.includes(key)"
-        @toggle="toggle(key)"
+        :value="!!modelValue.includes(label)"
+        @toggle="toggle(label)"
         :hover="key"
       />
     </div>

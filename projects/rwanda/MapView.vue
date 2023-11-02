@@ -148,7 +148,7 @@ watch(
             v-if="languagesLayer"
             path="rwanda/search/language/"
             :params = "{
-              name: languages[0],
+              q: languages[0],
             }"
             >
             <ol-style>

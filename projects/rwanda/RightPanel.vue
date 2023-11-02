@@ -36,7 +36,9 @@ watchEffect(async () => {
     <div v-if="route.params.placeId" class="right-panel">
         <PlaceView :id="props.placeId || ''" />
     </div>
-    <div v-else class="right-panel-initial"></div>
+    <div v-else class="right-panel-initial">
+        Add some text and image here to show when no place is selected
+    </div>
 </router-view>
 </template>
 
@@ -45,7 +47,7 @@ watchEffect(async () => {
     height:100%;
     background-color:transparent!important;
 }
-.right-panel-inititial {
+.right-panel-initial {
     height:calc(100vh - 80px);
     display: flex;
     color: white !important;

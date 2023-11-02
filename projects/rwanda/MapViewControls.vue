@@ -89,7 +89,7 @@ const handleInformantClick = (key: string) => {
   allLayer.value = false
 }
 
-const handleLanguageClick = (key: string, label: string) => {
+const handleLanguageClick = (key: string) => {
   console.log("Clicked: ", key);
   languagesLayer.value = true
   informantsLayer.value = false
