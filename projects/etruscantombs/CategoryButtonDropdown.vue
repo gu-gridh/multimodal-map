@@ -9,7 +9,7 @@
     />
   </div>
   <select v-else :value="modelValue[0]" class="dropdown" @change="dropdownToggle($event)">
-    <option value="all">all</option>
+    <option value="all">All</option>
     <option 
       v-for="(label, key) in categories"
       :key="key"
@@ -91,7 +91,7 @@ function handleToggle(key: string) {
     background-repeat: no-repeat;
     background-position: calc(100% - 10px) 10px;
     -webkit-appearance: none;
-    text-transform: capitalize;
+    /* text-transform: capitalize; */
   
 }
 

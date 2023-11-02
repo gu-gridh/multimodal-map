@@ -312,7 +312,7 @@ const fetchData = async (requestedPageIndex) => {
 }
 
 .item-info-meta{
-  text-transform: capitalize;
+  /* text-transform: capitalize; */
   position:absolute;
   color:white;
   bottom:0px;

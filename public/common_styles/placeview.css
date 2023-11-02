@@ -74,7 +74,7 @@ table td {
     background-repeat: no-repeat;
     background-position: calc(100% - 10px) 10px;
     -webkit-appearance: none;
-    text-transform: capitalize;
+    /* text-transform: capitalize; */
     margin-left: 130px;
     margin-bottom:15px;
 }

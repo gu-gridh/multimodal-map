@@ -26,7 +26,7 @@ const etruscan = etruscanStore();  // Get the instance of etruscanStore
 const { selectedFeature } = storeToRefs(store);
 const minZoom = 10;
 const maxZoom = 20;
-const featureZoom = 16; //value between minZoom and maxZoom when you select a point 
+const featureZoom = 15; //value between minZoom and maxZoom when you select a point 
 const visibleAbout = ref(false);
 const showGallery = ref(false);
 let visited = true; // Store the visited status outside of the hook
@@ -56,7 +56,7 @@ watch(
   (newCoordinates, oldCoordinates) => {
     if (newCoordinates !== oldCoordinates && newCoordinates) {
       store.updateCenter(newCoordinates);
-      store.updateZoom(17);
+      store.updateZoom(16);
     }
   },
 );
