@@ -82,7 +82,7 @@
         <p>{{ totalPhotographs }}</p>
       </div>
       <div class="data-widget-item">
-        <h3>{{ $t('plans') }}:</h3>
+        <h3>{{ $t('drawings') }}:</h3>
         <p>{{ totalPlans }}</p>
       </div>
       <div class="data-widget-item">

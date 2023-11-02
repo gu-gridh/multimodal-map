@@ -34,6 +34,7 @@ const messages = {
       published: "Published",
       editplace: "Edit place",
       nophoto: "No photographs available",
+      drawings: "Drawings",
     
     },
 
@@ -70,6 +71,7 @@ const messages = {
       published: "Pubblicata",  
       editplace: "Modifica posto", 
       nophoto: "Nessuna fotografia disponibile",
+      drawings: "Disegni"
     },
 };  
 

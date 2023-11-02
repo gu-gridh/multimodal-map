@@ -196,7 +196,7 @@ function createPlaceURL() {
                     </tr>
 
                     <tr v-if="plans.length > 0">
-                        <td>{{ $t('plans') }}</td>
+                        <td>{{ $t('drawings') }}</td>
                         <div v-for="(image, index) in plans" :key="index" class="image-placeholder plan-placeholder">
                             <div class="image-square" v-if="'iiif_file' in image">
                                 <router-link :to="`/detail/image/${image.id}`">
