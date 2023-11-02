@@ -120,7 +120,7 @@ const initialTombCount = ref(289);
 const currentTombCount = ref(0);
 
 const CATEGORIES = {
-  all: "All Data",
+  all: "All data",
   plans: "Plans",
   models: "3D models",
   

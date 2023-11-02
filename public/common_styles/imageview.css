@@ -21,10 +21,14 @@
 .metadata .objects {
   margin-top: 30px;
   font-weight: 200;
-  font-size: 1.2em;
+  font-size: 1.1em;
   line-height: 1.2;
   text-align: left;
   padding: 0px 40px 0px 0px;
+}
+
+.metadata .objects .labels {
+  margin-bottom:20px;
 }
 
 .metadata .objects .label {
@@ -39,7 +43,13 @@
 
 .metadata .objects .description {
   font-size: 1vw;
-  margin-top:10px;
+  margin-top:0px;
+}
+
+.metadata .objects .imagedata .description {
+  font-size: 1vw;
+  margin-top:0px;
+  margin-bottom:0px;
 }
 
 @media screen and (max-width: 1500px) {
@@ -62,5 +72,5 @@
   background-repeat: no-repeat;
   padding-left: 45px;
   background-position: 8px 8px;
-  margin-top:00px !important;
+  margin-top:0px !important;
 }
