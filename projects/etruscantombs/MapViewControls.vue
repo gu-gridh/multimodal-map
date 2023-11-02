@@ -82,7 +82,7 @@
         <p>{{ totalPhotographs }}</p>
       </div>
       <div class="data-widget-item">
-        <h3>{{ $t('plans') }}:</h3>
+        <h3>{{ $t('drawings') }}:</h3>
         <p>{{ totalPlans }}</p>
       </div>
       <div class="data-widget-item">
@@ -107,7 +107,7 @@ import { transform } from 'ol/proj';
 
 const config = inject<EtruscanProject>("config");
 const dianaClient = new DianaClient("etruscantombs"); // Initialize DianaClient
-const { categories, years, tags, necropoli, tombType, dataParams, selectedNecropolisCoordinates, enable3D, enablePlans, areMapPointsLoaded } = storeToRefs(etruscanStore());
+const { categories, years, tags, necropoli, tombType, dataParams, selectedNecropolisCoordinates, enable3D, enablePlan, areMapPointsLoaded } = storeToRefs(etruscanStore());
 // Create a ref for last clicked category
 const lastClickedCategory = ref('');
 
@@ -182,9 +182,9 @@ const handleCategoryClick = (category: string) => {
       enable3D.value = false;
     }
     if (category === 'plans') {
-      enablePlans.value = !enablePlans.value;  // Toggle between true and false
+      enablePlan.value = !enablePlan.value;  // Toggle between true and false
     } else {
-      enablePlans.value = false;
+      enablePlan.value = false;
     }
   } else {
     // Add the clicked category only if it's not the same as the last clicked one
@@ -193,7 +193,7 @@ const handleCategoryClick = (category: string) => {
     // Update last clicked category
     lastClickedCategory.value = category;
     enable3D.value = (category === 'models');
-    // enablePlans.value = (category === 'plans');
+    enablePlan.value = (category === 'plans');
   }
 };
 
@@ -255,7 +255,7 @@ function handleSelectionClick(selectedValue, targetRef) {
     // Update the selectedNecropolisCoordinates in the store
     selectedNecropolisCoordinates.value = webMercatorCoordinates;
   } else {
-    console.log("Coordinates for selected necropolis not found");
+    // console.log("Coordinates for selected necropolis not found");
   }
 }
 </script>

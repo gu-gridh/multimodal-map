@@ -20,7 +20,7 @@ import { nextTick } from "vue";
 import GeoJSON from "ol/format/GeoJSON";
 import Title from "./Title.vue"
 
-const { categories, tags, necropoli, tombType, placesLayerVisible, tagsLayerVisible, dataParams, imgParams, selectedNecropolisCoordinates, enable3D } = storeToRefs(etruscanStore());
+const { categories, tags, necropoli, tombType, tagsLayerVisible, dataParams, imgParams, selectedNecropolisCoordinates, enable3D, enablePlan } = storeToRefs(etruscanStore());
 const store = mapStore();
 const etruscan = etruscanStore();  // Get the instance of etruscanStore
 const { selectedFeature } = storeToRefs(store);
@@ -28,7 +28,7 @@ const minZoom = 14;
 const maxZoom = 20;
 const featureZoom = 16; //value between minZoom and maxZoom when you select a point 
 const visibleAbout = ref(false);
-const showGrid = ref(false);
+const showGallery = ref(false);
 let visited = true; // Store the visited status outside of the hook
 
 // Watcher for selectedFeature changes
@@ -87,6 +87,14 @@ const tagParams = computed(() => {
     delete params['with_3D'];
   }
 
+
+  //filter for just 3D points
+  if (enablePlan.value) {
+    params['with_plan'] = 'true';
+  } else {
+    delete params['with_plan'];
+  }
+
   // Convert the params object to a URL search string
   const queryString = new URLSearchParams(params).toString();
 
@@ -111,7 +119,7 @@ watch(
 onMounted(() => {
   // Check if the "visited" key exists in session storage
   visited = sessionStorage.getItem("visited") === "true"; // Retrieve the visited status from session storage
-  const storedShowGrid = localStorage.getItem("showGrid");
+  const storedShowGallery = localStorage.getItem("showGallery");
 
   if (!visited) {
     // Hide the about component
@@ -119,8 +127,8 @@ onMounted(() => {
     sessionStorage.setItem("visited", "true");
   }
 
-  if (storedShowGrid) {
-    showGrid.value = JSON.parse(storedShowGrid);
+  if (storedShowGallery) {
+    showGallery.value = JSON.parse(storedShowGallery);
   }
 
 })
@@ -131,23 +139,23 @@ const toggleAboutVisibility = async () => {
   visibleAbout.value = !visibleAbout.value;
 };
 
-watch(showGrid, (newValue) => {
-  localStorage.setItem("showGrid", JSON.stringify(newValue));
+watch(showGallery, (newValue) => {
+  localStorage.setItem("showGallery", JSON.stringify(newValue));
 });
 </script>
 
 <template>
   <div style="display:flex; align-items: center; justify-content: center; pointer-events: none;">
     <div class="ui-mode ui-overlay">
-      <button class="item" v-bind:class="{ selected: !showGrid }" v-on:click="showGrid = false;">
+      <button class="item" v-bind:class="{ selected: !showGallery }" v-on:click="showGallery = false;">
         {{ $t('map') }}
       </button>
-      <button class="item" v-bind:class="{ selected: showGrid }" v-on:click="showGrid = true;">
+      <button class="item" v-bind:class="{ selected: showGallery }" v-on:click="showGallery = true;">
         {{ $t('gallery') }}
       </button>
     </div>
   </div>
-  <MapViewGallery v-if="showGrid" />
+  <MapViewGallery v-if="showGallery" />
   <About :visibleAbout="visibleAbout" @close="visibleAbout = false" />
   <MainLayout>
     <template #search>
@@ -162,9 +170,7 @@ watch(showGrid, (newValue) => {
           :min-zoom=minZoom
           :max-zoom=maxZoom 
           :restrictExtent="[11.9, 42.15, 12.2, 42.4]"    
-          :key="showGrid.toString()"
         > 
-                  
           <template #layers>
             <GeoJsonWebGLRenderer
               :externalUrl="'https://data.dh.gu.se/geography/SGElevationMain.geojson'"
@@ -186,7 +192,7 @@ watch(showGrid, (newValue) => {
               }"
             >
             </GeoJsonWebGLRenderer>
-            <DianaPlaceLayer v-if="placesLayerVisible" path="etruscantombs/geojson/place/" :params="tagParams" :zIndex=20>
+            <DianaPlaceLayer path="etruscantombs/geojson/place/" :params="tagParams" :zIndex=20>
             </DianaPlaceLayer>
           </template>
           
@@ -195,7 +201,7 @@ watch(showGrid, (newValue) => {
     </template>
 
     <template #details>
-      <MapViewPreview v-if="!showGrid"/>
+      <MapViewPreview v-if="!showGallery"/>
     </template>
 
   </MainLayout>

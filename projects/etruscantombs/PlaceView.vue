@@ -2,16 +2,22 @@
 import { ref, defineProps, onMounted, inject, computed } from 'vue';
 import type { Image, Observation, Document, Pointcloud, Mesh } from './types';
 import type { DianaClient } from "@/assets/diana";
+import { storeToRefs } from "pinia";
 import PlaceViewCard from "./PlaceViewCard.vue";
 import MapComponent from "@/components/MapComponent.vue";
 import i18n from '../../src/translations/etruscan';
+import { etruscanStore } from "./store";
+import { useRoute } from 'vue-router';
 
 const sort = ref('type');
+const etruscan = etruscanStore();
+const { placeId } = storeToRefs(etruscanStore());
 const groupedByYear = ref<{ [year: string]: (Image | Observation | Document | Pointcloud | Mesh)[] }>({});
-const { id } = defineProps<{ id: string; }>();
+const id = computed(() => etruscan.placeId);
 const diana = inject("diana") as DianaClient;
 const images = ref<Image[]>([]);
 const plans = ref<Image[]>([]);
+const route = useRoute();
 
 let observations = ref<Observation[]>([]);
 let documents = ref<Document[]>([]);
@@ -59,14 +65,26 @@ function toggleLanguage() {
 }
 
 onMounted(async () => {
+    const urlId = route.params.name;
+
+    // Check if placeId is undefined or null and fetch for the id based on the name
+    if (etruscan.placeId === null || etruscan.placeId === undefined) {
+        const response = await fetch(`https://diana.dh.gu.se/api/etruscantombs/geojson/place/?name=${urlId}`);
+        const data = await response.json();
+
+        if (data.features && data.features.length > 0) {
+            etruscan.placeId = data.features[0].id;
+        }
+    }
+
     if (id) {
         const [fetchedImages, fetchedObservations, fetchedDocuments, fetchedPointclouds, fetchedMeshes, fetchedPlans] = await Promise.all([
-            diana.listAll<Image>("image", { tomb: id, type_of_image: 2, depth: 2 }),
-            diana.listAll<Observation>("observation", { place: id }),
-            diana.listAll<Document>("document", { place: id, depth: 2 }),
-            diana.listAll<Pointcloud>("objectpointcloud", { tomb: id, depth: 2 }),
-            diana.listAll<Mesh>("object3dhop", { tomb: id, depth: 2 }),
-            fetch('https://diana.dh.gu.se/api/etruscantombs/image/?tomb=' + id + '&type_of_image=1&type_of_image=5&depth=2').then(res => res.json())
+            diana.listAll<Image>("image", { tomb: id.value, type_of_image: 2, depth: 2 }),
+            diana.listAll<Observation>("observation", { place: id.value }),
+            diana.listAll<Document>("document", { place: id.value, depth: 2 }),
+            diana.listAll<Pointcloud>("objectpointcloud", { tomb: id.value, depth: 2 }),
+            diana.listAll<Mesh>("object3dhop", { tomb: id.value, depth: 2 }),
+            fetch('https://diana.dh.gu.se/api/etruscantombs/image/?tomb=' + id.value + '&type_of_image=1&type_of_image=5&depth=2').then(res => res.json())
         ]);
 
         images.value = fetchedImages.filter(image => image.published);
@@ -98,7 +116,7 @@ function groupAndSortByYear(allItems: (Image | Observation | Document | Pointclo
 }
 
 function createPlaceURL() {
-    var url = "https://diana.dh.gu.se/admin/etruscantombs/place/" + id;
+    var url = "https://diana.dh.gu.se/admin/etruscantombs/place/" + id.value;
     window.open(url, "_blank");
 }
 </script>
@@ -116,8 +134,9 @@ function createPlaceURL() {
                         {{ $t('editplace') }}</div>
                 </button>
             </div>
+        <div v-if="id">
             <PlaceViewCard :id="id" />
-
+        </div>
         </div>
         <!-- Here we will show info of the place -->
         <div class="place-view">
@@ -177,7 +196,7 @@ function createPlaceURL() {
                     </tr>
 
                     <tr v-if="plans.length > 0">
-                        <td>{{ $t('plans') }}</td>
+                        <td>{{ $t('drawings') }}</td>
                         <div v-for="(image, index) in plans" :key="index" class="image-placeholder plan-placeholder">
                             <div class="image-square" v-if="'iiif_file' in image">
                                 <router-link :to="`/detail/image/${image.id}`">
@@ -193,7 +212,7 @@ function createPlaceURL() {
                     </tr>
                     <tr v-if="images.length > 0">
 
-                        <td><a :href="`https://diana.dh.gu.se/admin/etruscantombs/image/?q=${id}`">{{ $t('photographs') }}</a></td>
+                        <td><a :href="`https://diana.dh.gu.se/admin/etruscantombs/image/?q=${route.params.name}`">{{ $t('photographs') }}</a></td>
 
                         <div v-for="(image, index) in images" :key="index" class="image-placeholder">
                             <div class="image-square" v-if="'iiif_file' in image">
