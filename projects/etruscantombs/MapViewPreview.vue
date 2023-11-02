@@ -30,7 +30,7 @@ watchEffect(async () => {
   if (selectedFeature.value) {
     const placeName = selectedFeature.value.get("name");
     const placeId = selectedFeature.value.getId();
-    etruscan.placeId = placeId as string | null;
+    etruscan.placeId = placeId;
     place.value = { id_: placeName };
     images.value = await diana.listAll<Image>("image", { tomb: placeId, depth: 2 });
 
