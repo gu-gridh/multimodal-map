@@ -89,7 +89,21 @@ const fetchData = async (initialUrl, params) => {
   }
 
   while (nextUrl) {
-    const res = await fetch(nextUrl.replace(/^http:/, 'https:'), { signal });
+    const res = await fetch(nextUrl.replace(/^http:/, 'https:'), { signal })
+      .catch(err => {
+        // Handle the abort error gracefully
+        if (err.name === 'AbortError') {
+          console.log('Fetch aborted');
+          nextUrl = null;  // Stop the loop
+          return null;
+        }
+        // If it's another error, it will propagate
+        throw err;
+      });
+    
+    // If the fetch was aborted, skip to the next iteration
+    if (!res) continue;
+
     const data = await res.json();
     const features = data.features || [];
 
