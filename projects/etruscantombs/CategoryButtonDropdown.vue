@@ -79,6 +79,7 @@ function handleToggle(key: string) {
 
 <style scoped>
 .dropdown {
+  font-family: "Barlow Condensed", sans-serif !important;
     color: white;
     border-radius: 5px;
     background-color: rgb(180, 100, 100);

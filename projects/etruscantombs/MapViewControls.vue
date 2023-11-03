@@ -121,7 +121,7 @@ const currentTombCount = ref(0);
 
 const CATEGORIES = {
   all: "All data",
-  plans: "Plans",
+  plans: "Drawings",
   models: "3D models",
   
 };
