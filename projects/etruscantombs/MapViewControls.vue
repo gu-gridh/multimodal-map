@@ -265,6 +265,7 @@ function clearAll() {
   enable3D.value = false;
   categories.value = ["all"];
   tombType.value = ["all"];
+  tags.value = '';
 }
 </script>
 
