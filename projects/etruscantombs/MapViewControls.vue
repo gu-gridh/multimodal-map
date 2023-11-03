@@ -1,64 +1,40 @@
 <template>
   <div :class="{ 'non-interactive': !areMapPointsLoaded }">
-  <div v-if="areMapPointsLoaded">
-    <div class="section-title" style="">{{ $t('typeofdata') }}</div>
-      <CategoryButton
-        v-model="categories"
-        :categories="CATEGORIES"
-        :limit="1"
-        class="my-2"
-        @click="handleCategoryClick" 
-      />
+    <div v-if="areMapPointsLoaded">
+      <div class="section-title" style="">{{ $t('typeofdata') }}</div>
+      <CategoryButton v-model="categories" :categories="CATEGORIES" :limit="1" class="my-2"
+        @click="handleCategoryClick" />
 
       <div class="tag-section">
         <div class="section-title">{{ $t('timeperiod') }}</div>
         <div class="broad-controls">
-            <CategoryButtonList 
-              v-model="tags" 
-              :categories="TAGS" 
-              :limit="1" 
-              styleType="button"
-              class="my-2"
-            />
+          <CategoryButtonList v-model="tags" :categories="TAGS" :limit="1" styleType="button" class="my-2" />
         </div>
       </div>
 
       <div style="width:98%; float:left; display:flex; flex-direction:row; justify-content:space-between;">
-      <div class="tag-section" style="float:left;">
-        <div class="section-title">{{ $t('necropolisname') }}</div>
-        <div class="broad-controls">
-            <CategoryButtonList 
-              v-model="necropoli" 
-              :categories="NECROPOLI" 
-              :limit="1" 
-              styleType="dropdown"
-              class="my-2"
-              type="necropolis"
-              @click="handleSelectionClick($event, currentTombType)"
-            />
+        <div class="tag-section" style="float:left;">
+          <div class="section-title">{{ $t('necropolisname') }}</div>
+          <div class="broad-controls">
+            <CategoryButtonList v-model="necropoli" :categories="NECROPOLI" :limit="1" styleType="dropdown" class="my-2"
+              type="necropolis" @click="handleSelectionClick($event, currentTombType)" />
+          </div>
         </div>
-      </div>
 
-      <div class="tag-section" style="float:left; margin-left:20px;">
-        <div class="section-title">{{ $t('tombtype') }}</div>
-        <div class="broad-controls">
-            <CategoryButtonList 
-              v-model="tombType" 
-              :categories="TOMBTYPE" 
-              :limit="1" 
-              styleType="dropdown"
-              class="my-2"
-              type="tombType"
-            />
+        <div class="tag-section" style="float:left; margin-left:20px;">
+          <div class="section-title">{{ $t('tombtype') }}</div>
+          <div class="broad-controls">
+            <CategoryButtonList v-model="tombType" :categories="TOMBTYPE" :limit="1" styleType="dropdown" class="my-2"
+              type="tombType" />
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <div v-else> 
-    <div alt="Loading..." class="loading-svg" />
+    <div v-else>
+      <div alt="Loading..." class="loading-svg" />
+    </div>
   </div>
-</div>
 
   <!-- Data Section -->
   <div class="data-widget">
@@ -87,7 +63,7 @@
       </div>
       <div class="data-widget-item">
         <h3>{{ $t('threedmodels') }}:</h3>
-        <p>{{ totalThreedhop + totalPointcloud }}</p> 
+        <p>{{ totalThreedhop + totalPointcloud }}</p>
       </div>
     </div>
   </div>
@@ -123,7 +99,7 @@ const CATEGORIES = {
   all: "All data",
   plans: "Drawings",
   models: "3D models",
-  
+
 };
 
 const TAGS = ref<Record<string, string>>({});
@@ -138,7 +114,7 @@ const YEARS = {
   MAX: config?.timeRange?.[1] || new Date().getFullYear(),
 };
 
-onMounted(async () => { 
+onMounted(async () => {
   await fetchDataAndPopulateRef("epoch", TAGS);
   await fetchDataAndPopulateRef("necropolis", NECROPOLI);
   await fetchDataAndPopulateRef("typeoftomb", TOMBTYPE);
@@ -157,7 +133,7 @@ async function fetchDataAndPopulateRef<T>(type: string, refToPopulate: any) {
     data.forEach((result: any) => {
       if (result.published) {
         refToPopulate.value[result.id] = result.text;
-        
+
         // If the type is necropolis, store its coordinates
         if (type === "necropolis" && result.geometry && result.geometry.coordinates) {
           NECROPOLICoordinates.value[result.id] = result.geometry.coordinates;
@@ -189,7 +165,7 @@ const handleCategoryClick = (category: string) => {
   } else {
     // Add the clicked category only if it's not the same as the last clicked one
     categories.value = [category];
-    
+
     // Update last clicked category
     lastClickedCategory.value = category;
     enable3D.value = (category === 'models');
@@ -204,7 +180,7 @@ const fetchData = async (url: string) => {
     console.error(`Failed to fetch data: ${response.status}`);
     return;
   }
-  
+
   const data = await response.json();
   const { count, features } = data;
 
@@ -245,55 +221,60 @@ const toggleAboutVisibility = async () => {
 };
 
 function handleSelectionClick(selectedValue, targetRef) {
+  clearAll();
   const selectedCoordinates = NECROPOLICoordinates.value[selectedValue];
   if (selectedCoordinates) {
     const [x, y] = selectedCoordinates;
 
     // Convert them to Web Mercator (EPSG:3857)
     const webMercatorCoordinates = transform([x, y], 'EPSG:4326', 'EPSG:3857');
-    
+
     // Update the selectedNecropolisCoordinates in the store
     selectedNecropolisCoordinates.value = webMercatorCoordinates;
+
   } else {
     // console.log("Coordinates for selected necropolis not found");
   }
-  clearAll();
+
 }
 
 function clearAll() {
+  categories.value = ["all"];
   enablePlan.value = false;
   enable3D.value = false;
-  categories.value = ["all"];
   tombType.value = ["all"];
+  lastClickedCategory.value = '';
   tags.value = '';
 }
+
 </script>
 
 <style>
 .loading-svg {
   width: 100%;
   height: 200px;
-  background:url("/90-ring-with-bg.svg");
-  background-size:60px;
-  background-repeat:no-repeat;
-  background-position:50% 50%;
+  background: url("/90-ring-with-bg.svg");
+  background-size: 60px;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
   display: block;
   margin: auto;
   transition: all 0.4s;
 
 }
+
 .loading-svg:hover {
   height: 240px;
-  transform:scale(1.5);
+  transform: scale(1.5);
 }
 
 #app .section-title {
-  margin-top:10px;
-  margin-bottom:-3px;
+  margin-top: 10px;
+  margin-bottom: -3px;
 }
 
 #app .tag-section {
-  margin-top:0px;
+  margin-top: 0px;
 }
 
 
@@ -374,7 +355,7 @@ function clearAll() {
 
 
 .data-widget {
-  float:left;
+  float: left;
   pointer-events: none;
   width: 98%;
   margin-top: 10px;
@@ -386,16 +367,16 @@ function clearAll() {
 }
 
 .data-widget-section {
-  width:100%;
+  width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
 
 .data-widget-divider {
-  margin-top:10px;
-  margin-bottom:10px;
-  margin-left:-25px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: -25px;
   width: calc(100% + 50px);
   border-style: dotted;
   border-color: rgb(180, 100, 100);
@@ -404,9 +385,7 @@ function clearAll() {
 }
 
 
-.data-widget-item {
-
-}
+.data-widget-item {}
 
 .data-widget-item h3 {
   display: inline;
@@ -416,8 +395,6 @@ function clearAll() {
   display: inline;
   color: rgb(180, 100, 100);
   margin-left: 3px;
-  font-weight:500;
+  font-weight: 500;
 }
-
-
 </style>
