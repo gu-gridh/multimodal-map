@@ -261,9 +261,9 @@ function handleSelectionClick(selectedValue, targetRef) {
 }
 
 function clearAll() {
-  categories.value = ["all"];
   enablePlan.value = false;
   enable3D.value = false;
+  categories.value = ["all"];
   tombType.value = ["all"];
 }
 </script>
