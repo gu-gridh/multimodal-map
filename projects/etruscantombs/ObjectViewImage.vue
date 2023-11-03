@@ -24,25 +24,25 @@ const downloadImage = (fileUrl: string, fileName: string) => {
       <div class="objects">
         <div class="imagedata">
           <div class="labels">
-        <div>
-          <div class="label">Type:</div>
-          <div class="data">{{ object.type_of_image[0].text }}</div>
+            <div>
+              <div class="label">Type:</div>
+              <div class="data">{{ object.type_of_image[0].text }}</div>
+            </div>
+            <div v-if="object.author?.firstname">
+              <div class="label">Creator:</div>
+              <div class="data">{{ object.author.lastname }}, {{ object.author.firstname }}</div>
+            </div>
+            <div v-if="object.date">
+              <div class="label">Date:</div>
+              <div class="data">{{ object.date }}</div>
+            </div>
+          </div>
+          <div class="description" v-html="object.description"></div>
+          <div v-if="object.tag?.length">
+            Tags:
+            {{ object.tag.map((tag) => tag.text).join(", ") }}
+          </div>
         </div>
-        <div v-if="object.author?.firstname">
-          <div class="label">Creator:</div>
-          <div class="data">{{ object.author.lastname }}, {{ object.author.firstname }}</div>
-        </div>
-        <div v-if="object.date">
-          <div class="label">Date:</div>
-          <div class="data">{{ object.date }}</div>
-        </div>
-      </div>
-        <div class="description" v-html="object.description"></div>
-        <div v-if="object.tag?.length">
-          Tags:
-          {{ object.tag.map((tag) => tag.text).join(", ") }}
-        </div>
-      </div>
         <button class="theme-button download-button"
           @click="downloadImage(object.file, `${object.title}.tif`)">Download</button>
 
@@ -84,5 +84,6 @@ const downloadImage = (fileUrl: string, fileName: string) => {
 .theme-button {
   margin-top: 20px;
   margin-bottom: 10px;
-}</style>
+}
+</style>
 

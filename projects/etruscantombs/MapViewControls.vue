@@ -257,6 +257,14 @@ function handleSelectionClick(selectedValue, targetRef) {
   } else {
     // console.log("Coordinates for selected necropolis not found");
   }
+  clearAll();
+}
+
+function clearAll() {
+  categories.value = ["all"];
+  enablePlan.value = false;
+  enable3D.value = false;
+  tombType.value = ["all"];
 }
 </script>
 
