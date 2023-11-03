@@ -56,11 +56,14 @@ const getCurrentBoundingBox = () => {
   const transformedExtent = transformExtent(extent, 'EPSG:3857', 'EPSG:4326'); 
   let [minX, minY, maxX, maxY] = transformedExtent; 
 
-  const offset = (maxX - minX) * 0.25;  // Adjusting by 25% of the width and height
-  minX += offset;
-  minY += offset;
-  maxX -= offset;
-  maxY -= offset;
+  const offsetX = (maxX - minX) * 0.2;  // reduce the width by 20%
+  const offsetY = (maxY - minY) * 0.25;  // increase the height by 25%
+
+  // Adjust the bounding box
+  minX += offsetX;  
+  minY -= offsetY;  
+  maxX -= offsetX;  
+  maxY += offsetY; 
 
   return `${minX},${minY},${maxX},${maxY}`;
 };
