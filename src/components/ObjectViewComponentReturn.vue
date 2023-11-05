@@ -26,7 +26,7 @@ const goBack = () => {
       <div class="flex-1" ></div>
       <div class="container" >
         <slot name="title">
-          <h1 class="meta-title">{{ title }}</h1>
+          <h1 class="meta-title theme-title-typography">{{ title }}</h1>
         </slot>
       </div>
       <div class="flex-1 text-center" >

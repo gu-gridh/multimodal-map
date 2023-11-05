@@ -65,6 +65,15 @@ table td {
     margin-bottom:15px;
     float:left;
 }
+
+.content-table {
+  width:100%;
+}
+
+.content-table-date{
+    width:100%;
+}
+
 .content-table td {
     padding-right: 15px;
     padding-top: 2px;

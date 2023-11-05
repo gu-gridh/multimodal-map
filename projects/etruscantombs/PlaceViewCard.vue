@@ -112,13 +112,13 @@ onMounted(() => {
               </ol-style>
             </ol-vector-layer>
           </ol-map>
-          <div class="placeview-main-title">{{ $t('etruscantitle') }}</div>
+          <div class="placeview-main-title theme-title-typography theme-color-text">{{ $t('etruscantitle') }}</div>
         </div>
    
         <div class="placecard-text">
       
-          <div class="placecard-title theme-color-text">{{ $t('tomb') }} {{ title }}</div>
-          <div class="placecard-subtitle theme-color-text">{{ subtitle }}</div>
+          <div class="placecard-title theme-color-text theme-title-typography">{{ $t('tomb') }} {{ title }}</div>
+          <div class="placecard-subtitle theme-color-text theme-title-typography">{{ subtitle }}</div>
 
           <div class="placecard-metadata-content" style="">
             <div class="metadata-item">
@@ -154,8 +154,6 @@ onMounted(() => {
 .placeview-main-title{
   pointer-events:none;
   position:relative;
-  font-family: 'Teko', sans-serif;
-  color: rgb(180, 100, 100);
   z-index:1000;
   font-size:60px;
   padding:25px 25px;

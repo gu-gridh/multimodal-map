@@ -1,0 +1,103 @@
+/*CSS here will be used by any file that has added the stylesheet*/
+
+/* CSS - Cascading Style Sheet */
+
+
+
+/* Main */
+html,
+body {
+  font-family: "Barlow Condensed", sans-serif !important;
+  background-color: rgb(232, 228, 217) !important;
+}
+
+.theme-title-typography{
+    font-family: 'Teko', sans-serif;
+}
+
+.theme-color-text {
+  color: rgb(180, 100, 100);
+}
+
+.data {
+  color: rgb(250, 150, 150);
+}
+
+
+
+.theme-color-background {
+  background-color: rgb(180, 100, 100);
+}
+
+
+.dropdown:hover {
+  background-color: rgb(160, 80, 80) !important;
+}
+
+.dropdown:focus {
+    outline-color: rgb(140, 60, 60) !important;
+}
+
+.main-title {
+  font-family: 'Teko', sans-serif;
+  color: rgb(180, 100, 100);
+}
+
+.about {
+  display:none;
+}
+
+
+#app .left-pane {
+  background: url("@/assets/gradient-jubileum.png");
+  background-size: contain;
+}
+
+#app .download-button {
+  background: url("@/assets/interface/downloadbuttonwhite.png");
+  background-size: 21%;
+  background-repeat: no-repeat; 
+  background-color: rgb(180, 100, 100) !important;
+  padding-left: 12%;
+  padding-right: 8px;
+  background-position: 8px 5px;
+  margin-top:0px !important;
+}
+
+.theme-button {
+  border-radius: 5px;
+  padding: 5px 10px;
+  color: white;
+}
+
+.theme-button:hover {
+  background-color: rgb(160, 80, 80) !important;
+}
+
+
+
+#app .category-button {
+  background-color: rgba(255, 255, 255, 0.6);
+  color: rgb(71, 85, 105);
+  border-radius: 4px;
+}
+
+#app .category-button:hover {
+  background-color: rgb(140, 80, 80);
+  color: white;
+}
+
+#app .category-button.active {
+  background-color: rgb(180, 100, 100);
+  color: white;
+}
+
+@media screen and (max-width: 900px) {
+  .atlas-gradient {
+    background: linear-gradient(180deg, rgba(232, 228, 217, 0) 0px, rgba(232, 228, 217, 1) 300px) !important;
+}
+
+#app .right-pane {
+/* z-index: 0 !important; */
+}
+}

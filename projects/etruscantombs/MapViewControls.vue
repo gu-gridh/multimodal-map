@@ -1,8 +1,12 @@
 <template>
+    <!-- Checks if all points are loaded and only then show the controls -->
   <div :class="{ 'non-interactive': !areMapPointsLoaded }">
     <div v-if="areMapPointsLoaded">
+
+      <!-- This creates a 2-column section with for the controls -->
       <div style="width:98%; float:left; display:flex; flex-direction:row; justify-content:space-between;">
-        <div class="tag-section" style="float:left;">
+
+        <div class="tag-section">
           <div class="section-title">{{ $t('dataset') }}</div>
           <div style="display:inline; float:left; margin-right:0px; margin-top:8px;">
             <select class="dropdown theme-color-background">
@@ -12,26 +16,29 @@
           </div>
         </div>
 
-        <div class="tag-section" style="float:left; margin-left:0px;">
+        <div class="tag-section">
           <div class="section-title">{{ $t('typeofdata') }}</div>
           <div class="broad-controls">
             <CategoryButton v-model="categories" :categories="CATEGORIES" :limit="1" class="my-2"
               @click="handleCategoryClick" />
+          </div>
+        </div>
 
+      </div>
+
+      <div style="width:98%; float:left; display:flex; flex-direction:row; justify-content:space-between;">
+        <div class="tag-section">
+          <div class="section-title">{{ $t('timeperiod') }}</div>
+          <div class="broad-controls">
+            <CategoryButtonList v-model="tags" :categories="TAGS" :limit="1" styleType="button" class="my-2" />
           </div>
         </div>
       </div>
 
 
-      <div class="tag-section">
-        <div class="section-title">{{ $t('timeperiod') }}</div>
-        <div class="broad-controls">
-          <CategoryButtonList v-model="tags" :categories="TAGS" :limit="1" styleType="button" class="my-2 justify" />
-        </div>
-      </div>
-
+      <!-- This creates a 2-column section with for the controls -->
       <div style="width:98%; float:left; display:flex; flex-direction:row; justify-content:space-between;">
-        <div class="tag-section" style="float:left;">
+        <div class="tag-section">
           <div class="section-title">{{ $t('necropolisname') }}</div>
           <div class="broad-controls">
             <CategoryButtonList v-model="necropoli" :categories="NECROPOLI" :limit="1" styleType="dropdown" class="my-2"
@@ -39,7 +46,7 @@
           </div>
         </div>
 
-        <div class="tag-section" style="float:left; margin-left:20px;">
+        <div class="tag-section" style="margin-left:20px;">
           <div class="section-title">{{ $t('tombtype') }}</div>
           <div class="broad-controls">
             <CategoryButtonList v-model="tombType" :categories="TOMBTYPE" :limit="1" styleType="dropdown" class="my-2"
@@ -49,6 +56,7 @@
       </div>
     </div>
 
+    <!-- if the markers are not loaded show the loader -->
     <div v-else>
       <div alt="Loading..." class="loading-svg" />
     </div>
@@ -286,8 +294,8 @@ function clearAll() {
   transform: scale(1.5);
 }
 
-.justify{
-  display:flex;
+.justify {
+  display: flex;
   flex-direction: row;
   justify-content: left;
 }
@@ -298,25 +306,12 @@ function clearAll() {
 }
 
 #app .tag-section {
-  margin-top: 0px;
+  margin-top: 2px;
+  margin-bottom: 0px;
 }
 
 
-#app .category-button {
-  background-color: rgba(255, 255, 255, 0.6);
-  color: rgb(71, 85, 105);
-  border-radius: 4px;
-}
 
-#app .category-button:hover {
-  background-color: rgb(140, 80, 80);
-  color: white;
-}
-
-#app .category-button.active {
-  background-color: rgb(180, 100, 100);
-  color: white;
-}
 
 /* #app .range-slider-container {
   display: flex;

@@ -103,7 +103,6 @@
   hyphens: auto;
   line-height: 1.2;
   padding: 10px 0px 0px 0px;
-
 }
 
 .placecard-text p {
@@ -111,7 +110,6 @@
 }
 
 .placecard-title {
-  font-family: 'Teko', sans-serif;
   letter-spacing: -0.0rem;
   text-align: left;
   padding-bottom: 0px;
@@ -121,7 +119,6 @@
 
 
 .placecard-subtitle {
-  font-family: 'Teko', sans-serif;
   letter-spacing: -0.0rem;
   font-size: 2vw;
   text-align: left;

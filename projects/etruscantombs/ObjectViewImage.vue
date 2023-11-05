@@ -36,6 +36,10 @@ const downloadImage = (fileUrl: string, fileName: string) => {
               <div class="label">Date:</div>
               <div class="data">{{ object.date }}</div>
             </div>
+            <div>
+              <div class="label">Dataset:</div>
+              <div class="data">CTSG-2015</div>
+            </div>
           </div>
           <div class="description" v-html="object.description"></div>
           <div v-if="object.tag?.length">
@@ -43,7 +47,7 @@ const downloadImage = (fileUrl: string, fileName: string) => {
             {{ object.tag.map((tag) => tag.text).join(", ") }}
           </div>
         </div>
-        <button class="theme-button download-button"
+        <button class="download-button theme-button"
           @click="downloadImage(object.file, `${object.title}.tif`)">Download</button>
 
         <div v-if="object.tomb?.name">
@@ -75,10 +79,6 @@ const downloadImage = (fileUrl: string, fileName: string) => {
 <style scoped>
 .description ::v-deep * {
   color: white !important;
-}
-
-.data {
-  color: rgb(255, 150, 150);
 }
 
 .theme-button {
