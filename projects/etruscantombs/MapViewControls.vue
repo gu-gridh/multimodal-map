@@ -301,7 +301,7 @@ function clearAll() {
 }
 
 #app .section-title {
-  margin-top: 10px;
+  margin-top: 6px;
   margin-bottom: -3px;
 }
 
