@@ -202,7 +202,30 @@ body {
   padding: 10px;
 }
 
+.dropdown {
+  font-family: "Barlow Condensed", sans-serif !important;
+    color: white;
+    border-radius: 5px;
+    padding: 4px 10px;
+    padding-right: 30px;
+    width: auto;
+    height: auto;
+    background-image: url("/dropdown-arrow.png");
+    background-size: 15px;
+    background-repeat: no-repeat;
+    background-position: calc(100% - 10px) 10px;
+    -webkit-appearance: none;
+    /* text-transform: capitalize; */
+}
 
+
+.dropdown:hover {
+ 
+}
+
+.dropdown:focus {
+  outline: none;
+}
 /* Smaller screens - settings to not make text too small*/
 
 

@@ -145,9 +145,16 @@ function createPlaceURL() {
                 <!-- <p>ID: {{ id }}</p> -->
                 <!-- <p>PLACE: {{ place.id }}</p> -->
                 <div>
-                    <select v-model="sort" class="dropdown">
-                        <option actve value="type">{{ $t('sortbytype') }}</option>
+                    <select v-model="sort" class="dropdown theme-color-background" style="margin-left:130px;">
+                        <option active value="type">{{ $t('sortbytype') }}</option>
                         <option value="year">{{ $t('sortbyyear') }}</option>
+                    </select>
+                </div>
+
+                <div>
+                    <select class="dropdown theme-color-background">
+                        <option value="All datasets">All datasets</option>
+                        <option value="CTSG-2015">CTSG-2015</option>
                     </select>
                 </div>
 

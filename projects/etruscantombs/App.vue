@@ -30,6 +30,14 @@ body {
   background-color: rgb(180, 100, 100);
 }
 
+.dropdown:hover {
+  background-color: rgb(160, 80, 80) !important;
+}
+
+.dropdown:focus {
+    outline-color: rgb(140, 60, 60) !important;
+}
+
 .main-title {
   font-family: 'Teko', sans-serif;
   color: rgb(180, 100, 100);

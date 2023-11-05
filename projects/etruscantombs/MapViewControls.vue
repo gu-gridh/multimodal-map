@@ -1,14 +1,32 @@
 <template>
   <div :class="{ 'non-interactive': !areMapPointsLoaded }">
     <div v-if="areMapPointsLoaded">
-      <div class="section-title" style="">{{ $t('typeofdata') }}</div>
-      <CategoryButton v-model="categories" :categories="CATEGORIES" :limit="1" class="my-2"
-        @click="handleCategoryClick" />
+      <div style="width:98%; float:left; display:flex; flex-direction:row; justify-content:space-between;">
+        <div class="tag-section" style="float:left;">
+          <div class="section-title">{{ $t('dataset') }}</div>
+          <div style="display:inline; float:left; margin-right:0px; margin-top:8px;">
+            <select class="dropdown theme-color-background">
+              <option value="All datasets">All datasets</option>
+              <option value="CTSG-2015">CTSG-2015</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="tag-section" style="float:left; margin-left:0px;">
+          <div class="section-title">{{ $t('typeofdata') }}</div>
+          <div class="broad-controls">
+            <CategoryButton v-model="categories" :categories="CATEGORIES" :limit="1" class="my-2"
+              @click="handleCategoryClick" />
+
+          </div>
+        </div>
+      </div>
+
 
       <div class="tag-section">
         <div class="section-title">{{ $t('timeperiod') }}</div>
         <div class="broad-controls">
-          <CategoryButtonList v-model="tags" :categories="TAGS" :limit="1" styleType="button" class="my-2" />
+          <CategoryButtonList v-model="tags" :categories="TAGS" :limit="1" styleType="button" class="my-2 justify" />
         </div>
       </div>
 
@@ -96,7 +114,7 @@ const initialTombCount = ref(289);
 const currentTombCount = ref(0);
 
 const CATEGORIES = {
-  all: "All data",
+  all: "All types",
   plans: "Drawings",
   models: "3D models",
 
@@ -266,6 +284,12 @@ function clearAll() {
 .loading-svg:hover {
   height: 240px;
   transform: scale(1.5);
+}
+
+.justify{
+  display:flex;
+  flex-direction: row;
+  justify-content: left;
 }
 
 #app .section-title {
