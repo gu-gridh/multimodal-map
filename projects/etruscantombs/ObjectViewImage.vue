@@ -47,9 +47,10 @@ const downloadImage = (fileUrl: string, fileName: string) => {
             {{ object.tag.map((tag) => tag.text).join(", ") }}
           </div>
         </div>
-        <button class="download-button theme-button"
+        <div class="theme-button theme-color-background">
+        <button class="download-button"
           @click="downloadImage(object.file, `${object.title}.tif`)">Download</button>
-
+        </div>
         <div v-if="object.tomb?.name">
           <h2>Description</h2>
         </div>
@@ -81,9 +82,23 @@ const downloadImage = (fileUrl: string, fileName: string) => {
   color: white !important;
 }
 
-.theme-button {
+.metadata .theme-button {
   margin-top: 20px;
   margin-bottom: 10px;
+  padding: 0px 0px;
+  width:120px;
+  height:auto;
+  font-size:20px !important;
+}
+
+.download-button {
+  background: url("@/assets/interface/downloadbuttonwhite.png");
+  background-size: 25px;
+  background-repeat: no-repeat; 
+  padding: 6px 10px 6px 40px;
+  background-position: 6px 6px;
+  margin-top:0px !important;
+  
 }
 </style>
 

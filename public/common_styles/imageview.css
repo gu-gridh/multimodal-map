@@ -51,17 +51,12 @@
   margin-top:0px;
   margin-bottom:0px;
 }
-
-#app .download-button {
-  background: url("@/assets/interface/downloadbuttonwhite.png");
-  background-size: 21%;
-  background-repeat: no-repeat;
-  background-color: rgb(100, 100, 100);
-  padding-left: 12%;
-  padding-right: 8px;
-  background-position: 8px 5px;
-  margin-top:0px !important;
+.metadata .theme-button {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  padding: 0px 0px;
 }
+
 
 @media screen and (max-width: 1500px) {
   .metadata .objects .description {
