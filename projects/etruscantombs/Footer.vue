@@ -1,7 +1,7 @@
 <template>
   <footer id="footer">
     <div id="developer-info">
-      <a href="https://github.com/gu-gridh/etruscantombs#etruscan-tombs" target="_blank">Github repository and development</a> <br>
+      <a href="https://github.com/gu-gridh/etruscantombs#etruscan-tombs" target="_blank">GitHub repository and development</a> <br>
       <a href="https://github.com/gu-gridh/etruscantombs#loading-data" target="_blank">Database and API documentation</a> <br>
     </div>
     <a href="https://dh.gu.se/">
