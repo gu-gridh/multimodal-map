@@ -1,8 +1,8 @@
 <template>
   <footer id="footer">
     <div id="developer-info">
-      <a href="https://github.com/gu-gridh/multimodal-map" target="_blank">Github repository and development</a> <br>
-      <a href="https://github.com/gu-gridh/multimodal-map" target="_blank">Database and API documentation</a> <br>
+      <a href="https://github.com/gu-gridh/etruscantombs#etruscan-tombs" target="_blank">Github repository and development</a> <br>
+      <a href="https://github.com/gu-gridh/etruscantombs#loading-data" target="_blank">Database and API documentation</a> <br>
     </div>
     <a href="https://dh.gu.se/">
       <div id="PartnerLogo">+ ISVROMA</div>
