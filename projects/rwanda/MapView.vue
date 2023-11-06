@@ -97,7 +97,8 @@ watch(
           <!-- Sources layer just filtering interviews atm -->
           <DianaPlaceLayer 
             v-if="sourcesLayer"
-            path="rwanda/search/text"
+            path="`rwanda/search/" 
+            :params = sources[0]
           >
           <ol-style>
               <ol-style-stroke color="rgb(180,100,100)" :width="3"></ol-style-stroke>

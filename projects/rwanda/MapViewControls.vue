@@ -51,51 +51,31 @@ const handleSourcesClick = (key: string) => {
   }
   else {
     sourcesLayer.value = true
-    placeTypeLayer.value = false
-    periodsLayer.value = false
     allLayer.value = false
-    informantsLayer.value = false
-    languagesLayer.value = false
   }
 }
 
 const handlePlaceTypeClick = (key: string) => {
   console.log("Clicked: ", key);
   placeTypeLayer.value = true
-  sourcesLayer.value = false
-  periodsLayer.value = false
   allLayer.value = false
-  informantsLayer.value = false
-  languagesLayer.value = false
 }
 
 const handlePeriodClick = (key: string) => {
   console.log("Clicked: ", key);
   periodsLayer.value = true
-  sourcesLayer.value = false
-  placeTypeLayer.value = false
   allLayer.value = false
-  informantsLayer.value = false
-  languagesLayer.value = false
 }
 
 const handleInformantClick = (key: string) => {
   console.log("Clicked: ", key);
   informantsLayer.value = true
-  sourcesLayer.value = false
-  placeTypeLayer.value = false
-  periodsLayer.value = false
-  languagesLayer.value = false
   allLayer.value = false
 }
 
 const handleLanguageClick = (key: string) => {
   console.log("Clicked: ", key);
   languagesLayer.value = true
-  informantsLayer.value = false
-  sourcesLayer.value = false
-  placeTypeLayer.value = false
-  periodsLayer.value = false
   allLayer.value = false
 }
 </script>
