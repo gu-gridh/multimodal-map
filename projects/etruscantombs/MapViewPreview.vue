@@ -135,7 +135,7 @@ function deselectPlace() {
 
       <div class="placecard-center-button">
         <router-link :to="`/place/${place?.id_}`">
-          <button class="theme-button" style="margin-top:0px;">{{ $t('moreinfo') }}</button>
+          <button class="theme-button theme-color-background" style="margin-top:0px;">{{ $t('moreinfo') }}</button>
         </router-link>
       </div>
     </div>
