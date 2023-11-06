@@ -8,10 +8,10 @@
 
         <div class="tag-section">
           <div class="section-title">{{ $t('dataset') }}</div>
-          <div style="display:inline; float:left; margin-right:0px; margin-top:8px;">
-            <select class="dropdown theme-color-background">
-              <option value="All datasets">All datasets</option>
-              <option value="CTSG-2015">CTSG-2015</option>
+          <div style="display:inline; float:left; margin-right:0px;">
+            <select title="pick what dataset you want to view data from" class="dropdown theme-color-background my-2">
+              <option title="View data from all datasets" value="All datasets">All datasets</option>
+              <option title="View data from the San Giovenale dataset by Fredrik Tobin-Dodd" value="CTSG-2015">CTSG-2015</option>
             </select>
           </div>
         </div>
@@ -20,7 +20,7 @@
           <div class="section-title">{{ $t('typeofdata') }}</div>
           <div class="broad-controls">
             <CategoryButton v-model="categories" :categories="CATEGORIES" :limit="1" class="my-2"
-              @click="handleCategoryClick" />
+            title="Pick a data type" @click="handleCategoryClick" />
           </div>
         </div>
 
@@ -30,7 +30,8 @@
         <div class="tag-section">
           <div class="section-title">{{ $t('timeperiod') }}</div>
           <div class="broad-controls">
-            <CategoryButtonList v-model="tags" :categories="TAGS" :limit="1" styleType="button" class="my-2" />
+            <CategoryButtonList v-model="tags" :categories="TAGS" :limit="1" styleType="button" class="my-2" 
+            title="Pick a time period"/>
           </div>
         </div>
       </div>
@@ -40,15 +41,15 @@
       <div style="width:98%; float:left; display:flex; flex-direction:row; justify-content:space-between;">
         <div class="tag-section">
           <div class="section-title">{{ $t('necropolisname') }}</div>
-          <div class="broad-controls">
+          <div title="Narrow the result to a certain necropolis" class="broad-controls">
             <CategoryButtonList v-model="necropoli" :categories="NECROPOLI" :limit="1" styleType="dropdown" class="my-2"
               type="necropolis" @click="handleSelectionClick($event, currentTombType)" />
           </div>
         </div>
 
         <div class="tag-section" style="margin-left:20px;">
-          <div class="section-title">{{ $t('tombtype') }}</div>
-          <div class="broad-controls">
+          <div  class="section-title">{{ $t('tombtype') }}</div>
+          <div title="Narrow the result to a certain tomb type" class="broad-controls">
             <CategoryButtonList v-model="tombType" :categories="TOMBTYPE" :limit="1" styleType="dropdown" class="my-2"
               type="tombType" />
           </div>
@@ -398,7 +399,7 @@ function clearAll() {
   margin-left: -25px;
   width: calc(100% + 50px);
   border-style: dotted;
-  border-color: rgb(180, 100, 100);
+  border-color: var(--theme-3);
   border-width: 1px 0px 0px 0px;
   height: 1px;
 }
@@ -412,7 +413,7 @@ function clearAll() {
 
 .data-widget-item p {
   display: inline;
-  color: rgb(180, 100, 100);
+  color: var(--theme-3);
   margin-left: 3px;
   font-weight: 500;
 }
