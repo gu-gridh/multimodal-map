@@ -196,6 +196,14 @@ const showMoreInterviews =() => {
             </div>
             <button v-if="showMore" @click="interviewsToShow += 1">Show more</button>
         </div>
+        <!-- If documents avaliable-->
+        <div>
+          Documents
+          <router-link to="/document/1">
+            <div style="font-style: italic;">Filename</div>
+          </router-link>
+        </div>
+        <!-- Images -->
         <div v-if="images.length != 0" class="masonry">
         <div>
           <p>Images</p>
