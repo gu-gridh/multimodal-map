@@ -1,20 +1,15 @@
 <script setup lang="ts">
-import { mapStore } from "@/stores/store";
 import { storeToRefs } from "pinia";
 import { rwandaStore } from "./rwandaStore";
-import { useRwandaMap } from "./map.composable";
-import type { Place } from "./types";
-import { ref, watch } from "vue";
-import { watchEffect } from "vue";
 import CategoryButtonList from "@/components/input/CategoryButtonList.vue";
-import CategoryButton from "@/components/input/CategoryButton.vue";
+import ButtonList from "./input/ButtonList.vue";
 
 //Filtering map controls
 const SOURCES = {
   all: "All",
   images: "Images",
-  places: "Place names",
   interviews: "Interviews",
+  documents: "Documents",
 }
 const PLACE_TYPES = {
   area: "Areas",
@@ -34,15 +29,15 @@ const PERIODS = {
   "after 2012": "After 2012"
 }
 const LANGUAGES = {
-  "kinyarwanda-english": "KE",
-  "arabic-english": "AE",
-  "french-kinyarwanda": "FK",
+  "Kinyarwanda-English": "KE",
+  "Arabic-English": "AE",
+  "French-Kinyarwanda": "FK",
   "Kiswahili": "SW",
-  "kinyarwanda": "RW",
-  "french": "FR",
-  "english": "EN",
+  "Kinyarwanda": "RW",
+  "French": "FR",
+  "English": "EN",
 }
-const { sources, placeTypes, periods, informants, sourcesLayer, placeTypeLayer, periodsLayer, allLayer, informantsLayer, languages } = storeToRefs(rwandaStore());
+const { sources, placeTypes, periods, informants, sourcesLayer, placeTypeLayer, periodsLayer, allLayer, informantsLayer, languages, languagesLayer } = storeToRefs(rwandaStore());
 
 //handle category button click
 const handleSourcesClick = (key: string) => {
@@ -51,41 +46,36 @@ const handleSourcesClick = (key: string) => {
     placeTypeLayer.value = false
     periodsLayer.value = false
     informantsLayer.value = false
+    languagesLayer.value = false
     allLayer.value = true
   }
   else {
     sourcesLayer.value = true
-    placeTypeLayer.value = false
-    periodsLayer.value = false
     allLayer.value = false
-    informantsLayer.value = false
   }
 }
 
 const handlePlaceTypeClick = (key: string) => {
   console.log("Clicked: ", key);
   placeTypeLayer.value = true
-  sourcesLayer.value = false
-  periodsLayer.value = false
   allLayer.value = false
-  informantsLayer.value = false
 }
 
 const handlePeriodClick = (key: string) => {
   console.log("Clicked: ", key);
   periodsLayer.value = true
-  sourcesLayer.value = false
-  placeTypeLayer.value = false
   allLayer.value = false
-  informantsLayer.value = false
 }
 
 const handleInformantClick = (key: string) => {
   console.log("Clicked: ", key);
   informantsLayer.value = true
-  sourcesLayer.value = false
-  placeTypeLayer.value = false
-  periodsLayer.value = false
+  allLayer.value = false
+}
+
+const handleLanguageClick = (key: string) => {
+  console.log("Clicked: ", key);
+  languagesLayer.value = true
   allLayer.value = false
 }
 </script>
@@ -117,11 +107,12 @@ const handleInformantClick = (key: string) => {
         @click="handleInformantClick"
       />
       <div class="filter-heading">Languages</div>
-      <CategoryButtonList 
+      <ButtonList 
         v-model="languages"
         :categories="LANGUAGES"
         :limit="1"
         class="filter-button lang-buttons"
+        @click="handleLanguageClick"
       />
     <div class="filter-heading">Time periods</div>
       <CategoryButtonList 

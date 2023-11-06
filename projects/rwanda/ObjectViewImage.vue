@@ -11,13 +11,13 @@ const props = defineProps<{
 
 const diana = inject("diana") as DianaClient;
 
-const object = ref<Image>();
+const object = ref();
 const iiif_url = ref<string>();
 
 onMounted(async() => {
   if (props.id) {
     object.value = await diana.get("image", props.id.toString(), { depth: 1 });
-    iiif_url.value = object.value.iiif_file + "/info.json"
+    iiif_url.value = object.value.iiif_file
     console.log(object.value)
     console.log(iiif_url.value)
   }
@@ -30,14 +30,11 @@ onMounted(async() => {
   <div class="metadata">
     <ObjectViewComponent :title="object?.title" back="/">
       <p v-if="object?.description" class="my-5 object-title">{{ object?.description }}</p>
-<!--       <div v-if="object?.informants && object.informants.length > 0">
-        <p v-for="info in object?.informants">Informants: {{ info.custom_id }}</p>
-      </div> -->
     </ObjectViewComponent>
   </div>
 
   <section class="illustration flex">
-    <OpenSeadragon v-if="iiif_url" :src="iiif_url" class="flex-1" />
+    <OpenSeadragon v-if="iiif_url" :src="`${iiif_url}/info.json`" class="flex-1" />
 
     <div id="ToolbarVertical">
       <a id="full-page" href="#full-page">

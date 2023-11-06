@@ -16,6 +16,7 @@ import About from "./About.vue";
 import AutocompleteComponent from "@/components/input/AutocompleteComponent.vue";
 import { useRwandaMap } from "./map.composable";
 import { rwandaStore } from "./rwandaStore";
+import { useRoute } from "vue-router";
 
 function getName(f: Feature): string {
   const place = f.getProperties() as Place;
@@ -30,21 +31,13 @@ const visibleAbout = ref(false);
 
 const store = mapStore();
 const { params } = storeToRefs(store);
-const { periodsLayer, periods, sources, informants, sourcesLayer, placeTypeLayer, placeTypes, allLayer, informantsLayer, coordinate } = storeToRefs(rwandaStore());
+const { periodsLayer, periods, sources, informants, sourcesLayer, placeTypeLayer, placeTypes, allLayer, informantsLayer, coordinate, languagesLayer, languages } = storeToRefs(rwandaStore());
 const { selectedFeature } = storeToRefs(store);
 
 //MapViewControls
 const { searchText } = useRwandaMap();
 function displayName(p: Place): string {
   return formatNames(p.id, p.names);
-}
-
-//when selectedFeature changes, draw geometry on map - TODO
-const drawGeometry = () => {
-  if (selectedFeature.value) {
-    coordinate.value = selectedFeature.value.getGeometry();
-    console.log(coordinate.value)    
-  }
 }
 
 //zoom to place on click
@@ -67,6 +60,7 @@ watch(
   },
   { immediate: true }
 );
+
 </script>
 
 <template>
@@ -100,10 +94,28 @@ watch(
     <div class="map-container">
       <MapComponent :min-zoom="14" :max-zoom="19" :restrictExtent="[30.01, -1.98, 30.1, -1.92]" :shouldAutoMove="true" class="greyscale">
         <template #layers>
-          <!-- Sources layer just filtering interviews atm -->
+          <!-- Source layer -->
           <DianaPlaceLayer 
-            v-if="sourcesLayer"
-            path="rwanda/search/text"
+            v-if="sources[0] == 'images'"
+            path="rwanda/search/image"
+          >
+          <ol-style>
+              <ol-style-stroke color="rgb(180,100,100)" :width="3"></ol-style-stroke>
+            </ol-style>
+            <FeatureSelection/>
+          </DianaPlaceLayer>
+          <DianaPlaceLayer 
+            v-if="sources[0] == 'interviews'"
+            path="rwanda/search/text/"
+          >
+          <ol-style>
+              <ol-style-stroke color="rgb(180,100,100)" :width="3"></ol-style-stroke>
+            </ol-style>
+            <FeatureSelection/>
+          </DianaPlaceLayer>
+          <DianaPlaceLayer 
+            v-if="sources[0] == 'documents'"
+            path="rwanda/search/document/"
           >
           <ol-style>
               <ol-style-stroke color="rgb(180,100,100)" :width="3"></ol-style-stroke>
@@ -149,7 +161,19 @@ watch(
             </ol-style>
               <FeatureSelection/>
             </DianaPlaceLayer>  
-            <!-- TODO Lamguage layer -->
+            <!-- Language layer -->
+            <DianaPlaceLayer 
+            v-if="languagesLayer"
+            path="rwanda/search/language/"
+            :params = "{
+              q: languages[0],
+            }"
+            >
+            <ol-style>
+              <ol-style-stroke color="#b464b4" :width="3"></ol-style-stroke>
+            </ol-style>
+              <FeatureSelection/>
+            </DianaPlaceLayer>  
             <!-- Initial layer -->
           <DianaPlaceLayer
             v-if="allLayer"
@@ -171,9 +195,6 @@ watch(
       </MapComponent>
     </div>
   </template>
-    <!-- <template #details> -->
-  <!-- <MapViewPreview /> -->
-<!-- </template> -->
 </MainLayout>
 </template>
 
