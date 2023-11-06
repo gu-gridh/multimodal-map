@@ -61,32 +61,17 @@ table td {
 }
 
 .place-gallery-container .dropdown {
-    color: white;
-    border-radius: 5px;
-    background-color: rgb(180, 100, 100);
-    padding: 3px 10px;
-    padding-right: 30px;
-    width: auto;
-    height: auto;
-    text-align: left;
-    background-image: url("/dropdown-arrow.png");
-    background-size: 15px;
-    background-repeat: no-repeat;
-    background-position: calc(100% - 10px) 10px;
-    -webkit-appearance: none;
-    text-transform: capitalize;
-    margin-left: 130px;
+    margin-right:10px;
     margin-bottom:15px;
+    float:left;
 }
 
-
-.dropdown:hover {
-    background-color: rgb(160, 80, 80);
+.content-table {
+  width:100%;
 }
 
-.dropdown:focus {
-    outline: none;
-    outline-color: rgb(140, 60, 60) !important;
+.content-table-date{
+    width:100%;
 }
 
 .content-table td {

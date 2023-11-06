@@ -8,8 +8,8 @@
       @toggle="toggle(key)"
     />
   </div>
-  <select v-else :value="modelValue[0]" class="dropdown" @change="dropdownToggle($event)">
-    <option value="all">all</option>
+  <select v-else :value="modelValue[0]" class="dropdown theme-color-background" @change="dropdownToggle($event)">
+    <option value="all">All</option>
     <option 
       v-for="(label, key) in categories"
       :key="key"
@@ -78,29 +78,5 @@ function handleToggle(key: string) {
 </script>
 
 <style scoped>
-.dropdown {
-    color: white;
-    border-radius: 5px;
-    background-color: rgb(180, 100, 100);
-    padding: 3px 10px;
-    padding-right: 30px;
-    width: auto;
-    height: auto;
-    background-image: url("/dropdown-arrow.png");
-    background-size: 15px;
-    background-repeat: no-repeat;
-    background-position: calc(100% - 10px) 10px;
-    -webkit-appearance: none;
-    text-transform: capitalize;
-  
-}
 
-.dropdown:hover {
-    background-color: rgb(160, 80, 80);
-}
-
-.dropdown:focus {
-    outline: none;
-    outline-color: rgb(140, 60, 60) !important;
-}
 </style>

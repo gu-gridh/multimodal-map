@@ -5,7 +5,7 @@
 #app .back-button {
   width: 30px;
   height: 30px;
-  margin-top:5px;
+  margin-top:0px;
 }
 
 
@@ -21,10 +21,14 @@
 .metadata .objects {
   margin-top: 30px;
   font-weight: 200;
-  font-size: 1.2em;
+  font-size: 1.1em;
   line-height: 1.2;
   text-align: left;
   padding: 0px 40px 0px 0px;
+}
+
+.metadata .objects .labels {
+  margin-bottom:20px;
 }
 
 .metadata .objects .label {
@@ -39,7 +43,20 @@
 
 .metadata .objects .description {
   font-size: 1vw;
+  margin-top:0px;
 }
+
+.metadata .objects .imagedata .description {
+  font-size: 1vw;
+  margin-top:0px;
+  margin-bottom:0px;
+}
+.metadata .theme-button {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  padding: 0px 0px;
+}
+
 
 @media screen and (max-width: 1500px) {
   .metadata .objects .description {
@@ -55,10 +72,3 @@
   height: calc(100vh - 80px);
 }
 
-.download-button {
-  background: url("@/assets/interface/downloadbuttonwhite.png");
-  background-size: 25px;
-  background-repeat: no-repeat;
-  padding-left: 45px;
-  background-position: 8px 8px;
-}

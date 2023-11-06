@@ -120,15 +120,16 @@ font-size:1.9em!important;
 .about-logo-top-right {
   display: block;
   pointer-events: none;
-  width: 250px;
-  height: 150px;
+  width: 180px;
+  height: 180px;
   position: absolute;
-  background: url(/images/logo-isvroma.png);
+  background: url(/images/logo-isvroma3.png);
   background-repeat: no-repeat;
   background-size: contain;
   top: 30px;
-  right: 60px;
-  opacity: 0.7;
+  right: 40px;
+  opacity: 0.9;
+  transform:rotate(0deg);
 }
 
 

@@ -24,9 +24,9 @@ const { categories, tags, necropoli, tombType, tagsLayerVisible, dataParams, img
 const store = mapStore();
 const etruscan = etruscanStore();  // Get the instance of etruscanStore
 const { selectedFeature } = storeToRefs(store);
-const minZoom = 14;
+const minZoom = 11;
 const maxZoom = 20;
-const featureZoom = 16; //value between minZoom and maxZoom when you select a point 
+const featureZoom = 15; //value between minZoom and maxZoom when you select a point 
 const visibleAbout = ref(false);
 const showGallery = ref(false);
 let visited = true; // Store the visited status outside of the hook
@@ -56,7 +56,7 @@ watch(
   (newCoordinates, oldCoordinates) => {
     if (newCoordinates !== oldCoordinates && newCoordinates) {
       store.updateCenter(newCoordinates);
-      store.updateZoom(17);
+      store.updateZoom(16);
     }
   },
 );
@@ -169,7 +169,7 @@ watch(showGallery, (newValue) => {
           :shouldAutoMove="true" 
           :min-zoom=minZoom
           :max-zoom=maxZoom 
-          :restrictExtent="[11.9, 42.15, 12.2, 42.4]"    
+          :restrictExtent="[11.4, 42.15, 12.4, 42.4]"    
         > 
           <template #layers>
             <GeoJsonWebGLRenderer
