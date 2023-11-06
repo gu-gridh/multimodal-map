@@ -1,8 +1,8 @@
 <template>
   <footer id="footer">
     <div id="developer-info">
-      <a href="">Github repository and development</a> <br>
-      <a href="">Database and API documentation</a> <br>
+      <a href="https://github.com/gu-gridh/multimodal-map" target="_blank">Github repository and development</a> <br>
+      <a href="https://github.com/gu-gridh/multimodal-map" target="_blank">Database and API documentation</a> <br>
     </div>
     <a href="https://dh.gu.se/">
       <div id="PartnerLogo">+ ISVROMA</div>
@@ -76,6 +76,10 @@ padding:0px 0px 0px 15px;
  border-width: 0 0 0 0.5px;
  border-color:white;
  border-style:dashed;
+}
+
+#developer-info a:link{
+  font-weight:200;
 }
 
 </style>
