@@ -59,7 +59,7 @@ body {
   background-color: transparent !important;
   position: absolute;
   height: 100vh;
-  width: 50%;
+  width: 52%;
   min-width: 900px;
   z-index: 100;
   pointer-events: none;
@@ -203,7 +203,6 @@ body {
 }
 
 .dropdown {
-  font-family: "Barlow Condensed", sans-serif !important;
     color: white;
     border-radius: 5px;
     padding: 4px 10px;
@@ -213,7 +212,7 @@ body {
     background-image: url("/dropdown-arrow.png");
     background-size: 15px;
     background-repeat: no-repeat;
-    background-position: calc(100% - 10px) 10px;
+    background-position: calc(100% - 10px) 55%;
     -webkit-appearance: none;
     /* text-transform: capitalize; */
 }
@@ -226,6 +225,32 @@ body {
 .dropdown:focus {
   outline: none;
 }
+
+/* really large screens - settings to not make text too large*/
+@media screen and (min-width: 2100px) {
+
+  html,
+  body {
+    font-size: 1.2em !important;
+  }
+
+  .main-title {
+    font-size: 150px;
+  }
+
+  .sub-title {
+    font-size: 70px;
+  }
+
+  .section-title {
+    font-size: 1.3em;
+  }
+
+  #app .left-pane {
+    width: 1050px;
+  }
+}
+
 /* Smaller screens - settings to not make text too small*/
 
 

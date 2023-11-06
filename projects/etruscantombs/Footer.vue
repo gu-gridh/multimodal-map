@@ -1,5 +1,9 @@
 <template>
   <footer id="footer">
+    <div id="developer-info">
+      <a href="https://github.com/gu-gridh/etruscantombs#etruscan-tombs" target="_blank">GitHub repository and development</a> <br>
+      <a href="https://github.com/gu-gridh/etruscantombs#loading-data" target="_blank">Database and API documentation</a> <br>
+    </div>
     <a href="https://dh.gu.se/">
       <div id="PartnerLogo">+ ISVROMA</div>
     </a>
@@ -24,6 +28,7 @@
   position: absolute;
   z-index: 3000;
   bottom: -2px;;
+  font-family: "Barlow Condensed", sans-serif;
 }
 
 a {
@@ -43,7 +48,6 @@ a {
   line-height: 0.4;
   padding: 30px 0px 10px 0px;
   vertical-align: middle;
-  font-family: "Barlow Condensed", sans-serif;
 }
 
 #PartnerLogo {
@@ -59,7 +63,23 @@ a {
   line-height: 0.4;
   padding: 30px 0px 10px 0px;
   vertical-align: middle;
-  font-family: "Barlow Condensed", sans-serif;
+}
+
+#developer-info {
+  float: left;
+  margin-left:50px;
+  margin-top:15px;
+padding:0px 0px 0px 15px;
+ font-size:1.5em;
+ line-height:1.4;
+ font-weight:200;
+ border-width: 0 0 0 0.5px;
+ border-color:white;
+ border-style:dashed;
+}
+
+#developer-info a:link{
+  font-weight:200;
 }
 
 </style>
