@@ -96,9 +96,26 @@ watch(
         <template #layers>
           <!-- Sources layer just filtering interviews atm -->
           <DianaPlaceLayer 
-            v-if="sourcesLayer"
-            path="`rwanda/search/" 
-            :params = sources[0]
+            v-if="sources[0] == 'images'"
+            path="rwanda/search/image"
+          >
+          <ol-style>
+              <ol-style-stroke color="rgb(180,100,100)" :width="3"></ol-style-stroke>
+            </ol-style>
+            <FeatureSelection/>
+          </DianaPlaceLayer>
+          <DianaPlaceLayer 
+            v-if="sources[0] == 'interviews'"
+            path="rwanda/search/text/"
+          >
+          <ol-style>
+              <ol-style-stroke color="rgb(180,100,100)" :width="3"></ol-style-stroke>
+            </ol-style>
+            <FeatureSelection/>
+          </DianaPlaceLayer>
+          <DianaPlaceLayer 
+            v-if="sources[0] == 'documents'"
+            path="rwanda/search/document/"
           >
           <ol-style>
               <ol-style-stroke color="rgb(180,100,100)" :width="3"></ol-style-stroke>
