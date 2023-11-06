@@ -26,6 +26,8 @@ const placeDescription = ref()
 const placeNames: any = ref([])
 const placeGeoJson = ref()
 const coordinates: any = ref([])
+const interviewsToShow = ref(1) //how many interviews to show in preview
+const showMore = ref(true)
 
 //Capitalize first letter since some are lowercase in database
 const capitalize = (word: String) => {
@@ -60,6 +62,7 @@ const fetchInterviews = async (id: any) => {
       interviews.value.push(newInterview);
     }
     fetchInformants();
+    showMoreInterviews();
   } else {
     informants.value = [];
   }
@@ -148,10 +151,17 @@ watch(selectedFeature, () => {
 
 function deselectPlace() {
   selectedFeature.value = undefined;
-  //change zoom to original state - This is not working anymore
   router.push(`/`)
   store.updateCenter([3346522.1909503858, -217337.69352852934])
   store.updateZoom(15)
+}
+
+//show more interviews if more than 1
+const showMoreInterviews =() => {
+  if(interviews.value.length > 1 && interviewsToShow.value < interviews.value.length){
+    showMore.value = true
+  }
+  else showMore.value = false
 }
 
 </script>
@@ -173,17 +183,18 @@ function deselectPlace() {
             </div>
         </div>
         <!-- Interview if avaliable -->
-        <div class="place-card" v-if="interviews && interviews.length != 0">
+        <div class="place-card citation" v-if="interviews && interviews.length != 0">
             <span v-for="text in interviews">
                 <p>{{ text.title }}</p>
                 <p style="font-style: italic;">{{ text.text}}</p>
             </span>
-            <!-- Informants if avaliable -->
+             <!-- Informants if avaliable -->
             <div v-if="informants && informants.length != 0">
                  <span v-for="informant in informants">
                     <p>/{{ informant.custom_id }}</p>
                 </span>
             </div>
+            <button v-if="showMore" @click="interviewsToShow += 1">Show more</button>
         </div>
         <div v-if="images.length != 0" class="masonry">
         <div>

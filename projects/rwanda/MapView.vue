@@ -94,7 +94,7 @@ watch(
     <div class="map-container">
       <MapComponent :min-zoom="14" :max-zoom="19" :restrictExtent="[30.01, -1.98, 30.1, -1.92]" :shouldAutoMove="true" class="greyscale">
         <template #layers>
-          <!-- Sources layer just filtering interviews atm -->
+          <!-- Source layer -->
           <DianaPlaceLayer 
             v-if="sources[0] == 'images'"
             path="rwanda/search/image"
@@ -195,9 +195,6 @@ watch(
       </MapComponent>
     </div>
   </template>
-    <!-- <template #details> -->
-  <!-- <MapViewPreview /> -->
-<!-- </template> -->
 </MainLayout>
 </template>
 
