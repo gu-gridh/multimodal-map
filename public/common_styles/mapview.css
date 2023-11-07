@@ -226,12 +226,12 @@ body {
   outline: none;
 }
 
-/* really large screens - settings to not make text too large*/
-@media screen and (min-width: 2100px) {
+/* large screens - settings to not make UI too large*/
+@media screen and (min-width: 1900px) {
 
   html,
   body {
-    font-size: 1.2em !important;
+    font-size: 1.1em !important;
   }
 
   .main-title {
@@ -247,7 +247,7 @@ body {
   }
 
   #app .left-pane {
-    width: 1050px;
+    width: 950px;
   }
 }
 
