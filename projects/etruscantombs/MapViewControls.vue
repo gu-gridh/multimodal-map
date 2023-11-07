@@ -4,7 +4,7 @@
     <div v-if="areMapPointsLoaded">
 
       <!-- This creates a 2-column section with for the controls -->
-      <div style="width:98%; float:left; display:flex; flex-direction:row; justify-content:space-between;">
+      <div style="width:98%; float:left; display:flex; flex-direction:row; justify-content:space-between; margin-top:10px;">
 
         <div class="tag-section">
           <div class="section-title">{{ $t('dataset') }}</div>
