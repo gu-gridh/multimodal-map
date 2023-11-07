@@ -194,6 +194,26 @@
 
 
 
+/* large screens - settings to not make UI too large*/
+@media screen and (min-width: 1900px) {
+
+  .placecard-title {
+    font-size: 2.3em;
+  }
+
+  .placecard-subtitle {
+    font-size: 1.9em;
+  }
+
+  .placecard-text{
+  font-size: 1.1em;
+  }
+
+  .placecard-metadata-content{
+    font-size: 1.0em;
+    }
+}
+
 
 @media screen and (max-width: 1300px) {
 .metadata-item {
@@ -228,7 +248,7 @@
 }
 
 
-/* Adaptations to various screen sizes */
+/* Adaptations to mobile screen sizes */
 
 
 @media screen and (max-width: 900px) {
@@ -265,7 +285,5 @@
   .placecard-metadata-content .preview{
     display:none;
 
-    }
-
-  
+    }  
 }
