@@ -28,7 +28,6 @@ const placeGeoJson = ref()
 const coordinates: any = ref([])
 const interviewsToShow = ref(1) //how many interviews to show in preview
 const showMore = ref(true)
-const documents = ref([])
 
 //Capitalize first letter since some are lowercase in database
 const capitalize = (word: String) => {
@@ -198,7 +197,7 @@ const showMoreInterviews =() => {
             <button v-if="showMore" @click="interviewsToShow += 1">Show more</button>
         </div>
         <!-- If documents avaliable-->
-        <div v-if="documents.length">
+        <div>
           Documents
           <router-link to="/document/1">
             <div style="font-style: italic;">Filename</div>
