@@ -18,7 +18,6 @@ onMounted(async() => {
   if (props.id) {
     object.value = await diana.get("image", props.id.toString(), { depth: 1 });
     iiif_url.value = object.value.iiif_file
-    console.log(object.value)
     console.log(iiif_url.value)
   }
   else console.log("no image id")
@@ -60,7 +59,7 @@ onMounted(async() => {
 .metadata {
   background-color: black !important;
   overflow:hidden !important;
-  width: 450px !important;
+  width: 350px !important;
 }
 
 
