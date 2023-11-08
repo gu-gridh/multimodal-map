@@ -8,5 +8,5 @@ export default <RephotographyProject>{
   projection: "EPSG:3857",
   center: [11.1, 79.55],
   zoom: 11,
-  timeRange: [1600, new Date().getFullYear()],
+  timeRange: [1550, new Date().getFullYear()],
 };

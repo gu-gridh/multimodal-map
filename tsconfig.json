@@ -5,7 +5,7 @@
     "src/**/*",
     "src/**/*.vue",
     "src/**/*.json",
-    "projects/**/*"
+    "projects/rephotography/**/*"
   ],
   "compilerOptions": {
     "baseUrl": ".",
