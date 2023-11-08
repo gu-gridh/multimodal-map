@@ -68,7 +68,9 @@ const fetchInterviews = async (id: any) => {
     informants.value = [];
   }
 }
-const fetchImages = async (id: Number) => {
+const fetchImages = async (id: any) => {
+  if(isNaN(id)) return
+  else
   images.value = await diana.listAll<Image>("image/", { place_of_interest: id });
 }
 const featureZoom = 19;

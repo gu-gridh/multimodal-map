@@ -100,7 +100,7 @@ watch(
             path="rwanda/search/image"
           >
           <ol-style>
-              <ol-style-stroke color="rgb(180,100,100)" :width="3"></ol-style-stroke>
+              <ol-style-stroke color="#2b90c8" :width="3"></ol-style-stroke>
             </ol-style>
             <FeatureSelection/>
           </DianaPlaceLayer>
@@ -109,7 +109,7 @@ watch(
             path="rwanda/search/text/"
           >
           <ol-style>
-              <ol-style-stroke color="rgb(180,100,100)" :width="3"></ol-style-stroke>
+              <ol-style-stroke color="#2b90c8" :width="3"></ol-style-stroke>
             </ol-style>
             <FeatureSelection/>
           </DianaPlaceLayer>
@@ -118,7 +118,7 @@ watch(
             path="rwanda/search/document/"
           >
           <ol-style>
-              <ol-style-stroke color="rgb(180,100,100)" :width="3"></ol-style-stroke>
+              <ol-style-stroke color="#2b90c8" :width="3"></ol-style-stroke>
             </ol-style>
             <FeatureSelection/>
           </DianaPlaceLayer>

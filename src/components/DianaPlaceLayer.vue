@@ -18,7 +18,6 @@ const geoJsonFormat = new format.GeoJSON();
 
 const url = computed(() => {
   const params = { page_size: "500", ...props.params };
-  console.log(DIANA_BASE + props.path + "?" + new URLSearchParams(params).toString())
   return DIANA_BASE + props.path + "?" + new URLSearchParams(params).toString();
   
  /*  const finalUrl = DIANA_BASE + props.path + "?" + new URLSearchParams(params).toString();
