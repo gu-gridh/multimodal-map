@@ -56,6 +56,11 @@ const images = {
 </template>
 
 <style scoped>
+html,
+body {
+  background-color:black!important;
+}
+
 #app .no-touch{
   pointer-events:none !important;
 }
@@ -82,7 +87,7 @@ const images = {
   width: 100%!important;
   height: auto!important;
   max-height: 50vh!important;
-  background-color: black;
+  background-color: black
 }
 }
 

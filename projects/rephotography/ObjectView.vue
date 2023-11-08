@@ -33,7 +33,7 @@ const objectComponent = {
 </script>
 
 <template>
-  <div style="pointer-events:none !important;">
+  <div id="object-container" style="pointer-events:none !important;">
   <article v-if="object">
     <component :is="objectComponent" :object="object" :id="Number(id)" />
   </article>
@@ -41,6 +41,12 @@ const objectComponent = {
 </template>
 
 <style>
+#object-container{
+  background-color: black;
+  height:100vh;
+  width:100%;
+}
+
 .metadata {
   float: left;
   width: 450px;
