@@ -20,7 +20,6 @@ html,
 body {
   font-family: "Barlow Condensed", sans-serif !important;
   background-color: rgb(200, 200, 200) !important;
-
 }
 
 .theme-color {
