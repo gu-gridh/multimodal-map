@@ -56,25 +56,21 @@ const handleSourcesClick = (key: string) => {
 }
 
 const handlePlaceTypeClick = (key: string) => {
-  console.log("Clicked: ", key);
   placeTypeLayer.value = true
   allLayer.value = false
 }
 
 const handlePeriodClick = (key: string) => {
-  console.log("Clicked: ", key);
   periodsLayer.value = true
   allLayer.value = false
 }
 
 const handleInformantClick = (key: string) => {
-  console.log("Clicked: ", key);
   informantsLayer.value = true
   allLayer.value = false
 }
 
 const handleLanguageClick = (key: string) => {
-  console.log("Clicked: ", key);
   languagesLayer.value = true
   allLayer.value = false
 }

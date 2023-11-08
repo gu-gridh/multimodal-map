@@ -21,7 +21,6 @@ const router = useRouter();
 watchEffect(async () => {
   if (selectedFeature.value) {
     featureId.value = selectedFeature.value.getId();
-    console.log('featureId', featureId.value)
     //change url
     router.push(`/place/${featureId.value}`)
   }
