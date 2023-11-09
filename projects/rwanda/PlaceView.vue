@@ -116,11 +116,9 @@ const zoomMap = () => {
       store.updateZoom(15)
     }
 }
-//TODO
+
 const fetchDocuments = async (id: number) => {
   documents.value = await diana.listAll("document/", { place_of_interest: id});
-
-  console.log(documents.value)
 }
 
 //fetch place data
