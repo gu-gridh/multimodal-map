@@ -106,7 +106,7 @@ import { etruscanStore } from "./store";
 import type { EtruscanProjectProject } from "./types";
 import { DianaClient } from "@/assets/diana";
 import { transform } from 'ol/proj';
-import apiConfig from "./apiConfig.js"
+import apiConfig from "./apiConfig"
 
 const config = inject<EtruscanProject>("config");
 const dianaClient = new DianaClient("etruscantombs"); // Initialize DianaClient

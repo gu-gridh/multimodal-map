@@ -45,7 +45,7 @@ import Masonry from 'masonry-layout';
 import imagesLoaded from 'imagesloaded';
 import InfiniteScroll from 'infinite-scroll';
 import { etruscanStore } from "./store";
-import apiConfig from "./apiConfig.js";
+import apiConfig from "./apiConfig";
 
 export default {
   setup() {

@@ -3,6 +3,7 @@ import router from './router'
 import { ref, inject, onMounted } from "vue"
 import markerIcon from "@/assets/marker-red.svg";
 import i18n from '../../src/translations/etruscan';
+import apiConfig from "./apiConfig"
 
 const props = defineProps<{
   id: string;
@@ -36,7 +37,7 @@ const minZoom = ref(12)
 const format = inject("ol-format");
 const geoJson = new format.GeoJSON();
 
-const url = "https://diana.dh.gu.se/api/etruscantombs/geojson/place/" + props.id
+const url = `${apiConfig.PLACE}${props.id}`;
 
 const setCenter = async () => {
   try {
@@ -55,7 +56,7 @@ const setCenter = async () => {
 
 const fetchPlaceData = async () => {
   try {
-    const response = await fetch(`https://diana.dh.gu.se/api/etruscantombs/geojson/place/?id=${props.id}`);
+    const response = await fetch(`${apiConfig.PLACE}?id=${props.id}`);
     if (response.ok) {
       const data = await response.json();
       const feature = data.features[0];

@@ -8,6 +8,7 @@ import type {
 } from "./types";
 import type { DianaClient } from "@/assets/diana";
 import OpenSeadragon from "@/components/OpenSeadragonSequence.vue";
+import apiConfig from "./apiConfig"
 
 const { selectedFeature } = storeToRefs(mapStore());
 const { placeId } = storeToRefs(etruscanStore());
@@ -55,7 +56,7 @@ watchEffect(async () => {
       hasImages.value = false;
       imageUrls.value = [];
       // If no images are available, fetch details from `geojson/place` endpoint
-      const response = await fetch(`https://diana.dh.gu.se/api/etruscantombs/geojson/place/?id=${placeId}`);
+      const response = await fetch(`${apiConfig.PLACE}?id=${placeId}`);
       const geojsonData = await response.json();
       if (geojsonData.features.length > 0) {
         const feature = geojsonData.features[0];

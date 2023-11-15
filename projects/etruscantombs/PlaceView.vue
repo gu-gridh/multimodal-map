@@ -8,6 +8,7 @@ import MapComponent from "@/components/MapComponent.vue";
 import i18n from '../../src/translations/etruscan';
 import { etruscanStore } from "./store";
 import { useRoute } from 'vue-router';
+import apiConfig from "./apiConfig";
 
 const sort = ref('type');
 const etruscan = etruscanStore();
@@ -69,7 +70,7 @@ onMounted(async () => {
 
     // Check if placeId is undefined or null and fetch for the id based on the name
     if (etruscan.placeId === null || etruscan.placeId === undefined) {
-        const response = await fetch(`https://diana.dh.gu.se/api/etruscantombs/geojson/place/?name=${urlId}`);
+        const response = await fetch(`${apiConfig.PLACE}?name=${urlId}`);
         const data = await response.json();
 
         if (data.features && data.features.length > 0) {
@@ -84,7 +85,7 @@ onMounted(async () => {
             diana.listAll<Document>("document", { place: id.value, depth: 2 }),
             diana.listAll<Pointcloud>("objectpointcloud", { tomb: id.value, depth: 2 }),
             diana.listAll<Mesh>("object3dhop", { tomb: id.value, depth: 2 }),
-            fetch('https://diana.dh.gu.se/api/etruscantombs/image/?tomb=' + id.value + '&type_of_image=1&type_of_image=5&depth=2').then(res => res.json())
+            fetch(`${apiConfig.IMAGE}?tomb=${id.value}&type_of_image=1&type_of_image=5&depth=2`).then(res => res.json())
         ]);
 
         images.value = fetchedImages.filter(image => image.published);
@@ -116,7 +117,7 @@ function groupAndSortByYear(allItems: (Image | Observation | Document | Pointclo
 }
 
 function createPlaceURL() {
-    var url = "https://diana.dh.gu.se/admin/etruscantombs/place/" + id.value;
+    const url = `${apiConfig.ADMIN_PLACE}${id.value}`;
     window.open(url, "_blank");
 }
 </script>
@@ -218,9 +219,11 @@ function createPlaceURL() {
                         </div>
                     </tr>
                     <tr v-if="images.length > 0">
-
-                        <td><a :href="`https://diana.dh.gu.se/admin/etruscantombs/image/?q=${route.params.name}`">{{ $t('photographs') }}</a></td>
-
+                        <td>
+                            <a :href="`${apiConfig.ADMIN_IMAGE}?q=${route.params.name}`">
+                                {{ $t('photographs') }}
+                            </a>
+                        </td>
                         <div v-for="(image, index) in images" :key="index" class="image-placeholder">
                             <div class="image-square" v-if="'iiif_file' in image">
                                 <router-link :to="`/detail/image/${image.id}`">
