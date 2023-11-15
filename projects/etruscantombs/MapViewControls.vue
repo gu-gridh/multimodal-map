@@ -97,20 +97,20 @@
 </template>
 
 <script setup lang="ts">
-// @ts-nocheck
 import { inject, ref, onMounted, computed, defineProps, watch } from "vue";
 import CategoryButtonList from "./CategoryButtonDropdown.vue";
 import CategoryButton from "@/components/input/CategoryButtonList.vue";
 import { storeToRefs } from "pinia";
 import { etruscanStore } from "./store";
-import type { EtruscanProjectProject } from "./types";
+import type { EtruscanProject } from "./types";
 import { DianaClient } from "@/assets/diana";
 import { transform } from 'ol/proj';
 import apiConfig from "./apiConfig"
+import { nextTick } from 'vue';
 
 const config = inject<EtruscanProject>("config");
 const dianaClient = new DianaClient("etruscantombs"); // Initialize DianaClient
-const { categories, years, tags, necropoli, tombType, dataParams, selectedNecropolisCoordinates, enable3D, enablePlan, areMapPointsLoaded } = storeToRefs(etruscanStore());
+const { categories, tags, necropoli, tombType, dataParams, selectedNecropolisCoordinates, enable3D, enablePlan, areMapPointsLoaded } = storeToRefs(etruscanStore());
 // Create a ref for last clicked category
 const lastClickedCategory = ref('');
 
@@ -121,6 +121,7 @@ const totalThreedhop = ref(0);
 const totalPointcloud = ref(0);
 const initialTombCount = ref(289);
 const currentTombCount = ref(0);
+const visibleAbout = ref(false);
 
 const CATEGORIES = {
   all: "All types",
@@ -137,11 +138,6 @@ const currentNecropolis = ref(null);
 const currentTombType = ref(null);
 
 const baseURL = `${apiConfig.PLACE}?page_size=500`;
-
-const YEARS = {
-  MIN: config?.timeRange?.[0] || 0,
-  MAX: config?.timeRange?.[1] || new Date().getFullYear(),
-};
 
 onMounted(async () => {
   await fetchDataAndPopulateRef("epoch", TAGS);
@@ -237,7 +233,7 @@ const fetchData = async (url: string) => {
 watch(
   () => dataParams.value,
   async (newTagParams, oldTagParams) => {
-   const queryParams = new URLSearchParams(newTagParams);
+   const queryParams = new URLSearchParams(Object.fromEntries(Object.entries(newTagParams).map(([k, v]) => [k, String(v)])));
    const urlWithParams = `${baseURL}&${queryParams.toString()}`;
    await fetchData(urlWithParams);
   },
@@ -249,22 +245,20 @@ const toggleAboutVisibility = async () => {
   visibleAbout.value = !visibleAbout.value;
 };
 
-function handleSelectionClick(selectedValue, targetRef) {
+function handleSelectionClick(selectedValue: any, targetRef: any) {
   clearAll();
   const selectedCoordinates = NECROPOLICoordinates.value[selectedValue];
   if (selectedCoordinates) {
     const [x, y] = selectedCoordinates;
 
-    // Convert them to Web Mercator (EPSG:3857)
-    const webMercatorCoordinates = transform([x, y], 'EPSG:4326', 'EPSG:3857');
+    const convertedCoordinates = transform([x, y], 'EPSG:4326', 'EPSG:3857');
+    if (Array.isArray(convertedCoordinates) && convertedCoordinates.length === 2) {
+        selectedNecropolisCoordinates.value = convertedCoordinates as [number, number];
+    } else {
+        console.error("Invalid coordinate format after transformation.");
+    }
 
-    // Update the selectedNecropolisCoordinates in the store
-    selectedNecropolisCoordinates.value = webMercatorCoordinates;
-
-  } else {
-    // console.log("Coordinates for selected necropolis not found");
   }
-
 }
 
 function clearAll() {
@@ -273,7 +267,7 @@ function clearAll() {
   enable3D.value = false;
   tombType.value = ["all"];
   lastClickedCategory.value = '';
-  tags.value = '';
+  tags.value = [];
 }
 
 </script>
