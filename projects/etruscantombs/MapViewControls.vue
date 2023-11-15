@@ -101,12 +101,12 @@
 import { inject, ref, onMounted, computed, defineProps, watch } from "vue";
 import CategoryButtonList from "./CategoryButtonDropdown.vue";
 import CategoryButton from "@/components/input/CategoryButtonList.vue";
-// import RangeSlider from "@/components/input/RangeSlider.vue";
 import { storeToRefs } from "pinia";
 import { etruscanStore } from "./store";
 import type { EtruscanProjectProject } from "./types";
 import { DianaClient } from "@/assets/diana";
 import { transform } from 'ol/proj';
+import apiConfig from "./apiConfig.js"
 
 const config = inject<EtruscanProject>("config");
 const dianaClient = new DianaClient("etruscantombs"); // Initialize DianaClient
@@ -136,6 +136,8 @@ const currentTag = ref(null);
 const currentNecropolis = ref(null);
 const currentTombType = ref(null);
 
+const baseURL = `${apiConfig.PLACE}?page_size=500`;
+
 const YEARS = {
   MIN: config?.timeRange?.[0] || 0,
   MAX: config?.timeRange?.[1] || new Date().getFullYear(),
@@ -146,8 +148,7 @@ onMounted(async () => {
   await fetchDataAndPopulateRef("necropolis", NECROPOLI);
   await fetchDataAndPopulateRef("typeoftomb", TOMBTYPE);
 
-  const url = `https://diana.dh.gu.se/api/etruscantombs/geojson/place/?page_size=500`;
-  const response = await fetch(url);
+  const response = await fetch(baseURL);
   const data = await response.json();
   initialTombCount.value = data.count //set total tombcount
 });
@@ -236,8 +237,9 @@ const fetchData = async (url: string) => {
 watch(
   () => dataParams.value,
   async (newTagParams, oldTagParams) => {
-    const url = `https://diana.dh.gu.se/api/etruscantombs/geojson/place/?page_size=500&${new URLSearchParams(newTagParams).toString()}`;
-    await fetchData(url);
+   const queryParams = new URLSearchParams(newTagParams);
+   const urlWithParams = `${baseURL}&${queryParams.toString()}`;
+   await fetchData(urlWithParams);
   },
   { immediate: true }
 );

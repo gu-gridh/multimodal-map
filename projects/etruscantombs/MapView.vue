@@ -19,6 +19,7 @@ import { onMounted, watch } from "vue";
 import { nextTick } from "vue";
 import GeoJSON from "ol/format/GeoJSON";
 import Title from "./Title.vue"
+import apiConfig from "./apiConfig.js"
 
 const { categories, tags, necropoli, tombType, tagsLayerVisible, dataParams, imgParams, selectedNecropolisCoordinates, enable3D, enablePlan } = storeToRefs(etruscanStore());
 const store = mapStore();
@@ -99,11 +100,10 @@ const tagParams = computed(() => {
   const queryString = new URLSearchParams(params).toString();
 
   // Concatenate the base URL with the search string to form the full URL
-  const fullUrl = queryString ? 
-    `https://diana.dh.gu.se/api/etruscantombs/geojson/place/?page_size=500&${queryString}` :
-    `https://diana.dh.gu.se/api/etruscantombs/geojson/place/?page_size=500`;
+const fullUrl = queryString 
+    ? `${apiConfig.PLACE}?page_size=500&${queryString}`
+    : `${apiConfig.PLACE}?page_size=500`;
 
-  // console.log("Generated URL:", fullUrl); // Debug line
   etruscan.imgParams = params;
   return params;
 });
