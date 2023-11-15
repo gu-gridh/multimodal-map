@@ -14,7 +14,7 @@ import Icon from 'ol/style/Icon';
 import { mapStore } from "@/stores/store";
 import { storeToRefs } from "pinia";
 import Select from 'ol/interaction/Select';
-import { etruscanStore } from "../../projects/etruscantombs/store";
+import { etruscanStore } from "./store";
 import { pointerMove } from 'ol/events/condition';
 import {transformExtent} from 'ol/proj';
 
