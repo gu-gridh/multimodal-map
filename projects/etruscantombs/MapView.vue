@@ -68,7 +68,7 @@ const tagParams = computed(() => {
   const necropolis = necropoli.value[0];
   const type = tombType.value[0];
 
-  const initialParams = { epoch, necropolis, type };
+  const initialParams = { epoch, necropolis, type};
   
   // Remove parameters that are set to "all"
   const cleanedParams = Object.keys(initialParams)
@@ -83,24 +83,22 @@ const tagParams = computed(() => {
 
   //filter for just 3D points
   if (enable3D.value) {
-    params['with_3D'] = 'true';
+    (params as any)['with_3D'] = 'true';
   } else {
-    delete params['with_3D'];
+    delete (params as any)['with_3D'];
   }
 
-
-  //filter for just 3D points
   if (enablePlan.value) {
-    params['with_plan'] = 'true';
+    (params as any)['with_plan'] = 'true';
   } else {
-    delete params['with_plan'];
+    delete (params as any)['with_plan'];
   }
 
   // Convert the params object to a URL search string
   const queryString = new URLSearchParams(params).toString();
 
   // Concatenate the base URL with the search string to form the full URL
-const fullUrl = queryString 
+  const fullUrl = queryString 
     ? `${apiConfig.PLACE}?page_size=500&${queryString}`
     : `${apiConfig.PLACE}?page_size=500`;
 
