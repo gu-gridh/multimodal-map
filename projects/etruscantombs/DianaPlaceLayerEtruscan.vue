@@ -1,23 +1,23 @@
 <script lang="ts" setup>
 import { computed, ref, defineProps, onMounted, inject, watch } from "vue";
-import GeoJSON from 'ol/format/GeoJSON.js';
-import VectorSource from 'ol/source/Vector';
-import WebGLPointsLayer from 'ol/layer/WebGLPoints.js';
-import { fromLonLat } from 'ol/proj';
+import GeoJSON from "ol/format/GeoJSON.js";
+import VectorSource from "ol/source/Vector";
+import WebGLPointsLayer from "ol/layer/WebGLPoints.js";
+import { fromLonLat } from "ol/proj";
 import { DIANA_BASE } from "@/assets/diana";
 import markerIcon from "@/assets/marker-white.svg";
 import markerGold from "@/assets/marker-gold.svg";
-import Style from 'ol/style/Style';
-import type Feature from 'ol/Feature';
-import type Geometry from 'ol/geom/Geometry';
-import Icon from 'ol/style/Icon';
+import Style from "ol/style/Style";
+import type Feature from "ol/Feature";
+import type Geometry from "ol/geom/Geometry";
+import Icon from "ol/style/Icon";
 import { mapStore } from "@/stores/store";
 import { storeToRefs } from "pinia";
-import Select from 'ol/interaction/Select';
+import Select from "ol/interaction/Select";
 import { etruscanStore } from "./store";
-import { pointerMove } from 'ol/events/condition';
-import {transformExtent} from 'ol/proj';
-import type Map from 'ol/Map'
+import { pointerMove } from "ol/events/condition";
+import { transformExtent } from "ol/proj";
+import type Map from "ol/Map";
 
 const { selectedFeature } = storeToRefs(mapStore());
 
@@ -28,10 +28,12 @@ const hoveredFeature = ref<Feature<Geometry> | null>(null);
 const hoverCoordinates = ref(null);
 const selectedCoordinates = ref(null);
 const { areMapPointsLoaded } = storeToRefs(etruscanStore());
-const map = inject('map') as Map;
-const vectorSource = ref(new VectorSource({
-  format: new GeoJSON(),
-}));
+const map = inject("map") as Map;
+const vectorSource = ref(
+  new VectorSource({
+    format: new GeoJSON(),
+  })
+);
 
 const props = defineProps({
   map: Object,
@@ -56,34 +58,39 @@ const getCurrentBoundingBox = () => {
   }
 
   const extent = map.getView().calculateExtent();
-  const transformedExtent = transformExtent(extent, 'EPSG:3857', 'EPSG:4326'); 
-  let [minX, minY, maxX, maxY] = transformedExtent; 
+  const transformedExtent = transformExtent(extent, "EPSG:3857", "EPSG:4326");
+  let [minX, minY, maxX, maxY] = transformedExtent;
 
-  const offsetX = (maxX - minX) * 0.15;  // reduce the width by 15%
-  const offsetY = (maxY - minY) * 0.25;  // increase the height by 25%
+  const offsetX = (maxX - minX) * 0.15; // reduce the width by 15%
+  const offsetY = (maxY - minY) * 0.25; // increase the height by 25%
 
   // Adjust the bounding box
-  minX += offsetX;  
-  minY -= offsetY;  
-  maxX -= offsetX;  
-  maxY += offsetY; 
+  minX += offsetX;
+  minY -= offsetY;
+  maxX -= offsetX;
+  maxY += offsetY;
 
   return `${minX},${minY},${maxX},${maxY}`;
 };
 
 const updateFeatures = (features: Feature[]) => {
   const geoJSONFormat = new GeoJSON({ featureProjection: "EPSG:3857" });
-  const transformedFeatures = geoJSONFormat.readFeatures(
-    { type: "FeatureCollection", features }
-  );
-  
+  const transformedFeatures = geoJSONFormat.readFeatures({
+    type: "FeatureCollection",
+    features,
+  });
+
   vectorSource.value.addFeatures(transformedFeatures);
 };
 
 const fetchData = async (initialUrl: string, params: Record<string, any>) => {
   let nextUrl = initialUrl;
   const bbox = getCurrentBoundingBox();
-  let initialParams = new URLSearchParams({ page_size: '70', in_bbox: bbox ?? '', ...params }).toString();
+  let initialParams = new URLSearchParams({
+    page_size: "70",
+    in_bbox: bbox ?? "",
+    ...params,
+  }).toString();
 
   // Cancel the previous fetch
   controller.abort();
@@ -95,18 +102,19 @@ const fetchData = async (initialUrl: string, params: Record<string, any>) => {
   }
 
   while (nextUrl) {
-    const res = await fetch(nextUrl.replace(/^http:/, 'https:'), { signal })
-      .catch(err => {
-        // Handle the abort error gracefully
-        if (err.name === 'AbortError') {
-          console.log('Fetch aborted');
-          nextUrl = '';
-          return null;
-        }
-        // If it's another error, it will propagate
-        throw err;
-      });
-    
+    const res = await fetch(nextUrl.replace(/^http:/, "https:"), {
+      signal,
+    }).catch((err) => {
+      // Handle the abort error gracefully
+      if (err.name === "AbortError") {
+        console.log("Fetch aborted");
+        nextUrl = "";
+        return null;
+      }
+      // If it's another error, it will propagate
+      throw err;
+    });
+
     // If the fetch was aborted, skip to the next iteration
     if (!res) continue;
 
@@ -116,7 +124,7 @@ const fetchData = async (initialUrl: string, params: Record<string, any>) => {
     // Update features immediately after fetching a batch
     updateFeatures(features);
 
-    nextUrl = data.next ? data.next.replace(/^http:/, 'https:') : null;
+    nextUrl = data.next ? data.next.replace(/^http:/, "https:") : null;
   }
   areMapPointsLoaded.value = true; // Set to true once all points are loaded
 };
@@ -127,11 +135,11 @@ const webGLPointsLayer = ref(
     source: vectorSource.value as any,
     style: {
       symbol: {
-        symbolType: 'image',
-        color: '#ffffff',
-        offset: [0, 20], 
+        symbolType: "image",
+        color: "#ffffff",
+        offset: [0, 20],
         size: [30, 45],
-        src: markerIcon,  // Use white marker
+        src: markerIcon, // Use white marker
       },
     },
   })
@@ -157,41 +165,40 @@ onMounted(() => {
     map.addInteraction(selectHover);
 
     // Add an event listener for when a feature is hovered over
-   selectHover.on('select', (event) => {
-  if (event.selected.length > 0) {
-    const feature = event.selected[0];
-    hoveredFeature.value = feature as any;
+    selectHover.on("select", (event) => {
+      if (event.selected.length > 0) {
+        const feature = event.selected[0];
+        hoveredFeature.value = feature as any;
 
-  const geometry = feature.getGeometry() as any;
-  hoverCoordinates.value = geometry.getCoordinates();
-
-  }
-});
+        const geometry = feature.getGeometry() as any;
+        hoverCoordinates.value = geometry.getCoordinates();
+      }
+    });
 
     let clickedFeatures: Feature[] = [];
-    map.on('click', function(evt) {
-      clickedFeatures = [];  // Clear the array before each click
-      map.forEachFeatureAtPixel(evt.pixel, function(feature) {
-  clickedFeatures.push(feature as Feature<Geometry>);
-});
-
+    map.on("click", function (evt) {
+      clickedFeatures = []; // Clear the array before each click
+      map.forEachFeatureAtPixel(evt.pixel, function (feature) {
+        clickedFeatures.push(feature as Feature<Geometry>);
+      });
 
       if (clickedFeatures.length === 1) {
         // Unselect the hovered feature
         hoverCoordinates.value = null;
         hoveredFeature.value = null;
-        
+
         // Select the clicked feature
-       selectedFeature.value = clickedFeatures[0];
-const geometry = clickedFeatures[0].getGeometry() as any;
-selectedCoordinates.value = geometry.getCoordinates();
-        } else {
-        selectedCoordinates.value = undefined as any;  
+        selectedFeature.value = clickedFeatures[0];
+        const geometry = clickedFeatures[0].getGeometry() as any;
+        selectedCoordinates.value = geometry.getCoordinates();
+      } else {
+        selectedCoordinates.value = undefined as any;
         selectedFeature.value = undefined;
       }
     });
-    map.on('moveend', async () => {
-      const initialUrl = "https://diana.dh.gu.se/api/etruscantombs/geojson/place/";
+    map.on("moveend", async () => {
+      const initialUrl =
+        "https://diana.dh.gu.se/api/etruscantombs/geojson/place/";
       fetchData(initialUrl, props.params);
     });
   } else {
@@ -202,39 +209,37 @@ selectedCoordinates.value = geometry.getCoordinates();
 watch(
   () => props.params,
   async (newParams) => {
-    areMapPointsLoaded.value = false;  // Reset before fetching new data
-    const initialUrl = "https://diana.dh.gu.se/api/etruscantombs/geojson/place/";
+    areMapPointsLoaded.value = false; // Reset before fetching new data
+    const initialUrl =
+      "https://diana.dh.gu.se/api/etruscantombs/geojson/place/";
 
     vectorSource.value.clear();
     clearPopups(); // Clear the popups
-    
-    await fetchData(initialUrl, newParams);
-  },
-);
 
+    await fetchData(initialUrl, newParams);
+  }
+);
 </script>
 <template>
-    <ol-overlay
-      class="ol-popup"
-      v-if="hoveredFeature"
-      :position="hoverCoordinates"
-    >
-      <div
-        class="ol-popup-content"
-        v-html="'Tomb ' + (hoveredFeature ? hoveredFeature.get('name') : '')"
-      >
-      </div>
-    </ol-overlay>
-    
-    <ol-overlay
-      class="ol-popup"
-      v-if="selectedFeature"
-      :position="selectedCoordinates"
-    >
-      <div
-        class="ol-popup-content"
-        v-html="'Tomb ' + (selectedFeature ? selectedFeature.get('name') : '')"
-      >
-      </div>
-    </ol-overlay>
+  <ol-overlay
+    class="ol-popup"
+    v-if="hoveredFeature"
+    :position="hoverCoordinates"
+  >
+    <div
+      class="ol-popup-content"
+      v-html="'Tomb ' + (hoveredFeature ? hoveredFeature.get('name') : '')"
+    ></div>
+  </ol-overlay>
+
+  <ol-overlay
+    class="ol-popup"
+    v-if="selectedFeature"
+    :position="selectedCoordinates"
+  >
+    <div
+      class="ol-popup-content"
+      v-html="'Tomb ' + (selectedFeature ? selectedFeature.get('name') : '')"
+    ></div>
+  </ol-overlay>
 </template>
