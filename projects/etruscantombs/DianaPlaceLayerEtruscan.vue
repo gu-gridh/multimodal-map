@@ -16,14 +16,11 @@ import { storeToRefs } from "pinia";
 import Select from "ol/interaction/Select";
 import { etruscanStore } from "./store";
 import { pointerMove } from "ol/events/condition";
-import { transformExtent } from "ol/proj";
 import type Map from "ol/Map";
 
 const { selectedFeature } = storeToRefs(mapStore());
 
 let selectHover; // Select interaction for hover
-let controller = new AbortController();
-let signal = controller.signal;
 const hoveredFeature = ref<Feature<Geometry> | null>(null);
 const hoverCoordinates = ref(null);
 const selectedCoordinates = ref(null);
@@ -37,10 +34,6 @@ const vectorSource = ref(
 
 const props = defineProps({
   map: Object,
-  path: {
-    type: String,
-    required: true,
-  },
   params: {
     type: Object,
     default: () => ({}),
@@ -50,28 +43,6 @@ const props = defineProps({
     default: 2,
   },
 });
-
-const getCurrentBoundingBox = () => {
-  if (!map || !map.getView() || !map.getView().getCenter()) {
-    console.error("Map view or center is not initialized.");
-    return;
-  }
-
-  const extent = map.getView().calculateExtent();
-  const transformedExtent = transformExtent(extent, "EPSG:3857", "EPSG:4326");
-  let [minX, minY, maxX, maxY] = transformedExtent;
-
-  const offsetX = (maxX - minX) * 0.15; // reduce the width by 15%
-  const offsetY = (maxY - minY) * 0.25; // increase the height by 25%
-
-  // Adjust the bounding box
-  minX += offsetX;
-  minY -= offsetY;
-  maxX -= offsetX;
-  maxY += offsetY;
-
-  return `${minX},${minY},${maxX},${maxY}`;
-};
 
 const updateFeatures = (features: Feature[]) => {
   const geoJSONFormat = new GeoJSON({ featureProjection: "EPSG:3857" });
@@ -85,37 +56,17 @@ const updateFeatures = (features: Feature[]) => {
 
 const fetchData = async (initialUrl: string, params: Record<string, any>) => {
   let nextUrl = initialUrl;
-  const bbox = getCurrentBoundingBox();
-  let initialParams = new URLSearchParams({
-    page_size: "70",
-    in_bbox: bbox ?? "",
-    ...params,
-  }).toString();
-
-  // Cancel the previous fetch
-  controller.abort();
-  controller = new AbortController();
-  signal = controller.signal;
+  let initialParams = new URLSearchParams({ page_size: '1000', ...params }).toString();
 
   if (nextUrl && initialParams) {
     nextUrl = `${nextUrl}?${initialParams}`;
   }
 
   while (nextUrl) {
-    const res = await fetch(nextUrl.replace(/^http:/, "https:"), {
-      signal,
-    }).catch((err) => {
-      // Handle the abort error gracefully
-      if (err.name === "AbortError") {
-        console.log("Fetch aborted");
-        nextUrl = "";
-        return null;
-      }
-      // If it's another error, it will propagate
+    const res = await fetch(nextUrl.replace(/^http:/, "https:")).catch((err) => {
       throw err;
     });
 
-    // If the fetch was aborted, skip to the next iteration
     if (!res) continue;
 
     const data = await res.json();
@@ -196,11 +147,6 @@ onMounted(() => {
         selectedFeature.value = undefined;
       }
     });
-    map.on("moveend", async () => {
-      const initialUrl =
-        "https://diana.dh.gu.se/api/etruscantombs/geojson/place/";
-      fetchData(initialUrl, props.params);
-    });
   } else {
     console.error("Map object is not initialized.");
   }
@@ -211,13 +157,14 @@ watch(
   async (newParams) => {
     areMapPointsLoaded.value = false; // Reset before fetching new data
     const initialUrl =
-      "https://diana.dh.gu.se/api/etruscantombs/geojson/place/";
+      "https://diana.dh.gu.se/api/etruscantombs/coordinates";
 
     vectorSource.value.clear();
     clearPopups(); // Clear the popups
 
     await fetchData(initialUrl, newParams);
-  }
+  },
+  { immediate: true }
 );
 </script>
 <template>

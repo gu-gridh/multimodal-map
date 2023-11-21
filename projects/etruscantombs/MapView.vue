@@ -190,7 +190,7 @@ watch(showGallery, (newValue) => {
               }"
             >
             </GeoJsonWebGLRenderer>
-            <DianaPlaceLayer path="etruscantombs/geojson/place/" :params="tagParams" :zIndex=20>
+            <DianaPlaceLayer :params="tagParams" :zIndex=20>
             </DianaPlaceLayer>
           </template>
           
