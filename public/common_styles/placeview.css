@@ -103,7 +103,7 @@ table td {
     border-radius: 4px;
     margin: 8px 16px 8px 0px;
     display: inline-block;
-    overflow: auto;
+    overflow: hidden;
     transition: all 0.2s ease-in-out;
     cursor: pointer;
 }
