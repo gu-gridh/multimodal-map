@@ -19,6 +19,9 @@ const diana = inject("diana") as DianaClient;
 const images = ref<Image[]>([]);
 const plans = ref<Image[]>([]);
 const route = useRoute();
+const nextPageUrl = ref<string | null>(null);
+const hasMoreImages = ref(true);
+const isLoading = ref(false);
 
 let observations = ref<Observation[]>([]);
 let documents = ref<Document[]>([]);
@@ -65,6 +68,38 @@ function toggleLanguage() {
     }
 }
 
+async function fetchMoreImages() {
+    if (!hasMoreImages.value || !nextPageUrl.value) {
+        return; 
+    }
+    isLoading.value = true;
+
+    try {
+        const response = await fetch(nextPageUrl.value);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+
+        nextPageUrl.value = data.next && data.next.startsWith('http://')
+            ? data.next.replace('http://', 'https://')
+            : data.next;
+
+        hasMoreImages.value = !!data.next;
+
+        const newImages = data.results.filter((image: Image) => image.published);
+        images.value = [...images.value, ...newImages];
+
+        // Now update the grouped and sorted items
+        groupAndSortByYear([...images.value, ...plans.value, ...observations.value, ...documents.value, ...pointcloud.value, ...mesh.value]);
+    } catch (error) {
+        console.error("Failed to fetch more images:", error);
+    }
+    finally {
+        isLoading.value = false;
+    }
+}
+
 onMounted(async () => {
     const urlId = route.params.name;
 
@@ -80,7 +115,7 @@ onMounted(async () => {
 
     if (id) {
         const [fetchedImages, fetchedObservations, fetchedDocuments, fetchedPointclouds, fetchedMeshes, fetchedPlans] = await Promise.all([
-            diana.listAll<Image>("image", { tomb: id.value, type_of_image: 2, depth: 2 }),
+            fetch(`${apiConfig.IMAGE}?tomb=${id.value}&limit=5&type_of_image=2&depth=2`).then(res => res.json()),
             diana.listAll<Observation>("observation", { place: id.value }),
             diana.listAll<Document>("document", { place: id.value, depth: 2 }),
             diana.listAll<Pointcloud>("objectpointcloud", { tomb: id.value, depth: 2 }),
@@ -88,7 +123,11 @@ onMounted(async () => {
             fetch(`${apiConfig.IMAGE}?tomb=${id.value}&type_of_image=1&type_of_image=5&depth=2`).then(res => res.json())
         ]);
 
-        images.value = fetchedImages.filter(image => image.published);
+        images.value = fetchedImages.results.filter((image: Image) => image.published);
+        nextPageUrl.value = fetchedImages.next && fetchedImages.next.startsWith('http://')
+                    ? fetchedImages.next.replace('http://', 'https://')
+                    : fetchedImages.next;
+        hasMoreImages.value = !!fetchedImages.next;
         observations.value = fetchedObservations;
         documents.value = fetchedDocuments;
         pointcloud.value = fetchedPointclouds;
@@ -236,6 +275,9 @@ function createPlaceURL() {
                                 </router-link>
                             </div>
                         </div>
+                        <div>
+                            <button v-if="nextPageUrl" @click="fetchMoreImages" :disabled="isLoading">Show More</button>
+                        </div>
                     </tr>
 
                     <tr v-if="observations.length > 0">
@@ -321,7 +363,6 @@ function createPlaceURL() {
                                 </div>
                             </a>
                         </div>
-
                     </tr>
                 </table>
             </div>
