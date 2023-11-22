@@ -114,7 +114,8 @@ onMounted(async () => {
     }
 
     if (id) {
-        const [fetchedImages, fetchedObservations, fetchedDocuments, fetchedPointclouds, fetchedMeshes, fetchedPlans] = await Promise.all([
+        const [fetchedImages, fetchedObservations, fetchedDocuments, fetchedPointclouds, fetchedMeshes, fetchedPlans] = await Promise.all
+        ([
             fetch(`${apiConfig.IMAGE}?tomb=${id.value}&limit=5&type_of_image=2&depth=2`).then(res => res.json()),
             diana.listAll<Observation>("observation", { place: id.value }),
             diana.listAll<Document>("document", { place: id.value, depth: 2 }),
@@ -218,7 +219,7 @@ function createPlaceURL() {
 
                     <tr v-if="combined3DModels.length > 0">
                         <td>{{ $t('threedmodels') }}</td>
-                        <div v-for="(model, index) in combined3DModels" :key="index" class="image-placeholder">
+                        <div v-for="(model, index) in combined3DModels" :key="index" class="image-placeholder square">
                             <a v-if="model.modelType === 'mesh'" :href="`https://modelviewer.dh.gu.se/mesh/?q=${model.id}`"
                                 target="_blank">
                                 <div class="meta-data-overlay">
@@ -244,7 +245,7 @@ function createPlaceURL() {
 
                     <tr v-if="plans.length > 0">
                         <td>{{ $t('drawings') }}</td>
-                        <div v-for="(image, index) in plans" :key="index" class="image-placeholder plan-placeholder">
+                        <div v-for="(image, index) in plans" :key="index" class="image-placeholder plan-placeholder square">
                             <div class="image-square" v-if="'iiif_file' in image">
                                 <router-link :to="`/detail/image/${image.id}`">
                                     <div class="meta-data-overlay">
@@ -264,7 +265,8 @@ function createPlaceURL() {
                             </a>
                             <button class="show-button theme-color-background" v-if="nextPageUrl" @click="fetchMoreImages" :disabled="isLoading">Show all</button>
                         </td>
-                        <div v-for="(image, index) in images" :key="index" class="image-placeholder">
+                        <div class="masonry-gallery">
+                        <div v-for="(image, index) in images" :key="index" class="image-placeholder square">
                             <div class="image-square" v-if="'iiif_file' in image">
                                 <router-link :to="`/detail/image/${image.id}`">
                                     <div class="meta-data-overlay">
@@ -276,6 +278,7 @@ function createPlaceURL() {
                                 </router-link>
                             </div>
                         </div>
+                    </div>
                         
 
                         <div>
@@ -303,7 +306,7 @@ function createPlaceURL() {
                         <td style="font-size:1.5em; font-weight:200; text-align:right;">{{ year }}</td>
 
                         <div v-for="(item, index) in items" :key="index"
-                            :class="(isImage(item) || isPointcloud(item) || isMesh(item)) ? 'image-placeholder' : ''">
+                            :class="(isImage(item) || isPointcloud(item) || isMesh(item)) ? 'image-placeholder square' : ''">
                             <!-- If the item is an image -->
                             <div class="image-square" v-if="'iiif_file' in item">
                                 <router-link v-if="item.iiif_file" :to="`/detail/image/${item.id}`">
@@ -388,6 +391,8 @@ function createPlaceURL() {
     background-color:transparent;
     float:right;
     font-size:0.9em;
+    margin-top:5px;
+    margin-left:20px;
 }
 
 .show-button:hover{

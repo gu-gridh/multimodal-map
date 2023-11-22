@@ -90,17 +90,22 @@ table td {
     text-align: center;
 }
 
-.image-placeholder {
+.masonry-gallery{
+
+}
+
+.square{
     width: 200px;
     height: 200px;
-    background-color: #eee;
+}
+
+.image-placeholder {
     border-radius: 4px;
     margin: 8px 16px 8px 0px;
     display: inline-block;
-    overflow: hidden;
+    overflow: auto;
     transition: all 0.2s ease-in-out;
     cursor: pointer;
-    background-color: white;
 }
 
 .document-placeholder {
