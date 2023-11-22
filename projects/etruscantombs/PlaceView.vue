@@ -262,6 +262,7 @@ function createPlaceURL() {
                             <a :href="`${apiConfig.ADMIN_IMAGE}?q=${route.params.name}`">
                                 {{ $t('photographs') }}
                             </a>
+                            <button class="show-button theme-color-background" v-if="nextPageUrl" @click="fetchMoreImages" :disabled="isLoading">Show all</button>
                         </td>
                         <div v-for="(image, index) in images" :key="index" class="image-placeholder">
                             <div class="image-square" v-if="'iiif_file' in image">
@@ -275,9 +276,10 @@ function createPlaceURL() {
                                 </router-link>
                             </div>
                         </div>
+                        
+
                         <div>
-                            <button v-if="nextPageUrl" @click="fetchMoreImages" :disabled="isLoading">Show More</button>
-                        </div>
+                                                    </div>
                     </tr>
 
                     <tr v-if="observations.length > 0">
@@ -376,6 +378,20 @@ function createPlaceURL() {
 .main-container {
     background-color: rgba(232, 228, 217, 0.5) !important;
     backdrop-filter: blur(10px) saturate(50%) brightness(100%);
+}
+
+.show-button{
+    color:white;
+    height:auto;
+    border-radius:4px;
+    padding:2px 8px;
+    background-color:transparent;
+    float:right;
+    font-size:0.9em;
+}
+
+.show-button:hover{
+    background-color: var(--theme-4) !important;
 }
 
 /* unvisited link */
