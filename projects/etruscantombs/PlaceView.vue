@@ -118,7 +118,7 @@ onMounted(async () => {
         ([
             fetch(`${apiConfig.IMAGE}?tomb=${id.value}&limit=5&type_of_image=2&depth=2`).then(res => res.json()),
             diana.listAll<Observation>("observation", { place: id.value }),
-            diana.listAll<Document>("document", { place: id.value, depth: 2 }),
+            diana.listAll<Document>("document", { place: id.value }),
             diana.listAll<Pointcloud>("objectpointcloud", { tomb: id.value, depth: 2 }),
             diana.listAll<Mesh>("object3dhop", { tomb: id.value, depth: 2 }),
             fetch(`${apiConfig.IMAGE}?tomb=${id.value}&type_of_image=1&type_of_image=5&depth=2`).then(res => res.json())
