@@ -19,8 +19,16 @@
         <div class="tag-section">
           <div class="section-title">{{ $t('typeofdata') }}</div>
           <div class="broad-controls">
-            <CategoryButton v-model="categories" :categories="CATEGORIES" :limit="1" class="my-2"
-            title="Pick a data type" @click="handleCategoryClick" />
+            <CategoryButton v-model="categories" 
+                :categories="{
+                  all: $t('categories.all'), 
+                  plans: $t('categories.drawings'), 
+                  models: $t('categories.models')
+                }" 
+                :limit="1" 
+                class="my-2"
+                title="Pick a data type" 
+                @click="handleCategoryClick" />
           </div>
         </div>
 
@@ -122,13 +130,6 @@ const totalPointcloud = ref(0);
 const initialTombCount = ref(289);
 const currentTombCount = ref(0);
 const visibleAbout = ref(false);
-
-const CATEGORIES = {
-  all: "All types",
-  plans: "Drawings",
-  models: "3D models",
-
-};
 
 const TAGS = ref<Record<string, string>>({});
 const NECROPOLI = ref<Record<string, string>>({});

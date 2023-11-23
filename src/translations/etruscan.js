@@ -36,7 +36,11 @@ const messages = {
       editplace: "Edit place",
       nophoto: "No photographs available",
       drawings: "Drawings",
-    
+      "categories": {
+        "all": "All types",
+        "drawings": "Drawings",
+        "models": "3D models"
+      },
     },
 
     it: {
@@ -73,7 +77,12 @@ const messages = {
       published: "Pubblicata",  
       editplace: "Modifica posto", 
       nophoto: "Nessuna fotografia disponibile",
-      drawings: "Disegni"
+      drawings: "Disegni",
+      "categories": {
+        "all": "Tutti i tipi",
+        "drawings": "Disegni",
+        "models": "Modelli"
+      },
     },
 };  
 
