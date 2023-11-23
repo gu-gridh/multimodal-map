@@ -70,32 +70,32 @@ function toggleLanguage() {
 
 async function fetchMoreImages() {
     if (!hasMoreImages.value || !nextPageUrl.value) {
-        return; 
+        return;
     }
     isLoading.value = true;
 
     try {
-        const response = await fetch(nextPageUrl.value);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+        while (nextPageUrl.value) {
+            const response = await fetch(nextPageUrl.value) as Response;
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data: Record<string, any> = await response.json();
+
+            nextPageUrl.value = data.next && data.next.startsWith('http://')
+                ? data.next.replace('http://', 'https://')
+                : data.next;
+
+            hasMoreImages.value = !!data.next;
+
+            const newImages = data.results.filter((image: Image) => image.published);
+            images.value = [...images.value, ...newImages];
         }
-        const data = await response.json();
-
-        nextPageUrl.value = data.next && data.next.startsWith('http://')
-            ? data.next.replace('http://', 'https://')
-            : data.next;
-
-        hasMoreImages.value = !!data.next;
-
-        const newImages = data.results.filter((image: Image) => image.published);
-        images.value = [...images.value, ...newImages];
-
         // Now update the grouped and sorted items
         groupAndSortByYear([...images.value, ...plans.value, ...observations.value, ...documents.value, ...pointcloud.value, ...mesh.value]);
     } catch (error) {
         console.error("Failed to fetch more images:", error);
-    }
-    finally {
+    } finally {
         isLoading.value = false;
     }
 }
