@@ -2,17 +2,19 @@
   <footer id="footer">
     <div id="developer-info">
       <div class="links-stack border-style">
-        <a href="https://github.com/gu-gridh/etruscantombs#etruscan-tombs" target="_blank">GitHub repository and development</a>
-        <a href="https://github.com/gu-gridh/etruscantombs#loading-data" target="_blank">Database and API documentation</a>
+        <a class="site-link link" href="https://github.com/gu-gridh/etruscantombs#etruscan-tombs" target="_blank">GitHub repository and development</a>
+        <a class="site-link link" href="https://github.com/gu-gridh/etruscantombs#loading-data" target="_blank">Database and API documentation</a>
       </div>
-      <a href="#" class="download-link border-style" @click="downloadData">Download the data</a>
+      <a href="#" class="download-link link" @click="downloadData">Download the structured data</a>
     </div>
+    <div class="partners">
     <a href="https://dh.gu.se/">
       <div id="PartnerLogo">+ ISVROMA</div>
     </a>
     <a href="https://dh.gu.se/">
       <div id="CDHLogo">#GRIDH</div>
     </a>
+  </div>
   </footer>
 </template>
 
@@ -73,6 +75,15 @@ a {
   font-weight: bold;
 }
 
+.partners{
+float: right;
+position:fixed;
+
+bottom:0px;
+right:0px;
+height:80px;
+}
+
 #CDHLogo {
   float: right;
   margin-top: 0px;
@@ -91,7 +102,7 @@ a {
 #PartnerLogo {
   float: right;
   margin-top: 0px;
-  margin-right: 60px;
+  margin-right: 40px;
   width: auto;
   height: auto;
   text-align: left;
@@ -105,20 +116,47 @@ a {
 
 #developer-info {
   display: flex; 
-  align-items: start; 
+  align-items: flex-end; 
   margin-left: 50px;
   margin-top: 15px;
-  padding: 0 0 0 15px;
   font-size: 1.5em;
   line-height: 1.4;
   font-weight: 200;
 }
 
 .border-style {
-  border-width: 0 0 0 0.5px;
+  border-width: 0 0.5px 0 0px;
   border-color: white;
   border-style: dashed;
   padding-left: 10px; 
+  padding-right: 20px; 
+
+}
+
+.link{
+
+}
+
+.link:hover{
+opacity:0.8;
+}
+
+.download-link{
+  background:url("@/assets/interface/downloadbuttonwhite.png");
+  background-size:18px;
+  background-position:0px 50%;
+  background-repeat:no-repeat;
+  padding-left:25px;
+  margin-left:0px;
+}
+
+.site-link{
+  background:url("@/assets/interface/linkbuttonwhite.png");
+  background-size:18px;
+  background-position:0px 50%;
+  background-repeat:no-repeat;
+  padding-left:25px;
+
 }
 
 .links-stack {
