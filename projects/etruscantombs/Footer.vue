@@ -9,10 +9,10 @@
     </div>
     <div class="partners">
     <a href="https://dh.gu.se/">
-      <div id="PartnerLogo">+ ISVROMA</div>
+      <div class="link" id="PartnerLogo">+ ISVROMA</div>
     </a>
     <a href="https://dh.gu.se/">
-      <div id="CDHLogo">#GRIDH</div>
+      <div class="link" id="CDHLogo">#GRIDH</div>
     </a>
   </div>
   </footer>
@@ -134,7 +134,7 @@ height:80px;
 }
 
 .link{
-
+color:white;
 }
 
 .link:hover{
