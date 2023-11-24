@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, defineProps, onMounted, inject, computed } from 'vue';
+import { ref, defineProps, onMounted, inject, computed, nextTick, watch} from 'vue';
 import type { Image, Observation, Document, Pointcloud, Mesh } from './types';
 import type { DianaClient } from "@/assets/diana";
 import { storeToRefs } from "pinia";
@@ -9,7 +9,10 @@ import i18n from '../../src/translations/etruscan';
 import { etruscanStore } from "./store";
 import { useRoute } from 'vue-router';
 import apiConfig from "./apiConfig";
+import Masonry from 'masonry-layout';
+import imagesLoaded from 'imagesloaded';
 
+const msnry = ref(null);
 const sort = ref('type');
 const etruscan = etruscanStore();
 const { placeId } = storeToRefs(etruscanStore());
@@ -37,6 +40,18 @@ const combined3DModels = computed(() => [
 const sortedGroupedByYear = computed(() => {
     return Object.entries(groupedByYear.value)
         .sort((a, b) => parseInt(b[0]) - parseInt(a[0]));
+});
+
+watch(() => sort.value, async () => {
+    await nextTick(); // Wait for Vue to update the DOM
+
+    // Destroy the old Masonry instance if it exists
+    if (msnry.value) {
+        msnry.value.destroy();
+    }
+
+    // Reinitialize Masonry
+    initPhotographMasonry();
 });
 
 function isImage(item: any): item is Image {
@@ -93,6 +108,21 @@ async function fetchMoreImages() {
         }
         // Now update the grouped and sorted items
         groupAndSortByYear([...images.value, ...plans.value, ...observations.value, ...documents.value, ...pointcloud.value, ...mesh.value]);
+
+       await nextTick();
+
+         const photoGallery = document.querySelector('.masonry-gallery');
+        if (photoGallery) {
+            await new Promise(resolve => {
+                imagesLoaded(photoGallery, resolve);
+            });
+
+            // Recalculate Masonry layout after images are loaded
+            if (msnry.value) {
+                msnry.value.reloadItems();
+                msnry.value.layout();
+            }
+        }
     } catch (error) {
         console.error("Failed to fetch more images:", error);
     } finally {
@@ -138,6 +168,10 @@ onMounted(async () => {
         /* For sorting by year */
         groupAndSortByYear([...images.value, ...plans.value, ...observations.value, ...documents.value, ...pointcloud.value, ...mesh.value]);
     }
+
+    nextTick(() => {
+        initPhotographMasonry();
+    });
 });
 
 function groupAndSortByYear(allItems: (Image | Observation | Document | Pointcloud | Mesh)[]) {
@@ -159,6 +193,29 @@ function groupAndSortByYear(allItems: (Image | Observation | Document | Pointclo
 function createPlaceURL() {
     const url = `${apiConfig.ADMIN_PLACE}${id.value}`;
     window.open(url, "_blank");
+}
+
+function initPhotographMasonry() {
+  const photoGallery = document.querySelector('.masonry-gallery');
+  if (!photoGallery) {
+    return;
+  }
+
+  msnry.value = new Masonry(photoGallery, {
+
+  });
+
+  nextTick(() => {
+    const photoGallery = document.querySelector('.masonry-gallery');
+    if (photoGallery) {
+        msnry.value = new Masonry(photoGallery, {
+            itemSelector: '.gallery__item',
+            columnWidth: 100, 
+            gutter: 8, 
+            percentPosition: true,
+        });
+    }
+});
 }
 </script>
     
@@ -266,23 +323,19 @@ function createPlaceURL() {
                             <button class="show-button theme-color-background" v-if="nextPageUrl" @click="fetchMoreImages" :disabled="isLoading">Show all</button>
                         </td>
                         <div class="masonry-gallery">
-                        <div v-for="(image, index) in images" :key="index" class="image-placeholder square">
-                            <div class="image-square" v-if="'iiif_file' in image">
-                                <router-link :to="`/detail/image/${image.id}`">
-                                    <div class="meta-data-overlay">
-                                        <div class="meta-data-overlay-text">{{ image.title }}</div>
-                                        <div class="meta-data-overlay-text">{{ image.type_of_image[0].text }}</div>
-                                    </div>
-                                    <img :src="`${image.iiif_file}/full/400,/0/default.jpg`" :alt="image.title"
+                            <div v-for="(image, index) in images" :key="index" class="gallery__item">
+                                <div class="image-square"  v-if="'iiif_file' in image">
+                                    <router-link :to="`/detail/image/${image.id}`">
+                                        <div class="meta-data-overlay">
+                                            <div class="meta-data-overlay-text">{{ image.title }}</div>
+                                            <div class="meta-data-overlay-text">{{ image.type_of_image[0].text }}</div>
+                                        </div>
+                                        <img :src="`${image.iiif_file}/full/400,/0/default.jpg`" :alt="image.title" 
                                         class="image-square-inner" />
-                                </router-link>
+                                    </router-link>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                        
-
-                        <div>
-                                                    </div>
                     </tr>
 
                     <tr v-if="observations.length > 0">
@@ -429,6 +482,11 @@ a:active {
 
 #app .ol-zoom-out {
     display: none !important;
+}
+
+.gallery__item {
+  width: 200px; 
+  margin-bottom: 10px; 
 }
 </style>
     
