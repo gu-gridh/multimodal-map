@@ -208,7 +208,7 @@ function createPlaceURL() {
                             <div class="image-placeholder document-placeholder">
                                 <div class="document-title">{{ document.title }}</div>
                                 <p class="documentlabel">{{ $t('type') }}:</p>
-                                <p class="documentdata theme-color-text">{{ document.type[0].text }}</p>
+                                <p class="documentdata theme-color-text">{{ document.type_names[0] }}</p>
                                 <p class="documentlabel">{{ $t('size') }}:</p>
                                 <p class="documentdata theme-color-text">{{ document.size }} MB</p>
                                 <p class="documentlabel">{{ $t('published') }}:</p>
