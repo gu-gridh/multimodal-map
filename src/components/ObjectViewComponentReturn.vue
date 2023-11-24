@@ -4,15 +4,20 @@ import { useRouter } from 'vue-router';
 const props = defineProps({
   title: String,
   back: String,
+  backName: String,
 });
 
 const router = useRouter();
 
 const goBack = () => {
   if (props.back) {
-    router.push(props.back);
+    router.push({ name: props.back }).catch(err => {
+      console.error('Navigation Error:', err);
+    });
   } else {
-    router.go(-1);
+     router.push({ name: 'place', params: { name: props.backName } }).catch(err => {
+       console.error('Navigation Error:', err);
+     });
   }
 };
 </script>
