@@ -200,6 +200,50 @@ table td {
     background-color: white;
 }
 
+.placeview-masonry-gallery{
+margin-top:10px;
+margin-bottom:10px;
+min-height:200px; 
+display:block;
+overflow:hidden;
+}
+
+.masonry-image{
+overflow:hidden;
+border-radius:4px;
+transition: all 0.3s ease-in-out;
+}
+
+.masonry-image:hover{
+    transform:scale(1.02);
+    }
+
+.masonry-image img{
+    transition: all 0.3s ease-in-out;
+    }
+
+.masonry-image:hover img{
+transform:scale(1.05);
+}
+
+.masonry-image .meta-data-overlay {
+    pointer-events: none;
+    position: absolute;
+    bottom: 0px;
+    opacity: 0.0;
+    z-index: 10;
+    padding: 0px;
+    height: 150px;
+    width: 100%;
+    color: white;
+    background: linear-gradient(rgba(0, 0, 0, 0.0) 50%, rgba(0, 0, 0, 0.5) 100%);
+    transition: all 0.5s ease-in-out;
+}
+
+.masonry-image:hover .meta-data-overlay {
+    opacity: 1.0;
+}
+
 .image-placeholder img {
     transform: scale(1.05);
     transition: all 0.2s ease-in-out;

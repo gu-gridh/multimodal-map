@@ -111,7 +111,7 @@ async function fetchMoreImages() {
 
        await nextTick();
 
-         const photoGallery = document.querySelector('.masonry-gallery');
+         const photoGallery = document.querySelector('.placeview-masonry-gallery');
         if (photoGallery) {
             await new Promise(resolve => {
                 imagesLoaded(photoGallery, resolve);
@@ -146,7 +146,7 @@ onMounted(async () => {
     if (id) {
         const [fetchedImages, fetchedObservations, fetchedDocuments, fetchedPointclouds, fetchedMeshes, fetchedPlans] = await Promise.all
         ([
-            fetch(`${apiConfig.IMAGE}?tomb=${id.value}&limit=5&type_of_image=2&depth=2`).then(res => res.json()),
+            fetch(`${apiConfig.IMAGE}?tomb=${id.value}&limit=8&type_of_image=2&depth=2`).then(res => res.json()),
             diana.listAll<Observation>("observation", { place: id.value }),
             diana.listAll<Document>("document", { place: id.value }),
             diana.listAll<Pointcloud>("objectpointcloud", { tomb: id.value, depth: 2 }),
@@ -196,7 +196,7 @@ function createPlaceURL() {
 }
 
 function initPhotographMasonry() {
-  const photoGallery = document.querySelector('.masonry-gallery');
+  const photoGallery = document.querySelector('.placeview-masonry-gallery');
   if (!photoGallery) {
     return;
   }
@@ -206,7 +206,7 @@ function initPhotographMasonry() {
   });
 
   nextTick(() => {
-    const photoGallery = document.querySelector('.masonry-gallery');
+    const photoGallery = document.querySelector('.placeview-masonry-gallery');
     if (photoGallery) {
         msnry.value = new Masonry(photoGallery, {
             itemSelector: '.gallery__item',
@@ -322,9 +322,9 @@ function initPhotographMasonry() {
                             </a>
                             <button class="show-button theme-color-background" v-if="nextPageUrl" @click="fetchMoreImages" :disabled="isLoading">Show all</button>
                         </td>
-                        <div class="masonry-gallery">
+                        <div class="placeview-masonry-gallery">
                             <div v-for="(image, index) in images" :key="index" class="gallery__item">
-                                <div class="image-square"  v-if="'iiif_file' in image">
+                                <div class="masonry-image"  v-if="'iiif_file' in image">
                                     <router-link :to="`/detail/image/${image.id}`">
                                         <div class="meta-data-overlay">
                                             <div class="meta-data-overlay-text">{{ image.title }}</div>
