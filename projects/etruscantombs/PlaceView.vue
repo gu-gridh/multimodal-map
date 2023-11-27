@@ -334,7 +334,7 @@ async function initMasonry() {
                             <a :href="`${apiConfig.ADMIN_IMAGE}?q=${route.params.name}`">
                                 {{ $t('photographs') }}
                             </a>
-                            <button class="show-button theme-color-background" v-if="nextPageUrl" @click="fetchMoreImages" :disabled="isLoading">Show all</button>
+                            <button class="show-button theme-color-background" v-if="nextPageUrl" @click="fetchMoreImages" :disabled="isLoading">{{ $t('showall') }}</button>
                         </td>
                         <div class="placeview-masonry-gallery">
                             <div v-for="(image, index) in images" :key="index" class="gallery__item">

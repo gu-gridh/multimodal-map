@@ -36,6 +36,7 @@ const messages = {
       editplace: "Edit place",
       nophoto: "No photographs available",
       drawings: "Drawings",
+      showall: "Show all",
       "categories": {
         "all": "All types",
         "drawings": "Drawings",
@@ -78,6 +79,7 @@ const messages = {
       editplace: "Modifica posto", 
       nophoto: "Nessuna fotografia disponibile",
       drawings: "Disegni",
+      showall: "Mostra tutto",
       "categories": {
         "all": "Tutti i tipi",
         "drawings": "Disegni",
