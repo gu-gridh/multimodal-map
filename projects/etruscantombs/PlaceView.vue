@@ -330,7 +330,7 @@ function initPhotographMasonry() {
                                             <div class="meta-data-overlay-text">{{ image.title }}</div>
                                             <div class="meta-data-overlay-text">{{ image.type_of_image[0].text }}</div>
                                         </div>
-                                        <img :src="`${image.iiif_file}/full/400,/0/default.jpg`" :alt="image.title" 
+                                        <img :src="`${image.iiif_file}/full/400,/0/default.jpg`"  :alt="image.title" 
                                         class="image-square-inner" />
                                     </router-link>
                                 </div>
