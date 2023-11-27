@@ -44,6 +44,13 @@ const sortedGroupedByYear = computed(() => {
         .sort((a, b) => parseInt(b[0]) - parseInt(a[0]));
 });
 
+watch(sort, (newValue, oldValue) => {
+    if (newValue === 'year' && hasMoreImages.value) {
+        console.log('fetchinmre images')
+        fetchMoreImages();
+    }
+});
+
 watch(() => sort.value, async () => {
     await nextTick(); // Wait for Vue to update the DOM
     
