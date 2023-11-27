@@ -195,18 +195,16 @@ function createPlaceURL() {
     window.open(url, "_blank");
 }
 
-function initPhotographMasonry() {
+async function initPhotographMasonry() {
   const photoGallery = document.querySelector('.placeview-masonry-gallery');
   if (!photoGallery) {
     return;
   }
 
-  msnry.value = new Masonry(photoGallery, {
+  await new Promise(resolve => {
+        imagesLoaded(photoGallery, resolve);
+    });
 
-  });
-
-  nextTick(() => {
-    const photoGallery = document.querySelector('.placeview-masonry-gallery');
     if (photoGallery) {
         msnry.value = new Masonry(photoGallery, {
             itemSelector: '.gallery__item',
@@ -215,7 +213,6 @@ function initPhotographMasonry() {
             percentPosition: true,
         });
     }
-});
 }
 </script>
     
