@@ -12,7 +12,9 @@ import apiConfig from "./apiConfig";
 import Masonry from 'masonry-layout';
 import imagesLoaded from 'imagesloaded';
 
-const msnry = ref(null);
+const msnry = ref<Masonry | null>(null);
+const plansMsnry = ref<Masonry | null>(null);
+
 const sort = ref('type');
 const etruscan = etruscanStore();
 const { placeId } = storeToRefs(etruscanStore());
@@ -44,14 +46,17 @@ const sortedGroupedByYear = computed(() => {
 
 watch(() => sort.value, async () => {
     await nextTick(); // Wait for Vue to update the DOM
-
+    
     // Destroy the old Masonry instance if it exists
     if (msnry.value) {
         msnry.value.destroy();
     }
+    if (plansMsnry.value) {
+        plansMsnry.value.destroy();
+    }
 
     // Reinitialize Masonry
-    initPhotographMasonry();
+    initMasonry();
 });
 
 function isImage(item: any): item is Image {
@@ -170,7 +175,7 @@ onMounted(async () => {
     }
 
     nextTick(() => {
-        initPhotographMasonry();
+        initMasonry();
     });
 });
 
@@ -195,21 +200,31 @@ function createPlaceURL() {
     window.open(url, "_blank");
 }
 
-async function initPhotographMasonry() {
-  const photoGallery = document.querySelector('.placeview-masonry-gallery');
-  if (!photoGallery) {
-    return;
-  }
-
-  await new Promise(resolve => {
-        imagesLoaded(photoGallery, resolve);
-    });
-
+async function initMasonry() {
+    // Initialize Photograph Masonry
+    const photoGallery = document.querySelector('.placeview-masonry-gallery');
     if (photoGallery) {
+        await new Promise(resolve => {
+            imagesLoaded(photoGallery, resolve);
+        });
         msnry.value = new Masonry(photoGallery, {
             itemSelector: '.gallery__item',
             columnWidth: 100, 
             gutter: 8, 
+            percentPosition: true,
+        });
+    }
+
+    // Initialize Plans Masonry
+    const plansGallery = document.querySelector('.plans-masonry-gallery');
+    if (plansGallery) {
+        await new Promise(resolve => {
+            imagesLoaded(plansGallery, resolve);
+        });
+        plansMsnry.value = new Masonry(plansGallery, {
+            itemSelector: '.plan-gallery__item',
+            columnWidth: 100,
+            gutter: 8,
             percentPosition: true,
         });
     }
@@ -299,16 +314,18 @@ async function initPhotographMasonry() {
 
                     <tr v-if="plans.length > 0">
                         <td>{{ $t('drawings') }}</td>
-                        <div v-for="(image, index) in plans" :key="index" class="image-placeholder plan-placeholder square">
-                            <div class="image-square" v-if="'iiif_file' in image">
-                                <router-link :to="`/detail/image/${image.id}`">
-                                    <div class="meta-data-overlay">
-                                        <div class="meta-data-overlay-text">{{ image.title }}</div>
-                                        <div class="meta-data-overlay-text">  {{ image.type_of_image[0].text }}</div>
-                                    </div>
-                                    <img :src="`${image.iiif_file}/full/400,/0/default.jpg`" :alt="image.title"
-                                        class="image-square-plan" />
-                                </router-link>
+                        <div class="plans-masonry-gallery">
+                            <div v-for="(image, index) in plans" :key="index" class="plan-gallery__item">
+                                <div class="masonry-image" v-if="'iiif_file' in image">
+                                    <router-link :to="`/detail/image/${image.id}`">
+                                        <div class="meta-data-overlay">
+                                            <div class="meta-data-overlay-text">{{ image.title }}</div>
+                                            <div class="meta-data-overlay-text">  {{ image.type_of_image[0].text }}</div>
+                                        </div>
+                                        <img :src="`${image.iiif_file}/full/400,/0/default.jpg`" :alt="image.title"
+                                            class="image-square-plan" />
+                                    </router-link>
+                                </div>
                             </div>
                         </div>
                     </tr>
@@ -482,6 +499,11 @@ a:active {
 }
 
 .gallery__item {
+  width: 200px; 
+  margin-bottom: 10px; 
+}
+
+.plan-gallery__item {
   width: 200px; 
   margin-bottom: 10px; 
 }

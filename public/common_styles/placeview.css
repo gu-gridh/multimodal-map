@@ -208,6 +208,14 @@ display:block;
 overflow:hidden;
 }
 
+.plans-masonry-gallery{
+margin-top:10px;
+margin-bottom:10px;
+min-height:100px; 
+display:block;
+overflow:hidden;
+}
+
 .masonry-image{
 overflow:hidden;
 border-radius:4px;
