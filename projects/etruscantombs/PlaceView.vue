@@ -263,7 +263,7 @@ async function initMasonry() {
 
                 <div>
                     <select class="dropdown theme-color-background">
-                        <option value="All datasets">All datasets</option>
+                        <option value="All datasets">{{ $t('alldatasets') }}</option>
                         <option value="CTSG-2015">CTSG-2015</option>
                     </select>
                 </div>

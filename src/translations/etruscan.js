@@ -37,6 +37,7 @@ const messages = {
       nophoto: "No photographs available",
       drawings: "Drawings",
       showall: "Show all",
+      alldatasets: "All datasets",
       "categories": {
         "all": "All types",
         "drawings": "Drawings",
@@ -51,7 +52,7 @@ const messages = {
       timeperiod: "Periodo",
       tombtype: "Tipo di tomba",
       necropolisname: "Necropoli",
-      dataset: "Dataset",
+      dataset: "Set di dati",
       typeofdata: "Tipo di dati",
       tomb: "Tomba",
       map: "carta geografica",
@@ -80,6 +81,7 @@ const messages = {
       nophoto: "Nessuna fotografia disponibile",
       drawings: "Disegni",
       showall: "Mostra tutto",
+      alldatasets: "Tutti i set di dati",
       "categories": {
         "all": "Tutti i tipi",
         "drawings": "Disegni",

@@ -10,7 +10,7 @@
           <div class="section-title">{{ $t('dataset') }}</div>
           <div style="display:inline; float:left; margin-right:0px;">
             <select title="pick what dataset you want to view data from" class="dropdown theme-color-background my-2">
-              <option title="View data from all datasets" value="All datasets">All datasets</option>
+              <option title="View data from all datasets" value="All datasets">{{ $t('alldatasets') }}</option>
               <option title="View data from the San Giovenale dataset by Fredrik Tobin-Dodd" value="CTSG-2015">CTSG-2015</option>
             </select>
           </div>
