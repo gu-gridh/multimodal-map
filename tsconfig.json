@@ -5,14 +5,13 @@
     "src/**/*",
     "src/**/*.vue",
     "src/**/*.json",
-    "projects/etruscantombs/**/*"
+    "projects/**/*"
     ],
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     },
-    "allowJs": true,
     // "target": "es5",
     "lib": ["es2019", "dom"]
   },
