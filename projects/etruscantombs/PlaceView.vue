@@ -46,7 +46,6 @@ const sortedGroupedByYear = computed(() => {
 
 watch(sort, (newValue, oldValue) => {
     if (newValue === 'year' && hasMoreImages.value) {
-        console.log('fetchinmre images')
         fetchMoreImages();
     }
 });
