@@ -63,6 +63,7 @@ export type Document = {
   type: Array<{ text: string }>;
   upload: string,
   date: string,
+  type_names: string[];
 };
 
 export type Technique = {

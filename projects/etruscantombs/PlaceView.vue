@@ -54,10 +54,11 @@ watch(() => sort.value, async () => {
     await nextTick(); // Wait for Vue to update the DOM
     
     // Destroy the old Masonry instance if it exists
-    if (msnry.value) {
+    if (msnry.value?.destroy) {
         msnry.value.destroy();
     }
-    if (plansMsnry.value) {
+
+    if (plansMsnry.value?.destroy) {
         plansMsnry.value.destroy();
     }
 
@@ -129,7 +130,7 @@ async function fetchMoreImages() {
             });
 
             // Recalculate Masonry layout after images are loaded
-            if (msnry.value) {
+            if (msnry.value?.reloadItems && msnry.value?.layout) {
                 msnry.value.reloadItems();
                 msnry.value.layout();
             }
