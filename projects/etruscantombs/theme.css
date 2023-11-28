@@ -2,9 +2,9 @@
 
 /* Color palette */
 :root{
-  --theme-1: 			rgb(232, 228, 217); /* This is the bakground color */
-  --theme-2: 			rgb(250, 150, 150); /* This is for lighter text on dark bakgrounds */
-	--theme-3: 			rgb(180, 100, 100); /* This the main accent colour */
+  --theme-1: 			rgb(232, 228, 217); /* This is the background color */
+  --theme-2: 			rgb(250, 150, 150); /* This is for lighter text on dark backgrounds */
+	--theme-3: 			rgb(180, 100, 100); /* This is the main accent colour */
   --theme-4: 			rgb(160, 80, 80); /* This is for accent hover */
   --theme-5: 			rgb(140, 60, 60); /* This is for accent lines */
 }
