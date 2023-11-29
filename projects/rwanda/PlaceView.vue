@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ref, inject, watch, onMounted, nextTick } from "vue";
+import { ref, inject, watch, onMounted } from "vue";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
-import type { Image } from "./types";
+import type { Image, Document } from "./types";
 import type { DianaClient } from "@/assets/diana";
 import VueMasonryWall from "@yeger/vue-masonry-wall";
 import { useRouter, useRoute } from "vue-router";
@@ -28,7 +28,7 @@ const placeGeoJson = ref()
 const coordinates: any = ref([])
 const interviewsToShow = ref(1) //how many interviews to show in preview
 const showMore = ref(true)
-const documents = ref([])
+const documents = ref<Array<Document>>([])
 
 //Capitalize first letter since some are lowercase in database
 const capitalize = (word: String) => {
@@ -116,6 +116,11 @@ const zoomMap = () => {
       store.updateZoom(15)
     }
 }
+
+const fetchDocuments = async (id: number) => {
+  documents.value = await diana.listAll("document/", { place_of_interest: id});
+}
+
 //fetch place data
 const fetchPlaceData =async () => {
     //if place is selected on map
@@ -127,6 +132,7 @@ const fetchPlaceData =async () => {
         const placeId = selectedFeature.value?.getId()
         fetchInterviews(placeId)
         fetchImages(Number(placeId))
+        fetchDocuments(Number(placeId))
     }
     //if routing from url
     else if(route.params.placeId) {
@@ -142,12 +148,14 @@ const fetchPlaceData =async () => {
         const placeId = Number(route.params.placeId)
         fetchInterviews(placeId)
         fetchImages(placeId)
+        fetchDocuments(placeId)
         zoomMap()
     }
 }
 onMounted(() => {
   fetchPlaceData()
 })
+
 watch(selectedFeature, () => {
   fetchPlaceData()
 })
@@ -200,11 +208,13 @@ const showMoreInterviews =() => {
             <button v-if="showMore" @click="interviewsToShow += 1">Show more</button>
         </div>
         <!-- If documents avaliable-->
-        <div v-if="documents.length">
+        <div v-if="documents.length" class="document">
           Documents
-          <router-link to="/document/1">
-            <div style="font-style: italic;">Filename</div>
-          </router-link>
+          <div v-for="doc in documents"> 
+            <router-link :to="`/document/${doc.id}`" :doc="{doc}">
+              <div style="font-style: italic;">{{doc.title}}</div>
+            </router-link>
+          </div>
         </div>
         <!-- Images -->
         <div v-if="images.length != 0" class="masonry">
@@ -347,5 +357,10 @@ const showMoreInterviews =() => {
   .long-name {
     width: 70%;
   }
+}
+
+.document {
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 </style>

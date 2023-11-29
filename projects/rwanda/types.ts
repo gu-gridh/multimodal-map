@@ -83,4 +83,15 @@ interface Interview {
   informants: Array<Informant>;
 } 
 
-export type { Place, PlaceType, Name, Informant, Language, Interview };
+interface Document {
+  id?: number;
+  authors: any;
+  filename: string;
+  informants: Array<Informant>;
+  place_of_interest: number;
+  published: boolean;
+  text: string;
+  title: string;
+}
+
+export type { Place, PlaceType, Name, Informant, Language, Interview, Document };
