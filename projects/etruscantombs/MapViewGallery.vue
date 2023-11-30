@@ -227,15 +227,21 @@ const fetchData = async (requestedPageIndex) => {
   position:absolute;
   width:100%;
   height:calc(100% - 80px);
-  padding-left:30%;
+  padding-left:33%;
   z-index:100!important;
   background-color: rgba(232, 228, 217, 0.5) !important;
   backdrop-filter:blur(5px);
 }
 
+@media screen and (min-width: 1900px) {
+  #gallery-container{ 
+    padding-left:600px;
+}
+  }
+
 @media screen and (max-width: 1500px) {
   #gallery-container{ 
-    padding-left:480px;
+    padding-left:500px;
 }
   }
 

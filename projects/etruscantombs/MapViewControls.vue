@@ -4,7 +4,7 @@
     <div v-if="areMapPointsLoaded">
 
       <!-- This creates a 2-column section with for the controls -->
-      <div style="width:98%; float:left; display:flex; flex-direction:row; justify-content:space-between; margin-top:10px;">
+      <div class="control-organisation justify-left">
 
         <div class="tag-section">
           <div class="section-title">{{ $t('dataset') }}</div>
@@ -16,7 +16,7 @@
           </div>
         </div>
 
-        <div class="tag-section">
+        <div class="tag-section margin-20">
           <div class="section-title">{{ $t('typeofdata') }}</div>
           <div class="broad-controls">
             <CategoryButton v-model="categories" 
@@ -34,7 +34,7 @@
 
       </div>
 
-      <div style="width:98%; float:left; display:flex; flex-direction:row; justify-content:space-between;">
+      <div class="control-organisation justify-space" style="justify-content:space-between;">
         <div class="tag-section">
           <div class="section-title">{{ $t('timeperiod') }}</div>
           <div class="broad-controls">
@@ -45,9 +45,21 @@
       </div>
 
 
-      <!-- This creates a 2-column section with for the controls -->
-      <div style="width:98%; float:left; display:flex; flex-direction:row; justify-content:space-between;">
+      <!-- This creates a 2-column section width for the controls -->
+      <div class="control-organisation justify-space">
         <div class="tag-section">
+          <div class="section-title">{{ $t('Site') }}</div>
+          <div style="display:inline; float:left; margin-right:0px;">
+            <select title="pick what dataset you want to view data from" class="dropdown theme-color-background my-2">
+              <option title="View data from all datasets" value="All datasets">{{ $t('All') }}</option>
+              <option title="View data from San Giovenale" value="CTSG-2015">San Givenale</option>
+              <option title="View data from San Giuliano" value="CTSG-2015">San Giuliano</option>
+              <option title="View data from Luni" value="CTSG-2015">Luni</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="tag-section margin-5">
           <div class="section-title">{{ $t('necropolisname') }}</div>
           <div title="Narrow the result to a certain necropolis" class="broad-controls">
             <CategoryButtonList v-model="necropoli" :categories="NECROPOLI" :limit="1" styleType="dropdown" class="my-2"
@@ -55,7 +67,7 @@
           </div>
         </div>
 
-        <div class="tag-section" style="margin-left:20px;">
+        <div class="tag-section margin-5">
           <div  class="section-title">{{ $t('tombtype') }}</div>
           <div title="Narrow the result to a certain tomb type" class="broad-controls">
             <CategoryButtonList v-model="tombType" :categories="TOMBTYPE" :limit="1" styleType="dropdown" class="my-2"
@@ -289,9 +301,6 @@ function clearAll() {
   margin-bottom: 0px;
 }
 
-
-
-
 /* #app .range-slider-container {
   display: flex;
   width: 100%;
@@ -324,35 +333,32 @@ function clearAll() {
 
 }
 
-@media screen and (max-width: 900px) {
-  #app .broad-controls {
-    width: 100%;
-
-  }
+#app .control-organisation{
+  width:98%; 
+  float:left; 
+  display:flex; 
+  flex-direction:row; 
+  margin-top:10px;
 }
 
-.slide-leave-active {
-  transition: all 0.4s;
-  opacity: 1.0;
+.justify-left{
+  justify-content:left;
 }
 
-.slide-leave-to {
-  opacity: 0.5;
+.justify-space{
+  justify-content:space-between;
 }
 
-.slideinactive {
-  opacity: 0.4;
-  pointer-events: none !important;
-  transition: all 0.4s;
+.margin-20 {
+margin-left:20px;
 }
 
-.slideactive {
-  transition: all 0.4s;
-  opacity: 1.0;
+.margin-5 {
+margin-left:5px;
 }
-
 
 .data-widget {
+  font-size:110%;
   float: left;
   pointer-events: none;
   width: 98%;
@@ -395,4 +401,61 @@ function clearAll() {
   margin-left: 3px;
   font-weight: 500;
 }
+
+@media screen and (max-width: 900px) {
+  #app .broad-controls {
+    width: 100%;
+
+  }
+  #app .control-organisation{
+  width:98%; 
+  float:none; 
+  display:flex; 
+  flex-direction:column; 
+  margin-top:10px;
+}
+
+.justify-space{
+  justify-content:left;
+}
+
+  #app .tag-section {
+ font-size:100%;
+}
+
+.margin-20 {
+margin-left:0px;
+}
+
+.margin-5 {
+margin-left:0px;
+}
+
+.data-widget {
+display:none;
+}
+}
+
+.slide-leave-active {
+  transition: all 0.4s;
+  opacity: 1.0;
+}
+
+.slide-leave-to {
+  opacity: 0.5;
+}
+
+.slideinactive {
+  opacity: 0.4;
+  pointer-events: none !important;
+  transition: all 0.4s;
+}
+
+.slideactive {
+  transition: all 0.4s;
+  opacity: 1.0;
+}
+
+
+
 </style>
