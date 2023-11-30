@@ -25,8 +25,8 @@ const { categories, tags, necropoli, tombType, tagsLayerVisible, dataParams, img
 const store = mapStore();
 const etruscan = etruscanStore();  // Get the instance of etruscanStore
 const { selectedFeature } = storeToRefs(store);
-const minZoom = 11;
-const maxZoom = 20;
+const minZoom = 10;
+const maxZoom = 22;
 const featureZoom = 15; //value between minZoom and maxZoom when you select a point 
 const visibleAbout = ref(false);
 const showGallery = ref(false);
