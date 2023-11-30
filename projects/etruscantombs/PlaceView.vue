@@ -143,7 +143,13 @@ async function fetchMoreImages() {
 }
 
 onMounted(async () => {
-    const urlId = route.params.name;
+    let urlId = route.params.name;
+
+    if (Array.isArray(urlId)) {
+        urlId = urlId[0];
+    }
+
+    urlId = urlId.replace(/_/g, ' ');
 
     // Check if placeId is undefined or null and fetch for the id based on the name
     if (etruscan.placeId === null || etruscan.placeId === undefined) {

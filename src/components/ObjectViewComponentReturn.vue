@@ -15,9 +15,10 @@ const goBack = () => {
       console.error('Navigation Error:', err);
     });
   } else {
-     router.push({ name: 'place', params: { name: props.backName } }).catch(err => {
-       console.error('Navigation Error:', err);
-     });
+    const formattedBackName = (props.backName || '').replace(/ /g, '_');
+    router.push({ name: 'place', params: { name: formattedBackName } }).catch(err => {
+      console.error('Navigation Error:', err);
+    });
   }
 };
 </script>

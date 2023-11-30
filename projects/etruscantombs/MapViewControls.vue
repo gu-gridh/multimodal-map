@@ -81,7 +81,7 @@
       <div class="data-widget-item">|</div>
       <div class="data-widget-item">
         <h3>{{ $t('tombshidden') }}:</h3>
-        <p>{{ initialTombCount - currentTombCount }}</p>
+        <p>{{ hiddenTombs }}</p>
       </div>
     </div>
 
@@ -98,7 +98,7 @@
       </div>
       <div class="data-widget-item">
         <h3>{{ $t('threedmodels') }}:</h3>
-        <p>{{ totalThreedhop + totalPointcloud }}</p>
+        <p>{{ totalThreed }}</p>
       </div>
     </div>
   </div>
@@ -125,9 +125,8 @@ const lastClickedCategory = ref('');
 //initialize variables for data section
 const totalPhotographs = ref(0);
 const totalPlans = ref(0);
-const totalThreedhop = ref(0);
-const totalPointcloud = ref(0);
-const initialTombCount = ref(289);
+const totalThreed = ref(0);
+const hiddenTombs = ref(0);
 const currentTombCount = ref(0);
 const visibleAbout = ref(false);
 
@@ -147,7 +146,6 @@ onMounted(async () => {
 
   const response = await fetch(baseURL);
   const data = await response.json();
-  initialTombCount.value = data.count //set total tombcount
 });
 
 const NECROPOLICoordinates = ref<Record<string, [number, number]>>({});
@@ -207,35 +205,18 @@ const fetchData = async (url: string) => {
   }
 
   const data = await response.json();
-  const { count, features } = data;
-
-  currentTombCount.value = count;
-  totalPhotographs.value = 0;
-  totalPlans.value = 0;
-  totalThreedhop.value = 0;
-  totalPointcloud.value = 0;
-
-  for (const feature of features) {
-    const {
-      photographs_count,
-      plans_count,
-      threedhop_count,
-      pointcloud_count
-    } = feature.properties;
-
-    totalPhotographs.value += photographs_count;
-    totalPlans.value += plans_count;
-    totalThreedhop.value += threedhop_count;
-    totalPointcloud.value += pointcloud_count;
-
-  }
+  currentTombCount.value = data.shown_tombs;
+  totalPhotographs.value = data.photographs;
+  totalPlans.value = data.drawing;
+  hiddenTombs.value = data.hidden_tombs;
+  totalThreed.value = data.objects_3d; 
 };
 
 watch(
   () => dataParams.value,
   async (newTagParams, oldTagParams) => {
-   const queryParams = new URLSearchParams(Object.fromEntries(Object.entries(newTagParams).map(([k, v]) => [k, String(v)])));
-   const urlWithParams = `${baseURL}&${queryParams.toString()}`;
+  const queryParams = new URLSearchParams(Object.fromEntries(Object.entries(newTagParams).map(([k, v]) => [k, String(v)])));
+  const urlWithParams = `https://diana.dh.gu.se/api/etruscantombs/info/tombs/?${queryParams.toString()}`;
    await fetchData(urlWithParams);
   },
   { immediate: true }
