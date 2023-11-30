@@ -33,8 +33,7 @@ watchEffect(async () => {
     const placeId = selectedFeature.value.getId();
     etruscan.placeId = placeId as string | null;
     place.value = { id_: placeName };
-    images.value = await diana.listAll<Image>("image", { tomb: placeId, depth: 2 });
-
+    images.value = await diana.listAll<Image>("image", { tomb: placeId, depth: 2, type_of_image: 2 });
     // If images are available
     if (images.value.length > 0) {
       hasImages.value = true;
