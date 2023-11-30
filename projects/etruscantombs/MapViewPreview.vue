@@ -28,6 +28,12 @@ const hasImages = ref<boolean>(false);
 
 //when a place is selected, fetch image and info
 watchEffect(async () => {
+  necropolisName.value = null;
+  chambers.value = null;
+  type.value = null;
+  period.value = null;
+  subtitle.value = null;
+  description.value = null;
   if (selectedFeature.value) {
     const placeName = selectedFeature.value.get("name");
     const placeId = selectedFeature.value.getId();
@@ -59,10 +65,10 @@ watchEffect(async () => {
       const geojsonData = await response.json();
       if (geojsonData.features.length > 0) {
         const feature = geojsonData.features[0];
-        necropolisName.value = feature.properties.necropolis.text || null;
+        necropolisName.value = feature.properties.necropolis?.text || null;
         chambers.value = feature.properties.number_of_chambers || null;
-        type.value = feature.properties.type.text || null;
-        period.value = feature.properties.epoch.text || null;
+        type.value = feature.properties.type?.text || null;
+        period.value = feature.properties.epoch?.text || null;
         subtitle.value = feature.properties.subtitle || null;
         description.value = feature.properties.description || null;
       }

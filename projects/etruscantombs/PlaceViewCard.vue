@@ -64,10 +64,10 @@ const fetchPlaceData = async () => {
 
       // Assign fetched data to Vue Ref variables
       title.value = properties.name || null;
-      necropolisName.value = properties.necropolis.text || null;
+      necropolisName.value = properties.necropolis?.text || null;
       chambers.value = properties.number_of_chambers || null;
-      type.value = properties.type.text || null;
-      period.value = properties.epoch.text || null;
+      type.value = properties.type?.text || null;
+      period.value = properties.epoch?.text || null;
       subtitle.value = properties.subtitle || null;
       description.value = properties.description || null;
     }
