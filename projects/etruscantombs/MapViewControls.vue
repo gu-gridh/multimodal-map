@@ -52,8 +52,9 @@
           <div style="display:inline; float:left; margin-right:0px;">
             <select title="pick what dataset you want to view data from" class="dropdown theme-color-background my-2">
               <option title="View data from all datasets" value="All datasets">{{ $t('All') }}</option>
-              <option title="View data from San Giovenale" value="CTSG-2015">San Givenale</option>
+              <option title="View data from San Giovenale" value="CTSG-2015">San Giovenale</option>
               <option title="View data from San Giuliano" value="CTSG-2015">San Giuliano</option>
+              <option title="View data from Blera" value="CTSG-2015">Blera</option>
               <option title="View data from Luni" value="CTSG-2015">Luni</option>
             </select>
           </div>
