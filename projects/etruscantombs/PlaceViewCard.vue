@@ -121,11 +121,12 @@ onMounted(() => {
           <div class="placecard-title theme-color-text theme-title-typography">{{ $t('tomb') }} {{ title }}</div>
           <div class="placecard-subtitle theme-color-text theme-title-typography">{{ subtitle }}</div>
 
-          <div class="placecard-metadata-content" style="">
+          <div class="placecard-metadata-content">
             <div class="metadata-item">
-              <div class="label">{{ $t('site') }}:</div>
-              <div class="tag theme-color-text"></div>
+              <div class="short-label">{{ $t('site') }}:</div>
+              <div class="tag theme-color-text">San Giovenale</div>
             </div>
+
             <div class="metadata-item">
               <div class="label">Necropolis:</div>
               <div class="tag theme-color-text">{{ necropolisName }}</div>
@@ -135,18 +136,22 @@ onMounted(() => {
               <div class="short-label">{{ $t('type') }}:</div>
               <div class="tag theme-color-text">{{ type }} </div>
             </div>
+
             <div class="metadata-item">
               <div class="label">{{ $t('chambers') }}:</div>
               <div class="tag theme-color-text">{{ chambers }}</div>
             </div>
+
             <div class="metadata-item">
               <div class="short-label">{{ $t('period') }}:</div>
               <div class="tag theme-color-text">{{ period }}</div>
             </div>
+
             <div class="metadata-item">
               <div class="label">{{ $t('dataset') }}:</div>
-              <div class="tag theme-color-text"></div>
+              <div class="dataset-tag">CTSG</div>
             </div>
+
           </div>
           <div class="placecard-metadata-content" style="margin-top:10px;">
             <div class="placecard-metadata-description" v-html="description">

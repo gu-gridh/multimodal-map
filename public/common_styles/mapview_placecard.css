@@ -192,6 +192,17 @@
   padding-bottom: 20px;
 }
 
+.dataset-tag{
+  color:white;
+  background-color:var(--theme-3);
+  width:auto;
+  margin-left:5px; 
+  border-radius:4px;
+  padding:2px 8px !important;
+  float:left;
+  margin-top:-1px;
+  }
+
 
 
 /* large screens - settings to not make UI too large*/
