@@ -112,7 +112,10 @@ function deselectPlace() {
         <div class="placecard-content">
           <div class="placecard-metadata-content">
 
-
+            <div class="metadata-item">
+              <div class="label">{{ $t('site') }}:</div>
+              <div class="tag theme-color-text"></div>
+            </div>
             <div class="metadata-item">
               <div class="label">Necropolis:</div>
               <div class="tag theme-color-text">{{ necropolisName }}</div>
@@ -128,6 +131,11 @@ function deselectPlace() {
             <div class="metadata-item">
               <div class="label">{{ $t('period') }}:</div>
               <div class="tag theme-color-text">{{ period }}</div>
+            </div>
+         
+            <div class="metadata-item">
+              <div class="label">{{ $t('dataset') }}:</div>
+              <div class="tag theme-color-text"></div>
             </div>
 
           </div>

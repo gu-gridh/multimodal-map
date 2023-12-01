@@ -52,9 +52,10 @@ body {
 #app .left-pane {
   background: url("images/gradient.png");
   background-size: contain;
-  width: 57% !important;
+  width: 56% !important;
   min-width: 940px;
-  max-width: 1020px;
+  max-width: 1000px;
+  font-size:95%;
 }
 
 .theme-button {

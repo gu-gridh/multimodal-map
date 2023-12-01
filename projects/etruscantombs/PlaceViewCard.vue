@@ -123,9 +123,14 @@ onMounted(() => {
 
           <div class="placecard-metadata-content" style="">
             <div class="metadata-item">
-              <div class="label">{{ $t('necropolisname') }}:</div>
+              <div class="label">{{ $t('site') }}:</div>
+              <div class="tag theme-color-text"></div>
+            </div>
+            <div class="metadata-item">
+              <div class="label">Necropolis:</div>
               <div class="tag theme-color-text">{{ necropolisName }}</div>
             </div>
+      
             <div class="metadata-item">
               <div class="short-label">{{ $t('type') }}:</div>
               <div class="tag theme-color-text">{{ type }} </div>
@@ -137,6 +142,10 @@ onMounted(() => {
             <div class="metadata-item">
               <div class="short-label">{{ $t('period') }}:</div>
               <div class="tag theme-color-text">{{ period }}</div>
+            </div>
+            <div class="metadata-item">
+              <div class="label">{{ $t('dataset') }}:</div>
+              <div class="tag theme-color-text"></div>
             </div>
           </div>
           <div class="placecard-metadata-content" style="margin-top:10px;">
