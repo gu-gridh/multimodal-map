@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, defineProps, onMounted, inject, computed, nextTick, watch} from 'vue';
+import { ref, defineProps, onMounted, inject, computed, nextTick, watch } from 'vue';
 import type { Image, Observation, Document, Pointcloud, Mesh } from './types';
 import type { DianaClient } from "@/assets/diana";
 import { storeToRefs } from "pinia";
@@ -52,7 +52,7 @@ watch(sort, (newValue, oldValue) => {
 
 watch(() => sort.value, async () => {
     await nextTick(); // Wait for Vue to update the DOM
-    
+
     // Destroy the old Masonry instance if it exists
     if (msnry.value?.destroy) {
         msnry.value.destroy();
@@ -121,9 +121,9 @@ async function fetchMoreImages() {
         // Now update the grouped and sorted items
         groupAndSortByYear([...images.value, ...plans.value, ...observations.value, ...documents.value, ...pointcloud.value, ...mesh.value]);
 
-       await nextTick();
+        await nextTick();
 
-         const photoGallery = document.querySelector('.placeview-masonry-gallery');
+        const photoGallery = document.querySelector('.placeview-masonry-gallery');
         if (photoGallery) {
             await new Promise(resolve => {
                 imagesLoaded(photoGallery, resolve);
@@ -163,19 +163,19 @@ onMounted(async () => {
 
     if (id) {
         const [fetchedImages, fetchedObservations, fetchedDocuments, fetchedPointclouds, fetchedMeshes, fetchedPlans] = await Promise.all
-        ([
-            fetch(`${apiConfig.IMAGE}?tomb=${id.value}&limit=8&type_of_image=2&depth=2`).then(res => res.json()),
-            diana.listAll<Observation>("observation", { place: id.value }),
-            diana.listAll<Document>("document", { place: id.value }),
-            diana.listAll<Pointcloud>("objectpointcloud", { tomb: id.value, depth: 2 }),
-            diana.listAll<Mesh>("object3dhop", { tomb: id.value, depth: 2 }),
-            fetch(`${apiConfig.IMAGE}?tomb=${id.value}&type_of_image=1&type_of_image=5&depth=2`).then(res => res.json())
-        ]);
+            ([
+                fetch(`${apiConfig.IMAGE}?tomb=${id.value}&limit=8&type_of_image=2&depth=2`).then(res => res.json()),
+                diana.listAll<Observation>("observation", { place: id.value }),
+                diana.listAll<Document>("document", { place: id.value }),
+                diana.listAll<Pointcloud>("objectpointcloud", { tomb: id.value, depth: 2 }),
+                diana.listAll<Mesh>("object3dhop", { tomb: id.value, depth: 2 }),
+                fetch(`${apiConfig.IMAGE}?tomb=${id.value}&type_of_image=1&type_of_image=5&depth=2`).then(res => res.json())
+            ]);
 
         images.value = fetchedImages.results.filter((image: Image) => image.published);
         nextPageUrl.value = fetchedImages.next && fetchedImages.next.startsWith('http://')
-                    ? fetchedImages.next.replace('http://', 'https://')
-                    : fetchedImages.next;
+            ? fetchedImages.next.replace('http://', 'https://')
+            : fetchedImages.next;
         hasMoreImages.value = !!fetchedImages.next;
         observations.value = fetchedObservations;
         documents.value = fetchedDocuments;
@@ -222,8 +222,8 @@ async function initMasonry() {
         });
         msnry.value = new Masonry(photoGallery, {
             itemSelector: '.gallery__item',
-            columnWidth: 100, 
-            gutter: 8, 
+            columnWidth: 100,
+            gutter: 8,
             percentPosition: true,
         });
     }
@@ -257,9 +257,9 @@ async function initMasonry() {
                         {{ $t('editplace') }}</div>
                 </button>
             </div>
-        <div v-if="id">
-            <PlaceViewCard :id="id" />
-        </div>
+            <div v-if="id">
+                <PlaceViewCard :id="id" />
+            </div>
         </div>
         <!-- Here we will show info of the place -->
         <div class="place-view">
@@ -333,7 +333,7 @@ async function initMasonry() {
                                     <router-link :to="`/detail/image/${image.id}`">
                                         <div class="meta-data-overlay">
                                             <div class="meta-data-overlay-text">{{ image.title }}</div>
-                                            <div class="meta-data-overlay-text">  {{ image.type_of_image[0].text }}</div>
+                                            <div class="meta-data-overlay-text"> {{ image.type_of_image[0].text }}</div>
                                         </div>
                                         <img :src="`${image.iiif_file}/full/400,/0/default.jpg`" :alt="image.title"
                                             class="image-square-plan" />
@@ -347,18 +347,19 @@ async function initMasonry() {
                             <a :href="`${apiConfig.ADMIN_IMAGE}?q=${route.params.name}`">
                                 {{ $t('photographs') }}
                             </a>
-                            <button class="show-button theme-color-background" v-if="nextPageUrl" @click="fetchMoreImages" :disabled="isLoading">{{ $t('showall') }}</button>
+                            <button class="show-button theme-color-background" v-if="nextPageUrl" @click="fetchMoreImages"
+                                :disabled="isLoading">{{ $t('showall') }}</button>
                         </td>
                         <div class="placeview-masonry-gallery">
                             <div v-for="(image, index) in images" :key="index" class="gallery__item">
-                                <div class="masonry-image"  v-if="'iiif_file' in image">
+                                <div class="masonry-image" v-if="'iiif_file' in image">
                                     <router-link :to="`/detail/image/${image.id}`">
                                         <div class="meta-data-overlay">
                                             <div class="meta-data-overlay-text">{{ image.title }}</div>
                                             <div class="meta-data-overlay-text">{{ image.type_of_image[0].text }}</div>
                                         </div>
-                                        <img :src="`${image.iiif_file}/full/400,/0/default.jpg`"  :alt="image.title" 
-                                        class="image-square-inner" />
+                                        <img :src="`${image.iiif_file}/full/400,/0/default.jpg`" :alt="image.title"
+                                            class="image-square-inner" />
                                     </router-link>
                                 </div>
                             </div>
@@ -439,12 +440,12 @@ async function initMasonry() {
                             <a v-else-if="isDocument(item)" :href="item.upload" target="_blank" download>
                                 <div class="image-placeholder document-placeholder">
                                     <div class="document-title">{{ item.title }}</div>
-                                <p class="documentlabel">{{ $t('type') }}:</p>
-                                <p class="documentdata theme-color-text">{{ item.type[0].text }}</p>
-                                <p class="documentlabel">{{ $t('size') }}:</p>
-                                <p class="documentdata theme-color-text">{{ item.size }} MB</p>
-                                <p class="documentlabel">{{ $t('published') }}:</p>
-                                <p class="documentdata theme-color-text">{{ item.date }}</p>
+                                    <p class="documentlabel">{{ $t('type') }}:</p>
+                                    <p class="documentdata theme-color-text">{{ item.type[0].text }}</p>
+                                    <p class="documentlabel">{{ $t('size') }}:</p>
+                                    <p class="documentdata theme-color-text">{{ item.size }} MB</p>
+                                    <p class="documentlabel">{{ $t('published') }}:</p>
+                                    <p class="documentdata theme-color-text">{{ item.date }}</p>
                                 </div>
                             </a>
                         </div>
@@ -463,41 +464,40 @@ async function initMasonry() {
     backdrop-filter: blur(10px) saturate(50%) brightness(100%);
 }
 
-.show-button{
-    color:white;
-    height:auto;
-    border-radius:4px;
-    padding:2px 8px;
-    background-color:transparent;
-    float:right;
-    font-size:0.9em;
-    margin-top:5px;
-    margin-left:20px;
+.show-button {
+    color: white;
+    height: auto;
+    border-radius: 4px;
+    padding: 2px 8px;
+    background-color: transparent;
+    float: right;
+    font-size: 0.9em;
+    margin-top: 5px;
+    margin-left: 20px;
+    transition: all 0.2s ease-in-out;
 }
 
-.show-button:hover{
+.show-button:hover {
     background-color: var(--theme-4) !important;
+    transform: scale(1.05);
 }
 
 /* unvisited link */
 a:link {
-    font-weight:normal !important;
+    font-weight: normal !important;
 }
 
 /* visited link */
 a:visited {
-  font-weight:normal !important;
+    font-weight: normal !important;
 }
 
 /* mouse over link */
-a:hover {
-
-}
+a:hover {}
 
 /* selected link */
-a:active {
+a:active {}
 
-}
 .content-table td {
     color: black;
 }
@@ -512,13 +512,13 @@ a:active {
 }
 
 .gallery__item {
-  width: 200px; 
-  margin-bottom: 10px; 
+    width: 200px;
+    margin-bottom: 10px;
 }
 
 .plan-gallery__item {
-  width: 200px; 
-  margin-bottom: 10px; 
+    width: 200px;
+    margin-bottom: 10px;
 }
 </style>
     

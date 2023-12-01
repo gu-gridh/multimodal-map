@@ -201,7 +201,15 @@
   padding:2px 8px !important;
   float:left;
   margin-top:-1px;
+  transition: all 0.2s ease-in-out;
+  cursor:pointer;
   }
+
+  .dataset-tag:hover{
+    transform:scale(1.05);
+    background-color:var(--theme-4);
+  
+    }
 
 
 

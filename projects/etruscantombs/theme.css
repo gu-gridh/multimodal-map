@@ -63,10 +63,12 @@ body {
   padding: 5px 10px;
   color: white;
   width:auto;
+  transition: all 0.2s ease-in-out;
 }
 
 .theme-button:hover {
   background-color: var(--theme-4) !important;
+  transform:scale(1.05);
 }
 
 #app .category-button {
