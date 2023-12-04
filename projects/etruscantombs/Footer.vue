@@ -25,7 +25,7 @@
 import { ref } from 'vue';
 
 const downloadData = async () => {
-  let url = 'https://diana.dh.gu.se/api/etruscantombs/geojson/place/';
+  let url = 'https://diana.dh.gu.se/api/etruscantombs/geojson/place/?page_size=100';
   let pageNumber = 0;
 
   try {
