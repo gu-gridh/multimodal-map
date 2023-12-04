@@ -298,7 +298,7 @@ function clearAll() {
 }
 
 #app .tag-section {
-  margin-top: 2px;
+  margin-top: 0px;
   margin-bottom: 0px;
 }
 
