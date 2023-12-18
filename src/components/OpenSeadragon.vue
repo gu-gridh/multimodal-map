@@ -58,9 +58,18 @@ onMounted(() => {
 </template>
 
 <style scoped>
-.osd {
-    height: 100vh; 
-    width: 100vw; 
+#FullPage:focus {
+  outline: none;
+}
+
+a:visited{
+  outline:none;
+}
+a:focus{
+  outline:none;
+}
+a:active{
+  outline:none;
 }
 
 ::v-deep .openseadragon-canvas {

@@ -71,11 +71,6 @@ onMounted(() => {
 </template>
 
 <style>
-.osd {
-    height: 100vh; 
-    width: 100vw; 
-}
-
 .openseadragon-canvas {
     background-color: #000 !important;
 }
