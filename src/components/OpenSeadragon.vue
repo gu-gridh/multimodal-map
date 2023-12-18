@@ -7,10 +7,19 @@ const props = defineProps({
 });
 
 const viewerEl = ref();
+const viewer = ref();
 
-onMounted(() =>
-  OpenSeadragon({
-    /** @see https://openseadragon.github.io/docs/OpenSeadragon.html#.Options */
+const toggleFullScreenPageMode = (bool: boolean) => {
+  // @ts-ignore 
+  OpenSeadragon.supportsFullScreen = bool;
+  // @ts-ignore 
+  OpenSeadragon.supportsFullPage = !bool;
+};
+
+onMounted(() => {
+  toggleFullScreenPageMode(false);
+
+  viewer.value = OpenSeadragon({
     element: viewerEl.value,
     immediateRender: false,
     visibilityRatio: 1.0,
@@ -19,42 +28,51 @@ onMounted(() =>
     showZoomControl: true,
     showHomeControl: false,
     showFullPageControl: true,
-    showNavigator:  true,
-    //navigatorId:   "navigatorDiv",
-    navigatorAutoFade:  true,
-    fullPageButton: "full-page",
-    zoomInButton: "zoom-in",
-    zoomOutButton: "zoom-out",
-    prefixUrl: "/openseadragon/",
-    // If a proper tileSource is not given, use src prop.
+    showNavigator: true,
+    navigatorAutoFade: true,
+    fullPageButton: 'full-page',
+    zoomInButton: 'zoom-in',
+    zoomOutButton: 'zoom-out',
+    prefixUrl: '/openseadragon/',
     tileSources: props.src,
-  })
-);
+  });
+
+  viewer.value.addHandler('full-page');
+});
 </script>
 
 <template>
-    <div ref="viewerEl" class="osd"> </div>
-     <!-- <div id="ToolbarHorizontal" v-show="src.length > 1">
-      <div id="CenterNav">
-        <a id="previous" href="#previous-page">
-          <div id="Prev" class="NavButton"></div>
-        </a>
-        <span id="currentpage">{{ currentImg + 1 }} / {{ src.length }}</span>
-        <a id="next" href="#next-page">
-          <div id="Next" class="NavButton"></div>
-        </a>
-      </div>
-    </div> -->
+  <div ref="viewerEl" class="osd">
+    <div id="ToolbarVertical">
+      <a id="full-page" href="#full-page">
+        <div id="FullPage" class="NavButton"></div>
+      </a>
+      <a id="zoom-in" href="#zoom-in">
+        <div id="ZoomIn" class="NavButton"></div>
+      </a>
+      <a id="zoom-out" href="#zoom-out">
+        <div id="ZoomOut" class="NavButton"></div>
+      </a>
+    </div>
+  </div>
 </template>
 
-<style>
+<style scoped>
+.osd {
+    height: 100vh; 
+    width: 100vw; 
+}
+
+::v-deep .openseadragon-canvas {
+    background-color: #000 !important;
+}
+
 #navigatorDiv{
 position:absolute;
   width:80px;
   height:80px;
   margin-top:10px;
   margin-right:10px;
-
 }
 
 #ToolbarHorizontal {
@@ -81,7 +99,6 @@ position:absolute;
   margin-left: 10px;
   margin-right: 10px;
 }
-
 
 #ToolbarVertical {
   position: absolute;

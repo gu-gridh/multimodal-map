@@ -62,7 +62,7 @@ const downloadImage = (fileUrl: string, fileName: string) => {
   <section class="illustration flex">
     <OpenSeadragon :src="`${object.iiif_file}/info.json`" class="flex-1" />
 
-    <div id="ToolbarVertical">
+    <!-- <div id="ToolbarVertical">
       <a id="full-page" href="#full-page">
         <div id="FullPage" class="NavButton"></div>
       </a>
@@ -72,7 +72,7 @@ const downloadImage = (fileUrl: string, fileName: string) => {
       <a id="zoom-out" href="#zoom-out">
         <div id="ZoomOut" class="NavButton"></div>
       </a>
-    </div>
+    </div> -->
 
   </section>
 </template>
