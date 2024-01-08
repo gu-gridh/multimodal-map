@@ -2,7 +2,7 @@ import { ref } from "vue";
 import { defineStore } from "pinia";
 import config from "./config";
 
-export const etruscanStore = defineStore("etruscan", () => {
+export const sonoraStore = defineStore("sonora", () => {
   const categories = ref<Array<string>>(["all"]);
   const tags = ref<Array<string>>(["all"]);
   const necropoli = ref<Array<string>>(["all"]);

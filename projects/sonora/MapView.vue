@@ -3,12 +3,12 @@ import { computed } from "vue";
 import MainLayout from "@/MainLayout.vue";
 import MapViewControls from "./MapViewControls.vue";
 import MapComponent from "@/components/MapComponentRwanda.vue";
-import DianaPlaceLayer from "@/components/DianaPlaceLayerEtruscan.vue";
+import DianaPlaceLayer from "./DianaPlaceLayerSonora.vue";
 import GeoJsonWebGLRenderer from "@/components/GeoJsonWebGLRenderer.vue";
 import FeatureSelection from "./FeatureSelection.vue";
 import MapViewPreview from "./MapViewPreview.vue";
 import { storeToRefs } from "pinia";
-import { etruscanStore } from "./store";
+import { sonoraStore } from "./store";
 import { mapStore } from "@/stores/store";
 import { clean } from "@/assets/utils";
 import markerIcon from "@/assets/marker-white.svg";
@@ -20,7 +20,7 @@ import { nextTick } from "vue";
 import GeoJSON from "ol/format/GeoJSON";
 import Title from "./Title.vue"
 
-const { categories, tags, necropoli, tombType, placesLayerVisible, tagsLayerVisible, dataParams, selectedNecropolisCoordinates, enable3D } = storeToRefs(etruscanStore());
+const { categories, tags, necropoli, tombType, placesLayerVisible, tagsLayerVisible, dataParams, selectedNecropolisCoordinates, enable3D } = storeToRefs(sonoraStore());
 const store = mapStore();
 const { selectedFeature } = storeToRefs(store);
 const minZoom = 9;

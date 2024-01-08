@@ -22,8 +22,8 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import CategoryButton from "../../src/components/input/CategoryButton.vue";
-import { etruscanStore } from "./store";
-const { selectedNecropolisCoordinates } = storeToRefs(etruscanStore());
+import { sonoraStore } from "./store";
+const { selectedNecropolisCoordinates } = storeToRefs(sonoraStore());
 
 
 const props = defineProps<{

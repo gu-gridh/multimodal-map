@@ -87,14 +87,14 @@ import CategoryButtonList from "./CategoryButtonDropdown.vue";
 import CategoryButton from "@/components/input/CategoryButtonList.vue";
 // import RangeSlider from "@/components/input/RangeSlider.vue";
 import { storeToRefs } from "pinia";
-import { etruscanStore } from "./store";
-import type { EtruscanProjectProject } from "./types";
+import { sonoraStore } from "./store";
+import type { SonoraProject } from "./types";
 import { DianaClient } from "@/assets/diana";
 import { transform } from 'ol/proj';
 
-const config = inject<EtruscanProject>("config");
-const dianaClient = new DianaClient("etruscantombs"); // Initialize DianaClient
-const { categories, years, tags, necropoli, tombType, dataParams, selectedNecropolisCoordinates, enable3D } = storeToRefs(etruscanStore());
+const config = inject<SonoraProject>("config");
+const dianaClient = new DianaClient("sonora"); // Initialize DianaClient
+const { categories, years, tags, necropoli, tombType, dataParams, selectedNecropolisCoordinates, enable3D } = storeToRefs(sonoraStore());
 // Create a ref for last clicked category
 const lastClickedCategory = ref('');
 

@@ -1,6 +1,6 @@
-import type { EtruscanProject } from "./types";
+import type { SonoraProject } from "./types";
 
-export default <EtruscanProject>{
+export default <SonoraProject>{
   title: "",
   subtitle: "",
   moreinfo: "Learn more...",

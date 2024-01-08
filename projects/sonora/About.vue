@@ -10,7 +10,7 @@
     <div class="flex-machine">
       <div class="red-content">
         
-    <div class="about-main-title theme-color-text" v-bind:class="{fullopacityui: visibleAbout}">{{ $t('etruscantitle') }}</div>
+    <div class="about-main-title theme-color-text" v-bind:class="{fullopacityui: visibleAbout}">{{ $t('sonoratitle') }}</div>
     <div class="about-sub-title theme-color-text" v-bind:class="{fullopacityui: visibleAbout}"></div>
 
     <div class="about-article-main" v-bind:class="{fullopacityui: visibleAbout}">
@@ -47,7 +47,7 @@
 
 <script lang="ts">
 
-import i18n from '../../src/translations/etruscan';
+import i18n from '../../src/translations/sonora';
 
 export default {
   name: "aboutview",
