@@ -158,34 +158,13 @@ watch(showGrid, (newValue) => {
       <div class="map-container">
         <MapComponent 
           :shouldAutoMove="true" 
-          :min-zoom=minZoom
-          :max-zoom=maxZoom 
-            
           :key="showGrid.toString()"
-        > 
+        >
+          <!-- :min-zoom=minZoom
+          :max-zoom=maxZoom  -->
         <!-- :restrictExtent="[11.9, 42.15, 12.2, 42.4]"      -->
           <template #layers>
-            <GeoJsonWebGLRenderer
-              :externalUrl="'https://data.dh.gu.se/geography/SGElevationMain.geojson'"
-              :zIndex=-0
-              :style="{
-                'stroke-color': [0, 0, 0, 0.18],
-                'stroke-width': 1,
-                'fill-color': [255, 0, 0, 1]
-              }"
-            >
-            </GeoJsonWebGLRenderer>
-            <GeoJsonWebGLRenderer
-              :externalUrl="'https://data.dh.gu.se/geography/SGElevationEdge.geojson'"
-              :zIndex=0
-              :style="{
-                'stroke-color': [0, 0, 0, 0.1],
-                'stroke-width': 1,
-                'fill-color': [0, 255, 0, 1]
-              }"
-            >
-            </GeoJsonWebGLRenderer>
-            <DianaPlaceLayer v-if="placesLayerVisible" path="etruscantombs/geojson/place/" :params="tagParams" :zIndex=20>
+            <DianaPlaceLayer v-if="placesLayerVisible" :zIndex=20>
             </DianaPlaceLayer>
           </template>
           

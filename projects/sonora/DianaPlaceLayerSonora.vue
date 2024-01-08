@@ -17,6 +17,7 @@ import Select from "ol/interaction/Select";
 import { sonoraStore } from "./store";
 import { pointerMove } from "ol/events/condition";
 import type Map from "ol/Map";
+import Point from "ol/geom/Point";
 
 const { selectedFeature } = storeToRefs(mapStore());
 
@@ -24,7 +25,6 @@ let selectHover; // Select interaction for hover
 const hoveredFeature = ref<Feature<Geometry> | null>(null);
 const hoverCoordinates = ref(null);
 const selectedCoordinates = ref(null);
-const { areMapPointsLoaded } = storeToRefs(sonoraStore());
 const map = inject("map") as Map;
 const vectorSource = ref(
   new VectorSource({
@@ -44,40 +44,28 @@ const props = defineProps({
   },
 });
 
-const updateFeatures = (features: Feature[]) => {
-  const geoJSONFormat = new GeoJSON({ featureProjection: "EPSG:3857" });
-  const transformedFeatures = geoJSONFormat.readFeatures({
-    type: "FeatureCollection",
-    features,
-  });
-
-  vectorSource.value.addFeatures(transformedFeatures);
-};
-
-const fetchData = async (initialUrl: string, params: Record<string, any>) => {
-  let nextUrl = initialUrl;
-  let initialParams = new URLSearchParams({ page_size: '1000', ...params }).toString();
-
-  if (nextUrl && initialParams) {
-    nextUrl = `${nextUrl}?${initialParams}`;
-  }
-
-  while (nextUrl) {
-    const res = await fetch(nextUrl.replace(/^http:/, "https:")).catch((err) => {
-      throw err;
+const fetchData = async () => {
+  const apiUrl = "https://orgeldatabas.gu.se/webgoart/goart/map.php?bbox=-5.229492,54.495568,34.101563,70.065585";
+  
+  try {
+      const response = await fetch(apiUrl);
+      const data = await response.json();
+      const geoJSONFormat = new GeoJSON({ featureProjection: "EPSG:3857" });
+      const transformedFeatures = data.features.map(feature => {
+        const coords = feature.geometry.coordinates;
+        feature.properties.name = feature.properties.Building;
+        return feature;
     });
 
-    if (!res) continue;
+    const transformedData = {
+      type: "FeatureCollection",
+      features: transformedFeatures,
+    };
 
-    const data = await res.json();
-    const features = data.features || [];
-
-    // Update features immediately after fetching a batch
-    updateFeatures(features);
-
-    nextUrl = data.next ? data.next.replace(/^http:/, "https:") : null;
+    vectorSource.value.addFeatures(geoJSONFormat.readFeatures(transformedData));
+  } catch (error) {
+    console.error("Error fetching data:", error);
   }
-  areMapPointsLoaded.value = true; // Set to true once all points are loaded
 };
 
 // Create a WebGLPointsLayer
@@ -104,6 +92,8 @@ const clearPopups = () => {
 
 onMounted(() => {
   if (map) {
+    fetchData();
+
     map.addLayer(webGLPointsLayer.value as any);
 
     // Initialize the select interaction for hover
@@ -152,21 +142,23 @@ onMounted(() => {
   }
 });
 
-watch(
-  () => props.params,
-  async (newParams) => {
-    areMapPointsLoaded.value = false; // Reset before fetching new data
-    const initialUrl =
-      "https://diana.dh.gu.se/api/etruscantombs/coordinates";
+// watch(
+//   () => props.params,
+//   async (newParams) => {
+//     areMapPointsLoaded.value = false; // Reset before fetching new data
+//     const initialUrl =
+//       "https://diana.dh.gu.se/api/etruscantombs/coordinates";
 
-    vectorSource.value.clear();
-    clearPopups(); // Clear the popups
+//     vectorSource.value.clear();
+//     clearPopups(); // Clear the popups
 
-    await fetchData(initialUrl, newParams);
-  },
-  { immediate: true }
-);
+//     await fetchData(initialUrl, newParams);
+//   },
+//   { immediate: true }
+// );
+
 </script>
+
 <template>
   <ol-overlay
     class="ol-popup"
@@ -175,7 +167,7 @@ watch(
   >
     <div
       class="ol-popup-content"
-      v-html="'Tomb ' + (hoveredFeature ? hoveredFeature.get('name') : '')"
+      v-html="(hoveredFeature ? hoveredFeature.get('name') : '')"
     ></div>
   </ol-overlay>
 
@@ -186,7 +178,7 @@ watch(
   >
     <div
       class="ol-popup-content"
-      v-html="'Tomb ' + (selectedFeature ? selectedFeature.get('name') : '')"
+      v-html="(selectedFeature ? selectedFeature.get('name') : '')"
     ></div>
   </ol-overlay>
 </template>

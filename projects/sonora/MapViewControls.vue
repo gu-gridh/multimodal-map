@@ -7,17 +7,9 @@
     </div>
   </div>
 
-
-  <div class="tag-section">
-    <div class="section-title">Tidsperiod</div>
-    <div class="broad-controls" style="height:100px;">
-  
-    </div>
-  </div>
-
   <div style="width:98%; float:left; display:flex; flex-direction:row; justify-content:space-between;">
   <div class="tag-section" style="float:left;">
-    <div class="section-title">Konstruktör</div>
+    <div class="section-title">Place</div>
     <div class="broad-controls">
         <CategoryButtonList 
           v-model="necropoli" 
@@ -32,7 +24,7 @@
   </div>
 
   <div class="tag-section" style="float:left; margin-left:20px;">
-    <div class="section-title">Orgeltyp</div>
+    <div class="section-title">Dokument</div>
     <div class="broad-controls">
         <CategoryButtonList 
           v-model="tombType" 
@@ -48,7 +40,7 @@
 </div>
 
   <!-- Data Section -->
-  <div class="data-widget">
+  <!-- <div class="data-widget">
     <div class="data-widget-section">
       <div class="data-widget-item">
         <h3>Visade orglar:</h3>
@@ -77,7 +69,7 @@
         <p>{{ totalThreedhop + totalPointcloud }}</p> 
       </div>
     </div>
-  </div>
+  </div> -->
 </template>
 
 <script setup lang="ts">
@@ -124,14 +116,14 @@ const YEARS = {
 };
 
 onMounted(async () => { 
-  await fetchDataAndPopulateRef("epoch", TAGS);
-  await fetchDataAndPopulateRef("necropolis", NECROPOLI);
-  await fetchDataAndPopulateRef("typeoftomb", TOMBTYPE);
+  // await fetchDataAndPopulateRef("epoch", TAGS);
+  // await fetchDataAndPopulateRef("necropolis", NECROPOLI);
+  // await fetchDataAndPopulateRef("typeoftomb", TOMBTYPE);
 
-  const url = `https://diana.dh.gu.se/api/etruscantombs/geojson/place/?page_size=500`;
-  const response = await fetch(url);
-  const data = await response.json();
-  initialTombCount.value = data.count //set total tombcount
+  // const url = `https://diana.dh.gu.se/api/etruscantombs/geojson/place/?page_size=500`;
+  // const response = await fetch(url);
+  // const data = await response.json();
+  // initialTombCount.value = data.count //set total tombcount
 });
 
 const NECROPOLICoordinates = ref<Record<string, [number, number]>>({});
