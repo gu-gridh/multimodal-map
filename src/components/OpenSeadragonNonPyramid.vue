@@ -3,7 +3,7 @@ import { ref, onMounted } from "vue";
 import OpenSeadragon from "openseadragon";
 
 const props = defineProps<{
-  src: string[];
+  src: string[];  
 }>();
  
 
@@ -11,6 +11,13 @@ const viewerEl = ref();
 const currentPage = ref(1);  // Define currentPage
 
 onMounted(() => {  
+
+  const tileSources: any = props.src.map(url => ({
+    type: 'image',
+    url: url,
+    buildPyramid: false  
+  }));
+
   const viewer = OpenSeadragon({
     element: viewerEl.value,
     immediateRender: false,
@@ -30,7 +37,7 @@ onMounted(() => {
     prefixUrl: "/openseadragon/",
     sequenceMode: true,
     preload: true,
-    tileSources: props.src,
+    tileSources: tileSources,
   });
     viewer.addHandler('page', function(event) {
     currentPage.value = event.page + 1;
@@ -92,7 +99,7 @@ position:absolute;
 #ToolbarHorizontal {
   position: absolute;
   display: flex;
-  justify-content: center;
+  justify-content: center;  
   bottom: 10px;
   width: 100%;
   z-index: 1000;
@@ -101,7 +108,7 @@ position:absolute;
 #ToolbarHorizontal span {
   display: flex;
   flex-direction:column;
-  justify-content: center;
+  justify-content: center;  
   background-color: rgba(35, 35, 35, 0.6);
   color: white;
   text-align: center;

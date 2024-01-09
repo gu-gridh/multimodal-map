@@ -54,6 +54,7 @@ const fetchData = async () => {
       const transformedFeatures = data.features.map(feature => {
         const coords = feature.geometry.coordinates;
         feature.properties.name = feature.properties.Building;
+        feature.properties.number = feature.properties.Nr;
         return feature;
     });
 

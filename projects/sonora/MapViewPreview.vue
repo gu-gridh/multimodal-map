@@ -8,7 +8,7 @@ import type {
   Tomb
 } from "./types";
 import type { DianaClient } from "@/assets/diana";
-import OpenSeadragon from "@/components/OpenSeadragonSequence.vue";
+import OpenSeadragon from "@/components/OpenSeadragonNonPyramid.vue";
 
 const { selectedFeature } = storeToRefs(mapStore());
 const diana = inject("diana") as DianaClient;
@@ -16,58 +16,53 @@ const images = ref<Image[]>();
 const imageUrls = ref<string[]>([]);
 let text = ref(false)
 let place = ref()
-const necropolisName = ref<string | null>(null);  
-const chambers = ref<number | null>(null);
-const type = ref<string | null>(null);
-const period = ref<string | null>(null);
-const subtitle = ref<string | null>(null);
-const description = ref<string | null>(null);
+
+const placeInfo = ref({
+  Ort: '',
+  Byggnadens_namn: '',
+  Stift: '',
+  Kontrakt: '',
+  Kommun: '',
+  Loc: '',
+});
 
 //when a place is selected, fetch image and info
 watchEffect(async () => {
   if (selectedFeature.value) {
-    const placeId = selectedFeature.value.getId();
-    place.value = { id_: placeId };
-    images.value = await diana.listAll<Image>("image", { tomb: placeId, depth: 2 });
+    const placeId = selectedFeature.value.get("number");
+    // place.value = { id_: placeId };
+    try {
+      const response = await fetch(`https://orgeldatabas.gu.se/webgoart/goart/place.php?id=${placeId}&lang=sv`);
+      if (response.ok) {
+        const data = await response.json();
+        placeInfo.value = {
+          Ort: data.Ort,
+          Byggnadens_namn: data.Byggnadens_namn,
+          Stift: data.Stift,
+          Kontrakt: data.Kontrakt,
+          Kommun: data.Kommun,
+          Loc: data.loc1,
+        };
 
-    // If images are available
-    if (images.value.length > 0) {
-      const filteredImages = images.value.filter(image => {
-        return image.type_of_image.some(tag => tag.text === 'photograph'); //Only display images that are photographs
-      });
-      imageUrls.value = filteredImages.map(image => `${image.iiif_file}/info.json`);
-      
-      // Populate place details
-      if (images.value[0].tomb) {
-        necropolisName.value = images.value[0].tomb?.necropolis?.text || null;
-        chambers.value = images.value[0].tomb.number_of_chambers || null;
-        type.value = images.value[0].tomb.type.text || null;
-        period.value = images.value[0].tomb.epoch.text || null;
-        subtitle.value = images.value[0].tomb.subtitle || null;
-        description.value = images.value[0].tomb.description || null;
+        imageUrls.value = [];
+        let i = 1; // Start with 'orgph1'
+        while (data[`orgph${i}`]) {
+          imageUrls.value.push(data[`orgph${i}`]);
+          i++;
+        }
+        console.log(imageUrls.value)
+      } else {
+        console.error('Failed to fetch place info');
       }
-    } else {
-      imageUrls.value = [];
-      // If no images are available, fetch details from `geojson/place` endpoint
-      const response = await fetch(`https://diana.dh.gu.se/api/etruscantombs/geojson/place/?id=${placeId}`);
-      const geojsonData = await response.json();
-      if (geojsonData.features.length > 0) {
-        const feature = geojsonData.features[0];
-        necropolisName.value = feature.properties.necropolis.text || null;
-        chambers.value = feature.properties.number_of_chambers || null;
-        type.value = feature.properties.type.text || null;
-        period.value = feature.properties.epoch.text || null;
-        subtitle.value = feature.properties.subtitle || null;
-        description.value = feature.properties.description || null;
-      }
+    } catch (error) {
+      console.error('Error fetching place info:', error);
     }
+
   } else {
     images.value = [];
     imageUrls.value = [];
-    necropolisName.value = null;
-    chambers.value = null;
-    type.value = null;
-    period.value = null;
+    // Reset placeInfo when no feature is selected
+    placeInfo.value = { Ort: '', Byggnadens_namn: '' };
   }
 });
 
@@ -84,47 +79,31 @@ function deselectPlace() {
       <div class="placecard-top">
 
         <OpenSeadragon :src="imageUrls" :key="imageUrls.join(',')" class="flex-1" />
-
-        <!-- Code to list all images -->
-        <!-- <router-link :to="`/place/${place.id_}`"
-        v-for="image in images"
-        :key="image.uuid"
-        class="clickable"
-      >
-        <div class="image-container">
-          <img
-            :src="`${image.iiif_file}/full/500,/0/default.jpg`"
-            class="image"
-          />
-        </div>
-      </router-link> -->
       </div>
 
       <div class="placecard-bottom">
         <div class="placecard-text">
-          <div class="placecard-title theme-color-text">{{ selectedFeature.get("name") }}</div>
-          <div class="placecard-subtitle theme-color-text">{{ selectedFeature.get("subtitle") }}</div>
-          <!-- <button class="theme-button theme-color-background">{{ $t('threedmodel') }}</button> -->
+          <div class="placecard-title theme-color-text">{{ placeInfo.Ort }}</div>
+          <div class="placecard-subtitle theme-color-text">{{ placeInfo.Byggnadens_namn }}</div>
         </div>
         <div class="placecard-content">
           <div class="placecard-metadata-content">
 
-
             <div class="metadata-item">
-              <div class="label">Necropolis:</div>
-              <div class="tag theme-color-text">{{ necropolisName }}</div>
+              <div class="label">Stift:</div>
+              <div class="tag theme-color-text">{{ placeInfo.Stift }}</div>
             </div>
             <div class="metadata-item">
-              <div class="label">{{ $t('type') }}:</div>
-              <div class="tag theme-color-text">{{ type }}</div>
+              <div class="label">Kontrakt:</div>
+              <div class="tag theme-color-text">{{ placeInfo.Kontrakt }}</div>
             </div>
             <div class="metadata-item">
-              <div class="label">{{ $t('chambers') }}:</div>
-              <div class="tag theme-color-text">{{ chambers }}</div>
+              <div class="label">Kommun:</div>
+              <div class="tag theme-color-text">{{ placeInfo.Kommun }}</div>
             </div>
             <div class="metadata-item">
-              <div class="label">{{ $t('period') }}:</div>
-              <div class="tag theme-color-text">{{ period }}</div>
+              <div class="label">Loc:</div>
+              <div class="tag theme-color-text">{{ placeInfo.Loc }}</div>
             </div>
             
           </div>
