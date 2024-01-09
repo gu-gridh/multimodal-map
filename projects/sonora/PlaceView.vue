@@ -16,57 +16,57 @@ let pointcloud = ref<Pointcloud[]>([]);
 let mesh = ref<Mesh[]>([]);
 let place = ref();
 
-const combined3DModels = computed(() => [
-  ...mesh.value.map(m => ({ ...m, modelType: 'mesh' })),
-  ...pointcloud.value.map(p => ({ ...p, modelType: 'pointcloud' }))
-]);
+// const combined3DModels = computed(() => [
+//   ...mesh.value.map(m => ({ ...m, modelType: 'mesh' })),
+//   ...pointcloud.value.map(p => ({ ...p, modelType: 'pointcloud' }))
+// ]);
 
-const sortedGroupedByYear = computed(() => {
-  return Object.entries(groupedByYear.value)
-    .sort((a, b) => parseInt(b[0]) - parseInt(a[0]));
-});
+// const sortedGroupedByYear = computed(() => {
+//   return Object.entries(groupedByYear.value)
+//     .sort((a, b) => parseInt(b[0]) - parseInt(a[0]));
+// });
 
-function isImage(item: any): item is Image {
-  return 'iiif_file' in item;
-}
+// function isImage(item: any): item is Image {
+//   return 'iiif_file' in item;
+// }
 
-function isObservation(item: any): item is Observation {
-  return 'observation' in item;
-}
+// function isObservation(item: any): item is Observation {
+//   return 'observation' in item;
+// }
 
-function isPointcloud(item: any): item is Pointcloud {
-  return 'camera_position' in item;
-}
+// function isPointcloud(item: any): item is Pointcloud {
+//   return 'camera_position' in item;
+// }
 
-function isMesh(item: any): item is Mesh {
-  return 'triangles_optimized' in item;
-}
+// function isMesh(item: any): item is Mesh {
+//   return 'triangles_optimized' in item;
+// }
 
-function isDocument(item: any): item is Mesh {
-  return 'upload' in item;
-}
+// function isDocument(item: any): item is Mesh {
+//   return 'upload' in item;
+// }
 
 onMounted(async () => {
-    if (id) {
-        images.value = await diana.listAll<Image>("image", { tomb: id, type_of_image: 2 });
-        observations.value = await diana.listAll<Observation>("observation", { place: id });
-        documents.value = await diana.listAll<Document>("document", { place: id, depth: 2 });
-        pointcloud.value = await diana.listAll<Pointcloud>("objectpointcloud", { tomb: id, depth: 2});
-        mesh.value = await diana.listAll<Mesh>("object3dhop", { tomb: id, depth: 2});
+    // if (id) {
+    //     images.value = await diana.listAll<Image>("image", { tomb: id, type_of_image: 2 });
+    //     observations.value = await diana.listAll<Observation>("observation", { place: id });
+    //     documents.value = await diana.listAll<Document>("document", { place: id, depth: 2 });
+    //     pointcloud.value = await diana.listAll<Pointcloud>("objectpointcloud", { tomb: id, depth: 2});
+    //     mesh.value = await diana.listAll<Mesh>("object3dhop", { tomb: id, depth: 2});
         
-        //fetch for sections and plans
-        const url = 'https://diana.dh.gu.se/api/etruscantombs/image/?tomb=' + id + '&type_of_image=1&type_of_image=5';
-        const response = await fetch(url);
-        if (response.ok) {
-            const data = await response.json();
-            plans.value = data.results;
-        } else {
-            console.error(`Failed to fetch data: ${response.statusText}`);
-        }
+    //     //fetch for sections and plans
+    //     const url = 'https://diana.dh.gu.se/api/etruscantombs/image/?tomb=' + id + '&type_of_image=1&type_of_image=5';
+    //     const response = await fetch(url);
+    //     if (response.ok) {
+    //         const data = await response.json();
+    //         plans.value = data.results;
+    //     } else {
+    //         console.error(`Failed to fetch data: ${response.statusText}`);
+    //     }
 
-        /* For sorting by year */
-        groupAndSortByYear([...images.value, ...plans.value, ...observations.value, ...documents.value, ...pointcloud.value, ...mesh.value]);
-    }
+    //     /* For sorting by year */
+    //     groupAndSortByYear([...images.value, ...plans.value, ...observations.value, ...documents.value, ...pointcloud.value, ...mesh.value]);
+    // }
 });
 
 function groupAndSortByYear(allItems: (Image | Observation | Document | Pointcloud | Mesh)[]) {

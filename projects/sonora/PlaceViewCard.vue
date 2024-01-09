@@ -7,77 +7,94 @@ const props = defineProps<{
   id: string;
 }>();
 
-const capitalize = (word: String) => {
-  if (word !== '') {
-    const first = word[0].toUpperCase()
-    const rest = word.slice(1)
-    return first + rest
-  }
-  else return word
-}
+const organData = ref(null);
 
-const title = ref<string | null>(null);
-const necropolisName = ref<string | null>(null);
-const chambers = ref<number | null>(null);
-const type = ref<string | null>(null);
-const period = ref<string | null>(null);
-const subtitle = ref<string | null>(null);
-const description = ref<string | null>(null);
-
-const projection = ref("EPSG:4326");
-const zoom = ref(16);
-const rotation = ref(0);
-const strokeWidth = ref(5);
-const strokeColor = ref("red");
-const center = ref([11.999722, 42.224444])
-const minZoom = ref(12)
-
-const format = inject("ol-format");
-const geoJson = new format.GeoJSON();
-
-const url = "https://diana.dh.gu.se/api/etruscantombs/geojson/place/" + props.id
-
-const setCenter = async () => {
+const fetchOrganData = async () => {
   try {
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-    const placeData = await response.json();
-    if (placeData && placeData.geometry && placeData.geometry.coordinates) {
-      center.value = placeData.geometry.coordinates;
-    }
-  } catch (error) {
-    console.error("Error fetching place data:", error);
-  }
-};
-
-const fetchPlaceData = async () => {
-  try {
-    const response = await fetch(`https://diana.dh.gu.se/api/etruscantombs/geojson/place/?id=${props.id}`);
+    const response = await fetch(`https://orgeldatabas.gu.se/webgoart/goart/organ.php?id=${props.id}&lang=sv`);
     if (response.ok) {
       const data = await response.json();
-      const feature = data.features[0];
-      const properties = feature.properties;
-
-      // Assign fetched data to Vue Ref variables
-      title.value = properties.name || null;
-      necropolisName.value = properties.necropolis.text || null;
-      chambers.value = properties.number_of_chambers || null;
-      type.value = properties.type.text || null;
-      period.value = properties.epoch.text || null;
-      subtitle.value = properties.subtitle || null;
-      description.value = properties.description || null;
+      organData.value = data;
+    } else {
+      throw new Error('Failed to fetch organ data');
     }
   } catch (error) {
-    console.error("Failed to fetch data", error);
+    console.error("Error fetching organ data:", error);
   }
 };
+
+// const capitalize = (word: String) => {
+//   if (word !== '') {
+//     const first = word[0].toUpperCase()
+//     const rest = word.slice(1)
+//     return first + rest
+//   }
+//   else return word
+// }
+
+// const title = ref<string | null>(null);
+// const necropolisName = ref<string | null>(null);
+// const chambers = ref<number | null>(null);
+// const type = ref<string | null>(null);
+// const period = ref<string | null>(null);
+// const subtitle = ref<string | null>(null);
+// const description = ref<string | null>(null);
+
+// const projection = ref("EPSG:4326");
+// const zoom = ref(16);
+// const rotation = ref(0);
+// const strokeWidth = ref(5);
+// const strokeColor = ref("red");
+// const center = ref([11.999722, 42.224444])
+// const minZoom = ref(12)
+
+// const format = inject("ol-format");
+// const geoJson = new format.GeoJSON();
+
+// const url = "https://diana.dh.gu.se/api/etruscantombs/geojson/place/" + props.id
+
+// const setCenter = async () => {
+//   try {
+//     const response = await fetch(url);
+//     if (!response.ok) {
+//       throw new Error("Network response was not ok");
+//     }
+//     const placeData = await response.json();
+//     if (placeData && placeData.geometry && placeData.geometry.coordinates) {
+//       center.value = placeData.geometry.coordinates;
+//     }
+//   } catch (error) {
+//     console.error("Error fetching place data:", error);
+//   }
+// };
+
+// const fetchPlaceData = async () => {
+//   try {
+//     const response = await fetch(`https://diana.dh.gu.se/api/etruscantombs/geojson/place/?id=${props.id}`);
+//     if (response.ok) {
+//       const data = await response.json();
+//       const feature = data.features[0];
+//       const properties = feature.properties;
+
+//       // Assign fetched data to Vue Ref variables
+//       title.value = properties.name || null;
+//       necropolisName.value = properties.necropolis.text || null;
+//       chambers.value = properties.number_of_chambers || null;
+//       type.value = properties.type.text || null;
+//       period.value = properties.epoch.text || null;
+//       subtitle.value = properties.subtitle || null;
+//       description.value = properties.description || null;
+//     }
+//   } catch (error) {
+//     console.error("Failed to fetch data", error);
+//   }
+// };
 
 // Center the map based on fetched data.
 onMounted(() => {
-  setCenter();
-  fetchPlaceData();  // Fetch image and details when component is mounted.
+  //setCenter();
+  //fetchPlaceData();  // Fetch image and details when component is mounted.
+  fetchOrganData();
 });
 
 </script>
@@ -141,7 +158,6 @@ onMounted(() => {
         </div>
       </div>
     </div>
-
   </div>
 </template>
 

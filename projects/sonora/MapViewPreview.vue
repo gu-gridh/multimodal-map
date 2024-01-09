@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { watchEffect, ref, inject } from "vue";
+import { watchEffect, ref, inject, computed } from "vue";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
 import type {
@@ -14,6 +14,9 @@ const { selectedFeature } = storeToRefs(mapStore());
 const diana = inject("diana") as DianaClient;
 const images = ref<Image[]>();
 const imageUrls = ref<string[]>([]);
+const organNumbers = ref({}); //all the organ numbers returned 
+const computedRoute = computed(() => `/place/${currentOrganNumber.value}`); //route for placeview
+let currentOrganNumber = ref(0); //organ number corresponding to page in openseadragonviewer
 let text = ref(false)
 let place = ref()
 
@@ -26,11 +29,16 @@ const placeInfo = ref({
   Loc: '',
 });
 
+const handlePageChange = (newPage) => {
+    currentOrganNumber.value = organNumbers.value[newPage];
+    console.log(currentOrganNumber.value);
+};
+
 //when a place is selected, fetch image and info
 watchEffect(async () => {
   if (selectedFeature.value) {
     const placeId = selectedFeature.value.get("number");
-    // place.value = { id_: placeId };
+    place.value = { id_: placeId };
     try {
       const response = await fetch(`https://orgeldatabas.gu.se/webgoart/goart/place.php?id=${placeId}&lang=sv`);
       if (response.ok) {
@@ -44,12 +52,20 @@ watchEffect(async () => {
           Loc: data.loc1,
         };
 
+        // Initialize the organNumbers and imageUrls arrays
+        organNumbers.value = {};
         imageUrls.value = [];
-        let i = 1; // Start with 'orgph1'
-        while (data[`orgph${i}`]) {
-          imageUrls.value.push(data[`orgph${i}`]);
-          i++;
-        }
+
+          let i = 1;
+          while (data[`orgnr${i}`]) {
+            imageUrls.value.push(data[`orgph${i}`]);
+            organNumbers.value[i] = data[`orgnr${i}`];
+            i++;
+          }
+
+          if (i > 1) {
+            currentOrganNumber.value = organNumbers.value[1];
+          }
       } else {
         console.error('Failed to fetch place info');
       }
@@ -60,6 +76,7 @@ watchEffect(async () => {
   } else {
     images.value = [];
     imageUrls.value = [];
+    organNumbers.value = {};
     // Reset placeInfo when no feature is selected
     placeInfo.value = { Ort: '', Byggnadens_namn: '' };
   }
@@ -77,7 +94,7 @@ function deselectPlace() {
       <div class="close-card-button" @click="deselectPlace">+</div>
       <div class="placecard-top">
 
-        <OpenSeadragon :src="imageUrls" :key="imageUrls.join(',')" class="flex-1" />
+        <OpenSeadragon :src="imageUrls" :key="imageUrls.join(',')" @page-changed="handlePageChange" class="flex-1" />
       </div>
 
       <div class="placecard-bottom">
@@ -115,9 +132,9 @@ function deselectPlace() {
       </div>
       
       <div class="placecard-center-button">
-        <router-link :to="`/place/${place?.id_}`">
+      <router-link :to="computedRoute">
           <button class="theme-button" style="margin-top:0px;">{{ $t('moreinfo') }}</button>
-        </router-link>
+      </router-link>
       </div>
     </div>
   </div>

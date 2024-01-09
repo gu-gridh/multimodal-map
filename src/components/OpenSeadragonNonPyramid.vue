@@ -5,8 +5,8 @@ import OpenSeadragon from "openseadragon";
 const props = defineProps<{
   src: string[];  
 }>();
- 
 
+const emit = defineEmits(['page-changed']);
 const viewerEl = ref();
 const currentPage = ref(1);  // Define currentPage
 
@@ -39,9 +39,10 @@ onMounted(() => {
     preload: true,
     tileSources: tileSources,
   });
-    viewer.addHandler('page', function(event) {
+viewer.addHandler('page', function(event) {
     currentPage.value = event.page + 1;
-  });
+    emit('page-changed', currentPage.value); // Emit the raw value
+});
 });
 </script>
 
