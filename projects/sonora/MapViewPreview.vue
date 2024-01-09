@@ -50,7 +50,6 @@ watchEffect(async () => {
           imageUrls.value.push(data[`orgph${i}`]);
           i++;
         }
-        console.log(imageUrls.value)
       } else {
         console.error('Failed to fetch place info');
       }
