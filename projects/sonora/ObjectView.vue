@@ -18,9 +18,9 @@ const props = defineProps({
 const diana = inject("diana") as DianaClient;
 const object = ref<Image>();
 
-watchEffect(async () => {
-  object.value = await diana.get(props.type, props.id, { depth: 1 });
-});
+// watchEffect(async () => {
+//   object.value = await diana.get(props.type, props.id, { depth: 1 });
+// });
 
 const objectComponent = {
   image: ObjectViewImage,
@@ -28,9 +28,9 @@ const objectComponent = {
 </script>
 
 <template>
-  <article v-if="object">
+
     <component :is="objectComponent" :object="object" :id="Number(id)" />
-  </article>
+
 </template>
 
 <style>

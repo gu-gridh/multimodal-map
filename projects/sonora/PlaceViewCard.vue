@@ -112,48 +112,47 @@ onMounted(() => {
 
         <!-- mini map -->
         <div class="mini-map">
-          <ol-map :loadTilesWhileAnimating="true" :loadTilesWhileInteracting="true" style="height:300px">
-            <ol-view ref="view" :center="center" :rotation="rotation" :zoom="zoom" :projection="projection"
-              :minZoom="minZoom" />
-            <ol-tile-layer>
-              <ol-source-osm />
-            </ol-tile-layer>
-
-            <ol-vector-layer>
-              <ol-source-vector :url="url" :format="geoJson">
-              </ol-source-vector>
-              <ol-style>
-                <ol-style-icon :src="markerIcon" :scale="1.8" :displacement="[-10, 45]"
-                  :anchor="[0.0, 0.0]"></ol-style-icon>
-              </ol-style>
-            </ol-vector-layer>
-          </ol-map>
+          <img v-if="organData" :src="organData.Fotografi" alt="Map Image" />
         </div>
-        <div class="placecard-text">
-          <div class="placecard-title theme-color-text">Tomb {{ title }}</div>
+        <div v-if="organData" class="placecard-text">
+          <div class="placecard-title theme-color-text">Organ {{ id }}</div>
           <div class="placecard-subtitle theme-color-text">{{ subtitle }}</div>
 
           <div class="placecard-metadata-content" style="">
-            <div class="metadata-item">
-              <div class="label">Necropolis:</div>
-              <div class="tag theme-color-text">{{ necropolisName }}</div>
+            <div  class="metadata-item">
+              <div class="label">Verksgrundare: </div>
+              <div class="tag theme-color-text">{{ organData.Verksgrundare }}</div>
             </div>
             <div class="metadata-item">
-              <div class="short-label">Type:</div>
-              <div class="tag theme-color-text">{{ type }} </div>
+              <div class="short-label">Fasadpipor_info: </div>
+              <div class="tag theme-color-text">{{ organData.Fasadpipor_info }} </div>
             </div>
             <div class="metadata-item">
-              <div class="label">Chambers:</div>
-              <div class="tag theme-color-text">{{ chambers }}</div>
+              <div class="label">Typ_av_traktursystem: </div>
+              <div class="tag theme-color-text">{{ organData.Typ_av_traktursystem }}</div>
             </div>
             <div class="metadata-item">
-              <div class="short-label">Period:</div>
-              <div class="tag theme-color-text">{{ period }}</div>
+              <div class="short-label">Typ_av_registratursystem: </div>
+              <div class="tag theme-color-text">{{ organData.Typ_av_registratursystem }}</div>
+            </div>
+            <div class="metadata-item">
+              <div class="short-label">Typ_av_huvudbälg: </div>
+              <div class="tag theme-color-text">{{ organData.Typ_av_huvudbälg }}</div>
+            </div>
+             <div class="metadata-item">
+              <div class="short-label">Info_bälgar/luftsystem: </div>
+              <div class="tag theme-color-text">{{ organData.Info_bälgar/luftsystem }}</div>
+            </div>
+             <div class="metadata-item">
+              <div class="short-label">Antal_bälgar: </div>
+              <div class="tag theme-color-text">{{ organData.Antal_bälgar }}</div>
             </div>
           </div>
           <div class="placecard-metadata-content" style="margin-top:10px;">
-            <div class="placecard-metadata-description" v-html="description">
-            </div>
+            <span>Historisk_översikt:</span>
+            <div class="organ-historic-overview" v-html="organData.Historisk_översikt"></div>
+            <span>Disposition:</span>
+            <div class="organ-historic-overview" v-html="organData.Disposition"></div>
           </div>
         </div>
       </div>
@@ -162,6 +161,23 @@ onMounted(() => {
 </template>
 
 <style scoped>
+.mini-map img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.placecard-metadata-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.metadata-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
 .place-back-button {
   left: 40px;
   top: 80px;

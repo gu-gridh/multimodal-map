@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ObjectViewComponent from "@/components/ObjectViewComponentReturn.vue";
+import ObjectViewComponent from "./ObjectViewComponentSonora.vue";
 import OpenSeadragon from "@/components/OpenSeadragon.vue";
 import type { ImageDeep } from "./types";
 
@@ -20,7 +20,7 @@ const downloadImage = (fileUrl: string, fileName: string) => {
 
 <template>
   <div class="metadata">
-    <ObjectViewComponent :title="'Tomb ' + object.tomb.name">
+    <!-- <ObjectViewComponent :title="'Tomb ' + object.tomb.name">
       <div class="objects">
       
       <div><div class="label">Type:</div> <div class="data">{{ object.type_of_image[0].text }}</div></div>
@@ -36,11 +36,19 @@ const downloadImage = (fileUrl: string, fileName: string) => {
       <div v-if="object.tomb?.name"><h2>Tomb {{ object.tomb.name }}</h2> </div>
       <div class="description" v-if="object.tomb?.description" v-html="object.tomb.description"></div>
     </div>
+    </ObjectViewComponent> -->
+
+    <ObjectViewComponent :title="'TEST'">
+      <div class="objects">
+        <div><div class="label">Type:</div> </div>
+        <div class="label">Creator:  </div>
+        <div class="label">Date:</div> 
+      </div>
     </ObjectViewComponent>
   </div>
 
   <section class="illustration flex">
-    <OpenSeadragon :src="`${object.iiif_file}/info.json`" class="flex-1" />
+    <!-- <OpenSeadragon :src="`${object.iiif_file}/info.json`" class="flex-1" /> -->
     
     <!-- <div id="ToolbarVertical">
       <a id="full-page" href="#full-page">
