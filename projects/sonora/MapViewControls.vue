@@ -1,11 +1,24 @@
 <template>
 
 <div class="tag-section">
-
     <div class="broad-controls" style="height:60px;">
-        
+    </div>
+</div>
+  <div class="search-section">
+    <input
+      type="text"
+      v-model="searchQuery"
+      @input="handleSearch"
+      placeholder="Search Places..."
+      class="search-box"
+    />
+  <div class="search-results" v-if="searchResults.length">
+    <div v-for="result in searchResults" :key="result.id" class="search-result-item">
+      {{ result.Name }}
     </div>
   </div>
+</div>
+
 
   <div style="width:98%; float:left; display:flex; flex-direction:row; justify-content:space-between;">
   <div class="tag-section" style="float:left;">
@@ -83,155 +96,199 @@ import { sonoraStore } from "./store";
 import type { SonoraProject } from "./types";
 import { DianaClient } from "@/assets/diana";
 import { transform } from 'ol/proj';
+import _debounce from 'lodash/debounce';
 
+const searchQuery = ref('');
+const searchResults = ref([]);
 const config = inject<SonoraProject>("config");
 const dianaClient = new DianaClient("sonora"); // Initialize DianaClient
 const { categories, years, tags, necropoli, tombType, dataParams, selectedNecropolisCoordinates, enable3D } = storeToRefs(sonoraStore());
 // Create a ref for last clicked category
-const lastClickedCategory = ref('');
+//const lastClickedCategory = ref('');
 
 //initialize variables for data section
-const totalPhotographs = ref(0);
-const totalPlans = ref(0);
-const totalThreedhop = ref(0);
-const totalPointcloud = ref(0);
-const initialTombCount = ref(289);
-const currentTombCount = ref(0);
+// const totalPhotographs = ref(0);
+// const totalPlans = ref(0);
+// const totalThreedhop = ref(0);
+// const totalPointcloud = ref(0);
+// const initialTombCount = ref(289);
+// const currentTombCount = ref(0);
 
-const CATEGORIES = {
-  all: "All Data",
-  models: "3D models",
-};
+// const CATEGORIES = {
+//   all: "All Data",
+//   models: "3D models",
+// };
 
-const TAGS = ref<Record<string, string>>({});
+// const TAGS = ref<Record<string, string>>({});
 const NECROPOLI = ref<Record<string, string>>({});
 const TOMBTYPE = ref<Record<string, string>>({});
-const currentTag = ref(null);
-const currentNecropolis = ref(null);
-const currentTombType = ref(null);
+// const currentTag = ref(null);
+// const currentNecropolis = ref(null);
+// const currentTombType = ref(null);
 
-const YEARS = {
-  MIN: config?.timeRange?.[0] || 0,
-  MAX: config?.timeRange?.[1] || new Date().getFullYear(),
-};
+// const YEARS = {
+//   MIN: config?.timeRange?.[0] || 0,
+//   MAX: config?.timeRange?.[1] || new Date().getFullYear(),
+// };
 
-onMounted(async () => { 
-  // await fetchDataAndPopulateRef("epoch", TAGS);
-  // await fetchDataAndPopulateRef("necropolis", NECROPOLI);
-  // await fetchDataAndPopulateRef("typeoftomb", TOMBTYPE);
-
-  // const url = `https://diana.dh.gu.se/api/etruscantombs/geojson/place/?page_size=500`;
-  // const response = await fetch(url);
-  // const data = await response.json();
-  // initialTombCount.value = data.count //set total tombcount
-});
-
-const NECROPOLICoordinates = ref<Record<string, [number, number]>>({});
-
-async function fetchDataAndPopulateRef<T>(type: string, refToPopulate: any) {
-  try {
-    const data = await dianaClient.listAll<T>(type);
-    data.forEach((result: any) => {
-      if (result.published) {
-        refToPopulate.value[result.id] = result.text;
-        
-        // If the type is necropolis, store its coordinates
-        if (type === "necropolis" && result.geometry && result.geometry.coordinates) {
-          NECROPOLICoordinates.value[result.id] = result.geometry.coordinates;
-        }
-      }
-    });
-  } catch (error) {
-    console.error(`Error fetching data for type ${type}:`, error);
-  }
-}
-
-const handleCategoryClick = (category: string) => {
-  // If the clicked category is the same as the last clicked one, default to "all"
-  if (lastClickedCategory.value === category) {
-    categories.value = ["all"];
-
-    // Clear the lastClickedCategory since it was unselected
-    lastClickedCategory.value = '';
-    if (category === 'models') {
-      enable3D.value = !enable3D.value;  // Toggle between true and false
-    } else {
-      enable3D.value = false;
-    }
-  } else {
-    // Add the clicked category only if it's not the same as the last clicked one
-    categories.value = [category];
-    
-    // Update last clicked category
-    lastClickedCategory.value = category;
-    enable3D.value = (category === 'models');
-  }
-};
-
-//Fetch to return count of each type based on the tagParams
-const fetchData = async (url: string) => {
-  const response = await fetch(url);
-  if (!response.ok) {
-    console.error(`Failed to fetch data: ${response.status}`);
+const debouncedSearch = _debounce(async (query) => {
+    if (!query) {
+    searchResults.value = []; // Clear results if query is empty
     return;
   }
-  
-  const data = await response.json();
-  const { count, features } = data;
 
-  currentTombCount.value = count;
-  totalPhotographs.value = 0;
-  totalPlans.value = 0;
-  totalThreedhop.value = 0;
-  totalPointcloud.value = 0;
-
-  for (const feature of features) {
-    const {
-      photographs_count,
-      plans_count,
-      threedhop_count,
-      pointcloud_count
-    } = feature.properties;
-
-    totalPhotographs.value += photographs_count;
-    totalPlans.value += plans_count;
-    totalThreedhop.value += threedhop_count;
-    totalPointcloud.value += pointcloud_count;
+  const apiUrl = `https://orgeldatabas.gu.se/webgoart/goart/searchpl.php?seastr=${encodeURIComponent(query)}&lang=sv`;
+  try {
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+    searchResults.value = data ? data : []; // Set to empty array if data is null
+  } catch (error) {
+    console.error('Error fetching search results:', error);
+        searchResults.value = []; // Set to empty array in case of error
 
   }
+}, 500); // 500 ms debounce time
+
+const handleSearch = () => {
+  debouncedSearch(searchQuery.value);
 };
 
-watch(
-  () => dataParams.value,
-  async (newTagParams, oldTagParams) => {
-    const url = `https://diana.dh.gu.se/api/etruscantombs/geojson/place/?page_size=500&${new URLSearchParams(newTagParams).toString()}`;
-    await fetchData(url);
-  },
-  { immediate: true }
-);
+// const NECROPOLICoordinates = ref<Record<string, [number, number]>>({});
+
+// async function fetchDataAndPopulateRef<T>(type: string, refToPopulate: any) {
+//   try {
+//     const data = await dianaClient.listAll<T>(type);
+//     data.forEach((result: any) => {
+//       if (result.published) {
+//         refToPopulate.value[result.id] = result.text;
+        
+//         // If the type is necropolis, store its coordinates
+//         if (type === "necropolis" && result.geometry && result.geometry.coordinates) {
+//           NECROPOLICoordinates.value[result.id] = result.geometry.coordinates;
+//         }
+//       }
+//     });
+//   } catch (error) {
+//     console.error(`Error fetching data for type ${type}:`, error);
+//   }
+// }
+
+// const handleCategoryClick = (category: string) => {
+//   // If the clicked category is the same as the last clicked one, default to "all"
+//   if (lastClickedCategory.value === category) {
+//     categories.value = ["all"];
+
+//     // Clear the lastClickedCategory since it was unselected
+//     lastClickedCategory.value = '';
+//     if (category === 'models') {
+//       enable3D.value = !enable3D.value;  // Toggle between true and false
+//     } else {
+//       enable3D.value = false;
+//     }
+//   } else {
+//     // Add the clicked category only if it's not the same as the last clicked one
+//     categories.value = [category];
+    
+//     // Update last clicked category
+//     lastClickedCategory.value = category;
+//     enable3D.value = (category === 'models');
+//   }
+// };
+
+//Fetch to return count of each type based on the tagParams
+// const fetchData = async (url: string) => {
+//   const response = await fetch(url);
+//   if (!response.ok) {
+//     console.error(`Failed to fetch data: ${response.status}`);
+//     return;
+//   }
+  
+//   const data = await response.json();
+//   const { count, features } = data;
+
+//   currentTombCount.value = count;
+//   totalPhotographs.value = 0;
+//   totalPlans.value = 0;
+//   totalThreedhop.value = 0;
+//   totalPointcloud.value = 0;
+
+//   for (const feature of features) {
+//     const {
+//       photographs_count,
+//       plans_count,
+//       threedhop_count,
+//       pointcloud_count
+//     } = feature.properties;
+
+//     totalPhotographs.value += photographs_count;
+//     totalPlans.value += plans_count;
+//     totalThreedhop.value += threedhop_count;
+//     totalPointcloud.value += pointcloud_count;
+
+//   }
+// };
+
+// watch(
+//   () => dataParams.value,
+//   async (newTagParams, oldTagParams) => {
+//     const url = `https://diana.dh.gu.se/api/etruscantombs/geojson/place/?page_size=500&${new URLSearchParams(newTagParams).toString()}`;
+//     await fetchData(url);
+//   },
+//   { immediate: true }
+// );
 
 const toggleAboutVisibility = async () => {
   await nextTick();
   visibleAbout.value = !visibleAbout.value;
 };
 
-function handleSelectionClick(selectedValue, targetRef) {
-  const selectedCoordinates = NECROPOLICoordinates.value[selectedValue];
-  if (selectedCoordinates) {
-    const [x, y] = selectedCoordinates;
+// function handleSelectionClick(selectedValue, targetRef) {
+//   const selectedCoordinates = NECROPOLICoordinates.value[selectedValue];
+//   if (selectedCoordinates) {
+//     const [x, y] = selectedCoordinates;
 
-    // Convert them to Web Mercator (EPSG:3857)
-    const webMercatorCoordinates = transform([x, y], 'EPSG:4326', 'EPSG:3857');
+//     // Convert them to Web Mercator (EPSG:3857)
+//     const webMercatorCoordinates = transform([x, y], 'EPSG:4326', 'EPSG:3857');
     
-    // Update the selectedNecropolisCoordinates in the store
-    selectedNecropolisCoordinates.value = webMercatorCoordinates;
-  } else {
-    console.log("Coordinates for selected necropolis not found");
-  }
-}
+//     // Update the selectedNecropolisCoordinates in the store
+//     selectedNecropolisCoordinates.value = webMercatorCoordinates;
+//   } else {
+//     console.log("Coordinates for selected necropolis not found");
+//   }
+// }
 </script>
 
 <style>
+.search-section {
+  position: relative;
+}
+
+.search-box {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.search-results {
+  position: absolute;
+  width: 100%;
+  background: white;
+  border: 1px solid #ccc;
+  border-top: none;
+  z-index: 100;
+}
+
+.search-result-item {
+  padding: 8px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+}
+
+.search-result-item:hover {
+  background-color: #f9f9f9;
+}
+
 #app .section-title {
   margin-top:10px;
   margin-bottom:-3px;
