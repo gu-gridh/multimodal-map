@@ -148,9 +148,12 @@ onMounted(() => {
               <div class="tag theme-color-text">{{ organData.Antal_bälgar }}</div>
             </div>
           </div>
-          <div class="placecard-metadata-content" style="margin-top:10px;">
+          <div class="placecard-metadata-content" style="margin-top:10px; border-top: 1.5px solid black;">
             <span>Historisk_översikt:</span>
             <div class="organ-historic-overview" v-html="organData.Historisk_översikt"></div>
+        
+          </div>
+            <div class="placecard-metadata-content" style="margin-top:10px; border-top: 1.5px solid black;">
             <span>Disposition:</span>
             <div class="organ-historic-overview" v-html="organData.Disposition"></div>
           </div>
@@ -165,12 +168,6 @@ onMounted(() => {
   width: 100%;
   height: 100%;
   object-fit: cover;
-}
-
-.placecard-metadata-content {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
 }
 .metadata-item {
   display: flex;
