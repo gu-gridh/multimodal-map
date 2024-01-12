@@ -4,18 +4,28 @@
     <div class="broad-controls" style="height:60px;">
     </div>
 </div>
+<div class="toggle-buttons">
+  <button :class="{ active: searchType === 'places' }" @click="setSearchType('places')">Places</button>
+  <button :class="{ active: searchType === 'docs' }" @click="setSearchType('docs')">Docs</button>
+</div>
   <div class="search-section">
     <input
       type="text"
       v-model="searchQuery"
       @input="handleSearch"
-      placeholder="Search Places..."
+      :placeholder="searchType === 'places' ? 'Search Places...' : 'Search Docs...'"
       class="search-box"
     />
   <div class="search-results" v-if="searchResults.length">
     <div v-for="result in searchResults" :key="result.id" class="search-result-item">
+    <template v-if="searchType === 'places'">
       {{ result.Name }}
+    </template>          
+    <template v-else> <!-- When searchType is 'docs' -->
+      <router-link :to="`/detail/image/${result.Id}`">{{ result.Name }}</router-link>
+    </template>
     </div>
+
   </div>
 </div>
 
@@ -98,38 +108,21 @@ import { DianaClient } from "@/assets/diana";
 import { transform } from 'ol/proj';
 import _debounce from 'lodash/debounce';
 
+const searchType = ref('places'); // Default to 'places' 
 const searchQuery = ref('');
 const searchResults = ref([]);
 const config = inject<SonoraProject>("config");
 const dianaClient = new DianaClient("sonora"); // Initialize DianaClient
 const { categories, years, tags, necropoli, tombType, dataParams, selectedNecropolisCoordinates, enable3D } = storeToRefs(sonoraStore());
-// Create a ref for last clicked category
-//const lastClickedCategory = ref('');
-
-//initialize variables for data section
-// const totalPhotographs = ref(0);
-// const totalPlans = ref(0);
-// const totalThreedhop = ref(0);
-// const totalPointcloud = ref(0);
-// const initialTombCount = ref(289);
-// const currentTombCount = ref(0);
-
-// const CATEGORIES = {
-//   all: "All Data",
-//   models: "3D models",
-// };
 
 // const TAGS = ref<Record<string, string>>({});
 const NECROPOLI = ref<Record<string, string>>({});
 const TOMBTYPE = ref<Record<string, string>>({});
-// const currentTag = ref(null);
-// const currentNecropolis = ref(null);
-// const currentTombType = ref(null);
 
-// const YEARS = {
-//   MIN: config?.timeRange?.[0] || 0,
-//   MAX: config?.timeRange?.[1] || new Date().getFullYear(),
-// };
+const setSearchType = (type: string) => {
+  searchType.value = type;
+  handleSearch(); // Re-trigger search when type changes
+};
 
 const debouncedSearch = _debounce(async (query) => {
     if (!query) {
@@ -137,7 +130,12 @@ const debouncedSearch = _debounce(async (query) => {
     return;
   }
 
-  const apiUrl = `https://orgeldatabas.gu.se/webgoart/goart/searchpl.php?seastr=${encodeURIComponent(query)}&lang=sv`;
+let apiUrl;
+  if (searchType.value === 'places') {
+    apiUrl = `https://orgeldatabas.gu.se/webgoart/goart/searchpl.php?seastr=${encodeURIComponent(query)}&lang=sv`;
+  } else { // 'docs'
+    apiUrl = `https://orgeldatabas.gu.se/webgoart/goart/searchdoc.php?seastr=${encodeURIComponent(query)}&lang=sv&start=0&limit=20`;
+  }
   try {
     const response = await fetch(apiUrl);
     const data = await response.json();
@@ -152,90 +150,6 @@ const debouncedSearch = _debounce(async (query) => {
 const handleSearch = () => {
   debouncedSearch(searchQuery.value);
 };
-
-// const NECROPOLICoordinates = ref<Record<string, [number, number]>>({});
-
-// async function fetchDataAndPopulateRef<T>(type: string, refToPopulate: any) {
-//   try {
-//     const data = await dianaClient.listAll<T>(type);
-//     data.forEach((result: any) => {
-//       if (result.published) {
-//         refToPopulate.value[result.id] = result.text;
-        
-//         // If the type is necropolis, store its coordinates
-//         if (type === "necropolis" && result.geometry && result.geometry.coordinates) {
-//           NECROPOLICoordinates.value[result.id] = result.geometry.coordinates;
-//         }
-//       }
-//     });
-//   } catch (error) {
-//     console.error(`Error fetching data for type ${type}:`, error);
-//   }
-// }
-
-// const handleCategoryClick = (category: string) => {
-//   // If the clicked category is the same as the last clicked one, default to "all"
-//   if (lastClickedCategory.value === category) {
-//     categories.value = ["all"];
-
-//     // Clear the lastClickedCategory since it was unselected
-//     lastClickedCategory.value = '';
-//     if (category === 'models') {
-//       enable3D.value = !enable3D.value;  // Toggle between true and false
-//     } else {
-//       enable3D.value = false;
-//     }
-//   } else {
-//     // Add the clicked category only if it's not the same as the last clicked one
-//     categories.value = [category];
-    
-//     // Update last clicked category
-//     lastClickedCategory.value = category;
-//     enable3D.value = (category === 'models');
-//   }
-// };
-
-//Fetch to return count of each type based on the tagParams
-// const fetchData = async (url: string) => {
-//   const response = await fetch(url);
-//   if (!response.ok) {
-//     console.error(`Failed to fetch data: ${response.status}`);
-//     return;
-//   }
-  
-//   const data = await response.json();
-//   const { count, features } = data;
-
-//   currentTombCount.value = count;
-//   totalPhotographs.value = 0;
-//   totalPlans.value = 0;
-//   totalThreedhop.value = 0;
-//   totalPointcloud.value = 0;
-
-//   for (const feature of features) {
-//     const {
-//       photographs_count,
-//       plans_count,
-//       threedhop_count,
-//       pointcloud_count
-//     } = feature.properties;
-
-//     totalPhotographs.value += photographs_count;
-//     totalPlans.value += plans_count;
-//     totalThreedhop.value += threedhop_count;
-//     totalPointcloud.value += pointcloud_count;
-
-//   }
-// };
-
-// watch(
-//   () => dataParams.value,
-//   async (newTagParams, oldTagParams) => {
-//     const url = `https://diana.dh.gu.se/api/etruscantombs/geojson/place/?page_size=500&${new URLSearchParams(newTagParams).toString()}`;
-//     await fetchData(url);
-//   },
-//   { immediate: true }
-// );
 
 const toggleAboutVisibility = async () => {
   await nextTick();
@@ -259,6 +173,27 @@ const toggleAboutVisibility = async () => {
 </script>
 
 <style>
+.search-result-item a {
+  font-weight: normal; /* Remove styling from anchor links */
+  color: inherit; 
+  text-decoration: none; 
+}
+
+.toggle-buttons button {
+  padding: 2px 12px;
+  border-radius: 4px;
+  background-color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  margin-right: 8px;
+  margin-bottom: 8px;
+  color: rgb(71, 85, 105);
+}
+
+.toggle-buttons button.active {
+  background-color: rgb(180, 100, 100);
+  color: #ffffff;
+}
+
 .search-section {
   position: relative;
 }

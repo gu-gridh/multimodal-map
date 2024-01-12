@@ -13,6 +13,7 @@ import { mapStore } from "@/stores/store";
 import { clean } from "@/assets/utils";
 import markerIcon from "@/assets/marker-white.svg";
 import MapViewGallery from "./MapViewGallery.vue";
+import MapViewArchive from "./MapViewArchive.vue";
 import { ref } from "vue";
 import About from "./About.vue";
 import { onMounted, watch } from "vue";
@@ -28,6 +29,7 @@ const maxZoom = 20;
 const featureZoom = 16; //value between minZoom and maxZoom when you select a point 
 const visibleAbout = ref(false);
 const showGrid = ref(false);
+const showArchive = ref(false);
 let visited = true; // Store the visited status outside of the hook
 
 // Watcher for selectedFeature changes
@@ -138,15 +140,19 @@ watch(showGrid, (newValue) => {
 <template>
   <div style="display:flex; align-items: center; justify-content: center; pointer-events: none;">
     <div class="ui-mode ui-overlay">
-      <button class="item" v-bind:class="{ selected: !showGrid }" v-on:click="showGrid = false;">
-        Karta
-      </button>
-      <button class="item" v-bind:class="{ selected: showGrid }" v-on:click="showGrid = true;">
-       Galleri
-      </button>
+     <button class="item" :class="{ selected: !showGrid && !showArchive }" @click="showGrid = false; showArchive = false;">
+      Karta
+    </button>
+    <button class="item" :class="{ selected: showGrid }" @click="showGrid = true; showArchive = false;">
+      Galleri
+    </button>
+    <button class="item" :class="{ selected: showArchive }" @click="showArchive = true; showGrid = false;">
+      Archive
+    </button>
     </div>
   </div>
-  <MapViewGallery v-if="showGrid" />
+  <MapViewGallery v-if="showGrid && !showArchive" />
+  <MapViewArchive v-if="showArchive" />
   <About :visibleAbout="visibleAbout" @close="visibleAbout = false" />
   <MainLayout>
     <template #search>
