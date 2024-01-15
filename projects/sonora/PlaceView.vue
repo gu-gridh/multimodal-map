@@ -4,19 +4,34 @@ import type { Image, Observation, Document, Pointcloud, Mesh } from './types';
 import type { DianaClient } from "@/assets/diana";
 import documentIcon from '@/assets/document.svg'; 
 import PlaceViewCard from "./PlaceViewCard.vue"; 
+import { watch } from 'vue';
+import { useRoute } from 'vue-router';
 
+const route = useRoute();
 const sort = ref('type');
 const groupedByYear = ref<{ [year: string]: (Image | Observation | Document | Pointcloud | Mesh )[] }>({});
 const { id } = defineProps<{ id: string; }>();
-// const diana = inject("diana") as DianaClient;
 let documents = ref<Document[]>([]); // Initialized as an empty array
-// const images = ref<Image[]>([]);
-// const plans = ref<Image[]>([]);
-// let observations = ref<Observation[]>([]);
-// let documents = ref<Document[]>([]);
-// let pointcloud = ref<Pointcloud[]>([]);
-// let mesh = ref<Mesh[]>([]);
-// let place = ref();
+
+watch(() => route.params.id, async (newId) => {
+  if (newId) {
+    try {
+    const response = await fetch(`https://orgeldatabas.gu.se/webgoart/goart/organ.php?id=${newId}&lang=sv`);
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+
+        documents.value = [];
+        for (let i = 0; i < data.no_docs; i++) {
+        if (data[i.toString()]) {
+            documents.value.push(data[i.toString()]);
+        }
+    }
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }  }
+}, { immediate: true });
 
 onMounted(async () => {
   try {

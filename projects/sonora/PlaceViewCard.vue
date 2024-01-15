@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import router from './router'
-import { ref, inject, onMounted } from "vue"
+import { ref, inject, onMounted, nextTick } from "vue"
 import markerIcon from "@/assets/marker-red.svg";
+import { watch } from 'vue';
 
 const props = defineProps<{
   id: string;
@@ -23,72 +24,22 @@ const fetchOrganData = async () => {
   }
 };
 
-// const capitalize = (word: String) => {
-//   if (word !== '') {
-//     const first = word[0].toUpperCase()
-//     const rest = word.slice(1)
-//     return first + rest
-//   }
-//   else return word
-// }
+const handleLinkClick = (event) => {
+  if (event.target.tagName === 'A') {
+    event.preventDefault();
+    const url = new URL(event.target.href);
+    const newId = url.searchParams.get("id");
+    if (newId) {
+      router.push(`/place/${newId}`);
+    }
+  }
+};
 
-// const title = ref<string | null>(null);
-// const necropolisName = ref<string | null>(null);
-// const chambers = ref<number | null>(null);
-// const type = ref<string | null>(null);
-// const period = ref<string | null>(null);
-// const subtitle = ref<string | null>(null);
-// const description = ref<string | null>(null);
-
-// const projection = ref("EPSG:4326");
-// const zoom = ref(16);
-// const rotation = ref(0);
-// const strokeWidth = ref(5);
-// const strokeColor = ref("red");
-// const center = ref([11.999722, 42.224444])
-// const minZoom = ref(12)
-
-// const format = inject("ol-format");
-// const geoJson = new format.GeoJSON();
-
-// const url = "https://diana.dh.gu.se/api/etruscantombs/geojson/place/" + props.id
-
-// const setCenter = async () => {
-//   try {
-//     const response = await fetch(url);
-//     if (!response.ok) {
-//       throw new Error("Network response was not ok");
-//     }
-//     const placeData = await response.json();
-//     if (placeData && placeData.geometry && placeData.geometry.coordinates) {
-//       center.value = placeData.geometry.coordinates;
-//     }
-//   } catch (error) {
-//     console.error("Error fetching place data:", error);
-//   }
-// };
-
-// const fetchPlaceData = async () => {
-//   try {
-//     const response = await fetch(`https://diana.dh.gu.se/api/etruscantombs/geojson/place/?id=${props.id}`);
-//     if (response.ok) {
-//       const data = await response.json();
-//       const feature = data.features[0];
-//       const properties = feature.properties;
-
-//       // Assign fetched data to Vue Ref variables
-//       title.value = properties.name || null;
-//       necropolisName.value = properties.necropolis.text || null;
-//       chambers.value = properties.number_of_chambers || null;
-//       type.value = properties.type.text || null;
-//       period.value = properties.epoch.text || null;
-//       subtitle.value = properties.subtitle || null;
-//       description.value = properties.description || null;
-//     }
-//   } catch (error) {
-//     console.error("Failed to fetch data", error);
-//   }
-// };
+watch(() => props.id, async (newId) => {
+  if (newId) {
+    await fetchOrganData(); // Refetch the data with the new ID
+  }
+}, { immediate: true });
 
 // Center the map based on fetched data.
 onMounted(() => {
@@ -110,16 +61,15 @@ onMounted(() => {
 
         <div class="placecard-text-overlay"></div>
 
-        <!-- mini map -->
-        <div class="mini-map">
-          <img v-if="organData" :src="organData.Fotografi" alt="Map Image" />
-        </div>
+          <!-- mini map -->
+          <div class="mini-map">
+            <img v-if="organData?.Fotografi" :src="organData.Fotografi" alt="Map Image" />
+            <div v-else class="no-image-placeholder"></div>
+          </div>
         <div v-if="organData" class="placecard-text">
           <div class="placecard-title theme-color-text">Organ {{ id }}</div>
-          <div class="placecard-subtitle theme-color-text">{{ subtitle }}</div>
-
           <div class="placecard-metadata-content" style="">
-            <div  class="metadata-item">
+            <div class="metadata-item">
               <div class="label">Verksgrundare: </div>
               <div class="tag theme-color-text">{{ organData.Verksgrundare }}</div>
             </div>
@@ -150,7 +100,7 @@ onMounted(() => {
           </div>
           <div class="placecard-metadata-content" style="margin-top:10px; border-top: 1.5px solid black;">
             <span>Historisk_översikt:</span>
-            <div class="organ-historic-overview" v-html="organData.Historisk_översikt"></div>
+          <div class="organ-historic-overview" v-html="organData.Historisk_översikt" @click="handleLinkClick"></div>
         
           </div>
             <div class="placecard-metadata-content" style="margin-top:10px; border-top: 1.5px solid black;">
@@ -164,11 +114,16 @@ onMounted(() => {
 </template>
 
 <style scoped>
-.mini-map img {
+.mini-map img, .no-image-placeholder {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
+
+.no-image-placeholder {
+  background-color: black;
+}
+
 .metadata-item {
   display: flex;
   flex-direction: column;
