@@ -10,6 +10,11 @@ const props = defineProps<{
 
 const organData = ref(null);
 
+// Popup data
+const popupData = ref(null);
+const isPopupVisible = ref(false);
+const mousePosition = ref({ x: 0, y: 0 });
+
 const fetchOrganData = async () => {
   try {
     const response = await fetch(`https://orgeldatabas.gu.se/webgoart/goart/organ.php?id=${props.id}&lang=sv`);
@@ -24,10 +29,41 @@ const fetchOrganData = async () => {
   }
 };
 
+const fetchDivisionInfo = async (divId) => {
+  try {
+    const response = await fetch(`https://orgeldatabas.gu.se/webgoart/goart/divinfo.php?div_id=${divId}&lang=sv`);
+    if (response.ok) {
+      const data = await response.json();
+      popupData.value = data;
+      isPopupVisible.value = true;
+    } else {
+      throw new Error('Failed to fetch division info');
+    }
+  } catch (error) {
+    console.error("Error fetching division info:", error);
+  }
+};
+
+const fetchStopInfo = async (stopId) => {
+  try {
+    const response = await fetch(`https://orgeldatabas.gu.se/webgoart/goart/stopinfo.php?stop_id=${stopId}&lang=sv`);
+    if (response.ok) {
+      const data = await response.json();
+      popupData.value = data;
+      isPopupVisible.value = true;
+    } else {
+      throw new Error('Failed to fetch stop info');
+    }
+  } catch (error) {
+    console.error("Error fetching stop info:", error);
+  }
+};
+
 const handleLinkClick = (event) => {
   if (event.target.tagName === 'A') {
     event.preventDefault();
     const url = new URL(event.target.href);
+
     const newId = url.searchParams.get("id");
     if (newId) {
       router.push(`/place/${newId}`);
@@ -35,16 +71,45 @@ const handleLinkClick = (event) => {
   }
 };
 
+const handleDisposition = async (event) => {
+  const anchor = event.target.closest('a');
+  if (anchor) {
+    event.preventDefault();
+    const url = new URL(anchor.href);
+
+    // Capture mouse position
+    mousePosition.value = { x: event.clientX, y: event.clientY };
+
+    // Close any currently open popup
+    popupData.value = null;
+    isPopupVisible.value = false;
+
+    if (url.pathname.endsWith('divinfo.php')) {
+      const divId = url.searchParams.get("div_id");
+      console.log(`Division info link clicked, ID: ${divId}`);
+      await fetchDivisionInfo(divId);
+    } else if (url.pathname.endsWith('stopinfo.php')) {
+      const stopId = url.searchParams.get("stop_id");
+      console.log(`Stop info link clicked, ID: ${stopId}`);
+      await fetchStopInfo(stopId);
+    } else {
+      console.log('Other link clicked');
+    }
+    const newId = url.searchParams.get("id");
+    if (newId) {
+      router.push(`/place/${newId}`);
+    }
+  }
+};
+
+
 watch(() => props.id, async (newId) => {
   if (newId) {
     await fetchOrganData(); // Refetch the data with the new ID
   }
 }, { immediate: true });
 
-// Center the map based on fetched data.
 onMounted(() => {
-  //setCenter();
-  //fetchPlaceData();  // Fetch image and details when component is mounted.
   fetchOrganData();
 });
 
@@ -103,9 +168,26 @@ onMounted(() => {
           <div class="organ-historic-overview" v-html="organData.Historisk_översikt" @click="handleLinkClick"></div>
         
           </div>
-            <div class="placecard-metadata-content" style="margin-top:10px; border-top: 1.5px solid black;">
+          <div class="placecard-metadata-content" style="margin-top:10px; border-top: 1.5px solid black;">
             <span>Disposition:</span>
-            <div class="organ-historic-overview" v-html="organData.Disposition"></div>
+            <div class="organ-historic-overview" v-html="organData.Disposition"  @click="handleDisposition"></div>
+          </div>
+          <div v-if="isPopupVisible" class="popup" :style="{ left: mousePosition.x + 'px', top: mousePosition.y + 'px' }">
+            <h3 v-if="popupData?.Verk">Division Info:</h3>
+            <h3 v-else-if="popupData?.Stämma">Stop Info:</h3>
+
+            <div v-if="popupData?.Verk">
+              <p>Verk: {{ popupData.Verk }}</p>
+              <p>Beskrivning väderlåda: {{ popupData.Beskrivning_väderlåda }}</p>
+              <p>Lufttryck: {{ popupData.Lufttryck }}</p>
+            </div>
+
+            <div v-else-if="popupData?.Stämma">
+              <p>Stämma: {{ popupData.Stämma }}</p>
+              <p>Stämma info: {{ popupData.Stämma_info }}</p>
+            </div>
+
+            <button @click="isPopupVisible = false" style="font-weight: bold">Close</button>
           </div>
         </div>
       </div>
@@ -114,6 +196,24 @@ onMounted(() => {
 </template>
 
 <style scoped>
+::v-deep a {
+  color: blue !important;
+  text-decoration: underline;
+}
+
+.popup {
+  position: fixed;
+  background-color: white;
+  padding: 20px;
+  border: 1px solid #ddd;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.popup-content {
+  max-width: 300px;
+}
+
 .mini-map img, .no-image-placeholder {
   width: 100%;
   height: 100%;
