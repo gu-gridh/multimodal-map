@@ -8,14 +8,14 @@
   >
     <template v-slot:default="{ item }">
       <router-link
-        :key="item.uuid"
-        :to="`/place/${item.featureId}`"
+        :key="item.Id"
+        :to="`/place/${item.Id}`"
         class="grid-item"
       >
-        <img :src="`${item.iiif_file}/full/450,/0/default.jpg`" @load="imageLoaded" />
-         <div class="grid-item-info">
+        <img :src="item.Photo" @load="imageLoaded" />
+        <div class="grid-item-info">
           <div class="grid-item-info-meta">
-            <h1>{{item.title}}</h1>
+            <h1>{{ item.Place }}</h1>
           </div>
         </div>
       </router-link>
@@ -29,8 +29,14 @@ import type { Image } from "./types";
 import type { DianaClient } from "@/assets/diana";
 import VueMasonryWall from "@yeger/vue-masonry-wall";
 
+type GalleryImage = {
+  Id: number;
+  Place: string;
+  Photo: string;
+};
+
+const images = ref<Array<GalleryImage>>([]);
 const diana = inject("diana") as DianaClient;
-const images = ref<Array<Image>>([]);
 
 let layoutKey = ref(0);
 let loadedImagesCount = ref(0);
@@ -48,21 +54,13 @@ const refreshMasonry = () => {
 
 onMounted(async () => {
   try {
-    const response = await fetch("https://diana.dh.gu.se/api/etruscantombs/geojson/place/");
-    const data = await response.json();
+    const response = await fetch("https://orgeldatabas.gu.se/webgoart/goart/gallery.php");
+    const data: Array<GalleryImage> = await response.json();
 
-    images.value = data.features.map((feature: any) => {
-      if (feature.properties.default_image) {
-        return {
-          ...feature.properties.default_image,
-          featureId: feature.id
-        };
-      }
-      return null;
-    }).filter((img: Image | null) => img !== null);
+    images.value = data.filter(img => img.Photo !== ""); // Filtering out images with no Photo URL
 
   } catch (error) {
-    console.error("Error fetching GeoJSON data:", error);
+    console.error("Error fetching data:", error);
   }
 });
 
