@@ -45,7 +45,7 @@ const props = defineProps({
 });
 
 const fetchData = async () => {
-  const apiUrl = "https://orgeldatabas.gu.se/webgoart/goart/map.php?bbox=-5.229492,54.495568,34.101563,70.065585";
+  const apiUrl = "https://orgeldatabas.gu.se/webgoart/goart/map.php";
   
   try {
       const response = await fetch(apiUrl);

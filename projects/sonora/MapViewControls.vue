@@ -1,13 +1,44 @@
 <template>
-
-<div class="tag-section">
-    <div class="broad-controls" style="height:60px;">
+   <div class="control-organisation justify-space">
+    <!-- Building Type Section -->
+    <div class="tag-section">
+      <div class="section-title">Time Period:</div>
+      <div class="broad-controls">
+        <button
+          v-for="(type, index) in buildingTypes"
+          :key="index"
+          :class="['p-1 px-2 clickable category-button', {'active': selectedBuildingTypeIndex === index}]"
+          @click="selectCategory('building', index)"
+          @dblclick="deselectCategory('building', index)"
+        >
+          {{ type }}
+        </button>
+      </div>
     </div>
-</div>
-<div class="toggle-buttons">
-  <button :class="{ active: searchType === 'places' }" @click="setSearchType('places')">Places</button>
-  <button :class="{ active: searchType === 'docs' }" @click="setSearchType('docs')">Docs</button>
-</div>
+
+    <!-- Time Period Section -->
+    <div class="tag-section">
+            <div class="section-title">Time Period:</div>
+
+      <div class="broad-controls">
+        <button
+          v-for="(period, index) in timePeriods"
+          :key="index"
+          :class="['p-1 px-2 clickable category-button', {'active': selectedTimePeriodIndex === index}]"
+          @click="selectCategory('time', index)"
+          @dblclick="deselectCategory('time', index)"
+        >
+          {{ period }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toggle-buttons" style="margin-top: 50px">
+    <button :class="{ active: searchType === 'places' }" @click="setSearchType('places')">Places</button>
+    <button :class="{ active: searchType === 'docs' }" @click="setSearchType('docs')">Docs</button>
+    <button :class="{ active: searchType === 'builders' }" @click="setSearchType('builders')">Builders</button>
+  </div>
   <div class="search-section">
     <input
       type="text"
@@ -16,51 +47,27 @@
       :placeholder="searchType === 'places' ? 'Search Places...' : 'Search Docs...'"
       class="search-box"
     />
-  <div class="search-results" v-if="searchResults.length">
-    <div v-for="result in searchResults" :key="result.id" class="search-result-item">
-    <template v-if="searchType === 'places'">
-      {{ result.Name }}
-    </template>          
-    <template v-else> <!-- When searchType is 'docs' -->
-      <router-link :to="`/detail/image/${result.Id}`">{{ result.Name }}</router-link>
-    </template>
+   <div class="search-results">
+  <!-- Rendering for 'places' -->
+  <template v-if="searchType === 'places'">
+    <div v-for="feature in filteredPlaces" 
+         :key="feature.properties ? feature.properties.Nr : 'no-place'" 
+         class="search-result-item">
+      {{ feature.properties.Building }}
     </div>
+  </template>
 
-  </div>
+  <!-- Rendering for 'docs' -->
+  <template v-else-if="searchType === 'docs'">
+    <div v-for="(doc, index) in objectToArray(searchResults)" 
+         :key="index" 
+         class="search-result-item">
+      {{ doc.Titel }}
+    </div>
+  </template>
 </div>
 
-
-  <div style="width:98%; float:left; display:flex; flex-direction:row; justify-content:space-between;">
-  <div class="tag-section" style="float:left;">
-    <div class="section-title">Place</div>
-    <div class="broad-controls">
-        <CategoryButtonList 
-          v-model="necropoli" 
-          :categories="NECROPOLI" 
-          :limit="1" 
-          styleType="dropdown"
-          class="my-2"
-          type="necropolis"
-          @click="handleSelectionClick($event, currentTombType)"
-        />
-    </div>
   </div>
-
-  <div class="tag-section" style="float:left; margin-left:20px;">
-    <div class="section-title">Dokument</div>
-    <div class="broad-controls">
-        <CategoryButtonList 
-          v-model="tombType" 
-          :categories="TOMBTYPE" 
-          :limit="1" 
-          styleType="dropdown"
-          class="my-2"
-          type="tombType"
-        />
-    </div>
-  </div>
-
-</div>
 
   <!-- Data Section -->
   <!-- <div class="data-widget">
@@ -100,13 +107,17 @@
 import { inject, ref, onMounted, computed, defineProps, watch } from "vue";
 import CategoryButtonList from "./CategoryButtonDropdown.vue";
 import CategoryButton from "@/components/input/CategoryButtonList.vue";
-// import RangeSlider from "@/components/input/RangeSlider.vue";
 import { storeToRefs } from "pinia";
 import { sonoraStore } from "./store";
 import type { SonoraProject } from "./types";
 import { DianaClient } from "@/assets/diana";
 import { transform } from 'ol/proj';
 import _debounce from 'lodash/debounce';
+
+const timePeriods = ref({}); // State to store time periods
+const selectedTimePeriodIndex = ref(null); // State to track the selected time period index
+const buildingTypes = ref({}); // State to store time periods
+const selectedBuildingTypeIndex = ref(null); // State to track the selected building type index
 
 const searchType = ref('places'); // Default to 'places' 
 const searchQuery = ref('');
@@ -115,16 +126,67 @@ const config = inject<SonoraProject>("config");
 const dianaClient = new DianaClient("sonora"); // Initialize DianaClient
 const { categories, years, tags, necropoli, tombType, dataParams, selectedNecropolisCoordinates, enable3D } = storeToRefs(sonoraStore());
 
-// const TAGS = ref<Record<string, string>>({});
-const NECROPOLI = ref<Record<string, string>>({});
-const TOMBTYPE = ref<Record<string, string>>({});
-
 const setSearchType = (type: string) => {
   searchType.value = type;
-  handleSearch(); // Re-trigger search when type changes
+  handleSearch();
 };
 
-const debouncedSearch = _debounce(async (query) => {
+const filteredPlaces = computed(() => {
+  if (searchResults.value && searchResults.value.features) {
+    return searchResults.value.features.filter(feature => feature.properties);
+  }
+  return [];
+});
+
+const objectToArray = (obj) => {
+  return obj ? Object.keys(obj).map(key => obj[key]) : [];
+};
+
+onMounted(async () => {
+  await fetchFilters();
+});
+
+// filter options
+async function fetchFilters() {
+  try {
+    const response = await fetch('https://orgeldatabas.gu.se/webgoart/goart/filter.php');
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    if (data && data.Period) {
+      timePeriods.value = data.Period;
+      buildingTypes.value = data.Building;
+    }
+  } catch (error) {
+    console.error('Error fetching time periods:', error);
+  }
+}
+
+// selection of buttons
+function selectCategory(type, index) {
+  if (type === 'building') {
+    selectedBuildingTypeIndex.value = selectedBuildingTypeIndex.value === index ? null : index;
+    console.log('Selected building type index:', selectedBuildingTypeIndex.value);
+  } else if (type === 'time') {
+    selectedTimePeriodIndex.value = selectedTimePeriodIndex.value === index ? null : index;
+    console.log('Selected time period index:', selectedTimePeriodIndex.value);
+  }
+}
+
+// deselection of buttons
+function deselectCategory(type, index) {
+  if (type === 'building' && selectedBuildingTypeIndex.value === index) {
+    selectedBuildingTypeIndex.value = null;
+    console.log('Deselected building type index:', index);
+  } else if (type === 'time' && selectedTimePeriodIndex.value === index) {
+    selectedTimePeriodIndex.value = null;
+    console.log('Deselected time period index:', index);
+  }
+}
+
+//fetch places
+const fetchPlaces = _debounce(async (query) => {
     if (!query) {
     searchResults.value = []; // Clear results if query is empty
     return;
@@ -132,9 +194,7 @@ const debouncedSearch = _debounce(async (query) => {
 
 let apiUrl;
   if (searchType.value === 'places') {
-    apiUrl = `https://orgeldatabas.gu.se/webgoart/goart/searchpl.php?seastr=${encodeURIComponent(query)}&lang=sv`;
-  } else { // 'docs'
-    apiUrl = `https://orgeldatabas.gu.se/webgoart/goart/searchdoc.php?seastr=${encodeURIComponent(query)}&lang=sv&start=0&limit=20`;
+    apiUrl = `https://orgeldatabas.gu.se/webgoart/goart/searchpl.php?seastr=${encodeURIComponent(query)}&date=&btype=&lang=sv`;
   }
   try {
     const response = await fetch(apiUrl);
@@ -142,37 +202,60 @@ let apiUrl;
     searchResults.value = data ? data : []; // Set to empty array if data is null
   } catch (error) {
     console.error('Error fetching search results:', error);
-        searchResults.value = []; // Set to empty array in case of error
-
+    searchResults.value = []; // Set to empty array in case of error
   }
 }, 500); // 500 ms debounce time
 
+//fetch docs
+async function fetchDocs() {
+  const apiUrl = `https://orgeldatabas.gu.se/webgoart/goart/searchdoc.php?seastr=${encodeURIComponent(searchQuery.value)}&archive=48&lang=sv`;
+  try {
+    const response = await fetch(apiUrl);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    searchResults.value = data;
+  } catch (error) {
+    console.error('Error fetching docs:', error);
+    searchResults.value = [];
+  }
+}
+
+//used to toggle between which search is used
 const handleSearch = () => {
-  debouncedSearch(searchQuery.value);
+  if (searchType.value === 'docs') {
+    fetchDocs();
+  } else {
+    fetchPlaces(searchQuery.value);
+  }
 };
 
 const toggleAboutVisibility = async () => {
   await nextTick();
   visibleAbout.value = !visibleAbout.value;
 };
-
-// function handleSelectionClick(selectedValue, targetRef) {
-//   const selectedCoordinates = NECROPOLICoordinates.value[selectedValue];
-//   if (selectedCoordinates) {
-//     const [x, y] = selectedCoordinates;
-
-//     // Convert them to Web Mercator (EPSG:3857)
-//     const webMercatorCoordinates = transform([x, y], 'EPSG:4326', 'EPSG:3857');
-    
-//     // Update the selectedNecropolisCoordinates in the store
-//     selectedNecropolisCoordinates.value = webMercatorCoordinates;
-//   } else {
-//     console.log("Coordinates for selected necropolis not found");
-//   }
-// }
 </script>
 
 <style>
+.category-button {
+  background-color: white;
+  color: rgb(71, 85, 105);
+  border-radius: 4px;
+  margin-right: 5px;
+  margin-bottom: 5px;
+}
+
+.category-button:hover {
+  background-color: #096058;
+  color: white;
+}
+
+.category-button.active {
+  background-color: #0d9488;
+  color: white;
+}
+
 .search-result-item a {
   font-weight: normal; /* Remove styling from anchor links */
   color: inherit; 
