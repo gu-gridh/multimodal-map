@@ -60,13 +60,22 @@
   <!-- Rendering for 'docs' -->
   <template v-else-if="searchType === 'docs'">
     <div v-for="(doc, index) in objectToArray(searchResults)" 
-         :key="index" 
-         class="search-result-item">
-      {{ doc.Titel }}
+        :key="index">
+      <router-link :to="`/detail/image/${doc.Dokument_nr}`" class="search-result-item">
+        {{ doc.Titel }}
+      </router-link>
     </div>
   </template>
-</div>
 
+  <!-- Rendering for 'builders' -->
+  <template v-else-if="searchType === 'builders'">
+  <div v-for="(builder, index) in objectToArray(searchResults)" 
+       :key="index" 
+       class="search-result-item">
+    {{ builder.Builder }}
+  </div>
+</template>
+</div>
   </div>
 
   <!-- Data Section -->
@@ -222,10 +231,28 @@ async function fetchDocs() {
   }
 }
 
+//fetch builders
+async function fetchBuilders() {
+  const apiUrl = `https://orgeldatabas.gu.se/webgoart/goart/searchbuilder.php?seastr=${encodeURIComponent(searchQuery.value)}&lang=sv`;
+  try {
+    const response = await fetch(apiUrl);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    searchResults.value = data;
+  } catch (error) {
+    console.error('Error fetching builders:', error);
+    searchResults.value = [];
+  }
+}
+
 //used to toggle between which search is used
 const handleSearch = () => {
   if (searchType.value === 'docs') {
     fetchDocs();
+  } else if (searchType.value === 'builders') {
+    fetchBuilders();
   } else {
     fetchPlaces(searchQuery.value);
   }
@@ -256,8 +283,9 @@ const toggleAboutVisibility = async () => {
   color: white;
 }
 
-.search-result-item a {
+.search-result-item {
   font-weight: normal; /* Remove styling from anchor links */
+  display: block;
   color: inherit; 
   text-decoration: none; 
 }
