@@ -51,8 +51,9 @@
   <!-- Rendering for 'places' -->
   <template v-if="searchType === 'places'">
     <div v-for="feature in filteredPlaces" 
-         :key="feature.properties ? feature.properties.Nr : 'no-place'" 
-         class="search-result-item">
+        :key="feature.properties ? feature.properties.Nr : 'no-place'" 
+        class="search-result-item"
+        @click="onPlaceClick(feature)">
       {{ feature.properties.Building }}
     </div>
   </template>
@@ -117,12 +118,15 @@ import { inject, ref, onMounted, computed, defineProps, watch } from "vue";
 import CategoryButtonList from "./CategoryButtonDropdown.vue";
 import CategoryButton from "@/components/input/CategoryButtonList.vue";
 import { storeToRefs } from "pinia";
+import { fromLonLat } from "ol/proj";
+import { mapStore } from "@/stores/store";
 import { sonoraStore } from "./store";
 import type { SonoraProject } from "./types";
 import { DianaClient } from "@/assets/diana";
 import { transform } from 'ol/proj';
 import _debounce from 'lodash/debounce';
 
+const store = mapStore();
 const timePeriods = ref({}); // State to store time periods
 const selectedTimePeriodIndex = ref(null); // State to track the selected time period index
 const buildingTypes = ref({}); // State to store time periods
@@ -256,6 +260,12 @@ const handleSearch = () => {
   } else {
     fetchPlaces(searchQuery.value);
   }
+};
+
+const onPlaceClick = (feature) => {
+  const coordinates = feature.geometry.coordinates;
+  const transformedCoordinates = fromLonLat(coordinates);
+  store.updateCenter(transformedCoordinates);
 };
 
 const toggleAboutVisibility = async () => {
