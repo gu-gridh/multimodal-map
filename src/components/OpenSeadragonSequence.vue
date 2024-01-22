@@ -1,12 +1,15 @@
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, onMounted, defineProps } from "vue";
 import OpenSeadragon from "openseadragon";
 
-const props = defineProps<{
-  src: string[];
-}>();
+const props = defineProps({
+  src: Array as () => string[],
+  showReferenceStrip: {
+    type: Boolean,
+    default: false
+  }
+});
  
-
 const viewerEl = ref();
 const currentPage = ref(1);  // Define currentPage
 
@@ -29,6 +32,7 @@ onMounted(() => {
     previousButton: "prev-button",
     prefixUrl: "/openseadragon/",
     sequenceMode: true,
+    showReferenceStrip: props.showReferenceStrip,
     preload: true,
     tileSources: props.src,
   });
