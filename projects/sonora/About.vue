@@ -74,16 +74,16 @@ export default {
 
 <style scoped>
 .about-container {
-  color: black;
+  color: white;
   overflow-y:auto;
-  background: linear-gradient(90deg, rgba(245, 235, 225,1) 0%, rgba(245, 235, 225,0.8) 100%) !important;
+  background: linear-gradient(90deg, rgba(108, 136, 139,1) 0%, rgba(245, 235, 225,0.8) 100%) !important;
   padding-bottom:40px !important;
 
 }
 
 .fullopacity{
   backdrop-filter:blur(5px);
-  background: linear-gradient(90deg, rgba(245, 235, 225,1) 0%, rgba(245, 235, 225,0.8) 100%) !important;
+  background: linear-gradient(90deg, rgba(108, 136, 139,1) 0%, rgba(138, 166, 169,1) 100%) !important;
 }
 
 .category-button{
@@ -99,7 +99,17 @@ export default {
 
 .about-main-title {
   font-family: 'Teko', sans-serif;
+  color:white;
 }
+
+.about-article-main {
+  color:white;
+}
+
+.about-article-sub {
+  color:white;
+}
+
 
 
 @media screen and (max-width: 1500px) {
@@ -123,7 +133,7 @@ font-size:1.9em!important;
   width: 250px;
   height: 150px;
   position: absolute;
-  background: url(/images/logo-isvroma.png);
+  background: url();
   background-repeat: no-repeat;
   background-size: contain;
   top: 30px;

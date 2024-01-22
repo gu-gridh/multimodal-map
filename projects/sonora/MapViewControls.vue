@@ -2,12 +2,12 @@
    <div class="control-organisation justify-space">
     <!-- Building Type Section -->
     <div class="tag-section">
-      <div class="section-title">Time Period:</div>
+      <div class="section-title">Archive</div>
       <div class="broad-controls">
         <button
           v-for="(type, index) in buildingTypes"
           :key="index"
-          :class="['p-1 px-2 clickable category-button', {'active': selectedBuildingTypeIndex === index}]"
+          :class="['p-0.5 px-2 clickable category-button', {'active': selectedBuildingTypeIndex === index}]"
           @click="selectCategory('building', index)"
           @dblclick="deselectCategory('building', index)"
         >
@@ -18,7 +18,7 @@
 
     <!-- Time Period Section -->
     <div class="tag-section">
-            <div class="section-title">Time Period:</div>
+            <div class="section-title">Time Period</div>
 
       <div class="broad-controls">
         <button
@@ -36,7 +36,7 @@
 
   <div class="toggle-buttons" style="margin-top: 50px">
     <button :class="{ active: searchType === 'places' }" @click="setSearchType('places')">Places</button>
-    <button :class="{ active: searchType === 'docs' }" @click="setSearchType('docs')">Docs</button>
+    <button :class="{ active: searchType === 'docs' }" @click="setSearchType('docs')">Documents</button>
     <button :class="{ active: searchType === 'builders' }" @click="setSearchType('builders')">Builders</button>
   </div>
   <div class="search-section">
@@ -321,17 +321,20 @@ const toggleAboutVisibility = async () => {
 
 .search-box {
   width: 100%;
+  height:40px;
   padding: 8px;
-  border: 1px solid #ccc;
+  border: 0px solid #ccc;
   border-radius: 4px;
+  overflow:hidden;
 }
 
 .search-results {
   position: absolute;
   width: 100%;
   background: white;
-  border: 1px solid #ccc;
+  border: 0px solid #ccc;
   border-top: none;
+  margin-top:-4px;
   z-index: 100;
 }
 
@@ -347,7 +350,7 @@ const toggleAboutVisibility = async () => {
 
 #app .section-title {
   margin-top:10px;
-  margin-bottom:-3px;
+  margin-bottom:3px;
   color:white;
 }
 
