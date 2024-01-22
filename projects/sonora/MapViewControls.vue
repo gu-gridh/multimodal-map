@@ -2,7 +2,7 @@
    <div class="control-organisation justify-space">
     <!-- Building Type Section -->
     <div class="tag-section">
-      <div class="section-title">Archive</div>
+      <div class="section-title">Building</div>
       <div class="broad-controls">
         <button
           v-for="(type, index) in buildingTypes"
