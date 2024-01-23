@@ -53,22 +53,6 @@ onMounted(async () => {
   console.log(documents.value)
 });
 
-// function groupAndSortByYear(allItems: (Image | Observation | Document | Pointcloud | Mesh)[]) {
-//   // Reset groupedByYear
-//   groupedByYear.value = {};
-
-//   // Group items by year
-//   allItems.forEach((item: Image | Observation | Document | Pointcloud | Mesh) => {
-//     const fullDate = new Date(item.date);
-//     const year = fullDate.getFullYear().toString();
-
-//     if (!groupedByYear.value[year]) {
-//       groupedByYear.value[year] = [];
-//     }
-//     groupedByYear.value[year].push(item);
-//   });
-// }
-
 </script>
     
 <template>
@@ -76,30 +60,16 @@ onMounted(async () => {
         <div class="place-card-container">
             <PlaceViewCard :id="id" />
         </div>
-        <!-- Here we will show info of the place -->
         <div class="place-view">
             <div class="place-gallery-container">
-                <!-- Gallery of objects will show here with the ability to sort by TYPE of object -->
-                <!-- <p>ID: {{ id }}</p> -->
-                <!-- <p>PLACE: {{ place.id }}</p> -->
-                <div>
-                    <!-- <select v-model="sort" class="dropdown">
-                        <option actve value="type">Arkiv: Alla</option>
-                        <option value="year">Sort by: YEAR</option>
-                    </select> -->
-                </div>
                 <!-- Sort by TYPE table-->
                  <table class="content-table" v-if="sort === 'type' && documents.length > 0">
                         <td>Documents: </td>
-                        <div v-for="(doc, index) in documents" :key="index" class="image-placeholder plan-placeholder">
-                        <div class="image-square">
-                            <router-link :to="`/detail/image/${doc.Nr}`">
-                                <div class="meta-data-overlay">
-                                    <div class="meta-data-overlay-text">{{ doc.Document }}</div>
-                                </div>
-                                <img :src="documentIcon" :alt="doc.title" class="image-square-plan" />
-                            </router-link>
-                        </div>
+                        <div v-for="(doc, index) in documents" :key="index">
+                             <router-link :to="`/detail/image/${doc.Nr}`" class="document-link">
+                                    <img src="@/assets/document.svg" class="document-icon" />
+                                    {{ doc.Document }}
+                              </router-link>
                         </div>
                 </table>
 
@@ -111,15 +81,27 @@ onMounted(async () => {
 
     
 <style scoped>
-.image-square:hover img {
-    opacity: 0.3;
+.document-icon {
+    height: 1em; 
+    vertical-align: middle; 
+    margin-right: 5px; 
+    display: inline-block; 
 }
 
-.meta-data-overlay-text {
-    bottom: 50px !important;
-    font-size: 20px;
-    color: white;
+.document-link {
+    display: flex;
+    align-items: center; 
 }
+
+.content-table {
+  margin-top: 35px;
+}
+
+a {
+  color: white;
+  font-weight: normal;
+}
+
 .main-container{
     background-color:rgb(114,135,138) !important;
     color:white;
