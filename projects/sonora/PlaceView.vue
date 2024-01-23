@@ -105,7 +105,7 @@ a {
 }
 
 .main-container{
-    background-color:rgba(114,135,138, 0.5) !important;
+    background-color:rgba(114,135,138, 0.6) !important;
     backdrop-filter: blur(10px) saturate(50%) brightness(100%);
     color:white;
 }
