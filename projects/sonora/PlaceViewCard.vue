@@ -233,7 +233,7 @@ onMounted(() => {
 .place-back-button {
   left: 40px;
   top: 80px;
-  background: url(@/assets/interface/backbutton.png);
+  background: url(@/assets/interface/backbuttonwhite.png);
   background-size: 100%;
   background-repeat: no-repeat;
   background-position: center;
