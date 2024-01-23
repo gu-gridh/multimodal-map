@@ -132,43 +132,23 @@ onMounted(() => {
             <div v-else class="no-image-placeholder"></div>
           </div>
         <div v-if="organData" class="placecard-text">
-          <div class="placecard-title theme-color-text">Organ {{ id }}</div>
+          <div class="placecard-title theme-color-text">PLACE NAME TEMP</div>
           <div class="placecard-metadata-content" style="">
-            <div class="metadata-item">
+            <div class="metadata-item" v-if="organData.Verksgrundare">
               <div class="label">Verksgrundare: </div>
               <div class="tag theme-color-text">{{ organData.Verksgrundare }}</div>
             </div>
-            <div class="metadata-item">
-              <div class="short-label">Fasadpipor_info: </div>
-              <div class="tag theme-color-text">{{ organData.Fasadpipor_info }} </div>
-            </div>
-            <div class="metadata-item">
-              <div class="label">Typ_av_traktursystem: </div>
-              <div class="tag theme-color-text">{{ organData.Typ_av_traktursystem }}</div>
-            </div>
-            <div class="metadata-item">
-              <div class="short-label">Typ_av_registratursystem: </div>
-              <div class="tag theme-color-text">{{ organData.Typ_av_registratursystem }}</div>
-            </div>
-            <div class="metadata-item">
-              <div class="short-label">Typ_av_huvudbälg: </div>
-              <div class="tag theme-color-text">{{ organData.Typ_av_huvudbälg }}</div>
-            </div>
-             <div class="metadata-item">
-              <div class="short-label">Info_bälgar/luftsystem: </div>
-              <div class="tag theme-color-text">{{ organData.Info_bälgar/luftsystem }}</div>
-            </div>
-             <div class="metadata-item">
-              <div class="short-label">Antal_bälgar: </div>
-              <div class="tag theme-color-text">{{ organData.Antal_bälgar }}</div>
+            <div class="metadata-item" v-if="organData.Tillkomstår">
+              <div class="label">Tillkomstår: </div>
+              <div class="tag theme-color-text">{{ organData.Tillkomstår }}</div>
             </div>
           </div>
           <div class="placecard-metadata-content" style="margin-top:10px; border-top: 1.5px solid black;">
-            <span>Historisk_översikt:</span>
+            <span>Historisk översikt:</span>
           <div class="organ-historic-overview" v-html="organData.Historisk_översikt" @click="handleLinkClick"></div>
         
           </div>
-          <div class="placecard-metadata-content" style="margin-top:10px; border-top: 1.5px solid black;">
+          <div class="placecard-metadata-content" style="margin-top:10px; border-top: 1.5px solid black;" v-if="organData.Disposition">
             <span>Disposition:</span>
             <div class="organ-historic-overview" v-html="organData.Disposition"  @click="handleDisposition"></div>
           </div>
@@ -189,6 +169,36 @@ onMounted(() => {
 
             <button @click="isPopupVisible = false" style="font-weight: bold">Close</button>
           </div>
+          <div class="placecard-metadata-content" style="margin-top:10px; border-top: 1.5px solid black;">
+            <div class="metadata-item" v-if="organData.Koppel_&_kombinationer_info">
+              <div class="short-label">Koppel kombinationer: </div>
+              <div class="tag theme-color-text">{{ organData.Koppel_&_kombinationer_info }} </div>
+            </div>
+            <div class="metadata-item" v-if="organData.Fasadpipor_info">
+              <div class="short-label">Fasadpipor info: </div>
+              <div class="tag theme-color-text">{{ organData.Fasadpipor_info }} </div>
+            </div>
+            <div class="metadata-item" v-if="organData.Typ_av_traktursystem">
+              <div class="label">Typ av traktursystem: </div>
+              <div class="tag theme-color-text">{{ organData.Typ_av_traktursystem }}</div>
+            </div>
+            <div class="metadata-item" v-if="organData.Typ_av_registratursystem">
+              <div class="short-label">Typ av registratursystem: </div>
+              <div class="tag theme-color-text">{{ organData.Typ_av_registratursystem }}</div>
+            </div>
+            <div class="metadata-item" v-if="organData.Typ_av_huvudbälg">
+              <div class="short-label">Typ av huvudbälg: </div>
+              <div class="tag theme-color-text">{{ organData.Typ_av_huvudbälg }}</div>
+            </div>
+             <div class="metadata-item" v-if="organData.Info_bälgar/luftsystem">
+              <div class="short-label">Info bälgar/luftsystem: </div>
+              <div class="tag theme-color-text">{{ organData.Info_bälgar/luftsystem }}</div>
+            </div>
+             <div class="metadata-item" v-if="organData.Antal_bälgar">
+              <div class="short-label">Antal bälgar: </div>
+              <div class="tag theme-color-text">{{ organData.Antal_bälgar }}</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -199,6 +209,14 @@ onMounted(() => {
 ::v-deep a {
   color: blue !important;
   text-decoration: underline;
+}
+
+.short-label {
+  width: 100%;
+}
+
+.label {
+  width: 100%;
 }
 
 .popup {
@@ -237,7 +255,6 @@ onMounted(() => {
   background-size: 100%;
   background-repeat: no-repeat;
   background-position: center;
-
   border-radius: 50%;
   width: 35px;
   height: 35px;
@@ -254,7 +271,7 @@ onMounted(() => {
   padding-right: 20px;
 }
 
-#app .place-meta-container {}
+/* #app .place-meta-container {} */
 
 .placecard-full {
   margin-top: 80px;
@@ -308,9 +325,6 @@ onMounted(() => {
 .placecard-metadata-description{
   font-size:0.9em;
 }
-
-
-
 
 /* For small screens */
 @media screen and (max-width: 900px) {
