@@ -4,6 +4,7 @@ import type { Image, Observation, Document, Pointcloud, Mesh } from './types';
 import type { DianaClient } from "@/assets/diana";
 import documentIcon from '@/assets/document.svg'; 
 import PlaceViewCard from "./PlaceViewCard.vue"; 
+import MapComponent from "@/components/MapComponent.vue";
 import { watch } from 'vue';
 import { useRoute } from 'vue-router';
 
@@ -77,6 +78,7 @@ onMounted(async () => {
             </div>
         </div>
     </div>
+    <MapComponent />
 </template>
 
     
@@ -103,7 +105,8 @@ a {
 }
 
 .main-container{
-    background-color:rgb(114,135,138) !important;
+    background-color:rgba(114,135,138, 0.5) !important;
+    backdrop-filter: blur(10px) saturate(50%) brightness(100%);
     color:white;
 }
 
