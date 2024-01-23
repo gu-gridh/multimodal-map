@@ -31,7 +31,10 @@ onMounted(async () => {
       throw new Error('Network response was not ok');
     }
     const data = await response.json();
-    filters.value = data;
+    // Assign only the "Archive" part of the response to filters
+    if (data.Archive) {
+      filters.value = { "Archive": data.Archive };
+    }
     initializeSelectedFilters();
   } catch (error) {
     console.error('Error fetching filters:', error);
@@ -39,8 +42,8 @@ onMounted(async () => {
 });
 
 function initializeSelectedFilters() {
-  for (const category in filters.value) {
-    selectedFilters.value[category] = '';
+  if (filters.value.Archive) {
+    selectedFilters.value["Archive"] = '';
   }
 }
 </script>
