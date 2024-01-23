@@ -67,11 +67,13 @@ onMounted(async () => {
                  <table class="content-table" v-if="sort === 'type' && documents.length > 0">
                         <td>Documents: </td>
                         <div v-for="(doc, index) in documents" :key="index">
+                          <div class="document-link">
                              <router-link :to="`/detail/image/${doc.Nr}`" class="document-link">
-                                    <img src="@/assets/document.svg" class="document-icon" />
+                                    <img src="@/assets/document-white.svg" class="document-icon" />
                                     {{ doc.Document }}
                               </router-link>
                         </div>
+                      </div>
                 </table>
 
               
@@ -105,13 +107,18 @@ a {
 }
 
 .main-container{
-    background-color:rgba(114,135,138, 0.6) !important;
+    background-color:rgba(114,135,138, 0.7) !important;
     backdrop-filter: blur(10px) saturate(50%) brightness(100%);
     color:white;
 }
 
 .content-table td{
     color:white;
+}
+
+.document-link:hover{
+  opacity:0.8;
+
 }
 </style>
     
