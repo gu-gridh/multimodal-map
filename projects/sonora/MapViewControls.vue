@@ -36,7 +36,6 @@
 
   <div class="toggle-buttons" style="margin-top: 50px">
     <button :class="{ active: searchType === 'places' }" @click="setSearchType('places')">Places</button>
-    <button :class="{ active: searchType === 'docs' }" @click="setSearchType('docs')">Documents</button>
     <button :class="{ active: searchType === 'builders' }" @click="setSearchType('builders')">Builders</button>
   </div>
   <div class="search-section">
@@ -44,7 +43,7 @@
       type="text"
       v-model="searchQuery"
       @input="handleSearch"
-      :placeholder="searchType === 'places' ? 'Search Places...' : 'Search Docs...'"
+      :placeholder="searchType === 'places' ? 'Search Places...' : 'Search Builders...'"
       class="search-box"
     />
    <div class="search-results">
@@ -55,16 +54,6 @@
         class="search-result-item"
         @click="onPlaceClick(feature)">
       {{ feature.properties.Building }}
-    </div>
-  </template>
-
-  <!-- Rendering for 'docs' -->
-  <template v-else-if="searchType === 'docs'">
-    <div v-for="(doc, index) in objectToArray(searchResults)" 
-        :key="index">
-      <router-link :to="`/detail/image/${doc.Dokument_nr}`" class="search-result-item">
-        {{ doc.Titel }}
-      </router-link>
     </div>
   </template>
 
@@ -219,22 +208,6 @@ let apiUrl;
   }
 }, 500); // 500 ms debounce time
 
-//fetch docs
-async function fetchDocs() {
-  const apiUrl = `https://orgeldatabas.gu.se/webgoart/goart/searchdoc.php?seastr=${encodeURIComponent(searchQuery.value)}&archive=48&lang=sv`;
-  try {
-    const response = await fetch(apiUrl);
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    const data = await response.json();
-    searchResults.value = data;
-  } catch (error) {
-    console.error('Error fetching docs:', error);
-    searchResults.value = [];
-  }
-}
-
 //fetch builders
 async function fetchBuilders() {
   const apiUrl = `https://orgeldatabas.gu.se/webgoart/goart/searchbuilder.php?seastr=${encodeURIComponent(searchQuery.value)}&lang=sv`;
@@ -253,9 +226,7 @@ async function fetchBuilders() {
 
 //used to toggle between which search is used
 const handleSearch = () => {
-  if (searchType.value === 'docs') {
-    fetchDocs();
-  } else if (searchType.value === 'builders') {
+  if (searchType.value === 'builders') {
     fetchBuilders();
   } else {
     fetchPlaces(searchQuery.value);
