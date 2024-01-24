@@ -18,18 +18,21 @@ onMounted(() => {
     element: viewerEl.value,
     immediateRender: false,
     visibilityRatio: 1.0,
-    minZoomImageRatio: 1.0,
+    minZoomImageRatio: 0.8,
     homeFillsViewer: true,
     showZoomControl: true,
     showHomeControl: false,
     showFullPageControl: true,
-    showNavigator: false,
+    showNavigator: true,
     navigatorAutoFade: true,
+    showRotationControl: true,
     fullPageButton: "full-page",
     zoomInButton: "zoom-in",
     zoomOutButton: "zoom-out",
     nextButton: "next-button",
     previousButton: "prev-button",
+    rotateLeftButton: "rotate-left",
+    rotateRightButton: "rotate-right",
     prefixUrl: "/openseadragon/",
     sequenceMode: true,
     showReferenceStrip: props.showReferenceStrip,
@@ -53,6 +56,12 @@ onMounted(() => {
       </a>
       <a id="zoom-out" href="#zoom-out">
         <div id="ZoomOut" class="NavButton"></div>
+      </a>
+      <a id="rotate-left" href="#rotate-left">
+        <div id="RotateLeft" class="NavButton"></div>
+      </a>
+      <a id="rotate-right" href="#rotate-right">
+        <div id="RotateRight" class="NavButton"></div>
       </a>
     </div> 
 
@@ -189,6 +198,34 @@ position:absolute;
   cursor:pointer;
   overflow: hidden;
 }
+
+#RotateLeft {
+  background: url(@/assets/openseadragon/rotateleft.svg);
+  background-size: 35%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: rgba(35, 35, 35, 0.9);
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  cursor:pointer;
+  overflow: hidden;
+  margin-top:15px;
+}
+
+#RotateRight {
+  background: url(@/assets/openseadragon/rotateright.svg);
+  background-size: 35%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: rgba(35, 35, 35, 0.9);
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  cursor:pointer;
+  overflow: hidden;
+}
+
 
 .NavButton {
   width: 35px;
