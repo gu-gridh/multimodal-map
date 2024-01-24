@@ -93,10 +93,12 @@ const downloadImage = (fileUrl: string, fileName: string) => {
 <style scoped>
 
 .data{
-  color:rgb(255,150,150);
+  color:rgb(255,200,200);
 }
 
-
+.metadata{
+  background-color:rgb(114,135,138) !important;
+}
 
 .theme-button{
   margin-top:20px;
