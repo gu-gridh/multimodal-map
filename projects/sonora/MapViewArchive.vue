@@ -10,19 +10,54 @@
         </select>
       </div>
     </div>
-    <div class="archive-content">
-      <input type="text" placeholder="Search in Archive" class="archive-search-box"/>
+      <div class="archive-content">
+      <input type="text" 
+            placeholder="Search in Archive" 
+            class="archive-search-box"
+            v-model="searchQuery"
+            @input="handleSearch" />
+        <div class="search-results">
+          <router-link v-for="doc in searchResults" 
+                      :key="doc.Dokument_nr" 
+                      :to="`/detail/image/${doc.Dokument_nr}`" 
+                      class="search-result-item">
+            {{ doc.Titel }}
+          </router-link>
+        </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
+import _debounce from 'lodash/debounce';
 
 const searchQuery = ref('');
+const searchResults = ref([]);
+
 const filters = ref({});
 const selectedFilters = ref({});
+
+const fetchSearchResults = _debounce(async () => {
+  try {
+    const response = await fetch(`https://orgeldatabas.gu.se/webgoart/goart/searchdoc.php?seastr=${encodeURIComponent(searchQuery.value)}&archive=48&lang=sv`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    searchResults.value = Object.values(data);
+  } catch (error) {
+    console.error('Error fetching search results:', error);
+    searchResults.value = [];
+  }
+}, 500);
+
+watch(searchQuery, (newValue, oldValue) => {
+  if (newValue !== oldValue) {
+    fetchSearchResults();
+  }
+});
 
 onMounted(async () => {
   try {
@@ -101,6 +136,10 @@ function initializeSelectedFilters() {
   margin-bottom: 10px;
   border: 1px solid #ddd;
   border-radius: 4px;
+}
+
+.search-result-item {
+  background-color: white;
 }
 
 @media (max-width: 900px) {

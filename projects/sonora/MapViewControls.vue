@@ -103,7 +103,7 @@
 
 <script setup lang="ts">
 // @ts-nocheck
-import { inject, ref, onMounted, computed, defineProps, watch } from "vue";
+import { inject, ref, onMounted, computed, defineProps } from "vue";
 import CategoryButtonList from "./CategoryButtonDropdown.vue";
 import CategoryButton from "@/components/input/CategoryButtonList.vue";
 import { storeToRefs } from "pinia";
