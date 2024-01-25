@@ -61,10 +61,11 @@
   <template v-else-if="searchType === 'builders'">
   <div v-for="(builder, index) in objectToArray(searchResults)" 
        :key="index" 
-       class="search-result-item">
+       class="search-result-item"
+       @click="onBuilderClick(builder.Id)">
     {{ builder.Builder }}
   </div>
-</template>
+  </template>
 </div>
   </div>
 
@@ -103,7 +104,7 @@
 
 <script setup lang="ts">
 // @ts-nocheck
-import { inject, ref, onMounted, computed, defineProps } from "vue";
+import { inject, ref, onMounted, computed, defineProps, nextTick } from "vue";
 import CategoryButtonList from "./CategoryButtonDropdown.vue";
 import CategoryButton from "@/components/input/CategoryButtonList.vue";
 import { storeToRefs } from "pinia";
@@ -126,11 +127,17 @@ const searchQuery = ref('');
 const searchResults = ref([]);
 const config = inject<SonoraProject>("config");
 const dianaClient = new DianaClient("sonora"); // Initialize DianaClient
-const { categories, years, tags, necropoli, tombType, dataParams, selectedNecropolisCoordinates, enable3D } = storeToRefs(sonoraStore());
+const { selectedBuilderId } = storeToRefs(sonoraStore());
 
 const setSearchType = (type: string) => {
   searchType.value = type;
   handleSearch();
+};
+
+const onBuilderClick = (builderId) => {
+  if (selectedBuilderId.value !== builderId) {
+    selectedBuilderId.value = builderId;
+  }
 };
 
 const filteredPlaces = computed(() => {

@@ -12,6 +12,7 @@ export const sonoraStore = defineStore("sonora", () => {
   const dataParams = ref<Record<string, string | number | null>>({});
   const selectedNecropolisCoordinates = ref<[number, number] | null>(null);
   const enable3D = ref<boolean>(false);
+  const selectedBuilderId = ref(null);
 
-  return { categories, tags, tagsLayerVisible, placesLayerVisible, necropoli, tombType,  dataParams, selectedNecropolisCoordinates, enable3D };
+  return { categories, tags, tagsLayerVisible, placesLayerVisible, necropoli, tombType,  dataParams, selectedNecropolisCoordinates, enable3D, selectedBuilderId };
 });

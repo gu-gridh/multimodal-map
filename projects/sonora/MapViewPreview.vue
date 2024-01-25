@@ -1,11 +1,10 @@
 <script lang="ts" setup>
-import { watchEffect, ref, inject, computed } from "vue";
+import { watchEffect, ref, inject, computed, watch } from "vue";
 import { storeToRefs } from "pinia";
+import { sonoraStore } from "./store";
 import { mapStore } from "@/stores/store";
 import type {
-  Image,
-  ImageDeep,
-  Tomb
+  Image
 } from "./types";
 import type { DianaClient } from "@/assets/diana";
 import OpenSeadragon from "@/components/OpenSeadragonNonPyramid.vue";
@@ -16,6 +15,11 @@ const images = ref<Image[]>();
 const imageUrls = ref<string[]>([]);
 const organNumbers = ref({}); //all the organ numbers returned 
 const computedRoute = computed(() => `/place/${currentOrganNumber.value}`); //route for placeview
+
+const { selectedBuilderId } = storeToRefs(sonoraStore());
+const builderData = ref(null);
+const lastInteraction = ref('none'); // 'none', 'place', or 'builder'
+
 let currentOrganNumber = ref(0); //organ number corresponding to page in openseadragonviewer
 let text = ref(false)
 let place = ref()
@@ -37,6 +41,8 @@ const handlePageChange = (newPage) => {
 //when a place is selected, fetch image and info
 watchEffect(async () => {
   if (selectedFeature.value) {
+    lastInteraction.value = 'place';
+    selectedBuilderId.value = null;
     const placeId = selectedFeature.value.get("number");
     place.value = { id_: placeId };
     try {
@@ -82,14 +88,36 @@ watchEffect(async () => {
   }
 });
 
+//when a builder is selected, fetch info
+watch(selectedBuilderId, async (newId) => {
+  if (newId) {
+    lastInteraction.value = 'builder';
+    selectedFeature.value = undefined;
+    try {
+      const response = await fetch(`https://orgeldatabas.gu.se/webgoart/goart/builder.php?id=${newId}&lang=sv`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      builderData.value = await response.json();
+      console.log(builderData.value);
+    } catch (error) {
+      console.error('Error fetching builder data:', error);
+    }
+  } else {
+    builderData.value = null;
+  }
+});
+
 //deselecting place will close the preview
-function deselectPlace() {
+function deselectPlace() { // Reset interaction states
   selectedFeature.value = undefined;
+  selectedBuilderId.value = null;
+  lastInteraction.value = 'none'; 
 }
 </script>
 
 <template>
-  <div v-if="selectedFeature" class="mapview-preview">
+  <div v-if="lastInteraction === 'place' && selectedFeature" class="mapview-preview">
     <div class="placecard">
       <div class="close-card-button" @click="deselectPlace">+</div>
       <div class="placecard-top">
@@ -138,8 +166,39 @@ function deselectPlace() {
       </div>
     </div>
   </div>
+  <div v-else-if="lastInteraction === 'builder' && builderData" class="mapview-preview">
+    <div class="placecard">
+      <div class="close-card-button" @click="deselectPlace">+</div>
+      <div class="placecard-bottom">
+        <div class="placecard-text">
+          <div class="placecard-title theme-color-text">{{ builderData.Verksgrundare }}</div>
+        </div>
+        <div class="placecard-content">
+          <div class="placecard-metadata-content">
+            <div class="label">Biografi:</div>
+            <div class="metadata-item-wide">
+              <div class="">{{ builderData.Biografi }}</div>
+            </div>
+          </div>
+          
+        </div>
+        <div class="placecard-metadata-content">
+            <div class="preview" v-html="description">
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <style>
+.metadata-item-wide {
+  margin-bottom: 5px;
+  float: left;
+  width: 100%;
+}
 
+.metadata-item-wide {
+  width: 100%;
+}
 </style>
