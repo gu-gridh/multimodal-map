@@ -24,6 +24,7 @@ import Title from "./Title.vue"
 const { categories, tags, necropoli, tombType, placesLayerVisible, tagsLayerVisible, dataParams, selectedNecropolisCoordinates, enable3D } = storeToRefs(sonoraStore());
 const store = mapStore();
 const { selectedFeature } = storeToRefs(store);
+const { selectedBuilderId } = storeToRefs(sonoraStore());
 const minZoom = 9;
 const maxZoom = 20;
 const featureZoom = 16; //value between minZoom and maxZoom when you select a point 
@@ -50,6 +51,13 @@ watch(
   },
   { immediate: true }
 );
+
+// Reset the selectedBuilderId when closing the archive so the same builder can be selected
+watch(showArchive, (newValue) => {
+  if (newValue) {
+    selectedBuilderId.value = null;  
+  }
+});
 
 // Watcher for selectedNecropolisCoordinates changes
 watch(
@@ -179,7 +187,7 @@ watch(showGrid, (newValue) => {
     </template>
 
     <template #details>
-      <MapViewPreview v-if="!showGrid"/>
+      <MapViewPreview v-if="!showGrid && !showArchive"/>
     </template>
 
   </MainLayout>
