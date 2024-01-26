@@ -33,6 +33,18 @@
       </div>
     </div>
   </div>
+    
+  
+  <div class="section-title">Time span</div>
+  <RangeSlider
+    v-model="years"
+    :min="YEARS.MIN"
+    :max="YEARS.MAX"
+    :step="1"
+    class="my-2"
+    :isSliderVisible="isSliderVisible" 
+  />
+
 
   <div class="toggle-buttons" style="margin-top: 50px">
     <button :class="{ active: searchType === 'places' }" @click="setSearchType('places')">Places</button>
@@ -105,7 +117,7 @@
 
 <script setup lang="ts">
 // @ts-nocheck
-import { inject, ref, onMounted, computed, defineProps, nextTick } from "vue";
+import { inject, ref, onMounted, computed, defineProps, nextTick, watch } from "vue";
 import CategoryButtonList from "./CategoryButtonDropdown.vue";
 import CategoryButton from "@/components/input/CategoryButtonList.vue";
 import { storeToRefs } from "pinia";
@@ -115,6 +127,7 @@ import { sonoraStore } from "./store";
 import type { SonoraProject } from "./types";
 import { DianaClient } from "@/assets/diana";
 import { transform } from 'ol/proj';
+import RangeSlider from "@/components/input/RangeSlider.vue";
 import _debounce from 'lodash/debounce';
 
 const store = mapStore();
@@ -129,6 +142,13 @@ const searchResults = ref([]);
 const config = inject<SonoraProject>("config");
 const dianaClient = new DianaClient("sonora"); // Initialize DianaClient
 const { selectedBuilderId } = storeToRefs(sonoraStore());
+
+//slider settings
+const YEARS = {
+  MIN: config?.timeRange?.[0] || 0,
+  MAX: config?.timeRange?.[1] || new Date().getFullYear(),
+};
+const years = ref([YEARS.MIN, YEARS.MAX]); 
 
 const setSearchType = (type: string) => {
   searchType.value = type;
@@ -158,6 +178,12 @@ const handleSearchBoxFocus = () => {
 const objectToArray = (obj) => {
   return obj ? Object.keys(obj).map(key => obj[key]) : [];
 };
+
+watch(years, (newValue) => {
+  console.log('Slider values:', newValue);
+}, {
+  immediate: true
+});
 
 onMounted(async () => {
   await fetchFilters();
@@ -261,6 +287,15 @@ const toggleAboutVisibility = async () => {
 </script>
 
 <style>
+.slider-tooltip {
+  background: rgb(180, 100, 100);
+  border: none;
+}
+
+.slider-connect {
+  background: rgb(180, 100, 100);
+}
+
 .category-button {
   background-color: white;
   color: rgb(71, 85, 105);
