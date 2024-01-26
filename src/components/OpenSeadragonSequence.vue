@@ -18,7 +18,7 @@ onMounted(() => {
     element: viewerEl.value,
     immediateRender: false,
     visibilityRatio: 1.0,
-    minZoomImageRatio: 0.8,
+    minZoomImageRatio: 0.5,
     homeFillsViewer: true,
     showZoomControl: true,
     showHomeControl: false,
@@ -210,7 +210,7 @@ position:absolute;
   height: 35px;
   cursor:pointer;
   overflow: hidden;
-  margin-top:15px;
+  margin-top:10px;
 }
 
 #RotateRight {

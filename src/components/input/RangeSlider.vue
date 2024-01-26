@@ -2,7 +2,7 @@
   <div class="range-slider-container bg-white rounded">
     <div class="start-end-box">{{ min }}</div>
     <div
-      style="width: 70%"
+      style="width: 100%"
       :class="['clickable', 'range-slider-wrapper', { 'no-pointer-events': isSliderVisible === false }]"
     >
       <Slider
@@ -10,9 +10,9 @@
         :min="min"
         :max="max"
         :step="step"
-        showTooltip="focus"
         class="slider-blue"
       />
+       <!-- showTooltip="focus" -->
     </div>
     <div class="start-end-box">{{ max }}</div>
   </div>

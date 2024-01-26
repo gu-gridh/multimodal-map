@@ -4,6 +4,10 @@
     <div class="tag-section">
       <div class="section-title">Building</div>
       <div class="broad-controls">
+        <button class="p-0.5 px-2 clickable category-button active">
+          All buildings
+        </button>
+
         <button
           v-for="(type, index) in buildingTypes"
           :key="index"
@@ -17,7 +21,7 @@
     </div>
 
     <!-- Time Period Section -->
-    <div class="tag-section">
+    <div class="tag-section" style="display:none;">
             <div class="section-title">Time Period</div>
 
       <div class="broad-controls">
@@ -33,8 +37,7 @@
       </div>
     </div>
   </div>
-    
-  
+
   <div class="section-title">Time span</div>
   <RangeSlider
     v-model="years"
@@ -45,12 +48,11 @@
     :isSliderVisible="isSliderVisible" 
   />
 
-
-  <div class="toggle-buttons" style="margin-top: 50px">
+  <div class="toggle-buttons" style="margin-top: 20px">
     <button :class="{ active: searchType === 'places' }" @click="setSearchType('places')">Places</button>
     <button :class="{ active: searchType === 'builders' }" @click="setSearchType('builders')">Builders</button>
   </div>
-  <div class="search-section">
+  <div class="search-section" style="padding-bottom: 120px;">
     <input
       type="text"
       v-model="searchQuery"
@@ -81,6 +83,9 @@
   </template>
 </div>
   </div>
+
+
+  
 
   <!-- Data Section -->
   <!-- <div class="data-widget">
@@ -347,17 +352,23 @@ const toggleAboutVisibility = async () => {
   border: 0px solid #ccc;
   border-radius: 4px;
   overflow:hidden;
+  background-color:rgba(255,255,255,0.6);
+  focus:none;
+}
+.search-box:focus {
+  outline: none;
 }
 
 .search-results {
   position: absolute;
   width: 100%;
-  background: white;
+  background-color:rgba(255,255,255,1.0);
   border: 0px solid #ccc;
   border-top: none;
+  border-radius:0px 0px 8px 8px;
   margin-top:-4px;
-  z-index: 100;
-  max-height: 300px;
+  z-index: 1000;
+  max-height: 120px;
   overflow-y: auto;
 }
 
@@ -365,10 +376,11 @@ const toggleAboutVisibility = async () => {
   padding: 8px;
   border-bottom: 1px solid #eee;
   cursor: pointer;
+  background-color:rgba(255,255,255,1.0)!important;
 }
 
 .search-result-item:hover {
-  background-color: #f9f9f9;
+  background-color:rgba(200,200,200,1.09);
 }
 
 #app .section-title {
@@ -455,6 +467,64 @@ const toggleAboutVisibility = async () => {
 .slideactive {
   transition: all 0.4s;
   opacity: 1.0;
+}
+
+
+#app .range-slider-container {
+  display: flex;
+  width: 100%;
+  height: auto;
+  align-items: bottom;
+  padding: 60px 0 15px 0;
+  background-color: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(3px);
+}
+
+#app .range-slider-wrapper {
+  padding-left: 27px;
+  padding-right: 28px;
+}
+
+#app .start-end-box {
+  display:none;
+  width: 15%;
+  font-size: 18px;
+  text-align: center;
+  padding-top: 0rem;
+  padding-bottom: 0.5rem;
+}
+
+#app .rounded {
+  border-radius: 8px;
+}
+
+#app .slider-connect {
+  background-color: rgb(180,100,100);
+}
+
+#app .slider-connects {
+  background-color: rgb(180,180,180);
+}
+
+#app .slider-tooltip {
+  background-color: rgb(180,100,100);
+  border: 1px solid var(--slider-tooltip-bg, rgb(180,100,100));
+  font-size: 18px;
+  font-weight:400;
+}
+
+#app .slider-handle {
+  margin-top: -10px;
+  margin-left: 10px;
+  width: 0;
+  height: 0;
+  border-radius: 0px;
+  background: none;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 15px solid rgb(180,100,100);
+  box-shadow: var(--slider-handle-shadow, 0.5px 0.5px 2px 1px rgba(0, 0, 0, 0));
+  cursor: grab;
 }
 
 

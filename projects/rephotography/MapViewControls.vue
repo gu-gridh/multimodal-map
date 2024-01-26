@@ -196,40 +196,48 @@ const toggleMapLayer = () => {
   color: white;
 }
 
+
 #app .range-slider-container {
   display: flex;
-  width: 100%;
-  height: 90px;
+  width: 94%;
+  height: auto;
   align-items: bottom;
-  padding: 25px 0 0 0;
+  padding: 60px 0 15px 0;
   background-color: rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(3px);
 }
 
 #app .range-slider-wrapper {
-  padding-left: 5px;
-  padding-right: 5px;
+  padding-left: 27px;
+  padding-right: 28px;
 }
 
 #app .start-end-box {
+  display:none;
   width: 15%;
-  font-size: 20px;
+  font-size: 18px;
   text-align: center;
   padding-top: 0rem;
   padding-bottom: 0.5rem;
 }
 
 #app .rounded {
-  border-radius: 10px;
+  border-radius: 8px;
 }
 
 #app .slider-connect {
   background-color: #ff9900;
 }
 
+#app .slider-connects {
+  background-color: rgb(180,180,180);
+}
+
 #app .slider-tooltip {
   background-color: #ff9900;
   border: 1px solid var(--slider-tooltip-bg, #ff9900);
+  font-size: 18px;
+  font-weight:500;
 }
 
 #app .slider-handle {
@@ -241,7 +249,7 @@ const toggleMapLayer = () => {
   background: none;
   border-left: 8px solid transparent;
   border-right: 8px solid transparent;
-  border-top: 15px solid #ff9900;
+  border-top: 15px solid #ff9900;;
   box-shadow: var(--slider-handle-shadow, 0.5px 0.5px 2px 1px rgba(0, 0, 0, 0));
   cursor: grab;
 }
