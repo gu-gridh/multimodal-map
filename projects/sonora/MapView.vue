@@ -53,8 +53,9 @@ watch(
 );
 
 // Reset the selectedBuilderId when closing the archive so the same builder can be selected
-watch(showArchive, (newValue) => {
-  if (newValue) {
+watch(showArchive, (newValue, oldValue) => {
+  // Check if the archive was open before
+  if (oldValue && !newValue) {
     selectedBuilderId.value = null;  
   }
 });
