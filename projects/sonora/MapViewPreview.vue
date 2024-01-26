@@ -174,7 +174,7 @@ function deselectPlace() { // Reset interaction states
           <div class="placecard-title theme-color-text">{{ builderData.Verksgrundare }}</div>
         </div>
         <div class="placecard-content">
-          <div class="placecard-metadata-content">
+          <div class="placecard-metadata-content" v-if="builderData.Biografi">
             <div class="label">Biografi:</div>
             <div class="metadata-item-wide">
               <div class="">{{ builderData.Biografi }}</div>

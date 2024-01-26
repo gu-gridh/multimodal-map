@@ -43,6 +43,7 @@
       type="text"
       v-model="searchQuery"
       @input="handleSearch"
+      @focus="handleSearchBoxFocus"
       :placeholder="searchType === 'places' ? 'Search Places...' : 'Search Builders...'"
       class="search-box"
     />
@@ -121,7 +122,7 @@ const timePeriods = ref({}); // State to store time periods
 const selectedTimePeriodIndex = ref(null); // State to track the selected time period index
 const buildingTypes = ref({}); // State to store time periods
 const selectedBuildingTypeIndex = ref(null); // State to track the selected building type index
-
+const firstSearchBoxClick = ref(true); // track the first click of the search box
 const searchType = ref('places'); // Default to 'places' 
 const searchQuery = ref('');
 const searchResults = ref([]);
@@ -146,6 +147,13 @@ const filteredPlaces = computed(() => {
   }
   return [];
 });
+
+const handleSearchBoxFocus = () => {
+  if (firstSearchBoxClick.value && searchType.value === 'places') {
+    fetchPlaces('');
+    firstSearchBoxClick.value = false; // Set to false after first fetch
+  }
+};
 
 const objectToArray = (obj) => {
   return obj ? Object.keys(obj).map(key => obj[key]) : [];
@@ -196,24 +204,23 @@ function deselectCategory(type, index) {
 
 //fetch places
 const fetchPlaces = _debounce(async (query) => {
-    if (!query) {
-    searchResults.value = []; // Clear results if query is empty
-    return;
+  let apiUrl;
+  if (searchType.value === 'places') {
+    // If query is empty, fetch all places
+    apiUrl = query
+      ? `https://orgeldatabas.gu.se/webgoart/goart/searchpl.php?seastr=${encodeURIComponent(query)}&date=&btype=&lang=sv`
+      : 'https://orgeldatabas.gu.se/webgoart/goart/searchpl.php?seastr=&date=&btype=&lang=sv';
   }
 
-let apiUrl;
-  if (searchType.value === 'places') {
-    apiUrl = `https://orgeldatabas.gu.se/webgoart/goart/searchpl.php?seastr=${encodeURIComponent(query)}&date=&btype=&lang=sv`;
-  }
   try {
     const response = await fetch(apiUrl);
     const data = await response.json();
-    searchResults.value = data ? data : []; // Set to empty array if data is null
+    searchResults.value = data ? data : [];
   } catch (error) {
     console.error('Error fetching search results:', error);
-    searchResults.value = []; // Set to empty array in case of error
+    searchResults.value = [];
   }
-}, 500); // 500 ms debounce time
+}, 500);
 
 //fetch builders
 async function fetchBuilders() {
@@ -235,7 +242,8 @@ async function fetchBuilders() {
 const handleSearch = () => {
   if (searchType.value === 'builders') {
     fetchBuilders();
-  } else {
+  } else if (searchType.value === 'places') {
+    // Call fetchPlaces with empty query if searchQuery is empty
     fetchPlaces(searchQuery.value);
   }
 };
@@ -314,6 +322,8 @@ const toggleAboutVisibility = async () => {
   border-top: none;
   margin-top:-4px;
   z-index: 100;
+  max-height: 300px;
+  overflow-y: auto;
 }
 
 .search-result-item {
