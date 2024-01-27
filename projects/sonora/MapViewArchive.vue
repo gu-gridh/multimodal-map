@@ -2,7 +2,7 @@
   <div class="map-view-archive-overlay">
      <div class="filters-container">
       <div v-for="(options, category) in filters" :key="category" class="filter-dropdown">
-        <select :id="category" v-model="selectedFilters[category]" class="archive-search-box">
+        <select :id="category" v-model="selectedFilters[category]" class="">
           <option disabled value="">{{ category }}</option>
           <option v-for="(label, value) in options" :key="value" :value="value">
             {{ label }}
@@ -102,7 +102,6 @@ function initializeSelectedFilters() {
   position: absolute;
   top: 10%;
   margin-left: calc(200px);
-
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
@@ -127,6 +126,20 @@ function initializeSelectedFilters() {
   border-radius: 8px;
   margin-left: calc(200px);
   width: 600px;
+  transition: ease-in-out 0.2s;
+}
+@media (max-width: 1300px) {
+.archive-content {
+  width: 500px;
+  margin-left: calc(500px);
+}
+}
+
+@media (max-width: 1100px) {
+.archive-content {
+  width: 400px;
+  margin-left: calc(400px);
+}
 }
 
 .archive-search-box {
@@ -135,6 +148,11 @@ function initializeSelectedFilters() {
   margin-bottom: 0px;
   border: 1px solid #ddd;
   border-radius: 4px;
+  font-size: 1.4em;
+}
+
+.archive-search-box:focus {
+  outline: none;
 }
 
 .archive-search-results {
@@ -146,7 +164,7 @@ function initializeSelectedFilters() {
   border-radius:0px 0px 8px 8px;
   margin-top:-4px;
   z-index: 1000;
-  max-height: calc(100vh - 300px);
+  max-height: calc(100vh - 285px);
   overflow-y: auto;
 }
 
@@ -156,19 +174,35 @@ function initializeSelectedFilters() {
 
 @media (max-width: 900px) {
   .filters-container {
-    left: 47%;
-    right: auto;
-    transform: translateX(-50%);
-    width: 80vw;
+    left: calc(50% - 310px);
+    width: 300px;
   }
 
   .archive-content {
     left: 22%;
     right: auto;
+    margin-left: calc(27vw);
     transform: translateX(-50%);
-    width: 80vw;
-    margin-top: 40px;
+    width: 85vw;
+    margin-top: 10px;
   }
+
+  .archive-search-box {
+  width: 100%; 
+  padding: 8px;
+  margin-bottom: 0px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  height:60px;
+  font-size:1.8em;
+}
+
+.archive-search-results {
+  margin-top:-8px;
+  z-index: 1000;
+  max-height: calc(100vh - 500px);
+  font-size:1.3em;
+}
 
   .filter-dropdown select, .archive-search-box {
     max-width: none;

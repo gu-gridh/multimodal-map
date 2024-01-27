@@ -33,6 +33,7 @@ body {
 .main-title {
   font-family: 'Teko', sans-serif;
   color: rgb(250, 250, 250);
+  font-size:5.5vw;
 }
 
 .about {
