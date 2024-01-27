@@ -171,13 +171,13 @@ function deselectPlace() { // Reset interaction states
       <div class="close-card-button" @click="deselectPlace">+</div>
       <div class="placecard-bottom">
         <div class="placecard-text">
-          <div class="placecard-title theme-color-text">{{ builderData.Verksgrundare }}</div>
+          <div class="placecard-title-builder theme-color-text">{{ builderData.Verksgrundare }}</div>
         </div>
         <div class="placecard-content">
           <div class="placecard-metadata-content" v-if="builderData.Biografi">
-            <div class="label">Biografi:</div>
+            <div class="builder-label">Biografi</div>
             <div class="metadata-item-wide">
-              <div class="">{{ builderData.Biografi }}</div>
+              <div class="biography">{{ builderData.Biografi }}</div>
             </div>
           </div>
           
@@ -200,5 +200,23 @@ function deselectPlace() { // Reset interaction states
 
 .metadata-item-wide {
   width: 100%;
+}
+
+.placecard-title-builder {
+  margin-top:50px;
+  font-size:2.5vw;
+  text-align:center;
+  padding:10px;
+}
+
+.builder-label{
+  font-size:1.5vw;
+  margin-top:20px;
+  text-align:center;
+}
+
+.biography{
+  text-align:justify;
+  padding:10px;
 }
 </style>
