@@ -16,7 +16,7 @@
             class="archive-search-box"
             v-model="searchQuery"
             @input="handleSearch" />
-        <div class="search-results">
+        <div class="archive-search-results">
           <router-link v-for="doc in searchResults" 
                       :key="doc.Dokument_nr" 
                       :to="`/detail/image/${doc.Dokument_nr}`" 
@@ -100,8 +100,8 @@ function initializeSelectedFilters() {
 .filters-container {
   position: absolute;
   top: 10%;
-  left: 55%;
-  transform: translateX(-50%);
+  margin-left: calc(200px);
+
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
@@ -121,21 +121,32 @@ function initializeSelectedFilters() {
 
 .archive-content {
   position: absolute;
-  top: 20%;
-  padding: 20px;
+  top: 150px;
+  padding: 0px;
   border-radius: 8px;
-  left: 55%;
-  transform: translateX(-50%);
-  width: 90vw;
-  max-width: 800px; 
+  margin-left: calc(200px);
+  width: 600px;
 }
 
 .archive-search-box {
   width: 100%; 
   padding: 8px;
-  margin-bottom: 10px;
+  margin-bottom: 0px;
   border: 1px solid #ddd;
   border-radius: 4px;
+}
+
+.archive-search-results {
+  position: absolute;
+  width: 100%;
+  background-color:rgba(255,255,255,1.0);
+  border: 0px solid #ccc;
+  border-top: none;
+  border-radius:0px 0px 8px 8px;
+  margin-top:-4px;
+  z-index: 1000;
+  max-height: calc(100vh - 300px);
+  overflow-y: auto;
 }
 
 .search-result-item {
@@ -144,18 +155,18 @@ function initializeSelectedFilters() {
 
 @media (max-width: 900px) {
   .filters-container {
-    left: 60%;
+    left: 47%;
     right: auto;
     transform: translateX(-50%);
     width: 80vw;
   }
 
   .archive-content {
-    left: 52%;
+    left: 22%;
     right: auto;
     transform: translateX(-50%);
     width: 80vw;
-    margin-top: 100px;
+    margin-top: 40px;
   }
 
   .filter-dropdown select, .archive-search-box {
