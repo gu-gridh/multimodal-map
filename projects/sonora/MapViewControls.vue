@@ -408,21 +408,6 @@ const toggleAboutVisibility = async () => {
   color: white;
 }
 
-/* #app .range-slider-container {
-  display: flex;
-  width: 100%;
-  height: 90px;
-  align-items: bottom;
-  padding: 25px 0 0 0;
-  background-color: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(3px);
-} */
-
-/* #app .range-slider-wrapper {
-  padding-left: 5px;
-  padding-right: 5px;
-} */
-
 #app .start-end-box {
   width: 15%;
   font-size: 20px;
@@ -476,6 +461,7 @@ const toggleAboutVisibility = async () => {
   padding: 60px 0 15px 0;
   background-color: rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(3px);
+  margin-top:0px;
 }
 
 #app .range-slider-wrapper {
