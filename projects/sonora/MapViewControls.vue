@@ -49,8 +49,9 @@
   />
 
   <div class="toggle-buttons" style="margin-top: 20px">
-    <button :class="{ active: searchType === 'places' }" @click="setSearchType('places')">Places</button>
-    <button :class="{ active: searchType === 'builders' }" @click="setSearchType('builders')">Builders</button>
+  
+    <button style="float:left; border-radius:4px 0px 0px 0px" :class="{ active: searchType === 'places' }" @click="setSearchType('places')">Places</button>
+    <button style="border-radius:0px 4px 0px 0px" :class="{ active: searchType === 'builders' }" @click="setSearchType('builders')">Builders</button>
   </div>
   <div class="search-section" style="padding-bottom: 120px;">
     <input
@@ -328,17 +329,14 @@ const toggleAboutVisibility = async () => {
 
 .toggle-buttons button {
   padding: 2px 12px;
-  border-radius: 4px;
-  background-color: rgba(255, 255, 255, 0.6);
+  background-color: rgba(255, 255, 255, 0.3);
   cursor: pointer;
-  margin-right: 8px;
-  margin-bottom: 8px;
-  color: rgb(71, 85, 105);
+  margin-bottom: 0px;
+  color: rgb(80,80,80);
 }
 
 .toggle-buttons button.active {
-  background-color: rgb(180, 100, 100);
-  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.6);
 }
 
 .search-section {
@@ -350,7 +348,7 @@ const toggleAboutVisibility = async () => {
   height:40px;
   padding: 8px;
   border: 0px solid #ccc;
-  border-radius: 4px;
+  border-radius: 0px 4px 4px;
   overflow:hidden;
   background-color:rgba(255,255,255,0.6);
   focus:none;
