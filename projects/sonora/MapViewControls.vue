@@ -346,7 +346,7 @@ const toggleAboutVisibility = async () => {
 
 .search-box {
   width: 100%;
-  height:40px;
+  height:50px;
   padding: 8px;
   border: 0px solid #ccc;
   border-radius: 0px 4px 4px;
@@ -423,7 +423,7 @@ const toggleAboutVisibility = async () => {
 }
 
 .search-result-item:hover {
-  background-color:rgba(200,200,200,1.09);
+  background-color:rgba(240,240,240,1.0)!important;
 }
 
 #app .section-title {
