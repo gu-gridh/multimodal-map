@@ -282,6 +282,9 @@ const onPlaceClick = (feature) => {
   const coordinates = feature.geometry.coordinates;
   const transformedCoordinates = fromLonLat(coordinates);
   store.updateCenter(transformedCoordinates);
+
+  // Reset selectedBuilderId when a place is clicked
+  selectedBuilderId.value = null;
 };
 
 const toggleAboutVisibility = async () => {

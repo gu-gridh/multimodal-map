@@ -177,6 +177,13 @@ watch(selectedBuilderId, async (newId) => {
     }
   }
 });
+
+watch(() => selectedBuilderId.value, (newId) => {
+  if (newId === null) {
+    // Refetch the data when a place is deselected
+    fetchData(props.apiUrl);
+  }
+});
 </script>
 
 <template>

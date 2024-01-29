@@ -112,7 +112,7 @@ watch(selectedBuilderId, async (newId) => {
 function deselectPlace() { // Reset interaction states
   selectedFeature.value = undefined;
   selectedBuilderId.value = null;
-  lastInteraction.value = 'none'; 
+  lastInteraction.value = 'none';
 }
 </script>
 
