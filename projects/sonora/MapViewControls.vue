@@ -203,7 +203,7 @@ async function fetchFilters() {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const data = await response.json();
-    if (data && data.Period) {
+    if (data) {
       buildingTypes.value = data.Building;
       console.log(buildingTypes.value)
     }

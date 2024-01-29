@@ -57,7 +57,6 @@ const fetchData = async () => {
       .filter(feature => feature.geometry && feature.geometry.coordinates) // Filter out invalid features
       .map(feature => {
         const coords = feature.geometry.coordinates;
-        console.log(coords);
         feature.properties.name = feature.properties.Building;
         feature.properties.number = feature.properties.Nr;
         return feature;
