@@ -13,6 +13,14 @@ export const sonoraStore = defineStore("sonora", () => {
   const selectedNecropolisCoordinates = ref<[number, number] | null>(null);
   const enable3D = ref<boolean>(false);
   const selectedBuilderId = ref(null);
+  const updateMapParams = (buildingTypeId, yearRange) => {
+    dataParams.value = {
+      ...dataParams.value,
+      buildingTypeId: buildingTypeId,
+      year1: yearRange ? yearRange[0] : null,
+      year2: yearRange ? yearRange[1] : null
+    };
+  };
 
-  return { categories, tags, tagsLayerVisible, placesLayerVisible, necropoli, tombType,  dataParams, selectedNecropolisCoordinates, enable3D, selectedBuilderId };
+  return { categories, tags, tagsLayerVisible, placesLayerVisible, necropoli, tombType,  dataParams, selectedNecropolisCoordinates, enable3D, selectedBuilderId, updateMapParams };
 });

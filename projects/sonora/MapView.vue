@@ -21,10 +21,10 @@ import { nextTick } from "vue";
 import GeoJSON from "ol/format/GeoJSON";
 import Title from "./Title.vue"
 
-const { categories, tags, necropoli, tombType, placesLayerVisible, tagsLayerVisible, dataParams, selectedNecropolisCoordinates, enable3D } = storeToRefs(sonoraStore());
+const { categories, tags, necropoli, tombType, placesLayerVisible, tagsLayerVisible, dataParams, selectedNecropolisCoordinates, enable3D, selectedBuilderId } = storeToRefs(sonoraStore());
 const store = mapStore();
 const { selectedFeature } = storeToRefs(store);
-const { selectedBuilderId } = storeToRefs(sonoraStore());
+const storeZ = sonoraStore();
 const minZoom = 9;
 const maxZoom = 20;
 const featureZoom = 16; //value between minZoom and maxZoom when you select a point 
@@ -60,6 +60,14 @@ watch(showArchive, (newValue, oldValue) => {
   }
 });
 
+const apiUrl = computed(() => {
+  const baseUrl = 'https://orgeldatabas.gu.se/webgoart/goart/map.php';
+  const buildingTypeId = dataParams.value.buildingTypeId || 1; // Default to 1
+  const year1 = dataParams.value.year1 || ''; 
+  const year2 = dataParams.value.year2 || '';
+  return `${baseUrl}?btype=${buildingTypeId}&year1=${year1}&year2=${year2}`;
+});
+
 // Watcher for selectedNecropolisCoordinates changes
 watch(
   selectedNecropolisCoordinates,
@@ -69,53 +77,6 @@ watch(
       store.updateZoom(16);
     }
   },
-);
-
-/* Response for generating the URL for filtering map points down */
-const tagParams = computed(() => {
-  const epoch = tags.value[0];
-  const necropolis = necropoli.value[0];
-  const type = tombType.value[0];
-
-  const initialParams = { epoch, necropolis, type };
-  
-  // Remove parameters that are set to "all"
-  const cleanedParams = Object.keys(initialParams)
-  .filter((key) => initialParams[key as keyof typeof initialParams] !== "all")
-  .reduce((obj, key) => {
-    obj[key as keyof typeof initialParams] = initialParams[key as keyof typeof initialParams];
-    return obj;
-  }, {} as typeof initialParams);
-  
-  // Further clean to remove null or undefined values
-  const params = clean(cleanedParams);
-
-  //filter for just 3D points
-  if (enable3D.value) {
-    params['with_3D'] = 'true';
-  } else {
-    delete params['with_3D'];
-  }
-
-  // Convert the params object to a URL search string
-  const queryString = new URLSearchParams(params).toString();
-
-  // Concatenate the base URL with the search string to form the full URL
-  const fullUrl = queryString ? 
-    `https://diana.dh.gu.se/api/etruscantombs/geojson/place/?page_size=500&${queryString}` :
-    `https://diana.dh.gu.se/api/etruscantombs/geojson/place/?page_size=500`;
-
-  console.log("Generated URL:", fullUrl); // Debug line
-  
-  return params;
-});
-
-watch(
-  tagParams, 
-  (newParams) => {
-    dataParams.value = newParams;
-  }, 
-  { immediate: true }
 );
 
 onMounted(() => {
@@ -179,7 +140,7 @@ watch(showGrid, (newValue) => {
           :max-zoom=maxZoom  -->
         <!-- :restrictExtent="[11.9, 42.15, 12.2, 42.4]"      -->
           <template #layers>
-            <DianaPlaceLayer v-if="placesLayerVisible" :zIndex=20>
+            <DianaPlaceLayer v-if="placesLayerVisible" :apiUrl="apiUrl" :zIndex="20">
             </DianaPlaceLayer>
           </template>
           

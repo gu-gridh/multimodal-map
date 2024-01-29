@@ -147,7 +147,8 @@ const searchQuery = ref('');
 const searchResults = ref([]);
 const config = inject<SonoraProject>("config");
 const dianaClient = new DianaClient("sonora"); // Initialize DianaClient
-const { selectedBuilderId } = storeToRefs(sonoraStore());
+const sonora = sonoraStore();
+const { selectedBuilderId } = storeToRefs(sonora);
 
 //slider settings
 const YEARS = {
@@ -186,7 +187,7 @@ const objectToArray = (obj) => {
 };
 
 watch(years, (newValue) => {
-  console.log('Slider values:', newValue);
+  sonora.updateMapParams(selectedBuildingTypeIndex.value, newValue);
 }, {
   immediate: true
 });
@@ -214,12 +215,9 @@ async function fetchFilters() {
 
 // selection of buttons
 function selectCategory(type, index) {
-  if (type === 'building') {
+   if (type === 'building') {
     selectedBuildingTypeIndex.value = selectedBuildingTypeIndex.value === index ? null : index;
-    console.log('Selected building type index:', selectedBuildingTypeIndex.value);
-  } else if (type === 'time') {
-    selectedTimePeriodIndex.value = selectedTimePeriodIndex.value === index ? null : index;
-    console.log('Selected time period index:', selectedTimePeriodIndex.value);
+    sonora.updateMapParams(selectedBuildingTypeIndex.value, years.value);
   }
 }
 
@@ -227,10 +225,10 @@ function selectCategory(type, index) {
 function deselectCategory(type, index) {
   if (type === 'building' && selectedBuildingTypeIndex.value === index) {
     selectedBuildingTypeIndex.value = null;
-    console.log('Deselected building type index:', index);
-  } else if (type === 'time' && selectedTimePeriodIndex.value === index) {
-    selectedTimePeriodIndex.value = null;
-    console.log('Deselected time period index:', index);
+    sonora.updateMapParams({
+      buildingTypeId: null,
+      yearRange: years.value
+    });
   }
 }
 

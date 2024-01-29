@@ -19,9 +19,17 @@ import { pointerMove } from "ol/events/condition";
 import type Map from "ol/Map";
 import Point from "ol/geom/Point";
 
-const { selectedFeature } = storeToRefs(mapStore());
+const props = defineProps({
+  map: Object,
+  apiUrl: String,
+  zIndex: {
+    type: Number,
+    default: 2,
+  },
+});
 
 let selectHover; // Select interaction for hover
+const { selectedFeature } = storeToRefs(mapStore());
 const hoveredFeature = ref<Feature<Geometry> | null>(null);
 const hoverCoordinates = ref(null);
 const selectedCoordinates = ref(null);
@@ -32,25 +40,14 @@ const vectorSource = ref(
   })
 );
 
-const props = defineProps({
-  map: Object,
-  params: {
-    type: Object,
-    default: () => ({}),
-  },
-  zIndex: {
-    type: Number,
-    default: 2,
-  },
-});
-
-const fetchData = async () => {
-  const apiUrl = "https://orgeldatabas.gu.se/webgoart/goart/map.php?btype=1&year1=1725&year2=1806";
-  
-  try {
-    const response = await fetch(apiUrl);
+const fetchData = async (url) => {  
+   try {
+    const response = await fetch(url);
     const data = await response.json();
     const geoJSONFormat = new GeoJSON({ featureProjection: "EPSG:3857" });
+
+    // Clear existing features
+    vectorSource.value.clear();
 
     // Map over the features and transform them
     const transformedFeatures = data.features
@@ -97,8 +94,6 @@ const clearPopups = () => {
 
 onMounted(() => {
   if (map) {
-    fetchData();
-
     map.addLayer(webGLPointsLayer.value as any);
 
     // Initialize the select interaction for hover
@@ -147,20 +142,12 @@ onMounted(() => {
   }
 });
 
-// watch(
-//   () => props.params,
-//   async (newParams) => {
-//     areMapPointsLoaded.value = false; // Reset before fetching new data
-//     const initialUrl =
-//       "https://diana.dh.gu.se/api/etruscantombs/coordinates";
-
-//     vectorSource.value.clear();
-//     clearPopups(); // Clear the popups
-
-//     await fetchData(initialUrl, newParams);
-//   },
-//   { immediate: true }
-// );
+watch(() => props.apiUrl, (newUrl) => {
+  if (newUrl) {
+    console.log(newUrl)
+    fetchData(newUrl);
+  }
+}, { immediate: true });
 
 </script>
 
