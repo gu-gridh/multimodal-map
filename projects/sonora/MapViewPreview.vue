@@ -206,6 +206,7 @@ function deselectPlace() { // Reset interaction states
   margin-top:50px;
   font-size:2.5vw;
   text-align:center;
+  font-weight:200;
   padding:10px;
 }
 
