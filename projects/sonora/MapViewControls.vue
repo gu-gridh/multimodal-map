@@ -4,9 +4,9 @@
     <div class="tag-section">
       <div class="section-title">Building</div>
       <div class="broad-controls">
-        <button class="p-0.5 px-2 clickable category-button active">
+        <!-- <button class="p-0.5 px-2 clickable category-button active">
           All buildings
-        </button>
+        </button> -->
 
         <button
           v-for="(type, index) in buildingTypes"

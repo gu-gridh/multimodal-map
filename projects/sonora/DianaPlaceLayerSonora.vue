@@ -8,7 +8,7 @@ import { DIANA_BASE } from "@/assets/diana";
 import markerIcon from "@/assets/marker-white.svg";
 import markerGold from "@/assets/marker-gold.svg";
 import Style from "ol/style/Style";
-import type Feature from "ol/Feature";
+import Feature from "ol/Feature";
 import type Geometry from "ol/geom/Geometry";
 import Icon from "ol/style/Icon";
 import { mapStore } from "@/stores/store";
@@ -29,6 +29,7 @@ const props = defineProps({
 });
 
 let selectHover; // Select interaction for hover
+const { selectedBuilderId } = storeToRefs(sonoraStore());
 const { selectedFeature } = storeToRefs(mapStore());
 const hoveredFeature = ref<Feature<Geometry> | null>(null);
 const hoverCoordinates = ref(null);
@@ -144,11 +145,38 @@ onMounted(() => {
 
 watch(() => props.apiUrl, (newUrl) => {
   if (newUrl) {
-    console.log(newUrl)
     fetchData(newUrl);
   }
 }, { immediate: true });
 
+watch(selectedBuilderId, async (newId) => {
+  if (newId) {
+    try {
+      const response = await fetch(`https://orgeldatabas.gu.se/webgoart/goart/builder.php?id=${newId}&lang=sv`);
+      const builderData = await response.json();
+
+      // Clear existing features
+      vectorSource.value.clear();
+
+      Object.values(builderData).forEach(builder => {
+        if (builder.lng && builder.lat) {
+          const coordinates = fromLonLat([parseFloat(builder.lng), parseFloat(builder.lat)]);
+          const builderFeature = new Feature({
+            geometry: new Point(coordinates),
+            name: builder.place, 
+            place_nr: builder.place_nr, 
+          });
+
+          console.log('Added feature:', builderFeature);
+          vectorSource.value.addFeature(builderFeature);
+        }
+      });
+
+    } catch (error) {
+      console.error("Error fetching builder data:", error);
+    }
+  }
+});
 </script>
 
 <template>

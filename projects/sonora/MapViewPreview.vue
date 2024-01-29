@@ -43,7 +43,7 @@ watchEffect(async () => {
   if (selectedFeature.value) {
     lastInteraction.value = 'place';
     selectedBuilderId.value = null;
-    const placeId = selectedFeature.value.get("number");
+    const placeId = selectedFeature.value.get("number") ?? selectedFeature.value.get("place_nr");
     place.value = { id_: placeId };
     try {
       const response = await fetch(`https://orgeldatabas.gu.se/webgoart/goart/place.php?id=${placeId}&lang=sv`);
