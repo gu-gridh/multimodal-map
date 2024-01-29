@@ -152,8 +152,8 @@ const { selectedBuilderId } = storeToRefs(sonora);
 
 //slider settings
 const YEARS = {
-  MIN: config?.timeRange?.[0] || 0,
-  MAX: config?.timeRange?.[1] || new Date().getFullYear(),
+  MIN: 1500,
+  MAX: 1899,
 };
 const years = ref([YEARS.MIN, YEARS.MAX]); 
 
