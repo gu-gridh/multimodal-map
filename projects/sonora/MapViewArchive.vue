@@ -100,7 +100,7 @@ function initializeSelectedFilters() {
 
 .filters-container {
   position: absolute;
-  top: 10%;
+  top: 100px;
   margin-left: calc(200px);
   display: flex;
   flex-wrap: wrap;
@@ -121,7 +121,7 @@ function initializeSelectedFilters() {
 
 .archive-content {
   position: absolute;
-  top: 150px;
+  top: 170px;
   padding: 0px;
   border-radius: 8px;
   margin-left: calc(200px);
