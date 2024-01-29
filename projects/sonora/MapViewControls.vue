@@ -371,6 +371,50 @@ const toggleAboutVisibility = async () => {
   overflow-y: auto;
 }
 
+.search-results {
+  position: absolute;
+  width: 100%;
+  background-color:rgba(255,255,255,1.0);
+  border: 0px solid #ccc;
+  border-top: none;
+  border-radius:0px 0px 8px 8px;
+  margin-top:-4px;
+  z-index: 1000;
+  max-height: 120px;
+  overflow-y: auto;
+  transition: all 0.4s;
+}
+
+@media screen and (min-height: 950px) {
+  .search-results {
+  max-height: 180px;
+}
+}
+
+@media screen and (min-height: 1000px) {
+  .search-results {
+  max-height: 230px;
+}
+}
+
+@media screen and (min-height: 1050px) {
+  .search-results {
+  max-height: 280px;
+}
+}
+
+@media screen and (min-height: 1100px) {
+  .search-results {
+  max-height: 330px;
+}
+}
+
+@media screen and (min-height: 1150px) {
+  .search-results {
+  max-height: 380px;
+}
+}
+
 .search-result-item {
   padding: 8px;
   border-bottom: 1px solid #eee;
