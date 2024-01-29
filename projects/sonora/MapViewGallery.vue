@@ -54,7 +54,7 @@ const refreshMasonry = () => {
 
 onMounted(async () => {
   try {
-    const response = await fetch("https://orgeldatabas.gu.se/webgoart/goart/gallery.php");
+    const response = await fetch("https://orgeldatabas.gu.se/webgoart/goart/gallery.php?btype=1&year1=1725&year2=1806&page=1&group=10");
     const data: Array<GalleryImage> = await response.json();
 
     images.value = data.filter(img => img.Photo !== ""); // Filtering out images with no Photo URL

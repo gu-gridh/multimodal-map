@@ -45,18 +45,22 @@ const props = defineProps({
 });
 
 const fetchData = async () => {
-  const apiUrl = "https://orgeldatabas.gu.se/webgoart/goart/map.php";
+  const apiUrl = "https://orgeldatabas.gu.se/webgoart/goart/map.php?btype=1&year1=1725&year2=1806";
   
   try {
-      const response = await fetch(apiUrl);
-      const data = await response.json();
-      const geoJSONFormat = new GeoJSON({ featureProjection: "EPSG:3857" });
-      const transformedFeatures = data.features.map(feature => {
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+    const geoJSONFormat = new GeoJSON({ featureProjection: "EPSG:3857" });
+
+    // Map over the features and transform them
+    const transformedFeatures = data.features
+      .filter(feature => feature.geometry && feature.geometry.coordinates) // Filter out invalid features
+      .map(feature => {
         const coords = feature.geometry.coordinates;
         feature.properties.name = feature.properties.Building;
         feature.properties.number = feature.properties.Nr;
         return feature;
-    });
+      });
 
     const transformedData = {
       type: "FeatureCollection",

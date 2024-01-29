@@ -203,9 +203,9 @@ async function fetchFilters() {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const data = await response.json();
-    if (data && data.Period) {
-      timePeriods.value = data.Period;
+    if (data) {
       buildingTypes.value = data.Building;
+      console.log(buildingTypes.value)
     }
   } catch (error) {
     console.error('Error fetching time periods:', error);
@@ -240,8 +240,8 @@ const fetchPlaces = _debounce(async (query) => {
   if (searchType.value === 'places') {
     // If query is empty, fetch all places
     apiUrl = query
-      ? `https://orgeldatabas.gu.se/webgoart/goart/searchpl.php?seastr=${encodeURIComponent(query)}&date=&btype=&lang=sv`
-      : 'https://orgeldatabas.gu.se/webgoart/goart/searchpl.php?seastr=&date=&btype=&lang=sv';
+      ? `https://orgeldatabas.gu.se/webgoart/goart/searchpl.php?seastr=${encodeURIComponent(query)}&btype=1&year1=1700&year2=1820&lang=sv`
+      : 'https://orgeldatabas.gu.se/webgoart/goart/searchpl.php?seastr=&btype=1&year1=1700&year2=1820&lang=sv';
   }
 
   try {
