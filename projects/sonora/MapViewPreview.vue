@@ -132,22 +132,33 @@ function deselectPlace() { // Reset interaction states
         </div>
         <div class="placecard-content">
           <div class="placecard-metadata-content">
-
-            <div class="metadata-item">
+            <div class="metadata-item" v-if="placeInfo.builder1">
+              <div class="label">Builder:</div>
+              <div class="tag theme-color-text">{{ placeInfo.builder1 }}</div>
+            </div>
+            <div class="metadata-item" v-if="placeInfo.year1">
+              <div class="label">Year:</div>
+              <div class="tag theme-color-text">{{ placeInfo.year1 }}</div>
+            </div>
+            <div class="metadata-item" v-if="placeInfo.loc1">
+              <div class="label">Loc:</div>
+              <div class="tag theme-color-text">{{ placeInfo.loc1 }}</div>
+            </div>
+            <div class="metadata-item" v-if="placeInfo.Stift">
               <div class="label">Stift:</div>
               <div class="tag theme-color-text">{{ placeInfo.Stift }}</div>
             </div>
-            <div class="metadata-item">
+            <div class="metadata-item" v-if="placeInfo.Kontrakt">
               <div class="label">Kontrakt:</div>
               <div class="tag theme-color-text">{{ placeInfo.Kontrakt }}</div>
             </div>
-            <div class="metadata-item">
+            <div class="metadata-item" v-if="placeInfo.Kommun">
               <div class="label">Kommun:</div>
               <div class="tag theme-color-text">{{ placeInfo.Kommun }}</div>
             </div>
-            <div class="metadata-item">
-              <div class="label">Loc:</div>
-              <div class="tag theme-color-text">{{ placeInfo.Loc }}</div>
+            <div class="metadata-item" v-if="placeInfo.Pastorat">
+              <div class="label">Pastorat:</div>
+              <div class="tag theme-color-text">{{ placeInfo.Pastorat }}</div>
             </div>
             
           </div>
