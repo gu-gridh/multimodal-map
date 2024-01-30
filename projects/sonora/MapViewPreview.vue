@@ -16,7 +16,7 @@ const imageUrls = ref<string[]>([]);
 const organNumbers = ref({}); //all the organ numbers returned 
 const computedRoute = computed(() => `/place/${currentOrganNumber.value}`); //route for placeview
 
-const { selectedBuilderId } = storeToRefs(sonoraStore());
+const { selectedBuilderId, archiveLayerVisible } = storeToRefs(sonoraStore());
 const builderData = ref(null);
 const lastInteraction = ref('none'); // 'none', 'place', or 'builder'
 
@@ -91,6 +91,7 @@ watchEffect(async () => {
 //when a builder is selected, fetch info
 watch(selectedBuilderId, async (newId) => {
   if (newId) {
+    archiveLayerVisible.value = true;
     lastInteraction.value = 'builder';
     selectedFeature.value = undefined;
     try {
@@ -113,6 +114,7 @@ function deselectPlace() { // Reset interaction states
   selectedFeature.value = undefined;
   selectedBuilderId.value = null;
   lastInteraction.value = 'none';
+  archiveLayerVisible.value = false;
 }
 </script>
 

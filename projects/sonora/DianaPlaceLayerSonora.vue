@@ -29,7 +29,7 @@ const props = defineProps({
 });
 
 let selectHover; // Select interaction for hover
-const { selectedBuilderId, noPlaceCount } = storeToRefs(sonoraStore());
+const { selectedBuilderId, noPlaceCount, archiveLayerVisible } = storeToRefs(sonoraStore());
 const { selectedFeature } = storeToRefs(mapStore());
 const hoveredFeature = ref<Feature<Geometry> | null>(null);
 const hoverCoordinates = ref(null);
@@ -173,7 +173,6 @@ watch(selectedBuilderId, async (newId) => {
             place_nr: builder.place_nr, 
           });
 
-          console.log('Added feature:', builderFeature);
           vectorSource.value.addFeature(builderFeature);
         }
       });
@@ -188,8 +187,8 @@ watch(selectedBuilderId, async (newId) => {
   }
 });
 
-watch(() => selectedBuilderId.value, (newId) => {
-  if (newId === null) {
+watch(() => archiveLayerVisible.value, (newId) => {
+  if (archiveLayerVisible.value === false) {
     // Refetch the data when a place is deselected
     fetchData(props.apiUrl);
   }

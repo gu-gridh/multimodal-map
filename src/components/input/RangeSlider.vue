@@ -3,7 +3,12 @@
     <div class="start-end-box">{{ min }}</div>
     <div
       style="width: 100%"
-      :class="['clickable', 'range-slider-wrapper', { 'no-pointer-events': isSliderVisible === false }]"
+      :class="[
+        'clickable', 
+        'range-slider-wrapper', 
+        { 'no-pointer-events': isSliderVisible === false },
+        { 'slider-disabled': isDisabled }
+      ]"
     >
       <Slider
         v-model="selection"
@@ -11,8 +16,8 @@
         :max="max"
         :step="step"
         class="slider-blue"
+        :disabled="isDisabled"
       />
-       <!-- showTooltip="focus" -->
     </div>
     <div class="start-end-box">{{ max }}</div>
   </div>
@@ -28,8 +33,10 @@ const props = withDefaults(defineProps<{
   max: number;
   step: number;
   isSliderVisible: boolean;
+  disabled: boolean;
 }>(), {
-  isSliderVisible: true
+  isSliderVisible: true,
+  disabled: false
 });
 
 const emit = defineEmits(["update:modelValue"]);
@@ -40,12 +47,17 @@ watch(selection, () => {
   emit("update:modelValue", selection.value);
 });
 
-const isSliderVisible = computed(() => props.isSliderVisible !== false); 
+const isSliderVisible = computed(() => props.isSliderVisible !== false);
+const isDisabled = computed(() => props.disabled);
 </script>
 
 <style src="@vueform/slider/themes/default.css"></style>
 
 <style>
+.range-slider-wrapper.slider-disabled {
+  opacity: 0.5;
+}
+
 .range-slider-container {
   display: flex;
   width: 100%;

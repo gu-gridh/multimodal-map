@@ -8,6 +8,7 @@
           class="p-0.5 px-2 clickable category-button"
           :class="{'active': selectedBuildingTypeIndex === 0}"
           @click="selectCategory('building', 0)"
+          :disabled="archiveLayerVisible"
         >
           All buildings
         </button>
@@ -17,6 +18,7 @@
           :key="index"
           :class="['p-0.5 px-2 clickable category-button', {'active': selectedBuildingTypeIndex === index}]"
           @click="selectCategory('building', index)"
+          :disabled="archiveLayerVisible"
         >
           {{ type }}
         </button>
@@ -31,18 +33,19 @@
     :max="YEARS.MAX"
     :step="1"
     class="my-2"
-    :isSliderVisible="isSliderVisible" 
+    :isSliderVisible="isSliderVisible"
+    :disabled="archiveLayerVisible"
   />
 
   <!-- Data Section -->
-  <div class="data-widget">
+  <!-- <div class="data-widget">
     <div class="data-widget-section">
       <div class="data-widget-item">
         <h3>Visade orglar:</h3>
         <p>{{ noPlaceCount }}</p>
       </div>
     </div>
-  </div>
+  </div> -->
 
   <div class="toggle-buttons" style="margin-top: 20px">
     <button style="float:left; border-radius:4px 0px 0px 0px" :class="{ active: searchType === 'places' }" @click="setSearchType('places')">Places</button>
@@ -108,7 +111,7 @@ const searchResults = ref([]);
 const config = inject<SonoraProject>("config");
 const dianaClient = new DianaClient("sonora"); // Initialize DianaClient
 const sonora = sonoraStore();
-const { selectedBuilderId, noPlaceCount } = storeToRefs(sonora);
+const { selectedBuilderId, noPlaceCount, archiveLayerVisible } = storeToRefs(sonora);
 
 //slider settings
 const YEARS = {
@@ -239,9 +242,6 @@ const onPlaceClick = (feature) => {
   const coordinates = feature.geometry.coordinates;
   const transformedCoordinates = fromLonLat(coordinates);
   store.updateCenter(transformedCoordinates);
-
-  // Reset selectedBuilderId when a place is clicked
-  selectedBuilderId.value = null;
 };
 
 const toggleAboutVisibility = async () => {
@@ -561,5 +561,7 @@ const toggleAboutVisibility = async () => {
   font-weight:500;
 }
 
-
+button:disabled {
+  opacity: 0.5;
+}
 </style>
