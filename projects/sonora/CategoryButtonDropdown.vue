@@ -23,7 +23,7 @@
 import { storeToRefs } from "pinia";
 import CategoryButton from "../../src/components/input/CategoryButton.vue";
 import { sonoraStore } from "./store";
-const { selectedNecropolisCoordinates } = storeToRefs(sonoraStore());
+// const { selectedNecropolisCoordinates } = storeToRefs(sonoraStore());
 
 
 const props = defineProps<{
@@ -54,9 +54,9 @@ function handleToggle(key: string) {
     emit("update:modelValue", ['all']); // Set modelValue to ['all']
     
     // If this dropdown is for "Necropolis", then move the map
-    if (props.type === 'necropolis') {
-      selectedNecropolisCoordinates.value = [1335733.925763396, 5194636.579769473];
-    }
+    // if (props.type === 'necropolis') {
+    //   selectedNecropolisCoordinates.value = [1335733.925763396, 5194636.579769473];
+    // }
 
     emit('click', 'all'); // Emit the special 'all' value
     return;

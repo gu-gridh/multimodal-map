@@ -21,7 +21,7 @@ import { nextTick } from "vue";
 import GeoJSON from "ol/format/GeoJSON";
 import Title from "./Title.vue"
 
-const { categories, tags, necropoli, tombType, placesLayerVisible, tagsLayerVisible, dataParams, selectedNecropolisCoordinates, enable3D, selectedBuilderId } = storeToRefs(sonoraStore());
+const { categories, tags, necropoli, tombType, placesLayerVisible, tagsLayerVisible, dataParams, enable3D, selectedBuilderId } = storeToRefs(sonoraStore());
 const store = mapStore();
 const { selectedFeature } = storeToRefs(store);
 const storeZ = sonoraStore();
@@ -69,15 +69,15 @@ const apiUrl = computed(() => {
 });
 
 // Watcher for selectedNecropolisCoordinates changes
-watch(
-  selectedNecropolisCoordinates,
-  (newCoordinates, oldCoordinates) => {
-    if (newCoordinates !== oldCoordinates && newCoordinates) {
-      store.updateCenter(newCoordinates);
-      store.updateZoom(16);
-    }
-  },
-);
+// watch(
+//   selectedNecropolisCoordinates,
+//   (newCoordinates, oldCoordinates) => {
+//     if (newCoordinates !== oldCoordinates && newCoordinates) {
+//       store.updateCenter(newCoordinates);
+//       store.updateZoom(16);
+//     }
+//   },
+// );
 
 onMounted(() => {
   // Check if the "visited" key exists in session storage
