@@ -114,6 +114,7 @@ const dianaClient = new DianaClient("sonora"); // Initialize DianaClient
 const sonora = sonoraStore();
 const { selectedBuilderId, noPlaceCount, builderLayerVisible } = storeToRefs(sonora);
 const featureZoom = 16; //value between minZoom and maxZoom when you select a point 
+const allZoom = 5.3; //value to see all of sweden 
 const rangeSliderRef = ref(null);
 
 //slider settings
@@ -129,9 +130,13 @@ const setSearchType = (type: string) => {
 };
 
 const onBuilderClick = (builderId) => {
+          
+    store.updateZoom(allZoom);
+  
   if (selectedBuilderId.value !== builderId) {
     selectedBuilderId.value = builderId;
   }
+
 };
 
 const filteredPlaces = computed(() => {
@@ -358,31 +363,31 @@ const toggleAboutVisibility = async () => {
 
 @media screen and (min-height: 950px) {
   .search-results {
-  max-height: 120px;
+  max-height: 180px;
 }
 }
 
 @media screen and (min-height: 1000px) {
   .search-results {
-  max-height: 180px;
+  max-height: 230px;
 }
 }
 
 @media screen and (min-height: 1050px) {
   .search-results {
-  max-height: 230px;
+  max-height: 280px;
 }
 }
 
 @media screen and (min-height: 1100px) {
   .search-results {
-  max-height: 280px;
+  max-height: 330px;
 }
 }
 
 @media screen and (min-height: 1150px) {
   .search-results {
-  max-height: 330px;
+  max-height: 380px;
 }
 }
 
