@@ -48,7 +48,7 @@ const downloadImage = (fileUrl: string, fileName: string) => {
           <div v-if="object['0'].org_nr"><div class="label">Org Nr:</div> <div class="data">{{ object['0'].org_nr }}</div></div>
           <div v-if="object['0'].place"><div class="label">Place:</div> <div class="data">{{ object['0'].place }}</div></div>
           <div v-if="object['0'].lng"><div class="label">Longitude:</div> <div class="data">{{ object['0'].lng }}</div></div>
-          <div v-if="object['0'].lat"><div class="label">Latitude:</div> <div class="data">{{ object['0'].lat }}</div></div>
+          <div v-if="object['0'].lat" style="margin-bottom:20px;"><div class="label">Latitude:</div> <div class="data">{{ object['0'].lat }}</div></div>
         </div>
         <div class="label" v-html="object ? object.Innehåll : ''"></div>
       </div>
@@ -89,7 +89,7 @@ const downloadImage = (fileUrl: string, fileName: string) => {
 <style scoped>
 
 .data{
-  color:rgb(255,200,200);
+  color:rgb(250,220,220)!important;
 }
 
 .metadata{

@@ -361,31 +361,31 @@ const toggleAboutVisibility = async () => {
   transition: all 0.4s;
 }
 
-@media screen and (min-height: 950px) {
+@media screen and (min-height: 900px) {
   .search-results {
   max-height: 180px;
 }
 }
 
-@media screen and (min-height: 1000px) {
+@media screen and (min-height: 950px) {
   .search-results {
   max-height: 230px;
 }
 }
 
-@media screen and (min-height: 1050px) {
+@media screen and (min-height: 1000px) {
   .search-results {
   max-height: 280px;
 }
 }
 
-@media screen and (min-height: 1100px) {
+@media screen and (min-height: 1050px) {
   .search-results {
   max-height: 330px;
 }
 }
 
-@media screen and (min-height: 1150px) {
+@media screen and (min-height: 1100px) {
   .search-results {
   max-height: 380px;
 }

@@ -42,7 +42,7 @@ body {
 
 
 #app .left-pane {
-  background: url("images/gradient-sonora.png");
+  background: url("images/gradient.png");
   background-size: contain;
 }
 

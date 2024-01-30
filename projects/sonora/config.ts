@@ -7,7 +7,7 @@ export default <SonoraProject>{
   about:
     "",
   projection: "EPSG:3857",
-  center: [15.361633, 60.615281],
-  zoom: 9,
+  center: [16, 59.3],
+  zoom: 7,
   timeRange: [1600, new Date().getFullYear()],
 };
