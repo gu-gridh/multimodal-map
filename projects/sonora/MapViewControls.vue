@@ -517,12 +517,12 @@ const toggleAboutVisibility = async () => {
 .data-widget {
   float:left;
   pointer-events: none;
-  width: 98%;
+  width: 100%;
   margin-top: 10px;
   margin-bottom: 20px;
   padding: 15px 25px;
-  border-radius: 10px;
-  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.6);
   min-height: 50px;
   backdrop-filter: blur(5px);
 }
