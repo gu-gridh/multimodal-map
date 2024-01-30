@@ -112,6 +112,7 @@ const config = inject<SonoraProject>("config");
 const dianaClient = new DianaClient("sonora"); // Initialize DianaClient
 const sonora = sonoraStore();
 const { selectedBuilderId, noPlaceCount, archiveLayerVisible } = storeToRefs(sonora);
+const featureZoom = 16; //value between minZoom and maxZoom when you select a point 
 
 //slider settings
 const YEARS = {
@@ -241,6 +242,10 @@ const handleSearch = () => {
 const onPlaceClick = (feature) => {
   const coordinates = feature.geometry.coordinates;
   const transformedCoordinates = fromLonLat(coordinates);
+  if (store.zoom < featureZoom)
+          {          
+            store.updateZoom(featureZoom);
+          }
   store.updateCenter(transformedCoordinates);
 };
 
