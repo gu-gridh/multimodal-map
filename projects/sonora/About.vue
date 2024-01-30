@@ -99,7 +99,7 @@ export default {
 
 .about-main-title {
   font-family: 'Teko', sans-serif;
-  color:white;
+  color:white!important;
 }
 
 .about-article-main {
