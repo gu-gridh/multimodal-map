@@ -5,7 +5,7 @@ import VectorSource from "ol/source/Vector";
 import WebGLPointsLayer from "ol/layer/WebGLPoints.js";
 import { fromLonLat } from "ol/proj";
 import { DIANA_BASE } from "@/assets/diana";
-import markerIcon from "@/assets/marker-white.svg";
+import markerIcon from "@/assets/marker-red.svg";
 import markerGold from "@/assets/marker-gold.svg";
 import Style from "ol/style/Style";
 import Feature from "ol/Feature";
