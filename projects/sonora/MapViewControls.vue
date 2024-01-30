@@ -344,31 +344,31 @@ const toggleAboutVisibility = async () => {
 
 @media screen and (min-height: 950px) {
   .search-results {
-  max-height: 180px;
+  max-height: 120px;
 }
 }
 
 @media screen and (min-height: 1000px) {
   .search-results {
-  max-height: 230px;
+  max-height: 180px;
 }
 }
 
 @media screen and (min-height: 1050px) {
   .search-results {
-  max-height: 280px;
+  max-height: 230px;
 }
 }
 
 @media screen and (min-height: 1100px) {
   .search-results {
-  max-height: 330px;
+  max-height: 280px;
 }
 }
 
 @media screen and (min-height: 1150px) {
   .search-results {
-  max-height: 380px;
+  max-height: 330px;
 }
 }
 
