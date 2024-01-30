@@ -123,14 +123,13 @@ function deselectPlace() { // Reset interaction states
     <div class="placecard">
       <div class="close-card-button" @click="deselectPlace">+</div>
       <div class="placecard-top">
-
         <OpenSeadragon :src="imageUrls" :key="imageUrls.join(',')" @page-changed="handlePageChange" class="flex-1" />
       </div>
 
-      <div class="placecard-bottom">
+        <div class="placecard-bottom">
         <div class="placecard-text">
-          <div class="placecard-title theme-color-text">{{ placeInfo.Ort }}</div>
-          <div class="placecard-subtitle theme-color-text">{{ placeInfo.Byggnadens_namn }}</div>
+          <div class="placecard-title theme-color-text">{{ placeInfo.Byggnadens_namn }}</div>
+          <div class="placecard-subtitle theme-color-text">{{ placeInfo.Ort }}</div>
         </div>
         <div class="placecard-content">
           <div class="placecard-metadata-content">
@@ -205,6 +204,9 @@ function deselectPlace() { // Reset interaction states
 </template>
 
 <style>
+.placecard-top{
+  height:65%;
+}
 .metadata-item-wide {
   margin-bottom: 5px;
   float: left;
@@ -221,6 +223,15 @@ function deselectPlace() { // Reset interaction states
   text-align:center;
   font-weight:200;
   padding:10px;
+}
+
+.placecard-title {
+
+  font-size:2.5vw;
+  padding-bottom:5px;
+  font-weight:300;
+  margin-left:-1px;
+
 }
 
 .builder-label{
