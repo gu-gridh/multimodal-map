@@ -8,7 +8,7 @@
           class="p-0.5 px-2 clickable category-button"
           :class="{'active': selectedBuildingTypeIndex === 0}"
           @click="selectCategory('building', 0)"
-          :disabled="archiveLayerVisible"
+          :disabled="builderLayerVisible"
         >
           All buildings
         </button>
@@ -18,7 +18,7 @@
           :key="index"
           :class="['p-0.5 px-2 clickable category-button', {'active': selectedBuildingTypeIndex === index}]"
           @click="selectCategory('building', index)"
-          :disabled="archiveLayerVisible"
+          :disabled="builderLayerVisible"
         >
           {{ type }}
         </button>
@@ -28,13 +28,14 @@
 
   <div class="section-title">Time span</div>
   <RangeSlider
+    ref="rangeSliderRef"
     v-model="years"
     :min="YEARS.MIN"
     :max="YEARS.MAX"
     :step="1"
     class="my-2"
     :isSliderVisible="isSliderVisible"
-    :disabled="archiveLayerVisible"
+    :disabled="builderLayerVisible"
   />
 
   <!-- Data Section -->
@@ -111,8 +112,9 @@ const searchResults = ref([]);
 const config = inject<SonoraProject>("config");
 const dianaClient = new DianaClient("sonora"); // Initialize DianaClient
 const sonora = sonoraStore();
-const { selectedBuilderId, noPlaceCount, archiveLayerVisible } = storeToRefs(sonora);
+const { selectedBuilderId, noPlaceCount, builderLayerVisible } = storeToRefs(sonora);
 const featureZoom = 16; //value between minZoom and maxZoom when you select a point 
+const rangeSliderRef = ref(null);
 
 //slider settings
 const YEARS = {
@@ -242,11 +244,18 @@ const handleSearch = () => {
 const onPlaceClick = (feature) => {
   const coordinates = feature.geometry.coordinates;
   const transformedCoordinates = fromLonLat(coordinates);
-  if (store.zoom < featureZoom)
-          {          
-            store.updateZoom(featureZoom);
-          }
+  if (store.zoom < featureZoom) {          
+    store.updateZoom(featureZoom);
+  }
   store.updateCenter(transformedCoordinates);
+
+  // Reset building type to 'All'
+  selectedBuildingTypeIndex.value = 0;
+
+  // Reset the date range to default
+   if (rangeSliderRef.value) {
+    rangeSliderRef.value.resetSlider();
+  }
 };
 
 const toggleAboutVisibility = async () => {

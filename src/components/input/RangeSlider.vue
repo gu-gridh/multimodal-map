@@ -49,6 +49,12 @@ watch(selection, () => {
 
 const isSliderVisible = computed(() => props.isSliderVisible !== false);
 const isDisabled = computed(() => props.disabled);
+
+function resetSlider() {
+  selection.value = [props.min, props.max];
+}
+
+defineExpose({ resetSlider });
 </script>
 
 <style src="@vueform/slider/themes/default.css"></style>
