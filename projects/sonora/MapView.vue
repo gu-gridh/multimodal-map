@@ -62,7 +62,7 @@ watch(showArchive, (newValue, oldValue) => {
 
 const apiUrl = computed(() => {
   const baseUrl = 'https://orgeldatabas.gu.se/webgoart/goart/map.php';
-  const buildingTypeId = dataParams.value.buildingTypeId || 1; // Default to 1
+  const buildingTypeId = dataParams.value.buildingTypeId || 0; // Default to 0
   const year1 = dataParams.value.year1 || ''; 
   const year2 = dataParams.value.year2 || '';
   return `${baseUrl}?btype=${buildingTypeId}&year1=${year1}&year2=${year2}`;

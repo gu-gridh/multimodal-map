@@ -4,35 +4,21 @@
     <div class="tag-section">
       <div class="section-title">Building</div>
       <div class="broad-controls">
-        <!-- <button class="p-0.5 px-2 clickable category-button active">
+         <button 
+          class="p-0.5 px-2 clickable category-button"
+          :class="{'active': selectedBuildingTypeIndex === 0}"
+          @click="selectCategory('building', 0)"
+        >
           All buildings
-        </button> -->
+        </button>
 
         <button
           v-for="(type, index) in buildingTypes"
           :key="index"
           :class="['p-0.5 px-2 clickable category-button', {'active': selectedBuildingTypeIndex === index}]"
           @click="selectCategory('building', index)"
-          @dblclick="deselectCategory('building', index)"
         >
           {{ type }}
-        </button>
-      </div>
-    </div>
-
-    <!-- Time Period Section -->
-    <div class="tag-section" style="display:none;">
-            <div class="section-title">Time Period</div>
-
-      <div class="broad-controls">
-        <button
-          v-for="(period, index) in timePeriods"
-          :key="index"
-          :class="['p-1 px-2 clickable category-button', {'active': selectedTimePeriodIndex === index}]"
-          @click="selectCategory('time', index)"
-          @dblclick="deselectCategory('time', index)"
-        >
-          {{ period }}
         </button>
       </div>
     </div>
@@ -84,9 +70,6 @@
   </template>
 </div>
   </div>
-
-
-  
 
   <!-- Data Section -->
   <!-- <div class="data-widget">
@@ -140,7 +123,7 @@ const store = mapStore();
 const timePeriods = ref({}); // State to store time periods
 const selectedTimePeriodIndex = ref(null); // State to track the selected time period index
 const buildingTypes = ref({}); // State to store time periods
-const selectedBuildingTypeIndex = ref("1"); // Initialize with the first key
+const selectedBuildingTypeIndex = ref(0);
 const firstSearchBoxClick = ref(true); // track the first click of the search box
 const searchType = ref('places'); // Default to 'places' 
 const searchQuery = ref('');
@@ -215,20 +198,17 @@ async function fetchFilters() {
 
 // selection of buttons
 function selectCategory(type, index) {
-   if (type === 'building') {
-    selectedBuildingTypeIndex.value = selectedBuildingTypeIndex.value === index ? null : index;
-    sonora.updateMapParams(selectedBuildingTypeIndex.value, years.value);
-  }
-}
-
-// deselection of buttons
-function deselectCategory(type, index) {
-  if (type === 'building' && selectedBuildingTypeIndex.value === index) {
-    selectedBuildingTypeIndex.value = null;
-    sonora.updateMapParams({
-      buildingTypeId: null,
-      yearRange: years.value
-    });
+  if (type === 'building') {
+    // Check if the clicked button is already active
+    if (selectedBuildingTypeIndex.value === index) {
+      // If active, reset to 'All Buildings'
+      selectedBuildingTypeIndex.value = 0;
+      sonora.updateMapParams(0, years.value);
+    } else {
+      // If not active, set as the active button
+      selectedBuildingTypeIndex.value = index;
+      sonora.updateMapParams(index, years.value);
+    }
   }
 }
 
