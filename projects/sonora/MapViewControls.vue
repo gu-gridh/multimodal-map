@@ -34,8 +34,17 @@
     :isSliderVisible="isSliderVisible" 
   />
 
+  <!-- Data Section -->
+  <div class="data-widget">
+    <div class="data-widget-section">
+      <div class="data-widget-item">
+        <h3>Visade orglar:</h3>
+        <p>{{ noPlaceCount }}</p>
+      </div>
+    </div>
+  </div>
+
   <div class="toggle-buttons" style="margin-top: 20px">
-  
     <button style="float:left; border-radius:4px 0px 0px 0px" :class="{ active: searchType === 'places' }" @click="setSearchType('places')">Places</button>
     <button style="border-radius:0px 4px 0px 0px" :class="{ active: searchType === 'builders' }" @click="setSearchType('builders')">Builders</button>
   </div>
@@ -48,60 +57,28 @@
       :placeholder="searchType === 'places' ? 'Search Places...' : 'Search Builders...'"
       class="search-box"
     />
-   <div class="search-results">
-  <!-- Rendering for 'places' -->
-  <template v-if="searchType === 'places'">
-    <div v-for="feature in filteredPlaces" 
-        :key="feature.properties ? feature.properties.Nr : 'no-place'" 
-        class="search-result-item"
-        @click="onPlaceClick(feature)">
-      {{ feature.properties.Building }}
-    </div>
-  </template>
+    <div class="search-results">
+      <!-- Rendering for 'places' -->
+      <template v-if="searchType === 'places'">
+        <div v-for="feature in filteredPlaces" 
+            :key="feature.properties ? feature.properties.Nr : 'no-place'" 
+            class="search-result-item"
+            @click="onPlaceClick(feature)">
+          {{ feature.properties.Building }}
+        </div>
+      </template>
 
-  <!-- Rendering for 'builders' -->
-  <template v-else-if="searchType === 'builders'">
-  <div v-for="(builder, index) in objectToArray(searchResults)" 
-       :key="index" 
-       class="search-result-item"
-       @click="onBuilderClick(builder.Id)">
-    {{ builder.Builder }}
+      <!-- Rendering for 'builders' -->
+      <template v-else-if="searchType === 'builders'">
+      <div v-for="(builder, index) in objectToArray(searchResults)" 
+          :key="index" 
+          class="search-result-item"
+          @click="onBuilderClick(builder.Id)">
+        {{ builder.Builder }}
+      </div>
+      </template>
+    </div>
   </div>
-  </template>
-</div>
-  </div>
-
-  <!-- Data Section -->
-  <!-- <div class="data-widget">
-    <div class="data-widget-section">
-      <div class="data-widget-item">
-        <h3>Visade orglar:</h3>
-        <p>{{ currentTombCount }}</p>
-      </div>
-      <div class="data-widget-item">|</div>
-      <div class="data-widget-item">
-        <h3>Gömde orglar:</h3>
-        <p>{{ initialTombCount - currentTombCount }}</p>
-      </div>
-    </div>
-
-    <div class="data-widget-divider"></div>
-
-    <div class="data-widget-section">
-      <div class="data-widget-item">
-        <h3>Dokument:</h3>
-        <p>{{ totalPhotographs }}</p>
-      </div>
-      <div class="data-widget-item">
-        <h3>Ritningar:</h3>
-        <p>{{ totalPlans }}</p>
-      </div>
-      <div class="data-widget-item">
-        <h3>Inspelningar:</h3>
-        <p>{{ totalThreedhop + totalPointcloud }}</p> 
-      </div>
-    </div>
-  </div> -->
 </template>
 
 <script setup lang="ts">
@@ -131,7 +108,7 @@ const searchResults = ref([]);
 const config = inject<SonoraProject>("config");
 const dianaClient = new DianaClient("sonora"); // Initialize DianaClient
 const sonora = sonoraStore();
-const { selectedBuilderId } = storeToRefs(sonora);
+const { selectedBuilderId, noPlaceCount } = storeToRefs(sonora);
 
 //slider settings
 const YEARS = {
@@ -542,6 +519,7 @@ const toggleAboutVisibility = async () => {
   pointer-events: none;
   width: 98%;
   margin-top: 10px;
+  margin-bottom: 20px;
   padding: 15px 25px;
   border-radius: 10px;
   background-color: rgba(255, 255, 255, 0.5);
@@ -553,7 +531,7 @@ const toggleAboutVisibility = async () => {
   width:100%;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
 }
 
 .data-widget-divider {

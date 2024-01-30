@@ -29,7 +29,7 @@ const props = defineProps({
 });
 
 let selectHover; // Select interaction for hover
-const { selectedBuilderId } = storeToRefs(sonoraStore());
+const { selectedBuilderId, noPlaceCount } = storeToRefs(sonoraStore());
 const { selectedFeature } = storeToRefs(mapStore());
 const hoveredFeature = ref<Feature<Geometry> | null>(null);
 const hoverCoordinates = ref(null);
@@ -66,6 +66,12 @@ const fetchData = async (url) => {
     };
 
     vectorSource.value.addFeatures(geoJSONFormat.readFeatures(transformedData));
+
+    const lastFeature = data.features[data.features.length - 1];
+    if (lastFeature && 'no_place' in lastFeature) {
+      noPlaceCount.value = lastFeature.no_place;
+    }
+
   } catch (error) {
     console.error("Error fetching data:", error);
   }
@@ -171,6 +177,10 @@ watch(selectedBuilderId, async (newId) => {
           vectorSource.value.addFeature(builderFeature);
         }
       });
+
+      if ('no_organs' in builderData) {
+        noPlaceCount.value = builderData.no_organs;
+      }
 
     } catch (error) {
       console.error("Error fetching builder data:", error);

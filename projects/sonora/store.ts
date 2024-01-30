@@ -10,7 +10,7 @@ export const sonoraStore = defineStore("sonora", () => {
   const tagsLayerVisible = ref(false); // Default visibility state for tags layer
   const placesLayerVisible = ref(true); // Default visibility state for places layer
   const dataParams = ref<Record<string, string | number | null>>({});
-  // const selectedNecropolisCoordinates = ref<[number, number] | null>(null);
+  const noPlaceCount = ref(0);
   const enable3D = ref<boolean>(false);
   const selectedBuilderId = ref(null);
   const updateMapParams = (buildingTypeId, yearRange) => {
@@ -22,5 +22,5 @@ export const sonoraStore = defineStore("sonora", () => {
     };
   };
 
-  return { categories, tags, tagsLayerVisible, placesLayerVisible, necropoli, tombType,  dataParams, enable3D, selectedBuilderId, updateMapParams };
+  return { categories, tags, tagsLayerVisible, placesLayerVisible, necropoli, tombType,  dataParams, enable3D, selectedBuilderId, noPlaceCount, updateMapParams };
 });
