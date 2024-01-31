@@ -87,7 +87,7 @@ onMounted(async () => {
     
 <style scoped>
 .document-icon {
-    height: 1em; 
+    height: 1.3em; 
     vertical-align: middle; 
     margin-right: 5px; 
     display: inline-block; 
@@ -96,6 +96,8 @@ onMounted(async () => {
 .document-link {
     display: flex;
     align-items: center; 
+    font-size:1.05em;
+    padding-bottom:5px;
 }
 
 .content-table {
@@ -108,7 +110,7 @@ a {
 }
 
 .main-container{
-    background-color:rgba(114,135,138, 0.7) !important;
+    background-color:rgba(84,105,108, 0.7) !important;
     backdrop-filter: blur(10px) saturate(50%) brightness(100%);
     color:white;
 }

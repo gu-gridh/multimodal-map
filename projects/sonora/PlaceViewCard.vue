@@ -132,20 +132,20 @@ onMounted(() => {
   <div class="place-meta-container">
 
     <div class="placecard-full">
-  
+
 
       <div class="placecard-full-content">
 
         <div class="placecard-text-overlay"></div>
 
-          <!-- mini map -->
-          <div class="mini-map">
-            <img v-if="organData?.Fotografi" :src="organData.Fotografi" alt="Map Image" />
-            <div v-else class="no-image-placeholder"></div>
-          </div>
+        <!-- mini map -->
+        <div class="mini-map">
+          <img v-if="organData?.Fotografi" :src="organData.Fotografi" alt="Map Image" />
+          <div v-else class="no-image-placeholder"></div>
+        </div>
         <div v-if="organData" class="placecard-text">
           <div class="placecard-title theme-color-text">{{ organData.Plats }}</div>
-          <div class="placecard-metadata-content" style="">
+          <!-- <div class="placecard-metadata-content" style="">
             <div class="metadata-item" v-if="organData.Verksgrundare">
               <div class="label">Verksgrundare: </div>
               <div class="tag theme-color-text">{{ organData.Verksgrundare }}</div>
@@ -154,25 +154,26 @@ onMounted(() => {
               <div class="label">Tillkomstår: </div>
               <div class="tag theme-color-text">{{ organData.Tillkomstår }}</div>
             </div>
-          </div>
-          <div class="placecard-metadata-content" style="margin-top:10px; border-top: 1.5px solid black;">
+          </div> -->
+          <div class="placecard-metadata-content" style="margin-top:10px;">
             <div class="historical-overview-title">Historisk översikt</div>
-          <div class="historical-overview">
-            <div v-for="item in processedOrganData" :key="item.date" class="overview-row">
-              <a href="#" v-if="item.link" @click="handleLinkClick($event, item.link)">
-                <div class="date-column" style="font-weight: 500">{{ item.date }}</div>
-                <div class="info-column">
-                  <div style="font-weight: 600;">{{ item.work }}</div>
-                  <div style="font-weight: 300;">{{ item.builder }}</div>
-                  <div style="font-weight: 300;">{{ item.place }}</div>
-                </div>
-              </a>
+            <div class="historical-overview">
+              <div v-for="item in processedOrganData" :key="item.date" class="overview-row">
+                <a href="#" v-if="item.link" @click="handleLinkClick($event, item.link)">
+                  <div class="date-column" style="font-weight: 500">{{ item.date }}</div>
+                  <div class="info-column">
+                    <div style="font-weight: 600;">{{ item.work }}</div>
+                    <div style="font-weight: 300;">{{ item.builder }}</div>
+                    <div style="font-weight: 300;">{{ item.place }}</div>
+                  </div>
+                </a>
+              </div>
             </div>
           </div>
-        </div>
-          <div class="placecard-metadata-content" style="margin-top:10px; border-top: 1.5px solid black;" v-if="organData.Disposition">
+          <!-- <div class="placecard-metadata-content" style="margin-top:10px; border-top: 1.5px solid black;"
+            v-if="organData.Disposition">
             <span>Disposition:</span>
-            <div class="organ-historic-overview" v-html="organData.Disposition"  @click="handleDisposition"></div>
+            <div class="organ-historic-overview" v-html="organData.Disposition" @click="handleDisposition"></div>
           </div>
           <div v-if="isPopupVisible" class="popup" :style="{ left: mousePosition.x + 'px', top: mousePosition.y + 'px' }">
             <h3 v-if="popupData?.Verk">Division Info:</h3>
@@ -192,9 +193,9 @@ onMounted(() => {
             <button @click="isPopupVisible = false" style="font-weight: bold">Close</button>
           </div>
           <div class="placecard-metadata-content" style="margin-top:10px; border-top: 1.5px solid black;">
-            <div class="metadata-item" v-if="organData.Koppel_&_kombinationer_info">
+            <div class="metadata-item" v-if="organData.Koppel_ & _kombinationer_info">
               <div class="short-label">Koppel kombinationer: </div>
-              <div class="tag theme-color-text">{{ organData.Koppel_&_kombinationer_info }} </div>
+              <div class="tag theme-color-text">{{ organData.Koppel_ & _kombinationer_info }} </div>
             </div>
             <div class="metadata-item" v-if="organData.Fasadpipor_info">
               <div class="short-label">Fasadpipor info: </div>
@@ -212,15 +213,15 @@ onMounted(() => {
               <div class="short-label">Typ av huvudbälg: </div>
               <div class="tag theme-color-text">{{ organData.Typ_av_huvudbälg }}</div>
             </div>
-             <div class="metadata-item" v-if="organData.Info_bälgar/luftsystem">
+            <div class="metadata-item" v-if="organData.Info_bälgar / luftsystem">
               <div class="short-label">Info bälgar/luftsystem: </div>
-              <div class="tag theme-color-text">{{ organData.Info_bälgar/luftsystem }}</div>
+              <div class="tag theme-color-text">{{ organData.Info_bälgar / luftsystem }}</div>
             </div>
-             <div class="metadata-item" v-if="organData.Antal_bälgar">
+            <div class="metadata-item" v-if="organData.Antal_bälgar">
               <div class="short-label">Antal bälgar: </div>
               <div class="tag theme-color-text">{{ organData.Antal_bälgar }}</div>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -228,12 +229,17 @@ onMounted(() => {
 </template>
 
 <style scoped>
-.historical-overview-title {
- font-size: 1.5em;
- padding-left:10px;
- padding-top: 20px;
- font-weight:300;
+.placecard-title {
+  padding-left: 10px;
 }
+
+.historical-overview-title {
+  font-size: 1.5em;
+  padding-left: 10px;
+  padding-top: 20px;
+  font-weight: 300;
+}
+
 .historical-overview {
   display: flex;
   flex-direction: column;
@@ -243,30 +249,33 @@ onMounted(() => {
   display: flex;
   align-items: center;
   width: calc(100% + 60px);
-  margin-left:-30px;
-  padding:15px 30px;
+  margin-left: -30px;
+  padding: 15px 30px;
+  cursor: pointer;
 }
 
 .overview-row:hover {
-  background-color:rgb(240,240,240);
+  background-color: rgb(240, 240, 240);
   text-decoration: none;
+  cursor: pointer;
 }
 
 .overview-row a {
   display: flex;
   text-decoration: none;
   color: inherit;
+  cursor: pointer;
 }
 
 .overview-row a:hover {
-
+  cursor: pointer;
   text-decoration: none;
 
 }
 
 .date-column {
 
-width:160px; 
+  width: 160px;
   padding: 10px;
   font-size: 25px;
 }
@@ -304,7 +313,8 @@ width:160px;
   max-width: 300px;
 }
 
-.mini-map img, .no-image-placeholder {
+.mini-map img,
+.no-image-placeholder {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -381,8 +391,8 @@ width:160px;
 
 }
 
-.placecard-full .placecard-text{
-  padding:10px 30px 0px 30px;
+.placecard-full .placecard-text {
+  padding: 10px 30px 0px 30px;
 }
 
 .mini-map {
@@ -394,15 +404,16 @@ width:160px;
   margin-bottom: 0px;
 }
 
-.placecard-metadata-description{
-  font-size:0.9em;
+.placecard-metadata-description {
+  font-size: 0.9em;
 }
 
 /* For small screens */
 @media screen and (max-width: 900px) {
   .placecard-full {
-    margin-top:40px!important;
+    margin-top: 40px !important;
   }
+
   #app .place-meta-container {
     position: relative !important;
     margin-top: 0px !important;
@@ -445,5 +456,4 @@ width:160px;
     padding-left: 0px;
     margin-bottom: 0px !important;
   }
-}
-</style>
+}</style>
