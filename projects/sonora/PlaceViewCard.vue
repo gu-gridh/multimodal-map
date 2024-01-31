@@ -140,11 +140,13 @@ onMounted(() => {
 
         <!-- mini map -->
         <div class="mini-map">
+          
           <img v-if="organData?.Fotografi" :src="organData.Fotografi" alt="Map Image" />
           <div v-else class="no-image-placeholder"></div>
+         
         </div>
+        <div class="placeview-main-title">{{ organData.Plats }}</div>
         <div v-if="organData" class="placecard-text">
-          <div class="placecard-title theme-color-text">{{ organData.Plats }}</div>
           <!-- <div class="placecard-metadata-content" style="">
             <div class="metadata-item" v-if="organData.Verksgrundare">
               <div class="label">Verksgrundare: </div>
@@ -232,6 +234,34 @@ onMounted(() => {
 
 </template>
 <style scoped>
+.placeview-main-title{
+  pointer-events:none;
+  position:relative;
+  z-index:1000;
+  font-size:35px;
+  padding:25px 25px;
+  margin-top:-300px;
+  text-shadow: 0px 0px 50px rgba(0,0,0,0.8);
+  white-space: pre-line;
+  line-height: 0.9;
+  width: 200px;
+  font-weight: 600;
+  letter-spacing: 0.05rem;
+  transition: all 0.5s ease-in-out;
+  color:white;
+  float:left;
+}
+.placecard-text{
+  overflow-y:scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  height:40vh;
+}
+
+.placecard-text::-webkit-scrollbar {
+  width: 0 !important
+}
+
 
 .fog{
 background:linear-gradient(00deg, #ffffff 10%, transparent);;
@@ -253,7 +283,7 @@ pointer-events:none;
 .historical-overview-title {
   font-size: 1.5em;
   padding-left: 10px;
-  padding-top: 20px;
+  padding-top: 0px;
   font-weight: 300;
 }
 
@@ -388,7 +418,7 @@ pointer-events:none;
   box-shadow: -3px 0px 25px rgba(0, 0, 0, 0.3);
   height: calc(100vh - 230px);
   overflow: hidden;
-  overflow-y: auto;
+  overflow-y: hidden;
   margin-bottom: 10px;
   border-radius: 15px !important;
   -ms-overflow-style: none;
@@ -426,6 +456,7 @@ pointer-events:none;
   overflow: hidden;
   background-color: grey;
   margin-bottom: 0px;
+display:block;
 }
 
 .placecard-metadata-description {
