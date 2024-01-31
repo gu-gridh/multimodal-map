@@ -24,11 +24,12 @@ watch(() => route.params.id, async (newId) => {
         const data = await response.json();
 
         documents.value = [];
-        for (let i = 0; i < data.no_docs; i++) {
-        if (data[i.toString()]) {
-            documents.value.push(data[i.toString()]);
+        for (const key in data) {
+          if (data[key].Document) {
+            documents.value.push(data[key]);
+          }
         }
-    }
+    
   } catch (error) {
     console.error("Error fetching data:", error);
   }  }
@@ -43,9 +44,9 @@ onMounted(async () => {
     const data = await response.json();
 
     documents.value = [];
-    for (let i = 0; i < data.no_docs; i++) {
-      if (data[i.toString()]) {
-        documents.value.push(data[i.toString()]);
+    for (const key in data) {
+      if (data[key].Document) {
+        documents.value.push(data[key]);
       }
     }
   } catch (error) {

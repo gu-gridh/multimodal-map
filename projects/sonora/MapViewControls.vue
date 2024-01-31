@@ -171,6 +171,7 @@ watch(years, (newValue) => {
 
 onMounted(async () => {
   await fetchFilters();
+  builderLayerVisible.value = false;
 });
 
 // filter options

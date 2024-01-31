@@ -14,6 +14,17 @@ const organData = ref(null);
 const popupData = ref(null);
 const isPopupVisible = ref(false);
 const mousePosition = ref({ x: 0, y: 0 });
+const processedOrganData = ref([]);
+
+const processOrganData = (data) => {
+  // Filter entries that start with 'work'
+  const filteredData = Object.values(data).filter(item => item.work);
+
+  // Sort entries by date
+  filteredData.sort((a, b) => new Date(a.date.trim()) - new Date(b.date.trim()));
+
+  processedOrganData.value = filteredData;
+};
 
 const fetchOrganData = async () => {
   try {
@@ -21,6 +32,7 @@ const fetchOrganData = async () => {
     if (response.ok) {
       const data = await response.json();
       organData.value = data;
+      processOrganData(data); // Process the data for the table
     } else {
       throw new Error('Failed to fetch organ data');
     }
@@ -59,15 +71,15 @@ const fetchStopInfo = async (stopId) => {
   }
 };
 
-const handleLinkClick = (event) => {
-  if (event.target.tagName === 'A') {
-    event.preventDefault();
-    const url = new URL(event.target.href);
+//when clicking on organs in the historical overview
+const handleLinkClick = (event, itemLink) => {
+  event.preventDefault();
 
-    const newId = url.searchParams.get("id");
-    if (newId) {
-      router.push(`/place/${newId}`);
-    }
+  const url = new URL(itemLink, window.location.href);
+  const newId = url.searchParams.get("id");
+
+  if (newId) {
+    router.push(`/place/${newId}`);
   }
 };
 
@@ -132,7 +144,7 @@ onMounted(() => {
             <div v-else class="no-image-placeholder"></div>
           </div>
         <div v-if="organData" class="placecard-text">
-          <div class="placecard-title theme-color-text">PLACE NAME TEMP</div>
+          <div class="placecard-title theme-color-text">{{ organData.Plats }}</div>
           <div class="placecard-metadata-content" style="">
             <div class="metadata-item" v-if="organData.Verksgrundare">
               <div class="label">Verksgrundare: </div>
@@ -144,10 +156,20 @@ onMounted(() => {
             </div>
           </div>
           <div class="placecard-metadata-content" style="margin-top:10px; border-top: 1.5px solid black;">
-            <span>Historisk översikt:</span>
-          <div class="organ-historic-overview" v-html="organData.Historisk_översikt" @click="handleLinkClick"></div>
-        
+          <span>Historisk översikt:</span>
+          <div class="historical-overview">
+            <div v-for="item in processedOrganData" :key="item.date" class="overview-row">
+              <a href="#" v-if="item.link" @click="handleLinkClick($event, item.link)">
+                <div class="date-column" style="font-weight: 500">{{ item.date }}</div>
+                <div class="info-column">
+                  <div style="font-weight: 600;">{{ item.work }}</div>
+                  <div style="font-weight: 300;">{{ item.builder }}</div>
+                  <div style="font-weight: 300;">{{ item.place }}</div>
+                </div>
+              </a>
+            </div>
           </div>
+        </div>
           <div class="placecard-metadata-content" style="margin-top:10px; border-top: 1.5px solid black;" v-if="organData.Disposition">
             <span>Disposition:</span>
             <div class="organ-historic-overview" v-html="organData.Disposition"  @click="handleDisposition"></div>
@@ -206,8 +228,41 @@ onMounted(() => {
 </template>
 
 <style scoped>
-::v-deep a {
-  color: blue !important;
+.historical-overview {
+  display: flex;
+  flex-direction: column;
+}
+
+.overview-row {
+  display: flex;
+  align-items: center;
+}
+
+.overview-row a {
+  display: flex;
+  width: 100%;
+  text-decoration: none;
+  color: inherit;
+}
+
+.date-column {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-basis: 200px; 
+  padding: 10px;
+  font-size: 25px;
+}
+
+.info-column {
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+  text-decoration: none;
+}
+
+::v-deep a:hover {
+  color: var(--theme-3) !important;
   text-decoration: underline;
 }
 
