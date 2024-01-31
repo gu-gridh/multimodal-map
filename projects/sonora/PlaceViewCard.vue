@@ -231,7 +231,6 @@ onMounted(() => {
   </div>
 
 </template>
-<!-- mask-image: linear-gradient(180deg, #000 -30%, transparent); -->
 <style scoped>
 
 .fog{
