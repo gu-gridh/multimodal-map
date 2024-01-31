@@ -231,6 +231,7 @@ onMounted(() => {
 <style scoped>
 .placecard-title {
   padding-left: 10px;
+  font-size:2.2em;
 }
 
 .historical-overview-title {
@@ -261,7 +262,7 @@ onMounted(() => {
 }
 
 .overview-row a {
-  display: flex;
+ float:left;
   text-decoration: none;
   color: inherit;
   cursor: pointer;
@@ -269,15 +270,21 @@ onMounted(() => {
 
 .overview-row a:hover {
   cursor: pointer;
+  color: inherit;
   text-decoration: none;
 
 }
 
 .date-column {
-
+  float:left;
   width: 160px;
   padding: 10px;
   font-size: 25px;
+}
+@media screen and (max-width: 1400px) {
+  .date-column {
+  width: 120px;
+}
 }
 
 .info-column {
@@ -413,6 +420,22 @@ onMounted(() => {
   .placecard-full {
     margin-top: 40px !important;
   }
+
+  
+
+  .placecard-title{
+    font-size:6em;
+  }
+
+  .date-column {
+  width: 240px;
+  font-size: 40px;
+}
+
+.historical-overview a {
+
+  font-size: 24px;
+}
 
   #app .place-meta-container {
     position: relative !important;
