@@ -472,6 +472,10 @@ display:block;
   .fog{
 display:none;
   }
+
+  .placecard-text{
+  height:auto;
+}
   
 
   .placecard-title{
