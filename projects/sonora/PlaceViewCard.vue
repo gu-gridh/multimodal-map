@@ -156,7 +156,7 @@ onMounted(() => {
             </div>
           </div>
           <div class="placecard-metadata-content" style="margin-top:10px; border-top: 1.5px solid black;">
-          <span>Historisk översikt:</span>
+            <div class="historical-overview-title">Historisk översikt</div>
           <div class="historical-overview">
             <div v-for="item in processedOrganData" :key="item.date" class="overview-row">
               <a href="#" v-if="item.link" @click="handleLinkClick($event, item.link)">
@@ -228,6 +228,12 @@ onMounted(() => {
 </template>
 
 <style scoped>
+.historical-overview-title {
+ font-size: 1.5em;
+ padding-left:10px;
+ padding-top: 20px;
+ font-weight:300;
+}
 .historical-overview {
   display: flex;
   flex-direction: column;
@@ -236,20 +242,31 @@ onMounted(() => {
 .overview-row {
   display: flex;
   align-items: center;
+  width: calc(100% + 60px);
+  margin-left:-30px;
+  padding:15px 30px;
+}
+
+.overview-row:hover {
+  background-color:rgb(240,240,240);
+  text-decoration: none;
 }
 
 .overview-row a {
   display: flex;
-  width: 100%;
   text-decoration: none;
   color: inherit;
 }
 
+.overview-row a:hover {
+
+  text-decoration: none;
+
+}
+
 .date-column {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-basis: 200px; 
+
+width:160px; 
   padding: 10px;
   font-size: 25px;
 }
