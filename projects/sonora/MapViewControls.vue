@@ -112,7 +112,7 @@ const searchResults = ref([]);
 const config = inject<SonoraProject>("config");
 const dianaClient = new DianaClient("sonora"); // Initialize DianaClient
 const sonora = sonoraStore();
-const { selectedBuilderId, noPlaceCount, builderLayerVisible } = storeToRefs(sonora);
+const { selectedBuilderId, noPlaceCount, builderLayerVisible, placeClicked } = storeToRefs(sonora);
 const featureZoom = 16; //value between minZoom and maxZoom when you select a point 
 const allZoom = 5.3; //value to see all of sweden 
 const rangeSliderRef = ref(null);
@@ -261,6 +261,8 @@ const onPlaceClick = (feature) => {
    if (rangeSliderRef.value) {
     rangeSliderRef.value.resetSlider();
   }
+
+  placeClicked.value = true;
 };
 
 const toggleAboutVisibility = async () => {

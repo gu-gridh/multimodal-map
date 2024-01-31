@@ -16,9 +16,9 @@ const imageUrls = ref<string[]>([]);
 const organNumbers = ref({}); //all the organ numbers returned 
 const computedRoute = computed(() => `/place/${currentOrganNumber.value}`); //route for placeview
 
-const { selectedBuilderId, builderLayerVisible } = storeToRefs(sonoraStore());
+const { selectedBuilderId, builderLayerVisible, placeClicked } = storeToRefs(sonoraStore());
 const builderData = ref(null);
-const lastInteraction = ref('none'); // 'none', 'place', or 'builder'
+const lastInteraction = ref('none'); //'none', 'place', or 'builder'
 
 let currentOrganNumber = ref(0); //organ number corresponding to page in openseadragonviewer
 let text = ref(false)
@@ -116,6 +116,14 @@ function deselectPlace() { // Reset interaction states
   lastInteraction.value = 'none';
   builderLayerVisible.value = false;
 }
+
+//deselect builder when a place is clicked in the search results
+watch(() => placeClicked.value, (newValue) => {
+  if (newValue) {
+    deselectPlace();
+    placeClicked.value = false;
+  }
+});
 </script>
 
 <template>
