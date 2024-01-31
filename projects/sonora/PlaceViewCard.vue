@@ -170,6 +170,8 @@ onMounted(() => {
               </div>
             </div>
           </div>
+       
+        
           <!-- <div class="placecard-metadata-content" style="margin-top:10px; border-top: 1.5px solid black;"
             v-if="organData.Disposition">
             <span>Disposition:</span>
@@ -225,10 +227,25 @@ onMounted(() => {
         </div>
       </div>
     </div>
+    <div class="fog" style=""></div>
   </div>
-</template>
 
+</template>
+<!-- mask-image: linear-gradient(180deg, #000 -30%, transparent); -->
 <style scoped>
+
+.fog{
+background:linear-gradient(00deg, #ffffff 10%, transparent);;
+bottom:150px;
+width:calc(100% - 50px);
+height:150px;
+position:relative;
+float:left;
+margin-top:-10px;
+margin-left:50px;
+border-radius:0px 0px 16px 16px;
+pointer-events:none;
+  }
 .placecard-title {
   padding-left: 10px;
   font-size:2.2em;
@@ -244,6 +261,7 @@ onMounted(() => {
 .historical-overview {
   display: flex;
   flex-direction: column;
+  padding-bottom:50px;
 }
 
 .overview-row {
@@ -353,7 +371,7 @@ onMounted(() => {
 }
 
 .place-meta-container {
-  overflow-y: auto;
+  overflow-y: hidden;
   height: calc(100vh - 80px);
   padding-bottom: 30px;
   padding-left: 45px;
@@ -421,6 +439,9 @@ onMounted(() => {
     margin-top: 40px !important;
   }
 
+  .fog{
+display:none;
+  }
   
 
   .placecard-title{
