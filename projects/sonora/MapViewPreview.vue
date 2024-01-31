@@ -43,7 +43,7 @@ watchEffect(async () => {
   if (selectedFeature.value) {
     lastInteraction.value = 'place';
     selectedBuilderId.value = null;
-    const placeId = selectedFeature.value.get("number") ?? selectedFeature.value.get("place_nr");
+    const placeId = selectedFeature.value.get("number") ?? selectedFeature.value.get("place_nr") ?? selectedFeature.value.get("Nr");
     place.value = { id_: placeId };
     try {
       const response = await fetch(`https://orgeldatabas.gu.se/webgoart/goart/place.php?id=${placeId}&lang=sv`);
@@ -120,7 +120,8 @@ function deselectPlace() { // Reset interaction states
 //deselect builder when a place is clicked in the search results
 watch(() => placeClicked.value, (newValue) => {
   if (newValue) {
-    deselectPlace();
+    selectedBuilderId.value = null;
+    builderLayerVisible.value = false;
     placeClicked.value = false;
   }
 });

@@ -108,6 +108,7 @@ const selectedBuildingTypeIndex = ref(0);
 const firstSearchBoxClick = ref(true); // track the first click of the search box
 const searchType = ref('places'); // Default to 'places' 
 const searchQuery = ref('');
+const { selectedFeature } = storeToRefs(mapStore());
 const searchResults = ref([]);
 const config = inject<SonoraProject>("config");
 const dianaClient = new DianaClient("sonora"); // Initialize DianaClient
@@ -130,13 +131,18 @@ const setSearchType = (type: string) => {
 };
 
 const onBuilderClick = (builderId) => {
-          
-    store.updateZoom(allZoom);
-  
+  const geographicCoordinates = [16, 59.3];
+
+  // Transform the geographic coordinates to the map's coordinate system
+  const transformedCoordinates = fromLonLat(geographicCoordinates);
+
+  // Update the map's zoom and center
+  store.updateZoom(allZoom);
+  store.updateCenter(transformedCoordinates);
+
   if (selectedBuilderId.value !== builderId) {
     selectedBuilderId.value = builderId;
   }
-
 };
 
 const filteredPlaces = computed(() => {
@@ -258,9 +264,12 @@ const onPlaceClick = (feature) => {
   selectedBuildingTypeIndex.value = 0;
 
   // Reset the date range to default
-   if (rangeSliderRef.value) {
+  if (rangeSliderRef.value) {
     rangeSliderRef.value.resetSlider();
   }
+
+  feature.get = (key) => feature.properties[key];
+  selectedFeature.value = feature;
 
   placeClicked.value = true;
 };
