@@ -255,7 +255,7 @@ onMounted(() => {
   overflow-y:scroll;
   -ms-overflow-style: none;
   scrollbar-width: none;
-  height:50vh;
+  height:46vh;
 }
 
 .placecard-text::-webkit-scrollbar {
