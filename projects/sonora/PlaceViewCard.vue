@@ -236,11 +236,11 @@ onMounted(() => {
 <style scoped>
 .placeview-main-title{
   pointer-events:none;
-  position:relative;
+  position:absolute;
   z-index:1000;
   font-size:35px;
   padding:25px 25px;
-  margin-top:-300px;
+  top:80px;
   text-shadow: 0px 0px 50px rgba(0,0,0,0.8);
   white-space: pre-line;
   line-height: 0.9;
@@ -255,7 +255,7 @@ onMounted(() => {
   overflow-y:scroll;
   -ms-overflow-style: none;
   scrollbar-width: none;
-  height:40vh;
+  height:50vh;
 }
 
 .placecard-text::-webkit-scrollbar {
@@ -452,7 +452,7 @@ pointer-events:none;
 .mini-map {
   width: 100%;
   height: 35vh;
-  max-height: 300px;
+ 
   overflow: hidden;
   background-color: grey;
   margin-bottom: 0px;
