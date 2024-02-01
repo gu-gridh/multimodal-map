@@ -143,62 +143,68 @@ const handleDisposition = async (event) => {
                     </div>
                   </td>
                 </tr>
-                <tr v-if="organData.Verksgrundare">
-                  <td class="wide-first-td">Verksgrundare:</td>
-                  <td class="tag theme-color-text">{{ organData.Verksgrundare }}</td>
-                </tr>
-                <tr v-if="organData.Tillkomstår">
-                  <td class="wide-first-td">Tillkomstår:</td>
-                  <td class="tag theme-color-text">{{ organData.Tillkomstår }}</td>
-                </tr>
-                <tr v-if="organData.Disposition">
-                  <td class="wide-first-td">Disposition:</td>
-                  <div class="organ-historic-overview" v-html="organData.Disposition" @click="handleDisposition"></div>
-                    <div v-if="isPopupVisible" class="popup" :style="{ left: mousePosition.x + 'px', top: mousePosition.y + 'px' }">
-                      <h3 v-if="popupData?.Verk">Division Info:</h3>
-                      <h3 v-else-if="popupData?.Stämma">Stop Info:</h3>
+                <tr v-if="organData.Verksgrundare || organData.Tillkomstår || organData.Koppel_ & _kombinationer_info || 
+                  organData.Fasadpipor_info || organData.Typ_av_traktursystem || organData.Typ_av_registratursystem || 
+                  organData.Typ_av_huvudbälg || organData.Info_bälgar / luftsystem || organData.Antal_bälgar">
+                  <td class="wide-first-td">Metadata:</td>
+                  <tr v-if="organData.Verksgrundare">
+                    <td class="wide-second-td">Verksgrundare:</td>
+                    <td class="tag theme-color-text">{{ organData.Verksgrundare }}</td>
+                  </tr>
+                  <tr v-if="organData.Tillkomstår">
+                    <td class="wide-second-td">Tillkomstår:</td>
+                    <td class="tag theme-color-text">{{ organData.Tillkomstår }}</td>
+                  </tr>
+                      <tr v-if="organData.Koppel_ & _kombinationer_info">
+                      <td class="wide-second-td">Koppel kombinationer:</td>
+                      <td class="tag theme-color-text">{{ organData.Koppel_ & _kombinationer_info }}</td>
+                    </tr>
+                    <tr v-if="organData.Fasadpipor_info">
+                      <td class="wide-second-td">Fasadpipor info:</td>
+                      <td class="tag theme-color-text">{{ organData.Fasadpipor_info }}</td>
+                    </tr>
+                    <tr v-if="organData.Typ_av_traktursystem">
+                      <td class="wide-second-td">Typ av traktursystem:</td>
+                      <td class="tag theme-color-text">{{  organData.Typ_av_traktursystem }}</td>
+                    </tr>
+                    <tr v-if="organData.Typ_av_registratursystem">
+                      <td class="wide-second-td">Typ av registratursystem:</td>
+                      <td class="tag theme-color-text">{{ organData.Typ_av_registratursystem }}</td>
+                    </tr>
+                    <tr v-if="organData.Typ_av_huvudbälg">
+                      <td class="wide-second-td">Typ av huvudbälg:</td>
+                      <td class="tag theme-color-text">{{ organData.Typ_av_huvudbälg }}</td>
+                    </tr>
+                    <tr v-if="organData.Info_bälgar / luftsystem">
+                      <td class="wide-second-td">Info bälgar/luftsystem:</td>
+                      <td class="tag theme-color-text">{{ organData.Info_bälgar / luftsystem }}</td>
+                    </tr>
+                    <tr v-if="organData.Antal_bälgar">
+                      <td class="wide-second-td">Antal bälgar:</td>
+                      <td class="tag theme-color-text">{{ organData.Antal_bälgar }}</td>
+                    </tr>
+                  </tr>
+                  <tr v-if="organData.Disposition">
+                    <td class="wide-first-td">Disposition:</td>
+                    <td>
+                    <div class="organ-historic-overview" v-html="organData.Disposition" @click="handleDisposition"></div>
+                      <div v-if="isPopupVisible" class="popup" :style="{ left: mousePosition.x + 'px', top: mousePosition.y + 'px' }">
+                        <h3 v-if="popupData?.Verk">Division Info:</h3>
+                        <h3 v-else-if="popupData?.Stämma">Stop Info:</h3>
 
-                      <div v-if="popupData?.Verk">
-                        <p>Verk: {{ popupData.Verk }}</p>
-                        <p>Beskrivning väderlåda: {{ popupData.Beskrivning_väderlåda }}</p>
-                        <p>Lufttryck: {{ popupData.Lufttryck }}</p>
+                        <div v-if="popupData?.Verk">
+                          <p>Verk: {{ popupData.Verk }}</p>
+                          <p>Beskrivning väderlåda: {{ popupData.Beskrivning_väderlåda }}</p>
+                          <p>Lufttryck: {{ popupData.Lufttryck }}</p>
+                        </div>
+
+                        <div v-else-if="popupData?.Stämma">
+                          <p>Stämma: {{ popupData.Stämma }}</p>
+                          <p>Stämma info: {{ popupData.Stämma_info }}</p>
+                        </div>
+                        <button @click="isPopupVisible = false" style="font-weight: bold">Close</button>
                       </div>
-
-                      <div v-else-if="popupData?.Stämma">
-                        <p>Stämma: {{ popupData.Stämma }}</p>
-                        <p>Stämma info: {{ popupData.Stämma_info }}</p>
-                      </div>
-
-                      <button @click="isPopupVisible = false" style="font-weight: bold">Close</button>
-                    </div>
-                  </tr>
-                  <tr v-if="organData.Koppel_ & _kombinationer_info">
-                    <td class="wide-first-td">Koppel kombinationer:</td>
-                    <td class="tag theme-color-text">{{ organData.Koppel_ & _kombinationer_info }}</td>
-                  </tr>
-                  <tr v-if="organData.Fasadpipor_info">
-                    <td class="wide-first-td">Fasadpipor info:</td>
-                    <td class="tag theme-color-text">{{ organData.Fasadpipor_info }}</td>
-                  </tr>
-                  <tr v-if="organData.Typ_av_traktursystem">
-                    <td class="wide-first-td">Typ av traktursystem:</td>
-                    <td class="tag theme-color-text">{{  organData.Typ_av_traktursystem }}</td>
-                  </tr>
-                  <tr v-if="organData.Typ_av_registratursystem">
-                    <td class="wide-first-td">Typ av registratursystem:</td>
-                    <td class="tag theme-color-text">{{ organData.Typ_av_registratursystem }}</td>
-                  </tr>
-                  <tr v-if="organData.Typ_av_huvudbälg">
-                    <td class="wide-first-td">Typ av huvudbälg:</td>
-                    <td class="tag theme-color-text">{{ organData.Typ_av_huvudbälg }}</td>
-                  </tr>
-                  <tr v-if="organData.Info_bälgar / luftsystem">
-                    <td class="wide-first-td">Info bälgar/luftsystem:</td>
-                    <td class="tag theme-color-text">{{ organData.Info_bälgar / luftsystem }}</td>
-                  </tr>
-                  <tr v-if="organData.Antal_bälgar">
-                    <td class="wide-first-td">Antal bälgar:</td>
-                    <td class="tag theme-color-text">{{ organData.Antal_bälgar }}</td>
+                    </td>
                   </tr>
               </tbody>
             </table>
@@ -210,6 +216,11 @@ const handleDisposition = async (event) => {
 
     
 <style scoped>
+.place-view {
+  margin-left: 20px;
+  margin-top: 35px;
+}
+
 .document-icon {
     height: 1.3em; 
     vertical-align: middle; 
@@ -234,7 +245,11 @@ const handleDisposition = async (event) => {
 }
 
 .wide-first-td {
-  max-width: 75px; 
+  max-width: 65px;
+}
+
+.wide-second-td {
+  min-width: 200px !important; 
 }
 
 a {
@@ -264,10 +279,15 @@ a {
   border: 1px solid #ddd;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
   z-index: 1000;
+  color: black;
 }
 
 .popup-content {
   max-width: 300px;
+}
+
+.tag.theme-color-text {
+  width: 100% !important;
 }
 </style>
     
