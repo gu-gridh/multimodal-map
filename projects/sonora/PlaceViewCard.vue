@@ -145,7 +145,7 @@ onMounted(() => {
           <div v-else class="no-image-placeholder"></div>
          
         </div>
-        <div class="placeview-main-title">{{ organData.Plats }}</div>
+        <div class="placeview-main-title">{{ organData?.Plats }}</div>
         <div v-if="organData" class="placecard-text">
           <!-- <div class="placecard-metadata-content" style="">
             <div class="metadata-item" v-if="organData.Verksgrundare">
@@ -264,17 +264,17 @@ onMounted(() => {
 
 
 .fog{
-background:linear-gradient(00deg, #ffffff 10%, transparent);;
-bottom:150px;
-width:calc(100% - 50px);
-height:150px;
-position:relative;
-float:left;
-margin-top:-10px;
-margin-left:50px;
-border-radius:0px 0px 16px 16px;
-pointer-events:none;
-  }
+    background:linear-gradient(00deg, #ffffff 10%, transparent);;
+    bottom:150px;
+    width:calc(100% - 50px);
+    height:150px;
+    position:relative;
+    float:left;
+    margin-top:-10px;
+    margin-left:50px;
+    border-radius:0px 0px 16px 16px;
+    pointer-events:none;
+}
 .placecard-title {
   padding-left: 10px;
   font-size:2.2em;
