@@ -4,6 +4,8 @@ import { ref, inject, onMounted, nextTick } from "vue"
 import markerIcon from "@/assets/marker-red.svg";
 import { watch } from 'vue';
 
+const emit = defineEmits(['link-clicked']);
+
 const props = defineProps<{
   id: string;
 }>();
@@ -37,7 +39,7 @@ const fetchOrganData = async () => {
 };
 
 //when clicking on organs in the historical overview
-const handleLinkClick = (event, itemLink) => {
+const handleLinkClick = (event, itemLink, item) => {
   event.preventDefault();
 
   const url = new URL(itemLink, window.location.href);
@@ -45,6 +47,7 @@ const handleLinkClick = (event, itemLink) => {
 
   if (newId) {
     router.push(`/place/${newId}`);
+    emit('link-clicked', { builder: item.builder, work: item.work });
   }
 };
 
@@ -84,7 +87,7 @@ onMounted(() => {
             <div class="historical-overview-title">Historisk översikt</div>
             <div class="historical-overview">
               <div v-for="item in processedOrganData" :key="item.date" class="overview-row">
-                <a href="#" v-if="item.link" @click="handleLinkClick($event, item.link)">
+                <a href="#" v-if="item.link" @click="handleLinkClick($event, item.link, item)">
                   <div class="date-column" style="font-weight: 500">{{ item.date }}</div>
                   <div class="info-column">
                     <div style="font-weight: 600;">{{ item.work }}</div>

@@ -15,6 +15,8 @@ const popupData = ref(null);
 const isPopupVisible = ref(false);
 const mousePosition = ref({ x: 0, y: 0 });
 
+const linkData = ref({ builder: '', work: '' }); // Selected builder and work from placeviewcard 
+
 const route = useRoute();
 const sort = ref('type');
 const groupedByYear = ref<{ [year: string]: (Image | Observation | Document | Pointcloud | Mesh)[] }>({});
@@ -37,7 +39,6 @@ watch(() => route.params.id, async (newId) => {
           documents.value.push(data[key]);
         }
       }
-
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -53,16 +54,17 @@ onMounted(async () => {
     const data = await response.json();
     organData.value = data;
 
-    documents.value = [];
-    for (const key in data) {
-      if (data[key].Document) {
-        documents.value.push(data[key]);
-      }
+    const lastWorkKey = Object.keys(data).filter(key => data[key].work).pop();
+    if (lastWorkKey) {
+      // Update the linkData with the last work's details from api
+      linkData.value = {
+        builder: data[lastWorkKey].builder,
+        work: data[lastWorkKey].work,
+      };
     }
   } catch (error) {
     console.error("Error fetching data:", error);
   }
-  console.log(documents.value)
 });
 
 const fetchDivisionInfo = async (divId) => {
@@ -122,19 +124,26 @@ const handleDisposition = async (event) => {
   }
 };
 
+const handleLinkClicked = (data) => {
+  linkData.value.builder = data.builder;
+  linkData.value.work = data.work;
+};
 </script>
     
 <template>
   <div class="main-container">
     <div class="place-card-container">
-      <PlaceViewCard :id="id" />
+      <PlaceViewCard :id="id" @link-clicked="handleLinkClicked" />
     </div>
     <div class="place-view">
+      <div class="overview-row">
+          <div style="font-weight: 600;">{{ linkData.work }}</div>
+          <div style="font-weight: 300;">{{ linkData.builder }}</div>
+      </div>
       <div class="place-gallery-container">
         <div class="table-section">
           <table class="content-table" v-if="organData">
             <tbody>
-
               <tr v-if="documents.length > 0">
                 <td class="wide-first-td">Documents:</td>
                 <td>
@@ -321,6 +330,16 @@ a {
 
 .tag.theme-color-text {
   width: 100% !important;
+}
+
+.overview-row {
+  display: flex;
+  flex-direction: column; 
+  align-items: start; 
+  width: 100%; 
+  padding: 15px;
+  font-size: 30px;
+  color: rgb(250,220,220);
 }
 </style>
     
