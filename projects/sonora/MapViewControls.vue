@@ -34,7 +34,7 @@
     :max="YEARS.MAX"
     :step="1"
     class="my-2"
-    :isSliderVisible="isSliderVisible"
+    :isSliderVisible="true"
     :disabled="builderLayerVisible"
   />
 
@@ -184,7 +184,6 @@ async function fetchFilters() {
     const data = await response.json();
     if (data) {
       buildingTypes.value = data.Building;
-      console.log(buildingTypes.value)
     }
   } catch (error) {
     console.error('Error fetching time periods:', error);

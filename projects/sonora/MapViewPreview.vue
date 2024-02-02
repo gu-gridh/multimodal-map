@@ -100,7 +100,6 @@ watch(selectedBuilderId, async (newId) => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       builderData.value = await response.json();
-      console.log(builderData.value);
     } catch (error) {
       console.error('Error fetching builder data:', error);
     }

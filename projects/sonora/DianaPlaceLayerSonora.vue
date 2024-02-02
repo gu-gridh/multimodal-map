@@ -148,6 +148,9 @@ onMounted(() => {
     console.error("Map object is not initialized.");
   }
 });
+watch(selectedFeature, (newValue, oldValue) => {
+  clearPopups();
+}); 
 
 watch(() => props.apiUrl, (newUrl) => {
   if (newUrl) {
@@ -157,6 +160,7 @@ watch(() => props.apiUrl, (newUrl) => {
 
 watch(selectedBuilderId, async (newId) => {
   if (newId) {
+    clearPopups();
     try {
       const response = await fetch(`https://orgeldatabas.gu.se/webgoart/goart/builder.php?id=${newId}&lang=sv`);
       const builderData = await response.json();
