@@ -2,8 +2,8 @@
 import { ref, defineProps, onMounted, inject, computed } from 'vue';
 import type { Image, Observation, Document, Pointcloud, Mesh } from './types';
 import type { DianaClient } from "@/assets/diana";
-import documentIcon from '@/assets/document.svg'; 
-import PlaceViewCard from "./PlaceViewCard.vue"; 
+import documentIcon from '@/assets/document.svg';
+import PlaceViewCard from "./PlaceViewCard.vue";
 import MapComponent from "@/components/MapComponent.vue";
 import { watch } from 'vue';
 import { useRoute } from 'vue-router';
@@ -17,30 +17,31 @@ const mousePosition = ref({ x: 0, y: 0 });
 
 const route = useRoute();
 const sort = ref('type');
-const groupedByYear = ref<{ [year: string]: (Image | Observation | Document | Pointcloud | Mesh )[] }>({});
+const groupedByYear = ref<{ [year: string]: (Image | Observation | Document | Pointcloud | Mesh)[] }>({});
 const { id } = defineProps<{ id: string; }>();
 let documents = ref<Document[]>([]); // Initialized as an empty array
 
 watch(() => route.params.id, async (newId) => {
   if (newId) {
     try {
-    const response = await fetch(`https://orgeldatabas.gu.se/webgoart/goart/organ.php?id=${newId}&lang=sv`);
-    if (!response.ok) {
+      const response = await fetch(`https://orgeldatabas.gu.se/webgoart/goart/organ.php?id=${newId}&lang=sv`);
+      if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        organData.value = data;
+      }
+      const data = await response.json();
+      organData.value = data;
 
-        documents.value = [];
-        for (const key in data) {
-          if (data[key].Document) {
-            documents.value.push(data[key]);
-          }
+      documents.value = [];
+      for (const key in data) {
+        if (data[key].Document) {
+          documents.value.push(data[key]);
         }
-    
-  } catch (error) {
-    console.error("Error fetching data:", error);
-  }  }
+      }
+
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }
 });
 
 onMounted(async () => {
@@ -124,94 +125,111 @@ const handleDisposition = async (event) => {
 </script>
     
 <template>
-    <div class="main-container">
-        <div class="place-card-container">
-            <PlaceViewCard :id="id" />
-        </div>
-        <div class="place-view">
-        <div class="place-gallery-container">
-            <table class="content-table" v-if="organData">  
-              <tbody>
-                <tr v-if="documents.length > 0">
-                  <td class="wide-first-td">Documents:</td>
-                  <td>
-                    <div v-for="(doc, index) in documents" :key="index" class="document-link">
-                      <router-link :to="`/detail/image/${doc.Nr}`">
-                        <img src="@/assets/document-white.svg" class="document-icon" />
-                        {{ doc.Document }}
-                      </router-link>
-                    </div>
-                  </td>
-                </tr>
-                <tr v-if="organData.Verksgrundare || organData.Tillkomstår || organData.Koppel_ & _kombinationer_info || 
-                  organData.Fasadpipor_info || organData.Typ_av_traktursystem || organData.Typ_av_registratursystem || 
-                  organData.Typ_av_huvudbälg || organData.Info_bälgar / luftsystem || organData.Antal_bälgar">
-                  <td class="wide-first-td">Metadata:</td>
-                  <tr v-if="organData.Verksgrundare">
-                    <td class="wide-second-td">Verksgrundare:</td>
-                    <td class="tag theme-color-text">{{ organData.Verksgrundare }}</td>
-                  </tr>
-                  <tr v-if="organData.Tillkomstår">
-                    <td class="wide-second-td">Tillkomstår:</td>
-                    <td class="tag theme-color-text">{{ organData.Tillkomstår }}</td>
-                  </tr>
-                      <tr v-if="organData.Koppel_ & _kombinationer_info">
-                      <td class="wide-second-td">Koppel kombinationer:</td>
-                      <td class="tag theme-color-text">{{ organData.Koppel_ & _kombinationer_info }}</td>
-                    </tr>
-                    <tr v-if="organData.Fasadpipor_info">
-                      <td class="wide-second-td">Fasadpipor info:</td>
-                      <td class="tag theme-color-text">{{ organData.Fasadpipor_info }}</td>
-                    </tr>
-                    <tr v-if="organData.Typ_av_traktursystem">
-                      <td class="wide-second-td">Typ av traktursystem:</td>
-                      <td class="tag theme-color-text">{{  organData.Typ_av_traktursystem }}</td>
-                    </tr>
-                    <tr v-if="organData.Typ_av_registratursystem">
-                      <td class="wide-second-td">Typ av registratursystem:</td>
-                      <td class="tag theme-color-text">{{ organData.Typ_av_registratursystem }}</td>
-                    </tr>
-                    <tr v-if="organData.Typ_av_huvudbälg">
-                      <td class="wide-second-td">Typ av huvudbälg:</td>
-                      <td class="tag theme-color-text">{{ organData.Typ_av_huvudbälg }}</td>
-                    </tr>
-                    <tr v-if="organData.Info_bälgar / luftsystem">
-                      <td class="wide-second-td">Info bälgar/luftsystem:</td>
-                      <td class="tag theme-color-text">{{ organData.Info_bälgar / luftsystem }}</td>
-                    </tr>
-                    <tr v-if="organData.Antal_bälgar">
-                      <td class="wide-second-td">Antal bälgar:</td>
-                      <td class="tag theme-color-text">{{ organData.Antal_bälgar }}</td>
-                    </tr>
-                  </tr>
-                  <tr v-if="organData.Disposition">
-                    <td class="wide-first-td">Disposition:</td>
-                    <td>
-                    <div class="organ-historic-overview" v-html="organData.Disposition" @click="handleDisposition"></div>
-                      <div v-if="isPopupVisible" class="popup" :style="{ left: mousePosition.x + 'px', top: mousePosition.y + 'px' }">
-                        <h3 v-if="popupData?.Verk">Division Info:</h3>
-                        <h3 v-else-if="popupData?.Stämma">Stop Info:</h3>
-
-                        <div v-if="popupData?.Verk">
-                          <p>Verk: {{ popupData.Verk }}</p>
-                          <p>Beskrivning väderlåda: {{ popupData.Beskrivning_väderlåda }}</p>
-                          <p>Lufttryck: {{ popupData.Lufttryck }}</p>
-                        </div>
-
-                        <div v-else-if="popupData?.Stämma">
-                          <p>Stämma: {{ popupData.Stämma }}</p>
-                          <p>Stämma info: {{ popupData.Stämma_info }}</p>
-                        </div>
-                        <button @click="isPopupVisible = false" style="font-weight: bold">Close</button>
-                      </div>
-                    </td>
-                  </tr>
-              </tbody>
-            </table>
-        </div>  
-        </div>
+  <div class="main-container">
+    <div class="place-card-container">
+      <PlaceViewCard :id="id" />
     </div>
-    <MapComponent />
+    <div class="place-view">
+      <div class="place-gallery-container">
+        <div class="table-section">
+          <table class="content-table" v-if="organData">
+            <tbody>
+
+              <tr v-if="documents.length > 0">
+                <td class="wide-first-td">Documents:</td>
+                <td>
+                  <div v-for="(doc, index) in documents" :key="index" class="document-link">
+                    <router-link :to="`/detail/image/${doc.Nr}`">
+                      <img src="@/assets/document-white.svg" class="document-icon" />
+                      {{ doc.Document }}
+                    </router-link>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="table-section">
+          <table class="content-table" v-if="organData">
+            <tbody>
+              <tr v-if="organData.Verksgrundare || organData.Tillkomstår || organData.Koppel_ & _kombinationer_info ||
+                organData.Fasadpipor_info || organData.Typ_av_traktursystem || organData.Typ_av_registratursystem ||
+                organData.Typ_av_huvudbälg || organData.Info_bälgar / luftsystem || organData.Antal_bälgar">
+                <td class="wide-first-td">Metadata:</td>
+              <tr v-if="organData.Verksgrundare">
+                <td class="wide-second-td">Verksgrundare:</td>
+                <td class="tag theme-color-text">{{ organData.Verksgrundare }}</td>
+              </tr>
+              <tr v-if="organData.Tillkomstår">
+                <td class="wide-second-td">Tillkomstår:</td>
+                <td class="tag theme-color-text">{{ organData.Tillkomstår }}</td>
+              </tr>
+              <tr v-if="organData.Koppel_ & _kombinationer_info">
+                <td class="wide-second-td">Koppel kombinationer:</td>
+                <td class="tag theme-color-text">{{ organData.Koppel_ & _kombinationer_info }}</td>
+              </tr>
+              <tr v-if="organData.Fasadpipor_info">
+                <td class="wide-second-td">Fasadpipor info:</td>
+                <td class="tag theme-color-text">{{ organData.Fasadpipor_info }}</td>
+              </tr>
+              <tr v-if="organData.Typ_av_traktursystem">
+                <td class="wide-second-td">Typ av traktursystem:</td>
+                <td class="tag theme-color-text">{{ organData.Typ_av_traktursystem }}</td>
+              </tr>
+              <tr v-if="organData.Typ_av_registratursystem">
+                <td class="wide-second-td">Typ av registratursystem:</td>
+                <td class="tag theme-color-text">{{ organData.Typ_av_registratursystem }}</td>
+              </tr>
+              <tr v-if="organData.Typ_av_huvudbälg">
+                <td class="wide-second-td">Typ av huvudbälg:</td>
+                <td class="tag theme-color-text">{{ organData.Typ_av_huvudbälg }}</td>
+              </tr>
+              <tr v-if="organData.Info_bälgar / luftsystem">
+                <td class="wide-second-td">Info bälgar/luftsystem:</td>
+                <td class="tag theme-color-text">{{ organData.Info_bälgar / luftsystem }}</td>
+              </tr>
+              <tr v-if="organData.Antal_bälgar">
+                <td class="wide-second-td">Antal bälgar:</td>
+                <td class="tag theme-color-text">{{ organData.Antal_bälgar }}</td>
+              </tr>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="table-section">
+          <table class="content-table" v-if="organData">
+
+            <tbody>
+              <tr v-if="organData.Disposition">
+                <td class="wide-first-td">Disposition:</td>
+                <td>
+                  <div class="organ-historic-overview" v-html="organData.Disposition" @click="handleDisposition"></div>
+                  <div v-if="isPopupVisible" class="popup"
+                    :style="{ left: mousePosition.x + 'px', top: mousePosition.y + 'px' }">
+                    <h3 v-if="popupData?.Verk">Division Info:</h3>
+                    <h3 v-else-if="popupData?.Stämma">Stop Info:</h3>
+
+                    <div v-if="popupData?.Verk">
+                      <p>Verk: {{ popupData.Verk }}</p>
+                      <p>Beskrivning väderlåda: {{ popupData.Beskrivning_väderlåda }}</p>
+                      <p>Lufttryck: {{ popupData.Lufttryck }}</p>
+                    </div>
+
+                    <div v-else-if="popupData?.Stämma">
+                      <p>Stämma: {{ popupData.Stämma }}</p>
+                      <p>Stämma info: {{ popupData.Stämma_info }}</p>
+                    </div>
+                    <button @click="isPopupVisible = false" style="font-weight: bold">Close</button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <MapComponent />
 </template>
 
     
@@ -222,34 +240,47 @@ const handleDisposition = async (event) => {
 }
 
 .document-icon {
-    height: 1.3em; 
-    vertical-align: middle; 
-    margin-right: 5px; 
-    display: inline-block; 
+  height: 1.3em;
+  vertical-align: middle;
+  margin-right: 5px;
+  display: inline-block;
 }
 
 .document-link {
-    display: flex;
-    align-items: center; 
-    font-size:1.05em;
-    padding-bottom:5px;
+  display: flex;
+  align-items: left;
+  font-size: 1.05em;
+  padding-bottom: 5px;
 }
 
 .content-table {
-  table-layout: auto;
-  width: 100%;
+
+}
+
+.table-section {
+ padding-bottom:30px;
 }
 
 .tag.theme-color-text {
-  color: rgb(250,220,220) !important;
+  color: rgb(250, 220, 220) !important;
 }
 
+table td {
+        width: 0px !important;
+    }
+
 .wide-first-td {
-  max-width: 65px;
+  width:110px!important;
+  max-width:0px;
 }
 
 .wide-second-td {
-  min-width: 200px !important; 
+  min-width: 180px !important;
+  padding-bottom: 5px;
+}
+
+.organ-historic-overview{
+  text-align:left!important;
 }
 
 a {
@@ -257,19 +288,19 @@ a {
   font-weight: normal;
 }
 
-.main-container{
-    background-color:rgba(84,105,108, 0.7) !important;
-    backdrop-filter: blur(10px) saturate(50%) brightness(100%);
-    color:white;
+.main-container {
+  background-color: rgba(84, 105, 108, 0.7) !important;
+  backdrop-filter: blur(10px) saturate(50%) brightness(100%);
+  color: white;
 }
 
-.content-table td{
-    color:white;
-    text-align: left;
+.content-table td {
+  color: white;
+  text-align: left;
 }
 
-.document-link:hover{
-  opacity:0.8;
+.document-link:hover {
+  opacity: 0.8;
 }
 
 .popup {
