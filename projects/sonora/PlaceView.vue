@@ -281,6 +281,8 @@ table td {
 
 .organ-historic-overview{
   text-align:left!important;
+  margin-left:-60px;
+  margin-top:-28px;
 }
 
 a {
