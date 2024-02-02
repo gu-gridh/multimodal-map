@@ -161,9 +161,9 @@ const handleLinkClicked = (data) => {
         <div class="table-section">
           <table class="content-table" v-if="organData">
             <tbody>
-              <tr v-if="organData.Verksgrundare || organData.Tillkomstår || organData.Koppel_ & _kombinationer_info ||
+              <tr v-if="organData.Verksgrundare || organData.Tillkomstår ||
                 organData.Fasadpipor_info || organData.Typ_av_traktursystem || organData.Typ_av_registratursystem ||
-                organData.Typ_av_huvudbälg || organData.Info_bälgar / luftsystem || organData.Antal_bälgar">
+                organData.Typ_av_huvudbälg || organData.Antal_bälgar">
                 <td class="wide-first-td">Metadata:</td>
               <tr v-if="organData.Verksgrundare">
                 <td class="wide-second-td">Verksgrundare:</td>
@@ -173,10 +173,10 @@ const handleLinkClicked = (data) => {
                 <td class="wide-second-td">Tillkomstår:</td>
                 <td class="tag theme-color-text">{{ organData.Tillkomstår }}</td>
               </tr>
-              <tr v-if="organData.Koppel_ & _kombinationer_info">
+              <!-- <tr v-if="organData.Koppel_ & _kombinationer_info">
                 <td class="wide-second-td">Koppel kombinationer:</td>
                 <td class="tag theme-color-text">{{ organData.Koppel_ & _kombinationer_info }}</td>
-              </tr>
+              </tr> -->
               <tr v-if="organData.Fasadpipor_info">
                 <td class="wide-second-td">Fasadpipor info:</td>
                 <td class="tag theme-color-text">{{ organData.Fasadpipor_info }}</td>
@@ -193,10 +193,10 @@ const handleLinkClicked = (data) => {
                 <td class="wide-second-td">Typ av huvudbälg:</td>
                 <td class="tag theme-color-text">{{ organData.Typ_av_huvudbälg }}</td>
               </tr>
-              <tr v-if="organData.Info_bälgar / luftsystem">
+              <!-- <tr v-if="organData.Info_bälgar / luftsystem">
                 <td class="wide-second-td">Info bälgar/luftsystem:</td>
                 <td class="tag theme-color-text">{{ organData.Info_bälgar / luftsystem }}</td>
-              </tr>
+              </tr> -->
               <tr v-if="organData.Antal_bälgar">
                 <td class="wide-second-td">Antal bälgar:</td>
                 <td class="tag theme-color-text">{{ organData.Antal_bälgar }}</td>
@@ -267,7 +267,7 @@ const handleLinkClicked = (data) => {
 }
 
 .table-section {
- padding-bottom:30px;
+ /* padding-bottom:30px; */
 }
 
 .tag.theme-color-text {

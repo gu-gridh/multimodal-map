@@ -174,10 +174,10 @@ watch(() => placeClicked.value, (newValue) => {
           </div>
           
         </div>
-        <div class="placecard-metadata-content">
+        <!-- <div class="placecard-metadata-content">
             <div class="preview" v-html="description">
             </div>
-          </div>
+          </div> -->
       </div>
       
       <div class="placecard-center-button">
@@ -203,10 +203,10 @@ watch(() => placeClicked.value, (newValue) => {
           </div>
           
         </div>
-        <div class="placecard-metadata-content">
+        <!-- <div class="placecard-metadata-content">
             <div class="preview" v-html="description">
             </div>
-          </div>
+          </div> -->
       </div>
     </div>
   </div>
