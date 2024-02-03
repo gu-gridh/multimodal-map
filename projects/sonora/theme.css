@@ -108,4 +108,13 @@ body {
 #app .right-pane {
 /* z-index: 0 !important; */
 }
+
+.organ-historic-overview a {
+  color: var(--theme-3) !important;
+}
+
+.organ-historic-overview a:hover {
+  color: black!important;
+}
+
 }

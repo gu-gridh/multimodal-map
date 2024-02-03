@@ -110,7 +110,7 @@ onMounted(() => {
   pointer-events:none;
   position:absolute;
   z-index:1000;
-  font-size:35px;
+  font-size:30px;
   padding:25px 25px;
   top:80px;
   text-shadow: 0px 0px 50px rgba(0,0,0,0.8);
@@ -327,6 +327,23 @@ display:block;
   .placecard-full {
     margin-top: 40px !important;
   }
+
+  .placeview-main-title{
+  font-size:30px;
+  padding:25px 25px;
+  top:40px;
+  line-height: 0.9;
+  width: 250px;
+}
+
+.mini-map {
+  width: 100%;
+  height: 50vh;
+  overflow: hidden;
+  background-color: grey;
+  margin-bottom: 0px;
+display:block;
+}
 
   .fog{
 display:none;

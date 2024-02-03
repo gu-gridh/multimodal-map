@@ -294,6 +294,8 @@ table td {
   margin-top:-28px;
 }
 
+
+
 .main-container {
   background-color: rgba(84, 105, 108, 0.7) !important;
   backdrop-filter: blur(10px) saturate(50%) brightness(100%);
@@ -342,5 +344,25 @@ margin-bottom:5px!important;
   font-size: 35px;
   color: var(--theme-6) !important;
 }
+
+@media screen and (max-width: 900px) {
+  .organ-historic-overview{
+  margin-left:0px;
+  margin-top:-35px;
+}
+
+.table-section{
+  font-size:130%;
+}
+
+.tag.theme-color-text {
+  color: var(--theme-3) !important;
+}
+#app .main-container {
+  background-color: rgba(84, 105, 108, 0.7) !important;
+  backdrop-filter: blur(10px) saturate(50%) brightness(100%);
+}
+}
+
 </style>
     
