@@ -245,7 +245,7 @@ const handleLinkClicked = (data) => {
 <style scoped>
 .place-view {
   margin-left: 20px;
-  margin-top: 35px;
+  padding-top: 35px;
 }
 
 .document-icon {
