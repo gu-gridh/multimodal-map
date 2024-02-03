@@ -89,7 +89,7 @@ const downloadImage = (fileUrl: string, fileName: string) => {
 <style scoped>
 
 .data{
-  color:rgb(250,220,220)!important;
+  color: var(--theme-6) !important;
 }
 
 .metadata{

@@ -7,6 +7,7 @@
 	--theme-3: 			rgb(180, 100, 100); /* This is the main accent colour */
   --theme-4: 			rgb(160, 80, 80); /* This is for accent hover */
   --theme-5: 			rgb(140, 60, 60); /* This is for accent lines */
+  --theme-6:      rgb(250,220,220); /* This is for data on theme-1 background */
 }
 
 /* Main */
@@ -86,6 +87,18 @@ body {
   background-color: var(--theme-3) !important;
   color: white;
 }
+
+.organ-historic-overview a {
+  color: var(--theme-6) !important;
+  cursor:pointer!important;
+}
+
+.organ-historic-overview a:hover {
+  color: white!important;
+  cursor:pointer!important;
+  font-size:110%;
+}
+
 
 @media screen and (max-width: 900px) {
   .atlas-gradient {

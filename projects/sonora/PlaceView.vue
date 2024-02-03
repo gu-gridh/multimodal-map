@@ -271,7 +271,7 @@ const handleLinkClicked = (data) => {
 }
 
 .tag.theme-color-text {
-  color: rgb(250, 220, 220) !important;
+  color: var(--theme-6) !important;
 }
 
 table td {
@@ -294,11 +294,6 @@ table td {
   margin-top:-28px;
 }
 
-a {
-  color: white;
-  font-weight: normal;
-}
-
 .main-container {
   background-color: rgba(84, 105, 108, 0.7) !important;
   backdrop-filter: blur(10px) saturate(50%) brightness(100%);
@@ -319,8 +314,7 @@ a {
   background-color: white;
   border-radius:8px;
   padding: 15px 20px;
-
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3);
   z-index: 1000;
   color: black;
   width:300px;
@@ -336,23 +330,17 @@ padding:0px!important;
 margin-bottom:5px!important;
 }
 
-
 .popup-content {
   max-width: 300px;
 }
-
-.tag.theme-color-text {
-  width: 100% !important;
-}
-
 .overview-row {
   display: flex;
   flex-direction: column; 
   align-items: start; 
   width: 100%; 
   padding: 15px;
-  font-size: 30px;
-  color: rgb(250,220,220);
+  font-size: 35px;
+  color: var(--theme-6) !important;
 }
 </style>
     
