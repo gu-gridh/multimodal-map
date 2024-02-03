@@ -116,7 +116,7 @@ onMounted(() => {
   text-shadow: 0px 0px 50px rgba(0,0,0,0.8);
   white-space: pre-line;
   line-height: 0.9;
-  width: 200px;
+  width: 250px;
   font-weight: 600;
   letter-spacing: 0.05rem;
   transition: all 0.5s ease-in-out;
