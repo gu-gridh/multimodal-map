@@ -214,21 +214,21 @@ const handleLinkClicked = (data) => {
                 <td>
                   <div class="organ-historic-overview" v-html="organData.Disposition" @click="handleDisposition"></div>
                   <div v-if="isPopupVisible" class="popup"
-                    :style="{ left: mousePosition.x + 'px', top: mousePosition.y + 'px' }">
-                    <h3 v-if="popupData?.Verk">Division Info:</h3>
-                    <h3 v-else-if="popupData?.Stämma">Stop Info:</h3>
+                    :style="{ left: mousePosition.x +50 + 'px', top: mousePosition.y -100 + 'px' }">
+                    <h3 v-if="popupData?.Verk">Division Info</h3>
+                    <h3 v-else-if="popupData?.Stämma">Stop Info</h3>
 
                     <div v-if="popupData?.Verk">
-                      <p>Verk: {{ popupData.Verk }}</p>
-                      <p>Beskrivning väderlåda: {{ popupData.Beskrivning_väderlåda }}</p>
-                      <p>Lufttryck: {{ popupData.Lufttryck }}</p>
+                      <p><b>Verk:</b> {{ popupData.Verk }}</p>
+                      <p><b>Beskrivning väderlåda:</b> {{ popupData.Beskrivning_väderlåda }}</p>
+                      <p><b>Lufttryck:</b> {{ popupData.Lufttryck }}</p>
                     </div>
 
                     <div v-else-if="popupData?.Stämma">
-                      <p>Stämma: {{ popupData.Stämma }}</p>
-                      <p>Stämma info: {{ popupData.Stämma_info }}</p>
+                      <p><b>Stämma:</b> {{ popupData.Stämma }}</p>
+                      <p><b>Stämma info:</b> {{ popupData.Stämma_info }}</p>
                     </div>
-                    <button @click="isPopupVisible = false" style="font-weight: bold">Close</button>
+                    <button @click="isPopupVisible = false" class="theme-color-text" style="font-weight: bold">Close</button>
                   </div>
                 </td>
               </tr>
@@ -267,7 +267,7 @@ const handleLinkClicked = (data) => {
 }
 
 .table-section {
- /* padding-bottom:30px; */
+ padding-bottom:30px;
 }
 
 .tag.theme-color-text {
@@ -317,12 +317,25 @@ a {
 .popup {
   position: fixed;
   background-color: white;
-  padding: 20px;
-  border: 1px solid #ddd;
+  border-radius:8px;
+  padding: 15px 20px;
+
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
   z-index: 1000;
   color: black;
+  width:300px;
 }
+
+.popup h3 {
+font-weight:600;
+font-size:1.3em;
+}
+
+.popup p{
+padding:0px!important;
+margin-bottom:5px!important;
+}
+
 
 .popup-content {
   max-width: 300px;
