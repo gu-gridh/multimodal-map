@@ -146,14 +146,14 @@ const handleLinkClicked = (data) => {
             <tbody>
               <tr v-if="documents.length > 0">
                 <td class="wide-first-td">Documents</td>
-                <td>
+                
                   <div v-for="(doc, index) in documents" :key="index" class="document-link">
                     <router-link :to="`/detail/image/${doc.Nr}`">
                       <img src="@/assets/document-white.svg" class="document-icon" />
                       {{ doc.Document }}
                     </router-link>
                   </div>
-                </td>
+           
               </tr>
             </tbody>
           </table>
@@ -249,7 +249,8 @@ const handleLinkClicked = (data) => {
 .document-icon {
   height: 1.3em;
   vertical-align: middle;
-  margin-right: 5px;
+  margin-right: 8px;
+  margin-top:-6px;
   display: inline-block;
 }
 
@@ -258,6 +259,15 @@ const handleLinkClicked = (data) => {
   align-items: left;
   font-size: 1.05em;
   padding-bottom: 5px;
+  color:white;
+  font-weight:100!important;
+  line-height:1.5;
+}
+
+.document-link a {
+
+  font-weight:300!important;
+
 }
 
 .content-table {
