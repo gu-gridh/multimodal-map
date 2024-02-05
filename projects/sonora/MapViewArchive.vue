@@ -28,11 +28,11 @@
              v-model="searchQuery"
              @input="fetchSearchResults" />
       <div class="archive-search-results">
-        <router-link v-for="doc in searchResults" 
+        <router-link v-for="doc in filteredSearchResults" 
               :key="doc.Dokument_nr" 
               :to="`/detail/image/${doc.Dokument_nr}`" 
               class="search-result-item">
-          {{ doc.Titel }}
+                {{ doc.Titel }}
         </router-link>
       </div>
     </div>
@@ -41,7 +41,7 @@
 
 <script lang="ts" setup>
 
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted, watch, computed } from 'vue';
 import _debounce from 'lodash/debounce';
 
 const searchQuery = ref('');
@@ -55,11 +55,14 @@ const filters = ref({});
 const series = ref({});
 const volumes = ref({});
 
-const fetchSearchResults = async () => {
+//remove the non docs from the search results
+const filteredSearchResults = computed(() => {
+  return searchResults.value.filter(doc => doc.hasOwnProperty('Dokument_nr'));
+});
 
+const fetchSearchResults = async () => {
   // Construct the base request URL
   const requestUrl = `https://orgeldatabas.gu.se/webgoart/goart/searchdoc.php?seastr=${encodeURIComponent(searchQuery.value)}&archive=${encodeURIComponent(selectedArchive.value)}&series=${encodeURIComponent(selectedSeries.value)}&volume=${encodeURIComponent(selectedVolume.value)}&lang=sv`;
-  
   try {
     const response = await fetch(requestUrl);
     if (!response.ok) {
@@ -67,44 +70,45 @@ const fetchSearchResults = async () => {
     }
     const data = await response.json();
 
-    if (Array.isArray(data) && data.length === 0) {
+    // Filter out the results to only include those with a "Dokument_nr"
+    const filteredResults = Object.values(data).filter(doc => doc.hasOwnProperty('Dokument_nr'));
+
+    if (Array.isArray(filteredResults) && filteredResults.length === 0) {
       // No data returned, reset series and volumes
       series.value = {'0': 'All Series'};
       volumes.value = {'0': 'All Volumes'};
-    } else if (data && typeof data === 'object') {
+      searchResults.value = [];
+    } else {
+        // Update series if the response is for an archive selection
+        if (selectedSeries.value === '0' || Object.keys(data).some(key => data[key].hasOwnProperty('dropdownseries'))) {
+          const newSeries = {'0': 'All Series'};
+          Object.entries(data).forEach(([id, { dropdownseries }]) => {
+            if (dropdownseries) newSeries[dropdownseries] = dropdownseries;
+          });
+          series.value = newSeries;
+        }
 
-      // Update series if the response is for an archive selection
-      if (selectedSeries.value === '0' || Object.keys(data).some(key => data[key].hasOwnProperty('dropdownseries'))) {
-        const newSeries = {'0': 'All Series'};
-        Object.entries(data).forEach(([id, { dropdownseries }]) => {
-          if (dropdownseries) newSeries[dropdownseries] = dropdownseries;
-        });
-        series.value = newSeries;
+        // Update volumes if the response is for a series selection
+        if (selectedSeries.value !== '0' && Object.keys(data).some(key => data[key].hasOwnProperty('dropdownvolume'))) {
+          const newVolumes = {'0': 'All Volumes'};
+          Object.entries(data).forEach(([id, { dropdownvolume }]) => {
+            if (dropdownvolume) newVolumes[dropdownvolume] = dropdownvolume;
+          });
+          volumes.value = newVolumes;
+        }
       }
-
-      // Update volumes if the response is for a series selection
-      if (selectedSeries.value !== '0' && Object.keys(data).some(key => data[key].hasOwnProperty('dropdownvolume'))) {
-        const newVolumes = {'0': 'All Volumes'};
-        Object.entries(data).forEach(([id, { dropdownvolume }]) => {
-          if (dropdownvolume) newVolumes[dropdownvolume] = dropdownvolume;
-        });
-        volumes.value = newVolumes;
-      }
+      searchResults.value = Object.values(data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
     }
-
-    searchResults.value = Object.values(data);
-  } catch (error) {
-    console.error('Error fetching data:', error);
-    // Reset series and volumes if fetch fails
-    series.value = {'0': 'All Series'};
-    volumes.value = {'0': 'All Volumes'};
-  }
 };
 
 watch(selectedArchive, () => {
   selectedSeries.value = '0';
-  selectedVolume.value = '0';
-  fetchSearchResults();
+  selectedVolume.value = '0'; 
+  series.value = {'0': 'All Series'}; 
+  volumes.value = {'0': 'All Volumes'}; 
+  fetchSearchResults(); 
 });
 
 watch(selectedSeries, () => {
@@ -210,7 +214,7 @@ onMounted(async () => {
   border-radius:0px 0px 8px 8px;
   margin-top:-4px;
   z-index: 1000;
-  max-height: calc(100vh - 285px);
+  max-height: calc(90vh - 285px);
   overflow-y: auto;
 }
 
