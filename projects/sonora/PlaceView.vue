@@ -145,7 +145,7 @@ const handleLinkClicked = (data) => {
           <table class="content-table" v-if="organData">
             <tbody>
               <tr v-if="documents.length > 0">
-                <td class="wide-first-td">Documents:</td>
+                <td class="wide-first-td">Documents</td>
                 <td>
                   <div v-for="(doc, index) in documents" :key="index" class="document-link">
                     <router-link :to="`/detail/image/${doc.Nr}`">
@@ -164,7 +164,7 @@ const handleLinkClicked = (data) => {
               <tr v-if="organData.Verksgrundare || organData.Tillkomstår ||
                 organData.Fasadpipor_info || organData.Typ_av_traktursystem || organData.Typ_av_registratursystem ||
                 organData.Typ_av_huvudbälg || organData.Antal_bälgar">
-                <td class="wide-first-td">Metadata:</td>
+                <td class="wide-first-td">Metadata</td>
               <tr v-if="organData.Verksgrundare">
                 <td class="wide-second-td">Verksgrundare:</td>
                 <td class="tag theme-color-text">{{ organData.Verksgrundare }}</td>
@@ -210,8 +210,7 @@ const handleLinkClicked = (data) => {
 
             <tbody>
               <tr v-if="organData.Disposition">
-                <td class="wide-first-td">Disposition:</td>
-                <td>
+                <td class="wide-first-td">Disposition</td>
                   <div class="organ-historic-overview" v-html="organData.Disposition" @click="handleDisposition"></div>
                   <div v-if="isPopupVisible" class="popup"
                     :style="{ left: mousePosition.x +50 + 'px', top: mousePosition.y -100 + 'px' }">
@@ -230,7 +229,6 @@ const handleLinkClicked = (data) => {
                     </div>
                     <button @click="isPopupVisible = false" class="theme-color-text" style="font-weight: bold">Close</button>
                   </div>
-                </td>
               </tr>
             </tbody>
           </table>
@@ -272,15 +270,17 @@ const handleLinkClicked = (data) => {
 
 .tag.theme-color-text {
   color: var(--theme-6) !important;
+  width:auto!important;
 }
 
 table td {
         width: 0px !important;
+        
     }
 
 .wide-first-td {
-  width:110px!important;
-  max-width:0px;
+  width:130px!important;
+
 }
 
 .wide-second-td {
@@ -289,9 +289,9 @@ table td {
 }
 
 .organ-historic-overview{
-  text-align:left!important;
   margin-left:-60px;
   margin-top:-28px;
+  color:white;
 }
 
 
