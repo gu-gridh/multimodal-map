@@ -43,7 +43,7 @@ watch(() => route.params.id, async (newId) => {
       console.error("Error fetching data:", error);
     }
   }
-});
+}, {immediate: true});
 
 onMounted(async () => {
   try {

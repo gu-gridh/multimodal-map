@@ -1,29 +1,40 @@
 <template>
   <div class="map-view-archive-overlay">
-     <div class="filters-container">
-      <div v-for="(options, category) in filters" :key="category" class="filter-dropdown">
-        <select :id="category" v-model="selectedFilters[category]" class="">
-          <option disabled value="">{{ category }}</option>
-          <option v-for="(label, value) in options" :key="value" :value="value">
-            {{ label }}
-          </option>
-        </select>
-      </div>
+    <div class="filters-container">
+      <select v-model="selectedArchive">
+        <option value="0">All Archives</option>
+        <option v-for="(option, id) in filters.Archive" :key="id" :value="id">
+          {{ option }}
+        </option>
+      </select>
+      <select v-model="selectedSeries">
+        <option value="0">All Series</option>
+        <option v-for="(label, value) in series" :key="value" :value="value">
+          {{ label }}
+        </option>
+      </select>
+      <select v-model="selectedVolume">
+        <option value="0">All Volumes</option>
+        <option v-for="(label, id) in volumes" :key="id" :value="id">
+          {{ label }}
+        </option>
+      </select>
     </div>
-      <div class="archive-content">
+
+    <div class="archive-content">
       <input type="text" 
-            placeholder="Search in Archive" 
-            class="archive-search-box"
-            v-model="searchQuery"
-            @input="handleSearch" />
-        <div class="archive-search-results">
-          <router-link v-for="doc in searchResults" 
-                      :key="doc.Dokument_nr" 
-                      :to="`/detail/image/${doc.Dokument_nr}`" 
-                      class="search-result-item">
-            {{ doc.Titel }}
-          </router-link>
-        </div>
+             placeholder="Search in Archive" 
+             class="archive-search-box"
+             v-model="searchQuery"
+             @input="fetchSearchResults" />
+      <div class="archive-search-results">
+        <router-link v-for="doc in searchResults" 
+              :key="doc.Dokument_nr" 
+              :to="`/detail/image/${doc.Dokument_nr}`" 
+              class="search-result-item">
+          {{ doc.Titel }}
+        </router-link>
+      </div>
     </div>
   </div>
 </template>
@@ -36,28 +47,72 @@ import _debounce from 'lodash/debounce';
 const searchQuery = ref('');
 const searchResults = ref([]);
 
-const filters = ref({});
-const selectedFilters = ref({});
+const selectedArchive = ref('0');
+const selectedSeries = ref('0');
+const selectedVolume = ref('0'); 
 
-const fetchSearchResults = _debounce(async () => {
+const filters = ref({});
+const series = ref({});
+const volumes = ref({});
+
+const fetchSearchResults = async () => {
+
+  // Construct the base request URL
+  const requestUrl = `https://orgeldatabas.gu.se/webgoart/goart/searchdoc.php?seastr=${encodeURIComponent(searchQuery.value)}&archive=${encodeURIComponent(selectedArchive.value)}&series=${encodeURIComponent(selectedSeries.value)}&volume=${encodeURIComponent(selectedVolume.value)}&lang=sv`;
+  
   try {
-    const response = await fetch(`https://orgeldatabas.gu.se/webgoart/goart/searchdoc.php?seastr=${encodeURIComponent(searchQuery.value)}&archive=48&lang=sv`);
+    const response = await fetch(requestUrl);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const data = await response.json();
+
+    if (Array.isArray(data) && data.length === 0) {
+      // No data returned, reset series and volumes
+      series.value = {'0': 'All Series'};
+      volumes.value = {'0': 'All Volumes'};
+    } else if (data && typeof data === 'object') {
+
+      // Update series if the response is for an archive selection
+      if (selectedSeries.value === '0' || Object.keys(data).some(key => data[key].hasOwnProperty('dropdownseries'))) {
+        const newSeries = {'0': 'All Series'};
+        Object.entries(data).forEach(([id, { dropdownseries }]) => {
+          if (dropdownseries) newSeries[dropdownseries] = dropdownseries;
+        });
+        series.value = newSeries;
+      }
+
+      // Update volumes if the response is for a series selection
+      if (selectedSeries.value !== '0' && Object.keys(data).some(key => data[key].hasOwnProperty('dropdownvolume'))) {
+        const newVolumes = {'0': 'All Volumes'};
+        Object.entries(data).forEach(([id, { dropdownvolume }]) => {
+          if (dropdownvolume) newVolumes[dropdownvolume] = dropdownvolume;
+        });
+        volumes.value = newVolumes;
+      }
+    }
+
     searchResults.value = Object.values(data);
   } catch (error) {
-    console.error('Error fetching search results:', error);
-    searchResults.value = [];
+    console.error('Error fetching data:', error);
+    // Reset series and volumes if fetch fails
+    series.value = {'0': 'All Series'};
+    volumes.value = {'0': 'All Volumes'};
   }
-}, 500);
+};
 
-watch(searchQuery, (newValue, oldValue) => {
-  if (newValue !== oldValue) {
-    fetchSearchResults();
-  }
+watch(selectedArchive, () => {
+  selectedSeries.value = '0';
+  selectedVolume.value = '0';
+  fetchSearchResults();
 });
+
+watch(selectedSeries, () => {
+  selectedVolume.value = '0'; 
+  fetchSearchResults();
+});
+
+watch([searchQuery, selectedArchive, selectedVolume], fetchSearchResults, { deep: true });
 
 onMounted(async () => {
   try {
@@ -66,21 +121,12 @@ onMounted(async () => {
       throw new Error('Network response was not ok');
     }
     const data = await response.json();
-    // Assign only the "Archive" part of the response to filters
-    if (data.Archive) {
-      filters.value = { "Archive": data.Archive };
-    }
-    initializeSelectedFilters();
+    filters.value = { "Archive": data.Archive };
   } catch (error) {
     console.error('Error fetching filters:', error);
   }
 });
 
-function initializeSelectedFilters() {
-  if (filters.value.Archive) {
-    selectedFilters.value["Archive"] = '';
-  }
-}
 </script>
 
 <style>
