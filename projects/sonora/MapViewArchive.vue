@@ -75,13 +75,13 @@ const fetchSearchResults = async () => {
 
     if (Array.isArray(filteredResults) && filteredResults.length === 0) {
       // No data returned, reset series and volumes
-      series.value = {'0': 'All Series'};
-      volumes.value = {'0': 'All Volumes'};
+      series.value = {};
+      volumes.value = {};
       searchResults.value = [];
     } else {
         // Update series if the response is for an archive selection
         if (selectedSeries.value === '0' || Object.keys(data).some(key => data[key].hasOwnProperty('dropdownseries'))) {
-          const newSeries = {'0': 'All Series'};
+          const newSeries = {};
           Object.entries(data).forEach(([id, { dropdownseries }]) => {
             if (dropdownseries) newSeries[dropdownseries] = dropdownseries;
           });
@@ -90,7 +90,7 @@ const fetchSearchResults = async () => {
 
         // Update volumes if the response is for a series selection
         if (selectedSeries.value !== '0' && Object.keys(data).some(key => data[key].hasOwnProperty('dropdownvolume'))) {
-          const newVolumes = {'0': 'All Volumes'};
+          const newVolumes = {};
           Object.entries(data).forEach(([id, { dropdownvolume }]) => {
             if (dropdownvolume) newVolumes[dropdownvolume] = dropdownvolume;
           });
@@ -112,7 +112,8 @@ watch(selectedArchive, () => {
 });
 
 watch(selectedSeries, () => {
-  selectedVolume.value = '0'; 
+  selectedVolume.value = '0';
+  volumes.value = {'0': 'All Volumes'}; 
   fetchSearchResults();
 });
 
