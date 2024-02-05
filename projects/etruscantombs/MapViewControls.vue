@@ -154,16 +154,14 @@ const NECROPOLICoordinates = ref<Record<string, [number, number]>>({});
 async function fetchDataAndPopulateRef<T>(type: string, refToPopulate: any) {
   try {
     const data = await dianaClient.listAll<T>(type);
-    var i = 1;
     data.forEach((result: any) => {
       if (result.published) {
-        refToPopulate.value[i] = result.text;
+        refToPopulate.value[result.id] = result.text;
 
         // If the type is necropolis, store its coordinates
         if (type === "necropolis" && result.geometry && result.geometry.coordinates) {
-          NECROPOLICoordinates.value[i] = result.geometry.coordinates;
+          NECROPOLICoordinates.value[result.id] = result.geometry.coordinates;
         }
-        i++;
       }
     });
   } catch (error) {
