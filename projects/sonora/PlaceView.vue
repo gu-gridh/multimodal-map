@@ -137,8 +137,8 @@ const handleLinkClicked = (data) => {
     </div>
     <div class="place-view">
       <div class="overview-row">
-          <div style="font-weight: 600;">{{ linkData.work }}</div>
-          <div style="font-weight: 300;">{{ linkData.builder }}</div>
+          <div class="title-event" style="font-weight: 600;">{{ linkData.work }}</div>
+          <div  class="title-builder" style="font-weight: 300;">{{ linkData.builder }}</div>
       </div>
       <div class="place-gallery-container">
         <div class="table-section">
@@ -246,6 +246,24 @@ const handleLinkClicked = (data) => {
   padding-top: 35px;
 }
 
+.overview-row {
+  display: flex;
+  flex-direction: column; 
+  align-items: start; 
+  width: 100%; 
+  font-size: 35px;
+}
+
+.title-event{
+color:white;
+padding-top:40px;
+line-height:1.0;
+}
+.title-builder{
+color:white;
+}
+
+
 .document-icon {
   height: 1.3em;
   vertical-align: middle;
@@ -345,15 +363,7 @@ margin-bottom:5px!important;
 .popup-content {
   max-width: 300px;
 }
-.overview-row {
-  display: flex;
-  flex-direction: column; 
-  align-items: start; 
-  width: 100%; 
-  padding: 15px;
-  font-size: 35px;
-  color: var(--theme-6) !important;
-}
+
 
 @media screen and (max-width: 900px) {
   .organ-historic-overview{

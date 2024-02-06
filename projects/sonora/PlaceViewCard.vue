@@ -162,7 +162,7 @@ onMounted(() => {
 .historical-overview {
   display: flex;
   flex-direction: column;
-  padding-bottom:50px;
+  padding-bottom:100px;
 }
 
 .overview-row {
