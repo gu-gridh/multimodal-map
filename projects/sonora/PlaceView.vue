@@ -250,6 +250,7 @@ const handleLinkClicked = (data) => {
   flex-direction: column; 
   align-items: start; 
   width: 100%; 
+  padding-left:15px;
 
 }
 
