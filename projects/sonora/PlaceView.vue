@@ -309,6 +309,8 @@ table td {
 
 .wide-first-td {
   width:130px!important;
+text-align:right!important;
+padding-right:45px;
 
 }
 
