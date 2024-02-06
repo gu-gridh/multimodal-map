@@ -1,19 +1,19 @@
 <template>
   <div class="map-view-archive-overlay">
     <div class="filters-container">
-      <select v-model="selectedArchive">
-        <option value="0">All Archives</option>
+      <select class="dropdown theme-color-background my-2" v-model="selectedArchive">
+        <option  value="0">All Archives</option>
         <option v-for="(option, id) in filters.Archive" :key="id" :value="id">
           {{ option }}
         </option>
       </select>
-      <select v-model="selectedSeries">
+      <select class="dropdown theme-color-background my-2" v-model="selectedSeries">
         <option value="0">All Series</option>
         <option v-for="(label, value) in series" :key="value" :value="value">
           {{ label }}
         </option>
       </select>
-      <select v-model="selectedVolume">
+      <select class="dropdown theme-color-background my-2" v-model="selectedVolume">
         <option value="0">All Volumes</option>
         <option v-for="(label, id) in volumes" :key="id" :value="id">
           {{ label }}
@@ -135,6 +135,9 @@ onMounted(async () => {
 </script>
 
 <style>
+.archive-menu{
+  padding:20px;
+}
 .filters-container select {
   border-radius: 4px;
 }
