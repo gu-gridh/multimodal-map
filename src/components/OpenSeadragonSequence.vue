@@ -19,6 +19,7 @@ onMounted(() => {
     immediateRender: false,
     visibilityRatio: 1.0,
     minZoomImageRatio: 0.5,
+    maxZoomPixelRatio: 4,
     homeFillsViewer: true,
     showZoomControl: true,
     showHomeControl: false,
