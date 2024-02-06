@@ -211,8 +211,8 @@ const fetchPlaces = _debounce(async (query) => {
   if (searchType.value === 'places') {
     // If query is empty, fetch all places
     apiUrl = query
-      ? `https://orgeldatabas.gu.se/webgoart/goart/searchpl.php?seastr=${encodeURIComponent(query)}&btype=1&year1=1700&year2=1820&lang=sv`
-      : 'https://orgeldatabas.gu.se/webgoart/goart/searchpl.php?seastr=&btype=1&year1=1700&year2=1820&lang=sv';
+      ? `https://orgeldatabas.gu.se/webgoart/goart/searchpl.php?seastr=${encodeURIComponent(query)}&btype=0&year1=1500&year2=1899&lang=sv`
+      : 'https://orgeldatabas.gu.se/webgoart/goart/searchpl.php?seastr=&btype=0&year1=1500&year2=1899&lang=sv';
   }
 
   try {
