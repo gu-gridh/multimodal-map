@@ -2,7 +2,6 @@
 import { ref, defineProps, onMounted, inject, computed } from 'vue';
 import type { Image, Observation, Document, Pointcloud, Mesh } from './types';
 import type { DianaClient } from "@/assets/diana";
-import documentIcon from '@/assets/document.svg';
 import PlaceViewCard from "./PlaceViewCard.vue";
 import MapComponent from "@/components/MapComponent.vue";
 import { watch } from 'vue';

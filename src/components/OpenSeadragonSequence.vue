@@ -71,7 +71,7 @@ onMounted(() => {
         <div id="Prev" class="NavButton"></div>
       </a>
 
-      <span id="currentpage">{{ currentPage }} / {{ src.length }}</span>
+      <span id="currentpage">{{ currentPage }} / {{ src ? src.length : 0 }}</span>
        
       <a id="next-button">
         <div id="Next" class="NavButton"></div>
