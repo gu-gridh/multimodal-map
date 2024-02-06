@@ -2,7 +2,7 @@ import { createI18n } from 'vue-i18n';
 
 const messages = {
     en: {
-      etruscantitle: "Etruscan \n Chamber \n Tombs",
+      sonoratitle: "Sonora",
       etruscanabout: "The portal is published by GRIDH at the university of Gothenburg in close collaboration with the Swedish Institute in Rome.",
       documentation: "Documentation by category",
       timeperiod: "Time period",
@@ -15,7 +15,7 @@ const messages = {
       map: "map",
       gallery: "gallery",
       infobutton: "About the portal",
-      languagebutton: "In Italiano",
+      languagebutton: "In Swedish",
       moreinfo: "More Info",
       threedmodel: "3D Model",
       threedmodels: "3D models",
@@ -47,7 +47,7 @@ const messages = {
     },
 
     it: {
-      etruscantitle: "Tombe \n Etrusche \n A Camera",
+      sonoratitle: "Sonora",
       etruscanabout: "Il portale è pubblicato da GRIDH presso l'Università di Göteborg, in collaborazione con l'Istituto Svedese di Studi Classici a Roma.",
       documentation: "Documentazione per categoria",
       timeperiod: "Periodo",

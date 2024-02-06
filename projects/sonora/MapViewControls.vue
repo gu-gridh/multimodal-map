@@ -38,51 +38,50 @@
     :disabled="builderLayerVisible"
   />
 
-  <!-- Data Section -->
-  <!-- <div class="data-widget">
-    <div class="data-widget-section">
-      <div class="data-widget-item">
-        <h3>Visade orglar:</h3>
-        <p>{{ noPlaceCount }}</p>
-      </div>
-    </div>
-  </div> -->
-
   <div class="toggle-buttons" style="margin-top: 20px">
     <button style="float:left; border-radius:4px 0px 0px 0px" :class="{ active: searchType === 'places' }" @click="setSearchType('places')">Places</button>
     <button style="border-radius:0px 4px 0px 0px" :class="{ active: searchType === 'builders' }" @click="setSearchType('builders')">Builders</button>
   </div>
-  <div class="search-section" style="padding-bottom: 120px;">
-    <input
-      type="text"
-      v-model="searchQuery"
-      @input="handleSearch"
-      @focus="handleSearchBoxFocus"
-      :placeholder="searchType === 'places' ? 'Search Places...' : 'Search Builders...'"
-      class="search-box"
-    />
-    <div class="search-results">
-      <!-- Rendering for 'places' -->
-      <template v-if="searchType === 'places'">
-        <div v-for="feature in filteredPlaces" 
-            :key="feature.properties ? feature.properties.Nr : 'no-place'" 
-            class="search-result-item"
-            @click="onPlaceClick(feature)">
-          {{ feature.properties.Building }}
-        </div>
-      </template>
+    <div class="search-section">
+      <input
+        type="text"
+        v-model="searchQuery"
+        @input="handleSearch"
+        @focus="handleSearchBoxFocus"
+        :placeholder="searchType === 'places' ? 'Search Places...' : 'Search Builders...'"
+        class="search-box"
+      />
+      <div class="search-results">
+        <!-- Rendering for 'places' -->
+        <template v-if="searchType === 'places'">
+          <div v-for="feature in filteredPlaces" 
+              :key="feature.properties ? feature.properties.Nr : 'no-place'" 
+              class="search-result-item"
+              @click="onPlaceClick(feature)">
+            {{ feature.properties.Building }}
+          </div>
+        </template>
 
-      <!-- Rendering for 'builders' -->
-      <template v-else-if="searchType === 'builders'">
-      <div v-for="(builder, index) in objectToArray(searchResults)" 
-          :key="index" 
-          class="search-result-item"
-          @click="onBuilderClick(builder.Id)">
-        {{ builder.Builder }}
+        <!-- Rendering for 'builders' -->
+        <template v-else-if="searchType === 'builders'">
+        <div v-for="(builder, index) in objectToArray(searchResults)" 
+            :key="index" 
+            class="search-result-item"
+            @click="onBuilderClick(builder.Id)">
+          {{ builder.Builder }}
+        </div>
+        </template>
       </div>
-      </template>
     </div>
-  </div>
+      <!-- Data Section -->
+    <div class="data-widget-counter">
+      <div class="data-widget-section">
+        <div class="data-widget-item">
+          <h3>Visade orglar:</h3>
+          <p>{{ noPlaceCount }}</p>
+        </div>
+      </div>
+    </div>
 </template>
 
 <script setup lang="ts">
@@ -339,27 +338,13 @@ const toggleAboutVisibility = async () => {
   border-radius: 0px 4px 4px;
   overflow:hidden;
   background-color:rgba(255,255,255,0.6);
-  focus:none;
+  /* focus:none; */
 }
 .search-box:focus {
   outline: none;
 }
 
 .search-results {
-  position: absolute;
-  width: 100%;
-  background-color:rgba(255,255,255,1.0);
-  border: 0px solid #ccc;
-  border-top: none;
-  border-radius:0px 0px 8px 8px;
-  margin-top:-4px;
-  z-index: 1000;
-  max-height: 120px;
-  overflow-y: auto;
-}
-
-.search-results {
-  position: absolute;
   width: 100%;
   background-color:rgba(255,255,255,1.0);
   border: 0px solid #ccc;
@@ -372,13 +357,33 @@ const toggleAboutVisibility = async () => {
   transition: all 0.4s;
 }
 
-@media screen and (min-height: 900px) {
-  .search-results {
-  max-height: 180px;
-}
+/* .search-results {
+  position: absolute;
+  width: 100%;
+  background-color:rgba(255,255,255,1.0);
+  border: 0px solid #ccc;
+  border-top: none;
+  border-radius:0px 0px 8px 8px;
+  margin-top:-4px;
+  z-index: 1000;
+  max-height: 120px;
+  overflow-y: auto;
+} */
+
+@media screen and (max-height: 950px) {
+  .data-widget-counter {
+    display: none !important;
+  }
 }
 
 @media screen and (min-height: 950px) {
+  .search-results {
+  max-height: calc(30vh - 100px);
+
+}
+}
+
+/* @media screen and (min-height: 950px) {
   .search-results {
   max-height: 230px;
 }
@@ -400,7 +405,7 @@ const toggleAboutVisibility = async () => {
   .search-results {
   max-height: 380px;
 }
-}
+} */
 
 .search-result-item {
   padding: 8px;
@@ -555,6 +560,21 @@ const toggleAboutVisibility = async () => {
   background-color: rgba(255, 255, 255, 0.6);
   min-height: 50px;
   backdrop-filter: blur(5px);
+}
+
+.data-widget-counter {
+  width: 50%;
+  max-width: 600px; 
+  margin: 20px auto;
+  padding: 0.5rem;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(5px);
+  height: auto; 
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
 }
 
 .data-widget-section {
