@@ -564,17 +564,19 @@ const toggleAboutVisibility = async () => {
 
 .data-widget-counter {
   width: 50%;
+  color:white;
   max-width: 600px; 
-  margin: 20px auto;
+  margin:10px auto;
   padding: 0.5rem;
   border-radius: 8px;
-  background-color: rgba(255, 255, 255, 0.6);
+  background-color: rgba(255, 255, 255, 0.0);
   backdrop-filter: blur(5px);
   height: auto; 
   display: flex; 
   justify-content: center; 
   align-items: center; 
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+  box-shadow: 0 2px 4px rgba(0,0,0,0.0); 
+  font-size:1.1em;
 }
 
 .data-widget-section {
@@ -606,7 +608,7 @@ const toggleAboutVisibility = async () => {
 
 .data-widget-item p {
   display: inline;
-  color: rgb(180, 100, 100);
+  color: var(--theme-6);
   margin-left: 3px;
   font-weight:500;
 }
