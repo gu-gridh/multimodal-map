@@ -370,7 +370,7 @@ const toggleAboutVisibility = async () => {
   overflow-y: auto;
 } */
 
-@media screen and (max-height: 950px) {
+@media screen and (max-height: 850px) {
   .data-widget-counter {
     display: none !important;
   }
