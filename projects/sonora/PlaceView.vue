@@ -251,16 +251,18 @@ const handleLinkClicked = (data) => {
   flex-direction: column; 
   align-items: start; 
   width: 100%; 
-  font-size: 35px;
+
 }
 
 .title-event{
 color:white;
 padding-top:40px;
 line-height:1.0;
+font-size: 35px;
 }
 .title-builder{
 color:white;
+font-size: 30px;
 }
 
 
