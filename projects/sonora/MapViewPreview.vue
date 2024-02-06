@@ -12,7 +12,6 @@ import placeholderImage from './images/placeholder.png';
 
 const { selectedFeature } = storeToRefs(mapStore());
 const diana = inject("diana") as DianaClient;
-const images = ref<Image[]>();
 const imageUrls = ref<string[]>([]);
 const organNumbers = ref({}); //all the organ numbers returned 
 const computedRoute = computed(() => `/place/${currentOrganNumber.value}`); //route for placeview
@@ -80,7 +79,6 @@ watchEffect(async () => {
             currentOrganNumber.value = organNumbers.value[1];
           }
       } else {
-        images.value = [];
         imageUrls.value = [placeholderImage];
         organNumbers.value = {};
         placeInfo.value = { Ort: '', Byggnadens_namn: '' };
@@ -90,7 +88,6 @@ watchEffect(async () => {
     }
 
   } else {
-    images.value = [];
     imageUrls.value = [];
     organNumbers.value = {};
     // Reset placeInfo when no feature is selected
