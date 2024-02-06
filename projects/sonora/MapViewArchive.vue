@@ -135,6 +135,10 @@ onMounted(async () => {
 </script>
 
 <style>
+.filters-container select {
+  border-radius: 4px;
+}
+
 .map-view-archive-overlay {
   position: absolute;
   top: 0;

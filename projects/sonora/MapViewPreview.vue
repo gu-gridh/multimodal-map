@@ -8,6 +8,7 @@ import type {
 } from "./types";
 import type { DianaClient } from "@/assets/diana";
 import OpenSeadragon from "@/components/OpenSeadragonNonPyramid.vue";
+import placeholderImage from './images/placeholder.png';
 
 const { selectedFeature } = storeToRefs(mapStore());
 const diana = inject("diana") as DianaClient;
@@ -62,18 +63,27 @@ watchEffect(async () => {
         organNumbers.value = {};
         imageUrls.value = [];
 
-          let i = 1;
+           let i = 1;
           while (data[`orgnr${i}`]) {
-            imageUrls.value.push(data[`orgph${i}`]);
+            const imageUrl = data[`orgph${i}`] ? data[`orgph${i}`] : placeholderImage; //if no images were found, use the placeholder
+            imageUrls.value.push(imageUrl);
             organNumbers.value[i] = data[`orgnr${i}`];
             i++;
+          }
+
+          if (imageUrls.value.length === 0) {
+            //if no images were found, use the placeholder
+            imageUrls.value.push(placeholderImage);
           }
 
           if (i > 1) {
             currentOrganNumber.value = organNumbers.value[1];
           }
       } else {
-        console.error('Failed to fetch place info');
+        images.value = [];
+        imageUrls.value = [placeholderImage];
+        organNumbers.value = {};
+        placeInfo.value = { Ort: '', Byggnadens_namn: '' };
       }
     } catch (error) {
       console.error('Error fetching place info:', error);
@@ -130,10 +140,9 @@ watch(() => placeClicked.value, (newValue) => {
   <div v-if="lastInteraction === 'place' && selectedFeature" class="mapview-preview">
     <div class="placecard">
       <div class="close-card-button" @click="deselectPlace">+</div>
-      <div class="placecard-top">
-        <OpenSeadragon :src="imageUrls" :key="imageUrls.join(',')" @page-changed="handlePageChange" class="flex-1" />
-      </div>
-
+        <div class="placecard-top">
+          <OpenSeadragon :src="imageUrls" :key="imageUrls.join(',')" @page-changed="handlePageChange" class="flex-1" />
+        </div>
         <div class="placecard-bottom">
         <div class="placecard-text">
           <div class="placecard-title theme-color-text">{{ placeInfo.Byggnadens_namn }}</div>
