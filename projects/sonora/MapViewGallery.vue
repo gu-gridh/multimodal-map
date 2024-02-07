@@ -24,10 +24,14 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, inject, onMounted, defineComponent } from "vue";
+import { ref, inject, onMounted, defineComponent, watch } from "vue";
 import type { Image } from "./types";
 import type { DianaClient } from "@/assets/diana";
 import VueMasonryWall from "@yeger/vue-masonry-wall";
+import { sonoraStore } from "./store";
+import { storeToRefs } from "pinia";
+
+const { dataParams } = storeToRefs(sonoraStore());
 
 type GalleryImage = {
   Id: number;
@@ -50,18 +54,27 @@ const imageLoaded = () => {
 
 const refreshMasonry = () => {
   layoutKey.value++;
-}
+};
 
-onMounted(async () => {
+const fetchData = async () => {
   try {
-    const response = await fetch("https://orgeldatabas.gu.se/webgoart/goart/gallery.php?btype=0&year1=1500&year2=1899&page=1&group=100");
+    const url = `https://orgeldatabas.gu.se/webgoart/goart/gallery.php?btype=${dataParams.value.buildingTypeId}&year1=${dataParams.value.year1}&year2=${dataParams.value.year2}&page=1&group=100`;
+    const response = await fetch(url);
     const data: Array<GalleryImage> = await response.json();
-
     images.value = data.filter(img => img.Photo !== ""); // Filtering out images with no Photo URL
-
   } catch (error) {
     console.error("Error fetching data:", error);
   }
+};
+
+// Watcher for dataParams changes to refetch data
+watch(dataParams, () => {
+  fetchData();
+  loadedImagesCount.value = 0;
+});
+
+onMounted(() => {
+  fetchData();
 });
 
 defineComponent({
@@ -69,8 +82,6 @@ defineComponent({
     VueMasonryWall,
   },
 });
-
-
 </script>
 
 <style>
