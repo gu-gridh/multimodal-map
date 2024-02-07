@@ -182,7 +182,7 @@ watch(dataParams, async () => {
   height:calc(100% - 80px);
   padding-left:33%;
   z-index:100!important;
-  background-color: rgba(232, 228, 217, 0.5) !important;
+  background-color: rgba(232, 228, 217, 0.9) !important;
   backdrop-filter:blur(5px);
 }
 
@@ -222,9 +222,22 @@ watch(dataParams, async () => {
 
 .gallery__item,
 .gallery__col-sizer {
-  width: calc(25% - 10px);
+  width: calc(16.6% - 10px);
 }
 .gallery__gutter-sizer { width: 10px;}
+
+@media screen and (max-width: 2000px) {
+  .gallery__item, .gallery__col-sizer {
+    width: calc(20% - 8px);
+  }
+}
+
+
+@media screen and (max-width: 1800px) {
+  .gallery__item, .gallery__col-sizer {
+    width: calc(25% - 8px);
+  }
+}
 
 @media screen and (max-width: 1500px) {
   .gallery__item, .gallery__col-sizer {
