@@ -3,6 +3,7 @@ import router from './router'
 import { ref, inject, onMounted, nextTick } from "vue"
 import markerIcon from "@/assets/marker-red.svg";
 import { watch } from 'vue';
+import placeholderImage from './images/placeholder.png';
 
 const emit = defineEmits(['link-clicked']);
 
@@ -11,6 +12,7 @@ const props = defineProps<{
 }>();
 
 const organData = ref(null);
+const loading = ref(true);
 const processedOrganData = ref([]);
 
 const processOrganData = (data) => {
@@ -24,6 +26,7 @@ const processOrganData = (data) => {
 };
 
 const fetchOrganData = async () => {
+  loading.value = true; // Start loading
   try {
     const response = await fetch(`https://orgeldatabas.gu.se/webgoart/goart/organ.php?id=${props.id}&lang=sv`);
     if (response.ok) {
@@ -35,6 +38,8 @@ const fetchOrganData = async () => {
     }
   } catch (error) {
     console.error("Error fetching organ data:", error);
+  } finally {
+    loading.value = false; // Finish loading
   }
 };
 
@@ -76,10 +81,8 @@ onMounted(() => {
 
         <!-- mini map -->
         <div class="mini-map">
-          
-          <img v-if="organData?.Fotografi" :src="organData.Fotografi" alt="Map Image" />
-          <div v-else class="no-image-placeholder"></div>
-         
+          <img v-if="!loading && organData?.Fotografi" :src="organData.Fotografi" />
+          <img v-else-if="!loading" :src="placeholderImage" />
         </div>
         <div class="placeview-main-title">{{ organData?.Plats }}</div>
         <div v-if="organData" class="placecard-text">

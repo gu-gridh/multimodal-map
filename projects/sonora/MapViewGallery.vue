@@ -156,10 +156,22 @@ const fetchData = async (requestedPageIndex) => {
   });
 
 // Watcher for dataParams changes to refetch data
-// watch(dataParams, () => {
-//   // fetchData();
-//   loadedImagesCount.value = 0;
-// });
+watch(dataParams, async () => {
+  images.value = [];
+  pageIndex = 1;  
+  canIncrement = true;  
+
+  if (infScroll) {
+    infScroll.destroy();
+  }
+
+  await fetchData(pageIndex);
+
+  imagesLoaded(document.querySelector('.gallery'), () => {
+    initMasonry();
+  });
+});
+
 
 </script>
 
