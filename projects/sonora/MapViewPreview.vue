@@ -33,6 +33,19 @@ const placeInfo = ref({
   Loc: '',
 });
 
+//for filtering out the date from the Builder Name
+const builderName = computed(() => {
+  if (builderData.value && builderData.value.Verksgrundare) {
+    let namePart = builderData.value.Verksgrundare.split("(")[0].trim();
+    // check if the last character is a comma and remove it if present
+    if (namePart.endsWith(',')) {
+      namePart = namePart.slice(0, -1);
+    }
+    return namePart;
+  }
+  return '';
+});
+
 const handlePageChange = (newPage) => {
     currentOrganNumber.value = organNumbers.value[newPage];
     console.log(currentOrganNumber.value);
@@ -197,7 +210,7 @@ watch(() => placeClicked.value, (newValue) => {
       <div class="close-card-button" @click="deselectPlace">+</div>
       <div class="placecard-bottom">
         <div class="placecard-text">
-          <div class="placecard-title-builder theme-color-text">{{ builderData.Verksgrundare }}</div>
+          <div class="placecard-title-builder theme-color-text">{{ builderName }}</div>
         </div>
         <div class="placecard-content">
           <div class="placecard-metadata-content" v-if="builderData.Biografi">
