@@ -138,7 +138,7 @@ text-align:center;
 columns:1;
 column-gap:30px;
 width:850px;
-font-size:1.8em;
+font-size:1.9em;
 opacity:0.0;
 padding:00px 30px;
 transition: all 0.4s ease-in-out;
@@ -158,7 +158,7 @@ font-weight: 200;
 opacity:0.0;
 padding:30px;
 transition: all 0.4s ease-in-out;
-
+font-size: 1.7em;
 }
 
 .about-container .category-button{
