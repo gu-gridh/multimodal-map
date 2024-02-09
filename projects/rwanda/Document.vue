@@ -4,17 +4,16 @@
             <router-link to="" class="back-button" @click="goBack()"> </router-link>
          </div>
         <div class="metadata">
-            <div v-if="place?.properties.names" v-for="name in place.properties.names" class="my-5 object-title">
+            <!-- <div v-if="place?.properties.names" v-for="name in place.properties.names" class="my-5 object-title">
                 {{ name.text }}
-            </div>
+            </div> -->
+            <div class="my-5 object-title">{{ document?.title }}</div>
             <div class="meta-text">
                 {{ document?.text }}
             </div>
         </div>
         <div class="pdf-container">
-            <object :data="document?.filename" type="application/pdf" class="pdf-viewer">
-            <p>Unable to display PDF file. <a href="">Download</a> instead.</p>
-            </object>
+            <embed :src="filename" type="application/pdf" class="pdf-viewer" />       
         </div>
         
     
@@ -34,6 +33,7 @@ const props = defineProps<{
 const diana = inject("diana") as DianaClient;
 const document = ref<Document>();
 const place = ref<any>();
+const filename = ref<string>();
 
 const goBack = () => {
     router.go(-1);
@@ -47,6 +47,7 @@ const fetchPlace = async () => {
 
 onMounted(async () => {
     document.value = await diana.get("document", props.id) 
+    filename.value = document.value?.filename + "#toolbar=1"
     fetchPlace();
 });
 
