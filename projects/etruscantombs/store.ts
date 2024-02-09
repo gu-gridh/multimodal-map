@@ -5,6 +5,7 @@ import config from "./config";
 export const etruscanStore = defineStore("etruscan", () => {
   const categories = ref<Array<string>>(["all"]);
   const tags = ref<Array<string>>(["all"]);
+  const dataSetValue = ref<Array<string>>(["all"]);
   const necropoli = ref<Array<string>>(["all"]);
   const tombType = ref<Array<string>>(["all"]);
   const tagsLayerVisible = ref(false); // Default visibility state for tags layer
@@ -16,5 +17,5 @@ export const etruscanStore = defineStore("etruscan", () => {
   const areMapPointsLoaded = ref<boolean>(false);
   const placeId = ref<string | null>(null);
 
-  return { categories, tags, tagsLayerVisible, necropoli, tombType,  dataParams, selectedNecropolisCoordinates, enable3D, enablePlan, areMapPointsLoaded, imgParams, placeId };
+  return { categories, tags, dataSetValue, tagsLayerVisible, necropoli, tombType,  dataParams, selectedNecropolisCoordinates, enable3D, enablePlan, areMapPointsLoaded, imgParams, placeId };
 });

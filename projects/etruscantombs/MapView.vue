@@ -21,7 +21,7 @@ import GeoJSON from "ol/format/GeoJSON";
 import Title from "./Title.vue"
 import apiConfig from "./apiConfig"
 
-const { categories, tags, necropoli, tombType, tagsLayerVisible, dataParams, imgParams, selectedNecropolisCoordinates, enable3D, enablePlan } = storeToRefs(etruscanStore());
+const { categories, tags, necropoli, tombType, tagsLayerVisible, dataSetValue, dataParams, imgParams, selectedNecropolisCoordinates, enable3D, enablePlan } = storeToRefs(etruscanStore());
 const store = mapStore();
 const etruscan = etruscanStore();  // Get the instance of etruscanStore
 const { selectedFeature } = storeToRefs(store);
@@ -67,8 +67,9 @@ const tagParams = computed(() => {
   const epoch = tags.value[0];
   const necropolis = necropoli.value[0];
   const type = tombType.value[0];
+  const dataset = dataSetValue.value[0];
 
-  const initialParams = { epoch, necropolis, type};
+  const initialParams = { epoch, necropolis, type, dataset};
   
   // Remove parameters that are set to "all"
   const cleanedParams = Object.keys(initialParams)
