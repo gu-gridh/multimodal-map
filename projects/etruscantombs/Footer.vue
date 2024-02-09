@@ -100,6 +100,7 @@ height:80px;
   line-height: 0.4;
   padding: 30px 0px 10px 0px;
   vertical-align: middle;
+  color:white;
 }
 
 #PartnerLogo {
@@ -115,6 +116,7 @@ height:80px;
   line-height: 0.4;
   padding: 30px 0px 10px 0px;
   vertical-align: middle;
+  color:white;
 }
 
 #developer-info {
@@ -137,6 +139,10 @@ height:80px;
 }
 
 .link{
+color:white;
+}
+
+.link:visited{
 color:white;
 }
 
