@@ -33,17 +33,19 @@ const placeInfo = ref({
   Loc: '',
 });
 
-//for filtering out the date from the Builder Name
-const builderName = computed(() => {
+//for filtering out the date from the Builder Name and putting it on a new line
+const builderNameAndDate = computed(() => {
   if (builderData.value && builderData.value.Verksgrundare) {
-    let namePart = builderData.value.Verksgrundare.split("(")[0].trim();
-    // check if the last character is a comma and remove it if present
+    let parts = builderData.value.Verksgrundare.split("(");
+    let namePart = parts[0].trim();
+    // Remove the comma if present
     if (namePart.endsWith(',')) {
       namePart = namePart.slice(0, -1);
     }
-    return namePart;
+    let datePart = parts.length > 1 ? parts[1].split(")")[0].trim() : '';
+    return { name: namePart, date: datePart };
   }
-  return '';
+  return { name: '', date: '' };
 });
 
 const handlePageChange = (newPage) => {
@@ -210,7 +212,10 @@ watch(() => placeClicked.value, (newValue) => {
       <div class="close-card-button" @click="deselectPlace">+</div>
       <div class="placecard-bottom">
         <div class="placecard-text">
-          <div class="placecard-title-builder theme-color-text">{{ builderName }}</div>
+        <div class="placecard-title-builder theme-color-text">
+          {{ builderNameAndDate.name }}<br>
+          <span v-if="builderNameAndDate.date">{{ builderNameAndDate.date }}</span>
+        </div>
         </div>
         <div class="placecard-content">
           <div class="placecard-metadata-content" v-if="builderData.Biografi">
