@@ -53,12 +53,12 @@ onMounted(async () => {
     const data = await response.json();
     organData.value = data;
 
-    const lastWorkKey = Object.keys(data).filter(key => data[key].work).pop();
-    if (lastWorkKey) {
-      // Update the linkData with the last work's details from api
+    //find the element with the matching org_nr from the api
+    const matchingElement = Object.values(data).find(element => element.org_nr === data.org_id);
+    if (matchingElement) {
       linkData.value = {
-        builder: data[lastWorkKey].builder,
-        work: data[lastWorkKey].work,
+        builder: matchingElement.builder,
+        work: matchingElement.work,
       };
     }
   } catch (error) {
