@@ -29,10 +29,10 @@
             <li>{{ $t('attributions1') }}</li><br>
             <li>{{ $t('attributions2') }}</li><br>
             <li>{{ $t('attributions3') }}</li><br>
-    
-          <li>{{ $t('attributions4') }}</li><br>
-          <li>{{ $t('attributions5') }}</li><br>
-          <li>{{ $t('attributions6') }}</li>
+
+            <li>{{ $t('attributions4') }}</li><br>
+            <li>{{ $t('attributions5') }}</li><br>
+            <li>{{ $t('attributions6') }}</li>
           </ul>
         </div>
 
@@ -96,7 +96,6 @@ ul {
   overflow-y: auto;
   background: linear-gradient(90deg, rgba(108, 136, 139, 1) 0%, rgba(245, 235, 225, 0.8) 100%) !important;
   padding-bottom: 40px !important;
-
 }
 
 .fullopacity {
@@ -120,7 +119,7 @@ ul {
   color: white !important;
   line-height: 0.9;
   margin-bottom: 0px;
-  font-size:5.0em;
+  font-size: 5.0em;
 }
 
 .about-article-main {
@@ -140,9 +139,9 @@ ul {
   line-height: 1.2;
   padding-bottom: 0px;
   max-width: 800px;
-  columns:2;
-  float:left;
-  margin-top:20px;
+  columns: 2;
+  float: left;
+  margin-top: 20px;
 }
 
 @media screen and (max-width: 1500px) {
@@ -160,14 +159,14 @@ ul {
   }
 
   .about-article-sub-list {
-  color: white;
-  line-height: 1.2;
-  padding-bottom: 0px;
- padding:0px 30px 30px 30px;
-  columns:1;
-  float:left;
-  font-size: 1.2em !important;
-}
+    color: white;
+    line-height: 1.2;
+    padding-bottom: 0px;
+    padding: 0px 30px 30px 30px;
+    columns: 1;
+    float: left;
+    font-size: 1.2em !important;
+  }
 }
 
 .about-logo {
@@ -216,4 +215,5 @@ ul {
   background-repeat: no-repeat;
   background-size: cover;
   opacity: 0.7;
-}</style>
+}
+</style>
