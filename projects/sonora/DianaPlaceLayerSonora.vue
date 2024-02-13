@@ -120,6 +120,10 @@ onMounted(() => {
 
         const geometry = feature.getGeometry() as any;
         hoverCoordinates.value = geometry.getCoordinates();
+      } else {
+        //clear hover information when no feature is hovered
+        hoveredFeature.value = null;
+        hoverCoordinates.value = null;
       }
     });
 
