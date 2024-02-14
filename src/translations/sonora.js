@@ -69,7 +69,7 @@ const messages = {
       gallery: "galleria",
       infobutton: "Sul portale",
       languagebutton: "In English",
-      moreinfo: "Più informazioni",
+      moreinfo: "Mer information",
       threedmodel: "Modello 3D",
       threedmodels: "Modelli 3D",
       tombshown: "Tombe mostrate",

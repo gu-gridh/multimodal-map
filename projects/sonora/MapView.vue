@@ -83,6 +83,7 @@ onMounted(() => {
   // Check if the "visited" key exists in session storage
   visited = sessionStorage.getItem("visited") === "true"; // Retrieve the visited status from session storage
   const storedShowGrid = localStorage.getItem("showGrid");
+  const storedShowArchive = localStorage.getItem("showArchive");
 
   if (!visited) {
     // Hide the about component
@@ -90,10 +91,15 @@ onMounted(() => {
     sessionStorage.setItem("visited", "true");
   }
 
+  //show the gallery
   if (storedShowGrid) {
     showGrid.value = JSON.parse(storedShowGrid);
   }
 
+  //show the archive
+  if (storedShowArchive !== null) {
+    showArchive.value = JSON.parse(storedShowArchive);
+  }
 })
 
 const toggleAboutVisibility = async () => {
@@ -104,6 +110,10 @@ const toggleAboutVisibility = async () => {
 
 watch(showGrid, (newValue) => {
   localStorage.setItem("showGrid", JSON.stringify(newValue));
+});
+
+watch(showArchive, (newValue) => {
+  localStorage.setItem("showArchive", JSON.stringify(newValue));
 });
 </script>
 
