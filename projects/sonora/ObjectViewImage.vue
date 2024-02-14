@@ -19,6 +19,17 @@ const imageUrls = computed(() => {
   return urls;
 });
 
+const placesBeforeFiles = computed(() => {
+  const places = [];
+  for (const key in props.object) {
+    if (props.object[key].Filename) break;
+    if (props.object[key].place) {
+      places.push(props.object[key].place);
+    }
+  }
+  return places;
+});
+
 const downloadImage = (fileUrl: string, fileName: string) => {
   const link = document.createElement('a');
   link.href = fileUrl;
@@ -50,17 +61,23 @@ const downloadImage = (fileUrl: string, fileName: string) => {
           <div v-if="object['0'].lng"><div class="label">Longitude:</div> <div class="data">{{ object['0'].lng }}</div></div>
           <div v-if="object['0'].lat" style="margin-bottom:20px;"><div class="label">Latitude:</div> <div class="data">{{ object['0'].lat }}</div></div>
         </div>
+        <div class="places-list" v-if="placesBeforeFiles.length > 0">
+          <h3>Found in places:</h3>
+          <ul>
+            <li v-for="(place, index) in placesBeforeFiles" :key="index">{{ place }}</li>
+          </ul>
+        </div>
         <div class="label" v-html="object ? object.Innehåll : ''"></div>
       </div>
     </ObjectViewComponent>
 
-    <ObjectViewComponent :title="'TEST'">
+    <!-- <ObjectViewComponent :title="'TEST'">
       <div class="objects">
         <div><div class="label">Type:</div> </div>
         <div class="label">Creator:  </div>
         <div class="label">Date:</div> 
       </div>
-    </ObjectViewComponent>
+    </ObjectViewComponent> -->
   </div>
 
   <section class="illustration flex">
