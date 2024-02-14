@@ -81,10 +81,10 @@ a {
 .partners{
 float: right;
 position:fixed;
-
 bottom:0px;
 right:0px;
 height:80px;
+width:600px;
 }
 
 #CDHLogo {
