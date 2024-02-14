@@ -50,6 +50,7 @@
         @focus="handleSearchBoxFocus"
         :placeholder="searchType === 'places' ? 'Search Places...' : 'Search Builders...'"
         class="search-box"
+        autofocus
       />
       <div class="search-results">
         <!-- Rendering for 'places' -->
@@ -276,6 +277,7 @@ const toggleAboutVisibility = async () => {
   await nextTick();
   visibleAbout.value = !visibleAbout.value;
 };
+
 </script>
 
 <style>
@@ -386,14 +388,7 @@ const toggleAboutVisibility = async () => {
   }
 
   .section-title {
-
 color:black!important;
-}
-}
-
-@media screen and (min-height: 900px) {
-  .search-results {
-  min-height: calc(30vh - 100px);
 }
 }
 
