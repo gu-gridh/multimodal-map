@@ -44,6 +44,7 @@ body {
 .main-title {
   font-family: 'Teko', sans-serif;
   color:white !important;
+  line-height:0.75;
 }
 
 .about {
