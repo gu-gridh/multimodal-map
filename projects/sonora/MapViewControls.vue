@@ -375,10 +375,31 @@ const toggleAboutVisibility = async () => {
   }
 }
 
+@media screen and (max-width: 900px) {
+  .data-widget-counter {
+    display: block !important;
+    color:black!important;
+  }
+
+  .data-widget-counter p {
+    color:var(--theme-5)!important;
+  }
+
+  .section-title {
+
+color:black!important;
+}
+}
+
+@media screen and (min-height: 900px) {
+  .search-results {
+  min-height: calc(30vh - 100px);
+}
+}
+
 @media screen and (min-height: 950px) {
   .search-results {
   max-height: calc(30vh - 100px);
-
 }
 }
 
