@@ -28,7 +28,7 @@
           <ul>
             <li>{{ $t('attributions1') }}</li><br>
             <li>{{ $t('attributions2') }}</li><br>
-            <li>{{ $t('attributions3') }}</li><br>
+            <li>{{ $t('attributions3') }}</li>
 
             <li>{{ $t('attributions4') }}</li><br>
             <li>{{ $t('attributions5') }}</li><br>
