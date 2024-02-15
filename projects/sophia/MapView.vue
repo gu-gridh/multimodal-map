@@ -25,8 +25,8 @@ const { categories, tags, necropoli, tombType, tagsLayerVisible, dataParams, img
 const store = mapStore();
 const etruscan = etruscanStore();  // Get the instance of etruscanStore
 const { selectedFeature } = storeToRefs(store);
-const minZoom = 10;
-const maxZoom = 22;
+const minZoom = 20;
+const maxZoom = 24;
 const featureZoom = 15; //value between minZoom and maxZoom when you select a point 
 const visibleAbout = ref(false);
 const showGallery = ref(false);
@@ -198,6 +198,13 @@ watch(showGallery, (newValue) => {
             </GeoJsonWebGLRenderer>
             <DianaPlaceLayer :params="tagParams" :zIndex=20>
             </DianaPlaceLayer>
+
+            <ol-tile-layer>
+              <ol-source-xyz
+                url="https://data.dh.gu.se/tiles/saint_sophia_ground_floor/{z}/{x}/{y}.png"
+              />
+            </ol-tile-layer>
+
           </template>
           
         </MapComponent>  
@@ -220,7 +227,7 @@ watch(showGallery, (newValue) => {
 
 #app .tile-layer {
   filter: grayscale(0%);
-  filter: opacity(0.1);
+  filter: opacity(0.0);
 }
 
 /* Overides the settings in ui_modules.css */
