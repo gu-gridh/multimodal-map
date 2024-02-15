@@ -103,7 +103,6 @@ onMounted(() => {
 })
 
 const toggleAboutVisibility = async () => {
-  console.log('fired')
   await nextTick();
   visibleAbout.value = !visibleAbout.value;
 };
@@ -121,13 +120,13 @@ watch(showArchive, (newValue) => {
   <div style="display:flex; align-items: center; justify-content: center; pointer-events: none;">
     <div class="ui-mode ui-overlay">
      <button class="item" :class="{ selected: !showGrid && !showArchive }" @click="showGrid = false; showArchive = false;">
-      Karta
+      {{ $t('map') }}
     </button>
     <button class="item" :class="{ selected: showGrid }" @click="showGrid = true; showArchive = false;">
-      Galleri
+      {{ $t('gallery') }}
     </button>
     <button class="item" :class="{ selected: showArchive }" @click="showArchive = true; showGrid = false;">
-      Archive
+      {{ $t('archive') }}
     </button>
     </div>
   </div>

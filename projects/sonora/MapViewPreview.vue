@@ -156,19 +156,19 @@ watch(() => placeClicked.value, (newValue) => {
               <div class="tag theme-color-text">{{ responseData.Loc }}</div>
             </div>
             <div class="metadata-item" v-if="responseData.Stift">
-              <div class="label">Stift:</div>
+              <div class="label">{{ $t('stift') }}</div>
               <div class="tag theme-color-text">{{ responseData.Stift }}</div>
             </div>
             <div class="metadata-item" v-if="responseData.Kontrakt">
-              <div class="label">Kontrakt:</div>
+              <div class="label">{{ $t('kontrakt') }}</div>
               <div class="tag theme-color-text">{{ responseData.Kontrakt }}</div>
             </div>
             <div class="metadata-item" v-if="responseData.Kommun">
-              <div class="label">Kommun:</div>
+              <div class="label">{{ $t('kommun') }}</div>
               <div class="tag theme-color-text">{{ responseData.Kommun }}</div>
             </div>
             <div class="metadata-item" v-if="responseData.Pastorat">
-              <div class="label">Pastorat:</div>
+              <div class="label">{{ $t('pastorat') }}</div>
               <div class="tag theme-color-text">{{ responseData.Pastorat }}</div>
             </div>
             
@@ -217,9 +217,14 @@ watch(() => placeClicked.value, (newValue) => {
 </template>
 
 <style>
+.label {
+  width: 35% !important;
+}
+
 .placecard-top{
   height:65%;
 }
+
 .metadata-item-wide {
   margin-bottom: 5px;
   float: left;

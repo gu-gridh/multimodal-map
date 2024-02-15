@@ -73,7 +73,7 @@ export default {
   methods: {
     toggleLanguage() {
       if (i18n.global.locale === 'en') {
-        i18n.global.locale = 'it';
+        i18n.global.locale = 'sv';
       } else {
         i18n.global.locale = 'en';
       }

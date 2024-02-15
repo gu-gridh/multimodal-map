@@ -78,7 +78,7 @@
     <div class="data-widget-counter">
       <div class="data-widget-section">
         <div class="data-widget-item">
-          <h3>Visade orglar:</h3>
+          <h3>{{ $t('shownorgans') }}</h3>
           <p>{{ noPlaceCount }}</p>
         </div>
       </div>
