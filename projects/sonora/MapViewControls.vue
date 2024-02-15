@@ -176,7 +176,7 @@ onMounted(async () => {
 // filter options
 async function fetchFilters() {
   try {
-    const response = await fetch('https://orgeldatabas.gu.se/webgoart/goart/filter.php');
+    const response = await fetch('https://orgeldatabas.gu.se/webgoart/goart/filter1.php?lang=en');
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
