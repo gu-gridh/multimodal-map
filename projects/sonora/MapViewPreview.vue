@@ -217,10 +217,6 @@ watch(() => placeClicked.value, (newValue) => {
 </template>
 
 <style>
-.label {
-  width: 35% !important;
-}
-
 .placecard-top{
   height:65%;
 }

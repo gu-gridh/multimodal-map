@@ -87,7 +87,7 @@ onMounted(() => {
         <div class="placeview-main-title">{{ organData?.Plats }}</div>
         <div v-if="organData" class="placecard-text">
           <div class="placecard-metadata-content" style="margin-top:10px;">
-            <div class="historical-overview-title">Historisk översikt</div>
+            <div class="historical-overview-title">{{ $t('historicaloversight') }}</div>
             <div class="historical-overview">
               <div v-for="item in processedOrganData" :key="item.date" class="overview-row">
                 <a href="#" v-if="item.link" @click="handleLinkClick($event, item.link, item)">

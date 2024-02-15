@@ -165,11 +165,11 @@ const handleLinkClicked = (data) => {
                 organData.Typ_av_huvudbälg || organData.Antal_bälgar">
                 <td class="wide-first-td">Metadata</td>
               <tr v-if="organData.Verksgrundare">
-                <td class="wide-second-td">Verksgrundare:</td>
+                <td class="wide-second-td">{{ $t('verksgrundare') }}:</td>
                 <td class="tag theme-color-text">{{ organData.Verksgrundare }}</td>
               </tr>
               <tr v-if="organData.Tillkomstår">
-                <td class="wide-second-td">Tillkomstår:</td>
+                <td class="wide-second-td">{{ $t('tillkomstår') }}:</td>
                 <td class="tag theme-color-text">{{ organData.Tillkomstår }}</td>
               </tr>
               <!-- <tr v-if="organData.Koppel_ & _kombinationer_info">
@@ -177,19 +177,19 @@ const handleLinkClicked = (data) => {
                 <td class="tag theme-color-text">{{ organData.Koppel_ & _kombinationer_info }}</td>
               </tr> -->
               <tr v-if="organData.Fasadpipor_info">
-                <td class="wide-second-td">Fasadpipor info:</td>
+                <td class="wide-second-td">{{ $t('fasadpipor') }}:</td>
                 <td class="tag theme-color-text">{{ organData.Fasadpipor_info }}</td>
               </tr>
               <tr v-if="organData.Typ_av_traktursystem">
-                <td class="wide-second-td">Typ av traktursystem:</td>
+                <td class="wide-second-td">{{ $t('traktursystem') }}:</td>
                 <td class="tag theme-color-text">{{ organData.Typ_av_traktursystem }}</td>
               </tr>
               <tr v-if="organData.Typ_av_registratursystem">
-                <td class="wide-second-td">Typ av registratursystem:</td>
+                <td class="wide-second-td">{{ $t('registratursystem') }}:</td>
                 <td class="tag theme-color-text">{{ organData.Typ_av_registratursystem }}</td>
               </tr>
               <tr v-if="organData.Typ_av_huvudbälg">
-                <td class="wide-second-td">Typ av huvudbälg:</td>
+                <td class="wide-second-td">{{ $t('huvudbälg') }}:</td>
                 <td class="tag theme-color-text">{{ organData.Typ_av_huvudbälg }}</td>
               </tr>
               <!-- <tr v-if="organData.Info_bälgar / luftsystem">
@@ -197,7 +197,7 @@ const handleLinkClicked = (data) => {
                 <td class="tag theme-color-text">{{ organData.Info_bälgar / luftsystem }}</td>
               </tr> -->
               <tr v-if="organData.Antal_bälgar">
-                <td class="wide-second-td">Antal bälgar:</td>
+                <td class="wide-second-td">{{ $t('antalbälgar') }}:</td>
                 <td class="tag theme-color-text">{{ organData.Antal_bälgar }}</td>
               </tr>
               </tr>
@@ -209,22 +209,22 @@ const handleLinkClicked = (data) => {
 
             <tbody>
               <tr v-if="organData.Disposition">
-                <td class="wide-first-td">Disposition</td>
+                <td class="wide-first-td">{{ $t('disposition') }}:</td>
                   <div class="organ-historic-overview" v-html="organData.Disposition" @click="handleDisposition"></div>
                   <div v-if="isPopupVisible" class="popup"
                     :style="{ left: mousePosition.x +50 + 'px', top: mousePosition.y -100 + 'px' }">
-                    <h3 v-if="popupData?.Verk">Division Info</h3>
-                    <h3 v-else-if="popupData?.Stämma">Stop Info</h3>
+                    <h3 v-if="popupData?.Verk">{{ $t('divisioninfo') }}</h3>
+                    <h3 v-else-if="popupData?.Stämma">{{ $t('stopinfo') }}</h3>
 
                     <div v-if="popupData?.Verk">
-                      <p><b>Verk:</b> {{ popupData.Verk }}</p>
-                      <p><b>Beskrivning väderlåda:</b> {{ popupData.Beskrivning_väderlåda }}</p>
-                      <p><b>Lufttryck:</b> {{ popupData.Lufttryck }}</p>
+                      <p><b>{{ $t('verk') }}:</b> {{ popupData.Verk }}</p>
+                      <p><b>{{ $t('väderlåda') }}:</b> {{ popupData.Beskrivning_väderlåda }}</p>
+                      <p><b>{{ $t('lufttryck') }}:</b> {{ popupData.Lufttryck }}</p>
                     </div>
 
                     <div v-else-if="popupData?.Stämma">
-                      <p><b>Stämma:</b> {{ popupData.Stämma }}</p>
-                      <p><b>Stämma info:</b> {{ popupData.Stämma_info }}</p>
+                      <p><b>{{ $t('stämma') }}:</b> {{ popupData.Stämma }}</p>
+                      <p><b>{{ $t('stämmainfo') }}:</b> {{ popupData.Stämma_info }}</p>
                     </div>
                     <button @click="isPopupVisible = false" class="theme-color-text" style="font-weight: bold">Close</button>
                   </div>
