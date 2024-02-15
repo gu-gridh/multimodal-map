@@ -42,7 +42,7 @@ watch(() => route.params.id, async (newId) => {
       console.error("Error fetching data:", error);
     }
   }
-}, {immediate: true});
+});
 
 onMounted(async () => {
   try {
@@ -52,6 +52,13 @@ onMounted(async () => {
     }
     const data = await response.json();
     organData.value = data;
+
+    documents.value = [];
+    for (const key in data) {
+      if (data[key].Document) {
+        documents.value.push(data[key]);
+      }
+    }
 
     //find the element with the matching org_nr from the api
     const matchingElement = Object.values(data).find(element => element.org_nr === data.org_id);
