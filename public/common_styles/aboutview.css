@@ -22,11 +22,9 @@ body {
   transition: all 1.5s ease-in-out;
   opacity: 0.0;
   overflow-y: auto;
-  display:none;
 }
 
 .fullopacity {
-  display:block;
   height: calc(100vh - 80px);
   opacity: 1.0;
   pointer-events: auto;

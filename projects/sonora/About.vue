@@ -1,5 +1,5 @@
 <template>
-  <div class="about-container" v-bind:class="{ fullopacity: visibleAbout }">
+  <div class="about-container" v-bind:class="{ fullopacity: visibleAbout }" :style="{ display: displayAbout ? 'block' : 'none' }">
     <button @click="toggleLanguage">
       <div class="p-1 px-2 clickable category-button about-button" style="
                 left: 20px !important;
@@ -68,6 +68,24 @@ export default {
     visibleAbout: {
       type: Boolean,
       required: true,
+    },
+  },
+  data() {
+    return {
+      displayAbout: this.visibleAbout,
+    };
+  },
+  watch: {
+    visibleAbout(newVal) {
+      if (newVal) {
+        // If visibleAbout is true, immediately show the container
+        this.displayAbout = true;
+      } else {
+        //if visibleAbout is false, wait for the transition to finish before hiding
+        setTimeout(() => {
+          this.displayAbout = false;
+        }, 1000); //transition duration
+      }
     },
   },
   methods: {
