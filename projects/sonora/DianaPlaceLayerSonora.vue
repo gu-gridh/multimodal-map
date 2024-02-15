@@ -5,7 +5,7 @@ import VectorSource from "ol/source/Vector";
 import WebGLPointsLayer from "ol/layer/WebGLPoints.js";
 import { fromLonLat } from "ol/proj";
 import { DIANA_BASE } from "@/assets/diana";
-import markerIcon from "@/assets/marker-red.svg";
+import markerIcon from "@/assets/marker-sonora.svg";
 import Style from "ol/style/Style";
 import Feature from "ol/Feature";
 import type Geometry from "ol/geom/Geometry";
@@ -85,7 +85,7 @@ const webGLPointsLayer = ref(
         symbolType: "image",
         color: "#ffffff",
         offset: [0, 20],
-        size: [30, 45],
+        size: [25, 35],
         src: markerIcon,
       },
     },
