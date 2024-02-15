@@ -112,19 +112,26 @@ onMounted(() => {
     map.addInteraction(selectHover);
 
     // Add an event listener for when a feature is hovered over
+    let debounceHoverTimer;
     selectHover.on("select", (event) => {
+      clearTimeout(debounceHoverTimer);
+      debounceHoverTimer = setTimeout(() => {
+        handleHover(event);
+      }, 20);
+    });
+
+    function handleHover(event) {
       if (event.selected.length > 0) {
         const feature = event.selected[0];
         hoveredFeature.value = feature as any;
-
         const geometry = feature.getGeometry() as any;
-        hoverCoordinates.value = geometry.getCoordinates();
+        hoverCoordinates.value = geometry.getCoordinates();      
       } else {
         //clear hover information when no feature is hovered
         hoveredFeature.value = null;
         hoverCoordinates.value = null;
       }
-    });
+    }
 
     let clickedFeatures: Feature[] = [];
     map.on("click", function (evt) {
