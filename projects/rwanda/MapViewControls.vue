@@ -87,6 +87,15 @@ const handleLanguageClick = (key: string) => {
         class="filter-button"
         @click="handleSourcesClick"
       />
+      <div class="filter-heading" v-show="sources.includes('interviews')">Informants</div>
+      <CategoryButtonList 
+        v-show="sources.includes('interviews')"
+        v-model="informants"
+        :categories="INFORMANTS"
+        :limit="1"
+        class="filter-button"
+        @click="handleInformantClick"
+      />
     <div class="filter-heading">Names of places </div>
       <CategoryButtonList 
         v-model="placeTypes"
@@ -94,14 +103,6 @@ const handleLanguageClick = (key: string) => {
         :limit="1"
         class="filter-button"
         @click="handlePlaceTypeClick"
-      />
-    <div class="filter-heading">Informants</div>
-      <CategoryButtonList 
-        v-model="informants"
-        :categories="INFORMANTS"
-        :limit="1"
-        class="filter-button"
-        @click="handleInformantClick"
       />
       <div class="filter-heading">Languages</div>
       <ButtonList 
