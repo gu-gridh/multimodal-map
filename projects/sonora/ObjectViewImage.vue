@@ -5,7 +5,7 @@ import OpenSeadragon from "@/components/OpenSeadragonSequence.vue";
 import type { ImageDeep } from "./types";
 
 const props = defineProps<{
-  object: ImageDeep;
+    object: ImageDeep;
   id: Number;
 }>();
 
@@ -23,8 +23,8 @@ const placesBeforeFiles = computed(() => {
   const places = [];
   for (const key in props.object) {
     if (props.object[key].Filename) break;
-    if (props.object[key].place) {
-      places.push(props.object[key].place);
+    if (props.object[key].place && props.object[key].org_nr) {
+      places.push({ name: props.object[key].place, placeNr: props.object[key].org_nr });
     }
   }
   return places;
@@ -61,10 +61,12 @@ const downloadImage = (fileUrl: string, fileName: string) => {
           <div v-if="object['0'].lng"><div class="label">Longitude:</div> <div class="data">{{ object['0'].lng }}</div></div>
           <div v-if="object['0'].lat" style="margin-bottom:20px;"><div class="label">Latitude:</div> <div class="data">{{ object['0'].lat }}</div></div>
         </div>
-        <div class="places-list" v-if="placesBeforeFiles.length > 0">
+         <div class="places-list" v-if="placesBeforeFiles.length > 0">
           <h3>Found in places:</h3>
           <ul>
-            <li v-for="(place, index) in placesBeforeFiles" :key="index">{{ place }}</li>
+            <li v-for="(place, index) in placesBeforeFiles" :key="index">
+              <router-link :to="`/place/${place.placeNr}`">{{ place.name }}</router-link>
+            </li>
           </ul>
         </div>
         <div class="label" v-html="object ? object.Innehåll : ''"></div>
@@ -118,5 +120,14 @@ const downloadImage = (fileUrl: string, fileName: string) => {
   margin-bottom:10px;
 }
 
+.places-list a {
+  color: var(--theme-6) !important;
+}
 
+.places-list a:hover {
+  color: white !important;
+  font-size: 110%;
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
 </style>
