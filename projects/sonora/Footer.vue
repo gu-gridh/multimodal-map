@@ -130,9 +130,9 @@ width:600px;
 }
 
 .border-style {
-  border-width: 0 0.5px 0 0px;
+  /* border-width: 0 0.5px 0 0px;
   border-color: white;
-  border-style: dashed;
+  border-style: dashed; */
   padding-left: 10px; 
   padding-right: 20px; 
 
