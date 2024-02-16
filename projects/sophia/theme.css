@@ -54,8 +54,8 @@ body {
 #app .left-pane {
   background: url("images/gradient.png");
   background-size: contain;
-  width: 56% !important;
-  min-width: 940px;
+  width: 53% !important;
+  min-width: 930px;
   max-width: 1000px;
   font-size:95%;
 }
