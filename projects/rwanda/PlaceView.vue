@@ -316,17 +316,17 @@ const showMoreInterviews =() => {
   font-size: 1.5em;
 }
 .lang {
-  float: left;
   border-radius: 5px;
   background: rgb(180, 100, 100);
-  padding: 1px;
+  padding: 4px;
   display: inline-block;
-  width: 30px;
+  width: auto;
   height: 30px;
   text-align: center;
-  line-height: 1.9;
+  line-height: 1.7;
   margin: 2px;
   color: white;
+  font-size: small;
 }
 .long-name {
   width: 80%;
