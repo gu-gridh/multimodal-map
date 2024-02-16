@@ -41,10 +41,9 @@ watch(
       if (geometry) {
         const coordinates = (geometry as any).getCoordinates();
         store.updateCenter(coordinates);
-        if (store.zoom < featureZoom)
-          {          
-            store.updateZoom(featureZoom);
-          }
+        if (store.zoom < featureZoom) {
+          store.updateZoom(featureZoom);
+        }
       }
     }
   },
@@ -68,16 +67,16 @@ const tagParams = computed(() => {
   const necropolis = necropoli.value[0];
   const type = tombType.value[0];
 
-  const initialParams = { epoch, necropolis, type};
-  
+  const initialParams = { epoch, necropolis, type };
+
   // Remove parameters that are set to "all"
   const cleanedParams = Object.keys(initialParams)
-  .filter((key) => initialParams[key as keyof typeof initialParams] !== "all")
-  .reduce((obj, key) => {
-    obj[key as keyof typeof initialParams] = initialParams[key as keyof typeof initialParams];
-    return obj;
-  }, {} as typeof initialParams);
-  
+    .filter((key) => initialParams[key as keyof typeof initialParams] !== "all")
+    .reduce((obj, key) => {
+      obj[key as keyof typeof initialParams] = initialParams[key as keyof typeof initialParams];
+      return obj;
+    }, {} as typeof initialParams);
+
   // Further clean to remove null or undefined values
   const params = clean(cleanedParams);
 
@@ -98,7 +97,7 @@ const tagParams = computed(() => {
   const queryString = new URLSearchParams(params).toString();
 
   // Concatenate the base URL with the search string to form the full URL
-  const fullUrl = queryString 
+  const fullUrl = queryString
     ? `${apiConfig.PLACE}?page_size=500&${queryString}`
     : `${apiConfig.PLACE}?page_size=500`;
 
@@ -107,10 +106,10 @@ const tagParams = computed(() => {
 });
 
 watch(
-  tagParams, 
+  tagParams,
   (newParams) => {
     dataParams.value = newParams;
-  }, 
+  },
   { immediate: true }
 );
 
@@ -161,58 +160,54 @@ watch(showGallery, (newValue) => {
   </div>
   <MapViewGallery v-if="showGallery" />
   <About :visibleAbout="visibleAbout" @close="visibleAbout = false" />
+  <div class="gradient-blur">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
   <MainLayout>
+   
     <template #search>
       <Title @toggle-about="toggleAboutVisibility" />
-      <MapViewControls/>
+      <MapViewControls />
     </template>
 
     <template #background>
       <div class="map-container">
-        <MapComponent 
-          :shouldAutoMove="true" 
-          :min-zoom=minZoom
-          :max-zoom=maxZoom 
-           
-        > 
+        <MapComponent :shouldAutoMove="true" :min-zoom=minZoom :max-zoom=maxZoom>
           <template #layers>
-            <GeoJsonWebGLRenderer
-              :externalUrl="'https://data.dh.gu.se/geography/SGElevationMain.geojson'"
-              :zIndex=-0
+            <GeoJsonWebGLRenderer :externalUrl="'https://data.dh.gu.se/geography/SGElevationMain.geojson'" :zIndex=-0
               :style="{
                 'stroke-color': [0, 0, 0, 0.18],
                 'stroke-width': 1,
                 'fill-color': [255, 0, 0, 1]
-              }"
-            >
+              }">
             </GeoJsonWebGLRenderer>
-            <GeoJsonWebGLRenderer
-              :externalUrl="'https://data.dh.gu.se/geography/SGElevationEdge.geojson'"
-              :zIndex=0
+            <GeoJsonWebGLRenderer :externalUrl="'https://data.dh.gu.se/geography/SGElevationEdge.geojson'" :zIndex=0
               :style="{
                 'stroke-color': [0, 0, 0, 0.1],
                 'stroke-width': 1,
                 'fill-color': [0, 255, 0, 1]
-              }"
-            >
+              }">
             </GeoJsonWebGLRenderer>
             <DianaPlaceLayer :params="tagParams" :zIndex=20>
             </DianaPlaceLayer>
 
             <ol-tile-layer>
-              <ol-source-xyz
-                url="https://data.dh.gu.se/tiles/saint_sophia_ground_floor/{z}/{x}/{y}.png"
-              />
+              <ol-source-xyz url="https://data.dh.gu.se/tiles/saint_sophia_ground_floor/{z}/{x}/{y}.png" />
             </ol-tile-layer>
 
           </template>
-          
-        </MapComponent>  
-      </div> 
+
+        </MapComponent>
+      </div>
     </template>
 
     <template #details>
-      <MapViewPreview v-if="!showGallery"/>
+      <MapViewPreview v-if="!showGallery" />
     </template>
 
   </MainLayout>
@@ -225,6 +220,109 @@ watch(showGallery, (newValue) => {
   width: 100%;
 }
 
+.gradient-blur {
+  position: fixed;
+  z-index: 1;
+  inset: auto 0 0 0;
+  height: calc(100vh - 80px);
+  pointer-events: none;
+  width: 800px;
+  top:0px;
+  opacity:1.0;
+}
+
+@media screen and (max-width: 900px) {
+  .gradient-blur {
+display:none;
+  }
+}
+
+.gradient-blur>div,
+.gradient-blur::before,
+.gradient-blur::after {
+  position: absolute;
+  inset: 0;
+}
+
+.gradient-blur::before {
+  content: "";
+  z-index: 1;
+  backdrop-filter: blur(0.5px);
+  mask: linear-gradient(to left,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 1) 12.5%,
+      rgba(0, 0, 0, 1) 25%,
+      rgba(0, 0, 0, 0) 37.5%);
+}
+
+.gradient-blur>div:nth-of-type(1) {
+  z-index: 2;
+  backdrop-filter: blur(1px);
+  mask: linear-gradient(to left,
+      rgba(0, 0, 0, 0) 12.5%,
+      rgba(0, 0, 0, 1) 25%,
+      rgba(0, 0, 0, 1) 37.5%,
+      rgba(0, 0, 0, 0) 50%);
+}
+
+.gradient-blur>div:nth-of-type(2) {
+  z-index: 3;
+  backdrop-filter: blur(2px);
+  mask: linear-gradient(to left,
+      rgba(0, 0, 0, 0) 25%,
+      rgba(0, 0, 0, 1) 37.5%,
+      rgba(0, 0, 0, 1) 50%,
+      rgba(0, 0, 0, 0) 62.5%);
+}
+
+.gradient-blur>div:nth-of-type(3) {
+  z-index: 4;
+  backdrop-filter: blur(4px);
+  mask: linear-gradient(to left,
+      rgba(0, 0, 0, 0) 37.5%,
+      rgba(0, 0, 0, 1) 50%,
+      rgba(0, 0, 0, 1) 62.5%,
+      rgba(0, 0, 0, 0) 75%);
+}
+
+.gradient-blur>div:nth-of-type(4) {
+  z-index: 5;
+  backdrop-filter: blur(8px);
+  mask: linear-gradient(to left,
+      rgba(0, 0, 0, 0) 50%,
+      rgba(0, 0, 0, 1) 62.5%,
+      rgba(0, 0, 0, 1) 75%,
+      rgba(0, 0, 0, 0) 87.5%);
+}
+
+.gradient-blur>div:nth-of-type(5) {
+  z-index: 6;
+  backdrop-filter: blur(16px);
+  mask: linear-gradient(to left,
+      rgba(0, 0, 0, 0) 62.5%,
+      rgba(0, 0, 0, 1) 75%,
+      rgba(0, 0, 0, 1) 87.5%,
+      rgba(0, 0, 0, 0) 100%);
+}
+
+.gradient-blur>div:nth-of-type(6) {
+  z-index: 7;
+  backdrop-filter: blur(32px);
+  mask: linear-gradient(to left,
+      rgba(0, 0, 0, 0) 75%,
+      rgba(0, 0, 0, 1) 87.5%,
+      rgba(0, 0, 0, 1) 100%);
+}
+
+.gradient-blur::after {
+  content: "";
+  z-index: 8;
+  backdrop-filter: blur(64px);
+  mask: linear-gradient(to left,
+      rgba(0, 0, 0, 0) 87.5%,
+      rgba(0, 0, 0, 1) 100%);
+}
+
 #app .tile-layer {
   filter: grayscale(0%);
   filter: opacity(0.0);
@@ -235,7 +333,7 @@ watch(showGallery, (newValue) => {
   left: -55px;
   width: 110px;
   min-width: 90px;
-  bottom:55px;
+  bottom: 55px;
 }
 
 #app .ol-popup:before {
