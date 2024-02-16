@@ -213,12 +213,12 @@ watch(showSecondFloor, (newValue) => {
             <DianaPlaceLayer :params="tagParams" :zIndex=20>
             </DianaPlaceLayer>
           <div v-if="!showGallery">
-            <ol-tile-layer v-if="!showSecondFloor">
+            <ol-tile-layer className="floor-plans" v-if="!showSecondFloor">
               <ol-source-xyz url="https://data.dh.gu.se/tiles/saint_sophia_ground_floor/{z}/{x}/{y}.png" />
             </ol-tile-layer>
 
-            <ol-tile-layer v-if="showSecondFloor">
-              <ol-source-xyz url="https://data.dh.gu.se/tiles/saint_sophia_second_floor/{z}/{x}/{y}.png" />
+            <ol-tile-layer className="floor-plans" v-if="showSecondFloor">
+              <ol-source-xyz  url="https://data.dh.gu.se/tiles/saint_sophia_second_floor/{z}/{x}/{y}.png" />
             </ol-tile-layer>
           </div>
           </template>
@@ -250,6 +250,11 @@ watch(showSecondFloor, (newValue) => {
   width: 800px;
   top:0px;
   opacity:1.0;
+}
+
+.floor-plans{
+  opacity:0.6;
+
 }
 
 @media screen and (max-width: 900px) {
