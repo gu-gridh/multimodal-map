@@ -357,6 +357,7 @@ function clearAll() {
   border-radius: 4px 4px 4px 4px;
   overflow: hidden;
   background-color: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(5px);
   /* focus:none; */
 }
 
