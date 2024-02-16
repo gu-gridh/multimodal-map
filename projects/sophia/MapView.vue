@@ -247,7 +247,7 @@ watch(showSecondFloor, (newValue) => {
   inset: auto 0 0 0;
   height: calc(100vh - 80px);
   pointer-events: none;
-  width: 800px;
+  width: 750px;
   top:0px;
   opacity:1.0;
 }
