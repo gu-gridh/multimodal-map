@@ -30,6 +30,7 @@ const maxZoom = 24;
 const featureZoom = 15; //value between minZoom and maxZoom when you select a point 
 const visibleAbout = ref(false);
 const showGallery = ref(false);
+const showSecondFloor = ref(false);
 let visited = true; // Store the visited status outside of the hook
 
 // Watcher for selectedFeature changes
@@ -117,6 +118,7 @@ onMounted(() => {
   // Check if the "visited" key exists in session storage
   visited = sessionStorage.getItem("visited") === "true"; // Retrieve the visited status from session storage
   const storedShowGallery = localStorage.getItem("showGallery");
+  const storedShowSecondFloor = localStorage.getItem("showSecondFloor");
 
   if (!visited) {
     // Hide the about component
@@ -126,6 +128,10 @@ onMounted(() => {
 
   if (storedShowGallery) {
     showGallery.value = JSON.parse(storedShowGallery);
+  }
+
+  if (storedShowSecondFloor) {
+    showSecondFloor.value = JSON.parse(storedShowSecondFloor);
   }
 
 })
@@ -138,6 +144,10 @@ const toggleAboutVisibility = async () => {
 
 watch(showGallery, (newValue) => {
   localStorage.setItem("showGallery", JSON.stringify(newValue));
+});
+
+watch(showSecondFloor, (newValue) => {
+  localStorage.setItem("showSecondFloor", JSON.stringify(newValue));
 });
 </script>
 
@@ -153,10 +163,17 @@ watch(showGallery, (newValue) => {
       <button class="item" v-bind:class="{ selected: showGallery }" v-on:click="showGallery = true;">
         {{ $t('inscriptions') }}
       </button>
-      <button class="item" v-bind:class="{ selected: showGallery }" v-on:click="showGallery = true;">
-        {{ $t('room') }}
+    </div>
+
+    <div class="ui-mode ui-overlay" style="top:calc(100vh - 210px);" v-if="!showGallery">
+      <button class="item" v-bind:class="{ selected: !showSecondFloor }" v-on:click="showSecondFloor = false;">
+        {{ $t('groundfloor') }}
+      </button>
+      <button class="item" v-bind:class="{ selected: showSecondFloor }" v-on:click="showSecondFloor = true;">
+        {{ $t('secondfloor') }}
       </button>
     </div>
+
   </div>
   <MapViewGallery v-if="showGallery" />
   <About :visibleAbout="visibleAbout" @close="visibleAbout = false" />
@@ -195,11 +212,15 @@ watch(showGallery, (newValue) => {
             </GeoJsonWebGLRenderer>
             <DianaPlaceLayer :params="tagParams" :zIndex=20>
             </DianaPlaceLayer>
-
-            <ol-tile-layer>
+          <div v-if="!showGallery">
+            <ol-tile-layer v-if="!showSecondFloor">
               <ol-source-xyz url="https://data.dh.gu.se/tiles/saint_sophia_ground_floor/{z}/{x}/{y}.png" />
             </ol-tile-layer>
 
+            <ol-tile-layer v-if="showSecondFloor">
+              <ol-source-xyz url="https://data.dh.gu.se/tiles/saint_sophia_second_floor/{z}/{x}/{y}.png" />
+            </ol-tile-layer>
+          </div>
           </template>
 
         </MapComponent>

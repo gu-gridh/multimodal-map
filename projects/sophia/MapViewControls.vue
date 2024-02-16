@@ -103,7 +103,7 @@
 
   <!-- Data Section -->
   <div class="data-widget">
- <!--    <div class="data-widget-section">
+    <div class="data-widget-section">
       <div class="data-widget-item">
         <h3>{{ $t('panelsshown') }}:</h3>
         <p>{{ currentTombCount }}</p>
@@ -116,21 +116,21 @@
     </div> 
 
     <div class="data-widget-divider"></div>
-    -->
+   
 
     <div class="data-widget-section">
       <div class="data-widget-item">
-        <h3>{{ $t('panels') }}:</h3>
+        <h3>{{ $t('texts') }}:</h3>
         <p>{{ totalPhotographs }}</p>
       </div>
-      <div class="data-widget-item">|</div>
+  
       <div class="data-widget-item">
-        <h3>{{ $t('inscriptions') }}:</h3>
+        <h3>{{ $t('figures') }}:</h3>
         <p>{{ totalPlans }}</p>
       </div>
-      <div class="data-widget-item">|</div>
+   
       <div class="data-widget-item">
-        <h3>{{ $t('languages') }}:</h3>
+        <h3>{{ $t('composites') }}:</h3>
         <p>{{ totalThreed }}</p>
       </div>
     </div>
