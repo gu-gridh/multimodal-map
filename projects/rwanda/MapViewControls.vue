@@ -29,13 +29,14 @@ const PERIODS = {
   "after 2012": "After 2012"
 }
 const LANGUAGES = {
-  "Kinyarwanda-English": "KE",
-  "Arabic-English": "AE",
-  "French-Kinyarwanda": "FK",
-  "Kiswahili": "SW",
-  "Kinyarwanda": "RW",
+  "English": "ENG",
   "French": "FR",
-  "English": "EN",
+  "French-Kinyarwanda": "FR-KIN",
+  "Kinyarwanda": "KIN",
+  "Kinyarwanda-English": "KIN-ENG",
+  "Arabic": "AR",
+  "Arabic-English": "AR-ENG",
+  "Kiswahili": "SW",
 }
 const { sources, placeTypes, periods, informants, sourcesLayer, placeTypeLayer, periodsLayer, allLayer, informantsLayer, languages, languagesLayer } = storeToRefs(rwandaStore());
 
@@ -86,21 +87,22 @@ const handleLanguageClick = (key: string) => {
         class="filter-button"
         @click="handleSourcesClick"
       />
-    <div class="filter-heading">Place types</div>
+      <div class="filter-heading" v-show="sources.includes('interviews')">Informants</div>
+      <CategoryButtonList 
+        v-show="sources.includes('interviews')"
+        v-model="informants"
+        :categories="INFORMANTS"
+        :limit="1"
+        class="filter-button"
+        @click="handleInformantClick"
+      />
+    <div class="filter-heading">Names of places </div>
       <CategoryButtonList 
         v-model="placeTypes"
         :categories="PLACE_TYPES"
         :limit="1"
         class="filter-button"
         @click="handlePlaceTypeClick"
-      />
-    <div class="filter-heading">Informants</div>
-      <CategoryButtonList 
-        v-model="informants"
-        :categories="INFORMANTS"
-        :limit="1"
-        class="filter-button"
-        @click="handleInformantClick"
       />
       <div class="filter-heading">Languages</div>
       <ButtonList 

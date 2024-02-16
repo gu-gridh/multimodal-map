@@ -104,7 +104,7 @@ watch(
             </ol-style>
             <FeatureSelection/>
           </DianaPlaceLayer>
-          <DianaPlaceLayer 
+          <!-- <DianaPlaceLayer 
             v-if="sources[0] == 'interviews'"
             path="rwanda/search/text/"
           >
@@ -112,7 +112,7 @@ watch(
               <ol-style-stroke color="#2b90c8" :width="3"></ol-style-stroke>
             </ol-style>
             <FeatureSelection/>
-          </DianaPlaceLayer>
+          </DianaPlaceLayer> -->
           <DianaPlaceLayer 
             v-if="sources[0] == 'documents'"
             path="rwanda/search/document/"
