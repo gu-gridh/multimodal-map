@@ -102,6 +102,8 @@ body {
   padding: 6px 3px 3px 3px!important;
 }
 
+
+
 @media screen and (max-width: 900px) {
   .atlas-gradient {
     background: linear-gradient(180deg, rgba(232, 228, 217, 0) 0px, var(--theme-1) 300px) !important;
