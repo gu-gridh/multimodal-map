@@ -41,7 +41,7 @@
 
 <script lang="ts">
 
-import i18n from '../../src/translations/etruscan';
+import i18n from '../../src/translations/sophia';
 
 export default {
   name: "aboutview",
@@ -54,7 +54,7 @@ export default {
   methods: {
     toggleLanguage() {
       if (i18n.global.locale === 'en') {
-        i18n.global.locale = 'it';
+        i18n.global.locale = 'uk';
       } else {
         i18n.global.locale = 'en';
       }
