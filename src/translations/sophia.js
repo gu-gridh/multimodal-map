@@ -2,7 +2,7 @@ import { createI18n } from 'vue-i18n';
 
 const messages = {
     en: {
-      etruscantitle: "Saint \nSophia's\nInscriptions",
+      portaltitle: "Saint \nSophia's\nInscriptions",
       etruscanabout: "The portal is published by GRIDH at the university of Gothenburg in close collaboration with the Swedish Institute in Rome.",
       documentation: "Documentation by category",
       timeperiod: "Time period",
@@ -40,8 +40,8 @@ const messages = {
       plans: "Plans",
       type: "Type",
       period: "Period",
-      aboutportalmain:"This portal collects and visualises datasets concerning Etruscan chamber tombs. The first dataset, encompassing the necropoleis/necropolises around San Giovenale, originated from the doctoral thesis 'The Chamber Tombs of San Giovenale and the Funerary Landscapes of South Etruria' by Dr. Fredrik Tobin-Dodd. It is our hope that the portal, which makes available descriptions, images, plans and 3D models, will function as a resource both for researchers and students.",
-      aboutportal: "The portal was realised by the Gothenburg Research Infrastructure in Digital Humanities (GRIDH) at the University of Gothenburg in collaboration with the Swedish Institute of Classical Studies in Rome. The project was developed by Associate Professor Jonathan Westin (project lead, design), together with M.A Tristan Bridge (development of the web interface) and Dr. Matteo Tomasini (development of the database). Dr. Fredrik Tobin-Dodd – whose thesis served as foundation for the project – provided the content for the San Giovenale tombs, and aided the project with expertise. The project was overseen by Associate Professor Ulf R. Hansson, Director of the Swedish Institute in Rome and Dr. Hampus Olsson, Senior Lecturer at the same institute. Please contact jonathan.westin(at)lir.gu.se if you have any questions or want to contribute with data.",
+      aboutportalmain:"",
+      aboutportal: "",
       explore: "Explore",  
       documents: "Documents",
       sortbytype: "Sort by: TYPE",
@@ -61,7 +61,7 @@ const messages = {
     },
 
     uk: {
-      etruscantitle: "Написи \nСвятої \nСофії",
+      portaltitle: "Написи \nСвятої \nСофії",
       etruscanabout: "The portal is published by GRIDH at the university of Gothenburg in close collaboration with the Swedish Institute in Rome.",
       documentation: "Documentation by category",
       timeperiod: "Time period",
@@ -99,8 +99,8 @@ const messages = {
       plans: "Плани",
       type: "Type",
       period: "Period",
-      aboutportalmain:"This portal collects and visualises datasets concerning Etruscan chamber tombs. The first dataset, encompassing the necropoleis/necropolises around San Giovenale, originated from the doctoral thesis 'The Chamber Tombs of San Giovenale and the Funerary Landscapes of South Etruria' by Dr. Fredrik Tobin-Dodd. It is our hope that the portal, which makes available descriptions, images, plans and 3D models, will function as a resource both for researchers and students.",
-      aboutportal: "The portal was realised by the Gothenburg Research Infrastructure in Digital Humanities (GRIDH) at the University of Gothenburg in collaboration with the Swedish Institute of Classical Studies in Rome. The project was developed by Associate Professor Jonathan Westin (project lead, design), together with M.A Tristan Bridge (development of the web interface) and Dr. Matteo Tomasini (development of the database). Dr. Fredrik Tobin-Dodd – whose thesis served as foundation for the project – provided the content for the San Giovenale tombs, and aided the project with expertise. The project was overseen by Associate Professor Ulf R. Hansson, Director of the Swedish Institute in Rome and Dr. Hampus Olsson, Senior Lecturer at the same institute. Please contact jonathan.westin(at)lir.gu.se if you have any questions or want to contribute with data.",
+      aboutportalmain:"",
+      aboutportal: "",
       explore: "Explore",  
       documents: "Documents",
       sortbytype: "Sort by: TYPE",
