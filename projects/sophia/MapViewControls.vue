@@ -4,14 +4,16 @@
     <div v-if="areMapPointsLoaded">
 
       <!-- This creates a 2-column section with for the controls -->
-      <div class="control-organisation justify-left" style="padding-bottom:10px; padding-top:10px;">
+      <div class="control-organisation justify-left" style="pointer-events:auto; padding-bottom:10px; padding-top:10px;">
         <div class="tag-section">
-          <div class="section-title">{{ $t('Language') }}</div>
-          <div style="display:inline; float:left; margin-right:0px;">
-            <select title="pick what dataset you want to view data from" class="dropdown theme-color-background my-2">
-              <option title="View data from all datasets" value="All datasets">{{ $t('alldatasets') }}</option>
-              <option title="View data from the San Giovenale dataset by Fredrik Tobin-Dodd" value="CTSG-2015">CTSG-2015
-              </option>
+          <div class="section-title">{{ $t('language') }}</div>
+          <div style="display:inline; float:left; margin-right:0px; pointer-events:auto;">
+            <select title="pick what dataset you want to view data from" class="dropdown theme-color-background my-2" >
+              <option title="View data from all datasets" value="All datasets">{{ $t('alllanguages') }}</option>
+              <option title="View data from the San Giovenale dataset by Fredrik Tobin-Dodd" value="CTSG-2015">Church Slavic</option>
+              <option title="View data from the San Giovenale dataset by Fredrik Tobin-Dodd" value="CTSG-2015">Latin</option>
+              <option title="View data from the San Giovenale dataset by Fredrik Tobin-Dodd" value="CTSG-2015">Greek</option>
+              <option title="View data from the San Giovenale dataset by Fredrik Tobin-Dodd" value="CTSG-2015">Polish</option>
             </select>
           </div>
         </div>
@@ -21,49 +23,25 @@
           <div class="broad-controls">
             <CategoryButton v-model="categories" :categories="{
               all: $t('categories.all'),
-              plans: $t('Text'),
-              models: $t('Figure'),
-              composite: $t('Composite')
+              plans: $t('text'),
+              models: $t('figure'),
+              composite: $t('composite')
             }" :limit="1" class="my-2" title="Pick a data type" @click="handleCategoryClick" />
           </div>
         </div>
-
       </div>
 
-   <!--    <div class="control-organisation justify-space" style="justify-content:space-between;">
-        <div class="tag-section"  style="padding-bottom:10px;">
-          <div class="section-title">{{ $t('tag') }}</div>
-          <div class="broad-controls">
-            <CategoryButtonList v-model="tags" :categories="TAGS" :limit="1" styleType="button" class="my-2"
-              title="Pick a time period" />
-          </div>
-        </div>
-      </div> -->
-
-      <div class="search-section">
+      <div class="search-section" style="float:left;">
         <div class="section-title">{{ $t('searchpanels') }}</div>
-        <input type="text" 
-          v-model="searchQuery" 
-           @input="handleSearch"
-           @focus="handleSearchBoxFocus"
-          :placeholder="'Search Panels...'"
-          class="search-box"
-          autofocus />
+        <input type="text"
+          :placeholder="'Search Panels...'" class="search-box" autofocus />
         <div class="search-results">
-          <!-- Rendering for 'places' -->
-          <template v-if="searchType === 'places'">
-            <div v-for="feature in filteredPlaces" :key="feature.properties ? feature.properties.Nr : 'no-place'"
-              class="search-result-item" @click="onPlaceClick(feature)">
-              {{ feature.properties.Building }}
-            </div>
-          </template>
-
         </div>
       </div>
 
 
       <!-- This creates a 2-column section width for the controls -->
-     <!--  <div class="control-organisation justify-space">
+      <!--  <div class="control-organisation justify-space">
         <div class="tag-section">
           <div class="section-title">{{ $t('Site') }}</div>
           <div style="display:inline; float:left; margin-right:0px;">
@@ -113,22 +91,22 @@
         <h3>{{ $t('panelshidden') }}:</h3>
         <p>{{ hiddenTombs }}</p>
       </div>
-    </div> 
+    </div>
 
     <div class="data-widget-divider"></div>
-   
+
 
     <div class="data-widget-section">
       <div class="data-widget-item">
         <h3>{{ $t('texts') }}:</h3>
         <p>{{ totalPhotographs }}</p>
       </div>
-  
+
       <div class="data-widget-item">
         <h3>{{ $t('figures') }}:</h3>
         <p>{{ totalPlans }}</p>
       </div>
-   
+
       <div class="data-widget-item">
         <h3>{{ $t('composites') }}:</h3>
         <p>{{ totalThreed }}</p>
@@ -143,6 +121,7 @@ import CategoryButtonList from "./CategoryButtonDropdown.vue";
 import CategoryButton from "@/components/input/CategoryButtonList.vue";
 import { storeToRefs } from "pinia";
 import { etruscanStore } from "./store";
+import { mapStore } from "@/stores/store";
 import type { EtruscanProject } from "./types";
 import { DianaClient } from "@/assets/diana";
 import { transform } from 'ol/proj';
@@ -162,7 +141,8 @@ const totalThreed = ref(0);
 const hiddenTombs = ref(0);
 const currentTombCount = ref(0);
 const visibleAbout = ref(false);
-
+const { selectedFeature } = storeToRefs(mapStore());
+const searchResults = ref([]);
 const TAGS = ref<Record<string, string>>({});
 const NECROPOLI = ref<Record<string, string>>({});
 const TOMBTYPE = ref<Record<string, string>>({});
@@ -285,6 +265,8 @@ function clearAll() {
   tags.value = [];
 }
 
+
+
 </script>
 
 <style>
@@ -346,13 +328,14 @@ function clearAll() {
 
 .search-section {
   position: relative;
+  width:100%;
 }
 
 .search-box {
   width: 98%;
   height: 50px;
   padding: 8px;
-  margin-top:10px;
+  margin-top: 10px;
   border: 0px solid #ccc;
   border-radius: 4px 4px 4px 4px;
   overflow: hidden;

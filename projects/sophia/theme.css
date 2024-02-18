@@ -12,8 +12,9 @@
 /* Main */
 html,
 body {
-  font-family: "Barlow Condensed", sans-serif !important;
+  font-family: "Sofia Sans Extra Condensed", sans-serif !important;
   background-color: var(--theme-1) !important;
+  font-size:108%!important;
 }
 
 .theme-title-typography{
@@ -41,10 +42,14 @@ body {
 }
 
 .main-title {
-  font-family: 'Teko', sans-serif;
+  font-family: 'Oswald', sans-serif;
   color: white !important;
   font-size: 6.0vw;
-  line-height:0.8;
+  line-height:0.9;
+  font-weight:100;
+  padding-bottom:20px;
+  margin-top:-25px;
+  letter-spacing: 1px!important;
 }
 
 .about {
@@ -55,7 +60,7 @@ body {
   background: url("images/gradient.png");
   background-size: contain;
   width: 53% !important;
-  min-width: 930px;
+  min-width: 970px;
   max-width: 1000px;
   font-size:95%;
 }
@@ -78,6 +83,8 @@ body {
   color: rgb(71, 85, 105);
   border-radius: 4px;
   backdrop-filter: blur(5px);
+  line-height:1.5;
+  padding:5px 10px 1px 10px;
 }
 
 #app .category-button:hover {
@@ -88,6 +95,11 @@ body {
 #app .category-button.active {
   background-color: var(--theme-3) !important;
   color: white;
+}
+
+#app .ui-mode {
+  top: 0px;
+  padding: 6px 3px 3px 3px!important;
 }
 
 @media screen and (max-width: 900px) {

@@ -155,7 +155,7 @@ watch(showSecondFloor, (newValue) => {
   <div style="display:flex; align-items: center; justify-content: center; pointer-events: none;">
     <div class="ui-mode ui-overlay">
       <button class="item" v-bind:class="{ selected: !showGallery }" v-on:click="showGallery = false;">
-        {{ $t('plan') }}
+        {{ $t('plans') }}
       </button>
       <button class="item" v-bind:class="{ selected: showGallery }" v-on:click="showGallery = true;">
         {{ $t('panels') }}
