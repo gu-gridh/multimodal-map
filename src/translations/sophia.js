@@ -70,7 +70,7 @@ const messages = {
       typeofinscription: "Вид напису",
       dataset: "Dataset",
       searchpanels: "Шукайте панно або напис",
-      inscriptions: "написи",
+      inscriptions: "Hаписи",
       alllanguages: "Всі мови",
       text: "Текст",
       texts: "Тексти",
