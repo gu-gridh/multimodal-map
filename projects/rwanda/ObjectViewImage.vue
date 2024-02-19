@@ -27,6 +27,7 @@ const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 </script>
 
 <template>
+  <div class="flex">
   <div class="metadata">
     <ObjectViewComponent :title="object?.title" back="/">
       <p v-if="object?.description" class="my-5 object-title">{{ object?.description }}</p>
@@ -50,6 +51,7 @@ const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
     </div>
 
   </section>
+</div>
 </template>
 
 <style>
@@ -61,11 +63,13 @@ const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 .metadata {
   background-color: black !important;
   overflow:hidden !important;
-  width: 350px !important;
+  margin-bottom: 10px;
+  padding: 0px 0px;
+  max-width:350px;
 }
 
 .object-description {
-  padding-top: 20px;
+  padding: 6px 20px 0px 0px;
   font-size: 24px;
 }
 
@@ -78,7 +82,7 @@ const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
 @media screen and (min-width: 1900px) {
 .metadata .category-button{
-  width:155px!important;
+  width:140px!important;
 padding:5px 18px!important;
 margin-top:50px!important;
 }
