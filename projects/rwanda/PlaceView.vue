@@ -1,4 +1,5 @@
 <script setup lang="ts">
+
 import { ref, inject, watch, onMounted } from "vue";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
@@ -59,6 +60,7 @@ const fetchInterviews = async (id: any) => {
   const newInterview = data.find((interview: any) => interview.place_of_interest === id);
   if (newInterview) {
     const seenInterviews = new Set(interviews.value.map((i: { id: any }) => i.id));
+    //@ts-ignore
     if (!seenInterviews.has(newInterview.id)) {
       interviews.value.push(newInterview);
     }
