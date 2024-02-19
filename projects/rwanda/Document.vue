@@ -53,7 +53,7 @@ onMounted(async () => {
 
 </script>
 
-<style>
+<style scoped>
 .content {
     width: 100%;
     height: auto;

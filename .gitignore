@@ -5,6 +5,7 @@
 COMMIT_MSG
 
 .env.*
+.env
 dist/
 node_modules/
 *.log

@@ -37,7 +37,9 @@ watchEffect(async () => {
     </div>
     <div v-else class="right-panel-initial">
         <div class="container">
-            <img src="./images/streetsigns.jpg" alt="streetsigns"/>
+            <div class="image-container">
+                <img src="./images/streetsigns.jpg" alt="streetsigns"/>
+            </div>
             <div class="info-text">
                 <p> Welcome to this map showing names of places of interest in Kiyovu, Kigali. The map is a free and collaborative OpenStreet map. You can search names of streets , buildings, and areas. You also find photos of signs and buildings, in addition to texts about names and places in Kigali. </p>
                 <p>The map visualizes some of the data of the project <em>Reading the signs - Renaming and transformative processes in urban Rwanda.</em> The project is a collaboration between University of Gothenburg, Sweden, and University of Kigali, Rwanda and financed by Vetenskapsrådet (VR). The map is under development in collaboration with Gothenburg Research Infrastructure in Digital Humanities (GRIDH) at the University of Gothenburg, Sweden.</p>
@@ -75,6 +77,10 @@ watchEffect(async () => {
 }
 
 em {
-    color: #B46464;
+    color: #ca8888;
+}
+
+.image-container {
+    text-align: center;
 }
 </style>
