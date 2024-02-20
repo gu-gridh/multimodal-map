@@ -338,7 +338,7 @@ const showMoreInterviews =() => {
   vertical-align: middle;
   height: 30px;
   line-height: 35px;
-  overflow: hidden;
+  
 }
 .centered-name {
   display: inline-block;
