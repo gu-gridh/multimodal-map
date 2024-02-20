@@ -46,7 +46,6 @@ const downloadImage = (fileUrl: string, fileName: string) => {
       <div class="objects">
         <div v-if="object?.Avsändare"><div class="label">{{ $t('sender') }}:</div> <div class="data">{{ object.Avsändare }}</div></div>
         <div v-if="object?.no_organs"><div class="label">{{ $t('number_of_organs') }}:</div> <div class="data">{{ object.no_organs }}</div></div>
-        <!-- <div v-if="object?.no_facs"><div class="label">Number of Facsimiles:</div> <div class="data">{{ object.no_facs }}</div></div> -->
         <div v-if="object?.Arkiv"><div class="label">{{ $t('archive') }}:</div> <div class="data">{{ object.Arkiv }}</div></div>
         <div v-if="object?.Serie"><div class="label">{{ $t('serie') }}:</div> <div class="data">{{ object.Serie }}</div></div>
         <div v-if="object?.Volym"><div class="label">{{ $t('volym') }}:</div> <div class="data">{{ object.Volym }}</div></div>
@@ -55,13 +54,13 @@ const downloadImage = (fileUrl: string, fileName: string) => {
         <div v-if="object?.Källa"><div class="label">{{ $t('källa') }}:</div> <div class="data">{{ object.Källa }}</div></div>
         <div v-if="object?.Källa_info"><div class="label">{{ $t('källainfo') }}:</div> <div class="data">{{ object.Källa_info }}</div></div>
         <div v-if="object?.Typ_av_dokument"><div class="label">{{ $t('typ_av_dokument') }}:</div> <div class="data">{{ object.Typ_av_dokument }}</div></div>
-        <div v-if="object?.['0']">
+        <!-- <div v-if="object?.['0']"> -->
           <!-- <div v-if="object['0'].org_nr"><div class="label">Org Nr:</div> <div class="data">{{ object['0'].org_nr }}</div></div> -->
-          <div v-if="object['0'].place"><div class="label">Place:</div> <div class="data">{{ object['0'].place }}</div></div>
+          <!-- <div v-if="object['0'].place"><div class="label">Place:</div> <div class="data">{{ object['0'].place }}</div></div>
           <div v-if="object['0'].lng"><div class="label">{{ $t('longitude') }}:</div> <div class="data">{{ object['0'].lng }}</div></div>
-          <div v-if="object['0'].lat" style="margin-bottom:20px;"><div class="label">{{ $t('latitude') }}:</div> <div class="data">{{ object['0'].lat }}</div></div>
-        </div>
-         <div class="places-list" v-if="placesBeforeFiles.length > 0">
+          <div v-if="object['0'].lat" style="margin-bottom:20px;"><div class="label">{{ $t('latitude') }}:</div> <div class="data">{{ object['0'].lat }}</div></div> -->
+        <!-- </div> -->
+         <div class="places-list" style="margin-top: 20px;" v-if="placesBeforeFiles.length > 0">
           <h3>{{ $t('found_in') }}:</h3>
           <ul>
             <li v-for="(place, index) in placesBeforeFiles" :key="index">

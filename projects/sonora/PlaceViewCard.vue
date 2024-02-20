@@ -19,9 +19,6 @@ const processOrganData = (data) => {
   // Filter entries that start with 'work'
   const filteredData = Object.values(data).filter(item => item.work);
 
-  // Sort entries by date
-  filteredData.sort((a, b) => new Date(a.date.trim()) - new Date(b.date.trim()));
-
   processedOrganData.value = filteredData;
 };
 
