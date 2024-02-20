@@ -188,9 +188,9 @@ const showMoreInterviews =() => {
             <div style="width:100%;">
                 <p>{{ placeType }} <span>- {{ placeDescription }}</span></p>
                 <div v-for="name in placeNames">
-                    <div style="width:100%; display:flex;">
+                    <div style="width:100%; display:flex; align-items: center;">
                         <span class="lang" v-if="name.languages && name.languages.length > 0">{{ name.languages[0].abbreviation }}</span>
-                        <div class="long-name"><span class="centered-name">{{ name.text }}</span><span style="font-weight: lighter;" v-if="name.period?.text">- {{ name.period.text }}</span></div>
+                        <div class="long-name"><span class="centered-name">{{ name.text }} <span style="font-weight: lighter; " v-if="name.period?.text">- {{ name.period.text }}</span></span></div>
                     </div>
                 </div>
             </div>
@@ -323,7 +323,7 @@ const showMoreInterviews =() => {
   padding: 4px;
   display: inline-block;
   width: auto;
-  height: 30px;
+  height: auto;
   text-align: center;
   line-height: 1.7;
   margin: 2px;
@@ -331,18 +331,15 @@ const showMoreInterviews =() => {
   font-size: small;
 }
 .long-name {
-  width: 80%;
-  float: left;
-  display: inline;
+  
   margin-left: 10px;
   vertical-align: middle;
-  height: 30px;
-  line-height: 35px;
+  line-height: 1.3 !important;    
   
 }
 .centered-name {
-  display: inline-block;
-  line-height: 1.2 !important;
+  
+  line-height: 1.3 !important;
   height: auto !important;
 }
 .link {
