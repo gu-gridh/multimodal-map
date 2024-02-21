@@ -113,7 +113,7 @@ const handleLanguageClick = (key: string) => {
         @click="handleLanguageClick"
       />
     <div class="filter-heading">Time periods</div>
-      <CategoryButtonList 
+      <ButtonList 
         v-model="periods"
         :categories="PERIODS"
         :limit="1"
