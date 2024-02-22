@@ -53,7 +53,7 @@ watchEffect(async () => {
         necropolisName.value = images.value[0].tomb?.necropolis?.text || null;
         chambers.value = images.value[0].tomb.number_of_chambers || null;
         type.value = images.value[0].tomb.type.text || null;
-        period.value = images.value[0].tomb.epoch.text || null;
+        // period.value = images.value[0].tomb.epoch.text || null;
         subtitle.value = images.value[0].tomb.subtitle || null;
         description.value = images.value[0].tomb.description || null;
       }
@@ -68,7 +68,7 @@ watchEffect(async () => {
         necropolisName.value = feature.properties.necropolis?.text || null;
         chambers.value = feature.properties.number_of_chambers || null;
         type.value = feature.properties.type?.text || null;
-        period.value = feature.properties.epoch?.text || null;
+        // period.value = feature.properties.epoch?.text || null;
         subtitle.value = feature.properties.subtitle || null;
         description.value = feature.properties.description || null;
       }

@@ -52,23 +52,23 @@ watch(
 );
 
 // Watcher for selectedNecropolisCoordinates changes
-watch(
-  selectedNecropolisCoordinates,
-  (newCoordinates, oldCoordinates) => {
-    if (newCoordinates !== oldCoordinates && newCoordinates) {
-      store.updateCenter(newCoordinates);
-      store.updateZoom(16);
-    }
-  },
-);
+// watch(
+//   selectedNecropolisCoordinates,
+//   (newCoordinates, oldCoordinates) => {
+//     if (newCoordinates !== oldCoordinates && newCoordinates) {
+//       store.updateCenter(newCoordinates);
+//       store.updateZoom(16);
+//     }
+//   },
+// );
 
 /* Response for generating the URL for filtering map points down */
 const tagParams = computed(() => {
-  const epoch = tags.value[0];
+  // const epoch = tags.value[0];
   const necropolis = necropoli.value[0];
   const type = tombType.value[0];
 
-  const initialParams = { epoch, necropolis, type };
+  const initialParams = { necropolis, type }; // epoch
 
   // Remove parameters that are set to "all"
   const cleanedParams = Object.keys(initialParams)
@@ -210,8 +210,8 @@ watch(showSecondFloor, (newValue) => {
                 'fill-color': [0, 255, 0, 1]
               }">
             </GeoJsonWebGLRenderer>
-            <DianaPlaceLayer :params="tagParams" :zIndex=20>
-            </DianaPlaceLayer>
+            <SophiaPlaceLayer :params="tagParams" :zIndex=20>
+            </SophiaPlaceLayer>
           <div v-if="!showGallery">
             <ol-tile-layer className="floor-plans" v-if="!showSecondFloor">
               <ol-source-xyz url="https://data.dh.gu.se/tiles/saint_sophia_ground_floor/{z}/{x}/{y}.png" />

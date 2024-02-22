@@ -120,7 +120,7 @@ const currentTombType = ref(null);
 const baseURL = `${apiConfig.PANEL}?page_size=500`;
 
 onMounted(async () => {
-  await fetchDataAndPopulateRef("epoch", TAGS);
+  // await fetchDataAndPopulateRef("epoch", TAGS);
   await fetchDataAndPopulateRef("necropolis", NECROPOLI);
   await fetchDataAndPopulateRef("typeoftomb", TOMBTYPE);
 

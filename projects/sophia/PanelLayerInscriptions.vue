@@ -7,7 +7,9 @@ import { fromLonLat } from "ol/proj";
 import { SOPHIA_BASE } from "@/assets/saintsophia";
 import markerIcon from "@/assets/marker-white.svg";
 import markerGold from "@/assets/marker-gold.svg";
+import View from 'ol/View.js';
 import Style from "ol/style/Style";
+import Stroke from "ol/style/Stroke";
 import type Feature from "ol/Feature";
 import type Geometry from "ol/geom/Geometry";
 import Icon from "ol/style/Icon";
@@ -17,6 +19,8 @@ import Select from "ol/interaction/Select";
 import { inscriptionsStore } from "./store";
 import { pointerMove } from "ol/events/condition";
 import type Map from "ol/Map";
+import {Vector as VectorLayer} from "ol/layer.js"
+
 
 const { selectedFeature } = storeToRefs(mapStore());
 
@@ -50,7 +54,7 @@ const updateFeatures = (features: Feature[]) => {
     type: "FeatureCollection",
     features,
   });
-
+  console.log(vectorSource.value)
   vectorSource.value.addFeatures(transformedFeatures);
 };
 
@@ -71,7 +75,6 @@ const fetchData = async (initialUrl: string, params: Record<string, any>) => {
 
     const data = await res.json();
     const features = data.features || [];
-
     // Update features immediately after fetching a batch
     updateFeatures(features);
 
@@ -96,6 +99,25 @@ const webGLPointsLayer = ref(
   })
 );
 
+const styles = {
+  'MultiLineString': new Style({
+    stroke: new Stroke({
+      color: 'red',
+      width: 5,
+    }),
+  }),
+};
+
+// @ts-ignore
+const styleFunction = function (feature) {
+  return styles[feature.getGeometry().getType()];
+};
+
+const vectorLayer = new VectorLayer({
+  source: vectorSource.value,
+  style: styleFunction,
+});
+
 const clearPopups = () => {
   hoverCoordinates.value = null;
   hoveredFeature.value = null;
@@ -104,7 +126,9 @@ const clearPopups = () => {
 
 onMounted(() => {
   if (map) {
-    map.addLayer(webGLPointsLayer.value as any);
+  
+    // map.addLayer(webGLPointsLayer.value as any);
+    map.addLayer(vectorLayer as any);
 
     // Initialize the select interaction for hover
     selectHover = new Select({
@@ -161,7 +185,7 @@ watch(
   async (newParams) => {
     areMapPointsLoaded.value = false; // Reset before fetching new data
     const initialUrl =
-      "https://diana.dh.gu.se/api/etruscantombs/coordinates";
+      "https://saintsophia.dh.gu.se/api/inscriptions/coordinates/";
 
     vectorSource.value.clear();
     clearPopups(); // Clear the popups
