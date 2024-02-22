@@ -19,7 +19,7 @@ import Select from "ol/interaction/Select";
 import { inscriptionsStore } from "./store";
 import { pointerMove } from "ol/events/condition";
 import type Map from "ol/Map";
-import {Vector as VectorLayer} from "ol/layer.js"
+import { Vector as VectorLayer } from "ol/layer.js"
 
 
 const { selectedFeature } = storeToRefs(mapStore());
@@ -60,7 +60,7 @@ const updateFeatures = (features: Feature[]) => {
 
 const fetchData = async (initialUrl: string, params: Record<string, any>) => {
   let nextUrl = initialUrl;
-  let initialParams = new URLSearchParams({ page_size: '1000', ...params }).toString();
+  let initialParams = new URLSearchParams({ page_size: '500', ...params }).toString();
 
   if (nextUrl && initialParams) {
     nextUrl = `${nextUrl}?${initialParams}`;
@@ -102,8 +102,8 @@ const webGLPointsLayer = ref(
 const styles = {
   'MultiLineString': new Style({
     stroke: new Stroke({
-      color: 'red',
-      width: 5,
+      color: 'rgba(200,50,50)',
+      width: 4,
     }),
   }),
 };
@@ -126,7 +126,7 @@ const clearPopups = () => {
 
 onMounted(() => {
   if (map) {
-  
+
     // map.addLayer(webGLPointsLayer.value as any);
     map.addLayer(vectorLayer as any);
 
@@ -147,7 +147,7 @@ onMounted(() => {
 
         const geometry = feature.getGeometry() as any;
         hoverCoordinates.value = geometry.getCoordinates();
-    } else {
+      } else {
         //clear hover information when no feature is hovered
         hoveredFeature.value = null;
         hoverCoordinates.value = null;
@@ -196,25 +196,11 @@ watch(
 );
 </script>
 <template>
-  <ol-overlay
-    class="ol-popup"
-    v-if="hoveredFeature"
-    :position="hoverCoordinates"
-  >
-    <div
-      class="ol-popup-content"
-      v-html="'Tomb ' + (hoveredFeature ? hoveredFeature.get('name') : '')"
-    ></div>
+  <ol-overlay class="ol-popup" v-if="hoveredFeature" :position="hoverCoordinates">
+    <div class="ol-popup-content" v-html="'Panel ' + (hoveredFeature ? hoveredFeature.get('name') : '')"></div>
   </ol-overlay>
 
-  <ol-overlay
-    class="ol-popup"
-    v-if="selectedFeature"
-    :position="selectedCoordinates"
-  >
-    <div
-      class="ol-popup-content"
-      v-html="'Tomb ' + (selectedFeature ? selectedFeature.get('name') : '')"
-    ></div>
+  <ol-overlay class="ol-popup" v-if="selectedFeature" :position="selectedCoordinates">
+    <div class="ol-popup-content" v-html="'Panel ' + (selectedFeature ? selectedFeature.get('name') : '')"></div>
   </ol-overlay>
 </template>
