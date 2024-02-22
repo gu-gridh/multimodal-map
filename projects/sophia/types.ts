@@ -1,7 +1,7 @@
 import type { Project } from "@/types/project";
 import type { Geometry } from "ol/geom";
 
-export type EtruscanProject = Project;
+export type InscriptionsProject = Project;
 
 export type Image = {
   id: number;
@@ -16,11 +16,11 @@ export type Image = {
   focus: number;
   tag: number[];
   published: boolean;
-  tomb: Tomb;
+  panel: Panel;
   type_of_image: { text: string }[];
 };
 
-export type Tomb = {
+export type Panel = {
   id: number;
   created_at: string;
   updated_at: string;

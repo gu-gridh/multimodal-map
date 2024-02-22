@@ -2,18 +2,18 @@
 import { watchEffect, ref, inject } from "vue";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
-import { etruscanStore } from "./store";
+import { inscriptionsStore } from "./store";
 import type {
   Image,
 } from "./types";
-import type { DianaClient } from "@/assets/diana";
+import type { SophiaClient } from "@/assets/saintsophia";
 import OpenSeadragon from "@/components/OpenSeadragonSequence.vue";
 import apiConfig from "./apiConfig"
 
 const { selectedFeature } = storeToRefs(mapStore());
-const { placeId } = storeToRefs(etruscanStore());
-const etruscan = etruscanStore();
-const diana = inject("diana") as DianaClient;
+const { placeId } = storeToRefs(inscriptionsStore());
+const inscriptions = inscriptionsStore();
+const sophia = inject("inscriptions") as SophiaClient;
 const images = ref<Image[]>();
 const imageUrls = ref<string[]>([]);
 let text = ref(false)
@@ -37,9 +37,9 @@ watchEffect(async () => {
   if (selectedFeature.value) {
     const placeName = selectedFeature.value.get("name");
     const placeId = selectedFeature.value.getId();
-    etruscan.placeId = placeId as string | null;
+    inscriptions.placeId = placeId as string | null;
     place.value = { id_: placeName };
-    images.value = await diana.listAll<Image>("image", { tomb: placeId, depth: 2, type_of_image: 2 });
+    images.value = await inscriptions.listAll<Image>("image", { tomb: placeId, depth: 2, type_of_image: 2 });
     // If images are available
     if (images.value.length > 0) {
       hasImages.value = true;
@@ -61,7 +61,7 @@ watchEffect(async () => {
       hasImages.value = false;
       imageUrls.value = [];
       // If no images are available, fetch details from `geojson/place` endpoint
-      const response = await fetch(`${apiConfig.PLACE}?id=${placeId}`);
+      const response = await fetch(`${apiConfig.PANEL}?id=${placeId}`);
       const geojsonData = await response.json();
       if (geojsonData.features.length > 0) {
         const feature = geojsonData.features[0];

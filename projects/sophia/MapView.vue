@@ -3,12 +3,12 @@ import { computed } from "vue";
 import MainLayout from "@/MainLayout.vue";
 import MapViewControls from "./MapViewControls.vue";
 import MapComponent from "@/components/MapComponentRwanda.vue";
-import DianaPlaceLayer from "./DianaPlaceLayerEtruscan.vue";
+import SophiaPlaceLayer from "./PanelLayerInscriptions.vue";
 import GeoJsonWebGLRenderer from "@/components/GeoJsonWebGLRenderer.vue";
 import FeatureSelection from "./FeatureSelection.vue";
 import MapViewPreview from "./MapViewPreview.vue";
 import { storeToRefs } from "pinia";
-import { etruscanStore } from "./store";
+import { inscriptionsStore } from "./store";
 import { mapStore } from "@/stores/store";
 import { clean } from "@/assets/utils";
 import markerIcon from "@/assets/marker-white.svg";
@@ -18,12 +18,12 @@ import About from "./About.vue";
 import { onMounted, watch } from "vue";
 import { nextTick } from "vue";
 import GeoJSON from "ol/format/GeoJSON";
-import Title from "./Title.vue"
+import Title from "./Title.vue";
 import apiConfig from "./apiConfig"
 
-const { categories, tags, necropoli, tombType, tagsLayerVisible, dataParams, imgParams, selectedNecropolisCoordinates, enable3D, enablePlan } = storeToRefs(etruscanStore());
+const { categories, tags, necropoli, tombType, tagsLayerVisible, dataParams, imgParams, selectedNecropolisCoordinates, enable3D, enablePlan } = storeToRefs(inscriptionsStore());
 const store = mapStore();
-const etruscan = etruscanStore();  // Get the instance of etruscanStore
+const inscriptions = inscriptionsStore();  // Get the instance of inscriptionsStore
 const { selectedFeature } = storeToRefs(store);
 const minZoom = 20;
 const maxZoom = 24;
@@ -99,10 +99,10 @@ const tagParams = computed(() => {
 
   // Concatenate the base URL with the search string to form the full URL
   const fullUrl = queryString
-    ? `${apiConfig.PLACE}?page_size=500&${queryString}`
-    : `${apiConfig.PLACE}?page_size=500`;
+    ? `${apiConfig.PANEL}?page_size=500&${queryString}`
+    : `${apiConfig.PANEL}?page_size=500`;
 
-  etruscan.imgParams = params;
+  inscriptions.imgParams = params;
   return params;
 });
 

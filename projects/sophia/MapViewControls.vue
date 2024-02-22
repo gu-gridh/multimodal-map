@@ -38,39 +38,6 @@
         <div class="search-results">
         </div>
       </div>
-
-
-      <!-- This creates a 2-column section width for the controls -->
-      <!--  <div class="control-organisation justify-space">
-        <div class="tag-section">
-          <div class="section-title">{{ $t('Site') }}</div>
-          <div style="display:inline; float:left; margin-right:0px;">
-            <select title="pick what dataset you want to view data from" class="dropdown theme-color-background my-2">
-              <option title="View data from all datasets" value="All datasets">{{ $t('All') }}</option>
-              <option title="View data from San Giovenale" value="CTSG-2015">San Giovenale</option>
-              <option title="View data from San Giuliano" value="CTSG-2015">San Giuliano</option>
-              <option title="View data from Blera" value="CTSG-2015">Blera</option>
-              <option title="View data from Luni" value="CTSG-2015">Luni</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="tag-section margin-5">
-          <div class="section-title">{{ $t('necropolisname') }}</div>
-          <div title="Narrow the result to a certain necropolis" class="broad-controls">
-            <CategoryButtonList v-model="necropoli" :categories="NECROPOLI" :limit="1" styleType="dropdown" class="my-2"
-              type="necropolis" @click="handleSelectionClick($event, currentTombType)" />
-          </div>
-        </div>
-
-        <div class="tag-section margin-5">
-          <div class="section-title">{{ $t('tombtype') }}</div>
-          <div title="Narrow the result to a certain tomb type" class="broad-controls">
-            <CategoryButtonList v-model="tombType" :categories="TOMBTYPE" :limit="1" styleType="dropdown" class="my-2"
-              type="tombType" />
-          </div>
-        </div>
-      </div> -->
     </div>
 
     <!-- if the markers are not loaded show the loader -->
@@ -120,17 +87,17 @@ import { inject, ref, onMounted, computed, defineProps, watch } from "vue";
 import CategoryButtonList from "./CategoryButtonDropdown.vue";
 import CategoryButton from "@/components/input/CategoryButtonList.vue";
 import { storeToRefs } from "pinia";
-import { etruscanStore } from "./store";
+import { inscriptionsStore } from "./store";
 import { mapStore } from "@/stores/store";
-import type { EtruscanProject } from "./types";
-import { DianaClient } from "@/assets/diana";
+import type { InscriptionsProject } from "./types";
+import { SophiaClient } from "@/assets/saintsophia";
 import { transform } from 'ol/proj';
 import apiConfig from "./apiConfig"
 import { nextTick } from 'vue';
 
-const config = inject<EtruscanProject>("config");
-const dianaClient = new DianaClient("etruscantombs"); // Initialize DianaClient
-const { categories, tags, necropoli, tombType, dataParams, selectedNecropolisCoordinates, enable3D, enablePlan, areMapPointsLoaded } = storeToRefs(etruscanStore());
+const config = inject<InscriptionsProject>("config");
+const sophiaClient = new SophiaClient("inscriptions"); // Initialize SophiaClient
+const { categories, tags, necropoli, tombType, dataParams, selectedNecropolisCoordinates, enable3D, enablePlan, areMapPointsLoaded } = storeToRefs(inscriptionsStore());
 // Create a ref for last clicked category
 const lastClickedCategory = ref('');
 
@@ -150,7 +117,7 @@ const currentTag = ref(null);
 const currentNecropolis = ref(null);
 const currentTombType = ref(null);
 
-const baseURL = `${apiConfig.PLACE}?page_size=500`;
+const baseURL = `${apiConfig.PANEL}?page_size=500`;
 
 onMounted(async () => {
   await fetchDataAndPopulateRef("epoch", TAGS);
@@ -165,7 +132,7 @@ const NECROPOLICoordinates = ref<Record<string, [number, number]>>({});
 
 async function fetchDataAndPopulateRef<T>(type: string, refToPopulate: any) {
   try {
-    const data = await dianaClient.listAll<T>(type);
+    const data = await sophiaClient.listAll<T>(type);
     data.forEach((result: any) => {
       if (result.published) {
         refToPopulate.value[result.id] = result.text;

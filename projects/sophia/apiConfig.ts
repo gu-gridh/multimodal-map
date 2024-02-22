@@ -1,8 +1,8 @@
 const API_ENDPOINTS = {
-    PLACE: 'https://diana.dh.gu.se/api/etruscantombs/geojson/place/',
-    IMAGE: 'https://diana.dh.gu.se/api/etruscantombs/image/',
-    ADMIN_PLACE: 'https://diana.dh.gu.se/admin/etruscantombs/place/',
-    ADMIN_IMAGE: 'https://diana.dh.gu.se/admin/etruscantombs/image/',
+    PANEL: 'https://saintsophia.dh.gu.se/api/inscriptions/geojson/panel/',
+    IMAGE: 'https://saintsophia.dh.gu.se/api/inscriptions/image/',
+    ADMIN_PANEL: 'https://saintsophia.dh.gu.se/admin/inscriptions/place/',
+    ADMIN_IMAGE: 'https://saintsophia.dh.gu.se/admin/inscriptions/image/',
 };
 
 export default API_ENDPOINTS;
