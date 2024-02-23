@@ -2,7 +2,6 @@
 import { computed, ref, defineProps, onMounted, inject, watch } from "vue";
 import GeoJSON from "ol/format/GeoJSON.js";
 import VectorSource from "ol/source/Vector";
-import WebGLPointsLayer from "ol/layer/WebGLPoints.js";
 import { fromLonLat } from "ol/proj";
 import { SOPHIA_BASE } from "@/assets/saintsophia";
 import markerIcon from "@/assets/marker-white.svg";
@@ -46,6 +45,10 @@ const props = defineProps({
     type: Number,
     default: 2,
   },
+  showSecondFloor: {
+    type: Boolean,
+    default: false,
+  }
 });
 
 const updateFeatures = (features: Feature[]) => {
@@ -54,14 +57,13 @@ const updateFeatures = (features: Feature[]) => {
     type: "FeatureCollection",
     features,
   });
-  console.log(vectorSource.value)
   vectorSource.value.addFeatures(transformedFeatures);
 };
 
 const fetchData = async (initialUrl: string, params: Record<string, any>) => {
   let nextUrl = initialUrl;
   let initialParams = new URLSearchParams({ page_size: '500', ...params }).toString();
-
+  
   if (nextUrl && initialParams) {
     nextUrl = `${nextUrl}?${initialParams}`;
   }
@@ -82,22 +84,6 @@ const fetchData = async (initialUrl: string, params: Record<string, any>) => {
   }
   areMapPointsLoaded.value = true; // Set to true once all points are loaded
 };
-
-// Create a WebGLPointsLayer
-const webGLPointsLayer = ref(
-  new WebGLPointsLayer({
-    source: vectorSource.value as any,
-    style: {
-      symbol: {
-        symbolType: "image",
-        color: "#ffffff",
-        offset: [0, 20],
-        size: [30, 45],
-        src: markerIcon, // Use white marker
-      },
-    },
-  })
-);
 
 const styles = {
   'MultiLineString': new Style({
