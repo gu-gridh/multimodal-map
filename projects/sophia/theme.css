@@ -110,6 +110,11 @@ body {
   padding: 6px 3px 3px 3px!important;
 }
 
+.placecard-top{
+ height:65%;
+  }
+  
+
 .placecard-title{
 font-size:2vw;
 font-family: 'Oswald', sans-serif;
