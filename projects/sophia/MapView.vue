@@ -34,22 +34,22 @@ const showSecondFloor = ref(false);
 let visited = true; // Store the visited status outside of the hook
 
 // Watcher for selectedFeature changes
-// watch(
-//   selectedFeature,
-//   (newFeature, oldFeature) => {
-//     if (newFeature && newFeature.getGeometry) {
-//       const geometry = newFeature.getGeometry();
-//       if (geometry) {
-//         const coordinates = (geometry as any).getFirstCoordinate();
-//         store.updateCenter(coordinates);
-//         if (store.zoom < featureZoom) {
-//           store.updateZoom(featureZoom);
-//         }
-//       }
-//     }
-//   },
-//   { immediate: true }
-// );
+watch(
+  selectedFeature,
+  (newFeature, oldFeature) => {
+    if (newFeature && newFeature.getGeometry) {
+      const geometry = newFeature.getGeometry();
+      if (geometry) {
+        const coordinates = (geometry as any).getFirstCoordinate();
+        store.updateCenter(coordinates);
+        if (store.zoom < featureZoom) {
+          store.updateZoom(featureZoom);
+        }
+      }
+    }
+  },
+  { immediate: true }
+);
 
 // Watcher for selectedNecropolisCoordinates changes
 // watch(
