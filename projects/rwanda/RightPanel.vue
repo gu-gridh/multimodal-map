@@ -54,8 +54,9 @@ watchEffect(async () => {
 
 <style>
 #app .right-panel {
-    height:100%;
+    height:950px;
     background-color:transparent!important;
+    overflow-y: auto;
 }
 .right-panel-initial {
     height:calc(100vh - 80px);

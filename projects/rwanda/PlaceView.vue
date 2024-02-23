@@ -243,7 +243,7 @@ const showMoreInterviews =() => {
   display:block;
   height: calc(100vh - 80px) !important;
   pointer-events: auto !important;
-  overflow-y: scroll !important;
+  overflow-y: auto !important;
   padding-left: 20px;
   padding-right: 20px;
   padding-bottom: 100px;
