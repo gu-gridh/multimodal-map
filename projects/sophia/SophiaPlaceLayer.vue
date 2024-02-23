@@ -60,12 +60,19 @@ const updateFeatures = (features: Feature[]) => {
   vectorSource.value.addFeatures(transformedFeatures);
 };
 
-const fetchData = async (initialUrl: string, params: Record<string, any>) => {
+const fetchData = async (initialUrl: string, params: Record<string, any>, isSecondFloor: Boolean) => {
   let nextUrl = initialUrl;
   let initialParams = new URLSearchParams({ page_size: '500', ...params }).toString();
-  
-  if (nextUrl && initialParams) {
-    nextUrl = `${nextUrl}?${initialParams}`;
+
+  if (nextUrl && initialParams) {   
+    if (!isSecondFloor) {
+      nextUrl = `${nextUrl}?${initialParams}&floor=1`;
+    } 
+    else if (isSecondFloor) {
+      nextUrl = `${nextUrl}?${initialParams}&floor=2`;
+    }
+
+
   }
 
   while (nextUrl) {
@@ -94,7 +101,7 @@ const styles = {
   }),
 };
 
-// @ts-ignore
+
 const styleFunction = function (feature) {
   return styles[feature.getGeometry().getType()];
 };
@@ -175,11 +182,24 @@ watch(
 
     vectorSource.value.clear();
     clearPopups(); // Clear the popups
-
-    await fetchData(initialUrl, newParams);
+    await fetchData(initialUrl, newParams, props.showSecondFloor);
   },
   { immediate: true }
 );
+
+watch(
+  () => props.showSecondFloor,
+  async (newFloor) => {
+    areMapPointsLoaded.value=false;
+    const initialUrl = 
+      "https://saintsophia.dh.gu.se/api/inscriptions/coordinates/";
+
+    vectorSource.value.clear();
+    clearPopups(); // Clear the popups
+    await fetchData(initialUrl, props.params, newFloor);
+  }
+)
+
 </script>
 <template>
  

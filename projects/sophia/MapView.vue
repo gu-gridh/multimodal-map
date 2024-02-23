@@ -222,7 +222,7 @@ watch(showSecondFloor, (newValue) => {
               <ol-source-xyz  url="https://data.dh.gu.se/tiles/saint_sophia_second_floor/{z}/{x}/{y}.png" />
             </ol-tile-layer>
           </div>
-          <SophiaPlaceLayer :params="tagParams" :zIndex=2000 v-if="!showSecondFloor" />
+          <SophiaPlaceLayer :params="tagParams" :zIndex=2000 :showSecondFloor="showSecondFloor" />
           </template>
         </MapComponent>
       </div>
