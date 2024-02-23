@@ -1,3 +1,4 @@
+// @ts-nocheck
 <script lang="ts" setup>
 import { computed, ref, defineProps, onMounted, inject, watch } from "vue";
 import GeoJSON from "ol/format/GeoJSON.js";
@@ -44,7 +45,7 @@ const props = defineProps({
   },
   zIndex: {
     type: Number,
-    default: 2,
+    default: 20,
   },
 });
 
@@ -54,7 +55,6 @@ const updateFeatures = (features: Feature[]) => {
     type: "FeatureCollection",
     features,
   });
-  console.log(vectorSource.value)
   vectorSource.value.addFeatures(transformedFeatures);
 };
 
@@ -83,22 +83,6 @@ const fetchData = async (initialUrl: string, params: Record<string, any>) => {
   areMapPointsLoaded.value = true; // Set to true once all points are loaded
 };
 
-// Create a WebGLPointsLayer
-const webGLPointsLayer = ref(
-  new WebGLPointsLayer({
-    source: vectorSource.value as any,
-    style: {
-      symbol: {
-        symbolType: "image",
-        color: "#ffffff",
-        offset: [0, 20],
-        size: [30, 45],
-        src: markerIcon, // Use white marker
-      },
-    },
-  })
-);
-
 const styles = {
   'MultiLineString': new Style({
     stroke: new Stroke({
@@ -108,7 +92,6 @@ const styles = {
   }),
 };
 
-// @ts-ignore
 const styleFunction = function (feature) {
   return styles[feature.getGeometry().getType()];
 };
@@ -126,14 +109,12 @@ const clearPopups = () => {
 
 onMounted(() => {
   if (map) {
-  
-    // map.addLayer(webGLPointsLayer.value as any);
     map.addLayer(vectorLayer as any);
 
     // Initialize the select interaction for hover
     selectHover = new Select({
       condition: pointerMove,
-      layers: [webGLPointsLayer.value as any],
+      layers: [vectorLayer as any],
     });
 
     // Add select interaction to the map for hover
@@ -154,27 +135,27 @@ onMounted(() => {
       }
     });
 
-    let clickedFeatures: Feature[] = [];
-    map.on("click", function (evt) {
-      clickedFeatures = []; // Clear the array before each click
-      map.forEachFeatureAtPixel(evt.pixel, function (feature) {
-        clickedFeatures.push(feature as Feature<Geometry>);
-      });
+    // let clickedFeatures: Feature[] = [];
+    // map.on("click", function (evt) {
+    //   clickedFeatures = []; // Clear the array before each click
+    //   map.forEachFeatureAtPixel(evt.pixel, function (feature) {
+    //     clickedFeatures.push(feature as Feature<Geometry>);
+    //   });
 
-      if (clickedFeatures.length === 1) {
-        // Unselect the hovered feature
-        hoverCoordinates.value = null;
-        hoveredFeature.value = null;
+    //   if (clickedFeatures.length === 1) {
+    //     // Unselect the hovered feature
+    //     hoverCoordinates.value = null;
+    //     hoveredFeature.value = null;
 
-        // Select the clicked feature
-        selectedFeature.value = clickedFeatures[0];
-        const geometry = clickedFeatures[0].getGeometry() as any;
-        selectedCoordinates.value = geometry.getCoordinates();
-      } else {
-        selectedCoordinates.value = undefined as any;
-        selectedFeature.value = undefined;
-      }
-    });
+    //     // Select the clicked feature
+    //     selectedFeature.value = clickedFeatures[0];
+    //     const geometry = clickedFeatures[0].getGeometry() as any;
+    //     selectedCoordinates.value = geometry.getCoordinates();
+    //   } else {
+    //     selectedCoordinates.value = undefined as any;
+    //     selectedFeature.value = undefined;
+    //   }
+    // });
   } else {
     console.error("Map object is not initialized.");
   }
@@ -189,11 +170,17 @@ watch(
 
     vectorSource.value.clear();
     clearPopups(); // Clear the popups
-
+    
     await fetchData(initialUrl, newParams);
   },
   { immediate: true }
 );
+
+watch(
+  () => showSecondFloor,
+  
+)
+
 </script>
 <template>
   <ol-overlay
@@ -203,7 +190,7 @@ watch(
   >
     <div
       class="ol-popup-content"
-      v-html="'Tomb ' + (hoveredFeature ? hoveredFeature.get('name') : '')"
+      v-html="'Panel ' + (hoveredFeature ? hoveredFeature.get('title') : '')"
     ></div>
   </ol-overlay>
 
@@ -214,7 +201,7 @@ watch(
   >
     <div
       class="ol-popup-content"
-      v-html="'Tomb ' + (selectedFeature ? selectedFeature.get('name') : '')"
+      v-html="'Panel ' + (selectedFeature ? selectedFeature.get('title') : '')"
     ></div>
   </ol-overlay>
 </template>
