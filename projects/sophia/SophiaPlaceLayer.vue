@@ -139,7 +139,7 @@ onMounted(() => {
         hoveredFeature.value = feature as any;
 
         const geometry = feature.getGeometry() as any;
-        hoverCoordinates.value = geometry.getCoordinates();
+        hoverCoordinates.value = geometry.getFirstCoordinate();
       } else {
         //clear hover information when no feature is hovered
         hoveredFeature.value = null;
@@ -205,10 +205,10 @@ watch(
  
 
   <ol-overlay class="ol-popup" v-if="hoveredFeature" :position="hoverCoordinates">
-    <div class="ol-popup-content" v-html="'Panel ' + (hoveredFeature ? hoveredFeature.get('name') : '')"></div>
+    <div class="ol-popup-content" v-html="'Panel ' + (hoveredFeature ? hoveredFeature.get('title') : '')"></div>
   </ol-overlay>
 
   <ol-overlay class="ol-popup" v-if="selectedFeature" :position="selectedCoordinates">
-    <div class="ol-popup-content" v-html="'Panel ' + (selectedFeature ? selectedFeature.get('name') : '')"></div>
+    <div class="ol-popup-content" v-html="'Panel ' + (selectedFeature ? selectedFeature.get('title') : '')"></div>
   </ol-overlay>
 </template>
