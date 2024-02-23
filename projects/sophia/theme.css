@@ -110,6 +110,12 @@ body {
   padding: 6px 3px 3px 3px!important;
 }
 
+.placecard-title{
+font-size:2vw;
+font-family: 'Oswald', sans-serif;
+font-weight:100;
+}
+
 
 
 @media screen and (max-width: 900px) {
