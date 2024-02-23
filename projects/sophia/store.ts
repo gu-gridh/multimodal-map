@@ -5,7 +5,7 @@ import config from "./config";
 export const inscriptionsStore = defineStore("inscriptions", () => {
   const categories = ref<Array<string>>(["all"]);
   const tags = ref<Array<string>>(["all"]);
-  const necropoli = ref<Array<string>>(["all"]);
+  //const necropoli = ref<Array<string>>(["all"]);
   const tombType = ref<Array<string>>(["all"]);
   const tagsLayerVisible = ref(false); // Default visibility state for tags layer
   const dataParams = ref<Record<string, string | number | null>>({});
@@ -16,5 +16,5 @@ export const inscriptionsStore = defineStore("inscriptions", () => {
   const areMapPointsLoaded = ref<boolean>(false);
   const placeId = ref<string | null>(null);
 
-  return { categories, tags, tagsLayerVisible, necropoli, tombType,  dataParams, selectedNecropolisCoordinates, enable3D, enablePlan, areMapPointsLoaded, imgParams, placeId };
+  return { categories, tags, tagsLayerVisible, tombType,  dataParams, selectedNecropolisCoordinates, enable3D, enablePlan, areMapPointsLoaded, imgParams, placeId };
 });

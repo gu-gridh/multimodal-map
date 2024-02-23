@@ -3,7 +3,7 @@ import { computed } from "vue";
 import MainLayout from "@/MainLayout.vue";
 import MapViewControls from "./MapViewControls.vue";
 import MapComponent from "@/components/MapComponentRwanda.vue";
-import SophiaPlaceLayer from "./PanelLayerInscriptions.vue";
+import SophiaPlaceLayer from "./SophiaPlaceLayer.vue";
 import GeoJsonWebGLRenderer from "@/components/GeoJsonWebGLRenderer.vue";
 import FeatureSelection from "./FeatureSelection.vue";
 import MapViewPreview from "./MapViewPreview.vue";
@@ -21,7 +21,7 @@ import GeoJSON from "ol/format/GeoJSON";
 import Title from "./Title.vue";
 import apiConfig from "./apiConfig"
 
-const { categories, tags, necropoli, tombType, tagsLayerVisible, dataParams, imgParams, selectedNecropolisCoordinates, enable3D, enablePlan } = storeToRefs(inscriptionsStore());
+const { categories, tags, tombType, tagsLayerVisible, dataParams, imgParams, selectedNecropolisCoordinates, enable3D, enablePlan } = storeToRefs(inscriptionsStore());
 const store = mapStore();
 const inscriptions = inscriptionsStore();  // Get the instance of inscriptionsStore
 const { selectedFeature } = storeToRefs(store);
@@ -65,10 +65,10 @@ watch(
 /* Response for generating the URL for filtering map points down */
 const tagParams = computed(() => {
   // const epoch = tags.value[0];
-  const necropolis = necropoli.value[0];
+  //const necropolis = necropoli.value[0];
   const type = tombType.value[0];
 
-  const initialParams = { necropolis, type }; // epoch
+  const initialParams = { type }; 
 
   // Remove parameters that are set to "all"
   const cleanedParams = Object.keys(initialParams)
@@ -82,7 +82,7 @@ const tagParams = computed(() => {
   const params = clean(cleanedParams);
 
   //filter for just 3D points
-  if (enable3D.value) {
+/*   if (enable3D.value) {
     (params as any)['with_3D'] = 'true';
   } else {
     delete (params as any)['with_3D'];
@@ -92,7 +92,7 @@ const tagParams = computed(() => {
     (params as any)['with_plan'] = 'true';
   } else {
     delete (params as any)['with_plan'];
-  }
+  } */
 
   // Convert the params object to a URL search string
   const queryString = new URLSearchParams(params).toString();
@@ -194,9 +194,10 @@ watch(showSecondFloor, (newValue) => {
 
     <template #background>
       <div class="map-container">
-        <MapComponent :shouldAutoMove="true" :min-zoom=minZoom :max-zoom=maxZoom>
+       
+        <MapComponent :shouldAutoMove="true" :min-zoom=minZoom :max-zoom=maxZoom v-if="!showGallery">
           <template #layers>
-            <GeoJsonWebGLRenderer :externalUrl="'https://data.dh.gu.se/geography/SGElevationMain.geojson'" :zIndex=-0
+            <!-- <GeoJsonWebGLRenderer :externalUrl="'https://data.dh.gu.se/geography/SGElevationMain.geojson'" :zIndex=-0
               :style="{
                 'stroke-color': [0, 0, 0, 0.18],
                 'stroke-width': 1,
@@ -208,21 +209,21 @@ watch(showSecondFloor, (newValue) => {
                 'stroke-color': [0, 0, 0, 0.1],
                 'stroke-width': 1,
                 'fill-color': [0, 255, 0, 1]
-              }">
-            </GeoJsonWebGLRenderer>
-            <SophiaPlaceLayer :params="tagParams" :zIndex=20>
-            </SophiaPlaceLayer>
-          <div v-if="!showGallery">
+              }"> 
+            </GeoJsonWebGLRenderer>-->
+          
+          <div >
             <ol-tile-layer className="floor-plans" v-if="!showSecondFloor">
               <ol-source-xyz url="https://data.dh.gu.se/tiles/saint_sophia_ground_floor/{z}/{x}/{y}.png" />
+              
             </ol-tile-layer>
 
             <ol-tile-layer className="floor-plans" v-if="showSecondFloor">
               <ol-source-xyz  url="https://data.dh.gu.se/tiles/saint_sophia_second_floor/{z}/{x}/{y}.png" />
             </ol-tile-layer>
           </div>
+          <SophiaPlaceLayer :params="tagParams" :zIndex=2000 v-if="!showSecondFloor" />
           </template>
-
         </MapComponent>
       </div>
     </template>
