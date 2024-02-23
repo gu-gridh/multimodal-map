@@ -13,11 +13,11 @@ import apiConfig from "./apiConfig"
 const { selectedFeature } = storeToRefs(mapStore());
 // const { panelId } = storeToRefs(inscriptionsStore());
 const inscriptions = inscriptionsStore();
-const sophia = inject("inscriptions") as SophiaClient;
+const sophia = inject("sophia") as SophiaClient;
 const images = ref<Image[]>();
 const imageUrls = ref<string[]>([]);
 let text = ref(false)
-let panel = ref<Panel[]>();
+let panel = ref()// ref<Panel[]>();
 // const type = ref<string | null>(null);
 // const subtitle = ref<string | null>(null);
 const room = ref<string | null>(null);
@@ -32,22 +32,20 @@ watchEffect(async () => {
   if (selectedFeature.value) {
     const panelTitle = selectedFeature.value.get("title");
     const panelId = selectedFeature.value.getId();
-    const panelRoom = selectedFeature.value.get("room");
     inscriptions.panelId = panelId as string | null;
     panel.value = { id_: panelTitle };
     images.value = await sophia.listAll<Image>("image", { panel: panelId, depth: 2});
-    
-
     // If images are available
     if (images.value.length > 0) {
       hasImages.value = true;
-      const filteredImages = images.value.filter(image => {
-        return image.type_of_image.some(tag => tag.text === 'orthophoto'); //Only display images that are orthophoto
-      });
-      imageUrls.value = filteredImages.map(image => `${image.iiif_file}/info.json`);
+      // const filteredImages = images.value.filter(image => {
+      //   return image.type_of_image.some(tag => tag.text === 'Orthophoto'); //Only display images that are orthophoto
+      // });
+      imageUrls.value = images.value.map(image => `${image.iiif_file}/info.json`);// filteredImages.map(image => `${image.iiif_file}/info.json`);
 
       // Populate place details
       if (images.value[0].panel) {
+        room.value = images.value[0].room || null;
         //type.value = images.value[0].tomb.type.text || null;
         // period.value = images.value[0].tomb.epoch.text || null;
         // subtitle.value = images.value[0].panel.subtitle || null;
@@ -60,9 +58,8 @@ watchEffect(async () => {
       const response = await fetch(`${apiConfig.PANEL}?id=${panelId}`);
       const geojsonData = await response.json();
       if (geojsonData.features.length > 0) {
-        console.log("fired")
         const feature = geojsonData.features[0];
-        room.value = panelRoom || null;
+        room.value = feature.properties.room || null;
         // type.value = feature.properties.type?.text || null;
         // period.value = feature.properties.epoch?.text || null;
         // subtitle.value = feature.properties.subtitle || null;

@@ -96,7 +96,7 @@ import apiConfig from "./apiConfig"
 import { nextTick } from 'vue';
 
 const config = inject<InscriptionsProject>("config");
-const sophiaClient = new SophiaClient("inscriptions"); // Initialize SophiaClient
+const sophiaClient = new SophiaClient("sophia"); // Initialize SophiaClient
 const { categories, tags, dataParams, areMapPointsLoaded } = storeToRefs(inscriptionsStore());
 // Create a ref for last clicked category
 const lastClickedCategory = ref('');
