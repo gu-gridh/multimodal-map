@@ -4,41 +4,45 @@ import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
 import { inscriptionsStore } from "./store";
 import type {
-  Image,
+  Image, Panel,
 } from "./types";
 import type { SophiaClient } from "@/assets/saintsophia";
 import OpenSeadragon from "@/components/OpenSeadragonSequence.vue";
 import apiConfig from "./apiConfig"
 
 const { selectedFeature } = storeToRefs(mapStore());
-const { placeId } = storeToRefs(inscriptionsStore());
+// const { panelId } = storeToRefs(inscriptionsStore());
 const inscriptions = inscriptionsStore();
 const sophia = inject("inscriptions") as SophiaClient;
 const images = ref<Image[]>();
 const imageUrls = ref<string[]>([]);
 let text = ref(false)
-let place = ref()
-const type = ref<string | null>(null);
-const subtitle = ref<string | null>(null);
-const description = ref<string | null>(null);
+let panel = ref<Panel[]>();
+// const type = ref<string | null>(null);
+// const subtitle = ref<string | null>(null);
+const room = ref<string | null>(null);
+const documentation = ref<string | null>(null);
 const hasImages = ref<boolean>(false);
 
 //when a place is selected, fetch image and info
 watchEffect(async () => {
-  type.value = null;
-  subtitle.value = null;
-  description.value = null;
+  // type.value = null;
+  // subtitle.value = null;
+  documentation.value = null;
   if (selectedFeature.value) {
-    const placeName = selectedFeature.value.get("name");
-    const placeId = selectedFeature.value.getId();
-    inscriptions.placeId = placeId as string | null;
-    place.value = { id_: placeName };
-    images.value = await inscriptions.listAll<Image>("image", { panel: placeId, depth: 2, type_of_image: 2 });
+    const panelTitle = selectedFeature.value.get("title");
+    const panelId = selectedFeature.value.getId();
+    const panelRoom = selectedFeature.value.get("room");
+    inscriptions.panelId = panelId as string | null;
+    panel.value = { id_: panelTitle };
+    images.value = await sophia.listAll<Image>("image", { panel: panelId, depth: 2});
+    
+
     // If images are available
     if (images.value.length > 0) {
       hasImages.value = true;
       const filteredImages = images.value.filter(image => {
-        return image.type_of_image.some(tag => tag.text === 'orthophoto'); //Only display images that are photographs
+        return image.type_of_image.some(tag => tag.text === 'orthophoto'); //Only display images that are orthophoto
       });
       imageUrls.value = filteredImages.map(image => `${image.iiif_file}/info.json`);
 
@@ -46,27 +50,29 @@ watchEffect(async () => {
       if (images.value[0].panel) {
         //type.value = images.value[0].tomb.type.text || null;
         // period.value = images.value[0].tomb.epoch.text || null;
-        subtitle.value = images.value[0].panel.subtitle || null;
-        description.value = images.value[0].panel.description || null;
+        // subtitle.value = images.value[0].panel.subtitle || null;
+        documentation.value = images.value[0].panel.documentation || null;
       }
     } else {
       hasImages.value = false;
       imageUrls.value = [];
       // If no images are available, fetch details from `geojson/place` endpoint
-      const response = await fetch(`${apiConfig.PANEL}?id=${placeId}`);
+      const response = await fetch(`${apiConfig.PANEL}?id=${panelId}`);
       const geojsonData = await response.json();
       if (geojsonData.features.length > 0) {
+        console.log("fired")
         const feature = geojsonData.features[0];
-        type.value = feature.properties.type?.text || null;
+        room.value = panelRoom || null;
+        // type.value = feature.properties.type?.text || null;
         // period.value = feature.properties.epoch?.text || null;
-        subtitle.value = feature.properties.subtitle || null;
-        description.value = feature.properties.description || null;
+        // subtitle.value = feature.properties.subtitle || null;
+        documentation.value = feature.properties.documentation || null;
       }
     }
   } else {
     images.value = [];
     imageUrls.value = [];
-    type.value = null;
+    // type.value = null;
   }
 });
 
@@ -92,8 +98,8 @@ function deselectPlace() {
 
       <div class="placecard-bottom">
         <div class="placecard-text">
-          <div class="placecard-title theme-color-text theme-title-typography">{{ $t('panel') }} {{ selectedFeature.get("name") }}</div>
-          <div class="placecard-subtitle theme-color-text theme-title-typography">{{ subtitle }}</div>
+          <div class="placecard-title theme-color-text theme-title-typography">{{ $t('Panel') }} {{ selectedFeature.get("title") }}</div>
+          <!-- <div class="placecard-subtitle theme-color-text theme-title-typography">{{ room }}</div> -->
           <!-- <button class="theme-button theme-color-background">{{ $t('threedmodel') }}</button> -->
         </div>
         <div class="placecard-content">
@@ -113,7 +119,7 @@ function deselectPlace() {
               <div class="tag theme-color-text"></div>
             </div>
             <div class="metadata-item">
-              <div class="short-label">{{ $t('room') }}:</div>
+              <div class="short-label">{{ $t('room') }}: {{ room }}</div>
               <div class="tag theme-color-text"></div>
             </div>
 
@@ -121,13 +127,13 @@ function deselectPlace() {
 
         </div>
         <div class="placecard-metadata-content">
-          <div class="preview" v-html="description">
+          <div class="preview" v-html="documentation">
           </div>
         </div>
       </div>
 
       <div class="placecard-center-button">
-        <router-link :to="`${(place?.id_ || '').replace(/ /g, '_')}`">
+        <router-link :to="`${(panel?.id_ || '').replace(/ /g, '_')}`">
     <button class="theme-button theme-color-background" style="margin-top:0px;">{{ $t('moreinfo') }}</button>
 </router-link>
       </div>

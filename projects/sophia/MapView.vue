@@ -66,9 +66,9 @@ watch(
 const tagParams = computed(() => {
   // const epoch = tags.value[0];
   //const necropolis = necropoli.value[0];
-  const type = tombType.value[0];
+  // const type = panelType.value[0];
 
-  const initialParams = { type }; 
+  const initialParams = { }; // no initialParams at the moment!
 
   // Remove parameters that are set to "all"
   const cleanedParams = Object.keys(initialParams)

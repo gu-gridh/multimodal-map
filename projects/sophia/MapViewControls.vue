@@ -97,7 +97,7 @@ import { nextTick } from 'vue';
 
 const config = inject<InscriptionsProject>("config");
 const sophiaClient = new SophiaClient("inscriptions"); // Initialize SophiaClient
-const { categories, tags, dataParams, selectedNecropolisCoordinates, enable3D, enablePlan, areMapPointsLoaded } = storeToRefs(inscriptionsStore());
+const { categories, tags, dataParams, areMapPointsLoaded } = storeToRefs(inscriptionsStore());
 // Create a ref for last clicked category
 const lastClickedCategory = ref('');
 
@@ -153,24 +153,24 @@ const handleCategoryClick = (category: string) => {
 
     // Clear the lastClickedCategory since it was unselected
     lastClickedCategory.value = '';
-    if (category === 'models') {
-      enable3D.value = !enable3D.value;  // Toggle between true and false
-    } else {
-      enable3D.value = false;
-    }
-    if (category === 'plans') {
-      enablePlan.value = !enablePlan.value;  // Toggle between true and false
-    } else {
-      enablePlan.value = false;
-    }
+    // if (category === 'models') {
+    //   enable3D.value = !enable3D.value;  // Toggle between true and false
+    // } else {
+    //   enable3D.value = false;
+    // }
+    // if (category === 'plans') {
+    //   enablePlan.value = !enablePlan.value;  // Toggle between true and false
+    // } else {
+    //   enablePlan.value = false;
+    // }
   } else {
     // Add the clicked category only if it's not the same as the last clicked one
     categories.value = [category];
 
     // Update last clicked category
     lastClickedCategory.value = category;
-    enable3D.value = (category === 'models');
-    enablePlan.value = (category === 'plans');
+    // enable3D.value = (category === 'models');
+    // enablePlan.value = (category === 'plans');
   }
 };
 

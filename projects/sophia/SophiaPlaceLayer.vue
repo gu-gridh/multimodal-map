@@ -170,7 +170,7 @@ onMounted(() => {
       // Select the clicked feature
       selectedFeature.value = clickedFeatures[0];
       const geometry = clickedFeatures[0].getGeometry() as any;
-      selectedCoordinates.value = geometry.getCoordinates();
+      selectedCoordinates.value = geometry.getFirstCoordinate();
     } else {
       selectedCoordinates.value = undefined as any;
       selectedFeature.value = undefined;

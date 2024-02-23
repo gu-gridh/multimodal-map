@@ -9,43 +9,36 @@ export type Image = {
   file: string;
   iiif_file: string;
   title: string;
-  creator: number;
-  place: number;
-  description: string;
-  date: string;
-  focus: number;
-  tag: number[];
   published: boolean;
   panel: Panel;
+  inscription: Inscription;
   type_of_image: { text: string }[];
 };
 
-export type Panel = {
-  id: number;
-  created_at: string;
-  updated_at: string;
+export interface Panel {
+  id?: number;
   published: boolean;
-  name: string;
-  subtitle: string;
+  title: string;
   geometry: {
     type: string;
     coordinates: number[];
   };
-  number_of_chambers: number;
-  description: string;
-  necropolis: {
-    id: number;
-    text: string;
-  };
-  type: {
-    id: number;
-    text: string;
-  };
-  epoch: {
-    id: number;
-    text: string;
-  };
+  documentation: string;
   tags: any[];
+};
+
+export type Inscription = {
+  id: number;
+  published: boolean;
+  title: string;
+  alt_title: string;
+  geometry: {
+    type: string;
+    coordinates: number[];
+  };
+  type_of_inscription: InscriptionType;
+  tags: any[];
+  author?: Array<{ id: number, firstname: string, lastname: string }>;
 };
 
 export type Observation = {
@@ -64,6 +57,11 @@ export type Document = {
   upload: string,
   date: string,
   type_names: string[];
+};
+
+export type InscriptionType = {
+  id: number;
+  text: string;
 };
 
 export type Technique = {
@@ -145,17 +143,17 @@ export interface PlaceType {
   text: string;
 }
 
-export interface Place {
-  id?: number;
-  comment: string | null;
-  corrected: boolean;
-  description: string;
-  published: boolean;
-  is_existing: boolean;
-  is_iconic: boolean;
-  is_private: boolean;
-  names: Array<Name>;
-  type: PlaceType;
-  properties: any;
-  geometry: any
-}
+// export interface Panel {
+//   id?: number;
+//   comment: string | null;
+//   corrected: boolean;
+//   description: string;
+//   published: boolean;
+//   is_existing: boolean;
+//   is_iconic: boolean;
+//   is_private: boolean;
+//   names: Array<Name>;
+//   type: PlaceType;
+//   properties: any;
+//   geometry: any
+// }
