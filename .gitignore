@@ -8,3 +8,5 @@ COMMIT_MSG
 dist/
 node_modules/
 *.log
+
+code-review.csv
