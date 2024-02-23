@@ -64,10 +64,10 @@ const fetchData = async (initialUrl: string, params: Record<string, any>, isSeco
   let nextUrl = initialUrl;
   let initialParams = new URLSearchParams({ page_size: '500', ...params }).toString();
 
-  if (nextUrl && initialParams) {   
+  if (nextUrl && initialParams) {
     if (!isSecondFloor) {
       nextUrl = `${nextUrl}?${initialParams}&floor=1`;
-    } 
+    }
     else if (isSecondFloor) {
       nextUrl = `${nextUrl}?${initialParams}&floor=2`;
     }
@@ -133,11 +133,18 @@ onMounted(() => {
     map.addInteraction(selectHover);
 
     // Add an event listener for when a feature is hovered over
+    let debounceHoverTimer;
     selectHover.on("select", (event) => {
+      clearTimeout(debounceHoverTimer);
+      debounceHoverTimer = setTimeout(() => {
+        handleHover(event);
+      }, 20);
+    });
+
+    function handleHover(event) {
       if (event.selected.length > 0) {
         const feature = event.selected[0];
         hoveredFeature.value = feature as any;
-
         const geometry = feature.getGeometry() as any;
         hoverCoordinates.value = geometry.getFirstCoordinate();
       } else {
@@ -145,32 +152,33 @@ onMounted(() => {
         hoveredFeature.value = null;
         hoverCoordinates.value = null;
       }
+    }
+
+
+  let clickedFeatures: Feature[] = [];
+  map.on("click", function (evt) {
+    clickedFeatures = []; // Clear the array before each click
+    map.forEachFeatureAtPixel(evt.pixel, function (feature) {
+      clickedFeatures.push(feature as Feature<Geometry>);
     });
 
-    let clickedFeatures: Feature[] = [];
-    map.on("click", function (evt) {
-      clickedFeatures = []; // Clear the array before each click
-      map.forEachFeatureAtPixel(evt.pixel, function (feature) {
-        clickedFeatures.push(feature as Feature<Geometry>);
-      });
+    if (clickedFeatures.length === 1) {
+      // Unselect the hovered feature
+      hoverCoordinates.value = null;
+      hoveredFeature.value = null;
 
-      if (clickedFeatures.length === 1) {
-        // Unselect the hovered feature
-        hoverCoordinates.value = null;
-        hoveredFeature.value = null;
-
-        // Select the clicked feature
-        selectedFeature.value = clickedFeatures[0];
-        const geometry = clickedFeatures[0].getGeometry() as any;
-        selectedCoordinates.value = geometry.getCoordinates();
-      } else {
-        selectedCoordinates.value = undefined as any;
-        selectedFeature.value = undefined;
-      }
-    });
-  } else {
-    console.error("Map object is not initialized.");
-  }
+      // Select the clicked feature
+      selectedFeature.value = clickedFeatures[0];
+      const geometry = clickedFeatures[0].getGeometry() as any;
+      selectedCoordinates.value = geometry.getCoordinates();
+    } else {
+      selectedCoordinates.value = undefined as any;
+      selectedFeature.value = undefined;
+    }
+  });
+} else {
+  console.error("Map object is not initialized.");
+}
 });
 
 watch(
@@ -190,8 +198,8 @@ watch(
 watch(
   () => props.showSecondFloor,
   async (newFloor) => {
-    areMapPointsLoaded.value=false;
-    const initialUrl = 
+    areMapPointsLoaded.value = false;
+    const initialUrl =
       "https://saintsophia.dh.gu.se/api/inscriptions/coordinates/";
 
     vectorSource.value.clear();
@@ -202,8 +210,6 @@ watch(
 
 </script>
 <template>
- 
-
   <ol-overlay class="ol-popup" v-if="hoveredFeature" :position="hoverCoordinates">
     <div class="ol-popup-content" v-html="'Panel ' + (hoveredFeature ? hoveredFeature.get('title') : '')"></div>
   </ol-overlay>
