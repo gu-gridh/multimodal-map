@@ -97,7 +97,7 @@ import { nextTick } from 'vue';
 
 const config = inject<InscriptionsProject>("config");
 const sophiaClient = new SophiaClient("inscriptions"); // Initialize SophiaClient
-const { categories, tags, necropoli, tombType, dataParams, selectedNecropolisCoordinates, enable3D, enablePlan, areMapPointsLoaded } = storeToRefs(inscriptionsStore());
+const { categories, tags, dataParams, selectedNecropolisCoordinates, enable3D, enablePlan, areMapPointsLoaded } = storeToRefs(inscriptionsStore());
 // Create a ref for last clicked category
 const lastClickedCategory = ref('');
 
@@ -111,18 +111,16 @@ const visibleAbout = ref(false);
 const { selectedFeature } = storeToRefs(mapStore());
 const searchResults = ref([]);
 const TAGS = ref<Record<string, string>>({});
-const NECROPOLI = ref<Record<string, string>>({});
-const TOMBTYPE = ref<Record<string, string>>({});
+//const INSCRIPTIONTYPE = ref<Record<string, string>>({});
 const currentTag = ref(null);
-const currentNecropolis = ref(null);
-const currentTombType = ref(null);
+//const currentNecropolis = ref(null);
+//const currentInscriptionType = ref(null);
 
 const baseURL = `${apiConfig.PANEL}?page_size=500`;
 
 onMounted(async () => {
   // await fetchDataAndPopulateRef("epoch", TAGS);
-  await fetchDataAndPopulateRef("necropolis", NECROPOLI);
-  await fetchDataAndPopulateRef("typeoftomb", TOMBTYPE);
+  //await fetchDataAndPopulateRef("typeofinscription", INSCRIPTIONTYPE);
 
   const response = await fetch(baseURL);
   const data = await response.json();
@@ -146,7 +144,7 @@ async function fetchDataAndPopulateRef<T>(type: string, refToPopulate: any) {
   } catch (error) {
     console.error(`Error fetching data for type ${type}:`, error);
   }
-}
+} 
 
 const handleCategoryClick = (category: string) => {
   // If the clicked category is the same as the last clicked one, default to "all"
@@ -227,7 +225,7 @@ function clearAll() {
   categories.value = ["all"];
   enablePlan.value = false;
   enable3D.value = false;
-  tombType.value = ["all"];
+  //inscriptionType.value = ["all"];
   lastClickedCategory.value = '';
   tags.value = [];
 }

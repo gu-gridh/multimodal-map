@@ -21,7 +21,7 @@ import GeoJSON from "ol/format/GeoJSON";
 import Title from "./Title.vue";
 import apiConfig from "./apiConfig"
 
-const { categories, tags, necropoli, tombType, tagsLayerVisible, dataParams, imgParams, selectedNecropolisCoordinates, enable3D, enablePlan } = storeToRefs(inscriptionsStore());
+const { categories, tags, tombType, tagsLayerVisible, dataParams, imgParams, selectedNecropolisCoordinates, enable3D, enablePlan } = storeToRefs(inscriptionsStore());
 const store = mapStore();
 const inscriptions = inscriptionsStore();  // Get the instance of inscriptionsStore
 const { selectedFeature } = storeToRefs(store);
@@ -65,10 +65,10 @@ watch(
 /* Response for generating the URL for filtering map points down */
 const tagParams = computed(() => {
   // const epoch = tags.value[0];
-  const necropolis = necropoli.value[0];
+  //const necropolis = necropoli.value[0];
   const type = tombType.value[0];
 
-  const initialParams = { necropolis, type }; // epoch
+  const initialParams = { type }; 
 
   // Remove parameters that are set to "all"
   const cleanedParams = Object.keys(initialParams)
@@ -82,7 +82,7 @@ const tagParams = computed(() => {
   const params = clean(cleanedParams);
 
   //filter for just 3D points
-  if (enable3D.value) {
+/*   if (enable3D.value) {
     (params as any)['with_3D'] = 'true';
   } else {
     delete (params as any)['with_3D'];
@@ -92,7 +92,7 @@ const tagParams = computed(() => {
     (params as any)['with_plan'] = 'true';
   } else {
     delete (params as any)['with_plan'];
-  }
+  } */
 
   // Convert the params object to a URL search string
   const queryString = new URLSearchParams(params).toString();

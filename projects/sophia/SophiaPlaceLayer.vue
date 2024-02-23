@@ -102,8 +102,8 @@ const webGLPointsLayer = ref(
 const styles = {
   'MultiLineString': new Style({
     stroke: new Stroke({
-      color: 'rgba(200,50,50)',
-      width: 4,
+      color: 'rgba(200,50,50, 0.5)',
+      width: 10,
     }),
   }),
 };
@@ -133,7 +133,7 @@ onMounted(() => {
     // Initialize the select interaction for hover
     selectHover = new Select({
       condition: pointerMove,
-      layers: [webGLPointsLayer.value as any],
+      // layers: [webGLPointsLayer.value as any],
     });
 
     // Add select interaction to the map for hover
@@ -196,6 +196,8 @@ watch(
 );
 </script>
 <template>
+ 
+
   <ol-overlay class="ol-popup" v-if="hoveredFeature" :position="hoverCoordinates">
     <div class="ol-popup-content" v-html="'Panel ' + (hoveredFeature ? hoveredFeature.get('name') : '')"></div>
   </ol-overlay>
