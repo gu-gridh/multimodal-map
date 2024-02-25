@@ -80,7 +80,7 @@ const messages = {
       composite: "CКомпозитний",
       composites: "композити",
       panels: "Панелі",
-      room: "Room",
+      room: "Кімната",
       plan: "План",
       plans: "Плани",
       groundfloor: "Перший поверх",

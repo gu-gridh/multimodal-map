@@ -22,7 +22,6 @@ import { Vector as VectorLayer } from "ol/layer.js"
 
 
 const { selectedFeature } = storeToRefs(mapStore());
-
 let selectHover; // Select interaction for hover
 const hoveredFeature = ref<Feature<Geometry> | null>(null);
 const hoverCoordinates = ref(null);
@@ -94,12 +93,21 @@ const fetchData = async (initialUrl: string, params: Record<string, any>, isSeco
 
 const styles = {
   'MultiLineString': new Style({
-    stroke: new Stroke({
-      color: 'rgba(200,50,50, 0.5)',
+      stroke: new Stroke({
+      color: 'rgba(200,50,50, 0.8)',
       width: 10,
+      zIndex: 10000,
     }),
-  }),
+  }),  
+  'MultiLineStringHover': new Style({
+      stroke: new Stroke({
+      color: 'rgba(100,200,50, 1.0)',
+      width: 12,
+      zIndex: 10000,
+    }),
+  }),  
 };
+
 
 
 const styleFunction = function (feature) {
@@ -138,8 +146,11 @@ onMounted(() => {
       clearTimeout(debounceHoverTimer);
       debounceHoverTimer = setTimeout(() => {
         handleHover(event);
+
       }, 20);
     });
+
+
 
     function handleHover(event) {
       if (event.selected.length > 0) {
@@ -218,3 +229,6 @@ watch(
     <div class="ol-popup-content" v-html="'Panel ' + (selectedFeature ? selectedFeature.get('title') : '')"></div>
   </ol-overlay>
 </template>
+
+<style>
+</style>

@@ -46,7 +46,7 @@ watchEffect(async () => {
       // Populate place details
       if (images.value[0].panel) {
         room.value = images.value[0].room || null;
-        //type.value = images.value[0].tomb.type.text || null;
+        // type.value = images.value[0].tomb.type.text || null;
         // period.value = images.value[0].tomb.epoch.text || null;
         // subtitle.value = images.value[0].panel.subtitle || null;
         documentation.value = images.value[0].panel.documentation || null;
@@ -100,23 +100,24 @@ function deselectPlace() {
           <!-- <button class="theme-button theme-color-background">{{ $t('threedmodel') }}</button> -->
         </div>
         <div class="placecard-content">
-          <div class="placecard-metadata-content">
-
-          
-            <div class="metadata-item">
-              <div class="short-label">{{ $t('type') }}:</div>
-              <div class="tag theme-color-text"></div>
-            </div>
-            <div class="metadata-item">
-              <div class="short-label">{{ $t('languages') }}:</div>
-              <div class="tag theme-color-text"></div>
-            </div>
+          <div class="placecard-metadata-content" >
             <div class="metadata-item">
               <div class="label">{{ $t('inscriptions') }}:</div>
               <div class="tag theme-color-text"></div>
             </div>
+            
             <div class="metadata-item">
-              <div class="short-label">{{ $t('room') }}: {{ room }}</div>
+              <div class="short-label">{{ $t('languages') }}:</div>
+              <div class="tag theme-color-text"></div>
+            </div>
+          
+            <div class="metadata-item">
+              <div class="short-label">{{ $t('room') }}: </div>
+              <div class="tag theme-color-text">{{ room }}</div>
+            </div>
+
+            <div class="metadata-item">
+              <div class="short-label">{{ $t('tags') }}: </div>
               <div class="tag theme-color-text"></div>
             </div>
 

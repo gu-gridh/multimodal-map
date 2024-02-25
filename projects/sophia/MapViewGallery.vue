@@ -15,13 +15,11 @@
         >
         <div class="item-info">
             <div class="item-info-meta">
-              <h1>{{ $t('tomb') }} {{ item.name }}</h1>
-              <h1> {{ item.necropolis }}</h1>
+              <h1>{{ $t('panel') }} {{ item.name }}</h1>
             </div>
         </div>
-        <img 
-          v-if="item.published && (item.first_photograph_id || item.default_image)" 
-          :src="item.default_image ? `${item.default_image}/full/450,/0/default.jpg` : `https://img.dh.gu.se/diana/static/${item.first_photograph_id}/full/450,/0/default.jpg`" 
+        <img  
+          :src="item.default_image ? `${item.default_image}/full/450,/0/default.jpg` : `https://img.dh.gu.se/saintsophia/static/${item.first_photograph_id}/full/450,/0/default.jpg`" 
           loading="lazy" 
           @load="imageLoaded"
         />
