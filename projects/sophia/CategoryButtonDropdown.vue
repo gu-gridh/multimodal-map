@@ -78,5 +78,7 @@ function handleToggle(key: string) {
 </script>
 
 <style scoped>
-
+.dropdown{
+  font-family: "Sofia Sans Extra Condensed", sans-serif !important;
+}
 </style>

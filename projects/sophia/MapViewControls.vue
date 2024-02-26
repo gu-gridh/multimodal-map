@@ -8,12 +8,12 @@
         <div class="tag-section">
           <div class="section-title">{{ $t('language') }}</div>
           <div style="display:inline; float:left; margin-right:0px; pointer-events:auto;">
-            <select title="pick what dataset you want to view data from" class="dropdown theme-color-background my-2" >
-              <option title="View data from all datasets" value="All datasets">{{ $t('alllanguages') }}</option>
-              <option title="View data from the San Giovenale dataset by Fredrik Tobin-Dodd" value="CTSG-2015">Church Slavic</option>
-              <option title="View data from the San Giovenale dataset by Fredrik Tobin-Dodd" value="CTSG-2015">Latin</option>
-              <option title="View data from the San Giovenale dataset by Fredrik Tobin-Dodd" value="CTSG-2015">Greek</option>
-              <option title="View data from the San Giovenale dataset by Fredrik Tobin-Dodd" value="CTSG-2015">Polish</option>
+            <select title="Pick what inscription language you want filter by" class="dropdown theme-color-background my-2" >
+              <option title="" value="All datasets">{{ $t('alllanguages') }}</option>
+              <option title="" value="CTSG-2015">церковнослов'ян</option>
+              <option title="" value="CTSG-2015">Latin</option>
+              <option title="" value="CTSG-2015">Greek</option>
+              <option title="" value="CTSG-2015">Polish</option>
             </select>
           </div>
         </div>
@@ -268,6 +268,11 @@ function clearAll() {
 #app .tag-section {
   margin-top: -5px;
   margin-bottom: 0px;
+}
+
+.dropdown{
+  font-family: "Sofia Sans Extra Condensed", sans-serif !important;
+  appearance: none !important;
 }
 
 
