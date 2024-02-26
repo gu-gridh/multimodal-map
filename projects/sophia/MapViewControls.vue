@@ -462,9 +462,7 @@ function clearAll() {
     margin-left: 0px;
   }
 
-  .data-widget {
-    display: none;
-  }
+
 }
 
 .slide-leave-active {

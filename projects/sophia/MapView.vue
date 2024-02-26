@@ -165,7 +165,7 @@ watch(showSecondFloor, (newValue) => {
       </button>
     </div>
 
-    <div class="ui-mode ui-overlay" style="top:calc(100vh - 160px);" v-if="!showGallery">
+    <div class="ui-mode ui-overlay tile-switcher" style="" v-if="!showGallery">
       <button class="item" v-bind:class="{ selected: !showSecondFloor }" v-on:click="showSecondFloor = false;">
         {{ $t('groundfloor') }}
       </button>
@@ -367,4 +367,15 @@ display:none;
   background-color:rgba(0,0,0,0.9)!important;
   border-radius:0px 8px 8px 0px!important;
 }
+
+.tile-switcher{
+  top:calc(100vh - 160px)!important;
+}
+
+@media screen and (max-width: 900px) {
+  .tile-switcher{
+  top:calc(60px)!important;
+}
+}
+
 </style>
