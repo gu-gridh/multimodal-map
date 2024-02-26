@@ -3,6 +3,7 @@ import { inject, ref, watchEffect, onMounted } from "vue";
 import type { Image } from "./types";
 import type { DianaClient } from "@/assets/diana";
 import ObjectViewImage from "./ObjectViewImage.vue";
+import i18n from '../../src/translations/sonora';
 
 const props = defineProps({
   type: {
@@ -16,15 +17,25 @@ const props = defineProps({
 });
 
 const diana = inject("diana") as DianaClient;
-const object = ref<Image>();
+const object = ref({});
 
 const fetchObjectData = async () => {
   try {
-    const response = await fetch(`https://orgeldatabas.gu.se/webgoart/goart/document.php?id=${props.id}&lang=sv`);
+    const currentLocale = i18n.global.locale; // 'en' or 'sv'
+    const response = await fetch(`https://orgeldatabas.gu.se/webgoart/goart/document1.php?id=${props.id}&lang=${currentLocale}`);    
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-    const data = await response.json();
+    let data = await response.json();
+
+    Object.keys(data).forEach(key => {
+      // check if the value for this key contains a semicolon
+      if (typeof data[key] === 'string' && data[key].includes(';')) {
+        const parts = data[key].split(';');
+        data[key] = { label: parts[0].trim(), data: parts[1].trim() };
+      }
+    });
+
     object.value = data;
   } catch (error) {
     console.error("Error fetching data:", error);

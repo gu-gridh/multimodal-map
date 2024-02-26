@@ -13,6 +13,10 @@ const messages = {
       kontrakt: "Deanery:",
       pastorat: "Parish:",
       kommun: "Municipality:",
+      allbuildings: "All buildings",
+      places: "Places",
+      buildings: "Buildings",
+      timespan: "Time span",
 
       historicaloversight: "Historical Oversight",
       verksgrundare: "Original builder",
@@ -70,6 +74,10 @@ const messages = {
       kontrakt: "Kontrakt:",
       pastorat: "Pastorat:",
       kommun: "Kommun:",
+      allbuildings: "Alla byggnader",
+      places: "Orter",
+      buildings: "Byggnader",
+      timespan: "Tidsperiod",
 
       historicaloversight: "Historisk översikt",
       verksgrundare: "Verksgrundare",
