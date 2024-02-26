@@ -105,7 +105,7 @@ function deselectPlace() {
               <div class="label">{{ $t('inscriptions') }}:</div>
               <div class="tag theme-color-text"></div>
             </div>
-            
+
             <div class="metadata-item">
               <div class="short-label">{{ $t('languages') }}:</div>
               <div class="tag theme-color-text"></div>
@@ -140,5 +140,7 @@ function deselectPlace() {
 </template>
 
 <style>
-
+.osd{
+  background-color:black!important;
+}
 </style>

@@ -1,22 +1,25 @@
 <template>
   <div class="about-container" v-bind:class="{ fullopacity: visibleAbout }">
 
-    <div class="language-button"> 
-        <button @click="toggleLanguage">
-          <div class="p-1 px-2 clickable about-button" style="
+    <div class="language-button">
+      <button @click="toggleLanguage">
+        <div class="p-1 px-2 clickable about-button" style="
                 left: 20px !important;
                 top: 20px !important;
                 font-size:1.1em!important;
                 color:white;
               ">{{ $t('languagebutton') }}</div>
-        </button>
-      </div>
+      </button>
+    </div>
     <div class="main-about-content">
       <div class="right-content"></div>
       <div class="left-content">
 
-        <div class="about-main-title theme-color-text" v-bind:class="{ fullopacityui: visibleAbout }">Написи <br>Святої <br>Софії</div>
-        <div class="about-sub-title theme-color-text" v-bind:class="{ fullopacityui: visibleAbout }">Saint Sophia's <br> Inscriptions</div>
+        <div class="about-main-title theme-color-text" v-bind:class="{ fullopacityui: visibleAbout }">Написи <br>Святої
+          <br>Софії
+        </div>
+        <div class="about-sub-title theme-color-text" v-bind:class="{ fullopacityui: visibleAbout }">Saint Sophia's <br>
+          Inscriptions</div>
         <div class="about-article-main" v-bind:class="{ fullopacityui: visibleAbout }">
           {{ $t('aboutportalmain') }}
         </div>
@@ -24,12 +27,21 @@
           {{ $t('aboutportal') }}
         </div>
 
-        <div class="explore-button"> 
-        <button @click="$emit('close')">
-          <div class="p-1 px-2 category-button" style="width:auto; padding:5px 15px; text-align: center; cursor: pointer;"
-            v-bind:class="{ fullopacityui: visibleAbout }"> {{ $t('explore') }}</div>
-        </button>
-      </div>
+        <div class="explore-button">
+          <button @click="toggleLanguageEN; $emit('close')">
+            <div class="p-1 px-2 category-button"
+              style="width:auto; padding:5px 15px; text-align: center; cursor: pointer;"
+              v-bind:class="{ fullopacityui: visibleAbout }">Explore</div>
+          </button>
+        </div>
+
+        <div class="explore-button">
+          <button @click="toggleLanguageUK; $emit('close')">
+            <div class="p-1 px-2 category-button"
+              style="width:auto; padding:5px 15px; text-align: center; cursor: pointer;"
+              v-bind:class="{ fullopacityui: visibleAbout }">Досліджуйте</div>
+          </button>
+        </div>
       </div>
 
 
@@ -59,6 +71,14 @@ export default {
         i18n.global.locale = 'en';
       }
     },
+    toggleLanguageUK() {
+
+      i18n.global.locale = 'uk';
+    },
+    toggleLanguageEN() {
+
+      i18n.global.locale = 'en';
+    }
   },
 };
 
@@ -89,7 +109,7 @@ export default {
   font-weight: 100 !important;
   line-height: 0.9;
   text-align: right;
-  font-size:5.5vw;
+  font-size: 5.5vw;
 
 }
 
@@ -99,37 +119,38 @@ export default {
   font-weight: 100 !important;
   line-height: 1.0;
   text-align: right;
-  margin-top:20px;
-  font-size:3.0vw;
-  margin-bottom:0px;
-  letter-spacing: 0px!important;
+  margin-top: 20px;
+  font-size: 3.0vw;
+  margin-bottom: 0px;
+  letter-spacing: 0px !important;
 }
 
 .main-about-content {
   padding: 0px;
-  height:calc(100vh - 80px);
-  overflow:hidden;
+  height: calc(100vh - 80px);
+  overflow: hidden;
 }
 
-.language-button{
-  width:120px;
-  position:absolute;
-  top:20px;
-  left:20px;
+.language-button {
+  width: 120px;
+  position: absolute;
+  top: 20px;
+  left: 20px;
 }
 
 
-.explore-button{
-  margin-top:0px;
-  position:relative;
-
+.explore-button {
+  margin-top: 20px;
+  position: relative;
+  float: right;
+  margin-left: 20px;
 }
 
 .left-content {
   width: 50%;
   float: right;
   padding-right: 100px;
-  padding-top:8%;
+  padding-top: 8%;
 }
 
 .right-content {
@@ -142,7 +163,6 @@ export default {
 
 .category-button {
   margin-top: 40px;
-  position: absolute;
   float: right;
   font-size: 1.4vw !important;
   font-weight: 400;
@@ -150,7 +170,7 @@ export default {
   padding: 4px 20px !important;
   z-index: 1000;
   opacity: 1.0;
-  right:0px;
+  right: 0px;
 }
 
 
