@@ -104,23 +104,23 @@ export default {
 
 
 .about-main-title {
-  font-family: 'Oswald', sans-serif;
+  font-family: "Alumni Sans Pinstripe", sans-serif;
   color: white !important;
   font-weight: 100 !important;
-  line-height: 0.9;
+  line-height: 0.7;
   text-align: right;
-  font-size: 5.5vw;
+  font-size: 6vw;
 
 }
 
 .about-sub-title {
-  font-family: 'Oswald', sans-serif;
+  font-family: "Alumni Sans Pinstripe", sans-serif;
   color: white !important;
   font-weight: 100 !important;
-  line-height: 1.0;
+  line-height: 0.8;
   text-align: right;
   margin-top: 20px;
-  font-size: 3.0vw;
+  font-size: 3.5vw;
   margin-bottom: 0px;
   letter-spacing: 0px !important;
 }
