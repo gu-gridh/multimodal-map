@@ -41,7 +41,7 @@ function displayName(p: Place): string {
 }
 
 //zoom to place on click
-const featureZoom = 17; // zoom level when clicking on a feature
+const featureZoom = 18; // zoom level when clicking on a feature
 
 watch(
   selectedFeature,

@@ -75,10 +75,11 @@ const fetchImages = async (id: any) => {
   else
   images.value = await diana.listAll<Image>("image/", { place_of_interest: id });
 }
-const featureZoom = 19;
+const featureZoom = 18;
 
 const zoomMap = () => {
     const geometry = placeGeoJson.value
+    console.log(geometry.type)
     if (geometry.type == "Point") {
         const center = geometry.coordinates
         coordinates.value = center.geometry.coordinates
@@ -92,17 +93,18 @@ const zoomMap = () => {
         store.updateCenter(fromLonLat(coordinates.value))
         store.updateZoom(featureZoom)
     }
-    if (geometry.type == "MultiLineString") {
+    if (geometry.type === "MultiLineString") {
         const multilinestring = turf.multiLineString(geometry.coordinates)
         const center = turf.pointOnSurface(multilinestring)
         coordinates.value = center.geometry.coordinates
         store.updateCenter(fromLonLat(coordinates.value))
-        store. updateZoom(featureZoom)
+        store.updateZoom(featureZoom)
     }
     if (geometry.type == "Polygon" ) {
         const polygon = turf.polygon(geometry.coordinates)
         const center = turf.pointOnSurface(polygon)
         coordinates.value = center.geometry.coordinates
+        
         store.updateCenter(fromLonLat(coordinates.value))
         store. updateZoom(featureZoom)
     }
@@ -114,8 +116,7 @@ const zoomMap = () => {
         store. updateZoom(featureZoom)
     }
     else {
-      store.updateCenter([3346522.1909503858, -217337.69352852934])
-      store.updateZoom(15)
+      return
     }
 }
 
@@ -136,7 +137,7 @@ const fetchPlaceData =async () => {
         fetchImages(Number(placeId))
         fetchDocuments(Number(placeId))
     }
-    //if routing from url
+    //if routing from url or search
     else if(route.params.placeId) {
         await fetch(`https://diana.dh.gu.se/api/rwanda/geojson/place/${route.params.placeId}`)
         .then(response => response.json())
@@ -151,7 +152,7 @@ const fetchPlaceData =async () => {
         fetchInterviews(placeId)
         fetchImages(placeId)
         fetchDocuments(placeId)
-        zoomMap()
+        zoomMap() //why not working?
     }
 }
 onMounted(() => {
