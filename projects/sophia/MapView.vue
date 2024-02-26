@@ -197,21 +197,7 @@ watch(showSecondFloor, (newValue) => {
        
         <MapComponent :shouldAutoMove="true" :min-zoom=minZoom :max-zoom=maxZoom v-if="!showGallery">
           <template #layers>
-            <!-- <GeoJsonWebGLRenderer :externalUrl="'https://data.dh.gu.se/geography/SGElevationMain.geojson'" :zIndex=-0
-              :style="{
-                'stroke-color': [0, 0, 0, 0.18],
-                'stroke-width': 1,
-                'fill-color': [255, 0, 0, 1]
-              }">
-            </GeoJsonWebGLRenderer>
-            <GeoJsonWebGLRenderer :externalUrl="'https://data.dh.gu.se/geography/SGElevationEdge.geojson'" :zIndex=0
-              :style="{
-                'stroke-color': [0, 0, 0, 0.1],
-                'stroke-width': 1,
-                'fill-color': [0, 255, 0, 1]
-              }"> 
-            </GeoJsonWebGLRenderer>-->
-          
+            <SophiaPlaceLayer :params="tagParams" :zIndex=20000 :showSecondFloor="showSecondFloor" />
           <div >
             <ol-tile-layer className="floor-plans" v-if="!showSecondFloor">
               <ol-source-xyz url="https://data.dh.gu.se/tiles/saint_sophia_ground_floor/{z}/{x}/{y}.png" />
@@ -222,9 +208,12 @@ watch(showSecondFloor, (newValue) => {
               <ol-source-xyz  url="https://data.dh.gu.se/tiles/saint_sophia_second_floor/{z}/{x}/{y}.png" />
             </ol-tile-layer>
           </div>
-          <SophiaPlaceLayer :params="tagParams" :zIndex=2000 :showSecondFloor="showSecondFloor" />
-          </template>
+          
+       
+          
+        </template>
         </MapComponent>
+        
       </div>
     </template>
 
