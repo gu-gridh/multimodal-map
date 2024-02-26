@@ -2,13 +2,13 @@
   <footer id="footer">
     <div id="developer-info">
       <div class="links-stack border-style">
-        <a class="site-link link" href="https://github.com/gu-gridh/etruscantombs#etruscan-tombs" target="_blank">GitHub
+        <a class="site-link link" href="https://github.com/gu-gridh/Saint_Sophia" target="_blank">GitHub
           repository and development</a>
-        <a class="site-link link" href="https://github.com/gu-gridh/etruscantombs#database-and-api-documentation"
+        <a class="site-link link" href="https://github.com/gu-gridh/Saint_Sophia?tab=readme-ov-file#database-and-api-documentation"
           target="_blank">Database and API documentation</a>
       </div>
       <div class="links-stack">
-        <a class="site-link link" href="https://github.com/gu-gridh/etruscantombs#datasets" target="_blank">Dataset
+        <a class="site-link link" href="https://github.com/gu-gridh/Saint_Sophia?tab=readme-ov-file#datasets" target="_blank">Dataset
           documentation</a>
         <a href="#" class="download-link link" @click="downloadData">Download the structured data</a>
       </div>
