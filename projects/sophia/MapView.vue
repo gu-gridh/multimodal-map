@@ -165,7 +165,7 @@ watch(showSecondFloor, (newValue) => {
       </button>
     </div>
 
-    <div class="ui-mode ui-overlay" style="top:calc(100vh - 210px);" v-if="!showGallery">
+    <div class="ui-mode ui-overlay" style="top:calc(100vh - 160px);" v-if="!showGallery">
       <button class="item" v-bind:class="{ selected: !showSecondFloor }" v-on:click="showSecondFloor = false;">
         {{ $t('groundfloor') }}
       </button>
@@ -354,5 +354,15 @@ display:none;
 
 #app .ol-popup:before {
   left: 30px;
+}
+
+#app .ol-zoom-in {
+  top: calc(100vh - 190px) !important;
+  background-color:rgba(0,0,0,0.9)!important;
+}
+
+#app .ol-zoom-out {
+  top: calc(100vh - 190px) !important;
+  background-color:rgba(0,0,0,0.9)!important;
 }
 </style>
