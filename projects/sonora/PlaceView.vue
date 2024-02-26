@@ -118,14 +118,10 @@ const handleDisposition = async (event) => {
 
     if (url.pathname.endsWith('divinfo.php')) {
       const divId = url.searchParams.get("div_id");
-      console.log(`Division info link clicked, ID: ${divId}`);
       await fetchDivisionInfo(divId);
     } else if (url.pathname.endsWith('stopinfo.php')) {
       const stopId = url.searchParams.get("stop_id");
-      console.log(`Stop info link clicked, ID: ${stopId}`);
       await fetchStopInfo(stopId);
-    } else {
-      console.log('Other link clicked');
     }
   }
 };
@@ -233,7 +229,7 @@ const handleLinkClicked = (data) => {
                       <p><b>{{ $t('stämma') }}:</b> {{ popupData.Stämma }}</p>
                       <p><b>{{ $t('stämmainfo') }}:</b> {{ popupData.Stämma_info }}</p>
                     </div>
-                    <button @click="isPopupVisible = false" class="theme-color-text" style="font-weight: bold">Close</button>
+                    <button @click="isPopupVisible = false" class="theme-color-text" style="font-weight: bold">{{ $t('close') }}</button>
                   </div>
               </tr>
             </tbody>

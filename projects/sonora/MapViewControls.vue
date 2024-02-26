@@ -48,7 +48,7 @@
         v-model="searchQuery"
         @input="handleSearch"
         @focus="handleSearchBoxFocus"
-        :placeholder="searchType === 'places' ? 'Search Places...' : 'Search Builders...'"
+        :placeholder="searchType === 'places' ? $t('searchPlaces') : $t('searchBuilders')"
         class="search-box"
         autofocus
       />

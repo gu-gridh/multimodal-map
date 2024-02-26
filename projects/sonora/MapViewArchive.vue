@@ -2,19 +2,19 @@
   <div class="map-view-archive-overlay">
     <div class="filters-container">
       <select class="dropdown theme-color-background my-2" v-model="selectedArchive">
-        <option  value="0">All Archives</option>
+        <option  value="0">{{$t('allaArkiv')}}</option>
         <option v-for="(option, id) in filters.Archive" :key="id" :value="id">
           {{ option }}
         </option>
       </select>
       <select class="dropdown theme-color-background my-2" v-model="selectedSeries">
-        <option value="0">All Series</option>
+        <option value="0">{{$t('allaSeries')}}</option>
         <option v-for="(label, value) in series" :key="value" :value="value">
           {{ label }}
         </option>
       </select>
       <select class="dropdown theme-color-background my-2" v-model="selectedVolume">
-        <option value="0">All Volumes</option>
+        <option value="0">{{$t('allaVolumes')}}</option>
         <option v-for="(label, id) in volumes" :key="id" :value="id">
           {{ label }}
         </option>
@@ -23,7 +23,7 @@
 
     <div class="archive-content">
       <input type="text" 
-             placeholder="Search in Archive" 
+             :placeholder="$t('searchArkiv')"
              class="archive-search-box"
              v-model="searchQuery"
              @input="fetchSearchResults" />
