@@ -83,7 +83,7 @@ const downloadImage = (fileUrl: string, fileName: string) => {
           <div v-if="object['0'].lng"><div class="label">{{ $t('longitude') }}:</div> <div class="data">{{ object['0'].lng }}</div></div>
           <div v-if="object['0'].lat" style="margin-bottom:20px;"><div class="label">{{ $t('latitude') }}:</div> <div class="data">{{ object['0'].lat }}</div></div> -->
         <!-- </div> -->
-         <div class="places-list" style="margin-top: 20px;" v-if="placesBeforeFiles.length > 0">
+        <div class="places-list" style="margin-top: 20px;" v-if="placesBeforeFiles.length > 0">
           <h3>{{ $t('found_in') }}:</h3>
           <ul>
             <li v-for="(place, index) in placesBeforeFiles" :key="index">
@@ -91,7 +91,10 @@ const downloadImage = (fileUrl: string, fileName: string) => {
             </li>
           </ul>
         </div>
-        <div class="content" v-html="object ? object.Innehåll : ''" style="margin-top:20px"></div>
+        <div class="content" v-if="object['Innehåll']" style="margin-top:20px">
+          <div class="label">{{ object['Innehåll'].label }}:</div>
+          <div class="data">{{ object['Innehåll'].data }}</div>
+        </div>
       </div>
     </ObjectViewComponent>
 
