@@ -10,8 +10,8 @@
       >
       
         <router-link
-          :to="`/place/${item.name}`"
-          @click="updatePlaceId(item)"
+          :to="`/panel/${item.name}?depth=2`"
+          @click="updatePanelId(item)"
         >
         <div class="item-info">
             <div class="item-info-meta">
@@ -19,7 +19,7 @@
             </div>
         </div>
         <img  
-          :src="item.default_image ? `${item.default_image}/full/450,/0/default.jpg` : `https://img.dh.gu.se/saintsophia/static/${item.first_photograph_id}/full/450,/0/default.jpg`" 
+          :src="`https://img.dh.gu.se/saintsophia/static/${item.attached_orthophoto}/full/450,/0/default.jpg`" 
           loading="lazy" 
           @load="imageLoaded"
         />
@@ -74,25 +74,25 @@ export default {
       }
     );
 
-const updatePlaceId = (item) => {
-      store.placeId = item.featureId;
+const updatePanelId = (item) => {
+  store.panelId = item.featureId;
 };
 
 const fetchData = async (requestedPageIndex) => {
+
   if (requestedPageIndex > lastFetchedPageIndex) {
     try {
-      const urlToFetch = `${apiConfig.PLACE}?page=${requestedPageIndex}&${new URLSearchParams(store.imgParams).toString()}`;
+      const urlToFetch = `${apiConfig.PANEL}?page=${requestedPageIndex}&${new URLSearchParams(store.imgParams).toString()}`; // 
       const res = await fetch(urlToFetch);
-      const data = await res.json();
+      const data = await res.json();  
       const newImages = data.features.map(feature => ({
-          ...feature.properties.first_photograph_id,
+          ...feature.properties.attached_photograph,
           featureId: feature.id,
-          default_image: feature.properties.default_image ? feature.properties.default_image.iiif_file : null,
-          first_photograph_id: feature.properties.first_photograph_id ? feature.properties.first_photograph_id.iiif_file : null,
-          name: feature.properties.name,
-          necropolis: feature.properties.necropolis.text
-        })).filter(img => img && (img.default_image || img.first_photograph_id));
-      
+          // default_image: feature.properties.default_image ? feature.properties.default_image.iiif_file : null,
+          attached_orthophoto: feature.properties.attached_photograph ? feature.properties.attached_photograph.iiif_file : null,
+          name: feature.properties.title,
+        })).filter( img => img && img.attached_orthophoto);
+
       images.value = [...images.value, ...newImages];
       
       lastFetchedPageIndex = requestedPageIndex;  // Update the lastFetchedPageIndex
@@ -135,7 +135,7 @@ const fetchData = async (requestedPageIndex) => {
         pageIndex++;  // Increment pageIndex for the next set of data
       }
       canIncrement = false; // Disable further increments
-      const url = `${apiConfig.PLACE}?page=${pageIndex}&${new URLSearchParams(store.imgParams).toString()}`;
+      const url = `${apiConfig.PANEL}?page=${pageIndex}&${new URLSearchParams(store.imgParams).toString()}`;
 
        // Use Promise syntax to handle the asynchronous 404 check
   checkFor404(url).then(async (is404) => {
@@ -168,13 +168,12 @@ const fetchData = async (requestedPageIndex) => {
           const data = JSON.parse(bodyContent);
           
           const newImages = data.features.map(feature => ({
-                ...feature.properties.first_photograph_id,
+                ...feature.properties.attached_photograph,
                 featureId: feature.id,
-                default_image: feature.properties.default_image ? feature.properties.default_image.iiif_file : null,
-                first_photograph_id: feature.properties.first_photograph_id ? feature.properties.first_photograph_id.iiif_file : null,
-                name: feature.properties.name,
-                necropolis: feature.properties.necropolis.text
-              })).filter(img => img !== null);        
+                // default_image: feature.properties.default_image ? feature.properties.default_image.iiif_file : null,
+                attached_orthophoto: feature.properties.attached_photograph ? feature.properties.attached_photograph.iiif_file : null,
+                name: feature.properties.title,
+              })).filter(img => img !== null);  
 
           images.value = [...images.value, ...newImages];
 
@@ -200,6 +199,7 @@ const fetchData = async (requestedPageIndex) => {
 
   onMounted(() => {
   fetchData(1).then(() => {
+    
     imagesLoaded(document.querySelector('.gallery'), () => {
       initMasonry();
 
@@ -213,7 +213,7 @@ const fetchData = async (requestedPageIndex) => {
 
   return {
       images,
-      updatePlaceId
+      updatePanelId
     };
   },
 };
