@@ -212,7 +212,7 @@ export default {
   padding-right: 2%;
   z-index: 100 !important;
   background-color: black;
-  backdrop-filter: blur(5px);
+  opacity:0.8;
 }
 
 @media screen and (min-width: 1900px) {
