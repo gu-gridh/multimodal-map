@@ -94,8 +94,8 @@ const fetchData = async (initialUrl: string, params: Record<string, any>, isSeco
 const styles = {
   'MultiLineString': new Style({
       stroke: new Stroke({
-      color: 'rgba(200,50,50, 0.8)',
-      width: 5,
+      color: 'rgba(180,80,80, 0.7)',
+      width: 10,
     }),
   }),  
 };
@@ -103,8 +103,8 @@ const styles = {
 // hover style
 const hoverStyle = new Style({
   stroke: new Stroke({
-    color: 'rgba(0, 255, 255, 1.0)', 
-    width: 6, 
+    color: 'rgba(200, 0, 0, 1.0)', 
+    width: 15, 
   }),
 });
 
