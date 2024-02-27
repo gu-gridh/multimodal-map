@@ -21,7 +21,7 @@ import GeoJSON from "ol/format/GeoJSON";
 import Title from "./Title.vue";
 import apiConfig from "./apiConfig"
 
-const { categories, tags, tombType, tagsLayerVisible, dataParams, imgParams, selectedNecropolisCoordinates, enable3D, enablePlan } = storeToRefs(inscriptionsStore());
+const { categories, tags, tagsLayerVisible, dataParams, imgParams } = storeToRefs(inscriptionsStore());
 const store = mapStore();
 const inscriptions = inscriptionsStore();  // Get the instance of inscriptionsStore
 const { selectedFeature } = storeToRefs(store);

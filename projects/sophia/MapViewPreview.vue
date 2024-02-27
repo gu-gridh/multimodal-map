@@ -4,7 +4,7 @@ import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
 import { inscriptionsStore } from "./store";
 import type {
-  Image, Panel,
+  Image, PanelMetadata, Inscription, Language,
 } from "./types";
 import type { SophiaClient } from "@/assets/saintsophia";
 import OpenSeadragon from "@/components/OpenSeadragonSequence.vue";
@@ -17,27 +17,30 @@ const sophia = inject("sophia") as SophiaClient;
 const images = ref<Image[]>();
 const imageUrls = ref<string[]>([]);
 let text = ref(false)
-let panel = ref()// ref<Panel[]>();
-// const type = ref<string | null>(null);
-// const subtitle = ref<string | null>(null);
+let panel = ref<PanelMetadata>(); // ref<Panel[]>();
 const room = ref<string | null>(null);
 const documentation = ref<string | null>(null);
 const hasImages = ref<boolean>(false);
+const number_of_inscriptions = ref<number | null>(null)
+const languages = ref<Language[]>();
+const tags = ref<string[]>();
 
 //when a place is selected, fetch image and info
 watchEffect(async () => {
-  // type.value = null;
-  // subtitle.value = null;
   documentation.value = null;
   if (selectedFeature.value) {
     const panelTitle = selectedFeature.value.get("title");
     const panelId = selectedFeature.value.getId();
     inscriptions.panelId = panelId as string | null;
-    panel.value = { id_: panelTitle };
+    panel.value = await sophia.list<PanelMetadata>("panel", {id: panelId});
+    number_of_inscriptions.value = panel.value?.number_of_inscriptions
+    languages.value = panel.value?.list_of_languages
+
     images.value = await sophia.listAll<Image>("image", { panel: panelId, depth: 2});
     // If images are available
     if (images.value.length > 0) {
       hasImages.value = true;
+      // TODO: this filter does not work. Quick google suggests possibly a lack of JSON parsing on the images object?
       // const filteredImages = images.value.filter(image => {
       //   return image.type_of_image.some(tag => tag.text === 'Orthophoto'); //Only display images that are orthophoto
       // });
@@ -45,10 +48,7 @@ watchEffect(async () => {
 
       // Populate place details
       if (images.value[0].panel) {
-        room.value = images.value[0].room || null;
-        // type.value = images.value[0].tomb.type.text || null;
-        // period.value = images.value[0].tomb.epoch.text || null;
-        // subtitle.value = images.value[0].panel.subtitle || null;
+        room.value = images.value[0].panel.room || null;
         documentation.value = images.value[0].panel.documentation || null;
       }
     } else {
@@ -60,16 +60,12 @@ watchEffect(async () => {
       if (geojsonData.features.length > 0) {
         const feature = geojsonData.features[0];
         room.value = feature.properties.room || null;
-        // type.value = feature.properties.type?.text || null;
-        // period.value = feature.properties.epoch?.text || null;
-        // subtitle.value = feature.properties.subtitle || null;
         documentation.value = feature.properties.documentation || null;
       }
     }
   } else {
     images.value = [];
     imageUrls.value = [];
-    // type.value = null;
   }
 });
 
@@ -103,12 +99,12 @@ function deselectPlace() {
           <div class="placecard-metadata-content" >
             <div class="metadata-item">
               <div class="label">{{ $t('inscriptions') }}:</div>
-              <div class="tag theme-color-text"></div>
+              <div class="tag theme-color-text">{{ number_of_inscriptions }}</div>
             </div>
 
             <div class="metadata-item">
               <div class="short-label">{{ $t('languages') }}:</div>
-              <div class="tag theme-color-text"></div>
+              <div class="tag theme-color-text">{{ languages }}</div>
             </div>
           
             <div class="metadata-item">
@@ -131,7 +127,7 @@ function deselectPlace() {
       </div>
 
       <div class="placecard-center-button">
-        <router-link :to="`${(panel?.id_ || '').replace(/ /g, '_')}`">
+        <router-link :to="`${panel?.id}`"> <!--- (panel?.id_ || '').replace(/ /g, '_') --->
     <button class="theme-button theme-color-background" style="margin-top:0px;">{{ $t('moreinfo') }}</button>
 </router-link>
       </div>

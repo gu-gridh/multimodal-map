@@ -15,7 +15,7 @@ export type Image = {
   type_of_image: { text: string }[];
 };
 
-export interface Panel {
+export type Panel = {
   id?: number;
   published: boolean;
   title: string;
@@ -27,11 +27,22 @@ export interface Panel {
   tags: any[];
 };
 
+export type PanelMetadata = {
+  id?: number;
+  published: boolean;
+  title: string;
+  number_of_inscriptions: number;
+  number_of_languages: number;
+  list_of_languages: any[];
+  tags: any[];
+};
+
 export type Inscription = {
   id: number;
   published: boolean;
   title: string;
   alt_title: string;
+  language: Language;
   geometry: {
     type: string;
     coordinates: number[];
@@ -39,6 +50,11 @@ export type Inscription = {
   type_of_inscription: InscriptionType;
   tags: any[];
   author?: Array<{ id: number, firstname: string, lastname: string }>;
+};
+
+export type Language = {
+  id: number,
+  text: string,
 };
 
 export type Observation = {
@@ -105,43 +121,43 @@ interface Author {
 
 export type ImageDeep = Omit<Image, "creator" | "place" | "focus" | "tag"> & {
   creator: Person;
-  place: Place;
+  place: Panel;
   focus: Focus;
   tag: Tag[];
   author?: Author;
 };
 
-export type Person = {
-  id: number;
-  name: string;
-};
+// export type Person = {
+//   id: number;
+//   name: string;
+// };
 
-export type Focus = {
-  place: Geometry;
-  text: string;
-};
+// export type Focus = {
+//   place: Geometry;
+//   text: string;
+// };
 
 export type Tag = {
   text: string;
 };
 
-export interface Name {
-  id?: number;
-  created_at: string;
-  updated_at: string;
-  published: boolean;
-  referent: number;
-  text: string;
-  note: string;
-}
+// export interface Name {
+//   id?: number;
+//   created_at: string;
+//   updated_at: string;
+//   published: boolean;
+//   referent: number;
+//   text: string;
+//   note: string;
+// }
 
-export interface PlaceType {
-  id?: number;
-  created_at: string;
-  updated_at: string;
-  published: boolean;
-  text: string;
-}
+// export interface PlaceType {
+//   id?: number;
+//   created_at: string;
+//   updated_at: string;
+//   published: boolean;
+//   text: string;
+// }
 
 // export interface Panel {
 //   id?: number;
