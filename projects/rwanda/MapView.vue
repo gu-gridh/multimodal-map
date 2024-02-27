@@ -29,6 +29,8 @@ provide("config", config);
 
 const visibleAbout = ref(false);
 
+const route = useRoute();
+
 const store = mapStore();
 const { params } = storeToRefs(store);
 const { periodsLayer, periods, sources, informants, sourcesLayer, placeTypeLayer, placeTypes, allLayer, informantsLayer, coordinate, languagesLayer, languages } = storeToRefs(rwandaStore());
@@ -60,6 +62,7 @@ watch(
   },
   { immediate: true }
 );
+
 
 </script>
 

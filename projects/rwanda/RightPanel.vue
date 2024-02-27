@@ -25,6 +25,13 @@ watchEffect(async () => {
     router.push(`/place/${featureId.value}`)
   }
 })
+
+//watch if route is home
+// watch(route, () => {
+//   if (!route.params.placeId) {
+//     featureId.value = undefined
+//   }
+// }), { immediate: true }
 </script>
 
 <template>

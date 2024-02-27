@@ -9,6 +9,7 @@ import VueMasonryWall from "@yeger/vue-masonry-wall";
 import { useRouter, useRoute } from "vue-router";
 import {fromLonLat} from 'ol/proj.js';
 import * as turf from '@turf/turf'
+import { nextTick } from "vue";
 
 
 const { selectedFeature } = storeToRefs(mapStore());
@@ -79,7 +80,6 @@ const featureZoom = 18;
 
 const zoomMap = () => {
     const geometry = placeGeoJson.value
-    console.log(geometry.type)
     if (geometry.type == "Point") {
         const center = geometry.coordinates
         coordinates.value = center.geometry.coordinates
@@ -113,7 +113,7 @@ const zoomMap = () => {
         const center = turf.pointOnSurface(polygon)
         coordinates.value = center.geometry.coordinates
         store.updateCenter(fromLonLat(coordinates.value))
-        store. updateZoom(featureZoom)
+        store.updateZoom(featureZoom)
     }
     else {
       return
@@ -121,13 +121,17 @@ const zoomMap = () => {
 }
 
 const fetchDocuments = async (id: number) => {
-  documents.value = await diana.listAll("document/", { place_of_interest: id});
+  if(id){
+    documents.value = await diana.listAll("document/", { place_of_interest: id});
+  }
+  else return
 }
 
 //fetch place data
 const fetchPlaceData =async () => {
+  
     //if place is selected on map
-    if(selectedFeature.value != undefined || null) {
+    if(selectedFeature.value !== undefined || null) {
         place.value = selectedFeature.value
         placeType.value = capitalize(place.value.values_.type.text)
         placeDescription.value = capitalize(place.value.values_.description)
@@ -137,9 +141,12 @@ const fetchPlaceData =async () => {
         fetchImages(Number(placeId))
         fetchDocuments(Number(placeId))
     }
-    //if routing from url or search
-    else if(route.params.placeId) {
-        await fetch(`https://diana.dh.gu.se/api/rwanda/geojson/place/${route.params.placeId}`)
+    else return
+
+}
+onMounted(async ()  => {
+  if(route.params.placeId){
+     await fetch(`https://diana.dh.gu.se/api/rwanda/geojson/place/${route.params.placeId}`)
         .then(response => response.json())
         .then(data => {
             place.value = data.properties
@@ -152,22 +159,27 @@ const fetchPlaceData =async () => {
         fetchInterviews(placeId)
         fetchImages(placeId)
         fetchDocuments(placeId)
-        zoomMap() //why not working?
-    }
-}
-onMounted(() => {
-  fetchPlaceData()
+        zoomMap()
+  }
+  else fetchPlaceData()
 })
 
 watch(selectedFeature, () => {
   fetchPlaceData()
 })
 
+
 function deselectPlace() {
+  router.push("/")
   selectedFeature.value = undefined;
-  router.push(`/`)
-  store.updateCenter([3346522.1909503858, -217337.69352852934])
-  store.updateZoom(15)
+  place.value = undefined
+  placeGeoJson.value = undefined
+  store.selectedFeature = undefined
+  nextTick(() => {
+    store.updateCenter([3346522.1909503858, -217337.69352852934])
+    store.updateZoom(15)
+  })
+  
 }
 
 //show more interviews if more than 1
