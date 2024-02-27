@@ -81,7 +81,7 @@ const updatePanelId = (item) => {
 const fetchData = async (requestedPageIndex) => {
   if (requestedPageIndex > lastFetchedPageIndex) {
     try {
-      const urlToFetch = `https://saintsophia.dh.gu.se/api/inscriptions/image/?page=${requestedPageIndex}&depth=2`; 
+      const urlToFetch = `${apiConfig.IMAGE}?page=${requestedPageIndex}&${new URLSearchParams(store.imgParams).toString()}`; // `https://saintsophia.dh.gu.se/api/inscriptions/image/?page=${requestedPageIndex}&depth=2`; 
       const res = await fetch(urlToFetch);
       const data = await res.json();
       const newImages = data.results.map(item => ({
@@ -131,7 +131,7 @@ const fetchData = async (requestedPageIndex) => {
         pageIndex++;  // Increment pageIndex for the next set of data
       }
       canIncrement = false; // Disable further increments
-      const url = `${apiConfig.PANEL}?page=${pageIndex}&${new URLSearchParams(store.imgParams).toString()}`;
+      const url = `${apiConfig.IMAGE}?page=${pageIndex}&${new URLSearchParams(store.imgParams).toString()}`;
 
        // Use Promise syntax to handle the asynchronous 404 check
   checkFor404(url).then(async (is404) => {
@@ -154,36 +154,33 @@ const fetchData = async (requestedPageIndex) => {
     elementScroll: true,
   });
 
-  // infScroll.on('load', async function(response)   {
-  //   if (pageIndex > lastFetchedPageIndex) {
-  //     try {
-  //         // Extract the body content from the HTML response
-  //         let bodyContent = response.querySelector("body").textContent;
+  infScroll.on('load', async function(response)   {
+    if (pageIndex > lastFetchedPageIndex) {
+      try {
+          // Extract the body content from the HTML response
+          let bodyContent = response.querySelector("body").textContent;
           
-  //         // Convert the body content to JSON
-  //         const data = JSON.parse(bodyContent);
+          // Convert the body content to JSON
+          const data = JSON.parse(bodyContent);
           
-  //         const newImages = data.features.map(feature => ({
-  //               ...feature.properties.attached_photograph,
-  //               featureId: feature.id,
-  //               // default_image: feature.properties.default_image ? feature.properties.default_image.iiif_file : null,
-  //               attached_orthophoto: feature.properties.attached_photograph ? feature.properties.attached_photograph.iiif_file : null,
-  //               name: feature.properties.title,
-  //             })).filter(img => img !== null);  
+          const newImages = data.features.map(item => ({
+                attached_orthophoto: item.attached_photograph ? item.attached_photograph.iiif_file : null,
+                name: item.panel.title,
+              })).filter(img => img !== null);
 
-  //         images.value = [...images.value, ...newImages];
+          images.value = [...images.value, ...newImages];
 
-  //         imagesLoaded(document.querySelector('.gallery'), () => {
-  //           msnry.reloadItems();
-  //           msnry.layout();
-  //         });
-  //     }
-  //     catch (e) {
-  //         console.error("JSON Parsing failed or other error: ", e);
-  //     }
-  //   } 
-  //     canIncrement = true;
-  // });
+          imagesLoaded(document.querySelector('.gallery'), () => {
+            msnry.reloadItems();
+            msnry.layout();
+          });
+      }
+      catch (e) {
+          console.error("JSON Parsing failed or other error: ", e);
+      }
+    } 
+      canIncrement = true;
+  });
   };
 
     const reinitInfiniteScroll = () => {
