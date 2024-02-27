@@ -235,6 +235,15 @@ function clearAll() {
 </script>
 
 <style>
+#app .left-pane {
+  background: url("images/gradient.png");
+  background-size: contain;
+  width: 53% !important;
+  min-width: 970px;
+  max-width: 1000px;
+  font-size:95%;
+}
+
 .loading-svg {
   width: 100%;
   height: 200px;

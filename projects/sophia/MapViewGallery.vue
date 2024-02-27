@@ -3,26 +3,15 @@
     <div class="gallery">
       <div class="gallery__col-sizer"></div>
       <div class="gallery__gutter-sizer"></div>
-      <div
-        v-for="item in images"
-        :key="item.uuid"
-        class="gallery__item"
-      >
-      
-        <router-link
-          :to="`/panel/${item.name}?depth=2`"
-          @click="updatePanelId(item)"
-        >
-        <div class="item-info">
+      <div v-for="item in images" :key="item.uuid" class="gallery__item">
+
+        <router-link :to="`/panel/${item.name}?depth=2`" @click="updatePanelId(item)">
+          <div class="item-info">
             <div class="item-info-meta">
               <h1>{{ $t('Panel') }} {{ item.name }}</h1>
             </div>
-        </div>
-        <img  
-          :src="`${item.attached_orthophoto}/full/450,/0/default.jpg`" 
-          loading="lazy" 
-          @load="imageLoaded"
-        />
+          </div>
+          <img :src="`${item.attached_orthophoto}/full/450,/0/default.jpg`" loading="lazy" @load="imageLoaded" />
         </router-link>
       </div>
     </div>
@@ -62,7 +51,7 @@ export default {
         lastFetchedPageIndex = 0;
 
         images.value = [];
-        
+
         await fetchData(1);
 
         // Make sure to wait until all images have loaded
@@ -74,31 +63,31 @@ export default {
       }
     );
 
-const updatePanelId = (item) => {
-  store.panelId = item.featureId;
-};
+    const updatePanelId = (item) => {
+      store.panelId = item.featureId;
+    };
 
-const fetchData = async (requestedPageIndex) => {
-  if (requestedPageIndex > lastFetchedPageIndex) {
-    try {
-      const urlToFetch = `${apiConfig.IMAGE}?page=${requestedPageIndex}&${new URLSearchParams(store.imgParams).toString()}`; // `https://saintsophia.dh.gu.se/api/inscriptions/image/?page=${requestedPageIndex}&depth=2`; 
-      const res = await fetch(urlToFetch);
-      const data = await res.json();
-      const newImages = data.results.map(item => ({
-        attached_orthophoto: item.iiif_file,
-        name: item.panel.title, 
-      })).filter(img => img && img.attached_orthophoto);
+    const fetchData = async (requestedPageIndex) => {
+      if (requestedPageIndex > lastFetchedPageIndex) {
+        try {
+          const urlToFetch = `${apiConfig.IMAGE}?page=${requestedPageIndex}&${new URLSearchParams(store.imgParams).toString()}`; // `https://saintsophia.dh.gu.se/api/inscriptions/image/?page=${requestedPageIndex}&depth=2`; 
+          const res = await fetch(urlToFetch);
+          const data = await res.json();
+          const newImages = data.results.map(item => ({
+            attached_orthophoto: item.iiif_file,
+            name: item.panel.title,
+          })).filter(img => img && img.attached_orthophoto);
 
-      images.value = [...images.value, ...newImages];
-      
-      lastFetchedPageIndex = requestedPageIndex;  // Update the lastFetchedPageIndex
-    } catch (error) {
-      console.error("Error fetching additional images:", error);
-    }
-  }
-};
+          images.value = [...images.value, ...newImages];
 
-  const initMasonry = () => {
+          lastFetchedPageIndex = requestedPageIndex;  // Update the lastFetchedPageIndex
+        } catch (error) {
+          console.error("Error fetching additional images:", error);
+        }
+      }
+    };
+
+    const initMasonry = () => {
       const gallery = document.querySelector('.gallery');
       if (!gallery) {
         console.error('gallery element not found.');
@@ -112,76 +101,76 @@ const fetchData = async (requestedPageIndex) => {
         percentPosition: true,
       });
 
-    const checkFor404 = async (url) => {
-      try {
-        const res = await fetch(url);
-        if (res.status === 404) {
-          msnry.layout();
-          return true; // Indicates that a 404 was found
-        }
-      } catch (error) {
-        console.error("Error in 404 fetch:", error);
-      }
-      return false; // Indicates that a 404 was not found
-    };
-
-   infScroll = new InfiniteScroll(gallery, {
-    path: () => {
-      if (canIncrement) {
-        pageIndex++;  // Increment pageIndex for the next set of data
-      }
-      canIncrement = false; // Disable further increments
-      const url = `${apiConfig.IMAGE}?page=${pageIndex}&${new URLSearchParams(store.imgParams).toString()}`;
-
-       // Use Promise syntax to handle the asynchronous 404 check
-  checkFor404(url).then(async (is404) => {
-      if (is404) {
-        // Here, first ensure all images are fully loaded
-        await new Promise((resolve) => {
-          imagesLoaded(document.querySelector('.gallery'), resolve);
-        });
-        msnry.reloadItems();
-        msnry.layout();
-      }
-    });
-
-    return url;
-  },
-    outlayer: msnry,
-    status: '.page-load-status',
-    history: false,
-    scrollThreshold: 1200,
-    elementScroll: true,
-  });
-
-  infScroll.on('load', async function(response)   {
-    if (pageIndex > lastFetchedPageIndex) {
-      try {
-          // Extract the body content from the HTML response
-          let bodyContent = response.querySelector("body").textContent;
-          
-          // Convert the body content to JSON
-          const data = JSON.parse(bodyContent);
-          
-          const newImages = data.features.map(item => ({
-                attached_orthophoto: item.attached_photograph ? item.attached_photograph.iiif_file : null,
-                name: item.panel.title,
-              })).filter(img => img !== null);
-
-          images.value = [...images.value, ...newImages];
-
-          imagesLoaded(document.querySelector('.gallery'), () => {
-            msnry.reloadItems();
+      const checkFor404 = async (url) => {
+        try {
+          const res = await fetch(url);
+          if (res.status === 404) {
             msnry.layout();
+            return true; // Indicates that a 404 was found
+          }
+        } catch (error) {
+          console.error("Error in 404 fetch:", error);
+        }
+        return false; // Indicates that a 404 was not found
+      };
+
+      infScroll = new InfiniteScroll(gallery, {
+        path: () => {
+          if (canIncrement) {
+            pageIndex++;  // Increment pageIndex for the next set of data
+          }
+          canIncrement = false; // Disable further increments
+          const url = `${apiConfig.IMAGE}?page=${pageIndex}&${new URLSearchParams(store.imgParams).toString()}`;
+
+          // Use Promise syntax to handle the asynchronous 404 check
+          checkFor404(url).then(async (is404) => {
+            if (is404) {
+              // Here, first ensure all images are fully loaded
+              await new Promise((resolve) => {
+                imagesLoaded(document.querySelector('.gallery'), resolve);
+              });
+              msnry.reloadItems();
+              msnry.layout();
+            }
           });
-      }
-      catch (e) {
-          console.error("JSON Parsing failed or other error: ", e);
-      }
-    } 
-      canIncrement = true;
-  });
-  };
+
+          return url;
+        },
+        outlayer: msnry,
+        status: '.page-load-status',
+        history: false,
+        scrollThreshold: 1200,
+        elementScroll: true,
+      });
+
+      infScroll.on('load', async function (response) {
+        if (pageIndex > lastFetchedPageIndex) {
+          try {
+            // Extract the body content from the HTML response
+            let bodyContent = response.querySelector("body").textContent;
+
+            // Convert the body content to JSON
+            const data = JSON.parse(bodyContent);
+
+            const newImages = data.features.map(item => ({
+              attached_orthophoto: item.attached_photograph ? item.attached_photograph.iiif_file : null,
+              name: item.panel.title,
+            })).filter(img => img !== null);
+
+            images.value = [...images.value, ...newImages];
+
+            imagesLoaded(document.querySelector('.gallery'), () => {
+              msnry.reloadItems();
+              msnry.layout();
+            });
+          }
+          catch (e) {
+            console.error("JSON Parsing failed or other error: ", e);
+          }
+        }
+        canIncrement = true;
+      });
+    };
 
     const reinitInfiniteScroll = () => {
       if (infScroll) {
@@ -190,21 +179,21 @@ const fetchData = async (requestedPageIndex) => {
       initMasonry(); // Reinitialize Masonry and InfiniteScroll
     };
 
-  onMounted(() => {
-  fetchData(1).then(() => {
-    
-    imagesLoaded(document.querySelector('.gallery'), () => {
-      initMasonry();
+    onMounted(() => {
+      fetchData(1).then(() => {
 
-      // After the initial Masonry initialization, reload and layout again
-      // to make sure the first batch of images obeys the Masonry layout.
-      msnry.reloadItems();
-      msnry.layout();
+        imagesLoaded(document.querySelector('.gallery'), () => {
+          initMasonry();
+
+          // After the initial Masonry initialization, reload and layout again
+          // to make sure the first batch of images obeys the Masonry layout.
+          msnry.reloadItems();
+          msnry.layout();
+        });
+      });
     });
-  });
-  });
 
-  return {
+    return {
       images,
       updatePanelId
     };
@@ -214,39 +203,48 @@ const fetchData = async (requestedPageIndex) => {
 
 
 <style scoped>
-#gallery-container{
-  position:absolute;
-  width:100%;
-  height:calc(100% - 80px);
-  padding-left:33%;
-  z-index:100!important;
-  background-color: rgba(232, 228, 217, 0.5) !important;
-  backdrop-filter:blur(5px);
+#gallery-container {
+  position: absolute;
+  width: 68%;
+  height: calc(100% - 80px);
+  margin-left: 32%;
+  padding-left: 2%;
+  padding-right: 2%;
+  z-index: 100 !important;
+  background-color: black;
+  backdrop-filter: blur(5px);
 }
 
 @media screen and (min-width: 1900px) {
-  #gallery-container{ 
-    padding-left:600px;
-}
+  #gallery-container {
+    margin-left: 600px;
+    width: calc(100% - 600px);
   }
+}
 
 @media screen and (max-width: 1500px) {
-  #gallery-container{ 
-    padding-left:500px;
-}
+  #gallery-container {
+    margin-left: 550px;
+    width: calc(100% - 550px);
+    padding-left: 10px;
+    padding-right: 10px;
   }
+}
 
-  @media screen and (max-width: 900px) {
-  #gallery-container{ 
-    padding-left:5px;
-}
+@media screen and (max-width: 900px) {
+  #gallery-container {
+    margin-left: 0px;
+    width: 100%;
   }
+}
 
 .gallery {
   max-height: 100%;
   overflow-y: auto;
-  max-width: 100%; /* Maximum width of the gallery */
-  margin: 0 auto; /* Top and bottom margin 0, left and right margin auto */  
+  max-width: 100%;
+  /* Maximum width of the gallery */
+  margin: 0 auto;
+  /* Top and bottom margin 0, left and right margin auto */
 }
 
 .gallery::-webkit-scrollbar {
@@ -260,21 +258,54 @@ const fetchData = async (requestedPageIndex) => {
 
 .gallery__item,
 .gallery__col-sizer {
-  width: calc(25% - 10px);
+  width: calc(16.6%);
 }
-.gallery__gutter-sizer { width: 10px;}
+
+.gallery__gutter-sizer {
+  width: 0px;
+}
+
+
+@media screen and (max-width: 1800px) {
+
+  .gallery__item,
+  .gallery__col-sizer {
+    width: calc(20%);
+  }
+}
+
 
 @media screen and (max-width: 1500px) {
-  .gallery__item, .gallery__col-sizer {
-    width: calc(33% - 8px);
+
+  .gallery__item,
+  .gallery__col-sizer {
+    width: calc(25%);
+  }
+}
+
+@media screen and (max-width: 1300px) {
+
+.gallery__item,
+.gallery__col-sizer {
+  width: calc(33%);
+}
+}
+
+@media screen and (max-width: 1100px) {
+
+  .gallery__item,
+  .gallery__col-sizer {
+    width: calc(50%);
   }
 }
 
 @media screen and (max-width: 900px) {
-  .gallery__item, .gallery__col-sizer {
-    width: calc(50% - 8px);
-}
+
+  .gallery__item,
+  .gallery__col-sizer {
+    width: calc(50%);
   }
+}
 
 
 
@@ -286,61 +317,76 @@ const fetchData = async (requestedPageIndex) => {
 .gallery__item {
   margin-bottom: 10px;
   float: left;
-  overflow:hidden !important;
+  overflow: hidden !important;
 }
 
-.gallery__item--height1 { height: 140px; background: #EA0; }
-.gallery__item--height2 { height: 220px; background: #C25; }
-.gallery__item--height3 { height: 300px; background: #19F; }
+.gallery__item--height1 {
+  height: 140px;
+  background: #EA0;
+}
 
-.gallery__item--width2 { width: 66%; }
+.gallery__item--height2 {
+  height: 220px;
+  background: #C25;
+}
 
-.item-info{
-  pointer-events:none;
-  position:absolute!important;
-  height:100%!important;
-  width:100%!important;
-  z-index:1000!important;
-  bottom:0px;
+.gallery__item--height3 {
+  height: 300px;
+  background: #19F;
+}
+
+.gallery__item--width2 {
+  width: 66%;
+}
+
+.item-info {
+  pointer-events: none;
+  position: absolute !important;
+  height: 100% !important;
+  width: 100% !important;
+  z-index: 1000 !important;
+  bottom: 0px;
+
   transition: all 0.5s ease-in-out;
   background: linear-gradient(0deg, rgba(0, 0, 0, 0.0) 0px, rgba(0, 0, 0, 0)50%) !important;
 }
 
-.item-info-meta{
+.item-info-meta {
   /* text-transform: capitalize; */
-  position:absolute;
-  color:white;
-  bottom:0px;
-  padding:10px 15px;
-  display:none;
+  position: absolute;
+  color: white;
+  bottom: 0px;
+  padding: 20px 25px;
+  padding-bottom:40px!important;
+  display: none;
 }
 
 .gallery__item img {
   display: block;
   max-width: 100%;
   transition: all 0.2s ease-in-out;
+  transform: scale(0.98);
 }
 
 
 .gallery__item img:hover {
   display: block;
-  transform:scale(1.05);
+  transform: scale(1.00);
 }
 
-.gallery__item:hover .item-info{
-  background: linear-gradient(0deg, rgba(0, 0, 0, 0.7) 0px, rgba(0, 0, 0, 0)50%) !important;
+.gallery__item:hover .item-info {
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.7) 0px, rgba(0, 0, 0, 0)30%) !important;
 }
 
-.gallery__item:hover .item-info-meta{
- display:block;
+.gallery__item:hover .item-info-meta {
+  display: block;
 }
 
 .page-load-status {
-  display: none; /* hidden by default */
+  display: none;
+  /* hidden by default */
   padding-top: 20px;
   border-top: 1px solid #DDD;
   text-align: center;
   color: #777;
-}
-
-</style>
+}</style>

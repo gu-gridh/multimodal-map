@@ -160,7 +160,7 @@ watch(showSecondFloor, (newValue) => {
       <button class="item" v-bind:class="{ selected: showGallery }" v-on:click="showGallery = true;">
         {{ $t('panels') }}
       </button>
-      <button class="item" v-bind:class="{ selected: showGallery }" v-on:click="showGallery = true;">
+      <button class="item" style="pointer-events:none" v-bind:class="{ selected: showGalleryInscriptions }" v-on:click="showGallery = true;">
         {{ $t('inscriptions') }}
       </button>
     </div>
