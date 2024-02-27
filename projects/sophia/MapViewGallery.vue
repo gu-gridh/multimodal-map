@@ -15,7 +15,7 @@
         >
         <div class="item-info">
             <div class="item-info-meta">
-              <h1>{{ $t('panel') }} {{ item.name }}</h1>
+              <h1>{{ $t('Panel') }} {{ item.name }}</h1>
             </div>
         </div>
         <img  
@@ -81,12 +81,12 @@ const updatePanelId = (item) => {
 const fetchData = async (requestedPageIndex) => {
   if (requestedPageIndex > lastFetchedPageIndex) {
     try {
-      const urlToFetch = `https://saintsophia.dh.gu.se/api/inscriptions/image/?page=${requestedPageIndex}`; 
+      const urlToFetch = `https://saintsophia.dh.gu.se/api/inscriptions/image/?page=${requestedPageIndex}&depth=2`; 
       const res = await fetch(urlToFetch);
       const data = await res.json();
       const newImages = data.results.map(item => ({
         attached_orthophoto: item.iiif_file,
-        name: item.panel, 
+        name: item.panel.title, 
       })).filter(img => img && img.attached_orthophoto);
 
       images.value = [...images.value, ...newImages];
