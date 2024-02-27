@@ -95,20 +95,18 @@ const styles = {
   'MultiLineString': new Style({
       stroke: new Stroke({
       color: 'rgba(200,50,50, 0.8)',
-      width: 10,
-      zIndex: 10000,
-    }),
-  }),  
-  'MultiLineStringHover': new Style({
-      stroke: new Stroke({
-      color: 'rgba(100,200,50, 1.0)',
-      width: 12,
-      zIndex: 10000,
+      width: 5,
     }),
   }),  
 };
 
-
+// hover style
+const hoverStyle = new Style({
+  stroke: new Stroke({
+    color: 'rgba(0, 255, 255, 1.0)', 
+    width: 6, 
+  }),
+});
 
 const styleFunction = function (feature) {
   return styles[feature.getGeometry().getType()];
@@ -127,6 +125,7 @@ const clearPopups = () => {
 
 onMounted(() => {
   if (map) {
+    vectorLayer.setZIndex(props.zIndex); //set the zIndex based on props
 
     // map.addLayer(webGLPointsLayer.value as any);
     map.addLayer(vectorLayer as any);
@@ -156,6 +155,7 @@ onMounted(() => {
       if (event.selected.length > 0) {
         const feature = event.selected[0];
         hoveredFeature.value = feature as any;
+        feature.setStyle(hoverStyle); //apply the hover style
         const geometry = feature.getGeometry() as any;
         hoverCoordinates.value = geometry.getFirstCoordinate();
       } else {

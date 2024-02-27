@@ -197,7 +197,7 @@ watch(showSecondFloor, (newValue) => {
        
         <MapComponent :shouldAutoMove="true" :min-zoom=minZoom :max-zoom=maxZoom v-if="!showGallery">
           <template #layers>
-            <SophiaPlaceLayer :params="tagParams" :zIndex=20000 :showSecondFloor="showSecondFloor" />
+            <SophiaPlaceLayer :params="tagParams" :zIndex=3 :showSecondFloor="showSecondFloor" />
           <div >
             <ol-tile-layer className="floor-plans" v-if="!showSecondFloor">
               <ol-source-xyz url="https://data.dh.gu.se/tiles/saint_sophia_ground_floor/{z}/{x}/{y}.png" />
