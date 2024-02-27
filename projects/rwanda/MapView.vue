@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { inject, provide, ref, nextTick, watch , onMounted} from "vue";
+import { provide, ref, watch } from "vue";
 import configRaw from "./config";
 import MainLayout from "@/MainLayout.vue";
 import MapViewControls from "./MapViewControls.vue";
@@ -33,8 +33,11 @@ const route = useRoute();
 
 const store = mapStore();
 const { params } = storeToRefs(store);
-const { periodsLayer, periods, sources, informants, sourcesLayer, placeTypeLayer, placeTypes, allLayer, informantsLayer, coordinate, languagesLayer, languages } = storeToRefs(rwandaStore());
+const { periodsLayer, periods, sources, informants, placeTypeLayer, placeTypes, allLayer, informantsLayer, languagesLayer, languages } = storeToRefs(rwandaStore());
 const { selectedFeature } = storeToRefs(store);
+
+//for map marker zoom in
+const showMarker = ref(false);
 
 //MapViewControls
 const { searchText } = useRwandaMap();
@@ -63,6 +66,15 @@ watch(
   { immediate: true }
 );
 
+watch(route, () => {
+  if (route.params.placeId) {
+    //set map marker
+    showMarker.value = true;
+  }
+  else {
+    showMarker.value = false;
+  }
+}, {immediate: true});
 
 </script>
 
@@ -97,6 +109,17 @@ watch(
     <div class="map-container">
       <MapComponent :min-zoom="14" :max-zoom="19" :restrictExtent="[30.01, -1.98, 30.1, -1.92]" :shouldAutoMove="true" class="greyscale">
         <template #layers>
+          <!-- marker layer -->
+          <DianaPlaceLayer
+            v-if="showMarker"
+            path="rwanda/geojson/place/"
+            :params="{
+              id__in: route.params.placeId,
+            }">
+            <ol-style>
+              <ol-style-stroke color="#2b90c8" :width="2"></ol-style-stroke>
+            </ol-style>
+          </DianaPlaceLayer>
           <!-- Source layer -->
           <DianaPlaceLayer 
             v-if="sources[0] == 'images'"
@@ -107,15 +130,8 @@ watch(
             </ol-style>
             <FeatureSelection/>
           </DianaPlaceLayer>
-          <!-- <DianaPlaceLayer 
-            v-if="sources[0] == 'interviews'"
-            path="rwanda/search/text/"
-          >
-          <ol-style>
-              <ol-style-stroke color="#2b90c8" :width="3"></ol-style-stroke>
-            </ol-style>
-            <FeatureSelection/>
-          </DianaPlaceLayer> -->
+
+          <!-- Document layer -->
           <DianaPlaceLayer 
             v-if="sources[0] == 'documents'"
             path="rwanda/search/document/"
@@ -125,6 +141,7 @@ watch(
             </ol-style>
             <FeatureSelection/>
           </DianaPlaceLayer>
+
           <!-- Place types layer -->
           <DianaPlaceLayer 
             v-if="placeTypeLayer"
@@ -179,7 +196,7 @@ watch(
             </DianaPlaceLayer>  
             <!-- Initial layer -->
           <DianaPlaceLayer
-            v-if="allLayer"
+            v-if="allLayer && !showMarker"
             path="rwanda/geojson/place/"
             :params="{
               has_no_name: false,

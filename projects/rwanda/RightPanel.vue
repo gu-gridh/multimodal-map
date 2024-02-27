@@ -26,12 +26,6 @@ watchEffect(async () => {
   }
 })
 
-//watch if route is home
-// watch(route, () => {
-//   if (!route.params.placeId) {
-//     featureId.value = undefined
-//   }
-// }), { immediate: true }
 </script>
 
 <template>
