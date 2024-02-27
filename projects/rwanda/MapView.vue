@@ -117,7 +117,7 @@ watch(route, () => {
               id__in: route.params.placeId,
             }">
             <ol-style>
-              <ol-style-stroke color="#2b90c8" :width="2"></ol-style-stroke>
+              <ol-style-stroke color="rgb(180,100,100)" :width="2"></ol-style-stroke>
             </ol-style>
           </DianaPlaceLayer>
           <!-- Source layer -->
