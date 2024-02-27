@@ -133,6 +133,7 @@ onMounted(() => {
     // Initialize the select interaction for hover
     selectHover = new Select({
       condition: pointerMove,
+      style: null,
       // layers: [webGLPointsLayer.value as any],
     });
 
@@ -141,15 +142,18 @@ onMounted(() => {
 
     // Add an event listener for when a feature is hovered over
     let debounceHoverTimer;
+
     selectHover.on("select", (event) => {
       clearTimeout(debounceHoverTimer);
+
       debounceHoverTimer = setTimeout(() => {
         handleHover(event);
-
       }, 20);
+
+      event.deselected.forEach((feature) => {
+        feature.setStyle(undefined);
+      });
     });
-
-
 
     function handleHover(event) {
       if (event.selected.length > 0) {
