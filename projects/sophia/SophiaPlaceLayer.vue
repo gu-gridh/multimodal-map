@@ -65,10 +65,10 @@ const fetchData = async (initialUrl: string, params: Record<string, any>, isSeco
 
   if (nextUrl && initialParams) {
     if (!isSecondFloor) {
-      nextUrl = `${nextUrl}?${initialParams}&floor=1`;
+      nextUrl = `${nextUrl}?${initialParams}&floor=1&published=true`;
     }
     else if (isSecondFloor) {
-      nextUrl = `${nextUrl}?${initialParams}&floor=2`;
+      nextUrl = `${nextUrl}?${initialParams}&floor=2&published=true`;
     }
 
 
