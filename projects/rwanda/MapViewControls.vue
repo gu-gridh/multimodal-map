@@ -3,13 +3,13 @@ import { storeToRefs } from "pinia";
 import { rwandaStore } from "./rwandaStore";
 import CategoryButtonList from "@/components/input/CategoryButtonList.vue";
 import ButtonList from "./input/ButtonList.vue";
+import CategoryButton from "@/components/input/CategoryButton.vue";
 
 //Filtering map controls
 const SOURCES = {
-  all: "All",
-  images: "Images",
-  interviews: "Interviews",
-  documents: "Documents",
+  image: "Images",
+  interview: "Interviews",
+  document: "Documents",
 }
 const PLACE_TYPES = {
   area: "Areas",
@@ -39,47 +39,36 @@ const LANGUAGES = {
   "Arabic-English": "AR-ENG",
   "Kiswahili": "SW",
 }
-const { sources, placeTypes, periods, informants, sourcesLayer, placeTypeLayer, periodsLayer, allLayer, informantsLayer, languages, languagesLayer } = storeToRefs(rwandaStore());
+const { sources, placeTypes, periods, informants, allLayer, languages, showAdvancedLayer } = storeToRefs(rwandaStore());
 
 //handle category button click
 const handleSourcesClick = (key: string) => {
   if(key == "all"){
-    sourcesLayer.value = false
-    placeTypeLayer.value = false
-    periodsLayer.value = false
-    informantsLayer.value = false
-    languagesLayer.value = false
+    showAdvancedLayer.value = false
     allLayer.value = true
+    sources.value = []
+    placeTypes.value = []
+    periods.value = []
+    informants.value = []
+    languages.value = []
   }
   else {
-    sourcesLayer.value = true
+    showAdvancedLayer.value = true
+    //turn off show all
     allLayer.value = false
   }
 }
 
-const handlePlaceTypeClick = (key: string) => {
-  placeTypeLayer.value = true
-  allLayer.value = false
-}
-
-const handlePeriodClick = (key: string) => {
-  periodsLayer.value = true
-  allLayer.value = false
-}
-
-const handleInformantClick = (key: string) => {
-  informantsLayer.value = true
-  allLayer.value = false
-}
-
-const handleLanguageClick = (key: string) => {
-  languagesLayer.value = true
-  allLayer.value = false
-}
 </script>
 
 <template>
   <div class="filter-container">
+    <CategoryButton
+      :text="'Show all'"
+      :value="allLayer"
+      @toggle="handleSourcesClick('all')"
+      class="filter-button"
+    />
     <div class="filter-heading">Sources</div>
       <CategoryButtonList 
         v-model="sources"
@@ -95,7 +84,7 @@ const handleLanguageClick = (key: string) => {
         :categories="INFORMANTS"
         :limit="1"
         class="filter-button"
-        @click="handleInformantClick"
+        @click="handleSourcesClick"
       />
     <div class="filter-heading">Names of places </div>
       <CategoryButtonList 
@@ -103,7 +92,7 @@ const handleLanguageClick = (key: string) => {
         :categories="PLACE_TYPES"
         :limit="1"
         class="filter-button"
-        @click="handlePlaceTypeClick"
+        @click="handleSourcesClick"
       />
       <div class="filter-heading">Languages</div>
       <ButtonList 
@@ -111,7 +100,7 @@ const handleLanguageClick = (key: string) => {
         :categories="LANGUAGES"
         :limit="1"
         class="filter-button lang-buttons"
-        @click="handleLanguageClick"
+        @click="handleSourcesClick"
       />
     <div class="filter-heading">Time periods</div>
       <ButtonList 
@@ -119,7 +108,7 @@ const handleLanguageClick = (key: string) => {
         :categories="PERIODS"
         :limit="1"
         class="filter-button"
-        @click="handlePeriodClick"
+        @click="handleSourcesClick"
       />
     </div>
 </template>
