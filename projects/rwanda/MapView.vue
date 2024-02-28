@@ -115,6 +115,7 @@ watch(route, () => {
             path="rwanda/geojson/place/"
             :params="{
               id__in: route.params.placeId,
+              corrected: true,
             }">
             <ol-style>
               <ol-style-stroke color="rgb(180,100,100)" :width="2"></ol-style-stroke>
@@ -125,6 +126,7 @@ watch(route, () => {
             v-if="showAdvancedLayer"
             path="rwanda/advance/search/"
             :params="{
+              corrected: true,
               source: sources[0] ? sources[0] : '',
               period: periods[0] ? periods[0] : '',
               place_type: placeTypes[0] ? placeTypes[0] : '',
@@ -147,6 +149,7 @@ watch(route, () => {
               in_bbox:
                 params.bbox && !params.searchIds ? params.bbox.toString() : '',
               page_size: 500,
+              corrected: true,
             }"
           >
             <ol-style>

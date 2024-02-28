@@ -77,9 +77,9 @@ const handleSourcesClick = (key: string) => {
         class="filter-button"
         @click="handleSourcesClick"
       />
-      <div class="filter-heading" v-show="sources.includes('interviews')">Informants</div>
+      <div class="filter-heading" v-show="sources.includes('interview')">Informants</div>
       <CategoryButtonList 
-        v-show="sources.includes('interviews')"
+        v-show="sources.includes('interview')"
         v-model="informants"
         :categories="INFORMANTS"
         :limit="1"
