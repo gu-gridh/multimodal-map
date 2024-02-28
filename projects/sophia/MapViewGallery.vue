@@ -70,7 +70,7 @@ export default {
     const fetchData = async (requestedPageIndex) => {
       if (requestedPageIndex > lastFetchedPageIndex) {
         try {
-          const urlToFetch = `${apiConfig.IMAGE}?page=${requestedPageIndex}&${new URLSearchParams(store.imgParams).toString()}`; // `https://saintsophia.dh.gu.se/api/inscriptions/image/?page=${requestedPageIndex}&depth=2`; 
+          const urlToFetch = `${apiConfig.IMAGE}?page=${requestedPageIndex}&depth=2&${new URLSearchParams(store.imgParams).toString()}`;
           const res = await fetch(urlToFetch);
           const data = await res.json();
           const newImages = data.results.map(item => ({
@@ -79,6 +79,7 @@ export default {
           })).filter(img => img && img.attached_orthophoto);
 
           images.value = [...images.value, ...newImages];
+          console.log(data.results)
 
           lastFetchedPageIndex = requestedPageIndex;  // Update the lastFetchedPageIndex
         } catch (error) {
@@ -120,7 +121,7 @@ export default {
             pageIndex++;  // Increment pageIndex for the next set of data
           }
           canIncrement = false; // Disable further increments
-          const url = `${apiConfig.IMAGE}?page=${pageIndex}&${new URLSearchParams(store.imgParams).toString()}`;
+          const url = `${apiConfig.IMAGE}?page=${pageIndex}&depth=2&${new URLSearchParams(store.imgParams).toString()}`;
 
           // Use Promise syntax to handle the asynchronous 404 check
           checkFor404(url).then(async (is404) => {
