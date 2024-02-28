@@ -51,12 +51,12 @@
     <div class="data-widget-section">
       <div class="data-widget-item">
         <h3>{{ $t('panelsshown') }}:</h3>
-        <p>{{ currentTombCount }}</p>
+        <p>{{ currentPanelCount }}</p>
       </div>
       <div class="data-widget-item">|</div>
       <div class="data-widget-item">
         <h3>{{ $t('panelshidden') }}:</h3>
-        <p>{{ hiddenTombs }}</p>
+        <p>{{ hiddenPanels }}</p>
       </div>
     </div>
 
@@ -105,8 +105,8 @@ const lastClickedCategory = ref('');
 const totalPhotographs = ref(0);
 const totalPlans = ref(0);
 const totalThreed = ref(0);
-const hiddenTombs = ref(0);
-const currentTombCount = ref(0);
+const hiddenPanels = ref(0);
+const currentPanelCount = ref(0);
 const visibleAbout = ref(false);
 const { selectedFeature } = storeToRefs(mapStore());
 const searchResults = ref([]);
@@ -126,7 +126,7 @@ onMounted(async () => {
   const data = await response.json();
 });
 
-const NECROPOLICoordinates = ref<Record<string, [number, number]>>({});
+// const NECROPOLICoordinates = ref<Record<string, [number, number]>>({});
 
 async function fetchDataAndPopulateRef<T>(type: string, refToPopulate: any) {
   try {
@@ -136,9 +136,9 @@ async function fetchDataAndPopulateRef<T>(type: string, refToPopulate: any) {
         refToPopulate.value[result.id] = result.text;
 
         // If the type is necropolis, store its coordinates
-        if (type === "necropolis" && result.geometry && result.geometry.coordinates) {
-          NECROPOLICoordinates.value[result.id] = result.geometry.coordinates;
-        }
+        // if (type === "necropolis" && result.geometry && result.geometry.coordinates) {
+        //   NECROPOLICoordinates.value[result.id] = result.geometry.coordinates;
+        // }
       }
     });
   } catch (error) {
@@ -181,20 +181,19 @@ const fetchData = async (url: string) => {
     console.error(`Failed to fetch data: ${response.status}`);
     return;
   }
-
   const data = await response.json();
-  currentTombCount.value = data.shown_tombs;
-  totalPhotographs.value = data.photographs;
-  totalPlans.value = data.drawing;
-  hiddenTombs.value = data.hidden_tombs;
-  totalThreed.value = data.objects_3d;
+  currentPanelCount.value = data.shown_panels;
+  // totalPhotographs.value = data.photographs;
+  // totalPlans.value = data.drawing;
+  hiddenPanels.value = data.hidden_panels;
+  // totalThreed.value = data.objects_3d;
 };
 
 watch(
   () => dataParams.value,
   async (newTagParams, oldTagParams) => {
     const queryParams = new URLSearchParams(Object.fromEntries(Object.entries(newTagParams).map(([k, v]) => [k, String(v)])));
-    const urlWithParams = `https://diana.dh.gu.se/api/etruscantombs/info/tombs/?${queryParams.toString()}`;
+    const urlWithParams = `https://saintsophia.dh.gu.se/api/inscriptions/info/panels/?${queryParams.toString()}`;
     await fetchData(urlWithParams);
   },
   { immediate: true }
@@ -205,30 +204,30 @@ const toggleAboutVisibility = async () => {
   visibleAbout.value = !visibleAbout.value;
 };
 
-function handleSelectionClick(selectedValue: any, targetRef: any) {
-  clearAll();
-  const selectedCoordinates = NECROPOLICoordinates.value[selectedValue];
-  if (selectedCoordinates) {
-    const [x, y] = selectedCoordinates;
+// function handleSelectionClick(selectedValue: any, targetRef: any) {
+//   clearAll();
+//   const selectedCoordinates = NECROPOLICoordinates.value[selectedValue];
+//   if (selectedCoordinates) {
+//     const [x, y] = selectedCoordinates;
 
-    const convertedCoordinates = transform([x, y], 'EPSG:4326', 'EPSG:3857');
-    if (Array.isArray(convertedCoordinates) && convertedCoordinates.length === 2) {
-      selectedNecropolisCoordinates.value = convertedCoordinates as [number, number];
-    } else {
-      console.error("Invalid coordinate format after transformation.");
-    }
+//     const convertedCoordinates = transform([x, y], 'EPSG:4326', 'EPSG:3857');
+//     if (Array.isArray(convertedCoordinates) && convertedCoordinates.length === 2) {
+//       selectedNecropolisCoordinates.value = convertedCoordinates as [number, number];
+//     } else {
+//       console.error("Invalid coordinate format after transformation.");
+//     }
 
-  }
-}
+//   }
+// }
 
-function clearAll() {
-  categories.value = ["all"];
-  enablePlan.value = false;
-  enable3D.value = false;
-  //inscriptionType.value = ["all"];
-  lastClickedCategory.value = '';
-  tags.value = [];
-}
+// function clearAll() {
+//   categories.value = ["all"];
+//   enablePlan.value = false;
+//   enable3D.value = false;
+//   //inscriptionType.value = ["all"];
+//   lastClickedCategory.value = '';
+//   tags.value = [];
+// }
 
 
 
