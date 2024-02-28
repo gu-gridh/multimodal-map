@@ -40,7 +40,7 @@
 
   <div class="toggle-buttons" style="margin-top: 20px">
     <button style="float:left; border-radius:4px 0px 0px 0px" :class="{ active: searchType === 'places' }" @click="setSearchType('places')">{{ $t('places') }}</button>
-    <button style="border-radius:0px 4px 0px 0px" :class="{ active: searchType === 'builders' }" @click="setSearchType('builders')">{{ $t('buildings') }}</button>
+    <button style="border-radius:0px 4px 0px 0px" :class="{ active: searchType === 'builders' }" @click="setSearchType('builders')">{{ $t('builders') }}</button>
   </div>
     <div class="search-section">
       <input
