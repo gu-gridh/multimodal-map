@@ -29,10 +29,12 @@ const fetchObjectData = async () => {
     let data = await response.json();
 
     Object.keys(data).forEach(key => {
-      // check if the value for this key contains a semicolon
+      //check if the value for this key contains a semicolon
       if (typeof data[key] === 'string' && data[key].includes(';')) {
-        const parts = data[key].split(';');
-        data[key] = { label: parts[0].trim(), data: parts[1].trim() };
+        const firstSemicolonIndex = data[key].indexOf(';');
+        const label = data[key].substring(0, firstSemicolonIndex).trim();
+        const remainingData = data[key].substring(firstSemicolonIndex + 1).trim();
+        data[key] = { label, data: remainingData };
       }
     });
 
