@@ -80,6 +80,11 @@ const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
   cursor: pointer;
 }
 
+#app #ToolbarVertical {
+  top: 75px;
+  margin-left: 10px;
+}
+
 @media screen and (min-width: 1900px) {
 .metadata .category-button{
   width:140px!important;
