@@ -8,7 +8,7 @@ import CategoryButton from "@/components/input/CategoryButton.vue";
 //Filtering map controls
 const SOURCES = {
   image: "Images",
-  interview: "Interviews",
+  text: "Interviews",
   document: "Documents",
 }
 const PLACE_TYPES = {
@@ -77,9 +77,9 @@ const handleSourcesClick = (key: string) => {
         class="filter-button"
         @click="handleSourcesClick"
       />
-      <div class="filter-heading" v-show="sources.includes('interview')">Informants</div>
+      <div class="filter-heading" v-show="sources.includes('text')">Informants</div>
       <CategoryButtonList 
-        v-show="sources.includes('interview')"
+        v-show="sources.includes('text')"
         v-model="informants"
         :categories="INFORMANTS"
         :limit="1"

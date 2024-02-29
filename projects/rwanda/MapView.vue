@@ -101,7 +101,7 @@ watch(route, () => {
           :searchItems="searchText"
         />
       </div>
-      <!--filter map-->
+      <!--filter map layers-->
       <MapViewControls />
     </template>
 
@@ -118,7 +118,7 @@ watch(route, () => {
               corrected: true,
             }">
             <ol-style>
-              <ol-style-stroke color="rgb(180,100,100)" :width="2"></ol-style-stroke>
+              <ol-style-stroke color="#dc6464" :width="2"></ol-style-stroke>
             </ol-style>
           </DianaPlaceLayer>
           <!-- Advanced search layers -->
@@ -135,7 +135,7 @@ watch(route, () => {
             }"
           >
           <ol-style>
-              <ol-style-stroke color="#2b90c8" :width="3"></ol-style-stroke>
+              <ol-style-stroke color="#9765A5" :width="3"></ol-style-stroke>
             </ol-style>
             <FeatureSelection/>
           </DianaPlaceLayer>
