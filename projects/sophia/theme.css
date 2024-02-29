@@ -17,13 +17,14 @@
 /* Main */
 html,
 body {
-  font-family: "Sofia Sans Extra Condensed", sans-serif !important;
+  font-family: "Oswald", sans-serif;
+  font-weight:300;
   background-color: var(--theme-1) !important;
-  font-size: 108% !important;
+  font-size: 105% !important;
 }
 
 .theme-title-typography {
-  font-family: 'Teko', sans-serif;
+  font-family: "Alumni Sans Pinstripe", sans-serif;
 }
 
 .theme-color-text {
@@ -85,8 +86,8 @@ body {
   background: url("images/gradient.png");
   background-size: contain;
   width: 53% !important;
-  min-width: 970px;
-  max-width: 1000px;
+  min-width: 960px !important;
+  max-width: 1100px!important;
   font-size: 95%;
 }
 
@@ -96,6 +97,7 @@ body {
   color: white;
   width: auto;
   transition: all 0.2s ease-in-out;
+  font-weight:300;
 }
 
 .theme-button:hover {
@@ -105,11 +107,11 @@ body {
 
 #app .category-button {
   background-color: rgba(255, 255, 255, 0.6);
-  color: rgb(71, 85, 105);
+  color: black;
   border-radius: 4px;
   backdrop-filter: blur(5px);
   line-height: 1.5;
-  padding: 5px 10px 1px 10px;
+  padding: 3px 10px 3px 10px;
 }
 
 #app .category-button:hover {
@@ -124,7 +126,24 @@ body {
 
 #app .ui-mode {
   top: 0px;
-  padding: 6px 3px 3px 3px !important;
+  padding: 4px 3px 6px 3px !important;
+}
+
+#app .ui-mode .item {
+  cursor: pointer;
+  display: inline;
+  font-weight: 300;
+  padding: 0px 15px 0px 15px;
+  padding-top:0px;
+  line-height:1.0;
+  font-size:1vw!important;
+}
+
+.placecard {
+  height: calc(100vh - 33vh);
+  margin-top: 85px;
+  font-size:90%;
+  font-weight:300;
 }
 
 .placecard-top {
@@ -135,9 +154,22 @@ body {
   height: 25% !important;
 }
 
-.placecard {
-  height: calc(100vh - 33vh);
-  margin-top: 85px;
+.placecard-title{
+  font-size:2.2vw;
+  font-weight:700!important;
+}
+
+.placecard-metadata-content{
+height:70px!important;
+overflow:hidden;
+}
+
+.metadata-item{
+  font-size:90%;
+}
+
+.tag{
+  margin-left:10px;
 }
 
 #app .right-pane {
@@ -163,9 +195,10 @@ body {
 
 #app .ol-popup {
   bottom: 20px !important;
-  left: -80px;
-  width: 170px;
-  transform: rotate(0deg);
+  left: -50px!important;
+  width: 120px!important;
+  font-weight:200;
+  font-size:0.85em!important;
 }
 
 

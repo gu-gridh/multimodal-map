@@ -237,8 +237,8 @@ const toggleAboutVisibility = async () => {
 #app .left-pane {
   background: url("images/gradient.png");
   background-size: contain;
-  width: 53% !important;
-  min-width: 970px;
+  width: 54% !important;
+  min-width: 990px;
   max-width: 1000px;
   font-size:95%;
 }
@@ -270,6 +270,7 @@ const toggleAboutVisibility = async () => {
 #app .section-title {
   margin-top: 6px;
   margin-bottom: -3px;
+  font-weight:200;
   color: white;
 }
 
@@ -279,8 +280,9 @@ const toggleAboutVisibility = async () => {
 }
 
 .dropdown{
-  font-family: "Sofia Sans Extra Condensed", sans-serif !important;
+  font-family: "Oswald", sans-serif;
   appearance: none !important;
+  padding: 3px 10px 3px 10px;
 }
 
 

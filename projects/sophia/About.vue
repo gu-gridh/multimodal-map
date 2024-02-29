@@ -162,10 +162,10 @@ export default {
 .category-button {
   margin-top: 40px;
   float: right;
-  font-size: 1.4vw !important;
-  font-weight: 400;
+  font-size: 1.2vw !important;
+  font-weight: 300;
   transition: all 0.4s ease-in-out;
-  padding: 4px 20px !important;
+  padding: 4px 15px !important;
   z-index: 1000;
   opacity: 1.0;
   right: 0px;

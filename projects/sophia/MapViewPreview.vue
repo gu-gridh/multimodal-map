@@ -91,7 +91,7 @@ function deselectPlace() {
 
       <div class="placecard-bottom">
         <div class="placecard-text">
-          <div class="placecard-title theme-color-text theme-title-typography">{{ $t('Panel') }} {{ selectedFeature.get("title") }}</div>
+          <div class="placecard-title theme-color-text theme-title-typography">{{ $t('panel') }} {{ selectedFeature.get("title") }}</div>
           <!-- <div class="placecard-subtitle theme-color-text theme-title-typography">{{ room }}</div> -->
           <!-- <button class="theme-button theme-color-background">{{ $t('threedmodel') }}</button> -->
         </div>
