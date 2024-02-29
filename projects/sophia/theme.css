@@ -127,6 +127,7 @@ body {
 #app .ui-mode {
   top: 0px;
   padding: 4px 3px 6px 3px !important;
+  box-shadow: 0.0rem 0.1rem 1rem rgba(0, 0, 0, 0.3) !important;
 }
 
 #app .ui-mode .item {
