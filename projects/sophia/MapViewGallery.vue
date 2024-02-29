@@ -5,14 +5,14 @@
       <div class="gallery__gutter-sizer"></div>
       <div v-for="item in images" :key="item.uuid" class="gallery__item">
 
-        <router-link :to="`/panel/${item.name}?depth=2`" @click="updatePanelId(item)">
+        <!-- <router-link :to="`/panel/${item.name}?depth=2`" @click="updatePanelId(item)"> -->
           <div class="item-info">
             <div class="item-info-meta">
               <h1>{{ $t('Panel') }} {{ item.name }}</h1>
             </div>
           </div>
           <img :src="`${item.attached_orthophoto}/full/450,/0/default.jpg`" loading="lazy" @load="imageLoaded" />
-        </router-link>
+        <!-- </router-link> -->
       </div>
     </div>
     <div class="page-load-status">
@@ -79,7 +79,6 @@ export default {
           })).filter(img => img && img.attached_orthophoto);
 
           images.value = [...images.value, ...newImages];
-          console.log(data.results)
 
           lastFetchedPageIndex = requestedPageIndex;  // Update the lastFetchedPageIndex
         } catch (error) {
