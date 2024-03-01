@@ -20,7 +20,7 @@ body {
   font-family: "Oswald", sans-serif;
   font-weight:300;
   background-color: var(--theme-1) !important;
-  font-size: 105% !important;
+  font-size: 100% !important;
 }
 
 .theme-title-typography {
