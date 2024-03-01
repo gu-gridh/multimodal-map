@@ -54,7 +54,7 @@ const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 </div>
 </template>
 
-<style>
+<style scoped>
 
 .category-button{
   width:123px !important;
@@ -65,7 +65,7 @@ const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
   overflow:hidden !important;
   margin-bottom: 10px;
   padding: 0px 0px;
-  max-width:350px;
+
 }
 
 .object-description {
@@ -80,11 +80,16 @@ const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
   cursor: pointer;
 }
 
+#app #ToolbarVertical {
+  top: 75px;
+  margin-left: 10px;
+}
+
 @media screen and (min-width: 1900px) {
 .metadata .category-button{
   width:140px!important;
-padding:5px 18px!important;
-margin-top:50px!important;
+  padding:5px 18px!important;
+  margin-top:50px!important;
 }
 
 .metadata .back-button{
@@ -98,6 +103,10 @@ margin-top:50px!important;
 
 @media screen and (max-width: 900px) {
 
+ .metadata .category-button{
+  width:100%!important;
+margin-top:50px!important;
+}
 }
 
 </style>

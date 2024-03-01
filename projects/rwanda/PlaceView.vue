@@ -9,6 +9,7 @@ import VueMasonryWall from "@yeger/vue-masonry-wall";
 import { useRouter, useRoute } from "vue-router";
 import {fromLonLat} from 'ol/proj.js';
 import * as turf from '@turf/turf'
+import { nextTick } from "vue";
 
 
 const { selectedFeature } = storeToRefs(mapStore());
@@ -75,7 +76,7 @@ const fetchImages = async (id: any) => {
   else
   images.value = await diana.listAll<Image>("image/", { place_of_interest: id });
 }
-const featureZoom = 19;
+const featureZoom = 18;
 
 const zoomMap = () => {
     const geometry = placeGeoJson.value
@@ -92,17 +93,18 @@ const zoomMap = () => {
         store.updateCenter(fromLonLat(coordinates.value))
         store.updateZoom(featureZoom)
     }
-    if (geometry.type == "MultiLineString") {
+    if (geometry.type === "MultiLineString") {
         const multilinestring = turf.multiLineString(geometry.coordinates)
         const center = turf.pointOnSurface(multilinestring)
         coordinates.value = center.geometry.coordinates
         store.updateCenter(fromLonLat(coordinates.value))
-        store. updateZoom(featureZoom)
+        store.updateZoom(featureZoom)
     }
     if (geometry.type == "Polygon" ) {
         const polygon = turf.polygon(geometry.coordinates)
         const center = turf.pointOnSurface(polygon)
         coordinates.value = center.geometry.coordinates
+        
         store.updateCenter(fromLonLat(coordinates.value))
         store. updateZoom(featureZoom)
     }
@@ -111,22 +113,25 @@ const zoomMap = () => {
         const center = turf.pointOnSurface(polygon)
         coordinates.value = center.geometry.coordinates
         store.updateCenter(fromLonLat(coordinates.value))
-        store. updateZoom(featureZoom)
+        store.updateZoom(featureZoom)
     }
     else {
-      store.updateCenter([3346522.1909503858, -217337.69352852934])
-      store.updateZoom(15)
+      return
     }
 }
 
 const fetchDocuments = async (id: number) => {
-  documents.value = await diana.listAll("document/", { place_of_interest: id});
+  if(id){
+    documents.value = await diana.listAll("document/", { place_of_interest: id});
+  }
+  else return
 }
 
 //fetch place data
 const fetchPlaceData =async () => {
+  
     //if place is selected on map
-    if(selectedFeature.value != undefined || null) {
+    if(selectedFeature.value !== undefined || null) {
         place.value = selectedFeature.value
         placeType.value = capitalize(place.value.values_.type.text)
         placeDescription.value = capitalize(place.value.values_.description)
@@ -136,9 +141,12 @@ const fetchPlaceData =async () => {
         fetchImages(Number(placeId))
         fetchDocuments(Number(placeId))
     }
-    //if routing from url
-    else if(route.params.placeId) {
-        await fetch(`https://diana.dh.gu.se/api/rwanda/geojson/place/${route.params.placeId}`)
+    else return
+
+}
+onMounted(async ()  => {
+  if(route.params.placeId){
+     await fetch(`https://diana.dh.gu.se/api/rwanda/geojson/place/${route.params.placeId}`)
         .then(response => response.json())
         .then(data => {
             place.value = data.properties
@@ -152,21 +160,26 @@ const fetchPlaceData =async () => {
         fetchImages(placeId)
         fetchDocuments(placeId)
         zoomMap()
-    }
-}
-onMounted(() => {
-  fetchPlaceData()
+  }
+  else fetchPlaceData()
 })
 
 watch(selectedFeature, () => {
   fetchPlaceData()
 })
 
+
 function deselectPlace() {
+  router.push("/")
   selectedFeature.value = undefined;
-  router.push(`/`)
-  store.updateCenter([3346522.1909503858, -217337.69352852934])
-  store.updateZoom(15)
+  place.value = undefined
+  placeGeoJson.value = undefined
+  store.selectedFeature = undefined
+  nextTick(() => {
+    store.updateCenter([3346522.1909503858, -217337.69352852934])
+    store.updateZoom(15)
+  })
+  
 }
 
 //show more interviews if more than 1
@@ -188,9 +201,9 @@ const showMoreInterviews =() => {
             <div style="width:100%;">
                 <p>{{ placeType }} <span>- {{ placeDescription }}</span></p>
                 <div v-for="name in placeNames">
-                    <div style="width:100%; display:flex;">
+                    <div style="width:100%; display:flex; align-items: center;">
                         <span class="lang" v-if="name.languages && name.languages.length > 0">{{ name.languages[0].abbreviation }}</span>
-                        <div class="long-name"><span class="centered-name">{{ name.text }}</span><span style="font-weight: lighter;" v-if="name.period?.text">- {{ name.period.text }}</span></div>
+                        <div class="long-name"><span class="centered-name">{{ name.text }} <span style="font-weight: lighter; " v-if="name.period?.text">- {{ name.period.text }}</span></span></div>
                     </div>
                 </div>
             </div>
@@ -243,7 +256,7 @@ const showMoreInterviews =() => {
   display:block;
   height: calc(100vh - 80px) !important;
   pointer-events: auto !important;
-  overflow-y: scroll !important;
+  overflow-y: auto !important;
   padding-left: 20px;
   padding-right: 20px;
   padding-bottom: 100px;
@@ -323,7 +336,7 @@ const showMoreInterviews =() => {
   padding: 4px;
   display: inline-block;
   width: auto;
-  height: 30px;
+  height: auto;
   text-align: center;
   line-height: 1.7;
   margin: 2px;
@@ -331,18 +344,15 @@ const showMoreInterviews =() => {
   font-size: small;
 }
 .long-name {
-  width: 80%;
-  float: left;
-  display: inline;
+  
   margin-left: 10px;
   vertical-align: middle;
-  height: 30px;
-  line-height: 35px;
-  overflow: hidden;
+  line-height: 1.3 !important;    
+  
 }
 .centered-name {
-  display: inline-block;
-  line-height: 1.2 !important;
+  
+  line-height: 1.3 !important;
   height: auto !important;
 }
 .link {
