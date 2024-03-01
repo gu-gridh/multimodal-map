@@ -84,11 +84,17 @@ onMounted(() => {
     flex-direction: column;
     overflow: auto;
   }
+  .gutter.gutter-horizontal::after {
+    display: none;
+  }
+  .gutter.gutter-horizontal {
+    display: none
+  }
 }
 
 @media (max-width: 1024px) {
   #split-1  {
-    position: relative;
+    position: bottom;
     bottom: 0;  
     height: 100%;
     width: 100% !important;
@@ -99,7 +105,7 @@ onMounted(() => {
   #split-0{
     min-width: 100% !important;
     height: 100% !important;
-    position: absolute;
+    
   }
 }
 
