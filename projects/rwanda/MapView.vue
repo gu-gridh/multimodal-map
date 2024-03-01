@@ -131,7 +131,7 @@ watch(route, () => {
               period: periods[0] ? periods[0] : '',
               place_type: placeTypes[0] ? placeTypes[0] : '',
               language: languages[0] ? languages[0] : '',
-              /* text: informants[0], */
+              informant: informants[0],
             }"
           >
           <ol-style>
