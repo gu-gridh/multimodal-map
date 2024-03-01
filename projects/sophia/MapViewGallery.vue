@@ -6,12 +6,12 @@
       <div v-for="item in images" :key="item.uuid" class="gallery__item">
 
         <!-- <router-link :to="`/panel/${item.name}?depth=2`" @click="updatePanelId(item)"> -->
-          <div class="item-info">
-            <div class="item-info-meta">
-              <h1>{{ $t('Panel') }} {{ item.name }}</h1>
-            </div>
+        <div class="item-info">
+          <div class="item-info-meta">
+            <h1>{{ $t('Panel') }} {{ item.name }}</h1>
           </div>
-          <img :src="`${item.attached_orthophoto}/full/450,/0/default.jpg`" loading="lazy" @load="imageLoaded" />
+        </div>
+        <img :src="`${item.attached_orthophoto}/full/450,/0/default.jpg`" loading="lazy" @load="imageLoaded" />
         <!-- </router-link> -->
       </div>
     </div>
@@ -70,7 +70,7 @@ export default {
     const fetchData = async (requestedPageIndex) => {
       if (requestedPageIndex > lastFetchedPageIndex) {
         try {
-          const urlToFetch = `${apiConfig.IMAGE}?page=${requestedPageIndex}&depth=2&${new URLSearchParams(store.imgParams).toString()}`;
+          const urlToFetch = `${apiConfig.IMAGE}?page=${requestedPageIndex}&type_of_image=1&depth=2&${new URLSearchParams(store.imgParams).toString()}`; // type_of_image=1 only fetches Ortophotos
           const res = await fetch(urlToFetch);
           const data = await res.json();
           const newImages = data.results.map(item => ({
@@ -212,7 +212,7 @@ export default {
   padding-right: 2%;
   z-index: 100 !important;
   background-color: black;
-  opacity:0.8;
+  opacity: 0.8;
 }
 
 @media screen and (min-width: 1900px) {
@@ -285,10 +285,10 @@ export default {
 
 @media screen and (max-width: 1300px) {
 
-.gallery__item,
-.gallery__col-sizer {
-  width: calc(33%);
-}
+  .gallery__item,
+  .gallery__col-sizer {
+    width: calc(33%);
+  }
 }
 
 @media screen and (max-width: 1100px) {
@@ -357,7 +357,7 @@ export default {
   color: white;
   bottom: 0px;
   padding: 20px 25px;
-  padding-bottom:40px!important;
+  padding-bottom: 40px !important;
   display: none;
 }
 
@@ -389,4 +389,5 @@ export default {
   border-top: 1px solid #DDD;
   text-align: center;
   color: #777;
-}</style>
+}
+</style>
