@@ -36,7 +36,6 @@ onMounted(() => {
 .split {
     display: flex;
     flex-direction: row;
-
 }
 
 
@@ -90,12 +89,14 @@ onMounted(() => {
   .gutter.gutter-horizontal {
     display: none
   }
+  .gutter {
+    display: none;
+  }
 }
 
 @media (max-width: 1024px) {
   #split-1  {
-    position: bottom;
-    bottom: 0;  
+    position: relative; 
     height: 100%;
     width: 100% !important;
   }
