@@ -127,9 +127,9 @@ function deselectPlace() {
       </div>
 
       <div class="placecard-center-button">
-        <router-link :to="`${panel?.id}`"> <!--- (panel?.id_ || '').replace(/ /g, '_') --->
-    <button class="theme-button theme-color-background" style="margin-top:0px;">{{ $t('moreinfo') }}</button>
-</router-link>
+        <a :href="`https://292d2fd034.dh.gu.se/?q=${selectedFeature.get('title')}`" target="_blank">
+          <button class="theme-button theme-color-background" style="margin-top:0px;">{{ $t('moreinfo') }}</button>
+        </a>
       </div>
     </div>
   </div>
