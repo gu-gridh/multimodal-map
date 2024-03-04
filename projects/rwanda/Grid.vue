@@ -92,6 +92,8 @@ onMounted(() => {
   .gutter {
     display: none;
   }
+  
+
 }
 
 @media (max-width: 1024px) {
