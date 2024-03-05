@@ -78,7 +78,7 @@ function deselectPlace() {
 <template>
   <div v-if="selectedFeature" class="mapview-preview">
     <div class="placecard">
-      <div class="close-card-button" @click="deselectPlace">+</div>
+      <div class="close-card-button" @click="deselectPlace" style="font-family: Barlow Condensed, sans-serif !important;">+</div>
         <div class="placecard-top">
           <!-- Render OpenSeadragon viewer only if hasImages is true -->
           <OpenSeadragon v-if="hasImages" :src="imageUrls" :key="imageUrls.join(',')" class="flex-1" />
