@@ -2,7 +2,7 @@
 
 /* Color palette */
 :root {
-  --theme-1: rgb(195, 181, 172);
+  --theme-1: rgb(220, 215, 210);
   /* This is the background color */
   --theme-2: rgb(250, 150, 150);
   /* This is for lighter text on dark backgrounds */
@@ -49,7 +49,7 @@ body {
 
 .main-title {
   font-family: "Alumni Sans Pinstripe", sans-serif;
-  color: white !important;
+  color: black !important;
   font-size: 6.9vw;
   line-height: 0.67;
   font-weight: 100;

@@ -271,7 +271,7 @@ const toggleAboutVisibility = async () => {
   margin-top: 6px;
   margin-bottom: -3px;
   font-weight:200;
-  color: white;
+  color: black;
 }
 
 #app .tag-section {
