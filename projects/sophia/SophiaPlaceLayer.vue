@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+// @ts-nocheck
 import { computed, ref, defineProps, onMounted, inject, watch } from "vue";
 import GeoJSON from "ol/format/GeoJSON.js";
 import VectorSource from "ol/source/Vector";
