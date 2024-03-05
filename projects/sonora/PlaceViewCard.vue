@@ -4,6 +4,7 @@ import { ref, inject, onMounted, nextTick } from "vue"
 import markerIcon from "@/assets/marker-red.svg";
 import { watch } from 'vue';
 import placeholderImage from './images/placeholder.png';
+import i18n from '../../src/translations/sonora';
 
 const emit = defineEmits(['link-clicked']);
 
@@ -23,9 +24,10 @@ const processOrganData = (data) => {
 };
 
 const fetchOrganData = async () => {
+  const currentLocale = i18n.global.locale;
   loading.value = true; // Start loading
   try {
-    const response = await fetch(`https://orgeldatabas.gu.se/webgoart/goart/organ.php?id=${props.id}&lang=sv`);
+    const response = await fetch(`https://orgeldatabas.gu.se/webgoart/goart/organ.php?id=${props.id}&lang=${currentLocale}`);
     if (response.ok) {
       const data = await response.json();
       organData.value = data;
