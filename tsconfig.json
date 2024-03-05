@@ -5,8 +5,11 @@
     "src/**/*",
     "src/**/*.vue",
     "src/**/*.json",
-    "projects/**/*"
+    "projects/sonora/**/*"
     ],
+  "exclude": [
+    "projects/sonora/**/*"
+  ],
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
