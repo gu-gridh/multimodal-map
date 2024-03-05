@@ -5,11 +5,8 @@
     "src/**/*",
     "src/**/*.vue",
     "src/**/*.json",
-    "projects/sophia/**/*"
+    "projects/**/*"
     ],
-  "exclude": [
-    "projects/sophia/**/*"
-  ],
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
