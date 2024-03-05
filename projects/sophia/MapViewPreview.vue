@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-// @ts-nocheck
 import { watchEffect, ref, inject } from "vue";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
