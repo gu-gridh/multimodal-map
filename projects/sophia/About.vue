@@ -152,6 +152,7 @@ export default {
   position: relative;
   float: right;
   margin-left: 20px;
+
 }
 
 .left-content {
@@ -179,6 +180,8 @@ export default {
   z-index: 1000;
   opacity: 1.0;
   right: 0px;
+  color:white !important;
+  background-color:rgb(50,50,50) !important;
 }
 
 
