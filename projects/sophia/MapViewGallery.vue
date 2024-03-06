@@ -235,6 +235,8 @@ export default {
   #gallery-container {
     margin-left: 0px;
     width: 100%;
+    height:100vh;
+    padding-top:80px;
   }
 }
 

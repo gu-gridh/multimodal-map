@@ -153,7 +153,7 @@ watch(showSecondFloor, (newValue) => {
 
 <template>
   <div style="display:flex; align-items: center; justify-content: center; pointer-events: none;">
-    <div class="ui-mode ui-overlay">
+    <div class="ui-mode ui-overlay ui-overlay-top">
       <button class="item" v-bind:class="{ selected: !showGallery }" v-on:click="showGallery = false;">
         {{ $t('plans') }}
       </button>
@@ -165,7 +165,7 @@ watch(showSecondFloor, (newValue) => {
       </button>
     </div>
 
-    <div class="ui-mode ui-overlay tile-switcher" style="" v-if="!showGallery">
+    <div class="ui-mode ui-overlay tile-switcher ui-overlay-bottom" style="" v-if="!showGallery">
       <button class="item" v-bind:class="{ selected: !showSecondFloor }" v-on:click="showSecondFloor = false;">
         {{ $t('groundfloor') }}
       </button>
