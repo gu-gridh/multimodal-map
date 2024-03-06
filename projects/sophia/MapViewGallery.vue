@@ -6,12 +6,14 @@
       <div v-for="item in images" :key="item.uuid" class="gallery__item">
 
         <!-- <router-link :to="`/panel/${item.name}?depth=2`" @click="updatePanelId(item)"> -->
+          <a :href="`https://292d2fd034.dh.gu.se/?q=${item.name}`" target="_blank">
         <div class="item-info">
           <div class="item-info-meta">
             <h1>{{ $t('Panel') }} {{ item.name }}</h1>
           </div>
         </div>
         <img :src="`${item.attached_orthophoto}/full/450,/0/default.jpg`" loading="lazy" @load="imageLoaded" />
+      </a>
         <!-- </router-link> -->
       </div>
     </div>
