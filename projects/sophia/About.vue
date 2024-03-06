@@ -176,14 +176,37 @@ export default {
   .category-button {
 
     font-size: 1.2em !important;
-
   }
 }
 
 @media screen and (max-width: 900px) {
   .category-button {
     margin-top: 30px;
-    font-size: 1.9em !important;
+    font-size: 1.5em !important;
+    float:auto!important;
+  }
+
+  .explore-button {
+  margin-top: 0px;
+  position: relative;
+  float: left;
+  margin-left: 30px;
+
+}
+
+  .about-main-title{
+    text-align:left;
+    margin-left:30px;
+  }
+
+  .about-sub-title{
+    text-align:left;
+    margin-left:30px;
+    font-size:3em;
+  }
+
+  .language-button{
+    margin-left:5px;
   }
 }
 
