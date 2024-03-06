@@ -160,8 +160,8 @@ const processOrganData = (data) => {
         </div>
         <div class="placecard-bottom">
           <div class="placecard-text" v-if="responseData && responseData.Byggnadens_namn && responseData.Ort">
-            <div class="placecard-title theme-color-text" v-if="responseData.Byggnadens_namn">{{ responseData.Byggnadens_namn.data }}</div>
-            <div class="placecard-subtitle theme-color-text" v-if="responseData.Ort">{{ responseData.Ort.data }}</div>
+            <div class="placecard-title theme-color-text">{{ responseData.Byggnadens_namn.data }}</div>
+            <div class="placecard-subtitle theme-color-text">{{ responseData.Ort.data }}</div>
           </div>
           <div class="placecard-content" v-if="responseData">
             <div class="placecard-metadata-content">
