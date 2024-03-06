@@ -231,17 +231,17 @@ overflow:hidden;
   }
 
   .placecard {
-    height: calc(100vh - 28vh);
-    margin-top: 30px;
+    height: calc(100vh - 35vh);
+    margin-top: 80px;
 
   }
 
   .close-card-button{
-    margin-top:20px;
+    margin-top:60px;
   }
 
   .ui-overlay-top{
-top:30px!important;
+margin-top:calc(100px)!important;
 z-index:101!important;
   }
 

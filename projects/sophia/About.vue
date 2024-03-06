@@ -208,6 +208,23 @@ export default {
   .language-button{
     margin-left:5px;
   }
+
+  .main-about-content {
+  padding: 0px;
+  height: calc(100vh - 0px);
+  overflow: hidden;
+}
+  .right-content {
+  width:80%;
+}
+.left-content {
+  width: 80%;
+  float: left;
+  padding-right:30px;
+  padding-top: 8%;
+  z-index:10000;
+  position:absolute;
+}
 }
 
 .about-logo-top-right {
