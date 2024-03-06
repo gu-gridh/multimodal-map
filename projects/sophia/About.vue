@@ -20,12 +20,12 @@
         </div>
         <div class="about-sub-title theme-color-text" v-bind:class="{ fullopacityui: visibleAbout }">Saint Sophia's <br>
           Inscriptions</div>
-        <div class="about-article-main" v-bind:class="{ fullopacityui: visibleAbout }">
+     <!--    <div class="about-article-main" v-bind:class="{ fullopacityui: visibleAbout }">
           {{ $t('aboutportalmain') }}
         </div>
         <div class="about-article-sub" v-bind:class="{ fullopacityui: visibleAbout }">
           {{ $t('aboutportal') }}
-        </div>
+        </div> -->
 
         <div class="explore-button">
           <button @click="toggleLanguageEN(); $emit('close')">
@@ -94,9 +94,8 @@ export default {
 }
 
 .fullopacity {
-  /*   Hide the about during development */
-  backdrop-filter: blur(5px);
   background: linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1.0) 100%) !important;
+
 }
 
 
@@ -107,7 +106,8 @@ export default {
   font-weight: 100 !important;
   line-height: 0.7;
   text-align: right;
-  font-size: 6vw;
+  font-size: 7vw;
+ top:40%;
 
 }
 
@@ -121,6 +121,16 @@ export default {
   font-size: 3.5vw;
   margin-bottom: 0px;
   letter-spacing: 0px !important;
+}
+
+@media screen and (max-width: 1350px) {
+  .about-main-title {
+  font-size: 7em;
+}
+
+.about-sub-title {
+  font-size: 3.5em;
+}
 }
 
 .main-about-content {
@@ -174,7 +184,6 @@ export default {
 
 @media screen and (max-width: 1500px) {
   .category-button {
-
     font-size: 1.2em !important;
   }
 }

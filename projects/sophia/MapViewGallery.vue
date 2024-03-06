@@ -224,7 +224,7 @@ export default {
   }
 }
 
-@media screen and (max-width: 1500px) {
+@media screen and (max-width: 1600px) {
   #gallery-container {
     margin-left: 550px;
     width: calc(100% - 550px);
