@@ -42,7 +42,7 @@ const downloadImage = (fileUrl: string, fileName: string) => {
 
 <template>
   <div class="metadata">
-<ObjectViewComponent :title="'Organ ' + (object['Titel'] ? object['Titel'].data : '')">
+  <ObjectViewComponent :title="(object['Titel'] ? object['Titel'].data : '')">
       <div class="objects">
         <div v-if="object?.no_organs"><div class="label">{{ $t('number_of_organs') }}:</div> <div class="data">{{ object.no_organs }}</div></div>
         <div v-if="object['Arkiv']">

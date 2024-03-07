@@ -20,6 +20,14 @@ const processOrganData = (data) => {
   // Filter entries that start with 'work'
   const filteredData = Object.values(data).filter(item => item.work);
 
+  //check if Plats exists and split it after the semicolon
+  if (data.Plats) {
+    const parts = data.Plats.split(';');
+    if (parts.length > 1) {
+      data.Plats = parts[1].trim();
+    }
+  }
+
   processedOrganData.value = filteredData;
 };
 
@@ -27,7 +35,7 @@ const fetchOrganData = async () => {
   const currentLocale = i18n.global.locale;
   loading.value = true; // Start loading
   try {
-    const response = await fetch(`https://orgeldatabas.gu.se/webgoart/goart/organ.php?id=${props.id}&lang=${currentLocale}`);
+    const response = await fetch(`https://orgeldatabas.gu.se/webgoart/goart/organ1.php?id=${props.id}&lang=${currentLocale}`);
     if (response.ok) {
       const data = await response.json();
       organData.value = data;
@@ -64,7 +72,6 @@ watch(() => props.id, async (newId) => {
 onMounted(() => {
   fetchOrganData();
 });
-
 </script>
 
 <template>

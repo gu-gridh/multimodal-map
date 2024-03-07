@@ -2,6 +2,7 @@ import { createI18n } from 'vue-i18n';
 
 const messages = {
     en: {
+      organ: "Organ",
       sonoratitle: "Digitising Sweden’s Organ Heritage: The SONORA project",
       infobutton: "About the portal",
       languagebutton: "In Swedish",
@@ -25,7 +26,7 @@ const messages = {
       allaSeries: "All Series",
       allaVolumes: "All Volumes",
 
-      historicaloversight: "Historical Oversight",
+      historicaloversight: "Historical Overview",
       verksgrundare: "Original builder",
       tillkomstår: "Year of origin",
       fasadpipor: "Prospect pipes info",
@@ -71,13 +72,14 @@ const messages = {
     },
 
     sv: {
+      organ: "Orgel",
       sonoratitle: "Digitising Sweden’s Organ Heritage: The SONORA project",
       infobutton: "Om portalen",
       languagebutton: "In English",
       shownorgans: "Visade orglar:",
       map: "Karta",
       gallery: "Galleri",
-      archive: "Akriv",
+      archive: "Arkiv",
       stift: "Stift:",
       kontrakt: "Kontrakt:",
       pastorat: "Pastorat:",
@@ -94,7 +96,7 @@ const messages = {
       allaSeries: "Alla Serier",
       allaVolumes: "Alla Volymer",
 
-      historicaloversight: "Historisk översikt",
+      historicaloversight: "Historisk Översikt",
       verksgrundare: "Verksgrundare",
       tillkomstår: "Tillkomstår",
       fasadpipor: "Fasadpipor",
