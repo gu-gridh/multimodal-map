@@ -275,12 +275,26 @@ const handleLinkClicked = (data) => {
                     :style="{ left: mousePosition.x +50 + 'px', top: mousePosition.y -100 + 'px' }">
                     <h3 v-if="popupData?.Verk">{{ $t('divisioninfo') }}</h3>
                     <h3 v-else-if="popupData?.Stämma">{{ $t('stopinfo') }}</h3>
-                      <div v-if="popupData?.Verk">
-                        <p><b>{{ popupData.Verk.label }}:</b> {{ popupData.Verk.data }}</p>
-                        <p v-if="popupData.Typ_av_väderlåda"><b>{{ popupData.Typ_av_väderlåda.label }}:</b> {{ popupData.Typ_av_väderlåda.data }}</p>
-                        <p v-if="popupData.Antal_väderlådor"><b>{{ popupData.Antal_väderlådor.label }}:</b> {{ popupData.Antal_väderlådor.data }}</p>
+                      <div v-if="popupData?.Verk" class="grid-container">
+                        <div class="column">
+                          <p><b>{{ popupData.Verk.label }}:</b> {{ popupData.Verk.data }}</p>
+                          <p v-if="popupData.Typ_av_väderlåda"><b>{{ popupData.Typ_av_väderlåda.label }}:</b> {{ popupData.Typ_av_väderlåda.data }}</p>
+                          <p v-if="popupData.Antal_väderlådor"><b>{{ popupData.Antal_väderlådor.label }}:</b> {{ popupData.Antal_väderlådor.data }}</p>
+                          <p v-if="popupData.Verk_info"><b>{{ popupData.Verk_info.label }}:</b> {{ popupData.Verk_info.data }}</p>
+                          <p v-if="popupData.Manual_nr"><b>{{ popupData.Manual_nr.label }}:</b> {{ popupData.Manual_nr.data }}</p>
+                          <p v-if="popupData.Pipuppställning"><b>{{ popupData.Pipuppställning.label }}:</b> {{ popupData.Pipuppställning.data }}</p>
+                          <p v-if="popupData.Info_tremulant_crescendo"><b>{{ popupData.Info_tremulant_crescendo.label }}:</b> {{ popupData.Info_tremulant_crescendo.data }}</p>
+                        </div>
+                        <div class="column">
+                          <p v-if="popupData.Beskrivning_väderlåda"><b>{{ popupData.Beskrivning_väderlåda.label }}:</b> {{ popupData.Beskrivning_väderlåda.data }}</p>
+                          <p v-if="popupData.Delad_väderlåda"><b>{{ popupData.Delad_väderlåda.label }}:</b> {{ popupData.Delad_väderlåda.data }}</p>
+                          <p v-if="popupData.Historik_väderlåda"><b>{{ popupData.Historik_väderlåda.label }}:</b> {{ popupData.Historik_väderlåda.data }}</p>
+                          <p v-if="popupData.Omfång_väderlåda"><b>{{ popupData.Omfång_väderlåda.label }}:</b> {{ popupData.Omfång_väderlåda.data }}</p>
+                          <p v-if="popupData.Lufttryck"><b>{{ popupData.Lufttryck.label }}:</b> {{ popupData.Lufttryck.data }}</p>
+                          <p v-if="popupData.Väderlåda_forskningsresultat"><b>{{ popupData.Väderlåda_forskningsresultat.label }}:</b> {{ popupData.Väderlåda_forskningsresultat.data }}</p>
+                        </div>
                       </div>
-                      <div v-else-if="popupData?.Stämma">
+                      <div v-else-if="popupData?.Stämma" class="stop-container">
                         <p v-if="popupData.Stämma"><b>{{ popupData.Stämma.label }}:</b> {{ popupData.Stämma.data }}</p>
                         <p v-if="popupData.Stämma_info"><b>{{ popupData.Stämma_info.label }}:</b> {{ popupData.Stämma_info.data }}</p>
                       </div>
@@ -404,12 +418,22 @@ padding-right:45px;
 .popup {
   position: fixed;
   background-color: white;
-  border-radius:8px;
-  padding: 15px 20px;
+  border-radius: 8px;
+  padding: 15px;
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3);
   z-index: 1000;
   color: black;
-  width:300px;
+}
+
+.grid-container {
+  max-width: 600px; 
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px; 
+}
+
+.stop-container {
+  width: 300px; 
 }
 
 .popup h3 {
