@@ -135,7 +135,15 @@ const handleDisposition = async (event) => {
     const url = new URL(anchor.href);
 
     // Capture mouse position
-    mousePosition.value = { x: event.clientX, y: event.clientY };
+    const viewportHeight = window.innerHeight;
+    const minDistanceFromBottom = 400; //minimum distance from the bottom of the viewport
+    let mouseYPosition = event.clientY;
+
+    if (mouseYPosition + minDistanceFromBottom > viewportHeight) {
+      mouseYPosition = viewportHeight - minDistanceFromBottom;
+    }
+
+    mousePosition.value = { x: event.clientX, y: mouseYPosition };
 
     // Close any currently open popup
     popupData.value = null;
