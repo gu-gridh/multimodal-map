@@ -77,6 +77,10 @@ const downloadImage = (fileUrl: string, fileName: string) => {
           <div class="label">{{ object['Typ_av_dokument'].label }}:</div>
           <div class="data">{{ object['Typ_av_dokument'].data }}</div>
         </div>
+        <div v-if="object['Fascikel_kommentar']">
+          <div class="label">{{ object['Fascikel_kommentar'].label }}:</div>
+          <div class="data">{{ object['Fascikel_kommentar'].data }}</div>
+        </div>
         <!-- <div v-if="object?.['0']"> -->
           <!-- <div v-if="object['0'].org_nr"><div class="label">Org Nr:</div> <div class="data">{{ object['0'].org_nr }}</div></div> -->
           <!-- <div v-if="object['0'].place"><div class="label">Place:</div> <div class="data">{{ object['0'].place }}</div></div>
