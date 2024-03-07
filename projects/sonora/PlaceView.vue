@@ -228,6 +228,38 @@ const handleLinkClicked = (data) => {
                 <td class="wide-second-td">{{ organData.Antal_bälgar.label }}:</td>
                 <td class="tag theme-color-text">{{ organData.Antal_bälgar.data }}</td>
               </tr>
+              <tr v-if="organData.Aktivitet_info">
+                <td class="wide-second-td">{{ organData.Aktivitet_info.label }}:</td>
+                <td class="tag theme-color-text">{{ organData.Aktivitet_info.data }}</td>
+              </tr>
+              <tr v-if="organData.Koppel_kombinationer_info">
+                <td class="wide-second-td">{{ organData.Koppel_kombinationer_info.label }}:</td>
+                <td class="tag theme-color-text">{{ organData.Koppel_kombinationer_info.data }}</td>
+              </tr>
+              <tr v-if="organData.Tillbehör">
+                <td class="wide-second-td">{{ organData.Tillbehör.label }}:</td>
+                <td class="tag theme-color-text">{{ organData.Tillbehör.data }}</td>
+              </tr>
+              <tr v-if="organData.Fasadhistorik">
+                <td class="wide-second-td">{{ organData.Fasadhistorik.label }}:</td>
+                <td class="tag theme-color-text">{{ organData.Fasadhistorik.data }}</td>
+              </tr>
+              <tr v-if="organData.Info_traktursystem">
+                <td class="wide-second-td">{{ organData.Info_traktursystem.label }}:</td>
+                <td class="tag theme-color-text">{{ organData.Info_traktursystem.data }}</td>
+              </tr>
+              <tr v-if="organData.Info_registratursystem">
+                <td class="wide-second-td">{{ organData.Info_registratursystem.label }}:</td>
+                <td class="tag theme-color-text">{{ organData.Info_registratursystem.data }}</td>
+              </tr>
+              <tr v-if="organData.Info_luftsystem">
+                <td class="wide-second-td">{{ organData.Info_luftsystem.label }}:</td>
+                <td class="tag theme-color-text">{{ organData.Info_luftsystem.data }}</td>
+              </tr>
+              <tr v-if="organData.Övrig_info">
+                <td class="wide-second-td">{{ organData.Övrig_info.label }}:</td>
+                <td class="tag theme-color-text">{{ organData.Övrig_info.data }}</td>
+              </tr>
               </tr>
             </tbody>
           </table>
