@@ -120,10 +120,10 @@ function deselectPlace() {
           </div>
 
         </div>
-        <div class="placecard-metadata-content">
+      <!--   <div class="placecard-metadata-content">
           <div class="preview" v-html="documentation">
           </div>
-        </div>
+        </div> -->
       </div>
 
       <div class="placecard-center-button">
