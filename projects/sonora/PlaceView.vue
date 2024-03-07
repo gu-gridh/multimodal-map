@@ -293,7 +293,7 @@ const handleLinkClicked = (data) => {
                           <p v-if="popupData.Pipuppställning"><b>{{ popupData.Pipuppställning.label }}:</b> {{ popupData.Pipuppställning.data }}</p>
                           <p v-if="popupData.Info_tremulant_crescendo"><b>{{ popupData.Info_tremulant_crescendo.label }}:</b> {{ popupData.Info_tremulant_crescendo.data }}</p>
                         </div>
-                        <div class="column">
+                        <div class="column" v-if="popupData.Beskrivning_väderlåda || popupData.Delad_väderlåda || popupData.Historik_väderlåda || popupData.Omfång_väderlåda || popupData.Lufttryck || popupData.Väderlåda_forskningsresultat">
                           <p v-if="popupData.Beskrivning_väderlåda"><b>{{ popupData.Beskrivning_väderlåda.label }}:</b> {{ popupData.Beskrivning_väderlåda.data }}</p>
                           <p v-if="popupData.Delad_väderlåda"><b>{{ popupData.Delad_väderlåda.label }}:</b> {{ popupData.Delad_väderlåda.data }}</p>
                           <p v-if="popupData.Historik_väderlåda"><b>{{ popupData.Historik_väderlåda.label }}:</b> {{ popupData.Historik_väderlåda.data }}</p>
@@ -434,10 +434,14 @@ padding-right:45px;
 }
 
 .grid-container {
-  max-width: 600px; 
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px; 
+  display: flex;
+  flex-wrap: wrap; 
+}
+
+.column {
+  flex-grow: 1;
+  flex-basis: 0;
+  max-width: 300px;
 }
 
 .stop-container {
