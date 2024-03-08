@@ -25,6 +25,7 @@ onMounted(() => {
     showHomeControl: false,
     showFullPageControl: true,
     showNavigator: true,
+    navigatorPosition:   "BOTTOM_RIGHT",
     navigatorAutoFade: true,
     showRotationControl: true,
     preserveViewport: true,
@@ -87,9 +88,6 @@ onMounted(() => {
 position:absolute;
   width:80px;
   height:80px;
-  margin-top:10px;
-  margin-right:10px;
-
 }
 
 #ToolbarHorizontal {
@@ -122,12 +120,12 @@ position:absolute;
   text-align: center;
   width:120px;
   border-radius: 8px;
-  font-size:15px;
+  font-size:0.8em;
   font-weight: bold;
   vertical-align: 13px;
   margin-left: 10px;
   margin-right: 10px;
-  height:35px
+  height:30px;
 }
 
 #ToolbarVertical {
@@ -155,23 +153,25 @@ position:absolute;
 
 #Prev {
   background: url(@/assets/openseadragon/prev.png);
-  background-size: 35px 35px;
+  background-size: 30px 30px;
   background-repeat: no-repeat;
   background-position: center;
   display: inline-block;
   position: absolute;
   left:10px;
+  margin-top:-2px;
       }
 
   
 #Next {
   background: url(@/assets/openseadragon/next.png);
-  background-size: 35px 35px;
+  background-size: 30px 30px;
   background-repeat: no-repeat;
   background-position: center;
   display: inline-block;
   position: absolute;
   left:-47px;
+  margin-top:-2px;
 }
 
 #ZoomIn {
