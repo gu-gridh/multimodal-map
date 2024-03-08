@@ -34,7 +34,7 @@
       <div class="search-section" style="float:left;">
         <div class="section-title">{{ $t('searchpanels') }}</div>
         <input type="text"
-          :placeholder="'Search Panels...'" class="search-box" autofocus />
+          :placeholder="'...'" class="search-box" autofocus />
         <div class="search-results">
         </div>
       </div>

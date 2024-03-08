@@ -7,7 +7,7 @@ import type {
   Image, PanelMetadata, Inscription, Language,
 } from "./types";
 import type { SophiaClient } from "@/assets/saintsophia";
-import OpenSeadragon from "@/components/OpenSeadragonSequence.vue";
+import OpenSeadragon from "./OpenSeadragonSequence.vue";
 import apiConfig from "./apiConfig"
 
 const { selectedFeature } = storeToRefs(mapStore());
@@ -121,10 +121,10 @@ function deselectPlace() {
           </div>
 
         </div>
-        <div class="placecard-metadata-content">
+      <!--   <div class="placecard-metadata-content">
           <div class="preview" v-html="documentation">
           </div>
-        </div>
+        </div> -->
       </div>
 
       <div class="placecard-center-button">
