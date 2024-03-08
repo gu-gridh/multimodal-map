@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { watchEffect, ref, inject } from "vue";
+import { watchEffect, ref, inject, toRaw, isProxy } from "vue";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
 import { inscriptionsStore } from "./store";
@@ -40,16 +40,17 @@ watchEffect(async () => {
     // If images are available
     if (images.value.length > 0) {
       hasImages.value = true;
-      // TODO: this filter does not work. Quick google suggests possibly a lack of JSON parsing on the images object?
-      // const filteredImages = images.value.filter(image => {
-      //   return image.type_of_image.some(tag => tag.text === 'Orthophoto'); //Only display images that are orthophoto
-      // });
-      imageUrls.value = images.value.map(image => `${image.iiif_file}/info.json`);// filteredImages.map(image => `${image.iiif_file}/info.json`);
+      const filteredImages = images.value.filter(image => {
+        return (image.type_of_image.text === 'Orthophoto' | image.type_of_image.text === 'Topography') //Only display images that are orthophoto
+      });
+      console.log(filteredImages)
+      imageUrls.value = filteredImages.map(image => `${image.iiif_file}/info.json`);
 
       // Populate place details
       if (images.value[0].panel) {
         room.value = images.value[0].panel.room || null;
-        documentation.value = images.value[0].panel.documentation || null;
+        // TODO the documentation binding needs to be language dependent. Or not there at all.
+        // documentation.value = images.value[0].panel.documentation[0].observation || null;
       }
     } else {
       hasImages.value = false;
