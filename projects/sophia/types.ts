@@ -119,13 +119,13 @@ interface Author {
   lastname: string;
 }
 
-export type ImageDeep = Omit<Image, "creator" | "place" | "focus" | "tag"> & {
-  creator: Person;
-  place: Panel;
-  focus: Focus;
-  tag: Tag[];
-  author?: Author;
-};
+// export type ImageDeep = Omit<Image, "creator" | "place" | "focus" | "tag"> & {
+//   creator: Person;
+//   place: Panel;
+//   focus: Focus;
+//   tag: Tag[];
+//   author?: Author;
+// };
 
 // export type Person = {
 //   id: number;

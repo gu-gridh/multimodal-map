@@ -5,15 +5,21 @@
     "src/**/*",
     "src/**/*.vue",
     "src/**/*.json",
-    "projects/**/*"
+    "projects/sophia/**/*"
     ],
+  "exclude": [
+    "projects/sophia/**/*"
+  ],
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     },
-    // "target": "es5",
-    "lib": ["es2019", "dom"]
+    "allowJs": true,
+    "lib": ["es2019", "dom"],
+    "noEmit": true,
+    "noImplicitAny": false,
+    "strict": false
   },
 
   "references": [
