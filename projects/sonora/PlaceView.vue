@@ -3,234 +3,397 @@ import { ref, defineProps, onMounted, inject, computed } from 'vue';
 import type { Image, Observation, Document, Pointcloud, Mesh } from './types';
 import type { DianaClient } from "@/assets/diana";
 import PlaceViewCard from "./PlaceViewCard.vue";
+import MapComponent from "@/components/MapComponent.vue";
+import { watch } from 'vue';
+import { useRoute } from 'vue-router';
 
+const organData = ref(null);
+
+// Popup data
+const popupData = ref(null);
+const isPopupVisible = ref(false);
+const mousePosition = ref({ x: 0, y: 0 });
+
+const linkData = ref({ builder: '', work: '' }); // Selected builder and work from placeviewcard 
+
+const route = useRoute();
 const sort = ref('type');
-const groupedByYear = ref<{ [year: string]: (Image | Observation | Document | Pointcloud | Mesh )[] }>({});
+const groupedByYear = ref<{ [year: string]: (Image | Observation | Document | Pointcloud | Mesh)[] }>({});
 const { id } = defineProps<{ id: string; }>();
-const diana = inject("diana") as DianaClient;
-const images = ref<Image[]>([]);
-const plans = ref<Image[]>([]);
-let observations = ref<Observation[]>([]);
-let documents = ref<Document[]>([]);
-let pointcloud = ref<Pointcloud[]>([]);
-let mesh = ref<Mesh[]>([]);
-let place = ref();
+let documents = ref<Document[]>([]); // Initialized as an empty array
 
-const combined3DModels = computed(() => [
-  ...mesh.value.map(m => ({ ...m, modelType: 'mesh' })),
-  ...pointcloud.value.map(p => ({ ...p, modelType: 'pointcloud' }))
-]);
+watch(() => route.params.id, async (newId) => {
+  if (newId) {
+    try {
+      const response = await fetch(`https://orgeldatabas.gu.se/webgoart/goart/organ.php?id=${newId}&lang=sv`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      organData.value = data;
 
-const sortedGroupedByYear = computed(() => {
-  return Object.entries(groupedByYear.value)
-    .sort((a, b) => parseInt(b[0]) - parseInt(a[0]));
+      documents.value = [];
+      for (const key in data) {
+        if (data[key].Document) {
+          documents.value.push(data[key]);
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }
 });
-
-function isImage(item: any): item is Image {
-  return 'iiif_file' in item;
-}
-
-function isObservation(item: any): item is Observation {
-  return 'observation' in item;
-}
-
-function isPointcloud(item: any): item is Pointcloud {
-  return 'camera_position' in item;
-}
-
-function isMesh(item: any): item is Mesh {
-  return 'triangles_optimized' in item;
-}
-
-function isDocument(item: any): item is Mesh {
-  return 'upload' in item;
-}
 
 onMounted(async () => {
-    if (id) {
-        images.value = await diana.listAll<Image>("image", { tomb: id, type_of_image: 2 });
-        observations.value = await diana.listAll<Observation>("observation", { place: id });
-        documents.value = await diana.listAll<Document>("document", { place: id, depth: 2 });
-        pointcloud.value = await diana.listAll<Pointcloud>("objectpointcloud", { tomb: id, depth: 2});
-        mesh.value = await diana.listAll<Mesh>("object3dhop", { tomb: id, depth: 2});
-        
-        //fetch for sections and plans
-        const url = 'https://diana.dh.gu.se/api/etruscantombs/image/?tomb=' + id + '&type_of_image=1&type_of_image=5';
-        const response = await fetch(url);
-        if (response.ok) {
-            const data = await response.json();
-            plans.value = data.results;
-        } else {
-            console.error(`Failed to fetch data: ${response.statusText}`);
-        }
-
-        /* For sorting by year */
-        groupAndSortByYear([...images.value, ...plans.value, ...observations.value, ...documents.value, ...pointcloud.value, ...mesh.value]);
+  try {
+    const response = await fetch(`https://orgeldatabas.gu.se/webgoart/goart/organ.php?id=${id}&lang=sv`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
+    const data = await response.json();
+    organData.value = data;
+
+    documents.value = [];
+    for (const key in data) {
+      if (data[key].Document) {
+        documents.value.push(data[key]);
+      }
+    }
+
+    //find the element with the matching org_nr from the api
+    const matchingElement = Object.values(data).find(element => element.org_nr === data.org_id);
+    if (matchingElement) {
+      linkData.value = {
+        builder: matchingElement.builder,
+        work: matchingElement.work,
+      };
+    }
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
 });
 
-function groupAndSortByYear(allItems: (Image | Observation | Document | Pointcloud | Mesh)[]) {
-  // Reset groupedByYear
-  groupedByYear.value = {};
-
-  // Group items by year
-  allItems.forEach((item: Image | Observation | Document | Pointcloud | Mesh) => {
-    const fullDate = new Date(item.date);
-    const year = fullDate.getFullYear().toString();
-
-    if (!groupedByYear.value[year]) {
-      groupedByYear.value[year] = [];
+const fetchDivisionInfo = async (divId) => {
+  try {
+    const response = await fetch(`https://orgeldatabas.gu.se/webgoart/goart/divinfo.php?div_id=${divId}&lang=sv`);
+    if (response.ok) {
+      const data = await response.json();
+      popupData.value = data;
+      isPopupVisible.value = true;
+    } else {
+      throw new Error('Failed to fetch division info');
     }
-    groupedByYear.value[year].push(item);
-  });
-}
+  } catch (error) {
+    console.error("Error fetching division info:", error);
+  }
+};
 
+const fetchStopInfo = async (stopId) => {
+  try {
+    const response = await fetch(`https://orgeldatabas.gu.se/webgoart/goart/stopinfo.php?stop_id=${stopId}&lang=sv`);
+    if (response.ok) {
+      const data = await response.json();
+      popupData.value = data;
+      isPopupVisible.value = true;
+    } else {
+      throw new Error('Failed to fetch stop info');
+    }
+  } catch (error) {
+    console.error("Error fetching stop info:", error);
+  }
+};
+
+const handleDisposition = async (event) => {
+  const anchor = event.target.closest('a');
+  if (anchor) {
+    event.preventDefault();
+    const url = new URL(anchor.href);
+
+    // Capture mouse position
+    mousePosition.value = { x: event.clientX, y: event.clientY };
+
+    // Close any currently open popup
+    popupData.value = null;
+    isPopupVisible.value = false;
+
+    if (url.pathname.endsWith('divinfo.php')) {
+      const divId = url.searchParams.get("div_id");
+      console.log(`Division info link clicked, ID: ${divId}`);
+      await fetchDivisionInfo(divId);
+    } else if (url.pathname.endsWith('stopinfo.php')) {
+      const stopId = url.searchParams.get("stop_id");
+      console.log(`Stop info link clicked, ID: ${stopId}`);
+      await fetchStopInfo(stopId);
+    } else {
+      console.log('Other link clicked');
+    }
+  }
+};
+
+const handleLinkClicked = (data) => {
+  linkData.value.builder = data.builder;
+  linkData.value.work = data.work;
+};
 </script>
     
 <template>
-    <div class="main-container">
-        <div class="place-card-container">
-            <PlaceViewCard :id="id" />
-        </div>
-        <!-- Here we will show info of the place -->
-        <div class="place-view">
-            <div class="place-gallery-container">
-                <!-- Gallery of objects will show here with the ability to sort by TYPE of object -->
-                <!-- <p>ID: {{ id }}</p> -->
-                <!-- <p>PLACE: {{ place.id }}</p> -->
-                <div>
-                    <select v-model="sort" class="dropdown">
-                        <option actve value="type">Arkiv: Alla</option>
-                        <option value="year">Sort by: YEAR</option>
-                    </select>
-                </div>
-                <!-- Sort by TYPE table-->
-                <table class="content-table" v-if="sort == 'type'">
-                  
-
-                    
-                
-                    <tr v-if="plans.length > 0">
-                        <td>Ritningar</td>
-                        <div v-for="(image, index) in plans" :key="index" class="image-placeholder plan-placeholder">
-                            <div class="image-square" v-if="'iiif_file' in image">
-                                <router-link :to="`/detail/image/${image.id}`">
-                                    <div class="meta-data-overlay"><div class="meta-data-overlay-text">{{image.title}}</div>
-                                </div>
-                                    <img :src="`${image.iiif_file}/full/400,/0/default.jpg`" :alt="image.title"
-                                        class="image-square-plan" />
-                                </router-link>
-                            </div>
-                        </div>
-                    </tr>
-                    <tr v-if="images.length > 0">
-                        <td>Fotografier</td>
-                        <div v-for="(image, index) in images" :key="index" class="image-placeholder">
-                            <div class="image-square" v-if="'iiif_file' in image">
-                                <router-link :to="`/detail/image/${image.id}`">
-                                    <div class="meta-data-overlay"><div class="meta-data-overlay-text">{{image.title}}</div></div>
-                                    <img :src="`${image.iiif_file}/full/400,/0/default.jpg`" :alt="image.title"
-                                        class="image-square-inner" />
-                                </router-link>
-                            </div>
-                        </div>
-                    </tr>
-                    
-                    <tr v-if="observations.length > 0">
-                        <td>Observations</td>
-                        <div v-for="(observation, index) in observations" :key="index"
-                            class="image-placeholder observation-placeholder">
-                            <div class="observation-title">
-                                {{ observation.title }}
-                            </div>
-                            <div class="observation-date">
-                                {{ observation.date }}
-                            </div>
-                            <div class="observation-body" 
-                                v-html="observation.observation">
-                            </div>
-                        </div>
-                    </tr>
-                </table>
-
-                <table class="content-table-date" v-else-if="sort == 'year'">
-                    <tr v-for="[year, items] in sortedGroupedByYear" :key="year">
-                        <td style="font-size:1.5em; font-weight:200; text-align:right;">{{ year }}</td>
-                       
-                            <div v-for="(item, index) in items" :key="index" :class="(isImage(item) || isPointcloud(item) || isMesh(item)) ? 'image-placeholder' : ''">
-                                <!-- If the item is an image -->
-                                 <div class="image-square" v-if="'iiif_file' in item">
-                                    <router-link v-if="item.iiif_file" :to="`/detail/image/${item.id}`">
-                                        <div class="meta-data-overlay"><div class="meta-data-overlay-text">{{item.title}}</div></div>
-                                        <img :src="`${item.iiif_file}/full/400,/0/default.jpg`" :alt="item.title" class="image-square-inner"/>
-                                    </router-link>
-                                </div>
-
-                                <!-- If the item is an observation -->
-                                <div v-else-if="isObservation(item)" class="image-placeholder observation-placeholder">
-                                    <div class="observation-title">
-                                        {{ item.title }}
-                                    </div>
-                                    <div class="observation-date">
-                                        {{ item.date }}
-                                    </div>
-                                     <div class="observation-body" 
-                                        v-html="item.observation">
-                                    </div>
-                                </div>
-
-                                 <!-- If the item is a pointcloud -->
-                                <a 
-                                    v-else-if="isPointcloud(item)" 
-                                    :href="`https://modelviewer.dh.gu.se/pointcloud/?q=${item.id}`" 
-                                    target="_blank"
-                                >
-                                    <div class="meta-data-overlay">
-                                        <div class="meta-data-overlay-text">{{ item.title }}</div>
-                                        <div class="meta-data-overlay-text">{{ item.technique ? item.technique.text : 'N/A' }}</div> 
-                                    </div>
-                                    <img :src="`${item.preview_image.iiif_file}/full/400,/0/default.jpg`" :alt="item.title" class="image-square" />
-                                </a>
-
-                                 <!-- If the item is a mesh -->
-                                <a 
-                                    v-else-if="isMesh(item)" 
-                                    :href="`https://modelviewer.dh.gu.se/mesh/?q=${item.id}`" 
-                                    target="_blank"
-                                >
-                                    <div class="meta-data-overlay">
-                                        <div class="meta-data-overlay-text">{{item.title}}</div>
-                                        <div class="meta-data-overlay-text">{{ item.technique ? item.technique.text : 'N/A' }}</div>
-                                    </div>
-                                    <img :src="`${item.preview_image.iiif_file}/full/400,/0/default.jpg`" :alt="item.title" class="image-square" />
-                                </a>
-
-                                 <!-- If the item is an document -->
-                                <a v-else-if="isDocument(item)" :href="item.upload" target="_blank" download>
-                                    <div class="image-placeholder document-placeholder">
-                                        <div class="document-title">{{item.title}}</div>
-                                        <p>Type: {{item.type[0].text}}</p>
-                                        <p>Size: {{item.size}} MB</p>
-                                        <p>Published: {{item.date}}</p>
-                                    </div>
-                                </a>
-                            </div>
-                       
-                    </tr>
-                </table>
-            </div>
-        </div>
+  <div class="main-container">
+    <div class="place-card-container">
+      <PlaceViewCard :id="id" @link-clicked="handleLinkClicked" />
     </div>
+    <div class="place-view">
+      <div class="overview-row">
+          <div class="title-event" style="font-weight: 600;">{{ linkData.work }}</div>
+          <div  class="title-builder" style="font-weight: 300;">{{ linkData.builder }}</div>
+      </div>
+      <div class="place-gallery-container">
+        <div class="table-section">
+          <table class="content-table" v-if="organData">
+            <tbody>
+              <tr v-if="documents.length > 0">
+                <td class="wide-first-td">Documents</td>
+                
+                  <div v-for="(doc, index) in documents" :key="index" class="document-link">
+                    <router-link :to="`/detail/image/${doc.Nr}`">
+                      <img src="@/assets/document-white.svg" class="document-icon" />
+                      {{ doc.Document }}
+                    </router-link>
+                  </div>
+           
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="table-section">
+          <table class="content-table" v-if="organData">
+            <tbody>
+              <tr v-if="organData.Verksgrundare || organData.Tillkomstår ||
+                organData.Fasadpipor_info || organData.Typ_av_traktursystem || organData.Typ_av_registratursystem ||
+                organData.Typ_av_huvudbälg || organData.Antal_bälgar">
+                <td class="wide-first-td">Metadata</td>
+              <tr v-if="organData.Verksgrundare">
+                <td class="wide-second-td">{{ $t('verksgrundare') }}:</td>
+                <td class="tag theme-color-text">{{ organData.Verksgrundare }}</td>
+              </tr>
+              <tr v-if="organData.Tillkomstår">
+                <td class="wide-second-td">{{ $t('tillkomstår') }}:</td>
+                <td class="tag theme-color-text">{{ organData.Tillkomstår }}</td>
+              </tr>
+              <!-- <tr v-if="organData.Koppel_ & _kombinationer_info">
+                <td class="wide-second-td">Koppel kombinationer:</td>
+                <td class="tag theme-color-text">{{ organData.Koppel_ & _kombinationer_info }}</td>
+              </tr> -->
+              <tr v-if="organData.Fasadpipor_info">
+                <td class="wide-second-td">{{ $t('fasadpipor') }}:</td>
+                <td class="tag theme-color-text">{{ organData.Fasadpipor_info }}</td>
+              </tr>
+              <tr v-if="organData.Typ_av_traktursystem">
+                <td class="wide-second-td">{{ $t('traktursystem') }}:</td>
+                <td class="tag theme-color-text">{{ organData.Typ_av_traktursystem }}</td>
+              </tr>
+              <tr v-if="organData.Typ_av_registratursystem">
+                <td class="wide-second-td">{{ $t('registratursystem') }}:</td>
+                <td class="tag theme-color-text">{{ organData.Typ_av_registratursystem }}</td>
+              </tr>
+              <tr v-if="organData.Typ_av_huvudbälg">
+                <td class="wide-second-td">{{ $t('huvudbälg') }}:</td>
+                <td class="tag theme-color-text">{{ organData.Typ_av_huvudbälg }}</td>
+              </tr>
+              <!-- <tr v-if="organData.Info_bälgar / luftsystem">
+                <td class="wide-second-td">Info bälgar/luftsystem:</td>
+                <td class="tag theme-color-text">{{ organData.Info_bälgar / luftsystem }}</td>
+              </tr> -->
+              <tr v-if="organData.Antal_bälgar">
+                <td class="wide-second-td">{{ $t('antalbälgar') }}:</td>
+                <td class="tag theme-color-text">{{ organData.Antal_bälgar }}</td>
+              </tr>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="table-section">
+          <table class="content-table" v-if="organData">
+
+            <tbody>
+              <tr v-if="organData.Disposition">
+                <td class="wide-first-td">{{ $t('disposition') }}:</td>
+                  <div class="organ-historic-overview" v-html="organData.Disposition" @click="handleDisposition"></div>
+                  <div v-if="isPopupVisible" class="popup"
+                    :style="{ left: mousePosition.x +50 + 'px', top: mousePosition.y -100 + 'px' }">
+                    <h3 v-if="popupData?.Verk">{{ $t('divisioninfo') }}</h3>
+                    <h3 v-else-if="popupData?.Stämma">{{ $t('stopinfo') }}</h3>
+
+                    <div v-if="popupData?.Verk">
+                      <p><b>{{ $t('verk') }}:</b> {{ popupData.Verk }}</p>
+                      <p><b>{{ $t('väderlåda') }}:</b> {{ popupData.Beskrivning_väderlåda }}</p>
+                      <p><b>{{ $t('lufttryck') }}:</b> {{ popupData.Lufttryck }}</p>
+                    </div>
+
+                    <div v-else-if="popupData?.Stämma">
+                      <p><b>{{ $t('stämma') }}:</b> {{ popupData.Stämma }}</p>
+                      <p><b>{{ $t('stämmainfo') }}:</b> {{ popupData.Stämma_info }}</p>
+                    </div>
+                    <button @click="isPopupVisible = false" class="theme-color-text" style="font-weight: bold">Close</button>
+                  </div>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <MapComponent />
 </template>
+
     
 <style scoped>
-.main-container{
-    background-color:rgb(114,135,138) !important;
-    color:white;
+.place-view {
+  margin-left: 20px;
+  padding-top: 35px;
 }
 
-.content-table td{
-    color:white;
+.overview-row {
+  display: flex;
+  flex-direction: column; 
+  align-items: start; 
+  width: 100%; 
+  padding-left:15px;
+
 }
+
+.title-event{
+color:white;
+padding-top:40px;
+line-height:1.0;
+font-size: 35px;
+}
+.title-builder{
+color:white;
+font-size: 30px;
+}
+
+
+.document-icon {
+  height: 1.3em;
+  vertical-align: middle;
+  margin-right: 8px;
+  margin-top:-6px;
+  display: inline-block;
+}
+
+.document-link {
+  display: flex;
+  align-items: left;
+  font-size: 1.05em;
+  padding-bottom: 5px;
+  color:white;
+  font-weight:100!important;
+  line-height:1.5;
+}
+
+.document-link a {
+
+  font-weight:300!important;
+
+}
+
+.content-table {
+
+}
+
+.table-section {
+ padding-bottom:30px;
+}
+
+.tag.theme-color-text {
+  color: var(--theme-6) !important;
+  width:auto!important;
+}
+
+table td {
+        width: 0px !important;
+        
+    }
+
+.wide-first-td {
+  width:130px!important;
+text-align:right!important;
+padding-right:45px;
+
+}
+
+.wide-second-td {
+  min-width: 180px !important;
+  padding-bottom: 5px;
+}
+
+.organ-historic-overview{
+  margin-left:-60px;
+  margin-top:-28px;
+  color:white;
+}
+
+
+
+.main-container {
+  background-color: rgba(84, 105, 108, 0.7) !important;
+  backdrop-filter: blur(10px) saturate(50%) brightness(100%);
+  color: white;
+}
+
+.content-table td {
+  color: white;
+  text-align: left;
+}
+
+.document-link:hover {
+  opacity: 0.8;
+}
+
+.popup {
+  position: fixed;
+  background-color: white;
+  border-radius:8px;
+  padding: 15px 20px;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  color: black;
+  width:300px;
+}
+
+.popup h3 {
+font-weight:600;
+font-size:1.3em;
+}
+
+.popup p{
+padding:0px!important;
+margin-bottom:5px!important;
+}
+
+.popup-content {
+  max-width: 300px;
+}
+
+
+@media screen and (max-width: 900px) {
+  .organ-historic-overview{
+  margin-left:0px;
+  margin-top:-35px;
+}
+
+.table-section{
+  font-size:130%;
+}
+
+.tag.theme-color-text {
+  color: var(--theme-3) !important;
+}
+#app .main-container {
+  background-color: rgba(84, 105, 108, 0.7) !important;
+  backdrop-filter: blur(10px) saturate(50%) brightness(100%);
+}
+}
+
 </style>
     

@@ -8,6 +8,7 @@ import type {
 } from "./types";
 import type { DianaClient } from "@/assets/diana";
 import OpenSeadragon from "@/components/OpenSeadragonSequence.vue";
+import apiConfig from "./apiConfig"
 
 const { selectedFeature } = storeToRefs(mapStore());
 const { placeId } = storeToRefs(etruscanStore());
@@ -27,13 +28,18 @@ const hasImages = ref<boolean>(false);
 
 //when a place is selected, fetch image and info
 watchEffect(async () => {
+  necropolisName.value = null;
+  chambers.value = null;
+  type.value = null;
+  period.value = null;
+  subtitle.value = null;
+  description.value = null;
   if (selectedFeature.value) {
     const placeName = selectedFeature.value.get("name");
     const placeId = selectedFeature.value.getId();
     etruscan.placeId = placeId as string | null;
     place.value = { id_: placeName };
-    images.value = await diana.listAll<Image>("image", { tomb: placeId, depth: 2 });
-
+    images.value = await diana.listAll<Image>("image", { tomb: placeId, depth: 2, type_of_image: 2 });
     // If images are available
     if (images.value.length > 0) {
       hasImages.value = true;
@@ -55,14 +61,14 @@ watchEffect(async () => {
       hasImages.value = false;
       imageUrls.value = [];
       // If no images are available, fetch details from `geojson/place` endpoint
-      const response = await fetch(`https://diana.dh.gu.se/api/etruscantombs/geojson/place/?id=${placeId}`);
+      const response = await fetch(`${apiConfig.PLACE}?id=${placeId}`);
       const geojsonData = await response.json();
       if (geojsonData.features.length > 0) {
         const feature = geojsonData.features[0];
-        necropolisName.value = feature.properties.necropolis.text || null;
+        necropolisName.value = feature.properties.necropolis?.text || null;
         chambers.value = feature.properties.number_of_chambers || null;
-        type.value = feature.properties.type.text || null;
-        period.value = feature.properties.epoch.text || null;
+        type.value = feature.properties.type?.text || null;
+        period.value = feature.properties.epoch?.text || null;
         subtitle.value = feature.properties.subtitle || null;
         description.value = feature.properties.description || null;
       }
@@ -100,19 +106,22 @@ function deselectPlace() {
       <div class="placecard-bottom">
         <div class="placecard-text">
           <div class="placecard-title theme-color-text theme-title-typography">{{ $t('tomb') }} {{ selectedFeature.get("name") }}</div>
-          <div class="placecard-subtitle theme-color-text theme-title-typography">{{ selectedFeature.get("subtitle") }}</div>
+          <div class="placecard-subtitle theme-color-text theme-title-typography">{{ subtitle }}</div>
           <!-- <button class="theme-button theme-color-background">{{ $t('threedmodel') }}</button> -->
         </div>
         <div class="placecard-content">
           <div class="placecard-metadata-content">
 
-
+            <div class="metadata-item">
+              <div class="short-label">{{ $t('site') }}:</div>
+              <div class="tag theme-color-text">San Giovenale</div>
+            </div>
             <div class="metadata-item">
               <div class="label">Necropolis:</div>
               <div class="tag theme-color-text">{{ necropolisName }}</div>
             </div>
             <div class="metadata-item">
-              <div class="label">{{ $t('type') }}:</div>
+              <div class="short-label">{{ $t('type') }}:</div>
               <div class="tag theme-color-text">{{ type }}</div>
             </div>
             <div class="metadata-item">
@@ -120,8 +129,13 @@ function deselectPlace() {
               <div class="tag theme-color-text">{{ chambers }}</div>
             </div>
             <div class="metadata-item">
-              <div class="label">{{ $t('period') }}:</div>
+              <div class="short-label">{{ $t('period') }}:</div>
               <div class="tag theme-color-text">{{ period }}</div>
+            </div>
+         
+            <div class="metadata-item">
+              <div class="label">{{ $t('dataset') }}:</div>
+              <div class="dataset-tag">CTSG</div>
             </div>
 
           </div>
@@ -134,13 +148,14 @@ function deselectPlace() {
       </div>
 
       <div class="placecard-center-button">
-        <router-link :to="`/place/${place?.id_}`">
-          <button class="theme-button theme-color-background" style="margin-top:0px;">{{ $t('moreinfo') }}</button>
-        </router-link>
+        <router-link :to="`/place/${(place?.id_ || '').replace(/ /g, '_')}`">
+    <button class="theme-button theme-color-background" style="margin-top:0px;">{{ $t('moreinfo') }}</button>
+</router-link>
       </div>
     </div>
   </div>
 </template>
 
 <style>
+
 </style>

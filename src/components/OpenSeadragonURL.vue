@@ -7,12 +7,22 @@ const props = defineProps({
   src: String,
 });
 
-let viewer = ref(null);
+const viewerEl = ref();
+let viewer = ref();
+
+const toggleFullScreenPageMode = (bool: boolean) => {
+  // @ts-ignore 
+  OpenSeadragon.supportsFullScreen = bool;
+  // @ts-ignore 
+  OpenSeadragon.supportsFullPage = !bool;
+};
 
 onMounted(() => {
-  viewer = OpenSeadragon({
+  toggleFullScreenPageMode(false);
+
+  viewer.value = OpenSeadragon({
     /** @see https://openseadragon.github.io/docs/OpenSeadragon.html#.Options */
-     element: viewer.value,
+     element: viewerEl.value,
      preserveViewport: true,
      sequenceMode: false,
     immediateRender: false,
@@ -32,9 +42,11 @@ onMounted(() => {
     // If a proper tileSource is not given, use src prop.
     tileSources: props.src,
   });
+
+  viewer.value.addHandler('full-page');
  
   // Use the bookmark plugin
-  viewer.bookmarkUrl({
+  viewer.value.bookmarkUrl({
     trackPage: true, // or false, depending on whether you want to track the current page
   });
 });
@@ -42,23 +54,29 @@ onMounted(() => {
 </script>
 
 <template>
-    <div ref="viewer" class="osd"> </div>
-     <!-- <div id="ToolbarHorizontal" v-show="src.length > 1">
-      <div id="CenterNav">
-        <a id="previous" href="#previous-page">
-          <div id="Prev" class="NavButton"></div>
-        </a>
-        <span id="currentpage">{{ currentImg + 1 }} / {{ src.length }}</span>
-        <a id="next" href="#next-page">
-          <div id="Next" class="NavButton"></div>
-        </a>
-      </div>
-    </div> -->
+  <div ref="viewerEl" class="osd">
+    <div id="ToolbarVertical">
+      <a id="full-page" href="#full-page">
+        <div id="FullPage" class="NavButton"></div>
+      </a>
+      <a id="zoom-in" href="#zoom-in">
+        <div id="ZoomIn" class="NavButton"></div>
+      </a>
+      <a id="zoom-out" href="#zoom-out">
+        <div id="ZoomOut" class="NavButton"></div>
+
+      </a>
+    </div>
+  </div>
 </template>
 
 <style>
+.openseadragon-canvas {
+    background-color: #000 !important;
+}
+
 #navigatorDiv{
-position:absolute;
+  position:absolute;
   width:80px;
   height:80px;
   margin-top:10px;

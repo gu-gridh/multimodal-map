@@ -45,6 +45,7 @@ import Masonry from 'masonry-layout';
 import imagesLoaded from 'imagesloaded';
 import InfiniteScroll from 'infinite-scroll';
 import { etruscanStore } from "./store";
+import apiConfig from "./apiConfig";
 
 export default {
   setup() {
@@ -82,9 +83,7 @@ const updatePlaceId = (item) => {
 const fetchData = async (requestedPageIndex) => {
   if (requestedPageIndex > lastFetchedPageIndex) {
     try {
-      const params = new URLSearchParams(store.imgParams).toString();
-      const urlToFetch = `https://diana.dh.gu.se/api/etruscantombs/geojson/place/?page=${requestedPageIndex}&${params}`;
-      
+      const urlToFetch = `${apiConfig.PLACE}?page=${requestedPageIndex}&${new URLSearchParams(store.imgParams).toString()}`;
       const res = await fetch(urlToFetch);
       const data = await res.json();
       const newImages = data.features.map(feature => ({
@@ -138,8 +137,7 @@ const fetchData = async (requestedPageIndex) => {
         pageIndex++;  // Increment pageIndex for the next set of data
       }
       canIncrement = false; // Disable further increments
-      const params = new URLSearchParams(store.imgParams).toString();
-      const url = `https://diana.dh.gu.se/api/etruscantombs/geojson/place/?page=${pageIndex}&${params}`;
+      const url = `${apiConfig.PLACE}?page=${pageIndex}&${new URLSearchParams(store.imgParams).toString()}`;
 
        // Use Promise syntax to handle the asynchronous 404 check
   checkFor404(url).then(async (is404) => {
@@ -229,15 +227,21 @@ const fetchData = async (requestedPageIndex) => {
   position:absolute;
   width:100%;
   height:calc(100% - 80px);
-  padding-left:30%;
+  padding-left:33%;
   z-index:100!important;
   background-color: rgba(232, 228, 217, 0.5) !important;
   backdrop-filter:blur(5px);
 }
 
+@media screen and (min-width: 1900px) {
+  #gallery-container{ 
+    padding-left:600px;
+}
+  }
+
 @media screen and (max-width: 1500px) {
   #gallery-container{ 
-    padding-left:480px;
+    padding-left:500px;
 }
   }
 

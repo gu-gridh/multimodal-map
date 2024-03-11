@@ -3,6 +3,7 @@ import router from './router'
 import { ref, inject, onMounted } from "vue"
 import markerIcon from "@/assets/marker-red.svg";
 import i18n from '../../src/translations/etruscan';
+import apiConfig from "./apiConfig"
 
 const props = defineProps<{
   id: string;
@@ -36,7 +37,7 @@ const minZoom = ref(12)
 const format = inject("ol-format");
 const geoJson = new format.GeoJSON();
 
-const url = "https://diana.dh.gu.se/api/etruscantombs/geojson/place/" + props.id
+const url = `${apiConfig.PLACE}${props.id}`;
 
 const setCenter = async () => {
   try {
@@ -55,7 +56,7 @@ const setCenter = async () => {
 
 const fetchPlaceData = async () => {
   try {
-    const response = await fetch(`https://diana.dh.gu.se/api/etruscantombs/geojson/place/?id=${props.id}`);
+    const response = await fetch(`${apiConfig.PLACE}?id=${props.id}`);
     if (response.ok) {
       const data = await response.json();
       const feature = data.features[0];
@@ -63,10 +64,10 @@ const fetchPlaceData = async () => {
 
       // Assign fetched data to Vue Ref variables
       title.value = properties.name || null;
-      necropolisName.value = properties.necropolis.text || null;
+      necropolisName.value = properties.necropolis?.text || null;
       chambers.value = properties.number_of_chambers || null;
-      type.value = properties.type.text || null;
-      period.value = properties.epoch.text || null;
+      type.value = properties.type?.text || null;
+      period.value = properties.epoch?.text || null;
       subtitle.value = properties.subtitle || null;
       description.value = properties.description || null;
     }
@@ -120,23 +121,37 @@ onMounted(() => {
           <div class="placecard-title theme-color-text theme-title-typography">{{ $t('tomb') }} {{ title }}</div>
           <div class="placecard-subtitle theme-color-text theme-title-typography">{{ subtitle }}</div>
 
-          <div class="placecard-metadata-content" style="">
+          <div class="placecard-metadata-content">
             <div class="metadata-item">
-              <div class="label">{{ $t('necropolisname') }}:</div>
+              <div class="short-label">{{ $t('site') }}:</div>
+              <div class="tag theme-color-text">San Giovenale</div>
+            </div>
+
+            <div class="metadata-item">
+              <div class="label">Necropolis:</div>
               <div class="tag theme-color-text">{{ necropolisName }}</div>
             </div>
+      
             <div class="metadata-item">
               <div class="short-label">{{ $t('type') }}:</div>
               <div class="tag theme-color-text">{{ type }} </div>
             </div>
+
             <div class="metadata-item">
               <div class="label">{{ $t('chambers') }}:</div>
               <div class="tag theme-color-text">{{ chambers }}</div>
             </div>
+
             <div class="metadata-item">
               <div class="short-label">{{ $t('period') }}:</div>
               <div class="tag theme-color-text">{{ period }}</div>
             </div>
+
+            <div class="metadata-item">
+              <div class="label">{{ $t('dataset') }}:</div>
+              <div class="dataset-tag">CTSG</div>
+            </div>
+
           </div>
           <div class="placecard-metadata-content" style="margin-top:10px;">
             <div class="placecard-metadata-description" v-html="description">

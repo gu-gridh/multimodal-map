@@ -38,7 +38,7 @@ const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
   <section class="illustration flex">
     <OpenSeadragon v-if="iiif_url" :src="`${iiif_url}/info.json`" class="flex-1" />
 
-    <div id="ToolbarVertical">
+    <!-- <div id="ToolbarVertical">
       <a id="full-page" href="#full-page">
         <div id="FullPage" class="NavButton"></div>
       </a>
@@ -48,7 +48,7 @@ const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
       <a id="zoom-out" href="#zoom-out">
         <div id="ZoomOut" class="NavButton"></div>
       </a>
-    </div>
+    </div> -->
 
   </section>
 </div>

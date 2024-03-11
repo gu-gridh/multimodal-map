@@ -1,0 +1,253 @@
+/* CSS - Cascading Style Sheet */
+
+/* Color palette */
+:root {
+  --theme-1: rgb(220, 215, 210);
+  /* This is the background color */
+  --theme-2: rgb(250, 150, 150);
+  /* This is for lighter text on dark backgrounds */
+  --theme-3: rgb(180, 100, 100);
+  /* This is the main accent colour */
+  --theme-4: rgb(160, 80, 80);
+  /* This is for accent hover */
+  --theme-5: rgb(140, 60, 60);
+  /* This is for accent lines */
+}
+
+/* Main */
+html,
+body {
+  font-family: "Oswald", sans-serif;
+  font-weight:300;
+  background-color: var(--theme-1) !important;
+  font-size: 100% !important;
+}
+
+.theme-title-typography {
+  font-family: "Alumni Sans Pinstripe", sans-serif;
+}
+
+.theme-color-text {
+  color: var(--theme-3) !important;
+}
+
+.data {
+  color: var(--theme-2) !important;
+}
+
+.theme-color-background {
+  background-color: var(--theme-3) !important;
+}
+
+.dropdown:hover {
+  background-color: var(--theme-4) !important;
+}
+
+.dropdown:focus {
+  outline-color: var(--theme-5) !important;
+}
+
+.main-title {
+  font-family: "Alumni Sans Pinstripe", sans-serif;
+  color: black !important;
+  font-size: 6.6vw;
+  line-height: 0.67;
+  font-weight: 100;
+  padding-bottom: 20px;
+  margin-top: -25px;
+  letter-spacing: -2px !important;
+}
+
+@media screen and (min-width: 1800px) {
+  .main-title {
+
+    font-size: 7.7em;
+
+  }
+}
+
+@media screen and (max-width: 1350px) {
+  .main-title {
+    font-size: 6.5em
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .main-title {
+    font-size: 6.5em !important;
+  }
+}
+
+.about {
+  display: none;
+}
+
+#app .left-pane {
+  background: url("images/gradient.png");
+  background-size: contain;
+  width: 52% !important;
+  max-width: 900px!important;
+  font-size: 95%;
+}
+
+.theme-button {
+  border-radius: 5px;
+  padding: 5px 10px;
+  color: white;
+  width: auto;
+  transition: all 0.2s ease-in-out;
+  font-weight:300;
+}
+
+.theme-button:hover {
+  background-color: var(--theme-4) !important;
+  transform: scale(1.05);
+}
+
+#app .category-button {
+  background-color: rgba(255, 255, 255, 0.6);
+  color: black;
+  border-radius: 4px;
+  backdrop-filter: blur(5px);
+  line-height: 1.5;
+  padding: 3px 10px 3px 10px;
+}
+
+#app .category-button:hover {
+  background-color: var(--theme-4) !important;
+  color: white;
+}
+
+#app .category-button.active {
+  background-color: var(--theme-3) !important;
+  color: white;
+}
+
+#app .ui-mode {
+  top: 0px;
+  padding: 4px 3px 6px 3px !important;
+  box-shadow: 0.0rem 0.1rem 1rem rgba(0, 0, 0, 0.4) !important;
+}
+
+#app .ui-mode .item {
+  cursor: pointer;
+  display: inline;
+  font-weight: 300;
+  padding: 0px 15px 0px 15px;
+  padding-top:0px;
+  line-height:1.0;
+
+}
+
+.placecard {
+  height: calc(100vh - 33vh);
+  margin-top: 85px;
+  font-size:90%;
+  font-weight:300;
+}
+
+.placecard-top {
+  height: 70% !important;
+}
+
+.placecard-bottom {
+  height: 25% !important;
+}
+
+.placecard-title{
+  font-size:2.2vw;
+  font-weight:700!important;
+}
+
+.placecard-metadata-content{
+height:70px!important;
+overflow:hidden;
+}
+
+.metadata-item{
+  font-size:90%;
+}
+
+.tag{
+  margin-left:10px;
+}
+
+#app .right-pane {
+  width: 27% !important;
+  min-width: 420px;
+  max-width: 600px;
+}
+
+
+.placecard-title {
+  line-height: 1.0;
+  font-family: "Alumni Sans Pinstripe", sans-serif;
+  font-weight: 700;
+  margin-bottom: 0px !important;
+}
+
+
+.placecard-content {
+  padding-top: 10px;
+
+}
+
+
+#app .ol-popup {
+  bottom: 20px !important;
+  left: -50px!important;
+  width: 120px!important;
+  font-weight:200;
+  font-size:0.85em!important;
+}
+
+
+@media screen and (max-width: 900px) {
+  .atlas-gradient {
+    background: linear-gradient(180deg, rgba(232, 228, 217, 0) 0px, var(--theme-1) 300px) !important;
+  }
+
+  #app .right-pane {
+    /* z-index: 0 !important; */
+  }
+
+  #app .right-pane {
+    min-width: 100%;
+    max-width: 100%;
+    z-index:102!important;
+  }
+
+  #app .left-pane {
+    margin-top: calc(100vh - 20vh)!important;
+    z-index:1000!important;
+  }
+
+  #app .main-title {
+    font-size: 6.5em!important;
+    font-weight: 400!important;
+    margin-top: -30px!important;
+
+  }
+
+  .placecard {
+    height: calc(100vh - 35vh);
+    margin-top: 80px;
+
+  }
+
+  .close-card-button{
+    margin-top:60px;
+  }
+
+  .ui-overlay-top{
+margin-top:calc(100px)!important;
+z-index:101!important;
+  }
+
+  .ui-overlay-bottom{
+
+    margin-top:64vh!important;
+    z-index:1!important;
+  }
+
+}

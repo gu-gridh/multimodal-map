@@ -1,248 +1,441 @@
 <template>
+   <div class="control-organisation justify-space">
+    <!-- Building Type Section -->
+    <div class="tag-section">
+      <div class="section-title">Building</div>
+      <div class="broad-controls">
+         <button 
+          class="p-0.5 px-2 clickable category-button"
+          :class="{'active': selectedBuildingTypeIndex === 0}"
+          @click="selectCategory('building', 0)"
+          :disabled="builderLayerVisible"
+        >
+          All buildings
+        </button>
 
-<div class="tag-section">
-
-    <div class="broad-controls" style="height:60px;">
-        
-    </div>
-  </div>
-
-
-  <div class="tag-section">
-    <div class="section-title">Tidsperiod</div>
-    <div class="broad-controls" style="height:100px;">
-  
-    </div>
-  </div>
-
-  <div style="width:98%; float:left; display:flex; flex-direction:row; justify-content:space-between;">
-  <div class="tag-section" style="float:left;">
-    <div class="section-title">Konstruktör</div>
-    <div class="broad-controls">
-        <CategoryButtonList 
-          v-model="necropoli" 
-          :categories="NECROPOLI" 
-          :limit="1" 
-          styleType="dropdown"
-          class="my-2"
-          type="necropolis"
-          @click="handleSelectionClick($event, currentTombType)"
-        />
-    </div>
-  </div>
-
-  <div class="tag-section" style="float:left; margin-left:20px;">
-    <div class="section-title">Orgeltyp</div>
-    <div class="broad-controls">
-        <CategoryButtonList 
-          v-model="tombType" 
-          :categories="TOMBTYPE" 
-          :limit="1" 
-          styleType="dropdown"
-          class="my-2"
-          type="tombType"
-        />
-    </div>
-  </div>
-
-</div>
-
-  <!-- Data Section -->
-  <div class="data-widget">
-    <div class="data-widget-section">
-      <div class="data-widget-item">
-        <h3>Visade orglar:</h3>
-        <p>{{ currentTombCount }}</p>
-      </div>
-      <div class="data-widget-item">|</div>
-      <div class="data-widget-item">
-        <h3>Gömde orglar:</h3>
-        <p>{{ initialTombCount - currentTombCount }}</p>
-      </div>
-    </div>
-
-    <div class="data-widget-divider"></div>
-
-    <div class="data-widget-section">
-      <div class="data-widget-item">
-        <h3>Dokument:</h3>
-        <p>{{ totalPhotographs }}</p>
-      </div>
-      <div class="data-widget-item">
-        <h3>Ritningar:</h3>
-        <p>{{ totalPlans }}</p>
-      </div>
-      <div class="data-widget-item">
-        <h3>Inspelningar:</h3>
-        <p>{{ totalThreedhop + totalPointcloud }}</p> 
+        <button
+          v-for="(type, index) in buildingTypes"
+          :key="index"
+          :class="['p-0.5 px-2 clickable category-button', {'active': selectedBuildingTypeIndex === index}]"
+          @click="selectCategory('building', index)"
+          :disabled="builderLayerVisible"
+        >
+          {{ type }}
+        </button>
       </div>
     </div>
   </div>
+
+  <div class="section-title">Time span</div>
+  <RangeSlider
+    ref="rangeSliderRef"
+    v-model="years"
+    :min="YEARS.MIN"
+    :max="YEARS.MAX"
+    :step="1"
+    class="my-2"
+    :isSliderVisible="true"
+    :disabled="builderLayerVisible"
+  />
+
+  <div class="toggle-buttons" style="margin-top: 20px">
+    <button style="float:left; border-radius:4px 0px 0px 0px" :class="{ active: searchType === 'places' }" @click="setSearchType('places')">Places</button>
+    <button style="border-radius:0px 4px 0px 0px" :class="{ active: searchType === 'builders' }" @click="setSearchType('builders')">Builders</button>
+  </div>
+    <div class="search-section">
+      <input
+        type="text"
+        v-model="searchQuery"
+        @input="handleSearch"
+        @focus="handleSearchBoxFocus"
+        :placeholder="searchType === 'places' ? 'Search Places...' : 'Search Builders...'"
+        class="search-box"
+        autofocus
+      />
+      <div class="search-results">
+        <!-- Rendering for 'places' -->
+        <template v-if="searchType === 'places'">
+          <div v-for="feature in filteredPlaces" 
+              :key="feature.properties ? feature.properties.Nr : 'no-place'" 
+              class="search-result-item"
+              @click="onPlaceClick(feature)">
+            {{ feature.properties.Building }}
+          </div>
+        </template>
+
+        <!-- Rendering for 'builders' -->
+        <template v-else-if="searchType === 'builders'">
+        <div v-for="(builder, index) in objectToArray(searchResults)" 
+            :key="index" 
+            class="search-result-item"
+            @click="onBuilderClick(builder.Id)">
+          {{ builder.Builder }}
+        </div>
+        </template>
+      </div>
+    </div>
+      <!-- Data Section -->
+    <div class="data-widget-counter">
+      <div class="data-widget-section">
+        <div class="data-widget-item">
+          <h3>{{ $t('shownorgans') }}</h3>
+          <p>{{ noPlaceCount }}</p>
+        </div>
+      </div>
+    </div>
 </template>
 
 <script setup lang="ts">
-// @ts-nocheck
-import { inject, ref, onMounted, computed, defineProps, watch } from "vue";
+import { inject, ref, onMounted, computed, defineProps, nextTick, watch } from "vue";
 import CategoryButtonList from "./CategoryButtonDropdown.vue";
 import CategoryButton from "@/components/input/CategoryButtonList.vue";
-// import RangeSlider from "@/components/input/RangeSlider.vue";
 import { storeToRefs } from "pinia";
-import { etruscanStore } from "./store";
-import type { EtruscanProjectProject } from "./types";
+import { fromLonLat } from "ol/proj";
+import { mapStore } from "@/stores/store";
+import { sonoraStore } from "./store";
+import type { SonoraProject } from "./types";
 import { DianaClient } from "@/assets/diana";
 import { transform } from 'ol/proj';
+import RangeSlider from "@/components/input/RangeSlider.vue";
+import _debounce from 'lodash/debounce';
 
-const config = inject<EtruscanProject>("config");
-const dianaClient = new DianaClient("etruscantombs"); // Initialize DianaClient
-const { categories, years, tags, necropoli, tombType, dataParams, selectedNecropolisCoordinates, enable3D } = storeToRefs(etruscanStore());
-// Create a ref for last clicked category
-const lastClickedCategory = ref('');
+const store = mapStore();
+const timePeriods = ref({}); // State to store time periods
+const selectedTimePeriodIndex = ref(null); // State to track the selected time period index
+const buildingTypes = ref({}); // State to store time periods
+const selectedBuildingTypeIndex = ref(0);
+const firstSearchBoxClick = ref(true); // track the first click of the search box
+const searchType = ref('places'); // Default to 'places' 
+const searchQuery = ref('');
+const { selectedFeature } = storeToRefs(mapStore());
+const searchResults = ref([]);
+const config = inject<SonoraProject>("config");
+const dianaClient = new DianaClient("sonora"); // Initialize DianaClient
+const sonora = sonoraStore();
+const { selectedBuilderId, noPlaceCount, builderLayerVisible, placeClicked } = storeToRefs(sonora);
+const featureZoom = 16; //value between minZoom and maxZoom when you select a point 
+const allZoom = 5.3; //value to see all of sweden 
+const rangeSliderRef = ref(null);
 
-//initialize variables for data section
-const totalPhotographs = ref(0);
-const totalPlans = ref(0);
-const totalThreedhop = ref(0);
-const totalPointcloud = ref(0);
-const initialTombCount = ref(289);
-const currentTombCount = ref(0);
-
-const CATEGORIES = {
-  all: "All Data",
-  models: "3D models",
-};
-
-const TAGS = ref<Record<string, string>>({});
-const NECROPOLI = ref<Record<string, string>>({});
-const TOMBTYPE = ref<Record<string, string>>({});
-const currentTag = ref(null);
-const currentNecropolis = ref(null);
-const currentTombType = ref(null);
-
+//slider settings
 const YEARS = {
-  MIN: config?.timeRange?.[0] || 0,
-  MAX: config?.timeRange?.[1] || new Date().getFullYear(),
+  MIN: 1500,
+  MAX: 1899,
+};
+const years = ref([YEARS.MIN, YEARS.MAX]); 
+
+const setSearchType = (type: string) => {
+  searchType.value = type;
+  handleSearch();
 };
 
-onMounted(async () => { 
-  await fetchDataAndPopulateRef("epoch", TAGS);
-  await fetchDataAndPopulateRef("necropolis", NECROPOLI);
-  await fetchDataAndPopulateRef("typeoftomb", TOMBTYPE);
+const onBuilderClick = (builderId) => {
+  const geographicCoordinates = [16, 59.3];
 
-  const url = `https://diana.dh.gu.se/api/etruscantombs/geojson/place/?page_size=500`;
-  const response = await fetch(url);
-  const data = await response.json();
-  initialTombCount.value = data.count //set total tombcount
+  // Transform the geographic coordinates to the map's coordinate system
+  const transformedCoordinates = fromLonLat(geographicCoordinates);
+
+  // Update the map's zoom and center
+  store.updateZoom(allZoom);
+  store.updateCenter(transformedCoordinates);
+
+  if (selectedBuilderId.value !== builderId) {
+    selectedBuilderId.value = builderId;
+  }
+};
+
+const filteredPlaces = computed(() => {
+  if (searchResults.value && searchResults.value.features) {
+    return searchResults.value.features.filter(feature => feature.properties);
+  }
+  return [];
 });
 
-const NECROPOLICoordinates = ref<Record<string, [number, number]>>({});
+const handleSearchBoxFocus = () => {
+  if (firstSearchBoxClick.value && searchType.value === 'places') {
+    fetchPlaces('');
+    firstSearchBoxClick.value = false; // Set to false after first fetch
+  }
+};
 
-async function fetchDataAndPopulateRef<T>(type: string, refToPopulate: any) {
+const objectToArray = (obj) => {
+  return obj ? Object.keys(obj).map(key => obj[key]) : [];
+};
+
+watch(years, (newValue) => {
+  sonora.updateMapParams(selectedBuildingTypeIndex.value, newValue);
+}, {
+  immediate: true
+});
+
+onMounted(async () => {
+  await fetchFilters();
+  builderLayerVisible.value = false;
+});
+
+// filter options
+async function fetchFilters() {
   try {
-    const data = await dianaClient.listAll<T>(type);
-    data.forEach((result: any) => {
-      if (result.published) {
-        refToPopulate.value[result.id] = result.text;
-        
-        // If the type is necropolis, store its coordinates
-        if (type === "necropolis" && result.geometry && result.geometry.coordinates) {
-          NECROPOLICoordinates.value[result.id] = result.geometry.coordinates;
-        }
-      }
-    });
+    const response = await fetch('https://orgeldatabas.gu.se/webgoart/goart/filter1.php?lang=en');
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    if (data) {
+      buildingTypes.value = data.Building;
+    }
   } catch (error) {
-    console.error(`Error fetching data for type ${type}:`, error);
+    console.error('Error fetching time periods:', error);
   }
 }
 
-const handleCategoryClick = (category: string) => {
-  // If the clicked category is the same as the last clicked one, default to "all"
-  if (lastClickedCategory.value === category) {
-    categories.value = ["all"];
-
-    // Clear the lastClickedCategory since it was unselected
-    lastClickedCategory.value = '';
-    if (category === 'models') {
-      enable3D.value = !enable3D.value;  // Toggle between true and false
+// selection of buttons
+function selectCategory(type, index) {
+  if (type === 'building') {
+    // Check if the clicked button is already active
+    if (selectedBuildingTypeIndex.value === index) {
+      // If active, reset to 'All Buildings'
+      selectedBuildingTypeIndex.value = 0;
+      sonora.updateMapParams(0, years.value);
     } else {
-      enable3D.value = false;
+      // If not active, set as the active button
+      selectedBuildingTypeIndex.value = index;
+      sonora.updateMapParams(index, years.value);
     }
-  } else {
-    // Add the clicked category only if it's not the same as the last clicked one
-    categories.value = [category];
-    
-    // Update last clicked category
-    lastClickedCategory.value = category;
-    enable3D.value = (category === 'models');
+  }
+}
+
+//fetch places
+const fetchPlaces = _debounce(async (query) => {
+  let apiUrl;
+  if (searchType.value === 'places') {
+    // If query is empty, fetch all places
+    apiUrl = query
+      ? `https://orgeldatabas.gu.se/webgoart/goart/searchpl.php?seastr=${encodeURIComponent(query)}&btype=0&year1=1500&year2=1899&lang=sv`
+      : 'https://orgeldatabas.gu.se/webgoart/goart/searchpl.php?seastr=&btype=0&year1=1500&year2=1899&lang=sv';
+  }
+
+  try {
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+    searchResults.value = data ? data : [];
+  } catch (error) {
+    console.error('Error fetching search results:', error);
+    searchResults.value = [];
+  }
+}, 500);
+
+//fetch builders
+async function fetchBuilders() {
+  const apiUrl = `https://orgeldatabas.gu.se/webgoart/goart/searchbuilder.php?seastr=${encodeURIComponent(searchQuery.value)}&lang=sv`;
+  try {
+    const response = await fetch(apiUrl);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    searchResults.value = data;
+  } catch (error) {
+    console.error('Error fetching builders:', error);
+    searchResults.value = [];
+  }
+}
+
+//used to toggle between which search is used
+const handleSearch = () => {
+  if (searchType.value === 'builders') {
+    fetchBuilders();
+  } else if (searchType.value === 'places') {
+    // Call fetchPlaces with empty query if searchQuery is empty
+    fetchPlaces(searchQuery.value);
   }
 };
 
-//Fetch to return count of each type based on the tagParams
-const fetchData = async (url: string) => {
-  const response = await fetch(url);
-  if (!response.ok) {
-    console.error(`Failed to fetch data: ${response.status}`);
-    return;
+const onPlaceClick = (feature) => {
+  const coordinates = feature.geometry.coordinates;
+  const transformedCoordinates = fromLonLat(coordinates);
+  if (store.zoom < featureZoom) {          
+    store.updateZoom(featureZoom);
   }
-  
-  const data = await response.json();
-  const { count, features } = data;
+  store.updateCenter(transformedCoordinates);
 
-  currentTombCount.value = count;
-  totalPhotographs.value = 0;
-  totalPlans.value = 0;
-  totalThreedhop.value = 0;
-  totalPointcloud.value = 0;
+  // Reset building type to 'All'
+  selectedBuildingTypeIndex.value = 0;
 
-  for (const feature of features) {
-    const {
-      photographs_count,
-      plans_count,
-      threedhop_count,
-      pointcloud_count
-    } = feature.properties;
-
-    totalPhotographs.value += photographs_count;
-    totalPlans.value += plans_count;
-    totalThreedhop.value += threedhop_count;
-    totalPointcloud.value += pointcloud_count;
-
+  // Reset the date range to default
+  if (rangeSliderRef.value) {
+    rangeSliderRef.value.resetSlider();
   }
+
+  feature.get = (key) => feature.properties[key];
+  selectedFeature.value = feature;
+
+  placeClicked.value = true;
 };
-
-watch(
-  () => dataParams.value,
-  async (newTagParams, oldTagParams) => {
-    const url = `https://diana.dh.gu.se/api/etruscantombs/geojson/place/?page_size=500&${new URLSearchParams(newTagParams).toString()}`;
-    await fetchData(url);
-  },
-  { immediate: true }
-);
 
 const toggleAboutVisibility = async () => {
   await nextTick();
   visibleAbout.value = !visibleAbout.value;
 };
 
-function handleSelectionClick(selectedValue, targetRef) {
-  const selectedCoordinates = NECROPOLICoordinates.value[selectedValue];
-  if (selectedCoordinates) {
-    const [x, y] = selectedCoordinates;
-
-    // Convert them to Web Mercator (EPSG:3857)
-    const webMercatorCoordinates = transform([x, y], 'EPSG:4326', 'EPSG:3857');
-    
-    // Update the selectedNecropolisCoordinates in the store
-    selectedNecropolisCoordinates.value = webMercatorCoordinates;
-  } else {
-    console.log("Coordinates for selected necropolis not found");
-  }
-}
 </script>
 
 <style>
+.slider-tooltip {
+  background: rgb(180, 100, 100);
+  border: none;
+}
+
+.slider-connect {
+  background: rgb(180, 100, 100);
+}
+
+.category-button {
+  background-color: white;
+  color: rgb(71, 85, 105);
+  border-radius: 4px;
+  margin-right: 5px;
+  margin-bottom: 5px;
+}
+
+.category-button:hover {
+  background-color: #096058;
+  color: white;
+}
+
+.category-button.active {
+  background-color: #0d9488;
+  color: white;
+}
+
+.search-result-item {
+  font-weight: normal; /* Remove styling from anchor links */
+  display: block;
+  color: inherit; 
+  text-decoration: none; 
+}
+
+.toggle-buttons button {
+  padding: 2px 12px;
+  background-color: rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  margin-bottom: 0px;
+  color: rgb(80,80,80);
+}
+
+.toggle-buttons button.active {
+  background-color: rgba(255, 255, 255, 0.6);
+}
+
+.search-section {
+  position: relative;
+}
+
+.search-box {
+  width: 100%;
+  height:50px;
+  padding: 8px;
+  border: 0px solid #ccc;
+  border-radius: 0px 4px 4px;
+  overflow:hidden;
+  background-color:rgba(255,255,255,0.6);
+  /* focus:none; */
+}
+.search-box:focus {
+  outline: none;
+}
+
+.search-results {
+  width: 100%;
+  background-color:rgba(255,255,255,1.0);
+  border: 0px solid #ccc;
+  border-top: none;
+  border-radius:0px 0px 8px 8px;
+  margin-top:-4px;
+  z-index: 1000;
+  max-height: 120px;
+  overflow-y: auto;
+  transition: all 0.4s;
+}
+
+/* .search-results {
+  position: absolute;
+  width: 100%;
+  background-color:rgba(255,255,255,1.0);
+  border: 0px solid #ccc;
+  border-top: none;
+  border-radius:0px 0px 8px 8px;
+  margin-top:-4px;
+  z-index: 1000;
+  max-height: 120px;
+  overflow-y: auto;
+} */
+
+@media screen and (max-height: 850px) {
+  .data-widget-counter {
+    display: none !important;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .data-widget-counter {
+    display: block !important;
+    color:black!important;
+  }
+
+  .data-widget-counter p {
+    color:var(--theme-5)!important;
+  }
+
+  .section-title {
+color:black!important;
+}
+}
+
+@media screen and (min-height: 950px) {
+  .search-results {
+  max-height: calc(30vh - 100px);
+}
+}
+
+/* @media screen and (min-height: 950px) {
+  .search-results {
+  max-height: 230px;
+}
+}
+
+@media screen and (min-height: 1000px) {
+  .search-results {
+  max-height: 280px;
+}
+}
+
+@media screen and (min-height: 1050px) {
+  .search-results {
+  max-height: 330px;
+}
+}
+
+@media screen and (min-height: 1100px) {
+  .search-results {
+  max-height: 380px;
+}
+} */
+
+.search-result-item {
+  padding: 8px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  background-color:rgba(255,255,255,1.0)!important;
+}
+
+.search-result-item:hover {
+  background-color:rgba(240,240,240,1.0)!important;
+}
+
 #app .section-title {
   margin-top:10px;
-  margin-bottom:-3px;
+  margin-bottom:3px;
   color:white;
 }
 
@@ -266,21 +459,6 @@ function handleSelectionClick(selectedValue, targetRef) {
   background-color: rgb(180, 100, 100);
   color: white;
 }
-
-/* #app .range-slider-container {
-  display: flex;
-  width: 100%;
-  height: 90px;
-  align-items: bottom;
-  padding: 25px 0 0 0;
-  background-color: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(3px);
-} */
-
-/* #app .range-slider-wrapper {
-  padding-left: 5px;
-  padding-right: 5px;
-} */
 
 #app .start-end-box {
   width: 15%;
@@ -327,23 +505,100 @@ function handleSelectionClick(selectedValue, targetRef) {
 }
 
 
+#app .range-slider-container {
+  display: flex;
+  width: 100%;
+  height: auto;
+  align-items: bottom;
+  padding: 60px 0 15px 0;
+  background-color: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(3px);
+  margin-top:0px;
+}
+
+#app .range-slider-wrapper {
+  padding-left: 27px;
+  padding-right: 28px;
+}
+
+#app .start-end-box {
+  display:none;
+  width: 15%;
+  font-size: 18px;
+  text-align: center;
+  padding-top: 0rem;
+  padding-bottom: 0.5rem;
+}
+
+#app .rounded {
+  border-radius: 8px;
+}
+
+#app .slider-connect {
+  background-color: rgb(180,100,100);
+}
+
+#app .slider-connects {
+  background-color: rgb(180,180,180);
+}
+
+#app .slider-tooltip {
+  background-color: rgb(180,100,100);
+  border: 1px solid var(--slider-tooltip-bg, rgb(180,100,100));
+  font-size: 18px;
+  font-weight:400;
+}
+
+#app .slider-handle {
+  margin-top: -10px;
+  margin-left: 10px;
+  width: 0;
+  height: 0;
+  border-radius: 0px;
+  background: none;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 15px solid rgb(180,100,100);
+  box-shadow: var(--slider-handle-shadow, 0.5px 0.5px 2px 1px rgba(0, 0, 0, 0));
+  cursor: grab;
+}
+
+
 .data-widget {
   float:left;
   pointer-events: none;
-  width: 98%;
+  width: 100%;
   margin-top: 10px;
+  margin-bottom: 20px;
   padding: 15px 25px;
-  border-radius: 10px;
-  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.6);
   min-height: 50px;
   backdrop-filter: blur(5px);
+}
+
+.data-widget-counter {
+  width: 50%;
+  color:white;
+  max-width: 600px; 
+  margin:10px auto;
+  padding: 0.5rem;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.0);
+  backdrop-filter: blur(5px);
+  height: auto; 
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  box-shadow: 0 2px 4px rgba(0,0,0,0.0); 
+  font-size:1.1em;
 }
 
 .data-widget-section {
   width:100%;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
 }
 
 .data-widget-divider {
@@ -368,10 +623,12 @@ function handleSelectionClick(selectedValue, targetRef) {
 
 .data-widget-item p {
   display: inline;
-  color: rgb(180, 100, 100);
+  color: var(--theme-6);
   margin-left: 3px;
   font-weight:500;
 }
 
-
+button:disabled {
+  opacity: 0.5;
+}
 </style>

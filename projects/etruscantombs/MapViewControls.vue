@@ -4,29 +4,37 @@
     <div v-if="areMapPointsLoaded">
 
       <!-- This creates a 2-column section with for the controls -->
-      <div style="width:98%; float:left; display:flex; flex-direction:row; justify-content:space-between; margin-top:10px;">
+      <div class="control-organisation justify-left">
 
         <div class="tag-section">
           <div class="section-title">{{ $t('dataset') }}</div>
           <div style="display:inline; float:left; margin-right:0px;">
             <select title="pick what dataset you want to view data from" class="dropdown theme-color-background my-2">
-              <option title="View data from all datasets" value="All datasets">All datasets</option>
+              <option title="View data from all datasets" value="All datasets">{{ $t('alldatasets') }}</option>
               <option title="View data from the San Giovenale dataset by Fredrik Tobin-Dodd" value="CTSG-2015">CTSG-2015</option>
             </select>
           </div>
         </div>
 
-        <div class="tag-section">
+        <div class="tag-section margin-20">
           <div class="section-title">{{ $t('typeofdata') }}</div>
           <div class="broad-controls">
-            <CategoryButton v-model="categories" :categories="CATEGORIES" :limit="1" class="my-2"
-            title="Pick a data type" @click="handleCategoryClick" />
+            <CategoryButton v-model="categories" 
+                :categories="{
+                  all: $t('categories.all'), 
+                  plans: $t('categories.drawings'), 
+                  models: $t('categories.models')
+                }" 
+                :limit="1" 
+                class="my-2"
+                title="Pick a data type" 
+                @click="handleCategoryClick" />
           </div>
         </div>
 
       </div>
 
-      <div style="width:98%; float:left; display:flex; flex-direction:row; justify-content:space-between;">
+      <div class="control-organisation justify-space" style="justify-content:space-between;">
         <div class="tag-section">
           <div class="section-title">{{ $t('timeperiod') }}</div>
           <div class="broad-controls">
@@ -37,9 +45,22 @@
       </div>
 
 
-      <!-- This creates a 2-column section with for the controls -->
-      <div style="width:98%; float:left; display:flex; flex-direction:row; justify-content:space-between;">
+      <!-- This creates a 2-column section width for the controls -->
+      <div class="control-organisation justify-space">
         <div class="tag-section">
+          <div class="section-title">{{ $t('Site') }}</div>
+          <div style="display:inline; float:left; margin-right:0px;">
+            <select title="pick what dataset you want to view data from" class="dropdown theme-color-background my-2">
+              <option title="View data from all datasets" value="All datasets">{{ $t('All') }}</option>
+              <option title="View data from San Giovenale" value="CTSG-2015">San Giovenale</option>
+              <option title="View data from San Giuliano" value="CTSG-2015">San Giuliano</option>
+              <option title="View data from Blera" value="CTSG-2015">Blera</option>
+              <option title="View data from Luni" value="CTSG-2015">Luni</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="tag-section margin-5">
           <div class="section-title">{{ $t('necropolisname') }}</div>
           <div title="Narrow the result to a certain necropolis" class="broad-controls">
             <CategoryButtonList v-model="necropoli" :categories="NECROPOLI" :limit="1" styleType="dropdown" class="my-2"
@@ -47,7 +68,7 @@
           </div>
         </div>
 
-        <div class="tag-section" style="margin-left:20px;">
+        <div class="tag-section margin-5">
           <div  class="section-title">{{ $t('tombtype') }}</div>
           <div title="Narrow the result to a certain tomb type" class="broad-controls">
             <CategoryButtonList v-model="tombType" :categories="TOMBTYPE" :limit="1" styleType="dropdown" class="my-2"
@@ -73,7 +94,7 @@
       <div class="data-widget-item">|</div>
       <div class="data-widget-item">
         <h3>{{ $t('tombshidden') }}:</h3>
-        <p>{{ initialTombCount - currentTombCount }}</p>
+        <p>{{ hiddenTombs }}</p>
       </div>
     </div>
 
@@ -90,44 +111,37 @@
       </div>
       <div class="data-widget-item">
         <h3>{{ $t('threedmodels') }}:</h3>
-        <p>{{ totalThreedhop + totalPointcloud }}</p>
+        <p>{{ totalThreed }}</p>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-// @ts-nocheck
 import { inject, ref, onMounted, computed, defineProps, watch } from "vue";
 import CategoryButtonList from "./CategoryButtonDropdown.vue";
 import CategoryButton from "@/components/input/CategoryButtonList.vue";
-// import RangeSlider from "@/components/input/RangeSlider.vue";
 import { storeToRefs } from "pinia";
 import { etruscanStore } from "./store";
-import type { EtruscanProjectProject } from "./types";
+import type { EtruscanProject } from "./types";
 import { DianaClient } from "@/assets/diana";
 import { transform } from 'ol/proj';
+import apiConfig from "./apiConfig"
+import { nextTick } from 'vue';
 
 const config = inject<EtruscanProject>("config");
 const dianaClient = new DianaClient("etruscantombs"); // Initialize DianaClient
-const { categories, years, tags, necropoli, tombType, dataParams, selectedNecropolisCoordinates, enable3D, enablePlan, areMapPointsLoaded } = storeToRefs(etruscanStore());
+const { categories, tags, necropoli, tombType, dataParams, selectedNecropolisCoordinates, enable3D, enablePlan, areMapPointsLoaded } = storeToRefs(etruscanStore());
 // Create a ref for last clicked category
 const lastClickedCategory = ref('');
 
 //initialize variables for data section
 const totalPhotographs = ref(0);
 const totalPlans = ref(0);
-const totalThreedhop = ref(0);
-const totalPointcloud = ref(0);
-const initialTombCount = ref(289);
+const totalThreed = ref(0);
+const hiddenTombs = ref(0);
 const currentTombCount = ref(0);
-
-const CATEGORIES = {
-  all: "All types",
-  plans: "Drawings",
-  models: "3D models",
-
-};
+const visibleAbout = ref(false);
 
 const TAGS = ref<Record<string, string>>({});
 const NECROPOLI = ref<Record<string, string>>({});
@@ -136,20 +150,15 @@ const currentTag = ref(null);
 const currentNecropolis = ref(null);
 const currentTombType = ref(null);
 
-const YEARS = {
-  MIN: config?.timeRange?.[0] || 0,
-  MAX: config?.timeRange?.[1] || new Date().getFullYear(),
-};
+const baseURL = `${apiConfig.PLACE}?page_size=500`;
 
 onMounted(async () => {
   await fetchDataAndPopulateRef("epoch", TAGS);
   await fetchDataAndPopulateRef("necropolis", NECROPOLI);
   await fetchDataAndPopulateRef("typeoftomb", TOMBTYPE);
 
-  const url = `https://diana.dh.gu.se/api/etruscantombs/geojson/place/?page_size=500`;
-  const response = await fetch(url);
+  const response = await fetch(baseURL);
   const data = await response.json();
-  initialTombCount.value = data.count //set total tombcount
 });
 
 const NECROPOLICoordinates = ref<Record<string, [number, number]>>({});
@@ -209,35 +218,19 @@ const fetchData = async (url: string) => {
   }
 
   const data = await response.json();
-  const { count, features } = data;
-
-  currentTombCount.value = count;
-  totalPhotographs.value = 0;
-  totalPlans.value = 0;
-  totalThreedhop.value = 0;
-  totalPointcloud.value = 0;
-
-  for (const feature of features) {
-    const {
-      photographs_count,
-      plans_count,
-      threedhop_count,
-      pointcloud_count
-    } = feature.properties;
-
-    totalPhotographs.value += photographs_count;
-    totalPlans.value += plans_count;
-    totalThreedhop.value += threedhop_count;
-    totalPointcloud.value += pointcloud_count;
-
-  }
+  currentTombCount.value = data.shown_tombs;
+  totalPhotographs.value = data.photographs;
+  totalPlans.value = data.drawing;
+  hiddenTombs.value = data.hidden_tombs;
+  totalThreed.value = data.objects_3d; 
 };
 
 watch(
   () => dataParams.value,
   async (newTagParams, oldTagParams) => {
-    const url = `https://diana.dh.gu.se/api/etruscantombs/geojson/place/?page_size=500&${new URLSearchParams(newTagParams).toString()}`;
-    await fetchData(url);
+  const queryParams = new URLSearchParams(Object.fromEntries(Object.entries(newTagParams).map(([k, v]) => [k, String(v)])));
+  const urlWithParams = `https://diana.dh.gu.se/api/etruscantombs/info/tombs/?${queryParams.toString()}`;
+   await fetchData(urlWithParams);
   },
   { immediate: true }
 );
@@ -247,22 +240,20 @@ const toggleAboutVisibility = async () => {
   visibleAbout.value = !visibleAbout.value;
 };
 
-function handleSelectionClick(selectedValue, targetRef) {
+function handleSelectionClick(selectedValue: any, targetRef: any) {
   clearAll();
   const selectedCoordinates = NECROPOLICoordinates.value[selectedValue];
   if (selectedCoordinates) {
     const [x, y] = selectedCoordinates;
 
-    // Convert them to Web Mercator (EPSG:3857)
-    const webMercatorCoordinates = transform([x, y], 'EPSG:4326', 'EPSG:3857');
+    const convertedCoordinates = transform([x, y], 'EPSG:4326', 'EPSG:3857');
+    if (Array.isArray(convertedCoordinates) && convertedCoordinates.length === 2) {
+        selectedNecropolisCoordinates.value = convertedCoordinates as [number, number];
+    } else {
+        console.error("Invalid coordinate format after transformation.");
+    }
 
-    // Update the selectedNecropolisCoordinates in the store
-    selectedNecropolisCoordinates.value = webMercatorCoordinates;
-
-  } else {
-    // console.log("Coordinates for selected necropolis not found");
   }
-
 }
 
 function clearAll() {
@@ -271,7 +262,7 @@ function clearAll() {
   enable3D.value = false;
   tombType.value = ["all"];
   lastClickedCategory.value = '';
-  tags.value = '';
+  tags.value = [];
 }
 
 </script>
@@ -307,12 +298,9 @@ function clearAll() {
 }
 
 #app .tag-section {
-  margin-top: 2px;
+  margin-top: -5px;
   margin-bottom: 0px;
 }
-
-
-
 
 /* #app .range-slider-container {
   display: flex;
@@ -346,35 +334,32 @@ function clearAll() {
 
 }
 
-@media screen and (max-width: 900px) {
-  #app .broad-controls {
-    width: 100%;
-
-  }
+#app .control-organisation{
+  width:98%; 
+  float:left; 
+  display:flex; 
+  flex-direction:row; 
+  margin-top:10px;
 }
 
-.slide-leave-active {
-  transition: all 0.4s;
-  opacity: 1.0;
+.justify-left{
+  justify-content:left;
 }
 
-.slide-leave-to {
-  opacity: 0.5;
+.justify-space{
+  justify-content:space-between;
 }
 
-.slideinactive {
-  opacity: 0.4;
-  pointer-events: none !important;
-  transition: all 0.4s;
+.margin-20 {
+margin-left:20px;
 }
 
-.slideactive {
-  transition: all 0.4s;
-  opacity: 1.0;
+.margin-5 {
+margin-left:5px;
 }
-
 
 .data-widget {
+  font-size:110%;
   float: left;
   pointer-events: none;
   width: 98%;
@@ -417,4 +402,61 @@ function clearAll() {
   margin-left: 3px;
   font-weight: 500;
 }
+
+@media screen and (max-width: 900px) {
+  #app .broad-controls {
+    width: 100%;
+
+  }
+  #app .control-organisation{
+  width:98%; 
+  float:none; 
+  display:flex; 
+  flex-direction:column; 
+  margin-top:10px;
+}
+
+.justify-space{
+  justify-content:left;
+}
+
+  #app .tag-section {
+ font-size:100%;
+}
+
+.margin-20 {
+margin-left:0px;
+}
+
+.margin-5 {
+margin-left:0px;
+}
+
+.data-widget {
+display:none;
+}
+}
+
+.slide-leave-active {
+  transition: all 0.4s;
+  opacity: 1.0;
+}
+
+.slide-leave-to {
+  opacity: 0.5;
+}
+
+.slideinactive {
+  opacity: 0.4;
+  pointer-events: none !important;
+  transition: all 0.4s;
+}
+
+.slideactive {
+  transition: all 0.4s;
+  opacity: 1.0;
+}
+
+
+
 </style>

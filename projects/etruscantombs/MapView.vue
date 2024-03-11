@@ -3,7 +3,7 @@ import { computed } from "vue";
 import MainLayout from "@/MainLayout.vue";
 import MapViewControls from "./MapViewControls.vue";
 import MapComponent from "@/components/MapComponent.vue";
-import DianaPlaceLayer from "@/components/DianaPlaceLayerEtruscan.vue";
+import DianaPlaceLayer from "./DianaPlaceLayerEtruscan.vue";
 import GeoJsonWebGLRenderer from "@/components/GeoJsonWebGLRenderer.vue";
 import FeatureSelection from "./FeatureSelection.vue";
 import MapViewPreview from "./MapViewPreview.vue";
@@ -19,13 +19,14 @@ import { onMounted, watch } from "vue";
 import { nextTick } from "vue";
 import GeoJSON from "ol/format/GeoJSON";
 import Title from "./Title.vue"
+import apiConfig from "./apiConfig"
 
 const { categories, tags, necropoli, tombType, tagsLayerVisible, dataParams, imgParams, selectedNecropolisCoordinates, enable3D, enablePlan } = storeToRefs(etruscanStore());
 const store = mapStore();
 const etruscan = etruscanStore();  // Get the instance of etruscanStore
 const { selectedFeature } = storeToRefs(store);
-const minZoom = 11;
-const maxZoom = 20;
+const minZoom = 10;
+const maxZoom = 22;
 const featureZoom = 15; //value between minZoom and maxZoom when you select a point 
 const visibleAbout = ref(false);
 const showGallery = ref(false);
@@ -67,7 +68,7 @@ const tagParams = computed(() => {
   const necropolis = necropoli.value[0];
   const type = tombType.value[0];
 
-  const initialParams = { epoch, necropolis, type };
+  const initialParams = { epoch, necropolis, type};
   
   // Remove parameters that are set to "all"
   const cleanedParams = Object.keys(initialParams)
@@ -82,28 +83,25 @@ const tagParams = computed(() => {
 
   //filter for just 3D points
   if (enable3D.value) {
-    params['with_3D'] = 'true';
+    (params as any)['with_3D'] = 'true';
   } else {
-    delete params['with_3D'];
+    delete (params as any)['with_3D'];
   }
 
-
-  //filter for just 3D points
   if (enablePlan.value) {
-    params['with_plan'] = 'true';
+    (params as any)['with_plan'] = 'true';
   } else {
-    delete params['with_plan'];
+    delete (params as any)['with_plan'];
   }
 
   // Convert the params object to a URL search string
   const queryString = new URLSearchParams(params).toString();
 
   // Concatenate the base URL with the search string to form the full URL
-  const fullUrl = queryString ? 
-    `https://diana.dh.gu.se/api/etruscantombs/geojson/place/?page_size=500&${queryString}` :
-    `https://diana.dh.gu.se/api/etruscantombs/geojson/place/?page_size=500`;
+  const fullUrl = queryString 
+    ? `${apiConfig.PLACE}?page_size=500&${queryString}`
+    : `${apiConfig.PLACE}?page_size=500`;
 
-  // console.log("Generated URL:", fullUrl); // Debug line
   etruscan.imgParams = params;
   return params;
 });
@@ -192,7 +190,7 @@ watch(showGallery, (newValue) => {
               }"
             >
             </GeoJsonWebGLRenderer>
-            <DianaPlaceLayer path="etruscantombs/geojson/place/" :params="tagParams" :zIndex=20>
+            <DianaPlaceLayer :params="tagParams" :zIndex=20>
             </DianaPlaceLayer>
           </template>
           

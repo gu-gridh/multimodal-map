@@ -54,7 +54,7 @@ body {
   cursor: pointer;
 }
 
-/* The colour of the gradients is added as an image to this class mapview.vue */
+/* The colour of the gradients is added as an image to this class in theme.vue */
 #app .left-pane {
   background-color: transparent !important;
   position: absolute;
@@ -288,7 +288,8 @@ body {
 
 @media screen and (max-width: 900px) {
   #app .left-pane {
-    min-width: 300px;
+    min-width: 100%!important;
+    width: 100%!important;
   }
 
   #app .right-pane {

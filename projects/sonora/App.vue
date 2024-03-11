@@ -4,7 +4,7 @@ import config from "./config";
 import Footer from './Footer.vue';
 import { DianaClient } from "@/assets/diana";
 
-const endpoint = new DianaClient("etruscantombs");
+const endpoint = new DianaClient("sonora");
 
 provide("config", config);
 provide("diana", endpoint);
@@ -33,6 +33,7 @@ body {
 .main-title {
   font-family: 'Teko', sans-serif;
   color: rgb(250, 250, 250);
+  font-size:5.5vw;
 }
 
 .about {
@@ -41,7 +42,7 @@ body {
 
 
 #app .left-pane {
-  background: url("images/gradient-sonora.png");
+  background: url("images/gradient.png");
   background-size: contain;
 }
 

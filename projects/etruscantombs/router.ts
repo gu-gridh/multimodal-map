@@ -15,7 +15,11 @@ const router = createRouter({
       path: "/place/:name",
       name: "place",
       component: PlaceView,
-      props: true
+      props: route => {
+        const name = Array.isArray(route.params.name) ? route.params.name[0] : route.params.name;
+        // Replace underscores with spaces
+        return { name: name.replace(/_/g, ' ') };
+      }
     },
     {
       path: "/detail/:type/:id",

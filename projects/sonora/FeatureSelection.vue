@@ -7,7 +7,7 @@ import type { Project } from "@/types/project";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
 import markerIcon from "@/assets/marker-gold.svg";
-import markerIconRed from "@/assets/marker-red.svg";
+import markerIconRed from "@/assets/marker-gold.svg";
 import Collection from "ol/Collection";
 
 const { selectedFeature } = storeToRefs(mapStore());

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, defineProps, onMounted, inject, computed } from 'vue';
+import { ref, defineProps, onMounted, inject, computed, nextTick, watch } from 'vue';
 import type { Image, Observation, Document, Pointcloud, Mesh } from './types';
 import type { DianaClient } from "@/assets/diana";
 import { storeToRefs } from "pinia";
@@ -8,6 +8,12 @@ import MapComponent from "@/components/MapComponent.vue";
 import i18n from '../../src/translations/etruscan';
 import { etruscanStore } from "./store";
 import { useRoute } from 'vue-router';
+import apiConfig from "./apiConfig";
+import Masonry from 'masonry-layout';
+import imagesLoaded from 'imagesloaded';
+
+const msnry = ref<Masonry | null>(null);
+const plansMsnry = ref<Masonry | null>(null);
 
 const sort = ref('type');
 const etruscan = etruscanStore();
@@ -18,6 +24,9 @@ const diana = inject("diana") as DianaClient;
 const images = ref<Image[]>([]);
 const plans = ref<Image[]>([]);
 const route = useRoute();
+const nextPageUrl = ref<string | null>(null);
+const hasMoreImages = ref(true);
+const isLoading = ref(false);
 
 let observations = ref<Observation[]>([]);
 let documents = ref<Document[]>([]);
@@ -33,6 +42,28 @@ const combined3DModels = computed(() => [
 const sortedGroupedByYear = computed(() => {
     return Object.entries(groupedByYear.value)
         .sort((a, b) => parseInt(b[0]) - parseInt(a[0]));
+});
+
+watch(sort, (newValue, oldValue) => {
+    if (newValue === 'year' && hasMoreImages.value) {
+        fetchMoreImages();
+    }
+});
+
+watch(() => sort.value, async () => {
+    await nextTick(); // Wait for Vue to update the DOM
+
+    // Destroy the old Masonry instance if it exists
+    if (msnry.value?.destroy) {
+        msnry.value.destroy();
+    }
+
+    if (plansMsnry.value?.destroy) {
+        plansMsnry.value.destroy();
+    }
+
+    // Reinitialize Masonry
+    initMasonry();
 });
 
 function isImage(item: any): item is Image {
@@ -64,12 +95,65 @@ function toggleLanguage() {
     }
 }
 
+async function fetchMoreImages() {
+    if (!hasMoreImages.value || !nextPageUrl.value) {
+        return;
+    }
+    isLoading.value = true;
+
+    try {
+        while (nextPageUrl.value) {
+            const response = await fetch(nextPageUrl.value) as Response;
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data: Record<string, any> = await response.json();
+
+            nextPageUrl.value = data.next && data.next.startsWith('http://')
+                ? data.next.replace('http://', 'https://')
+                : data.next;
+
+            hasMoreImages.value = !!data.next;
+
+            const newImages = data.results.filter((image: Image) => image.published);
+            images.value = [...images.value, ...newImages];
+        }
+        // Now update the grouped and sorted items
+        groupAndSortByYear([...images.value, ...plans.value, ...observations.value, ...documents.value, ...pointcloud.value, ...mesh.value]);
+
+        await nextTick();
+
+        const photoGallery = document.querySelector('.placeview-masonry-gallery');
+        if (photoGallery) {
+            await new Promise(resolve => {
+                imagesLoaded(photoGallery, resolve);
+            });
+
+            // Recalculate Masonry layout after images are loaded
+            if (msnry.value?.reloadItems && msnry.value?.layout) {
+                msnry.value.reloadItems();
+                msnry.value.layout();
+            }
+        }
+    } catch (error) {
+        console.error("Failed to fetch more images:", error);
+    } finally {
+        isLoading.value = false;
+    }
+}
+
 onMounted(async () => {
-    const urlId = route.params.name;
+    let urlId = route.params.name;
+
+    if (Array.isArray(urlId)) {
+        urlId = urlId[0];
+    }
+
+    urlId = urlId.replace(/_/g, ' ');
 
     // Check if placeId is undefined or null and fetch for the id based on the name
     if (etruscan.placeId === null || etruscan.placeId === undefined) {
-        const response = await fetch(`https://diana.dh.gu.se/api/etruscantombs/geojson/place/?name=${urlId}`);
+        const response = await fetch(`${apiConfig.PLACE}?name=${urlId}`);
         const data = await response.json();
 
         if (data.features && data.features.length > 0) {
@@ -78,16 +162,21 @@ onMounted(async () => {
     }
 
     if (id) {
-        const [fetchedImages, fetchedObservations, fetchedDocuments, fetchedPointclouds, fetchedMeshes, fetchedPlans] = await Promise.all([
-            diana.listAll<Image>("image", { tomb: id.value, type_of_image: 2, depth: 2 }),
-            diana.listAll<Observation>("observation", { place: id.value }),
-            diana.listAll<Document>("document", { place: id.value, depth: 2 }),
-            diana.listAll<Pointcloud>("objectpointcloud", { tomb: id.value, depth: 2 }),
-            diana.listAll<Mesh>("object3dhop", { tomb: id.value, depth: 2 }),
-            fetch('https://diana.dh.gu.se/api/etruscantombs/image/?tomb=' + id.value + '&type_of_image=1&type_of_image=5&depth=2').then(res => res.json())
-        ]);
+        const [fetchedImages, fetchedObservations, fetchedDocuments, fetchedPointclouds, fetchedMeshes, fetchedPlans] = await Promise.all
+            ([
+                fetch(`${apiConfig.IMAGE}?tomb=${id.value}&limit=8&type_of_image=2&depth=2`).then(res => res.json()),
+                diana.listAll<Observation>("observation", { place: id.value }),
+                diana.listAll<Document>("document", { place: id.value }),
+                diana.listAll<Pointcloud>("objectpointcloud", { tomb: id.value, depth: 2 }),
+                diana.listAll<Mesh>("object3dhop", { tomb: id.value, depth: 2 }),
+                fetch(`${apiConfig.IMAGE}?tomb=${id.value}&type_of_image=1&type_of_image=5&depth=2`).then(res => res.json())
+            ]);
 
-        images.value = fetchedImages.filter(image => image.published);
+        images.value = fetchedImages.results.filter((image: Image) => image.published);
+        nextPageUrl.value = fetchedImages.next && fetchedImages.next.startsWith('http://')
+            ? fetchedImages.next.replace('http://', 'https://')
+            : fetchedImages.next;
+        hasMoreImages.value = !!fetchedImages.next;
         observations.value = fetchedObservations;
         documents.value = fetchedDocuments;
         pointcloud.value = fetchedPointclouds;
@@ -97,6 +186,10 @@ onMounted(async () => {
         /* For sorting by year */
         groupAndSortByYear([...images.value, ...plans.value, ...observations.value, ...documents.value, ...pointcloud.value, ...mesh.value]);
     }
+
+    nextTick(() => {
+        initMasonry();
+    });
 });
 
 function groupAndSortByYear(allItems: (Image | Observation | Document | Pointcloud | Mesh)[]) {
@@ -116,8 +209,38 @@ function groupAndSortByYear(allItems: (Image | Observation | Document | Pointclo
 }
 
 function createPlaceURL() {
-    var url = "https://diana.dh.gu.se/admin/etruscantombs/place/" + id.value;
+    const url = `${apiConfig.ADMIN_PLACE}${id.value}`;
     window.open(url, "_blank");
+}
+
+async function initMasonry() {
+    // Initialize Photograph Masonry
+    const photoGallery = document.querySelector('.placeview-masonry-gallery');
+    if (photoGallery) {
+        await new Promise(resolve => {
+            imagesLoaded(photoGallery, resolve);
+        });
+        msnry.value = new Masonry(photoGallery, {
+            itemSelector: '.gallery__item',
+            columnWidth: 100,
+            gutter: 8,
+            percentPosition: true,
+        });
+    }
+
+    // Initialize Plans Masonry
+    const plansGallery = document.querySelector('.plans-masonry-gallery');
+    if (plansGallery) {
+        await new Promise(resolve => {
+            imagesLoaded(plansGallery, resolve);
+        });
+        plansMsnry.value = new Masonry(plansGallery, {
+            itemSelector: '.plan-gallery__item',
+            columnWidth: 100,
+            gutter: 8,
+            percentPosition: true,
+        });
+    }
 }
 </script>
     
@@ -134,9 +257,9 @@ function createPlaceURL() {
                         {{ $t('editplace') }}</div>
                 </button>
             </div>
-        <div v-if="id">
-            <PlaceViewCard :id="id" />
-        </div>
+            <div v-if="id">
+                <PlaceViewCard :id="id" />
+            </div>
         </div>
         <!-- Here we will show info of the place -->
         <div class="place-view">
@@ -153,7 +276,7 @@ function createPlaceURL() {
 
                 <div>
                     <select class="dropdown theme-color-background">
-                        <option value="All datasets">All datasets</option>
+                        <option value="All datasets">{{ $t('alldatasets') }}</option>
                         <option value="CTSG-2015">CTSG-2015</option>
                     </select>
                 </div>
@@ -167,7 +290,7 @@ function createPlaceURL() {
                             <div class="image-placeholder document-placeholder">
                                 <div class="document-title">{{ document.title }}</div>
                                 <p class="documentlabel">{{ $t('type') }}:</p>
-                                <p class="documentdata theme-color-text">{{ document.type[0].text }}</p>
+                                <p class="documentdata theme-color-text">{{ document.type_names[0] }}</p>
                                 <p class="documentlabel">{{ $t('size') }}:</p>
                                 <p class="documentdata theme-color-text">{{ document.size }} MB</p>
                                 <p class="documentlabel">{{ $t('published') }}:</p>
@@ -178,7 +301,7 @@ function createPlaceURL() {
 
                     <tr v-if="combined3DModels.length > 0">
                         <td>{{ $t('threedmodels') }}</td>
-                        <div v-for="(model, index) in combined3DModels" :key="index" class="image-placeholder">
+                        <div v-for="(model, index) in combined3DModels" :key="index" class="image-placeholder square">
                             <a v-if="model.modelType === 'mesh'" :href="`https://modelviewer.dh.gu.se/mesh/?q=${model.id}`"
                                 target="_blank">
                                 <div class="meta-data-overlay">
@@ -204,33 +327,41 @@ function createPlaceURL() {
 
                     <tr v-if="plans.length > 0">
                         <td>{{ $t('drawings') }}</td>
-                        <div v-for="(image, index) in plans" :key="index" class="image-placeholder plan-placeholder">
-                            <div class="image-square" v-if="'iiif_file' in image">
-                                <router-link :to="`/detail/image/${image.id}`">
-                                    <div class="meta-data-overlay">
-                                        <div class="meta-data-overlay-text">{{ image.title }}</div>
-                                        <div class="meta-data-overlay-text">  {{ image.type_of_image[0].text }}</div>
-                                    </div>
-                                    <img :src="`${image.iiif_file}/full/400,/0/default.jpg`" :alt="image.title"
-                                        class="image-square-plan" />
-                                </router-link>
+                        <div class="plans-masonry-gallery">
+                            <div v-for="(image, index) in plans" :key="index" class="plan-gallery__item">
+                                <div class="masonry-image" v-if="'iiif_file' in image">
+                                    <router-link :to="`/detail/image/${image.id}`">
+                                        <div class="meta-data-overlay">
+                                            <div class="meta-data-overlay-text">{{ image.title }}</div>
+                                            <div class="meta-data-overlay-text"> {{ image.type_of_image[0].text }}</div>
+                                        </div>
+                                        <img :src="`${image.iiif_file}/full/400,/0/default.jpg`" :alt="image.title"
+                                            class="image-square-plan" />
+                                    </router-link>
+                                </div>
                             </div>
                         </div>
                     </tr>
                     <tr v-if="images.length > 0">
-
-                        <td><a :href="`https://diana.dh.gu.se/admin/etruscantombs/image/?q=${route.params.name}`">{{ $t('photographs') }}</a></td>
-
-                        <div v-for="(image, index) in images" :key="index" class="image-placeholder">
-                            <div class="image-square" v-if="'iiif_file' in image">
-                                <router-link :to="`/detail/image/${image.id}`">
-                                    <div class="meta-data-overlay">
-                                        <div class="meta-data-overlay-text">{{ image.title }}</div>
-                                        <div class="meta-data-overlay-text">{{ image.type_of_image[0].text }}</div>
-                                    </div>
-                                    <img :src="`${image.iiif_file}/full/400,/0/default.jpg`" :alt="image.title"
-                                        class="image-square-inner" />
-                                </router-link>
+                        <td>
+                            <a :href="`${apiConfig.ADMIN_IMAGE}?q=${route.params.name}`">
+                                {{ $t('photographs') }}
+                            </a>
+                            <button class="show-button theme-color-background" v-if="nextPageUrl" @click="fetchMoreImages"
+                                :disabled="isLoading">{{ $t('showall') }}</button>
+                        </td>
+                        <div class="placeview-masonry-gallery">
+                            <div v-for="(image, index) in images" :key="index" class="gallery__item">
+                                <div class="masonry-image" v-if="'iiif_file' in image">
+                                    <router-link :to="`/detail/image/${image.id}`">
+                                        <div class="meta-data-overlay">
+                                            <div class="meta-data-overlay-text">{{ image.title }}</div>
+                                            <div class="meta-data-overlay-text">{{ image.type_of_image[0].text }}</div>
+                                        </div>
+                                        <img :src="`${image.iiif_file}/full/400,/0/default.jpg`" :alt="image.title"
+                                            class="image-square-inner" />
+                                    </router-link>
+                                </div>
                             </div>
                         </div>
                     </tr>
@@ -256,7 +387,7 @@ function createPlaceURL() {
                         <td style="font-size:1.5em; font-weight:200; text-align:right;">{{ year }}</td>
 
                         <div v-for="(item, index) in items" :key="index"
-                            :class="(isImage(item) || isPointcloud(item) || isMesh(item)) ? 'image-placeholder' : ''">
+                            :class="(isImage(item) || isPointcloud(item) || isMesh(item)) ? 'image-placeholder square' : ''">
                             <!-- If the item is an image -->
                             <div class="image-square" v-if="'iiif_file' in item">
                                 <router-link v-if="item.iiif_file" :to="`/detail/image/${item.id}`">
@@ -309,16 +440,15 @@ function createPlaceURL() {
                             <a v-else-if="isDocument(item)" :href="item.upload" target="_blank" download>
                                 <div class="image-placeholder document-placeholder">
                                     <div class="document-title">{{ item.title }}</div>
-                                <p class="documentlabel">{{ $t('type') }}:</p>
-                                <p class="documentdata theme-color-text">{{ item.type[0].text }}</p>
-                                <p class="documentlabel">{{ $t('size') }}:</p>
-                                <p class="documentdata theme-color-text">{{ item.size }} MB</p>
-                                <p class="documentlabel">{{ $t('published') }}:</p>
-                                <p class="documentdata theme-color-text">{{ item.date }}</p>
+                                    <p class="documentlabel">{{ $t('type') }}:</p>
+                                    <p class="documentdata theme-color-text">{{ item.type[0].text }}</p>
+                                    <p class="documentlabel">{{ $t('size') }}:</p>
+                                    <p class="documentdata theme-color-text">{{ item.size }} MB</p>
+                                    <p class="documentlabel">{{ $t('published') }}:</p>
+                                    <p class="documentdata theme-color-text">{{ item.date }}</p>
                                 </div>
                             </a>
                         </div>
-
                     </tr>
                 </table>
             </div>
@@ -334,25 +464,40 @@ function createPlaceURL() {
     backdrop-filter: blur(10px) saturate(50%) brightness(100%);
 }
 
+.show-button {
+    color: white;
+    height: auto;
+    border-radius: 4px;
+    padding: 2px 8px;
+    background-color: transparent;
+    float: right;
+    font-size: 0.9em;
+    margin-top: 5px;
+    margin-left: 20px;
+    transition: all 0.2s ease-in-out;
+}
+
+.show-button:hover {
+    background-color: var(--theme-4) !important;
+    transform: scale(1.05);
+}
+
 /* unvisited link */
 a:link {
-    font-weight:normal !important;
+    font-weight: normal !important;
 }
 
 /* visited link */
 a:visited {
-  font-weight:normal !important;
+    font-weight: normal !important;
 }
 
 /* mouse over link */
-a:hover {
-
-}
+a:hover {}
 
 /* selected link */
-a:active {
+a:active {}
 
-}
 .content-table td {
     color: black;
 }
@@ -364,6 +509,16 @@ a:active {
 
 #app .ol-zoom-out {
     display: none !important;
+}
+
+.gallery__item {
+    width: 200px;
+    margin-bottom: 10px;
+}
+
+.plan-gallery__item {
+    width: 200px;
+    margin-bottom: 10px;
 }
 </style>
     
