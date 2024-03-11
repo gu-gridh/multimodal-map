@@ -4,6 +4,7 @@ import { ref, inject, onMounted, nextTick } from "vue"
 import markerIcon from "@/assets/marker-red.svg";
 import { watch } from 'vue';
 import placeholderImage from './images/placeholder.png';
+import i18n from '../../src/translations/sonora';
 
 const emit = defineEmits(['link-clicked']);
 
@@ -19,16 +20,22 @@ const processOrganData = (data) => {
   // Filter entries that start with 'work'
   const filteredData = Object.values(data).filter(item => item.work);
 
-  // Sort entries by date
-  filteredData.sort((a, b) => new Date(a.date.trim()) - new Date(b.date.trim()));
+  //check if Plats exists and split it after the semicolon
+  if (data.Plats) {
+    const parts = data.Plats.split(';');
+    if (parts.length > 1) {
+      data.Plats = parts[1].trim();
+    }
+  }
 
   processedOrganData.value = filteredData;
 };
 
 const fetchOrganData = async () => {
+  const currentLocale = i18n.global.locale;
   loading.value = true; // Start loading
   try {
-    const response = await fetch(`https://orgeldatabas.gu.se/webgoart/goart/organ.php?id=${props.id}&lang=sv`);
+    const response = await fetch(`https://orgeldatabas.gu.se/webgoart/goart/organ1.php?id=${props.id}&lang=${currentLocale}`);
     if (response.ok) {
       const data = await response.json();
       organData.value = data;
@@ -65,7 +72,6 @@ watch(() => props.id, async (newId) => {
 onMounted(() => {
   fetchOrganData();
 });
-
 </script>
 
 <template>

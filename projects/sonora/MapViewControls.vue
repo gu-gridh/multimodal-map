@@ -2,7 +2,7 @@
    <div class="control-organisation justify-space">
     <!-- Building Type Section -->
     <div class="tag-section">
-      <div class="section-title">Building</div>
+      <div class="section-title">{{ $t('buildings') }}</div>
       <div class="broad-controls">
          <button 
           class="p-0.5 px-2 clickable category-button"
@@ -10,7 +10,7 @@
           @click="selectCategory('building', 0)"
           :disabled="builderLayerVisible"
         >
-          All buildings
+          {{ $t('allbuildings') }}
         </button>
 
         <button
@@ -26,7 +26,7 @@
     </div>
   </div>
 
-  <div class="section-title">Time span</div>
+  <div class="section-title">{{ $t('timespan') }}</div>
   <RangeSlider
     ref="rangeSliderRef"
     v-model="years"
@@ -39,8 +39,8 @@
   />
 
   <div class="toggle-buttons" style="margin-top: 20px">
-    <button style="float:left; border-radius:4px 0px 0px 0px" :class="{ active: searchType === 'places' }" @click="setSearchType('places')">Places</button>
-    <button style="border-radius:0px 4px 0px 0px" :class="{ active: searchType === 'builders' }" @click="setSearchType('builders')">Builders</button>
+    <button style="float:left; border-radius:4px 0px 0px 0px" :class="{ active: searchType === 'places' }" @click="setSearchType('places')">{{ $t('places') }}</button>
+    <button style="border-radius:0px 4px 0px 0px" :class="{ active: searchType === 'builders' }" @click="setSearchType('builders')">{{ $t('builders') }}</button>
   </div>
     <div class="search-section">
       <input
@@ -48,7 +48,7 @@
         v-model="searchQuery"
         @input="handleSearch"
         @focus="handleSearchBoxFocus"
-        :placeholder="searchType === 'places' ? 'Search Places...' : 'Search Builders...'"
+        :placeholder="searchType === 'places' ? $t('searchPlaces') : $t('searchBuilders')"
         class="search-box"
         autofocus
       />
@@ -98,6 +98,7 @@ import { DianaClient } from "@/assets/diana";
 import { transform } from 'ol/proj';
 import RangeSlider from "@/components/input/RangeSlider.vue";
 import _debounce from 'lodash/debounce';
+import i18n from '../../src/translations/sonora';
 
 const store = mapStore();
 const timePeriods = ref({}); // State to store time periods
@@ -173,10 +174,18 @@ onMounted(async () => {
   builderLayerVisible.value = false;
 });
 
+watch(() => i18n.global.locale, (newLang, oldLang) => {
+  if (newLang !== oldLang) {
+    fetchFilters();
+  }
+});
+
 // filter options
 async function fetchFilters() {
+  const lang = i18n.global.locale;
+
   try {
-    const response = await fetch('https://orgeldatabas.gu.se/webgoart/goart/filter1.php?lang=en');
+    const response = await fetch(`https://orgeldatabas.gu.se/webgoart/goart/filter1.php?lang=${lang}`);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
