@@ -11,3 +11,4 @@ node_modules/
 
 code-review.csv
 .yarn/cache
+.yarn/install-state.gz
