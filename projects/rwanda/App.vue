@@ -99,10 +99,17 @@ body {
   background-color: rgb(140, 100, 100);
 }
 
-@media screen and (max-width: 900px) {
+@media (max-width: 900px) {
 
 #app .main-title {
   font-weight: 600 !important;
+  font-size: 60px !important;
+  width: auto !important;
+  white-space: nowrap !important;
+}
+
+#app .about-button {
+  font-size: 16px !important;
 }
 }
 

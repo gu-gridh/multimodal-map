@@ -12,7 +12,8 @@ export default <RwandaProject>{
   about:
     "Renaming and transformative processes in urban Rwanda",
   projection: "EPSG:3857",
-  center: [30.055, -1.9520],
+  center: [30.052, -1.95178],
   zoom: 15,
   timeRange: [1600, new Date().getFullYear()],
 };
+

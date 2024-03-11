@@ -217,4 +217,13 @@ const handleSourcesClick = (key: string) => {
 color:rgb(180,100,100);
 }
 
+@media (max-width: 1024px) {
+  .filter-button {
+    font-size: 16px;
+  }
+  .filter-heading {
+    font-size: 18px;;
+  }
+}
+
 </style>
