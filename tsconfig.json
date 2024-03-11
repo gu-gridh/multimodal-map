@@ -6,7 +6,7 @@
     "src/**/*.vue",
     "src/**/*.json",
     "projects/**/*"
-    ],
+  ],
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
