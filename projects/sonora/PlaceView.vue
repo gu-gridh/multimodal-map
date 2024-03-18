@@ -579,6 +579,7 @@ font-size:1.3em;
   position: fixed;
   width:80%!important;
   height:auto!important;
+  max-height:80vh!important;
   top:5vh!important;
   left:10%!important;
   border-radius: 8px;
