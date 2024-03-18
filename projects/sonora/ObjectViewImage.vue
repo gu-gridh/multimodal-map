@@ -165,10 +165,7 @@ const downloadImage = (fileUrl: string, fileName: string) => {
 }
 
 @media screen and (max-width: 900px) {
-.illustration{
-  margin-top:80px!important;
-  height:60vh;
-}
+
 
 }
 

@@ -137,16 +137,16 @@ const goBack = () => {
 @media screen and (max-width: 900px) {
   .meta-top-gradient{
   width:100%;
-  margin-top:60vh;
+  margin-top:49.9vh;
 
 }
 
 .illustration {
-  height: 60vh;
+  height: 70vh!important;
 }
 
 .meta-container{
-  top:10vh;
+  top:0vh;
   overflow-y: auto;
   height:calc(auto)!important;
   padding-bottom:230px!important;
