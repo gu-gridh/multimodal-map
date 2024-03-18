@@ -272,7 +272,7 @@ onMounted(() => {
   height: calc(100vh - 80px);
   padding-bottom: 30px;
   padding-left: 45px;
-  padding-right: 20px;
+  padding-right: 0px;
 }
 
 /* #app .place-meta-container {} */
@@ -335,6 +335,7 @@ display:block;
 @media screen and (max-width: 900px) {
   .placecard-full {
     margin-top: 40px !important;
+    width:100% !important;
   }
 
   .placeview-main-title{
@@ -405,8 +406,8 @@ display:none;
     height: auto;
     width: 100%;
     z-index: 100;
-    padding-right: 20px !important;
-    padding-left: 20px !important;
+    padding-right: 0px !important;
+    padding-left: 0px !important;
     padding-bottom: 0px !important;
     overflow-y: auto;
   }
@@ -420,7 +421,7 @@ display:none;
   }
 
   .placecard-full {
-    margin-top: 30px;
+    margin-top: 40px !important;
     color: black;
     margin-left: 0px;
     background-color: white;
@@ -430,6 +431,7 @@ display:none;
     height: auto;
     overflow: hidden;
     border-radius: 20px 20px 0px 0px !important;
+    width:100%!important;
   }
 
   .placecard-full .category-button {

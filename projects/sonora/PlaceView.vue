@@ -480,6 +480,16 @@ margin-bottom:5px!important;
   margin-top:-35px;
 }
 
+#app .place-view {
+
+        width: calc(100%) !important;
+ 
+        margin-left: 0px !important;
+        padding-left: 15px;
+     
+    }
+
+
 .content-table{
   margin-top:30px;
 }
@@ -591,7 +601,10 @@ font-size:1.3em;
 }
 .place-gallery-container {
     flex: 1;
-    padding: 10px 30px 10px 0px;
+    padding: 10px 30px 30px 0px;
+}
+.place-card-container{
+  padding:0px;
 }
 }
 
