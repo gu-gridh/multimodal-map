@@ -185,6 +185,9 @@ ul {
     float: left;
     font-size: 1.2em !important;
   }
+  .about-main-title {
+  font-size: 5.0em!important;
+}
 }
 
 .about-logo {
@@ -220,6 +223,7 @@ ul {
   align-items: center;
   justify-content: center;
   gap: 50px;
+  padding:0px 30px;
 }
 
 .about-lower-border {
@@ -233,5 +237,21 @@ ul {
   background-repeat: no-repeat;
   background-size: cover;
   opacity: 0.7;
+}
+
+@media screen and (max-width: 900px) {
+  .about-logos-container {
+  display: block;
+  gap: 20px!important;
+  padding:20px 20px 300px 20px;
+}
+
+  .about-logo {
+  float:left;
+  height:auto;
+  min-height:100px;
+  width:150px;
+  margin:10px;
+}
 }
 </style>
