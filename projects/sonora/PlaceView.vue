@@ -201,6 +201,7 @@ const handleLinkClicked = (data) => {
                 organData.Fasadpipor_info || organData.Typ_av_traktursystem || organData.Typ_av_registratursystem ||
                 organData.Typ_av_huvudbälg || organData.Antal_bälgar">
               <td class="wide-first-td">Metadata</td>
+              <div class="metadata-section">
               <tr v-if="organData.Verksgrundare">
                 <td class="wide-second-td">{{ organData.Verksgrundare.label }}:</td>
                 <td class="tag theme-color-text">{{ organData.Verksgrundare.data }}</td>
@@ -269,6 +270,7 @@ const handleLinkClicked = (data) => {
                 <td class="wide-second-td">{{ organData.Övrig_info.label }}:</td>
                 <td class="tag theme-color-text">{{ organData.Övrig_info.data }}</td>
               </tr>
+            </div>
               </tr>
             </tbody>
           </table>
@@ -277,7 +279,9 @@ const handleLinkClicked = (data) => {
           <table class="content-table" v-if="organData">
 
             <tbody>
+              <div class="metadata-section">
               <tr v-if="organData.Disposition">
+            
                 <td class="wide-first-td">{{ organData.Disposition.label }}</td>
                   <div class="organ-historic-overview" v-html="organData.Disposition.data" @click="handleDisposition"></div>
                   <div v-if="isPopupVisible" class="popup"
@@ -309,7 +313,9 @@ const handleLinkClicked = (data) => {
                       </div>
                     <button @click="isPopupVisible = false" class="theme-color-text" style="font-weight: bold">{{ $t('close') }}</button>
                   </div>
+            
               </tr>
+            </div>
             </tbody>
           </table>
         </div>
@@ -401,7 +407,7 @@ padding-right:45px;
 }
 
 .wide-second-td {
-  min-width: 180px !important;
+  min-width: 180px;
   padding-bottom: 5px;
 }
 
@@ -474,8 +480,12 @@ margin-bottom:5px!important;
   margin-top:-35px;
 }
 
+.content-table{
+  margin-top:30px;
+}
+
 .table-section{
-  font-size:130%;
+  font-size:120%;
 }
 
 .tag.theme-color-text {
@@ -488,25 +498,51 @@ margin-bottom:5px!important;
 
 .title-event{
   color:black;
+  margin-left:-10px;
+  background-color:transparent;
+  padding-right:15px!important;
+  margin-bottom:5px;
 }
 
 .title-builder{
   color:black;
+  margin-left:-10px;
+  margin-bottom:20px;
+  padding-right:15px!important;
+  line-height:1.1;
+  background-color:transparent;
+}
+
+.metadata-section{
+  margin-top:0px;
 }
 
 .wide-first-td{
 width:100%!important;
 text-align:left!important;
-padding-left:20px;
+padding-left:5px;
 position:absolute;
+margin-top:-50px;
+z-index:100;
+font-size:1.3em;
+
 }
 
 .wide-second-td{
-  width:600px!important;
-  background-color:red;
+  min-width:150px!important;
+  position:relative;
+  padding-left:5px;
 }
+
+.tag{
+  position:relative;
+  float:left;
+}
+
 .documents{
-  margin-top:35px;
+  margin-top:10px;
+  margin-bottom:30px;
+
 }
 .document-icon {
   height: 1.3em;
@@ -527,12 +563,34 @@ position:absolute;
   color:black;
   font-weight:100!important;
   line-height:1.5;
-  padding-left:20px;
+  padding-left:5px;
 }
 
 .document-link a {
   font-weight:300!important;
 
+}
+
+.column{
+  text-align:left!important;
+}
+
+.popup {
+  position: fixed;
+  width:80%!important;
+  height:auto!important;
+  top:5vh!important;
+  left:10%!important;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  color: black;
+  overflow:auto;
+}
+.place-gallery-container {
+    flex: 1;
+    padding: 10px 30px 10px 0px;
 }
 }
 

@@ -369,16 +369,22 @@ display:none;
 
   .historical-overview-title{
     font-size:2em;
+    padding-left:0px;
+  margin-left:-10px;
   }
 
   .date-column {
   width: 100%;
   font-size: 30px;
+  padding-left:0px;
+  margin-left:-10px;
 }
 
 .info-column{
   width: 100%;
-  padding-left:10px;
+
+  padding-left:0px;
+  margin-left:-10px;
 }
 
 .historical-overview {
@@ -418,7 +424,7 @@ display:none;
     color: black;
     margin-left: 0px;
     background-color: white;
-    padding-bottom: 30px;
+    padding-bottom: 0px;
     box-shadow: 0px -15px 15px rgba(0, 0, 0, 0.1);
     transition: all 0.0s ease-in-out;
     height: auto;
