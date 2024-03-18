@@ -121,7 +121,7 @@ body {
 
 .placecard {
   height: calc(100vh - 32vh);
-  margin-top: 10%;
+  margin-top: 12%;
   font-size:90%;
   font-weight:300;
 }

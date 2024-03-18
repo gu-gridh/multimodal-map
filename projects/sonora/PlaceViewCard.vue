@@ -367,9 +367,18 @@ display:none;
     font-size:6em;
   }
 
+  .historical-overview-title{
+    font-size:2em;
+  }
+
   .date-column {
-  width: 240px;
-  font-size: 40px;
+  width: 100%;
+  font-size: 30px;
+}
+
+.info-column{
+  width: 100%;
+  padding-left:10px;
 }
 
 .historical-overview a {
