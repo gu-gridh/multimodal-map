@@ -381,6 +381,12 @@ display:none;
   padding-left:10px;
 }
 
+.historical-overview {
+
+  padding-bottom:0px;
+}
+
+
 .historical-overview a {
 
   font-size: 24px;

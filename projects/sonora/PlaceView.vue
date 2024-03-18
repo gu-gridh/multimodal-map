@@ -181,13 +181,14 @@ const handleLinkClicked = (data) => {
             <tbody>
               <tr v-if="documents.length > 0">
                 <td class="wide-first-td">Documents</td>
-                
+                <div class="documents">
                   <div v-for="(doc, index) in documents" :key="index" class="document-link">
                     <router-link :to="`/detail/image/${doc.Nr}`">
-                      <img src="@/assets/document-white.svg" class="document-icon" />
+                      <div class="document-icon" />
                       {{ doc.Document }}
                     </router-link>
                   </div>
+                </div>
            
               </tr>
             </tbody>
@@ -352,6 +353,10 @@ font-size: 30px;
   margin-right: 8px;
   margin-top:-6px;
   display: inline-block;
+  background-image: url("@/assets/document-white.svg");
+  background-repeat: no-repeat;
+  background-size: contain;
+  width:25px;
 }
 
 .document-link {
@@ -479,6 +484,55 @@ margin-bottom:5px!important;
 #app .main-container {
   background-color: rgba(84, 105, 108, 0.7) !important;
   backdrop-filter: blur(10px) saturate(50%) brightness(100%);
+}
+
+.title-event{
+  color:black;
+}
+
+.title-builder{
+  color:black;
+}
+
+.wide-first-td{
+width:100%!important;
+text-align:left!important;
+padding-left:20px;
+position:absolute;
+}
+
+.wide-second-td{
+  width:600px!important;
+  background-color:red;
+}
+.documents{
+  margin-top:35px;
+}
+.document-icon {
+  height: 1.3em;
+  vertical-align: middle;
+  margin-right: 8px;
+  margin-top:-6px;
+  display: inline-block;
+  background-image: url("@/assets/document-black.svg");
+  background-repeat: no-repeat;
+  background-size: contain;
+  width:30px;
+}
+.document-link {
+  display: flex;
+  align-items: left;
+  font-size: 1.05em;
+  padding-bottom: 5px;
+  color:black;
+  font-weight:100!important;
+  line-height:1.5;
+  padding-left:20px;
+}
+
+.document-link a {
+  font-weight:300!important;
+
 }
 }
 
