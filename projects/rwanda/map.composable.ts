@@ -47,6 +47,7 @@ export function useRwandaMap() {
           `${config.urls.baseURL}/${config.urls.place}`,
           {
             params: searchParams,
+            
           }
         )
         .then((response) => {
