@@ -25,6 +25,7 @@ const messages = {
       allaArkiv: "All Archives",
       allaSeries: "All Series",
       allaVolumes: "All Volumes",
+      location: "Location:",
 
       historicaloversight: "Historical Overview",
       verksgrundare: "Original builder",
@@ -95,6 +96,7 @@ const messages = {
       allaArkiv: "Alla Arkiv",
       allaSeries: "Alla Serier",
       allaVolumes: "Alla Volymer",
+      location: "Plats:",
 
       historicaloversight: "Historisk Översikt",
       verksgrundare: "Verksgrundare",
