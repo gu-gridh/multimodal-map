@@ -165,10 +165,10 @@ const processOrganData = (data) => {
           </div>
           <div class="placecard-content" v-if="responseData">
             <div class="placecard-metadata-content">
-              <div class="metadata-item" v-if="responseData.Loc">
+              <!-- <div class="metadata-item" v-if="responseData.Loc">
                 <div class="label">{{ $t('location') }}</div>
                 <div class="tag theme-color-text">{{ responseData.Loc }}</div>
-              </div>
+              </div> -->
               <div class="metadata-item" v-if="responseData.Stift">
                 <div class="label">{{ responseData.Stift.label }}</div>
                 <div class="tag theme-color-text">{{ responseData.Stift.data }}</div>
