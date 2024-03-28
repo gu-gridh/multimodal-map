@@ -49,8 +49,8 @@ const handlePageChange = (newPage) => {
 };
 
 //when a place is selected, fetch image and info
-watchEffect(async () => {
-  if (selectedFeature.value) {
+watch(selectedFeature, async (newFeature, oldFeature) => {
+  if (newFeature) {
     lastInteraction.value = 'place';
     selectedBuilderId.value = null;
     const placeId = selectedFeature.value.get("number") ?? selectedFeature.value.get("place_nr") ?? selectedFeature.value.get("Nr");
@@ -165,24 +165,24 @@ const processOrganData = (data) => {
           </div>
           <div class="placecard-content" v-if="responseData">
             <div class="placecard-metadata-content">
-              <!-- <div class="metadata-item" v-if="responseData.Loc">
+              <div class="metadata-item" v-if="responseData.Loc">
                 <div class="label">{{ $t('location') }}</div>
                 <div class="tag theme-color-text">{{ responseData.Loc }}</div>
-              </div> -->
+              </div>
               <div class="metadata-item" v-if="responseData.Stift">
-                <div class="label">{{ responseData.Stift.label }}</div>
+                <div class="label">{{ $t('stift') }}</div>
                 <div class="tag theme-color-text">{{ responseData.Stift.data }}</div>
               </div>
               <div class="metadata-item" v-if="responseData.Kontrakt">
-                <div class="label">{{ responseData.Kontrakt.label }}</div>
+                <div class="label">{{ $t('kontrakt') }}</div>
                 <div class="tag theme-color-text">{{ responseData.Kontrakt.data }}</div>
               </div>
               <div class="metadata-item" v-if="responseData.Kommun">
-                <div class="label">{{ responseData.Kommun.label }}</div>
+                <div class="label">{{ $t('kommun') }}</div>
                 <div class="tag theme-color-text">{{ responseData.Kommun.data }}</div>
               </div>
               <div class="metadata-item" v-if="responseData.Pastorat">
-                <div class="label">{{ responseData.Pastorat.label }}</div>
+                <div class="label">{{ $t('pastorat') }}</div>
                 <div class="tag theme-color-text">{{ responseData.Pastorat.data }}</div>
               </div>
             </div>
