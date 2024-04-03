@@ -69,7 +69,15 @@ const handleSourcesClick = (key: string) => {
       @toggle="handleSourcesClick('all')"
       class="filter-button"
     />
-    <div class="filter-heading">Sources</div>
+    <div class="filter-heading">NAMES OF PLACES </div>
+      <CategoryButtonList 
+        v-model="placeTypes"
+        :categories="PLACE_TYPES"
+        :limit="1"
+        class="filter-button"
+        @click="handleSourcesClick"
+      />
+    <div class="filter-heading">SOURCES</div>
       <CategoryButtonList 
         v-model="sources"
         :categories="SOURCES"
@@ -77,7 +85,7 @@ const handleSourcesClick = (key: string) => {
         class="filter-button"
         @click="handleSourcesClick"
       />
-      <div class="filter-heading" v-show="sources.includes('text')">Informants</div>
+      <div class="filter-heading" v-show="sources.includes('text')">INFORMANTS</div>
       <CategoryButtonList 
         v-show="sources.includes('text')"
         v-model="informants"
@@ -86,15 +94,8 @@ const handleSourcesClick = (key: string) => {
         class="filter-button"
         @click="handleSourcesClick"
       />
-    <div class="filter-heading">Names of places </div>
-      <CategoryButtonList 
-        v-model="placeTypes"
-        :categories="PLACE_TYPES"
-        :limit="1"
-        class="filter-button"
-        @click="handleSourcesClick"
-      />
-      <div class="filter-heading">Languages</div>
+    
+      <div class="filter-heading">LANGUAGES</div>
       <ButtonList 
         v-model="languages"
         :categories="LANGUAGES"
@@ -102,7 +103,7 @@ const handleSourcesClick = (key: string) => {
         class="filter-button lang-buttons"
         @click="handleSourcesClick"
       />
-    <div class="filter-heading">Time periods</div>
+    <div class="filter-heading">TIME PERIODS</div>
       <ButtonList 
         v-model="periods"
         :categories="PERIODS"
@@ -118,10 +119,10 @@ const handleSourcesClick = (key: string) => {
   font-size: 0.8vw;
 }
 .filter-heading {
-  font-size: 1.1vw;
+  font-size: 1vw;
   margin-bottom: 2px;
   margin-top: 10px;
-  font-weight: 400;
+  font-weight: 500;
 
 }
 .checkboxes {
