@@ -159,3 +159,7 @@ export interface Place {
   properties: any;
   geometry: any
 }
+
+export type RangeMapping = {
+  [key: number]: { range: string; id: number };
+};

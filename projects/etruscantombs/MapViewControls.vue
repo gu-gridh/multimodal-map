@@ -42,16 +42,22 @@
 
       </div>
 
-      <div class="control-organisation justify-space" style="justify-content:space-between;">
+      <div class="slider-widget">
         <div class="tag-section">
-          <div class="section-title">{{ $t('timeperiod') }}</div>
-          <div class="broad-controls">
-            <CategoryButtonDropdown v-model="tags" :categories="TAGS" :limit="1" styleType="button" class="my-2" 
-            title="Pick a time period"/>
-          </div>
+          <div class="section-title">Date Range</div>
+            <RangeSlider
+              ref="rangeSliderRef"
+              v-model="selectedRange"
+              :min="1"
+              :max="3"
+              :step="1"
+              class="my-2"
+              :isSliderVisible="true"
+              :startLabel="startLabel"
+              :endLabel="endLabel"
+            />
         </div>
       </div>
-
 
       <!-- This creates a 2-column section width for the controls -->
       <div class="control-organisation justify-space">
@@ -129,9 +135,10 @@
 import { inject, ref, onMounted, computed, defineProps, watch } from "vue";
 import CategoryButtonDropdown from "./CategoryButtonDropdown.vue";
 import CategoryButtonList from "@/components/input/CategoryButtonList.vue";
+import RangeSlider from "./EtruscanRangeSlider.vue";
 import { storeToRefs } from "pinia";
 import { etruscanStore } from "./store";
-import type { EtruscanProject } from "./types";
+import type { EtruscanProject, RangeMapping } from "./types";
 import { DianaClient } from "@/assets/diana";
 import { transform } from 'ol/proj';
 import apiConfig from "./apiConfig"
@@ -139,7 +146,7 @@ import { nextTick } from 'vue';
 
 const config = inject<EtruscanProject>("config");
 const dianaClient = new DianaClient("etruscantombs"); // Initialize DianaClient
-const { categories, tags, necropoli, tombType, dataSetValue, dataParams, selectedNecropolisCoordinates, enable3D, enablePlan, areMapPointsLoaded } = storeToRefs(etruscanStore());
+const { categories, selectedRange, tags, necropoli, tombType, dataSetValue, dataParams, selectedNecropolisCoordinates, enable3D, enablePlan, areMapPointsLoaded } = storeToRefs(etruscanStore());
 // Create a ref for last clicked category
 const lastClickedCategory = ref('');
 
@@ -150,6 +157,25 @@ const totalThreed = ref(0);
 const hiddenTombs = ref(0);
 const currentTombCount = ref(0);
 const visibleAbout = ref(false);
+
+const rangeMapping: RangeMapping = {
+  1: { range: '700-650 BC', id: 5 },
+  2: { range: '625-400 BC', id: 6 },
+  3: { range: '400-200 BC', id: 7 },
+};
+
+const startLabel = computed(() => {
+  return rangeMapping[selectedRange.value[0]].range;
+});
+
+const endLabel = computed(() => {
+  return rangeMapping[selectedRange.value[1]].range;
+});
+
+const selectedRangeIds = computed(() => {
+  return [rangeMapping[selectedRange.value[0]].id, rangeMapping[selectedRange.value[1]].id];
+});
+
 
 const TAGS = ref<Record<string, string>>({});
 const NECROPOLI = ref<Record<string, string>>({});
@@ -316,6 +342,35 @@ function clearAll() {
   margin-bottom: 0px;
 }
 
+#app .range-slider-container {
+  display: flex;
+  width: 100%;
+  height: auto;
+  align-items: bottom;
+  padding: 10px 0 0px 0;
+  background-color: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(3px);
+  margin-top:5px;
+}
+
+#app .slider-connect {
+  background-color: rgb(180,100,100);
+}
+
+#app .slider-handle {
+  margin-top: -10px;
+  margin-left: 10px;
+  width: 0;
+  height: 0;
+  border-radius: 0px;
+  background: none;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 15px solid rgb(180,100,100);
+  box-shadow: var(--slider-handle-shadow, 0.5px 0.5px 2px 1px rgba(0, 0, 0, 0));
+  cursor: grab;
+}
+
 /* #app .range-slider-container {
   display: flex;
   width: 100%;
@@ -333,10 +388,12 @@ function clearAll() {
 
 #app .start-end-box {
   width: 15%;
-  font-size: 20px;
+  font-size: 17px;
   text-align: center;
   padding-top: 0rem;
   padding-bottom: 0.5rem;
+  padding-left: 0.5rem; 
+  padding-right: 0.5rem; 
 }
 
 #app .rounded {
@@ -381,6 +438,16 @@ margin-left:5px;
   padding: 15px 25px;
   border-radius: 10px;
   background-color: rgba(255, 255, 255, 0.5);
+  min-height: 50px;
+  backdrop-filter: blur(5px);
+}
+
+.slider-widget {
+  font-size:110%;
+  float: left;
+  width: 98%;
+  margin-top: 10px;
+  border-radius: 10px;
   min-height: 50px;
   backdrop-filter: blur(5px);
 }
