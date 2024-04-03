@@ -42,20 +42,27 @@
 
       </div>
 
-      <div class="slider-widget">
-        <div class="tag-section">
-          <div class="section-title">Date Range</div>
-            <RangeSlider
-              ref="rangeSliderRef"
-              v-model="selectedRange"
-              :min="1"
-              :max="3"
-              :step="1"
-              class="my-2"
-              :isSliderVisible="true"
-              :startLabel="startLabel"
-              :endLabel="endLabel"
-            />
+      <div class="tag-section margin-5">
+        <div class="section-title">{{ $t('timeperiod') }}</div>
+        <div class="slider-widget">
+        <label class="container" style="width: 20%; display: flex; flex-direction: column; align-items: center; margin-right: 5px;">
+          <input type="checkbox" v-model="showUnknownRange">
+          <span class="checkmark"></span>
+          Unknown
+        </label>
+          <div class="slider-section">
+              <RangeSlider
+                ref="rangeSliderRef"
+                v-model="selectedRange"
+                :min="1"
+                :max="3"
+                :step="1"
+                class="my-2"
+                :isSliderVisible="true"
+                :startLabel="startLabel"
+                :endLabel="endLabel"
+              />
+          </div>
         </div>
       </div>
 
@@ -146,7 +153,7 @@ import { nextTick } from 'vue';
 
 const config = inject<EtruscanProject>("config");
 const dianaClient = new DianaClient("etruscantombs"); // Initialize DianaClient
-const { categories, selectedRange, tags, necropoli, tombType, dataSetValue, dataParams, selectedNecropolisCoordinates, enable3D, enablePlan, areMapPointsLoaded } = storeToRefs(etruscanStore());
+const { categories, selectedRange, showUnknownRange, tags, necropoli, tombType, dataSetValue, dataParams, selectedNecropolisCoordinates, enable3D, enablePlan, areMapPointsLoaded } = storeToRefs(etruscanStore());
 // Create a ref for last clicked category
 const lastClickedCategory = ref('');
 
@@ -342,6 +349,10 @@ function clearAll() {
   margin-bottom: 0px;
 }
 
+#app .slider-section {
+  width: 100%;
+}
+
 #app .range-slider-container {
   display: flex;
   width: 100%;
@@ -388,7 +399,7 @@ function clearAll() {
 
 #app .start-end-box {
   width: 15%;
-  font-size: 17px;
+  font-size: 13px;
   text-align: center;
   padding-top: 0rem;
   padding-bottom: 0.5rem;
@@ -443,10 +454,12 @@ margin-left:5px;
 }
 
 .slider-widget {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   font-size:110%;
   float: left;
   width: 98%;
-  margin-top: 10px;
   border-radius: 10px;
   min-height: 50px;
   backdrop-filter: blur(5px);
@@ -538,6 +551,10 @@ display:none;
   opacity: 1.0;
 }
 
-
+ div.slider-widget > label > input
+ {
+  width: 17px;
+  height: 17px;
+ }
 
 </style>
