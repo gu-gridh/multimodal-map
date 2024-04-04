@@ -200,7 +200,7 @@ const handleLinkClicked = (data) => {
               <tr v-if="organData.Verksgrundare || organData.Tillkomstår ||
                 organData.Fasadpipor_info || organData.Typ_av_traktursystem || organData.Typ_av_registratursystem ||
                 organData.Typ_av_huvudbälg || organData.Antal_bälgar">
-              <td class="wide-first-td">Metadata</td>
+              <td class="wide-first-td"></td>
               <div class="metadata-section">
               <tr v-if="organData.Verksgrundare">
                 <td class="wide-second-td">{{ organData.Verksgrundare.label }}:</td>
