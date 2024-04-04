@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, defineProps, onMounted, inject, computed } from 'vue';
+import { ref, defineProps, onMounted, inject, computed, onUnmounted } from 'vue';
 import type { Image, Observation, Document, Pointcloud, Mesh } from './types';
 import type { DianaClient } from "@/assets/diana";
 import PlaceViewCard from "./PlaceViewCard.vue";
@@ -14,6 +14,7 @@ const organData = ref(null);
 const popupData = ref(null);
 const isPopupVisible = ref(false);
 const mousePosition = ref({ x: 0, y: 0 });
+const popupRef = ref(null);
 
 const linkData = ref({ builder: '', work: '' }); // Selected builder and work from placeviewcard 
 
@@ -49,6 +50,8 @@ watch(() => route.params.id, async (newId) => {
 });
 
 onMounted(async () => {
+  document.addEventListener('click', handleClickOutside);
+
   try {
     const currentLocale = i18n.global.locale;
 
@@ -78,6 +81,10 @@ onMounted(async () => {
   } catch (error) {
     console.error("Error fetching data:", error);
   }
+});
+
+onUnmounted(() => {
+  document.removeEventListener('click', handleClickOutside);
 });
 
 const fetchDivisionInfo = async (divId) => {
@@ -162,6 +169,13 @@ const handleDisposition = async (event) => {
 const handleLinkClicked = (data) => {
   linkData.value.builder = data.builder;
   linkData.value.work = data.work;
+};
+
+//close popup if clicked outside
+const handleClickOutside = (event) => {
+  if (popupRef.value && !popupRef.value.contains(event.target) && isPopupVisible.value) {
+    isPopupVisible.value = false;
+  }
 };
 </script>
     
@@ -284,8 +298,7 @@ const handleLinkClicked = (data) => {
             
                 <td class="wide-first-td">{{ organData.Disposition.label }}</td>
                   <div class="organ-historic-overview" v-html="organData.Disposition.data" @click="handleDisposition"></div>
-                  <div v-if="isPopupVisible" class="popup"
-                    :style="{ left: mousePosition.x +50 + 'px', top: mousePosition.y -100 + 'px' }">
+                    <div v-if="isPopupVisible" class="popup" ref="popupRef" :style="{ left: mousePosition.x +50 + 'px', top: mousePosition.y -100 + 'px' }">
                     <h3 v-if="popupData?.Verk">{{ $t('divisioninfo') }}</h3>
                     <h3 v-else-if="popupData?.Stämma">{{ $t('stopinfo') }}</h3>
                       <div v-if="popupData?.Verk" class="grid-container">
