@@ -56,7 +56,7 @@ const messages = {
       typ_av_dokument: "Type of document",
       longitude: "Longitud",
       latitude: "Latitud",
-      found_in: "Found in",
+      found_in: "Linked organs",
       
       moreinfo: "More info",
       aboutportalmain: "Sweden possesses a uniquely rich cultural heritage of well-preserved pipe organs, among them no fewer than 436 instruments, built between ca. 1600 and 1860. This heritage of organs is not only present in the instruments themselves but also in a wealth of documentary materials of different kinds: written documents (such as correspondence, documentation reports, annotations, contracts, etc.), drawings, photos and sound recordings, resulting from many decades of information-gathering by dedicated organ experts. The material is an invaluable asset to research, but most of it is unpublished and has been difficult to access.",
@@ -127,7 +127,7 @@ const messages = {
       typ_av_dokument: "Typ av dokument",
       longitude: "Longitude",
       latitude: "Latitude",
-      found_in: "Hittades i",
+      found_in: "Länkade orglar",
 
       moreinfo: "Mer info",
       aboutportalmain: "Sverige har ett enastående rikt kulturarv av välbevarade piporglar, däribland inte mindre än 436 instrument byggda mellan c:a 1600 och 1860. Detta orgelkulturarv finns inte bara i själva instrumentet utan även i en stor mängd dokumentationsmaterial av skilda slag: skrivna dokument (såsom brev, dokumentationsrapporter, anteckningar, kontrakt etc.), ritningar, foton och ljudupptagningar, frukten av många decenniers informationsinsamling av hängivna orgelspecialister. Materialet är en ovärderlig tillgång för forskningen, men det mesta av det har inte publicerats och har varit svårtillgängligt.",
