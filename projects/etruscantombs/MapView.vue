@@ -85,7 +85,7 @@ const tagParams = computed(() => {
     dataset, 
     oldest_epoch: epochIds.length > 0 ? epochIds[0] : null, 
     newest_epoch: epochIds.length > 1 ? epochIds[1] : null,
-    show_unknown
+    show_unknown: show_unknown.toString(),
   };
   
   // Remove parameters that are set to "all"
