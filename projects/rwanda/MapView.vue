@@ -135,7 +135,10 @@ watch(route, () => {
             }"
           >
           <ol-style v-if="placeTypes[0] == 'building'">
-            <ol-style-stroke color="#D22B2B" :width="3"></ol-style-stroke>
+            <ol-style-stroke color="rgb(180,100,100)" :width="3"></ol-style-stroke>
+          </ol-style>
+          <ol-style v-if="placeTypes[0] == 'street'">
+            <ol-style-stroke color="rgb(100,180,100)" :width="3"></ol-style-stroke>
           </ol-style>
           <ol-style v-else>
               <ol-style-stroke color="#9765A5" :width="3"></ol-style-stroke>
