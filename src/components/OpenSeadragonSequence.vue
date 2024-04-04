@@ -159,8 +159,8 @@ position:absolute;
 }
 
 #FullPage.minimize {
-  background: url(@/assets/openseadragon/minus.svg);
-  background-size: 100%;
+  background: url(@/assets/openseadragon/minimize.svg);
+  background-size: 80%;
   background-repeat: no-repeat;
   background-position: 50% 50%;
   background-color: rgba(35, 35, 35, 0.9);

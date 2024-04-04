@@ -1,0 +1,37 @@
+<?xml version="1.0" ?>
+
+<svg width="800px" height="800px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+
+<defs>
+
+<style>.c{fill:none;stroke:#ffffff;stroke-linecap:round;stroke-linejoin:round;}</style>
+
+</defs>
+
+<g id="a"/>
+
+<g id="b">
+
+<g>
+
+<line class="c" x1="2.49" x2="10.26" y1="21.5" y2="13.69"/>
+
+<line class="c" x1="10.49" x2="4.54" y1="13.5" y2="13.5"/>
+
+<line class="c" x1="10.51" x2="10.51" y1="13.52" y2="19.51"/>
+
+</g>
+
+<g>
+
+<line class="c" x1="21.51" x2="14.02" y1="2.5" y2="10.04"/>
+
+<line class="c" x1="13.49" x2="19.45" y1="10.5" y2="10.5"/>
+
+<line class="c" x1="13.49" x2="13.49" y1="10.48" y2="4.49"/>
+
+</g>
+
+</g>
+
+</svg>
