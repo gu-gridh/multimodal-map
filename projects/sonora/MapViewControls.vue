@@ -342,14 +342,21 @@ const toggleAboutVisibility = async () => {
 
 .search-box {
   width: 100%;
-  height:50px;
+  height: 50px;
   padding: 8px;
   border: 0px solid #ccc;
   border-radius: 0px 4px 4px;
   overflow:hidden;
   background-color:rgba(255,255,255,0.6);
+  box-shadow: 
+    0 -5px 5px -5px rgba(0, 0, 0, 0.2);
   /* focus:none; */
 }
+
+div.search-section > input::placeholder {
+  color: rgb(80,80,80);
+}
+
 .search-box:focus {
   outline: none;
 }
