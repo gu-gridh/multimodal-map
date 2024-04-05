@@ -34,8 +34,7 @@ watch(() => route.params.id, async (newId) => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       let data = await response.json();
-      processOrganData(data);
-      organData.value = data;
+      organData.value = processOrganData(data);
 
       documents.value = [];
       for (const key in data) {
@@ -60,9 +59,7 @@ onMounted(async () => {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     let data = await response.json();
-    processOrganData(data);
-    organData.value = data;
-
+    organData.value = processOrganData(data);
     documents.value = [];
     for (const key in data) {
       if (data[key].Document) {
@@ -94,8 +91,7 @@ const fetchDivisionInfo = async (divId) => {
     const response = await fetch(`https://orgeldatabas.gu.se/webgoart/goart/divinfo1.php?div_id=${divId}&lang=${currentLocale}`);
     if (response.ok) {
       const data = await response.json();
-      processOrganData(data);
-      popupData.value = data;
+      popupData.value = processOrganData(data);
       isPopupVisible.value = true;
     } else {
       throw new Error('Failed to fetch division info');
@@ -112,8 +108,7 @@ const fetchStopInfo = async (stopId) => {
     const response = await fetch(`https://orgeldatabas.gu.se/webgoart/goart/stopinfo1.php?stop_id=${stopId}&lang=${currentLocale}`);
     if (response.ok) {
       const data = await response.json();
-      processOrganData(data);
-      popupData.value = data;
+      popupData.value = processOrganData(data);
       isPopupVisible.value = true;
     }
     else {
@@ -125,15 +120,34 @@ const fetchStopInfo = async (stopId) => {
 };
 
 const processOrganData = (data) => {
+  const processedData = {};
+
+  //keys to ignore explicitly
+  const keysToIgnore = ['no_docs', 'org_id', 'place_id'];
+
   Object.keys(data).forEach(key => {
-    if (typeof data[key] === 'string' && data[key].includes(';')) {
-      const index = data[key].indexOf(';');
-      const label = data[key].substring(0, index).trim();
-      const remainingData = data[key].substring(index + 1).trim();
-      data[key] = { label, data: remainingData };
+    //check if the key is not in the ignore list and does not start with a number
+    if (!keysToIgnore.includes(key) && isNaN(parseInt(key[0]))) {
+      if (typeof data[key] === 'string' && data[key].includes(';')) {
+        const index = data[key].indexOf(';');
+        const label = data[key].substring(0, index).trim();
+        const remainingData = data[key].substring(index + 1).trim();
+        processedData[key] = { label, data: remainingData };
+      }
     }
   });
+  return processedData;
 };
+
+const filteredOrganData = computed(() => {
+  if (!organData.value) return null;
+
+  const filteredData = { ...organData.value };
+  //Remove disposition key
+  delete filteredData['Disposition'];
+
+  return filteredData;
+});
 
 const handleDisposition = async (event) => {
   const anchor = event.target.closest('a');
@@ -190,11 +204,12 @@ const handleClickOutside = (event) => {
           <div  class="title-builder" style="font-weight: 300;">{{ linkData.builder }}</div>
       </div>
       <div class="place-gallery-container">
+        <!-- Documents -->
         <div class="table-section">
           <table class="content-table" v-if="organData">
             <tbody>
               <tr v-if="documents.length > 0">
-                <td class="wide-first-td">Documents</td>
+                <td class="wide-second-td">Documents</td>
                 <div class="documents">
                   <div v-for="(doc, index) in documents" :key="index" class="document-link">
                     <router-link :to="`/detail/image/${doc.Nr}`">
@@ -208,83 +223,13 @@ const handleClickOutside = (event) => {
             </tbody>
           </table>
         </div>
+          <!-- Metadata -->
         <div class="table-section">
-          <table class="content-table" v-if="organData">
+          <table class="content-table" v-if="filteredOrganData">
             <tbody>
-              <tr v-if="organData.Verksgrundare || organData.Tillkomstår ||
-                organData.Fasadpipor_info || organData.Typ_av_traktursystem || organData.Typ_av_registratursystem ||
-                organData.Typ_av_huvudbälg || organData.Antal_bälgar">
-              <td class="wide-first-td"></td>
-              <div class="metadata-section">
-              <tr v-if="organData.Verksgrundare">
-                <td class="wide-second-td">{{ organData.Verksgrundare.label }}:</td>
-                <td class="tag theme-color-text">{{ organData.Verksgrundare.data }}</td>
-              </tr>
-              <tr v-if="organData.Tillkomstår">
-                <td class="wide-second-td">{{ organData.Tillkomstår.label }}:</td>
-                <td class="tag theme-color-text">{{ organData.Tillkomstår.data }}</td>
-              </tr>
-              <!-- <tr v-if="organData.Koppel_ & _kombinationer_info">
-                <td class="wide-second-td">Koppel kombinationer:</td>
-                <td class="tag theme-color-text">{{ organData.Koppel_ & _kombinationer_info }}</td>
-              </tr> -->
-               <tr v-if="organData.Fasadpipor_info">
-                <td class="wide-second-td">{{ organData.Fasadpipor_info.label }}:</td>
-                <td class="tag theme-color-text">{{ organData.Fasadpipor_info.data }}</td>
-              </tr>
-              <tr v-if="organData.Typ_av_traktursystem">
-                <td class="wide-second-td">{{ organData.Typ_av_traktursystem.label }}:</td>
-                <td class="tag theme-color-text">{{ organData.Typ_av_traktursystem.data }}</td>
-              </tr>
-              <tr v-if="organData.Typ_av_registratursystem">
-                <td class="wide-second-td">{{ organData.Typ_av_registratursystem.label }}:</td>
-                <td class="tag theme-color-text">{{ organData.Typ_av_registratursystem.data }}</td>
-              </tr>
-              <tr v-if="organData.Typ_av_huvudbälg">
-                <td class="wide-second-td">{{ organData.Typ_av_huvudbälg.label }}:</td>
-                <td class="tag theme-color-text">{{ organData.Typ_av_huvudbälg.data }}</td>
-              </tr>
-              <!-- <tr v-if="organData.Info_bälgar / luftsystem">
-                <td class="wide-second-td">Info bälgar/luftsystem:</td>
-                <td class="tag theme-color-text">{{ organData.Info_bälgar / luftsystem }}</td>
-              </tr> -->
-              <tr v-if="organData.Antal_bälgar">
-                <td class="wide-second-td">{{ organData.Antal_bälgar.label }}:</td>
-                <td class="tag theme-color-text">{{ organData.Antal_bälgar.data }}</td>
-              </tr>
-              <tr v-if="organData.Aktivitet_info">
-                <td class="wide-second-td">{{ organData.Aktivitet_info.label }}:</td>
-                <td class="tag theme-color-text">{{ organData.Aktivitet_info.data }}</td>
-              </tr>
-              <tr v-if="organData.Koppel_kombinationer_info">
-                <td class="wide-second-td">{{ organData.Koppel_kombinationer_info.label }}:</td>
-                <td class="tag theme-color-text">{{ organData.Koppel_kombinationer_info.data }}</td>
-              </tr>
-              <tr v-if="organData.Tillbehör">
-                <td class="wide-second-td">{{ organData.Tillbehör.label }}:</td>
-                <td class="tag theme-color-text">{{ organData.Tillbehör.data }}</td>
-              </tr>
-              <tr v-if="organData.Fasadhistorik">
-                <td class="wide-second-td">{{ organData.Fasadhistorik.label }}:</td>
-                <td class="tag theme-color-text">{{ organData.Fasadhistorik.data }}</td>
-              </tr>
-              <tr v-if="organData.Info_traktursystem">
-                <td class="wide-second-td">{{ organData.Info_traktursystem.label }}:</td>
-                <td class="tag theme-color-text">{{ organData.Info_traktursystem.data }}</td>
-              </tr>
-              <tr v-if="organData.Info_registratursystem">
-                <td class="wide-second-td">{{ organData.Info_registratursystem.label }}:</td>
-                <td class="tag theme-color-text">{{ organData.Info_registratursystem.data }}</td>
-              </tr>
-              <tr v-if="organData.Info_luftsystem">
-                <td class="wide-second-td">{{ organData.Info_luftsystem.label }}:</td>
-                <td class="tag theme-color-text">{{ organData.Info_luftsystem.data }}</td>
-              </tr>
-              <tr v-if="organData.Övrig_info">
-                <td class="wide-second-td">{{ organData.Övrig_info.label }}:</td>
-                <td class="tag theme-color-text">{{ organData.Övrig_info.data }}</td>
-              </tr>
-            </div>
+              <tr v-for="(item, key) in filteredOrganData" :key="key">
+                <td class="wide-second-td">{{ item.label }}:</td>
+                <td class="tag theme-color-text">{{ item.data }}</td>
               </tr>
             </tbody>
           </table>
@@ -295,7 +240,6 @@ const handleClickOutside = (event) => {
             <tbody>
               <div class="metadata-section">
               <tr v-if="organData.Disposition">
-            
                 <td class="wide-first-td">{{ organData.Disposition.label }}</td>
                   <div class="organ-historic-overview" v-html="organData.Disposition.data" @click="handleDisposition"></div>
                     <div v-if="isPopupVisible" class="popup" ref="popupRef" :style="{ left: mousePosition.x +50 + 'px', top: mousePosition.y -100 + 'px' }">
@@ -399,7 +343,8 @@ font-size: 30px;
 }
 
 .table-section {
- padding-bottom:30px;
+ padding-left: 30px;
+ padding-bottom: 30px;
 }
 
 .tag.theme-color-text {
