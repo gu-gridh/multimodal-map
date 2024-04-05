@@ -100,7 +100,7 @@ watch(selectedFeature, async (newFeature, oldFeature) => {
     organNumbers.value = {};
     responseData.value = {};
   }
-});
+}, { immediate: true });
 
 //when a builder is selected, fetch info
 watch(selectedBuilderId, async (newId) => {
