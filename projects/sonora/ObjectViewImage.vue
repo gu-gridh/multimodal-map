@@ -5,9 +5,18 @@ import OpenSeadragon from "@/components/OpenSeadragonSequence.vue";
 import type { ImageDeep } from "./types";
 
 const props = defineProps<{
-    object: ImageDeep;
+  object: ImageDeep;
   id: Number;
 }>();
+
+const metadataFields = computed(() => {
+  return Object.entries(props.object).reduce((acc, [key, value]) => {
+    if (value && typeof value === 'object' && 'label' in value && 'data' in value) {
+      acc[key] = value;
+    }
+    return acc;
+  }, {});
+});
 
 const imageUrls = computed(() => {
   const urls = [];
@@ -42,51 +51,12 @@ const downloadImage = (fileUrl: string, fileName: string) => {
 
 <template>
   <div class="metadata">
-  <ObjectViewComponent :title="(object['Titel'] ? object['Titel'].data : '')">
+    <ObjectViewComponent :title="(object['Titel'] ? object['Titel'].data : '')">
       <div class="objects">
-        <div v-if="object?.no_organs"><div class="label">{{ $t('number_of_organs') }}:</div> <div class="data">{{ object.no_organs }}</div></div>
-        <div v-if="object['Arkiv']">
-          <div class="label">{{ object['Arkiv'].label }}:</div>
-          <div class="data">{{ object['Arkiv'].data }}</div>
+        <div v-for="(field, key) in metadataFields" :key="key">
+          <div class="label">{{ field.label }}:</div>
+          <div class="data">{{ field.data }}</div>
         </div>
-        <div v-if="object['Serie']">
-          <div class="label">{{ object['Serie'].label }}:</div>
-          <div class="data">{{ object['Serie'].data }}</div>
-        </div>
-        <div v-if="object['Volym']">
-          <div class="label">{{ object['Volym'].label }}:</div>
-          <div class="data">{{ object['Volym'].data }}</div>
-        </div>
-        <div v-if="object['Fascikel']">
-          <div class="label">{{ object['Fascikel'].label }}:</div>
-          <div class="data">{{ object['Fascikel'].data }}</div>
-        </div>
-        <div v-if="object['Ordningsnummer']">
-          <div class="label">{{ object['Ordningsnummer'].label }}:</div>
-          <div class="data">{{ object['Ordningsnummer'].data }}</div>
-        </div>
-        <div v-if="object['Källa']">
-          <div class="label">{{ object['Källa'].label }}:</div>
-          <div class="data">{{ object['Källa'].data }}</div>
-        </div>
-        <div v-if="object['Källa_info']">
-          <div class="label">{{ object['Källa_info'].label }}:</div>
-          <div class="data">{{ object['Källa_info'].data }}</div>
-        </div>
-        <div v-if="object['Typ_av_dokument']">
-          <div class="label">{{ object['Typ_av_dokument'].label }}:</div>
-          <div class="data">{{ object['Typ_av_dokument'].data }}</div>
-        </div>
-        <div v-if="object['Fascikel_kommentar']">
-          <div class="label">{{ object['Fascikel_kommentar'].label }}:</div>
-          <div class="data">{{ object['Fascikel_kommentar'].data }}</div>
-        </div>
-        <!-- <div v-if="object?.['0']"> -->
-          <!-- <div v-if="object['0'].org_nr"><div class="label">Org Nr:</div> <div class="data">{{ object['0'].org_nr }}</div></div> -->
-          <!-- <div v-if="object['0'].place"><div class="label">Place:</div> <div class="data">{{ object['0'].place }}</div></div>
-          <div v-if="object['0'].lng"><div class="label">{{ $t('longitude') }}:</div> <div class="data">{{ object['0'].lng }}</div></div>
-          <div v-if="object['0'].lat" style="margin-bottom:20px;"><div class="label">{{ $t('latitude') }}:</div> <div class="data">{{ object['0'].lat }}</div></div> -->
-        <!-- </div> -->
         <div class="places-list" style="margin-top: 20px;" v-if="placesBeforeFiles.length > 0">
           <h3>{{ $t('found_in') }}:</h3>
           <ul>
@@ -95,20 +65,8 @@ const downloadImage = (fileUrl: string, fileName: string) => {
             </li>
           </ul>
         </div>
-        <div class="content" v-if="object['Innehåll']" style="margin-top:20px">
-          <div class="label">{{ object['Innehåll'].label }}:</div>
-          <div class="data">{{ object['Innehåll'].data }}</div>
-        </div>
       </div>
     </ObjectViewComponent>
-
-    <!-- <ObjectViewComponent :title="'TEST'">
-      <div class="objects">
-        <div><div class="label">Type:</div> </div>
-        <div class="label">Creator:  </div>
-        <div class="label">Date:</div> 
-      </div>
-    </ObjectViewComponent> -->
   </div>
 
   <section class="illustration flex">
