@@ -8,7 +8,7 @@ export const etruscanStore = defineStore("etruscan", () => {
   const dataSetValue = ref<Array<string>>(["all"]);
   const necropoli = ref<Array<string>>(["all"]);
   const selectedRange = ref([1, 3]);  //initial range for slider
-  const showUnknownRange = ref(false);
+  const showUnknownRange = ref(true);
   const tombType = ref<Array<string>>(["all"]);
   const tagsLayerVisible = ref(false); // Default visibility state for tags layer
   const dataParams = ref<Record<string, string | number | null>>({});
