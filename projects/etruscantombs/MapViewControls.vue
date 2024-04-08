@@ -45,11 +45,6 @@
       <div class="tag-section margin-5">
         <div class="section-title">{{ $t('timeperiod') }}</div>
         <div class="slider-widget">
-        <label class="container" style="width: 20%; display: flex; flex-direction: column; align-items: center; margin-right: 5px;">
-          <input type="checkbox" v-model="showUnknownRange">
-          <span class="checkmark"></span>
-          Unknown
-        </label>
           <div class="slider-section">
               <RangeSlider
                 ref="rangeSliderRef"
@@ -153,7 +148,7 @@ import { nextTick } from 'vue';
 
 const config = inject<EtruscanProject>("config");
 const dianaClient = new DianaClient("etruscantombs"); // Initialize DianaClient
-const { categories, selectedRange, showUnknownRange, tags, necropoli, tombType, dataSetValue, dataParams, selectedNecropolisCoordinates, enable3D, enablePlan, areMapPointsLoaded } = storeToRefs(etruscanStore());
+const { categories, selectedRange, tags, necropoli, tombType, dataSetValue, dataParams, selectedNecropolisCoordinates, enable3D, enablePlan, areMapPointsLoaded } = storeToRefs(etruscanStore());
 // Create a ref for last clicked category
 const lastClickedCategory = ref('');
 

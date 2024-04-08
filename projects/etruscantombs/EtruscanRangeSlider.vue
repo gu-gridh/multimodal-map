@@ -1,17 +1,23 @@
 <template>
   <div class="range-slider-container bg-white rounded">
-    <div class="computed-range">{{ computedRange }}</div>
-    <div
-      style="width: 90%; margin-bottom: 10px;"
-      :class="['clickable', 'range-slider-wrapper', { 'no-pointer-events': isSliderVisible === false }]"
-    >
-      <Slider
-        v-model="selection"
-        :min="min"
-        :max="max"
-        :step="step"
-        class="slider-blue"
-      />
+    <div class="checkbox" style="margin-left: 10px; text-align: center">
+      <input type="checkbox" id="showUnknownRange" v-model="showUnknownRange">
+      <label for="showUnknownRange">Unknown</label>
+    </div>
+    <div class="label-slider">
+      <div class="computed-range">{{ computedRange }}</div>
+      <div
+        style="width: 90%; margin-bottom: 10px;"
+        :class="['clickable', 'range-slider-wrapper', { 'no-pointer-events': isSliderVisible === false }]"
+      >
+        <Slider
+          v-model="selection"
+          :min="min"
+          :max="max"
+          :step="step"
+          class="slider-blue"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -19,6 +25,9 @@
 <script setup lang="ts">
 import Slider from "@vueform/slider";
 import { ref, watch, computed } from "vue";
+import { storeToRefs } from "pinia";
+import { etruscanStore } from "./store";
+const { showUnknownRange} = storeToRefs(etruscanStore());
 import type { RangeMapping } from "./types";
 
 const rangeMapping: RangeMapping = {
@@ -63,11 +72,19 @@ const computedRange = computed(() => {
 <style>
 .range-slider-container {
   display: flex;
+  flex-direction: row;
+  width: 10%;
+  height: 100%; 
+  align-items: center;
+}
+
+.label-slider {
+  display: flex;
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
-  align-items: center;
   height: 100%; 
+  align-items: center;
 }
 
 #app .range-slider-container {
