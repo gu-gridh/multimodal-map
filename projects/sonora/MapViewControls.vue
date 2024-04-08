@@ -44,6 +44,7 @@
   </div>
     <div class="search-section">
       <input
+        ref="searchInput"
         type="text"
         v-model="searchQuery"
         @input="handleSearch"
@@ -117,6 +118,7 @@ const { selectedBuilderId, noPlaceCount, builderLayerVisible, placeClicked } = s
 const featureZoom = 16; //value between minZoom and maxZoom when you select a point 
 const allZoom = 5.3; //value to see all of sweden 
 const rangeSliderRef = ref(null);
+const searchInput = ref(null);
 
 //slider settings
 const YEARS = {
@@ -163,15 +165,21 @@ const objectToArray = (obj) => {
   return obj ? Object.keys(obj).map(key => obj[key]) : [];
 };
 
+onMounted(async () => {
+  await fetchFilters();
+  builderLayerVisible.value = false;
+
+  nextTick(() => {
+    if (searchInput.value) {
+      searchInput.value.focus();
+    }
+  });
+});
+
 watch(years, (newValue) => {
   sonora.updateMapParams(selectedBuildingTypeIndex.value, newValue);
 }, {
   immediate: true
-});
-
-onMounted(async () => {
-  await fetchFilters();
-  builderLayerVisible.value = false;
 });
 
 watch(() => i18n.global.locale, (newLang, oldLang) => {
@@ -282,11 +290,14 @@ const onPlaceClick = (feature) => {
   placeClicked.value = true;
 };
 
-const toggleAboutVisibility = async () => {
-  await nextTick();
-  visibleAbout.value = !visibleAbout.value;
-};
+// const toggleAboutVisibility = async () => {
+//   await nextTick();
+//   visibleAbout.value = !visibleAbout.value;
+// };
 
+defineExpose({
+  searchInput
+});
 </script>
 
 <style>
