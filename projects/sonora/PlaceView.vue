@@ -240,7 +240,7 @@ const handleClickOutside = (event) => {
             <tbody>
               <div class="metadata-section">
               <tr v-if="organData.Disposition">
-                <td class="wide-first-td">{{ organData.Disposition.label }}</td>
+                <td class="wide-second-td">{{ organData.Disposition.label }}</td>
                   <div class="organ-historic-overview" v-html="organData.Disposition.data" @click="handleDisposition"></div>
                     <div v-if="isPopupVisible" class="popup" ref="popupRef" :style="{ left: mousePosition.x +50 + 'px', top: mousePosition.y -100 + 'px' }">
                     <h3 v-if="popupData?.Verk">{{ $t('divisioninfo') }}</h3>
@@ -357,16 +357,11 @@ table td {
         
     }
 
-.wide-first-td {
-  width:130px!important;
-text-align:right!important;
-padding-right:45px;
-
-}
-
 .wide-second-td {
-  min-width: 180px;
+  min-width:150px!important;
   padding-bottom: 5px;
+  padding-left:5px;
+  position:relative;
 }
 
 .organ-historic-overview{
@@ -483,23 +478,6 @@ margin-bottom:5px!important;
 
 .metadata-section{
   margin-top:0px;
-}
-
-.wide-first-td{
-width:100%!important;
-text-align:left!important;
-padding-left:5px;
-position:absolute;
-margin-top:-50px;
-z-index:100;
-font-size:1.3em;
-
-}
-
-.wide-second-td{
-  min-width:150px!important;
-  position:relative;
-  padding-left:5px;
 }
 
 .tag{
