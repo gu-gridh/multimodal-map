@@ -25,7 +25,7 @@ const INFORMANTS = {
 const PERIODS = {
   "Before 1899": "Pre-colonial",
   "1899-1962": "Colonial",
-  "1962-1994": "Post-indenpendence",
+  "1962-1994": "Post-independence",
   "1994-2012": "Post-genocide",
   "After 2012": "After 2012"
 }
