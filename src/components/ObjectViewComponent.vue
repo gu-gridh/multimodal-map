@@ -58,15 +58,15 @@ defineProps({
 
 .back-button {
   left: 20px;
-  top: 40px;
+  top: 45px;
   background: url(@/assets/backbutton.png);
   background-size: 100%;
   background-repeat: no-repeat;
   background-position: center;
   background-color: rgba(35, 35, 35, 0.9);
   border-radius: 50%;
-  width: 35px;
-  height: 35px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   overflow: hidden;
   position: fixed;

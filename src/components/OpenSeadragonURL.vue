@@ -192,4 +192,8 @@ onMounted(() => {
   opacity: 1;
   cursor:pointer;
 }
+
+*:focus {
+        outline:none!important;
+      }
 </style>

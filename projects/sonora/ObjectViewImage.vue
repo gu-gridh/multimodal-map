@@ -94,6 +94,22 @@ const downloadImage = (fileUrl: string, fileName: string) => {
 
 <style scoped>
 
+.back-button {
+  left: 20px;
+  top: 40px;
+  background: url(@/assets/backbutton.png);
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: rgba(35, 35, 35, 0.9);
+  border-radius: 50%;
+  width: 20px!important;
+  height: 20px!important;
+  border-radius: 50%;
+  overflow: hidden;
+  position: fixed;
+}
+
 .data{
   color: var(--theme-6) !important;
 }
