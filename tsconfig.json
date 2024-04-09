@@ -5,17 +5,13 @@
     "src/**/*",
     "src/**/*.vue",
     "src/**/*.json",
-    "projects/sonora/**/*"
-    ],
-  "exclude": [
-    "projects/sonora/**/*"
+    "projects/**/*"
   ],
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     },
-    "noImplicitAny": false,
     // "target": "es5",
     "lib": ["es2019", "dom"]
   },
