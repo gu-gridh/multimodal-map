@@ -209,7 +209,7 @@ const handleClickOutside = (event) => {
           <table class="content-table" v-if="organData">
             <tbody>
               <tr v-if="documents.length > 0">
-                <td class="wide-second-td">Documents</td>
+                <td class="wide-second-td">{{ $t('documents') }}</td>
                 <div class="documents">
                   <div v-for="(doc, index) in documents" :key="index" class="document-link">
                     <router-link :to="`/detail/image/${doc.Nr}`">
