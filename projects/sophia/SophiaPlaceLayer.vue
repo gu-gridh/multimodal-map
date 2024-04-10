@@ -108,8 +108,59 @@ const hoverStyle = new Style({
   }),
 });
 
+const colorMapping = {
+  '110': 'rgba(255, 0, 0, 0.6)',    
+  '114': 'rgba(0, 0, 255, 0.6)',    
+  '107': 'rgba(255, 255, 0, 0.6)',  
+  '000': 'rgba(0, 255, 255, 0.6)',  
+  '108': 'rgba(255, 0, 255, 0.6)',  
+  '106': 'rgba(192, 192, 192, 0.6)',
+  '121': 'rgba(128, 0, 128, 0.6)',  
+  '119': 'rgba(255, 165, 0, 0.6)',  
+  '113': 'rgba(128, 0, 0, 1.0)',    
+  '115': 'rgba(0, 128, 0, 0.6)',    
+  '118': 'rgba(0, 128, 128, 0.6)',  
+  '112': 'rgba(0, 0, 128, 0.6)',    
+  '116': 'rgba(128, 128, 0, 0.6)',  
+  '111': 'rgba(128, 128, 128, 1)',
+  '104': 'rgba(0, 255, 0, 0.6)',    
+  '120': 'rgba(255, 192, 203, 0.6)',
+  '109': 'rgba(165, 42, 42, 0.6)',  
+  '213': 'rgba(255, 105, 180, 0.6)',
+  '201': 'rgba(75, 0, 130, 0.6)',   
+  '202': 'rgba(255, 69, 0, 0.6)',   
+  '212': 'rgba(47, 79, 79, 0.6)',   
+  '207': 'rgba(72, 61, 139, 0.6)',  
+  '208': 'rgba(143, 188, 143, 0.6)',
+  '209': 'rgba(210, 180, 140, 0.6)',
+  '205': 'rgba(30, 144, 255, 0.6)', 
+};
+
+
+function getColorFromTitle(title) {
+  const prefix = title.split('-')[0];
+  return colorMapping[prefix] || 'rgba(0, 0, 0, 1)'; //fallback color
+}
+
 const styleFunction = function (feature) {
-  return styles[feature.getGeometry().getType()];
+  const title = feature.get('title');
+  if (!title) {
+    console.error('Feature does not have a title property:', feature);
+    return new Style({
+      stroke: new Stroke({
+        color: 'rgba(0, 0, 0, 1)', //default color if no title is found
+        width: 10,
+      }),
+    });
+  }
+
+  const color = getColorFromTitle(title);
+  return new Style({
+    stroke: new Stroke({
+      color: color,
+      width: 10,
+    }),
+  });
 };
 
 const vectorLayer = new VectorLayer({
