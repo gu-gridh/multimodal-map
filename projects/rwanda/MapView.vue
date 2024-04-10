@@ -134,16 +134,7 @@ watch(route, () => {
               informant: informants[0] ? informants[0] : '',
             }"
           >
-          <ol-style v-if="placeTypes[0] == 'building'">
-            <ol-style-stroke color="#5585b5" :width="3"></ol-style-stroke>
-          </ol-style>
-          <ol-style v-if="placeTypes[0] == 'street'">
-            <ol-style-stroke color="#a21232" :width="3"></ol-style-stroke>
-          </ol-style>
-          <ol-style v-if="placeTypes[0] == 'area'">
-              <ol-style-stroke color="#20615b" :width="3"></ol-style-stroke>
-            </ol-style>
-            <ol-style v-else>
+          <ol-style >
               <ol-style-stroke color="#5585b5" :width="3"></ol-style-stroke>
             </ol-style>
             <FeatureSelection/>
