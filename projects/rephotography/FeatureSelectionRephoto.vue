@@ -29,7 +29,6 @@ const hoveredFeature = ref<Feature>();
 const selectConditions = inject("ol-selectconditions");
 const hoverCondition = selectConditions.pointerMove;
 const selectCondition = selectConditions.click;
-// This list is connected to the ol-interaction-select element; this is to be able to deselect programmatically
 const selectedFeaturesCollection = new Collection(
   selectedFeature.value ? [selectedFeature.value] : []
 );
@@ -48,7 +47,6 @@ const onHover = (event: SelectEvent) => {
 
 const onClick = (event: SelectEvent) => {
   const featureLayerName = event.selected[0]?.get('name'); 
-  console.log(featureLayerName)
   if (!featureLayerName) {
     selectedFeaturesCollection.clear();
     return;

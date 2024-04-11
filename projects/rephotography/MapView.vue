@@ -23,7 +23,6 @@ import GeoJSON from "ol/format/GeoJSON";
 
 
 const { categories, years, tags, tagsLayerVisible, placesLayerVisible, mapLayerVisibility, mapLayerVisibilityTwo, mapLayerVisibilityThree } = storeToRefs(rephotographyStore());
-
 const store = mapStore();
 const { selectedFeature } = storeToRefs(store);
 const minZoom = 9;
@@ -80,7 +79,6 @@ onMounted(() => {
 })
 
 const toggleAboutVisibility = async () => {
-  console.log('fired')
   await nextTick();
   visibleAbout.value = !visibleAbout.value;
 };
@@ -99,12 +97,6 @@ const vectorLayers = computed(() => [
   geoJsonFormat: new GeoJSON(),
   },
 ]);
-
-const showSection = ref(false);
-
-const toggleSection = () => {
-  showSection.value = !showSection.value;
-};
 
 /*Colors for Vector Layer*/
 const layerColors = ["rgb(255,150,0)", "rgb(0,150,50)", "rgb(0,100,255)"];
@@ -212,40 +204,30 @@ watch(showGrid, (newValue) => {
           </ol-style>
         </DianaPlaceLayer>
 
-        <div v-if="mapLayerVisibility">
-          <DianaPlaceLayerRephoto
-          v-for="(layer, index) in vectorLayers"
+        <DianaPlaceLayerRephoto
+          v-for="layer in vectorLayers"
           :key="layer.url"
-          :externalUrl="layer.url"
+          :geojsonUrl="layer.url"
           :zIndex=2
+          :isVisible="mapLayerVisibility"
+          :date= true
         >
-          <ol-style>
-            <ol-style-stroke :color="layerColors[index % layerColors.length]" :width="4"></ol-style-stroke>
-          </ol-style>
         </DianaPlaceLayerRephoto>
-      </div>
 
-      <div v-if="mapLayerVisibilityTwo">
         <DianaPlaceLayerRephoto
-          :externalUrl="'https://data.dh.gu.se/geography/CryoClim_GAO_SJ_1936-1972.geojson'"
+          :geojsonUrl="'https://data.dh.gu.se/geography/CryoClim_GAO_SJ_1936-1972.geojson'"
           :zIndex=1
+          :isVisible="mapLayerVisibilityTwo"
+          :date= false
         >
-          <ol-style>
-              <ol-style-fill color="rgba(255,255,255,0.4)"></ol-style-fill>
-          </ol-style>
         </DianaPlaceLayerRephoto>
-      </div>
 
-      <div v-if="mapLayerVisibilityThree">
-        <DianaPlaceLayerRephoto
-          :externalUrl="'https://data.dh.gu.se/geography/CryoClim_GAO_SJ_2001-2010.geojson'"
+        <!-- <DianaPlaceLayerRephoto
+          :geojsonUrl="'https://data.dh.gu.se/geography/CryoClim_GAO_SJ_2001-2010.geojson'"
           :zIndex=1
+          :isVisible="mapLayerVisibilityThree"
         >
-          <ol-style>
-            <ol-style-stroke color="purple" :width="4"></ol-style-stroke>
-          </ol-style>
-        </DianaPlaceLayerRephoto>
-      </div>
+        </DianaPlaceLayerRephoto> -->
 
 
         </template>
