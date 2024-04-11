@@ -5,8 +5,8 @@ import MapViewControls from "./MapViewControls.vue";
 import MapComponent from "@/components/MapComponent.vue";
 import NpolarLayer from "./NpolarLayer.vue";
 import DianaPlaceLayer from "@/components/DianaPlaceLayer.vue";
-import DianaPlaceLayerRephoto from "@/components/DianaPlaceLayerRephoto.vue";
-import FeatureSelection from "@/components/FeatureSelectionRephoto.vue";
+import DianaPlaceLayerRephoto from "./DianaPlaceLayerRephoto.vue";
+import FeatureSelection from "./FeatureSelectionRephoto.vue";
 import MapViewPreview from "./MapViewPreview.vue";
 import MapViewGallery from "./MapViewGallery.vue";
 import { storeToRefs } from "pinia";
@@ -267,8 +267,8 @@ watch(showGrid, (newValue) => {
 
 #app .left-pane {
   background-size: contain;
-  width: 50% !important;
-  max-width: 900px!important;
+  width: 50%;
+  min-width: 900px;
   user-select:none;
 }
 
