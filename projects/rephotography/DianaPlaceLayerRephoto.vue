@@ -28,7 +28,7 @@ const vectorLayer = new VectorLayer({
   source: vectorSource,
   style: new Style({
     stroke: new Stroke({ color: 'rgba(255, 255, 255, 0.7)', width: 2 }),
-    fill: new Fill({ color: 'rgba(255, 255, 255, 0.1)' }),
+    // fill: new Fill({ color: 'rgba(255, 255, 255, 0.1)' }),
   }),
   zIndex: props.zIndex,
 });
@@ -38,7 +38,7 @@ const featureOverlay = new VectorLayer({
   map: map,
   style: new Style({
     stroke: new Stroke({ color: '#f00', width: 2 }),
-    fill: new Fill({ color: 'rgba(255,0,0,0.1)' }),
+    // fill: new Fill({ color: 'rgba(255,0,0,0.1)' }),
   }),
 });
 

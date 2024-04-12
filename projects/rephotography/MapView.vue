@@ -208,7 +208,7 @@ watch(showGrid, (newValue) => {
           v-for="layer in vectorLayers"
           :key="layer.url"
           :geojsonUrl="layer.url"
-          :zIndex=2
+          :zIndex="2"
           :isVisible="mapLayerVisibility"
           :date= true
         >
@@ -216,7 +216,7 @@ watch(showGrid, (newValue) => {
 
         <DianaPlaceLayerRephoto
           :geojsonUrl="'https://data.dh.gu.se/geography/CryoClim_GAO_SJ_1936-1972.geojson'"
-          :zIndex=1
+          :zIndex="1"
           :isVisible="mapLayerVisibilityTwo"
           :date= false
         >
