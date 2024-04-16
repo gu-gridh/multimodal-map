@@ -16,5 +16,4 @@ provide("diana", endpoint);
 </template>
 
 <style>
-
 </style>

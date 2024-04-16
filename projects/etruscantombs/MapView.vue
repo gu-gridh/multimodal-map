@@ -21,12 +21,12 @@ import GeoJSON from "ol/format/GeoJSON";
 import Title from "./Title.vue"
 import apiConfig from "./apiConfig"
 
-const { categories, tags, necropoli, tombType, tagsLayerVisible, dataParams, imgParams, selectedNecropolisCoordinates, enable3D, enablePlan } = storeToRefs(etruscanStore());
+const { selectedRange, showUnknownRange,  necropoli, tombType, tagsLayerVisible, dataSetValue, dataParams, imgParams, selectedNecropolisCoordinates, enable3D, enablePlan } = storeToRefs(etruscanStore());
 const store = mapStore();
 const etruscan = etruscanStore();  // Get the instance of etruscanStore
 const { selectedFeature } = storeToRefs(store);
-const minZoom = 11;
-const maxZoom = 20;
+const minZoom = 10;
+const maxZoom = 22;
 const featureZoom = 15; //value between minZoom and maxZoom when you select a point 
 const visibleAbout = ref(false);
 const showGallery = ref(false);
@@ -64,11 +64,29 @@ watch(
 
 /* Response for generating the URL for filtering map points down */
 const tagParams = computed(() => {
-  const epoch = tags.value[0];
+
+ const rangeMapping: any = {
+    1: { range: '700-650 BC', id: 5 },
+    2: { range: '625-400 BC', id: 6 },
+    3: { range: '400-200 BC', id: 7 },
+  };
+
   const necropolis = necropoli.value[0];
   const type = tombType.value[0];
+  const dataset = dataSetValue.value[0];
+  const selectedRangeValue = selectedRange.value;
+  const show_unknown = showUnknownRange.value;
 
-  const initialParams = { epoch, necropolis, type};
+  const epochIds = selectedRangeValue.map(value => rangeMapping[value]?.id || null).filter(id => id !== null);
+
+  const initialParams = {
+    necropolis, 
+    type, 
+    dataset, 
+    oldest_epoch: epochIds.length > 0 ? epochIds[0] : null, 
+    newest_epoch: epochIds.length > 1 ? epochIds[1] : null,
+    show_unknown: show_unknown.toString(),
+  };
   
   // Remove parameters that are set to "all"
   const cleanedParams = Object.keys(initialParams)
@@ -190,7 +208,7 @@ watch(showGallery, (newValue) => {
               }"
             >
             </GeoJsonWebGLRenderer>
-            <DianaPlaceLayer path="etruscantombs/geojson/place/" :params="tagParams" :zIndex=20>
+            <DianaPlaceLayer :params="tagParams" :zIndex=20>
             </DianaPlaceLayer>
           </template>
           

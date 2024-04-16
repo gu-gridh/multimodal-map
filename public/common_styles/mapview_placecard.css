@@ -156,7 +156,7 @@
 .placecard-metadata-content .short-label{
   float: left;
   text-align: left;
-  width: 22%;
+  width: 23%;
 }
 
 .placecard-metadata-content .tag {
@@ -191,6 +191,25 @@
   width: 100%;
   padding-bottom: 20px;
 }
+
+.dataset-tag{
+  color:white;
+  background-color:var(--theme-3);
+  width:auto;
+  margin-left:5px; 
+  border-radius:4px;
+  padding:2px 8px !important;
+  float:left;
+  margin-top:-1px;
+  transition: all 0.2s ease-in-out;
+  cursor:pointer;
+  }
+
+  .dataset-tag:hover{
+    transform:scale(1.05);
+    background-color:var(--theme-4);
+  
+    }
 
 
 

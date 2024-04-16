@@ -7,6 +7,7 @@ const messages = {
       documentation: "Documentation by category",
       timeperiod: "Time period",
       tombtype: "Type of tomb",
+      site: "Site",
       necropolisname: "Necropolis",
       typeofdata: "Type of data",
       dataset: "Dataset",
@@ -36,7 +37,13 @@ const messages = {
       editplace: "Edit place",
       nophoto: "No photographs available",
       drawings: "Drawings",
-    
+      showall: "Show all",
+      alldatasets: "All datasets",
+      "categories": {
+        "all": "All types",
+        "drawings": "Drawings",
+        "models": "3D models"
+      },
     },
 
     it: {
@@ -46,7 +53,8 @@ const messages = {
       timeperiod: "Periodo",
       tombtype: "Tipo di tomba",
       necropolisname: "Necropoli",
-      dataset: "Dataset",
+      site: "Sito",
+      dataset: "Set di dati",
       typeofdata: "Tipo di dati",
       tomb: "Tomba",
       map: "carta geografica",
@@ -73,7 +81,14 @@ const messages = {
       published: "Pubblicata",  
       editplace: "Modifica posto", 
       nophoto: "Nessuna fotografia disponibile",
-      drawings: "Disegni"
+      drawings: "Disegni",
+      showall: "Mostra tutto",
+      alldatasets: "Tutti i set di dati",
+      "categories": {
+        "all": "Tutti i tipi",
+        "drawings": "Disegni",
+        "models": "Modelli"
+      },
     },
 };  
 

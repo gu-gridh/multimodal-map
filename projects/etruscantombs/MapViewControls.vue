@@ -4,53 +4,90 @@
     <div v-if="areMapPointsLoaded">
 
       <!-- This creates a 2-column section with for the controls -->
-      <div style="width:98%; float:left; display:flex; flex-direction:row; justify-content:space-between; margin-top:10px;">
+      <div class="control-organisation justify-left">
 
-        <div class="tag-section">
+        <!-- <div class="tag-section">
           <div class="section-title">{{ $t('dataset') }}</div>
           <div style="display:inline; float:left; margin-right:0px;">
             <select title="pick what dataset you want to view data from" class="dropdown theme-color-background my-2">
-              <option title="View data from all datasets" value="All datasets">All datasets</option>
+              <option title="View data from all datasets" value="All datasets">{{ $t('alldatasets') }}</option>
               <option title="View data from the San Giovenale dataset by Fredrik Tobin-Dodd" value="CTSG-2015">CTSG-2015</option>
+            </select>
+          </div>
+        </div> -->
+
+        <div class="tag-section margin-5">
+          <div class="section-title">DATASET</div>
+          <div title="Narrow the result to a certain dataset" class="broad-controls">
+             <CategoryButtonDropdown v-model="dataSetValue" :categories="DATASET" :limit="1" styleType="dropdown" class="my-2"
+              type="datasets" />
+          </div>
+        </div>
+
+        <div class="tag-section margin-20">
+          <div class="section-title">{{ $t('typeofdata') }}</div>
+          <div class="broad-controls">
+            <CategoryButtonList v-model="categories" 
+                :categories="{
+                  all: $t('categories.all'), 
+                  plans: $t('categories.drawings'), 
+                  models: $t('categories.models')
+                }" 
+                :limit="1" 
+                class="my-2"
+                title="Pick a data type" 
+                @click="handleCategoryClick" />
+          </div>
+        </div>
+
+      </div>
+
+      <div class="tag-section margin-5">
+        <div class="section-title">{{ $t('timeperiod') }}</div>
+        <div class="slider-widget">
+          <div class="slider-section">
+              <RangeSlider
+                ref="rangeSliderRef"
+                v-model="selectedRange"
+                :min="1"
+                :max="3"
+                :step="1"
+                class="my-2"
+                :isSliderVisible="true"
+                :startLabel="startLabel"
+                :endLabel="endLabel"
+              />
+          </div>
+        </div>
+      </div>
+
+      <!-- This creates a 2-column section width for the controls -->
+      <div class="control-organisation justify-space">
+        <div class="tag-section">
+          <div class="section-title">Site</div>
+          <div style="display:inline; float:left; margin-right:0px;">
+            <select title="pick what dataset you want to view data from" class="dropdown theme-color-background my-2">
+              <option title="View data from all datasets" value="All datasets">All</option>
+              <option title="View data from San Giovenale" value="CTSG-2015">San Giovenale</option>
+              <option title="View data from San Giuliano" value="CTSG-2015">San Giuliano</option>
+              <option title="View data from Blera" value="CTSG-2015">Blera</option>
+              <option title="View data from Luni" value="CTSG-2015">Luni</option>
             </select>
           </div>
         </div>
 
-        <div class="tag-section">
-          <div class="section-title">{{ $t('typeofdata') }}</div>
-          <div class="broad-controls">
-            <CategoryButton v-model="categories" :categories="CATEGORIES" :limit="1" class="my-2"
-            title="Pick a data type" @click="handleCategoryClick" />
-          </div>
-        </div>
-
-      </div>
-
-      <div style="width:98%; float:left; display:flex; flex-direction:row; justify-content:space-between;">
-        <div class="tag-section">
-          <div class="section-title">{{ $t('timeperiod') }}</div>
-          <div class="broad-controls">
-            <CategoryButtonList v-model="tags" :categories="TAGS" :limit="1" styleType="button" class="my-2" 
-            title="Pick a time period"/>
-          </div>
-        </div>
-      </div>
-
-
-      <!-- This creates a 2-column section with for the controls -->
-      <div style="width:98%; float:left; display:flex; flex-direction:row; justify-content:space-between;">
-        <div class="tag-section">
+        <div class="tag-section margin-5">
           <div class="section-title">{{ $t('necropolisname') }}</div>
           <div title="Narrow the result to a certain necropolis" class="broad-controls">
-            <CategoryButtonList v-model="necropoli" :categories="NECROPOLI" :limit="1" styleType="dropdown" class="my-2"
+            <CategoryButtonDropdown v-model="necropoli" :categories="NECROPOLI" :limit="1" styleType="dropdown" class="my-2"
               type="necropolis" @click="handleSelectionClick($event, currentTombType)" />
           </div>
         </div>
 
-        <div class="tag-section" style="margin-left:20px;">
+        <div class="tag-section margin-5">
           <div  class="section-title">{{ $t('tombtype') }}</div>
           <div title="Narrow the result to a certain tomb type" class="broad-controls">
-            <CategoryButtonList v-model="tombType" :categories="TOMBTYPE" :limit="1" styleType="dropdown" class="my-2"
+            <CategoryButtonDropdown v-model="tombType" :categories="TOMBTYPE" :limit="1" styleType="dropdown" class="my-2"
               type="tombType" />
           </div>
         </div>
@@ -73,7 +110,7 @@
       <div class="data-widget-item">|</div>
       <div class="data-widget-item">
         <h3>{{ $t('tombshidden') }}:</h3>
-        <p>{{ initialTombCount - currentTombCount }}</p>
+        <p>{{ hiddenTombs }}</p>
       </div>
     </div>
 
@@ -90,7 +127,7 @@
       </div>
       <div class="data-widget-item">
         <h3>{{ $t('threedmodels') }}:</h3>
-        <p>{{ totalThreedhop + totalPointcloud }}</p>
+        <p>{{ totalThreed }}</p>
       </div>
     </div>
   </div>
@@ -98,11 +135,12 @@
 
 <script setup lang="ts">
 import { inject, ref, onMounted, computed, defineProps, watch } from "vue";
-import CategoryButtonList from "./CategoryButtonDropdown.vue";
-import CategoryButton from "@/components/input/CategoryButtonList.vue";
+import CategoryButtonDropdown from "./CategoryButtonDropdown.vue";
+import CategoryButtonList from "@/components/input/CategoryButtonList.vue";
+import RangeSlider from "./EtruscanRangeSlider.vue";
 import { storeToRefs } from "pinia";
 import { etruscanStore } from "./store";
-import type { EtruscanProject } from "./types";
+import type { EtruscanProject, RangeMapping } from "./types";
 import { DianaClient } from "@/assets/diana";
 import { transform } from 'ol/proj';
 import apiConfig from "./apiConfig"
@@ -110,32 +148,45 @@ import { nextTick } from 'vue';
 
 const config = inject<EtruscanProject>("config");
 const dianaClient = new DianaClient("etruscantombs"); // Initialize DianaClient
-const { categories, tags, necropoli, tombType, dataParams, selectedNecropolisCoordinates, enable3D, enablePlan, areMapPointsLoaded } = storeToRefs(etruscanStore());
+const { categories, selectedRange, tags, necropoli, tombType, dataSetValue, dataParams, selectedNecropolisCoordinates, enable3D, enablePlan, areMapPointsLoaded } = storeToRefs(etruscanStore());
 // Create a ref for last clicked category
 const lastClickedCategory = ref('');
 
 //initialize variables for data section
 const totalPhotographs = ref(0);
 const totalPlans = ref(0);
-const totalThreedhop = ref(0);
-const totalPointcloud = ref(0);
-const initialTombCount = ref(289);
+const totalThreed = ref(0);
+const hiddenTombs = ref(0);
 const currentTombCount = ref(0);
 const visibleAbout = ref(false);
 
-const CATEGORIES = {
-  all: "All types",
-  plans: "Drawings",
-  models: "3D models",
-
+const rangeMapping: RangeMapping = {
+  1: { range: '700-650 BC', id: 5 },
+  2: { range: '625-400 BC', id: 6 },
+  3: { range: '400-200 BC', id: 7 },
 };
+
+const startLabel = computed(() => {
+  return rangeMapping[selectedRange.value[0]].range;
+});
+
+const endLabel = computed(() => {
+  return rangeMapping[selectedRange.value[1]].range;
+});
+
+const selectedRangeIds = computed(() => {
+  return [rangeMapping[selectedRange.value[0]].id, rangeMapping[selectedRange.value[1]].id];
+});
+
 
 const TAGS = ref<Record<string, string>>({});
 const NECROPOLI = ref<Record<string, string>>({});
 const TOMBTYPE = ref<Record<string, string>>({});
-const currentTag = ref(null);
-const currentNecropolis = ref(null);
+const DATASET = ref<Record<string, string>>({});
+//const currentTag = ref(null);
+// const currentNecropolis = ref(null);
 const currentTombType = ref(null);
+//const dataset = ref([]);
 
 const baseURL = `${apiConfig.PLACE}?page_size=500`;
 
@@ -143,10 +194,10 @@ onMounted(async () => {
   await fetchDataAndPopulateRef("epoch", TAGS);
   await fetchDataAndPopulateRef("necropolis", NECROPOLI);
   await fetchDataAndPopulateRef("typeoftomb", TOMBTYPE);
+  await fetchDataAndPopulateRef("epoch", DATASET); //use to populate the dataset
 
-  const response = await fetch(baseURL);
-  const data = await response.json();
-  initialTombCount.value = data.count //set total tombcount
+  //const response = await fetch(baseURL);
+  //const data = await response.json();
 });
 
 const NECROPOLICoordinates = ref<Record<string, [number, number]>>({});
@@ -154,6 +205,8 @@ const NECROPOLICoordinates = ref<Record<string, [number, number]>>({});
 async function fetchDataAndPopulateRef<T>(type: string, refToPopulate: any) {
   try {
     const data = await dianaClient.listAll<T>(type);
+    //var i = 1;
+      
     data.forEach((result: any) => {
       if (result.published) {
         refToPopulate.value[result.id] = result.text;
@@ -162,6 +215,7 @@ async function fetchDataAndPopulateRef<T>(type: string, refToPopulate: any) {
         if (type === "necropolis" && result.geometry && result.geometry.coordinates) {
           NECROPOLICoordinates.value[result.id] = result.geometry.coordinates;
         }
+        //i++;
       }
     });
   } catch (error) {
@@ -206,35 +260,18 @@ const fetchData = async (url: string) => {
   }
 
   const data = await response.json();
-  const { count, features } = data;
-
-  currentTombCount.value = count;
-  totalPhotographs.value = 0;
-  totalPlans.value = 0;
-  totalThreedhop.value = 0;
-  totalPointcloud.value = 0;
-
-  for (const feature of features) {
-    const {
-      photographs_count,
-      plans_count,
-      threedhop_count,
-      pointcloud_count
-    } = feature.properties;
-
-    totalPhotographs.value += photographs_count;
-    totalPlans.value += plans_count;
-    totalThreedhop.value += threedhop_count;
-    totalPointcloud.value += pointcloud_count;
-
-  }
+  currentTombCount.value = data.shown_tombs;
+  totalPhotographs.value = data.photographs;
+  totalPlans.value = data.drawing;
+  hiddenTombs.value = data.hidden_tombs;
+  totalThreed.value = data.objects_3d; 
 };
 
 watch(
   () => dataParams.value,
   async (newTagParams, oldTagParams) => {
-   const queryParams = new URLSearchParams(Object.fromEntries(Object.entries(newTagParams).map(([k, v]) => [k, String(v)])));
-   const urlWithParams = `${baseURL}&${queryParams.toString()}`;
+  const queryParams = new URLSearchParams(Object.fromEntries(Object.entries(newTagParams).map(([k, v]) => [k, String(v)])));
+  const urlWithParams = `https://diana.dh.gu.se/api/etruscantombs/info/tombs/?${queryParams.toString()}`;
    await fetchData(urlWithParams);
   },
   { immediate: true }
@@ -303,12 +340,42 @@ function clearAll() {
 }
 
 #app .tag-section {
-  margin-top: 2px;
+  margin-top: -5px;
   margin-bottom: 0px;
 }
 
+#app .slider-section {
+  width: 100%;
+}
 
+#app .range-slider-container {
+  display: flex;
+  width: 100%;
+  height: auto;
+  align-items: bottom;
+  padding: 10px 0 0px 0;
+  background-color: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(3px);
+  margin-top:5px;
+}
 
+#app .slider-connect {
+  background-color: rgb(180,100,100);
+}
+
+#app .slider-handle {
+  margin-top: -10px;
+  margin-left: 10px;
+  width: 0;
+  height: 0;
+  border-radius: 0px;
+  background: none;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 15px solid rgb(180,100,100);
+  box-shadow: var(--slider-handle-shadow, 0.5px 0.5px 2px 1px rgba(0, 0, 0, 0));
+  cursor: grab;
+}
 
 /* #app .range-slider-container {
   display: flex;
@@ -327,10 +394,12 @@ function clearAll() {
 
 #app .start-end-box {
   width: 15%;
-  font-size: 20px;
+  font-size: 13px;
   text-align: center;
   padding-top: 0rem;
   padding-bottom: 0.5rem;
+  padding-left: 0.5rem; 
+  padding-right: 0.5rem; 
 }
 
 #app .rounded {
@@ -342,35 +411,32 @@ function clearAll() {
 
 }
 
-@media screen and (max-width: 900px) {
-  #app .broad-controls {
-    width: 100%;
-
-  }
+#app .control-organisation{
+  width:98%; 
+  float:left; 
+  display:flex; 
+  flex-direction:row; 
+  margin-top:10px;
 }
 
-.slide-leave-active {
-  transition: all 0.4s;
-  opacity: 1.0;
+.justify-left{
+  justify-content:left;
 }
 
-.slide-leave-to {
-  opacity: 0.5;
+.justify-space{
+  justify-content:space-between;
 }
 
-.slideinactive {
-  opacity: 0.4;
-  pointer-events: none !important;
-  transition: all 0.4s;
+.margin-20 {
+margin-left:20px;
 }
 
-.slideactive {
-  transition: all 0.4s;
-  opacity: 1.0;
+.margin-5 {
+margin-left:5px;
 }
-
 
 .data-widget {
+  font-size:110%;
   float: left;
   pointer-events: none;
   width: 98%;
@@ -378,6 +444,18 @@ function clearAll() {
   padding: 15px 25px;
   border-radius: 10px;
   background-color: rgba(255, 255, 255, 0.5);
+  min-height: 50px;
+  backdrop-filter: blur(5px);
+}
+
+.slider-widget {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size:110%;
+  float: left;
+  width: 98%;
+  border-radius: 10px;
   min-height: 50px;
   backdrop-filter: blur(5px);
 }
@@ -413,4 +491,65 @@ function clearAll() {
   margin-left: 3px;
   font-weight: 500;
 }
+
+@media screen and (max-width: 900px) {
+  #app .broad-controls {
+    width: 100%;
+
+  }
+  #app .control-organisation{
+  width:98%; 
+  float:none; 
+  display:flex; 
+  flex-direction:column; 
+  margin-top:10px;
+}
+
+.justify-space{
+  justify-content:left;
+}
+
+  #app .tag-section {
+ font-size:100%;
+}
+
+.margin-20 {
+margin-left:0px;
+}
+
+.margin-5 {
+margin-left:0px;
+}
+
+.data-widget {
+display:none;
+}
+}
+
+.slide-leave-active {
+  transition: all 0.4s;
+  opacity: 1.0;
+}
+
+.slide-leave-to {
+  opacity: 0.5;
+}
+
+.slideinactive {
+  opacity: 0.4;
+  pointer-events: none !important;
+  transition: all 0.4s;
+}
+
+.slideactive {
+  transition: all 0.4s;
+  opacity: 1.0;
+}
+
+ div.slider-widget > label > input
+ {
+  width: 17px;
+  height: 17px;
+ }
+
 </style>

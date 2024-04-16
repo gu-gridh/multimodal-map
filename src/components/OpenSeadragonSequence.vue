@@ -29,6 +29,7 @@ onMounted(() => {
     previousButton: "prev-button",
     prefixUrl: "/openseadragon/",
     sequenceMode: true,
+    preload: true,
     tileSources: props.src,
   });
     viewer.addHandler('page', function(event) {

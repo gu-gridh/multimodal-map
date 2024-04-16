@@ -63,6 +63,7 @@ export type Document = {
   type: Array<{ text: string }>;
   upload: string,
   date: string,
+  type_names: string[];
 };
 
 export type Technique = {
@@ -158,3 +159,7 @@ export interface Place {
   properties: any;
   geometry: any
 }
+
+export type RangeMapping = {
+  [key: number]: { range: string; id: number };
+};

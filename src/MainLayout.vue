@@ -368,7 +368,7 @@ box-shadow: inset 0px 2px 2px 0 rgba(0, 0, 0, 0.3),
 
 #app .illustration {
   position:absolute;
-  height:50vh;
+  height:50vh !important;
   width: 100%;
 
 }
