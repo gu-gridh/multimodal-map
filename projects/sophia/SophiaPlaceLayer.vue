@@ -109,10 +109,10 @@ const hoverStyle = new Style({
 });
 
 const colorMapping = {
-  1: 'rgba(34, 139, 34, 0.6)',    
-  2: 'rgba(158, 50, 168, 0.6)',    
-  3: 'rgba(0, 0, 255, 0.6)',  
-  4: 'rgba(255, 255, 0, 0.6)',
+  1: 'rgba(150, 50, 50, 0.25)',    
+  2: 'rgba(220, 100, 100, 0.2))',    
+  3: 'rgba(250, 100, 100, 0.4)',  
+  4: 'rgba(200, 50, 50, 0.8)',
 };
 
 const styleFunction = function (feature: Feature<Geometry>) {
