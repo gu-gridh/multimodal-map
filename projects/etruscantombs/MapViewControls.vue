@@ -16,8 +16,8 @@
           </div>
         </div> -->
 
-        <div class="tag-section margin-5">
-          <div class="section-title">DATASET</div>
+        <div class="tag-section margin-3">
+          <div class="section-title">Dataset</div>
           <div title="Narrow the result to a certain dataset" class="broad-controls">
              <CategoryButtonDropdown v-model="dataSetValue" :categories="DATASET" :limit="1" styleType="dropdown" class="my-2"
               type="datasets" />
@@ -42,7 +42,7 @@
 
       </div>
 
-      <div class="tag-section margin-5">
+      <div class="tag-section margin-3">
         <div class="section-title">{{ $t('timeperiod') }}</div>
         <div class="slider-widget">
           <div class="slider-section">
