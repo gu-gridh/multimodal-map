@@ -58,6 +58,7 @@
   bottom: 40px;
   left: -80px;
   width: 170px;
+  pointer-events:none;
 }
 
 #app .ol-popup:after, .ol-popup:before {
