@@ -42,20 +42,18 @@
 
       </div>
 
-      <div class="tag-section margin-3">
+     <div class="tag-section margin-3">
         <div class="section-title">{{ $t('timeperiod') }}</div>
         <div class="slider-widget">
           <div class="slider-section">
               <RangeSlider
                 ref="rangeSliderRef"
                 v-model="selectedRange"
-                :min="1"
-                :max="3"
+                :min="-700"
+                :max="-200"
                 :step="1"
                 class="my-2"
                 :isSliderVisible="true"
-                :startLabel="startLabel"
-                :endLabel="endLabel"
               />
           </div>
         </div>
@@ -136,11 +134,11 @@
 <script setup lang="ts">
 import { inject, ref, onMounted, computed, defineProps, watch } from "vue";
 import CategoryButtonDropdown from "./CategoryButtonDropdown.vue";
+import RangeSlider from "./RangeSliderEtruscan.vue";
 import CategoryButtonList from "@/components/input/CategoryButtonList.vue";
-import RangeSlider from "./EtruscanRangeSlider.vue";
 import { storeToRefs } from "pinia";
 import { etruscanStore } from "./store";
-import type { EtruscanProject, RangeMapping } from "./types";
+import type { EtruscanProject } from "./types";
 import { DianaClient } from "@/assets/diana";
 import { transform } from 'ol/proj';
 import apiConfig from "./apiConfig"
@@ -159,25 +157,6 @@ const totalThreed = ref(0);
 const hiddenTombs = ref(0);
 const currentTombCount = ref(0);
 const visibleAbout = ref(false);
-
-const rangeMapping: RangeMapping = {
-  1: { range: '700-650 BC', id: 5 },
-  2: { range: '625-400 BC', id: 6 },
-  3: { range: '400-200 BC', id: 7 },
-};
-
-const startLabel = computed(() => {
-  return rangeMapping[selectedRange.value[0]].range;
-});
-
-const endLabel = computed(() => {
-  return rangeMapping[selectedRange.value[1]].range;
-});
-
-const selectedRangeIds = computed(() => {
-  return [rangeMapping[selectedRange.value[0]].id, rangeMapping[selectedRange.value[1]].id];
-});
-
 
 const TAGS = ref<Record<string, string>>({});
 const NECROPOLI = ref<Record<string, string>>({});
@@ -344,39 +323,6 @@ function clearAll() {
   margin-bottom: 0px;
 }
 
-#app .slider-section {
-  width: 100%;
-}
-
-#app .range-slider-container {
-  display: flex;
-  width: 100%;
-  height: auto;
-  align-items: bottom;
-  padding: 10px 0 0px 0;
-  background-color: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(3px);
-  margin-top:5px;
-}
-
-#app .slider-connect {
-  background-color: rgb(180,100,100);
-}
-
-#app .slider-handle {
-  margin-top: -10px;
-  margin-left: 10px;
-  width: 0;
-  height: 0;
-  border-radius: 0px;
-  background: none;
-  border-left: 8px solid transparent;
-  border-right: 8px solid transparent;
-  border-top: 15px solid rgb(180,100,100);
-  box-shadow: var(--slider-handle-shadow, 0.5px 0.5px 2px 1px rgba(0, 0, 0, 0));
-  cursor: grab;
-}
-
 /* #app .range-slider-container {
   display: flex;
   width: 100%;
@@ -394,12 +340,10 @@ function clearAll() {
 
 #app .start-end-box {
   width: 15%;
-  font-size: 13px;
+  font-size: 20px;
   text-align: center;
   padding-top: 0rem;
   padding-bottom: 0.5rem;
-  padding-left: 0.5rem; 
-  padding-right: 0.5rem; 
 }
 
 #app .rounded {
@@ -444,18 +388,6 @@ margin-left:5px;
   padding: 15px 25px;
   border-radius: 10px;
   background-color: rgba(255, 255, 255, 0.5);
-  min-height: 50px;
-  backdrop-filter: blur(5px);
-}
-
-.slider-widget {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  font-size:110%;
-  float: left;
-  width: 98%;
-  border-radius: 10px;
   min-height: 50px;
   backdrop-filter: blur(5px);
 }
@@ -546,10 +478,19 @@ display:none;
   opacity: 1.0;
 }
 
- div.slider-widget > label > input
- {
-  width: 17px;
-  height: 17px;
- }
+.slider-widget {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size:110%;
+  float: left;
+  width: 98%;
+  border-radius: 10px;
+  min-height: 50px;
+  backdrop-filter: blur(5px);
+}
 
+#app .slider-section {
+  width: 100%;
+}
 </style>
