@@ -104,14 +104,14 @@ const styles = {
 const hoverStyle = new Style({
   stroke: new Stroke({
     color: 'rgba(200, 0, 0, 1.0)', 
-    width: 15, 
+    width: 13, 
   }),
 });
 
 const colorMapping = {
-  1: 'rgba(150, 50, 50, 0.25)',    
-  2: 'rgba(220, 100, 100, 0.2))',    
-  3: 'rgba(250, 100, 100, 0.4)',  
+  1: 'rgba(50, 0, 0, 0.1)',    
+  2: 'rgba(200, 150, 50, 0.6)',    
+  3: 'rgba(200, 100, 50, 0.6)',  
   4: 'rgba(200, 50, 50, 0.8)',
 };
 
@@ -121,13 +121,13 @@ const styleFunction = function (feature: Feature<Geometry>) {
     console.error('Feature is missing the data_available property:', feature);
     return new Style({
       stroke: new Stroke({
-        color: 'rgba(0, 0, 0, 0.6)', //default color if no title is found
+        color: 'rgba(250, 0, 0, 0.0)', //default color if no title is found
         width: 10,
       }),
     });
   }
 
-  const color = colorMapping[dataAvailable] || 'rgba(0, 0, 0, 0.6)'; //fallback color
+  const color = colorMapping[dataAvailable] || 'rgba(0, 0, 0, 0.0)'; //fallback color
   return new Style({
     stroke: new Stroke({
       color: color,
