@@ -1,6 +1,6 @@
 <template>
   <div class="range-slider-container bg-white rounded">
-    <div class="checkbox" style="margin-left: 10px; text-align: center">
+    <div class="checkbox" style="margin-left: 5px; margin-right: 10px; text-align: center">
       <input type="checkbox" id="showUnknownRange" v-model="showUnknownRange">
       <label for="showUnknownRange">Unknown</label>
     </div>
@@ -19,7 +19,7 @@
         :format="v => `${Math.round(Math.abs(v))} BC`"
       />
     </div>
-    <div class="start-end-box">{{ formatBCYear(max) }}</div>
+    <div class="start-end-box" style="margin-right: 5px">{{ formatBCYear(max) }}</div>
   </div>
 </template>
 
@@ -43,7 +43,7 @@ const emit = defineEmits(["update:modelValue"]);
 const isSliderVisible = computed(() => props.isSliderVisible !== false); 
 const selection = ref<[number, number]>(props.modelValue);
 
-function formatBCYear(year) {
+function formatBCYear(year: any): string {
   return `${Math.abs(year)} BC`;
 }
 
@@ -57,6 +57,7 @@ watch(selection, () => {
 <style>
 .range-slider-container {
   display: flex;
+  height: 7vh;
   width: 100%;
   align-items: center;
 }

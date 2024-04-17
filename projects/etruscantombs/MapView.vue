@@ -70,7 +70,7 @@ const tagParams = computed(() => {
   const selectedRangeValue = selectedRange.value;
   const show_unknown = showUnknownRange.value;
 
-  const initialParams = { necropolis, type, dataset, show_unknown: show_unknown.toString() };
+  const initialParams: any  = { necropolis, type, dataset, show_unknown: show_unknown.toString() };
 
    if (selectedRangeValue.length === 2) {
     initialParams.minyear = Math.round(Math.abs(selectedRangeValue[0]));
