@@ -108,7 +108,7 @@ onMounted(() => {
               <ol-source-vector :url="url" :format="geoJson">
               </ol-source-vector>
               <ol-style>
-                <ol-style-icon :src="markerIcon" :scale="1.8" :displacement="[-10, 45]"
+                <ol-style-icon :src="markerIcon" :scale="0.8" :displacement="[-10, 45]"
                   :anchor="[0.0, 0.0]"></ol-style-icon>
               </ol-style>
             </ol-vector-layer>
@@ -278,6 +278,7 @@ onMounted(() => {
 .placecard-full {
     margin-top:60px!important;
   }
+
   #app .place-meta-container {
     position: relative !important;
     margin-top: 0px !important;
@@ -285,8 +286,8 @@ onMounted(() => {
     height: auto;
     width: 100%;
     z-index: 100;
-    padding-right: 20px !important;
-    padding-left: 20px !important;
+    padding-right: 0px !important;
+    padding-left: 0px !important;
     padding-bottom: 0px !important;
     overflow-y: auto;
   }

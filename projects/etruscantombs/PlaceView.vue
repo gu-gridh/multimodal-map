@@ -268,7 +268,7 @@ async function initMasonry() {
                 <!-- <p>ID: {{ id }}</p> -->
                 <!-- <p>PLACE: {{ place.id }}</p> -->
                 <div>
-                    <select v-model="sort" class="dropdown theme-color-background" style="margin-left:130px;">
+                    <select v-model="sort" class="dropdown theme-color-background sort">
                         <option active value="type">{{ $t('sortbytype') }}</option>
                         <option value="year">{{ $t('sortbyyear') }}</option>
                     </select>
@@ -464,6 +464,9 @@ async function initMasonry() {
     backdrop-filter: blur(10px) saturate(50%) brightness(100%);
 }
 
+.sort{
+margin-left:130px;
+}
 .show-button {
     color: white;
     height: auto;
@@ -475,6 +478,7 @@ async function initMasonry() {
     margin-top: 5px;
     margin-left: 20px;
     transition: all 0.2s ease-in-out;
+    min-width:60px;
 }
 
 .show-button:hover {
@@ -519,6 +523,53 @@ a:active {}
 .plan-gallery__item {
     width: 200px;
     margin-bottom: 10px;
+}
+
+
+@media screen and (max-width: 900px) {
+
+    #app .maijn-container{
+    padding:0px!important;
+}
+#app .place-gallery-container{
+    padding:0px!important;
+    margin-left:0px;
+}
+#app .place-view{
+    width:100%!important;
+    padding-top:20px!important;
+    margin-left:0px!important;
+    padding-bottom:100px;
+}
+
+.sort{
+margin-left:20px;
+}
+
+.square
+{
+  width:120px;  
+  height:120px;  
+}
+
+.placeview-masonry-gallery
+{
+  width:100%;  
+}
+.document-placeholder
+{
+max-width:90%;
+}
+.documentlabel{
+    display:none;
+}
+.documentdata{
+    display:none;
+}
+
+.observation-placeholder{
+    max-width:90%;
+}
 }
 </style>
     
