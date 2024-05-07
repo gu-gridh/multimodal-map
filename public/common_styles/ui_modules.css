@@ -117,6 +117,8 @@
 
 
 
+
+
 /* Changes for mobile screens */
 
 @media screen and (max-width: 900px) {
@@ -127,6 +129,9 @@
     font-size: 120% !important;
   }
 
+  #app .ol-control{
+    display:none!important;
+    }
  
   #app .ol-zoom-in {
     display:none!important;
