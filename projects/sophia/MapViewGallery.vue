@@ -72,7 +72,7 @@ export default {
     const fetchData = async (requestedPageIndex) => {
       if (requestedPageIndex > lastFetchedPageIndex) {
         try {
-          const urlToFetch = `${apiConfig.IMAGE}?page=${requestedPageIndex}&type_of_image=1&depth=2&${new URLSearchParams(store.imgParams).toString()}`; // type_of_image=1 only fetches Ortophotos
+          const urlToFetch = `${apiConfig.IMAGE}?type_of_image=1&depth=2&${new URLSearchParams(store.imgParams).toString()}`; // type_of_image=1 only fetches Ortophotos
           const res = await fetch(urlToFetch);
           const data = await res.json();
           const newImages = data.results.map(item => ({
@@ -90,89 +90,90 @@ export default {
     };
 
     const initMasonry = () => {
-      const gallery = document.querySelector('.gallery');
-      if (!gallery) {
-        console.error('gallery element not found.');
-        return;
+  const gallery = document.querySelector('.gallery');
+  if (!gallery) {
+    console.error('gallery element not found.');
+    return;
+  }
+
+  msnry = new Masonry(gallery, {
+    itemSelector: '.gallery__item',
+    columnWidth: '.gallery__col-sizer',
+    gutter: '.gallery__gutter-sizer',
+    percentPosition: true,
+  });
+
+  const checkFor404 = async (url) => {
+    try {
+      const res = await fetch(url);
+      if (res.status === 404) {
+        msnry.layout();
+        return true; // Indicates that a 404 was found
       }
+    } catch (error) {
+      console.error("Error in 404 fetch:", error);
+    }
+    return false; // Indicates that a 404 was not found
+  };
 
-      msnry = new Masonry(gallery, {
-        itemSelector: '.gallery__item',
-        columnWidth: '.gallery__col-sizer',
-        gutter: '.gallery__gutter-sizer',
-        percentPosition: true,
-      });
+  infScroll = new InfiniteScroll(gallery, {
+    path: () => {
+      if (canIncrement) {
+        pageIndex++;  // Increment pageIndex for the next set of data
+      }
+      canIncrement = false; // Disable further increments
+      const offset = (pageIndex - 1) * 25;
+      const url = `${apiConfig.IMAGE}?offset=${offset}&type_of_image=1&depth=2&${new URLSearchParams(store.imgParams).toString()}`;
 
-      const checkFor404 = async (url) => {
-        try {
-          const res = await fetch(url);
-          if (res.status === 404) {
-            msnry.layout();
-            return true; // Indicates that a 404 was found
-          }
-        } catch (error) {
-          console.error("Error in 404 fetch:", error);
-        }
-        return false; // Indicates that a 404 was not found
-      };
-
-      infScroll = new InfiniteScroll(gallery, {
-        path: () => {
-          if (canIncrement) {
-            pageIndex++;  // Increment pageIndex for the next set of data
-          }
-          canIncrement = false; // Disable further increments
-          const url = `${apiConfig.IMAGE}?page=${pageIndex}&depth=2&${new URLSearchParams(store.imgParams).toString()}`;
-
-          // Use Promise syntax to handle the asynchronous 404 check
-          checkFor404(url).then(async (is404) => {
-            if (is404) {
-              // Here, first ensure all images are fully loaded
-              await new Promise((resolve) => {
-                imagesLoaded(document.querySelector('.gallery'), resolve);
-              });
-              msnry.reloadItems();
-              msnry.layout();
-            }
+      // Use Promise syntax to handle the asynchronous 404 check
+      checkFor404(url).then(async (is404) => {
+        if (is404) {
+          // Here, first ensure all images are fully loaded
+          await new Promise((resolve) => {
+            imagesLoaded(document.querySelector('.gallery'), resolve);
           });
-
-          return url;
-        },
-        outlayer: msnry,
-        status: '.page-load-status',
-        history: false,
-        scrollThreshold: 1200,
-        elementScroll: true,
-      });
-
-      infScroll.on('load', async function (response) {
-        if (pageIndex > lastFetchedPageIndex) {
-          try {
-            // Extract the body content from the HTML response
-            let bodyContent = response.querySelector("body").textContent;
-
-            // Convert the body content to JSON
-            const data = JSON.parse(bodyContent);
-
-            const newImages = data.features.map(item => ({
-              attached_orthophoto: item.attached_photograph ? item.attached_photograph.iiif_file : null,
-              name: item.panel.title,
-            })).filter(img => img !== null);
-
-            images.value = [...images.value, ...newImages];
-
-            imagesLoaded(document.querySelector('.gallery'), () => {
-              msnry.reloadItems();
-              msnry.layout();
-            });
-          }
-          catch (e) {
-            console.error("JSON Parsing failed or other error: ", e);
-          }
+          msnry.reloadItems();
+          msnry.layout();
         }
-        canIncrement = true;
       });
-    };
+
+      return url;
+    },
+    outlayer: msnry,
+    status: '.page-load-status',
+    history: false,
+    scrollThreshold: 1200,
+    elementScroll: true,
+  });
+
+  infScroll.on('load', async function (response) {
+    if (pageIndex > lastFetchedPageIndex) {
+      try {
+        // Extract the body content from the HTML response
+        let bodyContent = response.querySelector("body").textContent;
+
+        // Convert the body content to JSON
+        const data = JSON.parse(bodyContent);
+
+        const newImages = data.results.map(item => ({
+          attached_orthophoto: item.iiif_file,
+          name: item.panel.title,
+        })).filter(img => img !== null);
+
+        images.value = [...images.value, ...newImages];
+
+        imagesLoaded(document.querySelector('.gallery'), () => {
+          msnry.reloadItems();
+          msnry.layout();
+        });
+      }
+      catch (e) {
+        console.error("JSON Parsing failed or other error: ", e);
+      }
+    }
+    canIncrement = true;
+  });
+};
 
     const reinitInfiniteScroll = () => {
       if (infScroll) {
