@@ -21,6 +21,8 @@ body {
   font-weight:300;
   background-color: var(--theme-1) !important;
   font-size: 100% !important;
+  min-height:100%;
+ 
 }
 
 .theme-title-typography {
@@ -219,8 +221,9 @@ overflow:hidden;
   }
 
   #app .left-pane {
-    margin-top: calc(100vh - 20vh)!important;
+    margin-top: calc(100vh - 30vh)!important;
     z-index:1000!important;
+      position:absolute!important;
   }
 
   #app .main-title {
@@ -251,7 +254,7 @@ z-index:101!important;
   }
 
   .ui-overlay-bottom{
-    margin-top:20px!important;
+    margin-top:100%!important;
     z-index:1!important;
   }
 
