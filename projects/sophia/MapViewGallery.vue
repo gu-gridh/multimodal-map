@@ -239,7 +239,7 @@ export default {
     margin-left: 0px;
     width: 100%;
     height:100vh;
-    padding-top:80px;
+    padding-top:0px;
   }
 }
 
@@ -310,6 +310,10 @@ export default {
   .gallery__col-sizer {
     width: calc(50%);
   }
+
+  .gallery {
+  padding-top:80px;
+}
 }
 
 

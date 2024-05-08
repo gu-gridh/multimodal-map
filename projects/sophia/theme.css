@@ -236,7 +236,7 @@ overflow:hidden;
   .placecard {
     height: calc(100vh - 36vh);
     width:calc(100% - 50px);
-    margin-top: -200px;
+    margin-top: 0px;
     position:fixed!important;
   }
 
