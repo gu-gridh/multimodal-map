@@ -447,9 +447,12 @@ const toggleAboutVisibility = async () => {
     width: 100%;
 
   }
+  .data-widget {
+width:100%;
+}
 
   #app .control-organisation {
-    width: 98%;
+    width: 100%;
     float: none;
     display: flex;
     flex-direction: column;
@@ -494,4 +497,12 @@ const toggleAboutVisibility = async () => {
   transition: all 0.4s;
   opacity: 1.0;
 }
+
+@media screen and (max-width: 600px) {
+
+  .data-widget {
+font-size:80%;
+}
+}
+
 </style>
