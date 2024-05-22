@@ -90,7 +90,7 @@ a {
 
   .GRIDHLogo {
     float: right;
-    margin-top: 30px;
+    margin-top: 27px;
     width: auto;
     height: auto;
     text-align: left;
@@ -104,7 +104,7 @@ a {
 
   .PartnerLogo {
     float: right;
-    margin-top: 30px;
+    margin-top: 27px;
     width: auto;
     height: auto;
     text-align: left;
