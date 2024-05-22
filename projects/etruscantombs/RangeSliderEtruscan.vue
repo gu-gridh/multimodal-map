@@ -1,12 +1,10 @@
 <template>
-  <div class="range-slider-container bg-white rounded">
-    <div class="checkbox" style="margin-left: 5px; margin-right: 10px; text-align: center">
-      <input type="checkbox" id="showUnknownRange" v-model="showUnknownRange">
-      <label for="showUnknownRange">Unknown</label>
-    </div>
-    <div class="start-end-box">{{ formatBCYear(min) }}</div>
+  
+  <div class="range-slider-container">
+  
+    <!-- <div class="start-end-box">{{ formatBCYear(min) }}</div> -->
     <div
-      style="width: 70%"
+      style="width: 100%"
       :class="['clickable', 'range-slider-wrapper', { 'no-pointer-events': isSliderVisible === false }]"
     >
       <Slider
@@ -14,13 +12,18 @@
         :min="min"
         :max="max"
         :step="step"
-        showTooltip="focus"
+        showTooltip="always"
         class="slider-blue"
         :format="v => `${Math.round(Math.abs(v))} BC`"
       />
     </div>
-    <div class="start-end-box" style="margin-right: 5px">{{ formatBCYear(max) }}</div>
+    <!-- <div class="start-end-box" style="margin-right: 5px">{{ formatBCYear(max) }}</div> -->
+    <div class="checkbox-container" style="">
+      <input type="checkbox" id="showUnknownRange" v-model="showUnknownRange">
+      <label style="margin-left:5px; margin-top:-3px; " for="showUnknownRange">Include unknown</label>
+    </div> 
   </div>
+
 </template>
 
 <script setup lang="ts">
@@ -56,10 +59,57 @@ watch(selection, () => {
 
 <style>
 .range-slider-container {
-  display: flex;
-  height: 7vh;
+  height: auto;
   width: 100%;
   align-items: center;
+  background-color:rgba(255,255,255,0.7);
+  border-radius:10px;
+  padding:45px 20px 5px 20px;
+}
+
+.checkbox-container{
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  margin-top:8px;
+}
+
+.checkbox-container input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  font-size: 1rem;
+  padding: 0.2rem;
+  width: 20px;
+  height: 20px;
+  border-radius: 0.2rem;
+  background-color:rgb(200,200,200);
+}
+
+.checkbox-container input[type="checkbox"]::before {
+  content: "";
+  width: 100%;
+  height: 100%;
+  transform: scale(0);
+  clip-path:circle(1);
+  background-color:var(--theme-3) !important; 
+}
+
+.checkbox-container input[type="checkbox"]:checked::before {
+  transform: scale(1);
+}
+
+.checkbox-container input[type="checkbox"]:hover {
+  color: black;
+}
+
+
+
+
+.slider-blue{
+  padding:0px;
 }
 
 .range-slider-wrapper {
