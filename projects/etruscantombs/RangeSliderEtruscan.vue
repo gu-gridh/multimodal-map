@@ -62,7 +62,7 @@ watch(selection, () => {
   height: auto;
   width: 100%;
   align-items: center;
-  background-color:rgba(255,255,255,0.7);
+  background-color:rgba(255,255,255,0.5);
   border-radius:10px;
   padding:45px 20px 5px 20px;
 }

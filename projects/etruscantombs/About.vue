@@ -78,10 +78,12 @@ export default {
   overflow-y:auto;
   background: linear-gradient(90deg, rgba(245, 235, 225,1) 0%, rgba(245, 235, 225,0.8) 100%) !important;
   padding-bottom:40px !important;
+  pointer-events:none!important;
 
 }
 
 .fullopacity{
+  pointer-events:none!important;
   backdrop-filter:blur(5px);
   background: linear-gradient(90deg, rgba(245, 235, 225,1) 0%, rgba(245, 235, 225,0.8) 100%) !important;
 }
