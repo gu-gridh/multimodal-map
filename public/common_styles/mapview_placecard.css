@@ -27,8 +27,8 @@
   transition: all 0.1s ease-in-out;
 }
 
-.place-card::-webkit-scrollbar {
-  width: 0 !important
+.placecard::-webkit-scrollbar {
+  width: 0 !important;
 }
 
 .close-card-button {
