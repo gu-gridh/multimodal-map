@@ -4,7 +4,7 @@
     <div v-if="areMapPointsLoaded">
 
       <!-- This creates a 2-column section with for the controls -->
-      <div class="control-organisation justify-left">
+      <div class="control-organisation justify-left" style="margin-bottom:8px;">
 
         <!-- <div class="tag-section">
           <div class="section-title">{{ $t('dataset') }}</div>
@@ -42,7 +42,7 @@
 
       </div>
 
-     <div class="tag-section margin-3">
+     <div class="tag-section margin-3" >
         <div class="section-title">{{ $t('timeperiod') }}</div>
         <div class="slider-widget">
           <div class="slider-section">
