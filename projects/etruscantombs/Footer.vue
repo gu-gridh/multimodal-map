@@ -11,12 +11,13 @@
     </div>
     </div>
     <div class="partners">
-    <a href="https://dh.gu.se/">
-      <div class="link" id="PartnerLogo">+ ISVROMA</div>
-    </a>
-    <a href="https://dh.gu.se/">
-      <div class="link" id="CDHLogo">#GRIDH</div>
-    </a>
+      <a href="https://dh.gu.se/">
+        <div class="GRIDHLogo" id="">GU / GRIDH</div>
+      </a>
+
+      <a href="https://isvroma.org">
+        <div class="PartnerLogo" id="">ISVROMA</div>
+      </a>
   </div>
   </footer>
 </template>
@@ -78,44 +79,45 @@ a {
   font-weight: bold;
 }
 
-.partners{
-float: right;
-position:fixed;
+.partners {
+    float: right;
+    position: fixed;
 
-bottom:0px;
-right:0px;
-height:80px;
-}
+    bottom: 0px;
+    right: 0px;
+    height: 80px;
+  }
 
-#CDHLogo {
-  float: right;
-  margin-top: 0px;
-  margin-right: 10px;
-  width: auto;
-  height: auto;
-  text-align: left;
-  font-weight: 100;
-  font-style: normal;
-  font-size: 45px;
-  line-height: 0.4;
-  padding: 30px 0px 10px 0px;
-  vertical-align: middle;
-}
+  .GRIDHLogo {
+    float: right;
+    margin-top: 30px;
+    width: auto;
+    height: auto;
+    text-align: left;
+    font-weight: 100;
+    font-style: normal;
+    font-size: 30px;
+    line-height: 0.8;
+    padding: 0px 50px 5px 30px;
+    vertical-align: middle;
+  }
 
-#PartnerLogo {
-  float: right;
-  margin-top: 0px;
-  margin-right: 40px;
-  width: auto;
-  height: auto;
-  text-align: left;
-  font-weight: 100;
-  font-style: normal;
-  font-size: 45px;
-  line-height: 0.4;
-  padding: 30px 0px 10px 0px;
-  vertical-align: middle;
-}
+  .PartnerLogo {
+    float: right;
+    margin-top: 30px;
+    width: auto;
+    height: auto;
+    text-align: left;
+    font-weight: 100;
+    font-style: normal;
+    font-size: 30px;
+    line-height: 0.8;
+    padding: 0px 30px 5px 30px;
+    vertical-align: middle;
+    border-width: 0px 0.5px 0px 0px;
+    border-color: white;
+    border-style: solid;
+  }
 
 #developer-info {
   display: flex; 
