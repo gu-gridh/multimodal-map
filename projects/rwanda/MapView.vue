@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { inject, provide, ref, nextTick, watch , onMounted} from "vue";
+import { provide, ref, watch } from "vue";
 import configRaw from "./config";
 import MainLayout from "@/MainLayout.vue";
 import MapViewControls from "./MapViewControls.vue";
@@ -16,6 +16,7 @@ import About from "./About.vue";
 import AutocompleteComponent from "@/components/input/AutocompleteComponent.vue";
 import { useRwandaMap } from "./map.composable";
 import { rwandaStore } from "./rwandaStore";
+import { useRoute } from "vue-router";
 
 function getName(f: Feature): string {
   const place = f.getProperties() as Place;
@@ -28,10 +29,15 @@ provide("config", config);
 
 const visibleAbout = ref(false);
 
+const route = useRoute();
+
 const store = mapStore();
 const { params } = storeToRefs(store);
-const { periodsLayer, periods, sources, informants, sourcesLayer, placeTypeLayer, placeTypes, allLayer, informantsLayer, coordinate } = storeToRefs(rwandaStore());
+const { periods, sources, placeTypes, allLayer, informants, languages, showAdvancedLayer } = storeToRefs(rwandaStore());
 const { selectedFeature } = storeToRefs(store);
+
+//for map marker zoom in
+const showMarker = ref(false);
 
 //MapViewControls
 const { searchText } = useRwandaMap();
@@ -39,16 +45,8 @@ function displayName(p: Place): string {
   return formatNames(p.id, p.names);
 }
 
-//when selectedFeature changes, draw geometry on map - TODO
-const drawGeometry = () => {
-  if (selectedFeature.value) {
-    coordinate.value = selectedFeature.value.getGeometry();
-    console.log(coordinate.value)    
-  }
-}
-
 //zoom to place on click
-const featureZoom = 17; // zoom level when clicking on a feature
+const featureZoom = 18; // zoom level when clicking on a feature
 
 watch(
   selectedFeature,
@@ -67,6 +65,17 @@ watch(
   },
   { immediate: true }
 );
+
+watch(route, () => {
+  if (route.params.placeId) {
+    //set map marker
+    showMarker.value = true;
+  }
+  else {
+    showMarker.value = false;
+  }
+}, {immediate: true});
+
 </script>
 
 <template>
@@ -92,7 +101,7 @@ watch(
           :searchItems="searchText"
         />
       </div>
-      <!--filter map-->
+      <!--filter map layers-->
       <MapViewControls />
     </template>
 
@@ -100,59 +109,39 @@ watch(
     <div class="map-container">
       <MapComponent :min-zoom="14" :max-zoom="19" :restrictExtent="[30.01, -1.98, 30.1, -1.92]" :shouldAutoMove="true" class="greyscale">
         <template #layers>
-          <!-- Sources layer just filtering interviews atm -->
+          <!-- marker layer for zooming in -->
+          <DianaPlaceLayer
+            v-if="showMarker"
+            path="rwanda/geojson/place/"
+            :params="{
+              id__in: route.params.placeId,
+              corrected: true,
+            }">
+            <ol-style>
+              <ol-style-stroke color="#dc6464" :width="2"></ol-style-stroke>
+            </ol-style>
+          </DianaPlaceLayer>
+          <!-- Advanced search layers -->
           <DianaPlaceLayer 
-            v-if="sourcesLayer"
-            path="rwanda/search/text"
+            v-if="showAdvancedLayer"
+            path="rwanda/advance/search/"
+            :params="{
+              corrected: true,
+              source: sources[0] ? sources[0] : '',
+              period: periods[0] ? periods[0] : '',
+              place_type: placeTypes[0] ? placeTypes[0] : '',
+              language: languages[0] ? languages[0] : '',
+              informant: informants[0] ? informants[0] : '',
+            }"
           >
-          <ol-style>
-              <ol-style-stroke color="rgb(180,100,100)" :width="3"></ol-style-stroke>
+          <ol-style >
+              <ol-style-stroke color="#5585b5" :width="3"></ol-style-stroke>
             </ol-style>
             <FeatureSelection/>
           </DianaPlaceLayer>
-          <!-- Place types layer -->
-          <DianaPlaceLayer 
-            v-if="placeTypeLayer"
-            path="rwanda/search/type/"
-            :params = "{
-              text: placeTypes[0],
-            }"
-            >
-            <ol-style>
-              <ol-style-stroke color="#64b464" :width="3"></ol-style-stroke>
-            </ol-style>
-              <FeatureSelection/>
-            </DianaPlaceLayer>  
-            <!-- Informants layer -->
-          <DianaPlaceLayer 
-            v-if="informantsLayer"
-            path="rwanda/search/informant/"
-            :params = "{
-              text: informants[0],
-            }"
-            >
-            <ol-style>
-              <ol-style-stroke color="#6464b4" :width="3"></ol-style-stroke>
-            </ol-style>
-              <FeatureSelection/>
-            </DianaPlaceLayer>  
-          <!-- Periods layer -->
-           <DianaPlaceLayer 
-            v-if="periodsLayer"
-            path="rwanda/search/period/"
-            :params = "{
-              period_name: periods[0],
-            }"
-            >
-            <ol-style>
-              <ol-style-stroke color="#64b4b4" :width="3"></ol-style-stroke>
-            </ol-style>
-              <FeatureSelection/>
-            </DianaPlaceLayer>  
-            <!-- TODO Lamguage layer -->
-            <!-- Initial layer -->
+          <!--All layer-->
           <DianaPlaceLayer
-            v-if="allLayer"
+            v-if="allLayer && !showMarker"
             path="rwanda/geojson/place/"
             :params="{
               has_no_name: false,
@@ -160,6 +149,7 @@ watch(
               in_bbox:
                 params.bbox && !params.searchIds ? params.bbox.toString() : '',
               page_size: 500,
+              corrected: true,
             }"
           >
             <ol-style>
@@ -171,9 +161,6 @@ watch(
       </MapComponent>
     </div>
   </template>
-    <!-- <template #details> -->
-  <!-- <MapViewPreview /> -->
-<!-- </template> -->
 </MainLayout>
 </template>
 

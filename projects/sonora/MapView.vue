@@ -3,16 +3,17 @@ import { computed } from "vue";
 import MainLayout from "@/MainLayout.vue";
 import MapViewControls from "./MapViewControls.vue";
 import MapComponent from "@/components/MapComponentRwanda.vue";
-import DianaPlaceLayer from "@/components/DianaPlaceLayerEtruscan.vue";
+import DianaPlaceLayer from "./DianaPlaceLayerSonora.vue";
 import GeoJsonWebGLRenderer from "@/components/GeoJsonWebGLRenderer.vue";
 import FeatureSelection from "./FeatureSelection.vue";
 import MapViewPreview from "./MapViewPreview.vue";
 import { storeToRefs } from "pinia";
-import { etruscanStore } from "./store";
+import { sonoraStore } from "./store";
 import { mapStore } from "@/stores/store";
 import { clean } from "@/assets/utils";
 import markerIcon from "@/assets/marker-white.svg";
 import MapViewGallery from "./MapViewGallery.vue";
+import MapViewArchive from "./MapViewArchive.vue";
 import { ref } from "vue";
 import About from "./About.vue";
 import { onMounted, watch } from "vue";
@@ -20,14 +21,17 @@ import { nextTick } from "vue";
 import GeoJSON from "ol/format/GeoJSON";
 import Title from "./Title.vue"
 
-const { categories, tags, necropoli, tombType, placesLayerVisible, tagsLayerVisible, dataParams, selectedNecropolisCoordinates, enable3D } = storeToRefs(etruscanStore());
+const { categories, tags, necropoli, tombType, placesLayerVisible, tagsLayerVisible, dataParams, enable3D, selectedBuilderId } = storeToRefs(sonoraStore());
 const store = mapStore();
 const { selectedFeature } = storeToRefs(store);
+const storeZ = sonoraStore();
 const minZoom = 9;
 const maxZoom = 20;
 const featureZoom = 16; //value between minZoom and maxZoom when you select a point 
 const visibleAbout = ref(false);
+const mapViewControls = ref(null);
 const showGrid = ref(false);
+const showArchive = ref(false);
 let visited = true; // Store the visited status outside of the hook
 
 // Watcher for selectedFeature changes
@@ -49,68 +53,27 @@ watch(
   { immediate: true }
 );
 
-// Watcher for selectedNecropolisCoordinates changes
-watch(
-  selectedNecropolisCoordinates,
-  (newCoordinates, oldCoordinates) => {
-    if (newCoordinates !== oldCoordinates && newCoordinates) {
-      store.updateCenter(newCoordinates);
-      store.updateZoom(16);
-    }
-  },
-);
-
-/* Response for generating the URL for filtering map points down */
-const tagParams = computed(() => {
-  const epoch = tags.value[0];
-  const necropolis = necropoli.value[0];
-  const type = tombType.value[0];
-
-  const initialParams = { epoch, necropolis, type };
-  
-  // Remove parameters that are set to "all"
-  const cleanedParams = Object.keys(initialParams)
-  .filter((key) => initialParams[key as keyof typeof initialParams] !== "all")
-  .reduce((obj, key) => {
-    obj[key as keyof typeof initialParams] = initialParams[key as keyof typeof initialParams];
-    return obj;
-  }, {} as typeof initialParams);
-  
-  // Further clean to remove null or undefined values
-  const params = clean(cleanedParams);
-
-  //filter for just 3D points
-  if (enable3D.value) {
-    params['with_3D'] = 'true';
-  } else {
-    delete params['with_3D'];
+// Reset the selectedBuilderId when closing the archive so the same builder can be selected
+watch(showArchive, (newValue, oldValue) => {
+  // Check if the archive was open before
+  if (oldValue && !newValue) {
+    selectedBuilderId.value = null;  
   }
-
-  // Convert the params object to a URL search string
-  const queryString = new URLSearchParams(params).toString();
-
-  // Concatenate the base URL with the search string to form the full URL
-  const fullUrl = queryString ? 
-    `https://diana.dh.gu.se/api/etruscantombs/geojson/place/?page_size=500&${queryString}` :
-    `https://diana.dh.gu.se/api/etruscantombs/geojson/place/?page_size=500`;
-
-  console.log("Generated URL:", fullUrl); // Debug line
-  
-  return params;
 });
 
-watch(
-  tagParams, 
-  (newParams) => {
-    dataParams.value = newParams;
-  }, 
-  { immediate: true }
-);
+const apiUrl = computed(() => {
+  const baseUrl = 'https://orgeldatabas.gu.se/webgoart/goart/map.php';
+  const buildingTypeId = dataParams.value.buildingTypeId || 0; // Default to 0
+  const year1 = dataParams.value.year1 || ''; 
+  const year2 = dataParams.value.year2 || '';
+  return `${baseUrl}?btype=${buildingTypeId}&year1=${year1}&year2=${year2}`;
+});
 
 onMounted(() => {
   // Check if the "visited" key exists in session storage
   visited = sessionStorage.getItem("visited") === "true"; // Retrieve the visited status from session storage
   const storedShowGrid = localStorage.getItem("showGrid");
+  const storedShowArchive = localStorage.getItem("showArchive");
 
   if (!visited) {
     // Hide the about component
@@ -118,14 +81,18 @@ onMounted(() => {
     sessionStorage.setItem("visited", "true");
   }
 
+  //show the gallery
   if (storedShowGrid) {
     showGrid.value = JSON.parse(storedShowGrid);
   }
 
+  //show the archive
+  if (storedShowArchive !== null) {
+    showArchive.value = JSON.parse(storedShowArchive);
+  }
 })
 
 const toggleAboutVisibility = async () => {
-  console.log('fired')
   await nextTick();
   visibleAbout.value = !visibleAbout.value;
 };
@@ -133,59 +100,55 @@ const toggleAboutVisibility = async () => {
 watch(showGrid, (newValue) => {
   localStorage.setItem("showGrid", JSON.stringify(newValue));
 });
+
+watch(showArchive, (newValue) => {
+  localStorage.setItem("showArchive", JSON.stringify(newValue));
+});
+
+watch(visibleAbout, async (newVal) => {
+  if (!newVal) {
+    await nextTick();
+    if (mapViewControls.value && mapViewControls.value.searchInput) {
+      mapViewControls.value.searchInput.focus();
+    }
+  }
+});
 </script>
 
 <template>
   <div style="display:flex; align-items: center; justify-content: center; pointer-events: none;">
     <div class="ui-mode ui-overlay">
-      <button class="item" v-bind:class="{ selected: !showGrid }" v-on:click="showGrid = false;">
-        Karta
-      </button>
-      <button class="item" v-bind:class="{ selected: showGrid }" v-on:click="showGrid = true;">
-       Galleri
-      </button>
+     <button class="item" :class="{ selected: !showGrid && !showArchive }" @click="showGrid = false; showArchive = false;">
+      {{ $t('map') }}
+    </button>
+    <button class="item" :class="{ selected: showGrid }" @click="showGrid = true; showArchive = false;">
+      {{ $t('gallery') }}
+    </button>
+    <button class="item" :class="{ selected: showArchive }" @click="showArchive = true; showGrid = false;">
+      {{ $t('archive') }}
+    </button>
     </div>
   </div>
-  <MapViewGallery v-if="showGrid" />
+  <MapViewGallery v-if="showGrid && !showArchive" />
+  <MapViewArchive v-if="showArchive" />
   <About :visibleAbout="visibleAbout" @close="visibleAbout = false" />
   <MainLayout>
     <template #search>
       <Title @toggle-about="toggleAboutVisibility" />
-      <MapViewControls/>
+      <MapViewControls ref="mapViewControls" />
     </template>
 
     <template #background>
       <div class="map-container">
         <MapComponent 
           :shouldAutoMove="true" 
-          :min-zoom=minZoom
-          :max-zoom=maxZoom 
-            
           :key="showGrid.toString()"
-        > 
+        >
+          <!-- :min-zoom=minZoom
+          :max-zoom=maxZoom  -->
         <!-- :restrictExtent="[11.9, 42.15, 12.2, 42.4]"      -->
           <template #layers>
-            <GeoJsonWebGLRenderer
-              :externalUrl="'https://data.dh.gu.se/geography/SGElevationMain.geojson'"
-              :zIndex=-0
-              :style="{
-                'stroke-color': [0, 0, 0, 0.18],
-                'stroke-width': 1,
-                'fill-color': [255, 0, 0, 1]
-              }"
-            >
-            </GeoJsonWebGLRenderer>
-            <GeoJsonWebGLRenderer
-              :externalUrl="'https://data.dh.gu.se/geography/SGElevationEdge.geojson'"
-              :zIndex=0
-              :style="{
-                'stroke-color': [0, 0, 0, 0.1],
-                'stroke-width': 1,
-                'fill-color': [0, 255, 0, 1]
-              }"
-            >
-            </GeoJsonWebGLRenderer>
-            <DianaPlaceLayer v-if="placesLayerVisible" path="etruscantombs/geojson/place/" :params="tagParams" :zIndex=20>
+            <DianaPlaceLayer v-if="placesLayerVisible" :apiUrl="apiUrl" :zIndex="20">
             </DianaPlaceLayer>
           </template>
           
@@ -194,7 +157,7 @@ watch(showGrid, (newValue) => {
     </template>
 
     <template #details>
-      <MapViewPreview v-if="!showGrid"/>
+      <MapViewPreview v-if="!showGrid && !showArchive"/>
     </template>
 
   </MainLayout>
@@ -214,13 +177,13 @@ watch(showGrid, (newValue) => {
 
 /* Overides the settings in ui_modules.css */
 #app .ol-popup {
-  left: -55px;
-  width: 110px;
+  left: -85px;
+  width: 180px;
   min-width: 90px;
   bottom:55px;
 }
 
 #app .ol-popup:before {
-  left: 30px;
+  left: 60px;
 }
 </style>

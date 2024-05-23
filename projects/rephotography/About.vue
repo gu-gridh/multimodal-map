@@ -50,14 +50,15 @@ export default {
 
 <style scoped>
 .about-container {
-  backdrop-filter:blur(0px);
+  backdrop-filter:blur(3px);
   pointer-events:auto;
   transform:scale(1.0);
   translate: 0px 0px;
   transition: all 0.0s ease-in-out;
   opacity:1.0;
-  background: linear-gradient(90deg, rgba(250, 250, 250,1) 0%, rgba(250, 250, 250,0.9) 100%);
+  background: linear-gradient(90deg, rgba(250, 250, 250,1) 0%, rgba(250, 250, 250,0.7) 100%);
 }
+
 
 .flex-machine{
   opacity:1.0; 
@@ -90,6 +91,7 @@ letter-spacing: -0.2rem;
 text-align: center;
 color:black;
 margin-bottom:50px;
+user-select: none;
 }
 
 .category-button{
@@ -167,7 +169,16 @@ a {
 .category-button{
 margin-top:30px;
   font-size:1.9em!important;
+  margin-bottom:50px!important;
 
+}
+
+.about-main-title {
+font-size:4em!important;
+}
+
+.about-container {
+  
 }
 }
 

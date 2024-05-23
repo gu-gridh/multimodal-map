@@ -5,10 +5,13 @@ import MapView from './MapView.vue'
 import RightPanel from './RightPanel.vue'
 import { onMounted } from 'vue'
 
+const direction = window.innerWidth <= 1024 ? 'vertical' : 'horizontal';
+
 onMounted(() => {
     Split(['#split-0', '#split-1'], {
         sizes: [75,25],
         minSize: [500, 360],
+        direction: direction,
     })
 })
 </script>
@@ -24,6 +27,7 @@ onMounted(() => {
         </router-view>
             
         </div>
+
     </div>
 </template>
 
@@ -32,8 +36,8 @@ onMounted(() => {
 .split {
     display: flex;
     flex-direction: row;
-
 }
+
 
 #split-1 {
     background-color:rgb(45,45,45) !important;
@@ -72,9 +76,40 @@ onMounted(() => {
   cursor: ew-resize;
 }
 
+@media (max-width: 1024px) {
 
-/* .gutter.gutter-horizontal {
-    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==');
-    cursor: col-resize;
-} */
+  .split{
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+  }
+  .gutter.gutter-horizontal::after {
+    display: none;
+  }
+  .gutter.gutter-horizontal {
+    display: none
+  }
+  .gutter {
+    display: none;
+  }
+  
+
+}
+
+@media (max-width: 1024px) {
+  #split-1  {
+    position: relative; 
+    height: 100%;
+    width: 100% !important;
+  }
+}
+
+@media (max-width: 1024px) {
+  #split-0{
+    min-width: 100% !important;
+    height: 100% !important;
+    
+  }
+}
+
 </style>

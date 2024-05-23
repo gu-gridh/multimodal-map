@@ -1,39 +1,53 @@
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, onMounted, defineProps } from "vue";
 import OpenSeadragon from "openseadragon";
 
-const props = defineProps<{
-  src: string[];  // Change this to an array of strings
-}>();
+const props = defineProps({
+  src: Array as () => string[],
+  showReferenceStrip: {
+    type: Boolean,
+    default: false
+  }
+});
  
-
 const viewerEl = ref();
 const currentPage = ref(1);  // Define currentPage
+const isFullscreen = ref(false);
 
 onMounted(() => {  
   const viewer = OpenSeadragon({
     element: viewerEl.value,
     immediateRender: false,
     visibilityRatio: 1.0,
-    minZoomImageRatio: 1.0,
+    minZoomImageRatio: 0.5,
+    maxZoomPixelRatio: 4,
     homeFillsViewer: true,
     showZoomControl: true,
     showHomeControl: false,
     showFullPageControl: true,
-    showNavigator: false,
+    showNavigator: true,
     navigatorAutoFade: true,
+    showRotationControl: true,
     fullPageButton: "full-page",
     zoomInButton: "zoom-in",
     zoomOutButton: "zoom-out",
     nextButton: "next-button",
     previousButton: "prev-button",
+    rotateLeftButton: "rotate-left",
+    rotateRightButton: "rotate-right",
     prefixUrl: "/openseadragon/",
     sequenceMode: true,
+    showReferenceStrip: props.showReferenceStrip,
     preload: true,
     tileSources: props.src,
   });
-    viewer.addHandler('page', function(event) {
+
+  viewer.addHandler('page', function(event) {
     currentPage.value = event.page + 1;
+  });
+
+  viewer.addHandler('full-page', function(event) {
+    isFullscreen.value = viewer.isFullPage(); //update isFullscreen state
   });
 });
 </script>
@@ -42,13 +56,19 @@ onMounted(() => {
   <div ref="viewerEl" class="osd">
     <div id="ToolbarVertical">
       <a id="full-page" href="#full-page">
-        <div id="FullPage" class="NavButton"></div>
+        <div :class="{ 'minimize': isFullscreen }" id="FullPage" class="NavButton"></div>
       </a>
       <a id="zoom-in" href="#zoom-in">
         <div id="ZoomIn" class="NavButton"></div>
       </a>
       <a id="zoom-out" href="#zoom-out">
         <div id="ZoomOut" class="NavButton"></div>
+      </a>
+      <a id="rotate-left" href="#rotate-left">
+        <div id="RotateLeft" class="NavButton"></div>
+      </a>
+      <a id="rotate-right" href="#rotate-right">
+        <div id="RotateRight" class="NavButton"></div>
       </a>
     </div> 
 
@@ -58,7 +78,7 @@ onMounted(() => {
         <div id="Prev" class="NavButton"></div>
       </a>
 
-      <span id="currentpage">{{ currentPage }} / {{ src.length }}</span>
+      <span id="currentpage">{{ currentPage }} / {{ src ? src.length : 0 }}</span>
        
       <a id="next-button">
         <div id="Next" class="NavButton"></div>
@@ -92,7 +112,7 @@ position:absolute;
 #ToolbarHorizontal {
   position: absolute;
   display: flex;
-  justify-content: center;  /* Add this line */
+  justify-content: center;
   bottom: 10px;
   width: 100%;
   z-index: 1000;
@@ -101,7 +121,7 @@ position:absolute;
 #ToolbarHorizontal span {
   display: flex;
   flex-direction:column;
-  justify-content: center;  /* Add this line */
+  justify-content: center;
   background-color: rgba(35, 35, 35, 0.6);
   color: white;
   text-align: center;
@@ -136,6 +156,20 @@ position:absolute;
   border-radius: 50%;
   overflow: hidden;
   cursor:pointer;
+}
+
+#FullPage.minimize {
+  background: url(@/assets/openseadragon/compress.svg);
+  background-size: 80%;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-color: rgba(35, 35, 35, 0.9);
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
 }
 
 #Prev {
@@ -185,6 +219,34 @@ position:absolute;
   cursor:pointer;
   overflow: hidden;
 }
+
+#RotateLeft {
+  background: url(@/assets/openseadragon/rotateleft.svg);
+  background-size: 35%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: rgba(35, 35, 35, 0.9);
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  cursor:pointer;
+  overflow: hidden;
+  margin-top:10px;
+}
+
+#RotateRight {
+  background: url(@/assets/openseadragon/rotateright.svg);
+  background-size: 35%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: rgba(35, 35, 35, 0.9);
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  cursor:pointer;
+  overflow: hidden;
+}
+
 
 .NavButton {
   width: 35px;

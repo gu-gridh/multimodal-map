@@ -58,6 +58,7 @@
   bottom: 40px;
   left: -80px;
   width: 170px;
+  pointer-events:none;
 }
 
 #app .ol-popup:after, .ol-popup:before {
@@ -111,8 +112,10 @@
 #app .ol-control button:active,
 #app .ol-control button:hover,
 #app .ol-control button:focus {
-  background-color: rgba(0, 0, 0, 0.7) !important;
+  background-color: rgba(0, 0, 0, 0.8) !important;
 }
+
+
 
 
 
@@ -126,6 +129,9 @@
     font-size: 120% !important;
   }
 
+  #app .ol-control{
+    display:none!important;
+    }
  
   #app .ol-zoom-in {
     display:none!important;

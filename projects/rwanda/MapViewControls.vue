@@ -1,20 +1,15 @@
 <script setup lang="ts">
-import { mapStore } from "@/stores/store";
 import { storeToRefs } from "pinia";
 import { rwandaStore } from "./rwandaStore";
-import { useRwandaMap } from "./map.composable";
-import type { Place } from "./types";
-import { ref, watch } from "vue";
-import { watchEffect } from "vue";
 import CategoryButtonList from "@/components/input/CategoryButtonList.vue";
+import ButtonList from "./input/ButtonList.vue";
 import CategoryButton from "@/components/input/CategoryButton.vue";
 
 //Filtering map controls
 const SOURCES = {
-  all: "All",
-  images: "Images",
-  places: "Place names",
-  interviews: "Interviews",
+  image: "Images",
+  text: "Interviews",
+  document: "Documents",
 }
 const PLACE_TYPES = {
   area: "Areas",
@@ -28,71 +23,61 @@ const INFORMANTS = {
   "Old female": "Old &#9792;"
 }
 const PERIODS = {
-  "colonial period": "Colonial",
-  "post-independence": "Post-indenpendence",
-  "post-genocide": "Post-genocide",
-  "after 2012": "After 2012"
+  "Before 1899": "Pre-colonial",
+  "1899-1962": "Colonial",
+  "1962-1994": "Post-independence",
+  "1994-2012": "Post-genocide",
+  "After 2012": "After 2012"
 }
 const LANGUAGES = {
-  "kinyarwanda-english": "KE",
-  "arabic-english": "AE",
-  "french-kinyarwanda": "FK",
+  "English": "ENG",
+  "French": "FR",
+  "French-Kinyarwanda": "FR-KIN",
+  "Kinyarwanda": "KIN",
+  "Kinyarwanda-English": "KIN-ENG",
+  "Arabic": "AR",
+  "Arabic-English": "AR-ENG",
   "Kiswahili": "SW",
-  "kinyarwanda": "RW",
-  "french": "FR",
-  "english": "EN",
 }
-const { sources, placeTypes, periods, informants, sourcesLayer, placeTypeLayer, periodsLayer, allLayer, informantsLayer, languages } = storeToRefs(rwandaStore());
+const { sources, placeTypes, periods, informants, allLayer, languages, showAdvancedLayer } = storeToRefs(rwandaStore());
 
 //handle category button click
 const handleSourcesClick = (key: string) => {
   if(key == "all"){
-    sourcesLayer.value = false
-    placeTypeLayer.value = false
-    periodsLayer.value = false
-    informantsLayer.value = false
+    showAdvancedLayer.value = false
     allLayer.value = true
+    sources.value = []
+    placeTypes.value = []
+    periods.value = []
+    informants.value = []
+    languages.value = []
   }
   else {
-    sourcesLayer.value = true
-    placeTypeLayer.value = false
-    periodsLayer.value = false
+    showAdvancedLayer.value = true
+    //turn off show all
     allLayer.value = false
-    informantsLayer.value = false
   }
 }
 
-const handlePlaceTypeClick = (key: string) => {
-  console.log("Clicked: ", key);
-  placeTypeLayer.value = true
-  sourcesLayer.value = false
-  periodsLayer.value = false
-  allLayer.value = false
-  informantsLayer.value = false
-}
-
-const handlePeriodClick = (key: string) => {
-  console.log("Clicked: ", key);
-  periodsLayer.value = true
-  sourcesLayer.value = false
-  placeTypeLayer.value = false
-  allLayer.value = false
-  informantsLayer.value = false
-}
-
-const handleInformantClick = (key: string) => {
-  console.log("Clicked: ", key);
-  informantsLayer.value = true
-  sourcesLayer.value = false
-  placeTypeLayer.value = false
-  periodsLayer.value = false
-  allLayer.value = false
-}
 </script>
 
 <template>
   <div class="filter-container">
-    <div class="filter-heading">Sources</div>
+    <CategoryButton
+      :text="'Show all'"
+      :value="allLayer"
+      @toggle="handleSourcesClick('all')"
+      class="filter-button"
+    />
+    <div class="filter-heading">NAMES OF PLACES </div>
+      <CategoryButtonList 
+        v-model="placeTypes"
+        :categories="PLACE_TYPES"
+        :limit="1"
+        class="filter-button"
+        @click="handleSourcesClick"
+      />
+    <div class="filter-heading">SOURCES</div>
       <CategoryButtonList 
         v-model="sources"
         :categories="SOURCES"
@@ -100,36 +85,31 @@ const handleInformantClick = (key: string) => {
         class="filter-button"
         @click="handleSourcesClick"
       />
-    <div class="filter-heading">Place types</div>
+      <div class="filter-heading" v-show="sources.includes('text')">INFORMANTS</div>
       <CategoryButtonList 
-        v-model="placeTypes"
-        :categories="PLACE_TYPES"
-        :limit="1"
-        class="filter-button"
-        @click="handlePlaceTypeClick"
-      />
-    <div class="filter-heading">Informants</div>
-      <CategoryButtonList 
+        v-show="sources.includes('text')"
         v-model="informants"
         :categories="INFORMANTS"
         :limit="1"
         class="filter-button"
-        @click="handleInformantClick"
+        @click="handleSourcesClick"
       />
-      <div class="filter-heading">Languages</div>
-      <CategoryButtonList 
+    
+      <div class="filter-heading">LANGUAGES</div>
+      <ButtonList 
         v-model="languages"
         :categories="LANGUAGES"
         :limit="1"
         class="filter-button lang-buttons"
+        @click="handleSourcesClick"
       />
-    <div class="filter-heading">Time periods</div>
-      <CategoryButtonList 
+    <div class="filter-heading">TIME PERIODS</div>
+      <ButtonList 
         v-model="periods"
         :categories="PERIODS"
         :limit="1"
         class="filter-button"
-        @click="handlePeriodClick"
+        @click="handleSourcesClick"
       />
     </div>
 </template>
@@ -139,10 +119,10 @@ const handleInformantClick = (key: string) => {
   font-size: 0.8vw;
 }
 .filter-heading {
-  font-size: 1.1vw;
+  font-size: 1vw;
   margin-bottom: 2px;
   margin-top: 10px;
-  font-weight: 400;
+  font-weight: 500;
 
 }
 .checkboxes {
@@ -236,6 +216,15 @@ const handleInformantClick = (key: string) => {
 
 .no-results{
 color:rgb(180,100,100);
+}
+
+@media (max-width: 1024px) {
+  .filter-button {
+    font-size: 16px;
+  }
+  .filter-heading {
+    font-size: 18px;;
+  }
 }
 
 </style>

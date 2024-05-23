@@ -61,10 +61,11 @@ html,
 body {
   height: 100vh;
   width: 100vw;
-  margin: 0 !important;
+  margin: 0px !important;
   overflow: hidden !important;
   background-color:rgb(45,45,45);
   -ms-overflow-style: none;
+
 }
 
 #app {

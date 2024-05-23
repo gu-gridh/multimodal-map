@@ -142,6 +142,10 @@ a {
 color:white;
 }
 
+.link:visited{
+color:white;
+}
+
 .link:hover{
 opacity:0.8;
 }

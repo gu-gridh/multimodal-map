@@ -13,7 +13,7 @@
  
 
       <div class="about-article-sub" v-bind:class="{fullopacityui: visibleAbout}">
-        This project is a collaboration between University of Gothenburg, Sweden, and University of Kigali, Rwanda and financed by Vetenskapsrådet (VR). The map is under development in collaboration with Gothenburg Research Infrastructure in Digital Humanities (GRIDH) at the University of Gothenburg. Namn på alla som varit med: Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn Namn.
+        This project is a collaboration between University of Gothenburg, Sweden, and University of Kigali, Rwanda and financed by Vetenskapsrådet (VR). The map is under development in collaboration with Gothenburg Research Infrastructure in Digital Humanities (GRIDH) at the University of Gothenburg. The data has been collected by Dr. Jean de Dieu Amini Ngabonziza and Dr. Tove Rosendal. The data model and the backend was created by Johan Åhlfeldt and Aram Karimi, GRIDH. The interface has mainly been developed by Kristin Åkerlund, GRIDH.
       </div>
   
     
@@ -138,7 +138,7 @@ text-align:center;
 columns:1;
 column-gap:30px;
 width:850px;
-font-size:1.8em;
+font-size:1.9em;
 opacity:0.0;
 padding:00px 30px;
 transition: all 0.4s ease-in-out;
@@ -158,7 +158,7 @@ font-weight: 200;
 opacity:0.0;
 padding:30px;
 transition: all 0.4s ease-in-out;
-
+font-size: 1.7em;
 }
 
 .about-container .category-button{

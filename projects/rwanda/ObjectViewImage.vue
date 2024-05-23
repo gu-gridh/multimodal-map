@@ -11,33 +11,32 @@ const props = defineProps<{
 
 const diana = inject("diana") as DianaClient;
 
-const object = ref<Image>();
+const object = ref();
 const iiif_url = ref<string>();
 
 onMounted(async() => {
   if (props.id) {
     object.value = await diana.get("image", props.id.toString(), { depth: 1 });
-    iiif_url.value = object.value.iiif_file + "/info.json"
-    console.log(object.value)
-    console.log(iiif_url.value)
+    iiif_url.value = object.value.iiif_file
   }
   else console.log("no image id")
 })
 
+const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+
 </script>
 
 <template>
+  <div class="flex">
   <div class="metadata">
     <ObjectViewComponent :title="object?.title" back="/">
       <p v-if="object?.description" class="my-5 object-title">{{ object?.description }}</p>
-<!--       <div v-if="object?.informants && object.informants.length > 0">
-        <p v-for="info in object?.informants">Informants: {{ info.custom_id }}</p>
-      </div> -->
+      <p v-if="object?.place_of_interest.description" class="object-description">{{ capitalize(object?.place_of_interest.description) }}</p>
     </ObjectViewComponent>
   </div>
 
   <section class="illustration flex">
-    <OpenSeadragon v-if="iiif_url" :src="iiif_url" class="flex-1" />
+    <OpenSeadragon v-if="iiif_url" :src="`${iiif_url}/info.json`" class="flex-1" />
 
     <!-- <div id="ToolbarVertical">
       <a id="full-page" href="#full-page">
@@ -52,9 +51,10 @@ onMounted(async() => {
     </div> -->
 
   </section>
+</div>
 </template>
 
-<style>
+<style scoped>
 
 .category-button{
   width:123px !important;
@@ -63,10 +63,15 @@ onMounted(async() => {
 .metadata {
   background-color: black !important;
   overflow:hidden !important;
-  width: 450px !important;
+  margin-bottom: 10px;
+  padding: 0px 0px;
+
 }
 
-
+.object-description {
+  padding: 6px 20px 0px 0px;
+  font-size: 24px;
+}
 
 .toPlace {
   margin-top: 50px; 
@@ -75,11 +80,16 @@ onMounted(async() => {
   cursor: pointer;
 }
 
+#app #ToolbarVertical {
+  top: 75px;
+  margin-left: 10px;
+}
+
 @media screen and (min-width: 1900px) {
 .metadata .category-button{
-  width:155px!important;
-padding:5px 18px!important;
-margin-top:50px!important;
+  width:140px!important;
+  padding:5px 18px!important;
+  margin-top:50px!important;
 }
 
 .metadata .back-button{
@@ -93,6 +103,10 @@ margin-top:50px!important;
 
 @media screen and (max-width: 900px) {
 
+ .metadata .category-button{
+  width:100%!important;
+margin-top:50px!important;
+}
 }
 
 </style>

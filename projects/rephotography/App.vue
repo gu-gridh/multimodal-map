@@ -36,8 +36,6 @@ body {
 
 
 @media screen and (max-width: 1500px) {
-
-
   .main-title {
     font-size: 80px !important;
     width: 75%;

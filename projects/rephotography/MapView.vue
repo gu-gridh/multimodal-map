@@ -5,8 +5,8 @@ import MapViewControls from "./MapViewControls.vue";
 import MapComponent from "@/components/MapComponent.vue";
 import NpolarLayer from "./NpolarLayer.vue";
 import DianaPlaceLayer from "@/components/DianaPlaceLayer.vue";
-import DianaPlaceLayerRephoto from "@/components/DianaPlaceLayerRephoto.vue";
-import FeatureSelection from "@/components/FeatureSelectionRephoto.vue";
+import DianaPlaceLayerRephoto from "./DianaPlaceLayerRephoto.vue";
+import FeatureSelection from "./FeatureSelectionRephoto.vue";
 import MapViewPreview from "./MapViewPreview.vue";
 import MapViewGallery from "./MapViewGallery.vue";
 import { storeToRefs } from "pinia";
@@ -23,7 +23,6 @@ import GeoJSON from "ol/format/GeoJSON";
 
 
 const { categories, years, tags, tagsLayerVisible, placesLayerVisible, mapLayerVisibility, mapLayerVisibilityTwo, mapLayerVisibilityThree } = storeToRefs(rephotographyStore());
-
 const store = mapStore();
 const { selectedFeature } = storeToRefs(store);
 const minZoom = 9;
@@ -80,7 +79,6 @@ onMounted(() => {
 })
 
 const toggleAboutVisibility = async () => {
-  console.log('fired')
   await nextTick();
   visibleAbout.value = !visibleAbout.value;
 };
@@ -99,12 +97,6 @@ const vectorLayers = computed(() => [
   geoJsonFormat: new GeoJSON(),
   },
 ]);
-
-const showSection = ref(false);
-
-const toggleSection = () => {
-  showSection.value = !showSection.value;
-};
 
 /*Colors for Vector Layer*/
 const layerColors = ["rgb(255,150,0)", "rgb(0,150,50)", "rgb(0,100,255)"];
@@ -127,6 +119,14 @@ watch(showGrid, (newValue) => {
   </div>
   <MapViewGallery v-if="showGrid" />
  <About :visibleAbout="visibleAbout" @close="visibleAbout = false" />
+ <div class="gradient-blur">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
   <MainLayout>
     <template #search>
       <button class="item"  @click="toggleAboutVisibility">
@@ -151,7 +151,7 @@ watch(showGrid, (newValue) => {
       :restrictExtent="[0.0, 75.0, 30.0, 81.0]" >
         <template #layers>
           <NpolarLayer
-            capabilitiesUrl="https://geodata.npolar.no/arcgis/rest/services/Basisdata/NP_Ortofoto_Svalbard_WMTS_25833/MapServer/WMTS/1.0.0/WMTSCapabilities.xml"
+            capabilitiesUrl="https://geodata.npolar.no/arcgis/rest/services/Basisdata/NP_Ortofoto_Svalbard_WMTS_3857/MapServer/WMTS/1.0.0/WMTSCapabilities.xml"
           />
 
         <!-- places -->
@@ -204,40 +204,30 @@ watch(showGrid, (newValue) => {
           </ol-style>
         </DianaPlaceLayer>
 
-        <div v-if="mapLayerVisibility">
-          <DianaPlaceLayerRephoto
-          v-for="(layer, index) in vectorLayers"
+        <DianaPlaceLayerRephoto
+          v-for="layer in vectorLayers"
           :key="layer.url"
-          :externalUrl="layer.url"
-          :zIndex=2
+          :geojsonUrl="layer.url"
+          :zIndex="2"
+          :isVisible="mapLayerVisibility"
+          :date= true
         >
-          <ol-style>
-            <ol-style-stroke :color="layerColors[index % layerColors.length]" :width="4"></ol-style-stroke>
-          </ol-style>
         </DianaPlaceLayerRephoto>
-      </div>
 
-      <div v-if="mapLayerVisibilityTwo">
         <DianaPlaceLayerRephoto
-          :externalUrl="'https://data.dh.gu.se/geography/CryoClim_GAO_SJ_1936-1972.geojson'"
-          :zIndex=1
+          :geojsonUrl="'https://data.dh.gu.se/geography/CryoClim_GAO_SJ_1936-1972.geojson'"
+          :zIndex="1"
+          :isVisible="mapLayerVisibilityTwo"
+          :date= false
         >
-          <ol-style>
-              <ol-style-fill color="rgba(255,255,255,0.4)"></ol-style-fill>
-          </ol-style>
         </DianaPlaceLayerRephoto>
-      </div>
 
-      <div v-if="mapLayerVisibilityThree">
-        <DianaPlaceLayerRephoto
-          :externalUrl="'https://data.dh.gu.se/geography/CryoClim_GAO_SJ_2001-2010.geojson'"
+        <!-- <DianaPlaceLayerRephoto
+          :geojsonUrl="'https://data.dh.gu.se/geography/CryoClim_GAO_SJ_2001-2010.geojson'"
           :zIndex=1
+          :isVisible="mapLayerVisibilityThree"
         >
-          <ol-style>
-            <ol-style-stroke color="purple" :width="4"></ol-style-stroke>
-          </ol-style>
-        </DianaPlaceLayerRephoto>
-      </div>
+        </DianaPlaceLayerRephoto> -->
 
 
         </template>
@@ -258,14 +248,121 @@ watch(showGrid, (newValue) => {
 }
 
 #app .left-pane {
+  background-size: contain;
   width: 50%;
   min-width: 900px;
+  user-select:none;
 }
 
 .map-container {
   height: calc(100vh - 80px) !important;
   position: relative;
   width: 100%;
+  user-select:none;
+}
+
+.gradient-blur {
+  position: fixed;
+  z-index: 1;
+  inset: auto 0 0 0;
+  height: calc(100vh - 80px);
+  pointer-events: none;
+  width: 750px;
+  top:0px;
+  opacity:1.0;
+  user-select:none;
+}
+
+@media screen and (max-width: 900px) {
+  .gradient-blur {
+display:none;
+  }
+}
+
+.gradient-blur>div,
+.gradient-blur::before,
+.gradient-blur::after {
+  position: absolute;
+  inset: 0;
+}
+
+.gradient-blur::before {
+  content: "";
+  z-index: 1;
+  backdrop-filter: blur(0.5px);
+  mask: linear-gradient(to left,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 1) 12.5%,
+      rgba(0, 0, 0, 1) 25%,
+      rgba(0, 0, 0, 0) 37.5%);
+}
+
+.gradient-blur>div:nth-of-type(1) {
+  z-index: 2;
+  backdrop-filter: blur(1px);
+  mask: linear-gradient(to left,
+      rgba(0, 0, 0, 0) 12.5%,
+      rgba(0, 0, 0, 1) 25%,
+      rgba(0, 0, 0, 1) 37.5%,
+      rgba(0, 0, 0, 0) 50%);
+}
+
+.gradient-blur>div:nth-of-type(2) {
+  z-index: 3;
+  backdrop-filter: blur(2px);
+  mask: linear-gradient(to left,
+      rgba(0, 0, 0, 0) 25%,
+      rgba(0, 0, 0, 1) 37.5%,
+      rgba(0, 0, 0, 1) 50%,
+      rgba(0, 0, 0, 0) 62.5%);
+}
+
+.gradient-blur>div:nth-of-type(3) {
+  z-index: 4;
+  backdrop-filter: blur(4px);
+  mask: linear-gradient(to left,
+      rgba(0, 0, 0, 0) 37.5%,
+      rgba(0, 0, 0, 1) 50%,
+      rgba(0, 0, 0, 1) 62.5%,
+      rgba(0, 0, 0, 0) 75%);
+}
+
+.gradient-blur>div:nth-of-type(4) {
+  z-index: 5;
+  backdrop-filter: blur(8px);
+  mask: linear-gradient(to left,
+      rgba(0, 0, 0, 0) 50%,
+      rgba(0, 0, 0, 1) 62.5%,
+      rgba(0, 0, 0, 1) 75%,
+      rgba(0, 0, 0, 0) 87.5%);
+}
+
+.gradient-blur>div:nth-of-type(5) {
+  z-index: 6;
+  backdrop-filter: blur(16px);
+  mask: linear-gradient(to left,
+      rgba(0, 0, 0, 0) 62.5%,
+      rgba(0, 0, 0, 1) 75%,
+      rgba(0, 0, 0, 1) 87.5%,
+      rgba(0, 0, 0, 0) 100%);
+}
+
+.gradient-blur>div:nth-of-type(6) {
+  z-index: 7;
+  backdrop-filter: blur(32px);
+  mask: linear-gradient(to left,
+      rgba(0, 0, 0, 0) 75%,
+      rgba(0, 0, 0, 1) 87.5%,
+      rgba(0, 0, 0, 1) 100%);
+}
+
+.gradient-blur::after {
+  content: "";
+  z-index: 8;
+  backdrop-filter: blur(64px);
+  mask: linear-gradient(to left,
+      rgba(0, 0, 0, 0) 87.5%,
+      rgba(0, 0, 0, 1) 100%);
 }
 
 

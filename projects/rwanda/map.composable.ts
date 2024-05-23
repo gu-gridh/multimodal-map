@@ -17,7 +17,7 @@ export function useRwandaMap() {
       return axios
         .get<MapResponse<Place>>(
           `${config.urls.baseURL}/${config.urls.place}`,
-          { params: { search: query } }
+          { params: { search: query, corrected: true } }
         )
         .then((d) => {
           return d.data.features.map((p) => {
@@ -47,6 +47,7 @@ export function useRwandaMap() {
           `${config.urls.baseURL}/${config.urls.place}`,
           {
             params: searchParams,
+            
           }
         )
         .then((response) => {

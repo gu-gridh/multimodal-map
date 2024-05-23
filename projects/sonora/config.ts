@@ -1,13 +1,13 @@
-import type { EtruscanProject } from "./types";
+import type { SonoraProject } from "./types";
 
-export default <EtruscanProject>{
+export default <SonoraProject>{
   title: "",
   subtitle: "",
   moreinfo: "Learn more...",
   about:
     "",
   projection: "EPSG:3857",
-  center: [13.982, 58.696],
-  zoom: 10,
+  center: [16, 59.3],
+  zoom: 7,
   timeRange: [1600, new Date().getFullYear()],
 };

@@ -10,13 +10,13 @@ body {
 }
 
 .about-container {
-  position: fixed;
+  pointer-events: none;
+  height: calc(100vh - 80px);
+  position: absolute;
   line-height: 1;
   width: 100%;
-  height: calc(100vh - 80px);
   z-index: 2000;
   backdrop-filter: blur(0px);
-  pointer-events: none;
   transform: scale(1.5);
   translate: 0px 100px;
   transition: all 1.5s ease-in-out;
@@ -25,6 +25,7 @@ body {
 }
 
 .fullopacity {
+  height: calc(100vh - 80px);
   opacity: 1.0;
   pointer-events: auto;
   transform: scale(1.0);
@@ -163,11 +164,16 @@ a {
     position: fixed;
     color: white;
     line-height: 1;
-    height: 100%;
+    /* height: 100%; */
     width: 100%;
     padding: 0px 0px;
-
   }
+
+
+  #app .fullopacity {
+  height: calc(100vh);
+}
+
 
   #app .about-logo-top-right {
     display: none;
