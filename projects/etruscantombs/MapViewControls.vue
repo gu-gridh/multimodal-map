@@ -4,9 +4,9 @@
     <div v-if="areMapPointsLoaded">
 
       <!-- This creates a 2-column section with for the controls -->
-      <div class="control-organisation justify-left">
+      <div class="control-organisation justify-left" style="margin-bottom:8px;">
 
-        <div class="tag-section">
+        <!-- <div class="tag-section">
           <div class="section-title">{{ $t('dataset') }}</div>
           <div style="display:inline; float:left; margin-right:0px;">
             <select title="pick what dataset you want to view data from" class="dropdown theme-color-background my-2">
@@ -14,12 +14,20 @@
               <option title="View data from the San Giovenale dataset by Fredrik Tobin-Dodd" value="CTSG-2015">CTSG-2015</option>
             </select>
           </div>
+        </div> -->
+
+        <div class="tag-section margin-3">
+          <div class="section-title">Dataset</div>
+          <div title="Narrow the result to a certain dataset" class="broad-controls">
+             <CategoryButtonDropdown v-model="dataSetValue" :categories="DATASET" :limit="1" styleType="dropdown" class="my-2"
+              type="datasets" />
+          </div>
         </div>
 
         <div class="tag-section margin-20">
           <div class="section-title">{{ $t('typeofdata') }}</div>
           <div class="broad-controls">
-            <CategoryButton v-model="categories" 
+            <CategoryButtonList v-model="categories" 
                 :categories="{
                   all: $t('categories.all'), 
                   plans: $t('categories.drawings'), 
@@ -34,24 +42,30 @@
 
       </div>
 
-      <div class="control-organisation justify-space" style="justify-content:space-between;">
-        <div class="tag-section">
-          <div class="section-title">{{ $t('timeperiod') }}</div>
-          <div class="broad-controls">
-            <CategoryButtonList v-model="tags" :categories="TAGS" :limit="1" styleType="button" class="my-2" 
-            title="Pick a time period"/>
+     <div class="tag-section margin-3" >
+        <div class="section-title">{{ $t('timeperiod') }}</div>
+        <div class="slider-widget">
+          <div class="slider-section">
+              <RangeSlider
+                ref="rangeSliderRef"
+                v-model="selectedRange"
+                :min="-700"
+                :max="-200"
+                :step="1"
+                class="my-2"
+                :isSliderVisible="true"
+              />
           </div>
         </div>
       </div>
 
-
       <!-- This creates a 2-column section width for the controls -->
       <div class="control-organisation justify-space">
         <div class="tag-section">
-          <div class="section-title">{{ $t('Site') }}</div>
+          <div class="section-title">Site</div>
           <div style="display:inline; float:left; margin-right:0px;">
             <select title="pick what dataset you want to view data from" class="dropdown theme-color-background my-2">
-              <option title="View data from all datasets" value="All datasets">{{ $t('All') }}</option>
+              <option title="View data from all datasets" value="All datasets">All</option>
               <option title="View data from San Giovenale" value="CTSG-2015">San Giovenale</option>
               <option title="View data from San Giuliano" value="CTSG-2015">San Giuliano</option>
               <option title="View data from Blera" value="CTSG-2015">Blera</option>
@@ -63,7 +77,7 @@
         <div class="tag-section margin-5">
           <div class="section-title">{{ $t('necropolisname') }}</div>
           <div title="Narrow the result to a certain necropolis" class="broad-controls">
-            <CategoryButtonList v-model="necropoli" :categories="NECROPOLI" :limit="1" styleType="dropdown" class="my-2"
+            <CategoryButtonDropdown v-model="necropoli" :categories="NECROPOLI" :limit="1" styleType="dropdown" class="my-2"
               type="necropolis" @click="handleSelectionClick($event, currentTombType)" />
           </div>
         </div>
@@ -71,7 +85,7 @@
         <div class="tag-section margin-5">
           <div  class="section-title">{{ $t('tombtype') }}</div>
           <div title="Narrow the result to a certain tomb type" class="broad-controls">
-            <CategoryButtonList v-model="tombType" :categories="TOMBTYPE" :limit="1" styleType="dropdown" class="my-2"
+            <CategoryButtonDropdown v-model="tombType" :categories="TOMBTYPE" :limit="1" styleType="dropdown" class="my-2"
               type="tombType" />
           </div>
         </div>
@@ -119,8 +133,9 @@
 
 <script setup lang="ts">
 import { inject, ref, onMounted, computed, defineProps, watch } from "vue";
-import CategoryButtonList from "./CategoryButtonDropdown.vue";
-import CategoryButton from "@/components/input/CategoryButtonList.vue";
+import CategoryButtonDropdown from "./CategoryButtonDropdown.vue";
+import RangeSlider from "./RangeSliderEtruscan.vue";
+import CategoryButtonList from "@/components/input/CategoryButtonList.vue";
 import { storeToRefs } from "pinia";
 import { etruscanStore } from "./store";
 import type { EtruscanProject } from "./types";
@@ -131,7 +146,7 @@ import { nextTick } from 'vue';
 
 const config = inject<EtruscanProject>("config");
 const dianaClient = new DianaClient("etruscantombs"); // Initialize DianaClient
-const { categories, tags, necropoli, tombType, dataParams, selectedNecropolisCoordinates, enable3D, enablePlan, areMapPointsLoaded } = storeToRefs(etruscanStore());
+const { categories, selectedRange, tags, necropoli, tombType, dataSetValue, dataParams, selectedNecropolisCoordinates, enable3D, enablePlan, areMapPointsLoaded } = storeToRefs(etruscanStore());
 // Create a ref for last clicked category
 const lastClickedCategory = ref('');
 
@@ -146,9 +161,11 @@ const visibleAbout = ref(false);
 const TAGS = ref<Record<string, string>>({});
 const NECROPOLI = ref<Record<string, string>>({});
 const TOMBTYPE = ref<Record<string, string>>({});
-const currentTag = ref(null);
-const currentNecropolis = ref(null);
+const DATASET = ref<Record<string, string>>({});
+//const currentTag = ref(null);
+// const currentNecropolis = ref(null);
 const currentTombType = ref(null);
+//const dataset = ref([]);
 
 const baseURL = `${apiConfig.PLACE}?page_size=500`;
 
@@ -156,9 +173,10 @@ onMounted(async () => {
   await fetchDataAndPopulateRef("epoch", TAGS);
   await fetchDataAndPopulateRef("necropolis", NECROPOLI);
   await fetchDataAndPopulateRef("typeoftomb", TOMBTYPE);
+  await fetchDataAndPopulateRef("epoch", DATASET); //use to populate the dataset
 
-  const response = await fetch(baseURL);
-  const data = await response.json();
+  //const response = await fetch(baseURL);
+  //const data = await response.json();
 });
 
 const NECROPOLICoordinates = ref<Record<string, [number, number]>>({});
@@ -166,6 +184,8 @@ const NECROPOLICoordinates = ref<Record<string, [number, number]>>({});
 async function fetchDataAndPopulateRef<T>(type: string, refToPopulate: any) {
   try {
     const data = await dianaClient.listAll<T>(type);
+    //var i = 1;
+      
     data.forEach((result: any) => {
       if (result.published) {
         refToPopulate.value[result.id] = result.text;
@@ -174,6 +194,7 @@ async function fetchDataAndPopulateRef<T>(type: string, refToPopulate: any) {
         if (type === "necropolis" && result.geometry && result.geometry.coordinates) {
           NECROPOLICoordinates.value[result.id] = result.geometry.coordinates;
         }
+        //i++;
       }
     });
   } catch (error) {
@@ -457,6 +478,19 @@ display:none;
   opacity: 1.0;
 }
 
+.slider-widget {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size:110%;
+  float: left;
+  width: 98%;
+  border-radius: 10px;
+  min-height: 50px;
+  backdrop-filter: blur(5px);
+}
 
-
+#app .slider-section {
+  width: 100%;
+}
 </style>
