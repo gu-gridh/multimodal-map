@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import router from './router'
 import { ref, inject, onMounted } from "vue"
-import markerIcon from "@/assets/marker-red.svg";
+import markerIcon from "@/assets/marker-red-etruscan.svg";
 import i18n from '../../src/translations/etruscan';
 import apiConfig from "./apiConfig"
 
