@@ -264,6 +264,7 @@ export default {
 .gallery__item,
 .gallery__col-sizer {
   width: calc(16.6%);
+  max-height:700px;
 }
 
 .gallery__gutter-sizer {
