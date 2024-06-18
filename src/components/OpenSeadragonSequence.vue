@@ -12,6 +12,7 @@ const props = defineProps({
  
 const viewerEl = ref();
 const currentPage = ref(1);  // Define currentPage
+const isFullscreen = ref(false);
 
 onMounted(() => {  
   const viewer = OpenSeadragon({
@@ -40,8 +41,13 @@ onMounted(() => {
     preload: true,
     tileSources: props.src,
   });
-    viewer.addHandler('page', function(event) {
+
+  viewer.addHandler('page', function(event) {
     currentPage.value = event.page + 1;
+  });
+
+  viewer.addHandler('full-page', function(event) {
+    isFullscreen.value = viewer.isFullPage(); //update isFullscreen state
   });
 });
 </script>
@@ -50,7 +56,7 @@ onMounted(() => {
   <div ref="viewerEl" class="osd">
     <div id="ToolbarVertical">
       <a id="full-page" href="#full-page">
-        <div id="FullPage" class="NavButton"></div>
+        <div :class="{ 'minimize': isFullscreen }" id="FullPage" class="NavButton"></div>
       </a>
       <a id="zoom-in" href="#zoom-in">
         <div id="ZoomIn" class="NavButton"></div>
@@ -150,6 +156,20 @@ position:absolute;
   border-radius: 50%;
   overflow: hidden;
   cursor:pointer;
+}
+
+#FullPage.minimize {
+  background: url(@/assets/openseadragon/compress.svg);
+  background-size: 80%;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-color: rgba(35, 35, 35, 0.9);
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
 }
 
 #Prev {

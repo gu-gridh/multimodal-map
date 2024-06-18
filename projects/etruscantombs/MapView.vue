@@ -21,7 +21,7 @@ import GeoJSON from "ol/format/GeoJSON";
 import Title from "./Title.vue"
 import apiConfig from "./apiConfig"
 
-const { categories, tags, necropoli, tombType, tagsLayerVisible, dataParams, imgParams, selectedNecropolisCoordinates, enable3D, enablePlan } = storeToRefs(etruscanStore());
+const { categories, tags, selectedRange, necropoli, showUnknownRange, tombType, tagsLayerVisible, dataSetValue, dataParams, imgParams, selectedNecropolisCoordinates, enable3D, enablePlan } = storeToRefs(etruscanStore());
 const store = mapStore();
 const etruscan = etruscanStore();  // Get the instance of etruscanStore
 const { selectedFeature } = storeToRefs(store);
@@ -64,11 +64,18 @@ watch(
 
 /* Response for generating the URL for filtering map points down */
 const tagParams = computed(() => {
-  const epoch = tags.value[0];
   const necropolis = necropoli.value[0];
   const type = tombType.value[0];
+  const dataset = dataSetValue.value[0];
+  const selectedRangeValue = selectedRange.value;
+  const show_unknown = showUnknownRange.value;
 
-  const initialParams = { epoch, necropolis, type};
+  const initialParams: any  = { necropolis, type, dataset, show_unknown: show_unknown.toString() };
+
+   if (selectedRangeValue.length === 2) {
+    initialParams.minyear = Math.round(Math.abs(selectedRangeValue[0]));
+    initialParams.maxyear = Math.round(Math.abs(selectedRangeValue[1]));
+  }
   
   // Remove parameters that are set to "all"
   const cleanedParams = Object.keys(initialParams)
@@ -93,14 +100,6 @@ const tagParams = computed(() => {
   } else {
     delete (params as any)['with_plan'];
   }
-
-  // Convert the params object to a URL search string
-  const queryString = new URLSearchParams(params).toString();
-
-  // Concatenate the base URL with the search string to form the full URL
-  const fullUrl = queryString 
-    ? `${apiConfig.PLACE}?page_size=500&${queryString}`
-    : `${apiConfig.PLACE}?page_size=500`;
 
   etruscan.imgParams = params;
   return params;

@@ -65,12 +65,12 @@ defineComponent({
   position: absolute;
   top: 0px;
   width: 100%; 
-  height: 100%; 
+  height: calc(100% - 80px); 
   z-index: 99;
   background-color: rgb(234, 228, 219);
-  padding: 0px 0px 0px 0px; 
   overflow-y: scroll;
   transition: all 0.5s ease-in-out;
+  padding-bottom:20px!important;
 }
 
 @media (min-width: 900px) {

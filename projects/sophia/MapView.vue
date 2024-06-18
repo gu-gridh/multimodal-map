@@ -226,7 +226,7 @@ watch(showSecondFloor, (newValue) => {
 
 <style>
 .map-container {
-  height: calc(100vh - 80px) !important;
+  height: calc(100% - 80px) !important;
   position: relative;
   width: 100%;
 }
@@ -235,7 +235,7 @@ watch(showSecondFloor, (newValue) => {
   position: fixed;
   z-index: 1;
   inset: auto 0 0 0;
-  height: calc(100vh - 80px);
+  height: calc(100% - 80px);
   pointer-events: none;
   width: 750px;
   top:0px;

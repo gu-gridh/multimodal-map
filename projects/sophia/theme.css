@@ -21,6 +21,7 @@ body {
   font-weight:300;
   background-color: var(--theme-1) !important;
   font-size: 100% !important;
+  min-height:100%;
 }
 
 .theme-title-typography {
@@ -207,8 +208,9 @@ overflow:hidden;
     background: linear-gradient(180deg, rgba(232, 228, 217, 0) 0px, var(--theme-1) 300px) !important;
   }
 
-  #app .right-pane {
-    /* z-index: 0 !important; */
+  .ui-overlay {
+    top: 0px !important;
+    position:fixed!important;
   }
 
   #app .right-pane {
@@ -218,36 +220,60 @@ overflow:hidden;
   }
 
   #app .left-pane {
-    margin-top: calc(100vh - 20vh)!important;
+    margin-top: calc(100vh - 30vh)!important;
     z-index:1000!important;
+      position:absolute!important;
+      width:100%!important;
+      padding:0px!important;
   }
 
   #app .main-title {
     font-size: 6.5em!important;
     font-weight: 400!important;
     margin-top: -30px!important;
-
   }
 
   .placecard {
-    height: calc(100vh - 35vh);
-    margin-top: 80px;
-
+    height: calc(100vh - 36vh);
+    width:calc(100% - 50px);
+    margin-top: 0px;
+    position:fixed!important;
   }
 
   .close-card-button{
     margin-top:60px;
   }
 
+
+  #app .placecard-title{
+    font-size:8em!important;
+  }
+
   .ui-overlay-top{
-margin-top:calc(100px)!important;
+margin-top:calc(30px)!important;
 z-index:101!important;
   }
 
   .ui-overlay-bottom{
-
-    margin-top:64vh!important;
+    margin-top:100%!important;
     z-index:1!important;
+  }
+
+  .close-card-button{
+    right: calc(10px) !important;
+    top:5px!important;
+  }
+
+  @media screen and (max-width: 600px) {
+    #app  .left-pane{
+      padding: 30px 10px 100px 10px!important;
+    }
+    #app  .main-title {
+    font-size: 100px !important;
+  }
+  #app .sub-title {
+    font-size: 50px;
+  }
   }
 
 }

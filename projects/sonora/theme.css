@@ -101,6 +101,7 @@ body {
 }
 
 
+
 @media screen and (max-width: 900px) {
   .atlas-gradient {
     background: linear-gradient(180deg, rgba(232, 228, 217, 0) 0px, var(--theme-1) 300px) !important;
@@ -117,5 +118,26 @@ body {
 .organ-historic-overview a:hover {
   color: black!important;
 }
+
+.placecard {
+  height: calc(100vh - 32vh);
+  margin-top: 12%;
+  font-size:90%;
+  font-weight:300;
+}
+#app .left-pane {
+  margin-top: calc(100vh - 20vh)!important;
+  z-index:1000!important;
+}
+
+.ui-overlay{
+  margin-top:calc(5%)!important;
+  z-index:101!important;
+  }
+
+  #gallery-container{
+    height:calc(100% - 0px)!important;
+  }
+  
 
 }

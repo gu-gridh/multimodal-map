@@ -5,7 +5,10 @@ import config from "./config";
 export const etruscanStore = defineStore("etruscan", () => {
   const categories = ref<Array<string>>(["all"]);
   const tags = ref<Array<string>>(["all"]);
+  const dataSetValue = ref<Array<string>>(["all"]);
   const necropoli = ref<Array<string>>(["all"]);
+  const selectedRange = ref([-700, -200]);
+  const showUnknownRange = ref(true);
   const tombType = ref<Array<string>>(["all"]);
   const tagsLayerVisible = ref(false); // Default visibility state for tags layer
   const dataParams = ref<Record<string, string | number | null>>({});
@@ -16,5 +19,5 @@ export const etruscanStore = defineStore("etruscan", () => {
   const areMapPointsLoaded = ref<boolean>(false);
   const placeId = ref<string | null>(null);
 
-  return { categories, tags, tagsLayerVisible, necropoli, tombType,  dataParams, selectedNecropolisCoordinates, enable3D, enablePlan, areMapPointsLoaded, imgParams, placeId };
+  return { categories, tags, dataSetValue, showUnknownRange, tagsLayerVisible, necropoli, selectedRange, tombType,  dataParams, selectedNecropolisCoordinates, enable3D, enablePlan, areMapPointsLoaded, imgParams, placeId };
 });

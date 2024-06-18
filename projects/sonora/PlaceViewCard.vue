@@ -4,6 +4,7 @@ import { ref, inject, onMounted, nextTick } from "vue"
 import markerIcon from "@/assets/marker-red.svg";
 import { watch } from 'vue';
 import placeholderImage from './images/placeholder.png';
+import i18n from '../../src/translations/sonora';
 
 const emit = defineEmits(['link-clicked']);
 
@@ -19,16 +20,22 @@ const processOrganData = (data) => {
   // Filter entries that start with 'work'
   const filteredData = Object.values(data).filter(item => item.work);
 
-  // Sort entries by date
-  filteredData.sort((a, b) => new Date(a.date.trim()) - new Date(b.date.trim()));
+  //check if Plats exists and split it after the semicolon
+  if (data.Plats) {
+    const parts = data.Plats.split(';');
+    if (parts.length > 1) {
+      data.Plats = parts[1].trim();
+    }
+  }
 
   processedOrganData.value = filteredData;
 };
 
 const fetchOrganData = async () => {
+  const currentLocale = i18n.global.locale;
   loading.value = true; // Start loading
   try {
-    const response = await fetch(`https://orgeldatabas.gu.se/webgoart/goart/organ.php?id=${props.id}&lang=sv`);
+    const response = await fetch(`https://orgeldatabas.gu.se/webgoart/goart/organ1.php?id=${props.id}&lang=${currentLocale}`);
     if (response.ok) {
       const data = await response.json();
       organData.value = data;
@@ -65,7 +72,6 @@ watch(() => props.id, async (newId) => {
 onMounted(() => {
   fetchOrganData();
 });
-
 </script>
 
 <template>
@@ -266,7 +272,7 @@ onMounted(() => {
   height: calc(100vh - 80px);
   padding-bottom: 30px;
   padding-left: 45px;
-  padding-right: 20px;
+  padding-right: 0px;
 }
 
 /* #app .place-meta-container {} */
@@ -329,6 +335,7 @@ display:block;
 @media screen and (max-width: 900px) {
   .placecard-full {
     margin-top: 40px !important;
+    width:100% !important;
   }
 
   .placeview-main-title{
@@ -361,10 +368,31 @@ display:none;
     font-size:6em;
   }
 
+  .historical-overview-title{
+    font-size:2em;
+    padding-left:0px;
+  margin-left:-10px;
+  }
+
   .date-column {
-  width: 240px;
-  font-size: 40px;
+  width: 100%;
+  font-size: 30px;
+  padding-left:0px;
+  margin-left:-10px;
 }
+
+.info-column{
+  width: 100%;
+
+  padding-left:0px;
+  margin-left:-10px;
+}
+
+.historical-overview {
+
+  padding-bottom:0px;
+}
+
 
 .historical-overview a {
 
@@ -378,8 +406,8 @@ display:none;
     height: auto;
     width: 100%;
     z-index: 100;
-    padding-right: 20px !important;
-    padding-left: 20px !important;
+    padding-right: 0px !important;
+    padding-left: 0px !important;
     padding-bottom: 0px !important;
     overflow-y: auto;
   }
@@ -393,16 +421,17 @@ display:none;
   }
 
   .placecard-full {
-    margin-top: 30px;
+    margin-top: 40px !important;
     color: black;
     margin-left: 0px;
     background-color: white;
-    padding-bottom: 30px;
+    padding-bottom: 0px;
     box-shadow: 0px -15px 15px rgba(0, 0, 0, 0.1);
     transition: all 0.0s ease-in-out;
     height: auto;
     overflow: hidden;
     border-radius: 20px 20px 0px 0px !important;
+    width:100%!important;
   }
 
   .placecard-full .category-button {

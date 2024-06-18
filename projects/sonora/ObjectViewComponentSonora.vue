@@ -136,10 +136,25 @@ const goBack = () => {
 /* The basic structure */
 @media screen and (max-width: 900px) {
   .meta-top-gradient{
-    width:100%;
+  width:100%;
   margin-top:49.9vh;
 
 }
+
+.illustration {
+  height: 70vh!important;
+}
+
+.meta-container{
+  top:0vh;
+  overflow-y: auto;
+  height:calc(auto)!important;
+  padding-bottom:230px!important;
+  padding-left:75px!important;
+  -ms-overflow-style: none!important;
+  scrollbar-width: none;
+}
+
 }
 
 

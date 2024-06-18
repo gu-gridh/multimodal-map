@@ -262,6 +262,10 @@ watch(dataParams, async () => {
   margin-bottom: 10px;
   float: left;
   overflow:hidden !important;
+  -webkit-transition-property: none!important;
+  -moz-transition-property: none!important;
+  -o-transition-property: none!important;
+  transition-property: none!important;
 }
 
 .gallery__item--height1 { height: 140px; background: #EA0; }

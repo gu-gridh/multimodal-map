@@ -29,12 +29,8 @@ watchEffect(async () => {
 </script>
 
 <template>
-<router-view>
-    <div v-if="selectedFeature" class="right-panel">
-        <PlaceView :id="featureId"/>
-    </div>
-    <div v-if="route.params.placeId" class="right-panel">
-        <PlaceView :id="props.placeId || ''" />
+    <div v-if="route.params.placeId || selectedFeature" class="right-panel">
+        <PlaceView :id="props.placeId || ''"/>
     </div>
     <div v-else class="right-panel-initial">
         <div class="container">
@@ -50,12 +46,11 @@ watchEffect(async () => {
         </div>
         
     </div>
-</router-view>
 </template>
 
 <style>
 #app .right-panel {
-    height:950px;
+    height:calc(100vh - 80px);
     background-color:transparent!important;
     overflow-y: auto;
 }

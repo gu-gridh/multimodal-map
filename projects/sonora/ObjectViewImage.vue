@@ -5,9 +5,18 @@ import OpenSeadragon from "@/components/OpenSeadragonSequence.vue";
 import type { ImageDeep } from "./types";
 
 const props = defineProps<{
-    object: ImageDeep;
+  object: ImageDeep;
   id: Number;
 }>();
+
+const metadataFields = computed(() => {
+  return Object.entries(props.object).reduce((acc, [key, value]) => {
+    if (value && typeof value === 'object' && 'label' in value && 'data' in value) {
+      acc[key] = value;
+    }
+    return acc;
+  }, {});
+});
 
 const imageUrls = computed(() => {
   const urls = [];
@@ -42,26 +51,13 @@ const downloadImage = (fileUrl: string, fileName: string) => {
 
 <template>
   <div class="metadata">
-    <ObjectViewComponent :title="'Organ ' + (object?.Titel)">
+    <ObjectViewComponent :title="(object['Titel'] ? object['Titel'].data : '')">
       <div class="objects">
-        <div v-if="object?.Avsändare"><div class="label">{{ $t('sender') }}:</div> <div class="data">{{ object.Avsändare }}</div></div>
-        <div v-if="object?.no_organs"><div class="label">{{ $t('number_of_organs') }}:</div> <div class="data">{{ object.no_organs }}</div></div>
-        <!-- <div v-if="object?.no_facs"><div class="label">Number of Facsimiles:</div> <div class="data">{{ object.no_facs }}</div></div> -->
-        <div v-if="object?.Arkiv"><div class="label">{{ $t('archive') }}:</div> <div class="data">{{ object.Arkiv }}</div></div>
-        <div v-if="object?.Serie"><div class="label">{{ $t('serie') }}:</div> <div class="data">{{ object.Serie }}</div></div>
-        <div v-if="object?.Volym"><div class="label">{{ $t('volym') }}:</div> <div class="data">{{ object.Volym }}</div></div>
-        <div v-if="object?.Fascikel"><div class="label">{{ $t('fascikel') }}:</div> <div class="data">{{ object.Fascikel }}</div></div>
-        <div v-if="object?.Ordningsnummer"><div class="label">{{ $t('ordningsnummer') }}:</div> <div class="data">{{ object.Ordningsnummer }}</div></div>
-        <div v-if="object?.Källa"><div class="label">{{ $t('källa') }}:</div> <div class="data">{{ object.Källa }}</div></div>
-        <div v-if="object?.Källa_info"><div class="label">{{ $t('källainfo') }}:</div> <div class="data">{{ object.Källa_info }}</div></div>
-        <div v-if="object?.Typ_av_dokument"><div class="label">{{ $t('typ_av_dokument') }}:</div> <div class="data">{{ object.Typ_av_dokument }}</div></div>
-        <div v-if="object?.['0']">
-          <!-- <div v-if="object['0'].org_nr"><div class="label">Org Nr:</div> <div class="data">{{ object['0'].org_nr }}</div></div> -->
-          <div v-if="object['0'].place"><div class="label">Place:</div> <div class="data">{{ object['0'].place }}</div></div>
-          <div v-if="object['0'].lng"><div class="label">{{ $t('longitude') }}:</div> <div class="data">{{ object['0'].lng }}</div></div>
-          <div v-if="object['0'].lat" style="margin-bottom:20px;"><div class="label">{{ $t('latitude') }}:</div> <div class="data">{{ object['0'].lat }}</div></div>
+        <div v-for="(field, key) in metadataFields" :key="key">
+          <div class="label">{{ field.label }}:</div>
+          <div class="data">{{ field.data }}</div>
         </div>
-         <div class="places-list" v-if="placesBeforeFiles.length > 0">
+        <div class="places-list" style="margin-top: 20px;" v-if="placesBeforeFiles.length > 0">
           <h3>{{ $t('found_in') }}:</h3>
           <ul>
             <li v-for="(place, index) in placesBeforeFiles" :key="index">
@@ -69,17 +65,8 @@ const downloadImage = (fileUrl: string, fileName: string) => {
             </li>
           </ul>
         </div>
-        <div class="content" v-html="object ? object.Innehåll : ''" style="margin-top:20px"></div>
       </div>
     </ObjectViewComponent>
-
-    <!-- <ObjectViewComponent :title="'TEST'">
-      <div class="objects">
-        <div><div class="label">Type:</div> </div>
-        <div class="label">Creator:  </div>
-        <div class="label">Date:</div> 
-      </div>
-    </ObjectViewComponent> -->
   </div>
 
   <section class="illustration flex">
@@ -106,6 +93,22 @@ const downloadImage = (fileUrl: string, fileName: string) => {
 </template>
 
 <style scoped>
+
+.back-button {
+  left: 20px;
+  top: 40px;
+  background: url(@/assets/backbutton.png);
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: rgba(35, 35, 35, 0.9);
+  border-radius: 50%;
+  width: 20px!important;
+  height: 20px!important;
+  border-radius: 50%;
+  overflow: hidden;
+  position: fixed;
+}
 
 .data{
   color: var(--theme-6) !important;
@@ -134,4 +137,10 @@ const downloadImage = (fileUrl: string, fileName: string) => {
 .content{
   width: 100%;
 }
+
+@media screen and (max-width: 900px) {
+
+
+}
+
 </style>

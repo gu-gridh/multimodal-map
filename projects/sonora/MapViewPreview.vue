@@ -9,6 +9,7 @@ import type {
 import type { DianaClient } from "@/assets/diana";
 import OpenSeadragon from "@/components/OpenSeadragonNonPyramid.vue";
 import placeholderImage from './images/placeholder.png';
+import i18n from '../../src/translations/sonora';
 
 const { selectedFeature } = storeToRefs(mapStore());
 const diana = inject("diana") as DianaClient;
@@ -48,16 +49,18 @@ const handlePageChange = (newPage) => {
 };
 
 //when a place is selected, fetch image and info
-watchEffect(async () => {
-  if (selectedFeature.value) {
+watch(selectedFeature, async (newFeature, oldFeature) => {
+  if (newFeature) {
     lastInteraction.value = 'place';
     selectedBuilderId.value = null;
     const placeId = selectedFeature.value.get("number") ?? selectedFeature.value.get("place_nr") ?? selectedFeature.value.get("Nr");
     place.value = { id_: placeId };
     try {
-      const response = await fetch(`https://orgeldatabas.gu.se/webgoart/goart/place.php?id=${placeId}&lang=sv`);
+      const currentLocale = i18n.global.locale;
+      const response = await fetch(`https://orgeldatabas.gu.se/webgoart/goart/place1.php?id=${placeId}&lang=${currentLocale}`);      
       if (response.ok) {
         const data = await response.json();
+        processOrganData(data);
         responseData.value = data;
 
         if (responseData.value) {
@@ -97,7 +100,7 @@ watchEffect(async () => {
     organNumbers.value = {};
     responseData.value = {};
   }
-});
+}, { immediate: true });
 
 //when a builder is selected, fetch info
 watch(selectedBuilderId, async (newId) => {
@@ -135,6 +138,17 @@ watch(() => placeClicked.value, (newValue) => {
     placeClicked.value = false;
   }
 });
+
+const processOrganData = (data) => {
+  Object.keys(data).forEach(key => {
+    if (typeof data[key] === 'string' && data[key].includes(';')) {
+      const index = data[key].indexOf(';');
+      const label = data[key].substring(0, index).trim();
+      const remainingData = data[key].substring(index + 1).trim();
+      data[key] = { label, data: remainingData };
+    }
+  });
+};
 </script>
 
 <template>
@@ -145,36 +159,34 @@ watch(() => placeClicked.value, (newValue) => {
           <OpenSeadragon :src="imageUrls" :key="imageUrls.join(',')" @page-changed="handlePageChange" class="flex-1" />
         </div>
         <div class="placecard-bottom">
-        <div class="placecard-text" v-if="responseData">
-          <div class="placecard-title theme-color-text">{{ responseData.Byggnadens_namn }}</div>
-          <div class="placecard-subtitle theme-color-text">{{ responseData.Ort }}</div>
-        </div>
-        <div class="placecard-content" v-if="responseData">
-          <div class="placecard-metadata-content">
-            <div class="metadata-item" v-if="responseData.Loc">
-              <div class="label">Location:</div>
-              <div class="tag theme-color-text">{{ responseData.Loc }}</div>
-            </div>
-            <div class="metadata-item" v-if="responseData.Stift">
-              <div class="label">{{ $t('stift') }}</div>
-              <div class="tag theme-color-text">{{ responseData.Stift }}</div>
-            </div>
-            <div class="metadata-item" v-if="responseData.Kontrakt">
-              <div class="label">{{ $t('kontrakt') }}</div>
-              <div class="tag theme-color-text">{{ responseData.Kontrakt }}</div>
-            </div>
-            <div class="metadata-item" v-if="responseData.Kommun">
-              <div class="label">{{ $t('kommun') }}</div>
-              <div class="tag theme-color-text">{{ responseData.Kommun }}</div>
-            </div>
-            <div class="metadata-item" v-if="responseData.Pastorat">
-              <div class="label">{{ $t('pastorat') }}</div>
-              <div class="tag theme-color-text">{{ responseData.Pastorat }}</div>
-            </div>
-            
+          <div class="placecard-text" v-if="responseData && responseData.Byggnadens_namn && responseData.Ort">
+            <div class="placecard-title theme-color-text">{{ responseData.Byggnadens_namn.data }}</div>
+            <div class="placecard-subtitle theme-color-text">{{ responseData.Ort.data }}</div>
           </div>
-          
-        </div>
+          <div class="placecard-content" v-if="responseData">
+            <div class="placecard-metadata-content">
+              <div class="metadata-item" v-if="responseData.Loc">
+                <div class="label">{{ $t('location') }}</div>
+                <div class="tag theme-color-text">{{ responseData.Loc }}</div>
+              </div>
+              <div class="metadata-item" v-if="responseData.Stift">
+                <div class="label">{{ $t('stift') }}</div>
+                <div class="tag theme-color-text">{{ responseData.Stift.data }}</div>
+              </div>
+              <div class="metadata-item" v-if="responseData.Kontrakt">
+                <div class="label">{{ $t('kontrakt') }}</div>
+                <div class="tag theme-color-text">{{ responseData.Kontrakt.data }}</div>
+              </div>
+              <div class="metadata-item" v-if="responseData.Kommun">
+                <div class="label">{{ $t('kommun') }}</div>
+                <div class="tag theme-color-text">{{ responseData.Kommun.data }}</div>
+              </div>
+              <div class="metadata-item" v-if="responseData.Pastorat">
+                <div class="label">{{ $t('pastorat') }}</div>
+                <div class="tag theme-color-text">{{ responseData.Pastorat.data }}</div>
+              </div>
+            </div>
+          </div>
         <!-- <div class="placecard-metadata-content">
             <div class="preview" v-html="description">
             </div>

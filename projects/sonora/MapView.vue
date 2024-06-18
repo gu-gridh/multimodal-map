@@ -29,6 +29,7 @@ const minZoom = 9;
 const maxZoom = 20;
 const featureZoom = 16; //value between minZoom and maxZoom when you select a point 
 const visibleAbout = ref(false);
+const mapViewControls = ref(null);
 const showGrid = ref(false);
 const showArchive = ref(false);
 let visited = true; // Store the visited status outside of the hook
@@ -68,17 +69,6 @@ const apiUrl = computed(() => {
   return `${baseUrl}?btype=${buildingTypeId}&year1=${year1}&year2=${year2}`;
 });
 
-// Watcher for selectedNecropolisCoordinates changes
-// watch(
-//   selectedNecropolisCoordinates,
-//   (newCoordinates, oldCoordinates) => {
-//     if (newCoordinates !== oldCoordinates && newCoordinates) {
-//       store.updateCenter(newCoordinates);
-//       store.updateZoom(16);
-//     }
-//   },
-// );
-
 onMounted(() => {
   // Check if the "visited" key exists in session storage
   visited = sessionStorage.getItem("visited") === "true"; // Retrieve the visited status from session storage
@@ -114,6 +104,15 @@ watch(showGrid, (newValue) => {
 watch(showArchive, (newValue) => {
   localStorage.setItem("showArchive", JSON.stringify(newValue));
 });
+
+watch(visibleAbout, async (newVal) => {
+  if (!newVal) {
+    await nextTick();
+    if (mapViewControls.value && mapViewControls.value.searchInput) {
+      mapViewControls.value.searchInput.focus();
+    }
+  }
+});
 </script>
 
 <template>
@@ -136,7 +135,7 @@ watch(showArchive, (newValue) => {
   <MainLayout>
     <template #search>
       <Title @toggle-about="toggleAboutVisibility" />
-      <MapViewControls/>
+      <MapViewControls ref="mapViewControls" />
     </template>
 
     <template #background>

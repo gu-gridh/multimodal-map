@@ -58,6 +58,7 @@
   bottom: 40px;
   left: -80px;
   width: 170px;
+  pointer-events:none;
 }
 
 #app .ol-popup:after, .ol-popup:before {
@@ -116,6 +117,8 @@
 
 
 
+
+
 /* Changes for mobile screens */
 
 @media screen and (max-width: 900px) {
@@ -126,6 +129,9 @@
     font-size: 120% !important;
   }
 
+  #app .ol-control{
+    display:none!important;
+    }
  
   #app .ol-zoom-in {
     display:none!important;
