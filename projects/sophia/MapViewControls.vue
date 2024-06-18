@@ -7,7 +7,11 @@
       <div class="control-organisation justify-left" style="pointer-events:auto; padding-bottom:10px; padding-top:10px;">
         <div class="tag-section">
           <div class="section-title">{{ $t('language') }}</div>
-          <div style="display:inline; float:left; margin-right:0px; pointer-events:auto;">
+          <div title="Narrow the result to a certain necropolis" class="broad-controls">
+            <CategoryButtonList v-model="language" :categories="LANGUAGE" :limit="1" styleType="dropdown" class="my-2" 
+            type="language" />
+          </div>
+          <!-- <div style="display:inline; float:left; margin-right:0px; pointer-events:auto;">
             <select title="Pick what inscription language you want filter by" class="dropdown theme-color-background my-2" >
               <option title="" value="All datasets">{{ $t('alllanguages') }}</option>
               <option title="" value="CTSG-2015">церковнослов'ян</option>
@@ -15,7 +19,7 @@
               <option title="" value="CTSG-2015">Greek</option>
               <option title="" value="CTSG-2015">Polish</option>
             </select>
-          </div>
+          </div> -->
         </div>
 
         <div class="tag-section margin-20">
@@ -96,8 +100,8 @@ import apiConfig from "./apiConfig"
 import { nextTick } from 'vue';
 
 const config = inject<InscriptionsProject>("config");
-const sophiaClient = new SophiaClient("sophia"); // Initialize SophiaClient
-const { categories, tags, dataParams, areMapPointsLoaded } = storeToRefs(inscriptionsStore());
+const sophiaClient = new SophiaClient("inscriptions"); // Initialize SophiaClient
+const { categories, tags, language, dataParams, areMapPointsLoaded } = storeToRefs(inscriptionsStore());
 // Create a ref for last clicked category
 const lastClickedCategory = ref('');
 
@@ -111,6 +115,7 @@ const visibleAbout = ref(false);
 const { selectedFeature } = storeToRefs(mapStore());
 const searchResults = ref([]);
 const TAGS = ref<Record<string, string>>({});
+const LANGUAGE = ref<Record<string, string>>({});
 //const INSCRIPTIONTYPE = ref<Record<string, string>>({});
 const currentTag = ref(null);
 //const currentNecropolis = ref(null);
@@ -121,6 +126,7 @@ const baseURL = `${apiConfig.PANEL}?page_size=500`;
 onMounted(async () => {
   // await fetchDataAndPopulateRef("epoch", TAGS);
   //await fetchDataAndPopulateRef("typeofinscription", INSCRIPTIONTYPE);
+  await fetchDataAndPopulateRef("language", LANGUAGE);
 
   const response = await fetch(baseURL);
   const data = await response.json();

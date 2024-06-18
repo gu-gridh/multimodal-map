@@ -55,6 +55,7 @@ export type Inscription = {
 export type Language = {
   id: number,
   text: string,
+  text_urk: string,
 };
 
 export type Observation = {

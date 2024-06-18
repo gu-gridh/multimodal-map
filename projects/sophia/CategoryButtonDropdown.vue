@@ -31,7 +31,7 @@ const props = defineProps<{
   categories: Record<string, string>;
   limit?: 1;
   styleType?: "button" | "dropdown";
-  type?: "necropolis" | "tombType";
+  type?: "language" | "tombType";
 }>();
 
 const emit = defineEmits(["update:modelValue", "click"]);
