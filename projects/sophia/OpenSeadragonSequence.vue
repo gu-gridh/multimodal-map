@@ -56,7 +56,7 @@
 
     <div class="interface-area-top">
       <div class="toolbar-top">
-        
+
         <a id="prev-button">
           <div id="Prev" class="switch-button"></div>
         </a>
@@ -174,7 +174,7 @@
   }
 
   #Home {
-    background: url(@/assets/openseadragon/frame.png);
+    background: url(@/assets/openseadragon/frame_small.png);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
