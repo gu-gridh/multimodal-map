@@ -51,25 +51,20 @@
 
 <template>
   <div ref="viewerEl" class="osd">
-    <!-- <div id="ToolbarVertical">
-      <a id="full-page" href="#full-page">
-        <div id="FullPage" class="NavButton"></div>
-      </a>
-      <a id="zoom-in" href="#zoom-in">
-        <div id="ZoomIn" class="NavButton"></div>
-      </a>
-      <a id="zoom-out" href="#zoom-out">
-        <div id="ZoomOut" class="NavButton"></div>
-      </a>
-      <a id="rotate-left" href="#rotate-left">
-        <div id="RotateLeft" class="NavButton"></div>
-      </a>
-      <a id="rotate-right" href="#rotate-right">
-        <div id="RotateRight" class="NavButton"></div>
-      </a>
-    </div>  -->
+ 
+    <div class="interface-area-top">
+      <div class="toolbar-top">
+        <a id="prev-button">
+          <div id="Prev" class="switch-button"></div>
+        </a>
+        <span id="currentpage">{{ currentPage }} / {{ src ? src.length : 0 }}</span>
+        <a id="next-button">
+          <div id="Next" class="switch-button"></div>
+        </a>
+      </div>
+    </div>
 
-    <div class="interface-area">
+    <div class="interface-area-bottom">
       <div class="toolbar-bottom">
 
         <a id="home" href="#home">
@@ -88,17 +83,7 @@
       </div>
     </div>
 
-    <div class="interface-area-top">
-      <div id="ToolbarHorizontal">
-        <a id="prev-button">
-          <div id="Prev" class="SwitchButton"></div>
-        </a>
-        <span id="currentpage">{{ currentPage }} / {{ src ? src.length : 0 }}</span>
-        <a id="next-button">
-          <div id="Next" class="SwitchButton"></div>
-        </a>
-      </div>
-    </div>
+  
 
 
   </div>
@@ -106,24 +91,38 @@
 
 <style scoped>
 
-#navigatorDiv{
-	position:absolute;
-	  width:80px;
-	  height:80px;
-	  margin-top:10px!important;
-	  margin-right:10px!important;
-}
+.interface-area-bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    position: absolute;
+    bottom: 15px;
+    pointer-events: none;
+  }
 
-  #ToolbarHorizontal {
+  .interface-area-top {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    position: absolute;
+    top: 15px;
+    pointer-events: none;
+  }
+
+  .toolbar-top {
     position: absolute;
     display: flex;
     justify-content: center;
-    bottom: 10px;
-    width: 100%;
     z-index: 1000;
+    align-items: center;
+    background-color: rgb(0, 0, 0, 0.8);
+    border-radius: 8px;
+    width: auto;
   }
 
-  #ToolbarHorizontal span {
+  .toolbar-top span {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -140,24 +139,36 @@
     height: 30px;
   }
 
- 
-
-  #CenterNav {
-    margin: auto;
-  }
-
-
-  #FullPage {
-    background: url(@/assets/openseadragon/expand.svg);
-    background-size: 100%;
-    background-repeat: no-repeat;
-    background-position: center;
-    width: 30px;
-    height: 30px;
-    overflow: hidden;
+  .toolbar-bottom {
+    pointer-events: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: auto;
+    height: 48px;
+    background-color: rgb(0, 0, 0, 0.8);
+    border-radius: 8px;
+    z-index: 1000;
     cursor: pointer;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    touch-action: none;
+    -ms-touch-action: none;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-tap-highlight-color: transparent;
+    box-shadow: 0.0rem 0.1rem 1rem rgba(0, 0, 0, 0.3) !important;
+    border-style: solid;
+    border-color: grey;
+    border-width: 0.5px 0px 0px 0px;
+    -webkit-backdrop-filter: blur(3px);
+    backdrop-filter: blur(3px);
   }
-
 
   #Home {
     background: url(@/assets/openseadragon/frame.png);
@@ -192,6 +203,16 @@
     overflow: hidden;
   }
 
+  #FullPage {
+    background: url(@/assets/openseadragon/expand.svg);
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 30px;
+    height: 30px;
+    overflow: hidden;
+    cursor: pointer;
+  }
 
   .NavButton {
     pointer-events: auto;
@@ -213,68 +234,6 @@
     cursor: pointer;
   }
 
-  .interface-area {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    position: absolute;
-    bottom: 15px;
-    pointer-events: none;
-  }
-
-  .interface-area-top {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    position: absolute;
-    top: 70px;
-    pointer-events: none;
-  }
-
-  .toolbar-bottom {
-    pointer-events: auto;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    padding-left: 10px;
-    padding-right: 10px;
-    width: auto;
-    height: 48px;
-    background-color: rgb(0, 0, 0, 0.8);
-    border-radius: 8px;
-    z-index: 1000;
-    cursor: pointer;
-    -webkit-user-select: none;
-    -webkit-touch-callout: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    touch-action: none;
-    -ms-touch-action: none;
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-    -webkit-tap-highlight-color: transparent;
-    box-shadow: 0.0rem 0.1rem 1rem rgba(0, 0, 0, 0.3) !important;
-    border-style: solid;
-    border-color: grey;
-    border-width: 0.5px 0px 0px 0px;
-    -webkit-backdrop-filter: blur(3px);
-    backdrop-filter: blur(3px);
-  }
-
-  /* A switcher for multiple media in same module */
-
-  #ToolbarHorizontal {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: rgb(0, 0, 0, 0.8);
-    border-radius: 8px;
-    width: auto;
-    margin-bottom: 12px;
-  }
 
   #Prev,
   #Next {
@@ -307,7 +266,7 @@
     pointer-events: none !important;
   }
 
-  .SwitchButton {
+  .switch-button {
     pointer-events: auto;
     width: 35px;
     height: 35px;
@@ -322,7 +281,7 @@
     -webkit-user-select: none;
   }
 
-  .SwitchButton:hover {
+  .switch-button:hover {
     opacity: 1;
     cursor: pointer;
   }
