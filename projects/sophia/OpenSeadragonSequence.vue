@@ -52,8 +52,11 @@
 <template>
   <div ref="viewerEl" class="osd">
  
+    <!--  These are the page switcher and counter -->
+
     <div class="interface-area-top">
       <div class="toolbar-top">
+        
         <a id="prev-button">
           <div id="Prev" class="switch-button"></div>
         </a>
@@ -61,16 +64,18 @@
         <a id="next-button">
           <div id="Next" class="switch-button"></div>
         </a>
+
       </div>
     </div>
 
+
+   <!--  These are the regular controls -->
     <div class="interface-area-bottom">
       <div class="toolbar-bottom">
 
         <a id="home" href="#home">
           <div id="Home" class="NavButton"></div>
         </a>
-
         <a id="zoom-in" href="#zoom-in">
           <div id="ZoomIn" class="NavButton"></div>
         </a>
@@ -80,11 +85,9 @@
         <a id="full-page" class="full-screen-option" href="#full-page">
           <div id="FullPage" class="NavButton full-page"></div>
         </a>
+
       </div>
     </div>
-
-  
-
 
   </div>
 </template>
