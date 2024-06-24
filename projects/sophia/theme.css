@@ -143,7 +143,7 @@ body {
 .placecard {
   height: calc(100vh - 33vh);
   margin-top: 85px;
-  font-size:90%;
+  font-size:100%;
   font-weight:300;
 }
 
@@ -155,10 +155,7 @@ body {
   height: 25% !important;
 }
 
-.placecard-title{
-  font-size:2.2vw;
-  font-weight:700!important;
-}
+
 
 .placecard-metadata-content{
 height:70px!important;
@@ -166,7 +163,7 @@ overflow:hidden;
 }
 
 .metadata-item{
-  font-size:90%;
+  font-size:18px;
 }
 
 .tag{
@@ -185,6 +182,7 @@ overflow:hidden;
   font-family: "Alumni Sans Pinstripe", sans-serif;
   font-weight: 700;
   margin-bottom: 0px !important;
+  font-size:40px;  
 }
 
 
@@ -260,8 +258,8 @@ z-index:101!important;
   }
 
   .close-card-button{
-    right: calc(10px) !important;
-    top:5px!important;
+    left: calc(15px) !important;
+    top:0px!important;
   }
 
   @media screen and (max-width: 600px) {
