@@ -31,8 +31,8 @@ const zoom = ref(16);
 const rotation = ref(0);
 const strokeWidth = ref(5);
 const strokeColor = ref("red");
-const center = ref([11.999722, 42.224444])
-const minZoom = ref(12)
+const center = ref([11.97, 57.7])
+const minZoom = ref(5)
 
 const format = inject("ol-format");
 const geoJson = new format.GeoJSON();

@@ -31,7 +31,6 @@ const vectorSource = ref(
     format: new GeoJSON(),
   })
 );
-
 const props = defineProps({
   map: Object,
   params: {
@@ -45,9 +44,11 @@ const props = defineProps({
 });
 
 const updateFeatures = (features: Feature[]) => {
-  const geoJSONFormat = new GeoJSON({ featureProjection: "EPSG:3857" });
+  const geoJSONFormat = new GeoJSON({  });
   const transformedFeatures = geoJSONFormat.readFeatures({
     type: "FeatureCollection",
+    featureProjection: "EPSG:3857",
+    dataProjection: "EPSG:4326",
     features,
   });
   
@@ -57,7 +58,6 @@ const updateFeatures = (features: Feature[]) => {
 const fetchData = async (initialUrl: string, params: Record<string, any>) => {
   let nextUrl = initialUrl;
   let initialParams = new URLSearchParams({ page_size: '1000', ...params }).toString();
-
   if (nextUrl && initialParams) {
     nextUrl = `${nextUrl}?${initialParams}`;
   }
@@ -83,7 +83,7 @@ const fetchData = async (initialUrl: string, params: Record<string, any>) => {
 // Create a WebGLPointsLayer
 const webGLPointsLayer = ref(
   new WebGLPointsLayer({
-    source: vectorSource.value as any,
+    source: vectorSource.value as any, 
     style: {
       symbol: {
         symbolType: "image",
@@ -93,8 +93,10 @@ const webGLPointsLayer = ref(
         src: markerIcon, // Use white marker
       },
     },
+    zIndex: props.zIndex,
   })
 );
+
 
 const clearPopups = () => {
   hoverCoordinates.value = null;
@@ -104,31 +106,32 @@ const clearPopups = () => {
 
 onMounted(() => {
   if (map) {
+    console.log(webGLPointsLayer.value)
     map.addLayer(webGLPointsLayer.value as any);
 
     // Initialize the select interaction for hover
-    selectHover = new Select({
-      condition: pointerMove,
-      layers: [webGLPointsLayer.value as any],
-    });
+    // selectHover = new Select({
+    //   condition: pointerMove,
+    //   layers: [webGLPointsLayer.value as any],
+    // });
 
-    // Add select interaction to the map for hover
-    map.addInteraction(selectHover);
+    // // Add select interaction to the map for hover
+    // map.addInteraction(selectHover);
 
-    // Add an event listener for when a feature is hovered over
-    selectHover.on("select", (event) => {
-      if (event.selected.length > 0) {
-        const feature = event.selected[0];
-        hoveredFeature.value = feature as any;
+    // // Add an event listener for when a feature is hovered over
+    // selectHover.on("select", (event) => {
+    //   if (event.selected.length > 0) {
+    //     const feature = event.selected[0];
+    //     hoveredFeature.value = feature as any;
 
-        const geometry = feature.getGeometry() as any;
-        hoverCoordinates.value = geometry.getCoordinates();
-    } else {
-        //clear hover information when no feature is hovered
-        hoveredFeature.value = null;
-        hoverCoordinates.value = null;
-      }
-    });
+    //     const geometry = feature.getGeometry() as any;
+    //     hoverCoordinates.value = geometry.getCoordinates();
+    // } else {
+    //     //clear hover information when no feature is hovered
+    //     hoveredFeature.value = null;
+    //     hoverCoordinates.value = null;
+    //   }
+    // });
 
     let clickedFeatures: Feature[] = [];
     map.on("click", function (evt) {
@@ -179,7 +182,7 @@ watch(
   >
     <div
       class="ol-popup-content"
-      v-html="'Tomb ' + (hoveredFeature ? hoveredFeature.get('name') : '')"
+      v-html="'Site ' + (hoveredFeature ? hoveredFeature.get('name') : '')"
     ></div>
   </ol-overlay>
 
@@ -190,7 +193,7 @@ watch(
   >
     <div
       class="ol-popup-content"
-      v-html="'Tomb ' + (selectedFeature ? selectedFeature.get('name') : '')"
+      v-html="'Site ' + (selectedFeature ? selectedFeature.get('name') : '')"
     ></div>
   </ol-overlay>
 </template>

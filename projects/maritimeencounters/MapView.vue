@@ -27,7 +27,7 @@ const maritimeencounters = maritimeencountersStore();  // Get the instance of ma
 const { selectedFeature } = storeToRefs(store);
 const minZoom = 5;
 const maxZoom = 22;
-const featureZoom = 15; //value between minZoom and maxZoom when you select a point; TODO change values
+const featureZoom = 15; //value between minZoom and maxZoom when you select a point;
 const visibleAbout = ref(false);
 const showGallery = ref(false);
 let visited = true; // Store the visited status outside of the hook
@@ -157,7 +157,7 @@ watch(showGallery, (newValue) => {
   <MainLayout>
     <template #search>
       <Title @toggle-about="toggleAboutVisibility" />
-      <MapViewControls/>
+      <!-- <MapViewControls/> -->
     </template>
 
     <template #background>
@@ -166,7 +166,7 @@ watch(showGallery, (newValue) => {
           :shouldAutoMove="true" 
           :min-zoom=minZoom
           :max-zoom=maxZoom 
-          :restrictExtent="[-12.5, 35.10, 24.6, 66.0]"    
+          :restrictExtent="[-27.5, 35.10, 24.6, 66.0]"    
         > 
           <template #layers>
             <GeoJsonWebGLRenderer
@@ -189,8 +189,8 @@ watch(showGallery, (newValue) => {
               }"
             >
             </GeoJsonWebGLRenderer>
-            <MaritimePlaceLayer :params="tagParams" :zIndex=20>
-            </MaritimePlaceLayer>
+             <MaritimePlaceLayer :params="tagParams" :zIndex=20>
+             </MaritimePlaceLayer> 
           </template>
           
         </MapComponent>  

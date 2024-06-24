@@ -191,9 +191,9 @@ async function fetchDataAndPopulateRef<T>(type: string, refToPopulate: any) {
         refToPopulate.value[result.id] = result.text;
 
         // If the type is necropolis, store its coordinates
-        if (type === "necropolis" && result.geometry && result.geometry.coordinates) {
-          NECROPOLICoordinates.value[result.id] = result.geometry.coordinates;
-        }
+        // if (type === "necropolis" && result.geometry && result.geometry.coordinates) {
+        //   NECROPOLICoordinates.value[result.id] = result.geometry.coordinates;
+        // }
         //i++;
       }
     });
@@ -209,16 +209,16 @@ const handleCategoryClick = (category: string) => {
 
     // Clear the lastClickedCategory since it was unselected
     lastClickedCategory.value = '';
-    if (category === 'models') {
-      enable3D.value = !enable3D.value;  // Toggle between true and false
-    } else {
-      enable3D.value = false;
-    }
-    if (category === 'plans') {
-      enablePlan.value = !enablePlan.value;  // Toggle between true and false
-    } else {
-      enablePlan.value = false;
-    }
+    // if (category === 'models') {
+    //   enable3D.value = !enable3D.value;  // Toggle between true and false
+    // } else {
+    //   enable3D.value = false;
+    // }
+    // if (category === 'plans') {
+    //   enablePlan.value = !enablePlan.value;  // Toggle between true and false
+    // } else {
+    //   enablePlan.value = false;
+    // }
   } else {
     // Add the clicked category only if it's not the same as the last clicked one
     categories.value = [category];
@@ -239,11 +239,11 @@ const fetchData = async (url: string) => {
   }
 
   const data = await response.json();
-  currentTombCount.value = data.shown_tombs;
-  totalPhotographs.value = data.photographs;
-  totalPlans.value = data.drawing;
-  hiddenTombs.value = data.hidden_tombs;
-  totalThreed.value = data.objects_3d; 
+  // currentTombCount.value = data.shown_tombs;
+  // totalPhotographs.value = data.photographs;
+  // totalPlans.value = data.drawing;
+  // hiddenTombs.value = data.hidden_tombs;
+  // totalThreed.value = data.objects_3d; 
 };
 
 watch(
