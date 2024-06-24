@@ -3,12 +3,12 @@ import { computed } from "vue";
 import MainLayout from "@/MainLayout.vue";
 import MapViewControls from "./MapViewControls.vue";
 import MapComponent from "@/components/MapComponent.vue";
-import DianaPlaceLayer from "./DianaPlaceLayerEtruscan.vue";
+import MaritimePlaceLayer from "./MaritimePlaceLayer.vue";
 import GeoJsonWebGLRenderer from "@/components/GeoJsonWebGLRenderer.vue";
 import FeatureSelection from "./FeatureSelection.vue";
 import MapViewPreview from "./MapViewPreview.vue";
 import { storeToRefs } from "pinia";
-import { etruscanStore } from "./store";
+import { maritimeencountersStore } from "./store";
 import { mapStore } from "@/stores/store";
 import { clean } from "@/assets/utils";
 import markerIcon from "@/assets/marker-white.svg";
@@ -21,13 +21,13 @@ import GeoJSON from "ol/format/GeoJSON";
 import Title from "./Title.vue"
 import apiConfig from "./apiConfig"
 
-const { categories, tags, selectedRange, necropoli, showUnknownRange, tombType, tagsLayerVisible, dataSetValue, dataParams, imgParams, selectedNecropolisCoordinates, enable3D, enablePlan } = storeToRefs(etruscanStore());
+const { categories, tags, selectedRange, showUnknownRange, tagsLayerVisible, dataSetValue, dataParams, imgParams } = storeToRefs(maritimeencountersStore());
 const store = mapStore();
-const etruscan = etruscanStore();  // Get the instance of etruscanStore
+const maritimeencounters = maritimeencountersStore();  // Get the instance of maritimeencountersStore
 const { selectedFeature } = storeToRefs(store);
-const minZoom = 10;
+const minZoom = 5;
 const maxZoom = 22;
-const featureZoom = 15; //value between minZoom and maxZoom when you select a point 
+const featureZoom = 15; //value between minZoom and maxZoom when you select a point; TODO change values
 const visibleAbout = ref(false);
 const showGallery = ref(false);
 let visited = true; // Store the visited status outside of the hook
@@ -52,25 +52,25 @@ watch(
 );
 
 // Watcher for selectedNecropolisCoordinates changes
-watch(
-  selectedNecropolisCoordinates,
-  (newCoordinates, oldCoordinates) => {
-    if (newCoordinates !== oldCoordinates && newCoordinates) {
-      store.updateCenter(newCoordinates);
-      store.updateZoom(16);
-    }
-  },
-);
+// watch(
+//   selectedNecropolisCoordinates,
+//   (newCoordinates, oldCoordinates) => {
+//     if (newCoordinates !== oldCoordinates && newCoordinates) {
+//       store.updateCenter(newCoordinates);
+//       store.updateZoom(16);
+//     }
+//   },
+// );
 
 /* Response for generating the URL for filtering map points down */
 const tagParams = computed(() => {
-  const necropolis = necropoli.value[0];
-  const type = tombType.value[0];
+  // const necropolis = necropoli.value[0];
+  // const type = tombType.value[0];
   const dataset = dataSetValue.value[0];
   const selectedRangeValue = selectedRange.value;
   const show_unknown = showUnknownRange.value;
 
-  const initialParams: any  = { necropolis, type, dataset, show_unknown: show_unknown.toString() };
+  const initialParams: any  = { dataset, show_unknown: show_unknown.toString() };
 
    if (selectedRangeValue.length === 2) {
     initialParams.minyear = Math.round(Math.abs(selectedRangeValue[0]));
@@ -89,19 +89,19 @@ const tagParams = computed(() => {
   const params = clean(cleanedParams);
 
   //filter for just 3D points
-  if (enable3D.value) {
-    (params as any)['with_3D'] = 'true';
-  } else {
-    delete (params as any)['with_3D'];
-  }
+  // if (enable3D.value) {
+  //   (params as any)['with_3D'] = 'true';
+  // } else {
+  //   delete (params as any)['with_3D'];
+  // }
 
-  if (enablePlan.value) {
-    (params as any)['with_plan'] = 'true';
-  } else {
-    delete (params as any)['with_plan'];
-  }
+  // if (enablePlan.value) {
+  //   (params as any)['with_plan'] = 'true';
+  // } else {
+  //   delete (params as any)['with_plan'];
+  // }
 
-  etruscan.imgParams = params;
+  maritimeencounters.imgParams = params;
   return params;
 });
 
@@ -144,12 +144,12 @@ watch(showGallery, (newValue) => {
 <template>
   <div style="display:flex; align-items: center; justify-content: center; pointer-events: none;">
     <div class="ui-mode ui-overlay">
-      <button class="item" v-bind:class="{ selected: !showGallery }" v-on:click="showGallery = false;">
+      <!-- <button class="item" v-bind:class="{ selected: !showGallery }" v-on:click="showGallery = false;">
         {{ $t('map') }}
       </button>
       <button class="item" v-bind:class="{ selected: showGallery }" v-on:click="showGallery = true;">
         {{ $t('gallery') }}
-      </button>
+      </button> -->
     </div>
   </div>
   <MapViewGallery v-if="showGallery" />
@@ -166,7 +166,7 @@ watch(showGallery, (newValue) => {
           :shouldAutoMove="true" 
           :min-zoom=minZoom
           :max-zoom=maxZoom 
-          :restrictExtent="[11.4, 42.15, 12.4, 42.4]"    
+          :restrictExtent="[-12.5, 35.10, 24.6, 66.0]"    
         > 
           <template #layers>
             <GeoJsonWebGLRenderer
@@ -189,8 +189,8 @@ watch(showGallery, (newValue) => {
               }"
             >
             </GeoJsonWebGLRenderer>
-            <DianaPlaceLayer :params="tagParams" :zIndex=20>
-            </DianaPlaceLayer>
+            <MaritimePlaceLayer :params="tagParams" :zIndex=20>
+            </MaritimePlaceLayer>
           </template>
           
         </MapComponent>  

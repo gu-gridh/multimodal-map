@@ -1,7 +1,9 @@
 import type { Project } from "@/types/project";
 import type { Geometry } from "ol/geom";
 
-export type EtruscanProject = Project;
+export type MaritimeEncountersProject = Project;
+
+// TODO write in new types
 
 export type Image = {
   id: number;

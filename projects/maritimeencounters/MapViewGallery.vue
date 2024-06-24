@@ -44,14 +44,14 @@ import { onMounted, ref, watch } from 'vue';
 import Masonry from 'masonry-layout';
 import imagesLoaded from 'imagesloaded';
 import InfiniteScroll from 'infinite-scroll';
-import { etruscanStore } from "./store";
+import { maritimeencountersStore } from "./store";
 import apiConfig from "./apiConfig";
 
 export default {
   setup() {
     const images = ref([]);
     let msnry;
-    const store = etruscanStore();
+    const store = maritimeencountersStore();
     let pageIndex = 1;  // Initialize pageIndex to 1
     let canIncrement = true;  // Flag to control the increment
     let infScroll;

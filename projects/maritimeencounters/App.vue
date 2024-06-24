@@ -2,12 +2,12 @@
 import { provide } from "vue";
 import config from "./config";
 import Footer from './Footer.vue';
-import { DianaClient } from "@/assets/diana";
+import { MaritimeEncountersClient } from "@/assets/maritimeencounters";
 
-const endpoint = new DianaClient("etruscantombs");
+const endpoint = new MaritimeEncountersClient("resources");
 
 provide("config", config);
-provide("diana", endpoint);
+provide("maritimeencounters", endpoint);
 </script>
 
 <template>

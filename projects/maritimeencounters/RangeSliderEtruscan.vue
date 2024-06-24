@@ -29,9 +29,9 @@
 <script setup lang="ts">
 import Slider from "@vueform/slider";
 import { storeToRefs } from "pinia";
-import { etruscanStore } from "./store";
+import { maritimeencountersStore } from "./store";
 import { ref, watch, computed } from "vue";
-const { showUnknownRange } = storeToRefs(etruscanStore());
+const { showUnknownRange } = storeToRefs(maritimeencountersStore());
 const props = withDefaults(defineProps<{
   modelValue: [number, number];
   min: number;

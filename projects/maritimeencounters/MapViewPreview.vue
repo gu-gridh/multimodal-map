@@ -2,18 +2,18 @@
 import { watchEffect, ref, inject } from "vue";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
-import { etruscanStore } from "./store";
+import { maritimeencountersStore } from "./store";
 import type {
   Image,
 } from "./types";
-import type { DianaClient } from "@/assets/diana";
+import type { MaritimeEncountersClient } from "@/assets/maritimeencounters";
 import OpenSeadragon from "@/components/OpenSeadragonSequence.vue";
 import apiConfig from "./apiConfig"
 
 const { selectedFeature } = storeToRefs(mapStore());
-const { placeId } = storeToRefs(etruscanStore());
-const etruscan = etruscanStore();
-const diana = inject("diana") as DianaClient;
+const { placeId } = storeToRefs(maritimeencountersStore());
+const maritimeencounters = maritimeencountersStore();
+const maritime_encounters = inject("resources") as MaritimeEncountersClient;
 const images = ref<Image[]>();
 const imageUrls = ref<string[]>([]);
 let text = ref(false)

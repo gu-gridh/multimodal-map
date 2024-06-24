@@ -1,27 +1,27 @@
 <template>
   <div class="about-container" v-bind:class="{fullopacity: visibleAbout}" :style="{ display: displayAbout ? 'block' : 'none' }">
-    <button @click="toggleLanguage">
+    <!-- <button @click="toggleLanguage">
         <div class="p-1 px-2 clickable category-button about-button" style="
                 left: 20px !important;
                 top: 20px !important;
                 font-size:1.1em!important;
               ">{{ $t('languagebutton') }}</div>
-    </button>
+    </button> -->
     <div class="flex-machine">
       <div class="red-content">
         
-    <div class="about-main-title theme-color-text" v-bind:class="{fullopacityui: visibleAbout}">{{ $t('etruscantitle') }}</div>
+    <div class="about-main-title theme-color-text" v-bind:class="{fullopacityui: visibleAbout}">{{ 'Maritime Encounters' }}</div>
     <div class="about-sub-title theme-color-text" v-bind:class="{fullopacityui: visibleAbout}"></div>
 
     <div class="about-article-main" v-bind:class="{fullopacityui: visibleAbout}">
-      {{ $t('aboutportalmain') }}
+      {{ "This portal collects and visualises datasets concerning Maritime Encounters, a project by the University of Gothenburg." }}
     </div>
 
 
 
 
       <div class="about-article-sub" v-bind:class="{fullopacityui: visibleAbout}">
-        {{ $t('aboutportal') }}
+        {{ "The portal was realised by the Gothenburg Research Infrastructure in Digital Humanities (GRIDH) at the University of Gothenburg in collaboration with InfraVis. The frontend is currently developed by Dr. Matteo Tomasini, while the backend is developed by M.A. Aram Karimi. The database is curated and maintained by Dr. Michael McGuire, Dr. Ashely Green and Prof. Marc Vander Linden. Please contact matteo.tomasini(at)lir.gu.se if you have any questions about the portal." }}
     </div>
   
     
@@ -30,7 +30,7 @@
       <button @click="$emit('close')">
         <div
               class="p-1 px-2 category-button"
-              style="width:auto; padding:5px 15px; text-align: center; cursor: pointer;"  v-bind:class="{fullopacityui: visibleAbout}"> {{ $t('explore') }}</div>
+              style="width:auto; padding:5px 15px; text-align: center; cursor: pointer;"  v-bind:class="{fullopacityui: visibleAbout}"> {{ "Explore" }}</div>
           </button>
         </div>
         <!-- <div class="about-lower-border"> </div> -->
@@ -47,7 +47,7 @@
 
 <script lang="ts">
 
-import i18n from '../../src/translations/etruscan';
+// import i18n from '../../src/translations/etruscan';
 
 export default {
   name: "aboutview",
@@ -76,13 +76,13 @@ export default {
     },
   },
   methods: {
-    toggleLanguage() {
-      if (i18n.global.locale === 'en') {
-        i18n.global.locale = 'it';
-      } else {
-        i18n.global.locale = 'en';
-      }
-    },
+    // toggleLanguage() {
+    //   if (i18n.global.locale === 'en') {
+    //     i18n.global.locale = 'it';
+    //   } else {
+    //     i18n.global.locale = 'en';
+    //   }
+    // },
   },
 };
 
@@ -140,7 +140,7 @@ font-size:1.9em!important;
   width: 180px;
   height: 180px;
   position: absolute;
-  background: url(/images/logo-isvroma3.png);
+  background: url(/images/GU_logo.jpg);
   background-repeat: no-repeat;
   background-size: contain;
   top: 30px;

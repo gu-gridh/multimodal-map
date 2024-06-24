@@ -1,15 +1,15 @@
 <template>
-    <div class="main-title">{{ $t('etruscantitle') }}</div>
-    <div class="about">{{ $t('etruscanabout') }}</div>
+    <div class="main-title">{{ "Maritime Encounters" }}</div>
+    <div class="about">{{ "The portal is published by GRIDH at the University of Gothenburg in close collaboration with InfraVis." }}</div>
     <button class="item" @click="$emit('toggle-about')">
       <div class="p-1 px-2 clickable category-button about-button">
-        {{ $t('infobutton') }}</div>
+        {{ "About the portal" }}</div>
     </button>
-    <button @click="toggleLanguage">
+    <!-- <button @click="toggleLanguage">
         <div class="p-1 px-2 clickable category-button about-button" style="
                 margin-left: 10px;
               ">{{ $t('languagebutton') }}</div>
-    </button>
+    </button> -->
 </template>
 
 <script>

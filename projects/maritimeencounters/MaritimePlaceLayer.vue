@@ -4,7 +4,7 @@ import GeoJSON from "ol/format/GeoJSON.js";
 import VectorSource from "ol/source/Vector";
 import WebGLPointsLayer from "ol/layer/WebGLPoints.js";
 import { fromLonLat } from "ol/proj";
-import { DIANA_BASE } from "@/assets/diana";
+import { MARITIMEENCOUNTERS_BASE } from "@/assets/maritimeencounters";
 import markerIcon from "@/assets/marker-white.svg";
 import markerGold from "@/assets/marker-gold.svg";
 import Style from "ol/style/Style";
@@ -14,7 +14,7 @@ import Icon from "ol/style/Icon";
 import { mapStore } from "@/stores/store";
 import { storeToRefs } from "pinia";
 import Select from "ol/interaction/Select";
-import { etruscanStore } from "./store";
+import { maritimeencountersStore } from "./store";
 import { pointerMove } from "ol/events/condition";
 import type Map from "ol/Map";
 
@@ -24,7 +24,7 @@ let selectHover; // Select interaction for hover
 const hoveredFeature = ref<Feature<Geometry> | null>(null);
 const hoverCoordinates = ref(null);
 const selectedCoordinates = ref(null);
-const { areMapPointsLoaded } = storeToRefs(etruscanStore());
+const { areMapPointsLoaded } = storeToRefs(maritimeencountersStore());
 const map = inject("map") as Map;
 const vectorSource = ref(
   new VectorSource({
@@ -50,7 +50,7 @@ const updateFeatures = (features: Feature[]) => {
     type: "FeatureCollection",
     features,
   });
-
+  
   vectorSource.value.addFeatures(transformedFeatures);
 };
 
@@ -161,7 +161,7 @@ watch(
   async (newParams) => {
     areMapPointsLoaded.value = false; // Reset before fetching new data
     const initialUrl =
-      "https://diana.dh.gu.se/api/etruscantombs/coordinates";
+      "https://maritime-encounters.dh.gu.se/api/resources/site_coordinates";
 
     vectorSource.value.clear();
     clearPopups(); // Clear the popups

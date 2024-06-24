@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { ref, defineProps, onMounted, inject, computed, nextTick, watch } from 'vue';
 import type { Image, Observation, Document, Pointcloud, Mesh } from './types';
-import type { DianaClient } from "@/assets/diana";
+import type { MaritimeEncountersClient } from "@/assets/maritimeencounters";
 import { storeToRefs } from "pinia";
 import PlaceViewCard from "./PlaceViewCard.vue";
 import MapComponent from "@/components/MapComponent.vue";
 import i18n from '../../src/translations/etruscan';
-import { etruscanStore } from "./store";
+import { maritimeencountersStore } from "./store";
 import { useRoute } from 'vue-router';
 import apiConfig from "./apiConfig";
 import Masonry from 'masonry-layout';
@@ -16,11 +16,11 @@ const msnry = ref<Masonry | null>(null);
 const plansMsnry = ref<Masonry | null>(null);
 
 const sort = ref('type');
-const etruscan = etruscanStore();
-const { placeId } = storeToRefs(etruscanStore());
+const maritimeencounters = maritimeencountersStore();
+const { placeId } = storeToRefs(maritimeencountersStore());
 const groupedByYear = ref<{ [year: string]: (Image | Observation | Document | Pointcloud | Mesh)[] }>({});
-const id = computed(() => etruscan.placeId);
-const diana = inject("diana") as DianaClient;
+const id = computed(() => maritimeencounters.placeId);
+const diana = inject("resources") as MaritimeEncountersClient;
 const images = ref<Image[]>([]);
 const plans = ref<Image[]>([]);
 const route = useRoute();
@@ -152,12 +152,12 @@ onMounted(async () => {
     urlId = urlId.replace(/_/g, ' ');
 
     // Check if placeId is undefined or null and fetch for the id based on the name
-    if (etruscan.placeId === null || etruscan.placeId === undefined) {
+    if (maritimeencounters.placeId === null || maritimeencounters.placeId === undefined) {
         const response = await fetch(`${apiConfig.PLACE}?name=${urlId}`);
         const data = await response.json();
 
         if (data.features && data.features.length > 0) {
-            etruscan.placeId = data.features[0].id;
+            maritimeencounters.placeId = data.features[0].id;
         }
     }
 

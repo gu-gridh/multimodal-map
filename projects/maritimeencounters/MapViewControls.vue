@@ -102,12 +102,12 @@
   <div class="data-widget">
     <div class="data-widget-section">
       <div class="data-widget-item">
-        <h3>{{ $t('tombshown') }}:</h3>
+        <h3>{{ "Sites shown" }}:</h3>
         <p>{{ currentTombCount }}</p>
       </div>
       <div class="data-widget-item">|</div>
       <div class="data-widget-item">
-        <h3>{{ $t('tombshidden') }}:</h3>
+        <h3>{{ "Sites hidden" }}:</h3>
         <p>{{ hiddenTombs }}</p>
       </div>
     </div>
@@ -116,15 +116,15 @@
 
     <div class="data-widget-section">
       <div class="data-widget-item">
-        <h3>{{ $t('photographs') }}:</h3>
+        <h3>{{ "Photographs" }}:</h3>
         <p>{{ totalPhotographs }}</p>
       </div>
       <div class="data-widget-item">
-        <h3>{{ $t('drawings') }}:</h3>
+        <h3>{{ "Drawings" }}:</h3>
         <p>{{ totalPlans }}</p>
       </div>
       <div class="data-widget-item">
-        <h3>{{ $t('threedmodels') }}:</h3>
+        <h3>{{ "3D models" }}:</h3>
         <p>{{ totalThreed }}</p>
       </div>
     </div>
@@ -137,16 +137,16 @@ import CategoryButtonDropdown from "./CategoryButtonDropdown.vue";
 import RangeSlider from "./RangeSliderEtruscan.vue";
 import CategoryButtonList from "@/components/input/CategoryButtonList.vue";
 import { storeToRefs } from "pinia";
-import { etruscanStore } from "./store";
-import type { EtruscanProject } from "./types";
-import { DianaClient } from "@/assets/diana";
+import { maritimeencountersStore } from "./store";
+import type { MaritimeEncountersProject } from "./types";
+import { MaritimeEncountersClient } from "@/assets/maritimeencounters";
 import { transform } from 'ol/proj';
 import apiConfig from "./apiConfig"
 import { nextTick } from 'vue';
 
-const config = inject<EtruscanProject>("config");
-const dianaClient = new DianaClient("etruscantombs"); // Initialize DianaClient
-const { categories, selectedRange, tags, necropoli, tombType, dataSetValue, dataParams, selectedNecropolisCoordinates, enable3D, enablePlan, areMapPointsLoaded } = storeToRefs(etruscanStore());
+const config = inject<MaritimeEncountersClient>("config");
+const maritimeencountersClient = new MaritimeEncountersClient("resources"); // Initialize DianaClient
+const { categories, selectedRange, tags, dataSetValue, dataParams } = storeToRefs(maritimeencountersStore());
 // Create a ref for last clicked category
 const lastClickedCategory = ref('');
 
@@ -170,10 +170,10 @@ const currentTombType = ref(null);
 const baseURL = `${apiConfig.PLACE}?page_size=500`;
 
 onMounted(async () => {
-  await fetchDataAndPopulateRef("epoch", TAGS);
-  await fetchDataAndPopulateRef("necropolis", NECROPOLI);
-  await fetchDataAndPopulateRef("typeoftomb", TOMBTYPE);
-  await fetchDataAndPopulateRef("epoch", DATASET); //use to populate the dataset
+  // await fetchDataAndPopulateRef("epoch", TAGS);
+  // await fetchDataAndPopulateRef("necropolis", NECROPOLI);
+  // await fetchDataAndPopulateRef("typeoftomb", TOMBTYPE);
+  // await fetchDataAndPopulateRef("epoch", DATASET); //use to populate the dataset
 
   //const response = await fetch(baseURL);
   //const data = await response.json();
@@ -183,7 +183,7 @@ const NECROPOLICoordinates = ref<Record<string, [number, number]>>({});
 
 async function fetchDataAndPopulateRef<T>(type: string, refToPopulate: any) {
   try {
-    const data = await dianaClient.listAll<T>(type);
+    const data = await maritimeencountersClient.listAll<T>(type);
     //var i = 1;
       
     data.forEach((result: any) => {

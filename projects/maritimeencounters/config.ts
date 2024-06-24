@@ -1,6 +1,6 @@
-import type { EtruscanProject } from "./types";
+import type { MaritimeEncountersProject } from "./types";
 
-export default <EtruscanProject>{
+export default <MaritimeEncountersProject>{
   title: "",
   subtitle: "",
   moreinfo: "Learn more...",
