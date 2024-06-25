@@ -55,7 +55,7 @@
     <!--  These are the page switcher and counter -->
 
     <div class="interface-area-top">
-      <div class="toolbar-top">
+      <div class="toolbar-top-mini">
 
         <a id="prev-button">
           <div id="Prev" class="switch-button"></div>
@@ -71,7 +71,7 @@
 
    <!--  These are the regular controls -->
     <div class="interface-area-bottom">
-      <div class="toolbar-bottom">
+      <div class="toolbar-bottom-mini">
 
         <a id="home" href="#home">
           <div id="Home" class="NavButton"></div>
@@ -114,7 +114,7 @@
     pointer-events: none;
   }
 
-  .toolbar-top {
+  .toolbar-top-mini {
     position: absolute;
     display: flex;
     justify-content: center;
@@ -125,7 +125,7 @@
     width: auto;
   }
 
-  .toolbar-top span {
+  .toolbar-top-mini span {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -139,18 +139,18 @@
     vertical-align: 13px;
     margin-left: 0px;
     margin-right: 0px;
-    height: 30px;
+    height: 20px;
   }
 
-  .toolbar-bottom {
+  .toolbar-bottom-mini {
     pointer-events: auto;
     display: flex;
     flex-direction: row;
     justify-content: center;
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-left: 6px;
+    padding-right: 6px;
     width: auto;
-    height: 48px;
+    height: 42px;
     background-color: rgb(0, 0, 0, 0.8);
     border-radius: 8px;
     z-index: 1000;
@@ -178,8 +178,8 @@
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-    width: 30px;
-    height: 30px;
+    width: 28px;
+    height: 28px;
     cursor: pointer;
     overflow: hidden;
   }
@@ -189,8 +189,8 @@
     background-size: 100%;
     background-repeat: no-repeat;
     background-position: center;
-    width: 30px;
-    height: 30px;
+    width: 28px;
+    height: 28px;
     cursor: pointer;
     overflow: hidden;
   }
@@ -200,19 +200,19 @@
     background-size: 100%;
     background-repeat: no-repeat;
     background-position: center;
-    width: 30px;
-    height: 30px;
+    width: 28px;
+    height: 28px;
     cursor: pointer;
     overflow: hidden;
   }
 
   #FullPage {
-    background: url(@/assets/openseadragon/expand.svg);
+    background: url(@/assets/openseadragon/expand_large.svg);
     background-size: 100%;
     background-repeat: no-repeat;
     background-position: center;
-    width: 30px;
-    height: 30px;
+    width: 26px;
+    height: 26px;
     overflow: hidden;
     cursor: pointer;
   }
@@ -225,8 +225,8 @@
     opacity: 0.8;
     margin-right: 6px;
     margin-left: 6px;
-    margin-top: 8px;
-    margin-bottom: 8px;
+    margin-top: 6px;
+    margin-bottom: 6px;
     cursor: pointer;
     user-select: none;
     -webkit-user-select: none;
@@ -242,7 +242,7 @@
   #Next {
     position: relative;
     width: 25px;
-    height: 20px;
+    height: 15px;
     background-size: 35px !important;
     background-repeat: no-repeat;
     background-position: center;
