@@ -4,6 +4,7 @@ import config from "./config";
 
 export const sonoraStore = defineStore("sonora", () => {
   const categories = ref<Array<string>>(["all"]);
+  const selectedRange = ref([1500, 1899]);
   const tags = ref<Array<string>>(["all"]);
   const necropoli = ref<Array<string>>(["all"]);
   const tombType = ref<Array<string>>(["all"]);
@@ -15,14 +16,15 @@ export const sonoraStore = defineStore("sonora", () => {
   const noPlaceCount = ref(0);
   const enable3D = ref<boolean>(false);
   const selectedBuilderId = ref(null);
+  const selectedBuildingTypeIndex = ref(0);
   const updateMapParams = (buildingTypeId, yearRange) => {
     dataParams.value = {
       ...dataParams.value,
       buildingTypeId: buildingTypeId,
-      year1: yearRange ? yearRange[0] : null,
-      year2: yearRange ? yearRange[1] : null
+      year1: selectedRange.value[0],
+      year2: selectedRange.value[1]
     };
   };
 
-  return { categories, tags, tagsLayerVisible, placesLayerVisible, necropoli, tombType,  dataParams, enable3D, selectedBuilderId, noPlaceCount, builderLayerVisible, placeClicked, updateMapParams };
+  return { categories, selectedBuildingTypeIndex, selectedRange, tags, tagsLayerVisible, placesLayerVisible, necropoli, tombType,  dataParams, enable3D, selectedBuilderId, noPlaceCount, builderLayerVisible, placeClicked, updateMapParams };
 });
