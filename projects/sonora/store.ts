@@ -15,7 +15,7 @@ export const sonoraStore = defineStore("sonora", () => {
   const placeClicked = ref(false);
   const noPlaceCount = ref(0);
   const enable3D = ref<boolean>(false);
-  const selectedBuilderId = ref(null);
+  const selectedBuilderId = ref(0);
   const selectedBuildingTypeIndex = ref(0);
   const updateMapParams = (buildingTypeId, yearRange) => {
     dataParams.value = {

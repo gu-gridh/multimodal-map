@@ -36,7 +36,7 @@ import imagesLoaded from 'imagesloaded';
 import { sonoraStore } from "./store";
 import { storeToRefs } from "pinia";
 
-const { dataParams } = storeToRefs(sonoraStore());
+const { dataParams, selectedBuilderId } = storeToRefs(sonoraStore());
 let msnry;
 let pageIndex = 1;  // Initialize pageIndex to 1
 let canIncrement = true;  // Flag to control the increment
@@ -56,7 +56,7 @@ let loadedImagesCount = ref(0);
 
 const fetchData = async (requestedPageIndex) => {
     try {
-      const urlToFetch = `https://orgeldatabas.gu.se/webgoart/goart/gallery.php?btype=${dataParams.value.buildingTypeId}&year1=${dataParams.value.year1}&year2=${dataParams.value.year2}&page=${requestedPageIndex}&group=100`;
+      const urlToFetch = `https://orgeldatabas.gu.se/webgoart/goart/gallery.php?btype=${dataParams.value.buildingTypeId}&year1=${dataParams.value.year1}&year2=${dataParams.value.year2}&id=${selectedBuilderId.value}&page=${requestedPageIndex}&group=100`;
       const res = await fetch(urlToFetch);
       const data = await res.json(); 
       const newImages = data.map(item => ({
@@ -92,7 +92,7 @@ const fetchData = async (requestedPageIndex) => {
         pageIndex++;  // Increment pageIndex for the next set of data
       }
       canIncrement = false; // Disable further increments
-      const url = `https://orgeldatabas.gu.se/webgoart/goart/gallery.php?btype=${dataParams.value.buildingTypeId}&year1=${dataParams.value.year1}&year2=${dataParams.value.year2}&page=${pageIndex}&group=100`;
+      const url = `https://orgeldatabas.gu.se/webgoart/goart/gallery.php?btype=${dataParams.value.buildingTypeId}&year1=${dataParams.value.year1}&year2=${dataParams.value.year2}&id=${selectedBuilderId.value}&page=${pageIndex}&group=100`;
       return url;
   },
     outlayer: msnry,
@@ -102,7 +102,7 @@ const fetchData = async (requestedPageIndex) => {
     elementScroll: true,
   });
 
-  infScroll.on('load', async function(response)   {
+  infScroll.on('load', async function(response) {
       try {
           // Extract the body content from the HTML response
           let bodyContent = response.querySelector("body").textContent;
@@ -114,7 +114,7 @@ const fetchData = async (requestedPageIndex) => {
             Id: item.Id,
             Place: item.Place,
             Photo: item.Photo
-          })).filter(img => img.Photo !== "");       
+          })).filter(img => img.Photo !== "");   
 
           images.value = [...images.value, ...newImages];
 
@@ -126,7 +126,7 @@ const fetchData = async (requestedPageIndex) => {
       catch (e) {
           console.error("JSON Parsing failed or other error: ", e);
       }
-    
+
       canIncrement = true;
   });
   };
@@ -168,6 +168,22 @@ watch(dataParams, async () => {
   await fetchData(pageIndex);
 
   imagesLoaded(document.querySelector('.gallery'), () => {
+    initMasonry();
+  });
+});
+
+watch(selectedBuilderId, async () => {
+ images.value = [];
+ pageIndex = 1;  
+ canIncrement = true;  
+
+ if (infScroll) {
+  infScroll.destroy();
+ }
+
+ await fetchData(pageIndex);
+
+imagesLoaded(document.querySelector('.gallery'), () => {
     initMasonry();
   });
 });

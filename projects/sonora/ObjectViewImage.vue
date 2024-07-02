@@ -88,11 +88,36 @@ const downloadImage = (fileUrl: string, fileName: string) => {
         <div id="ZoomOut" class="NavButton"></div>
       </a>
     </div>
+    <a id="download" target="_blank">
+      <div id="" class="download-button compact" title="Download image"></div>
+    </a>
 
   </section>
 </template>
 
 <style scoped>
+.download-button {
+    pointer-events: auto;
+    background: url(@/assets/openseadragon/downloadbutton.png);
+    background-size: 80%;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    overflow: hidden;
+    position: absolute;
+    top: 250px;
+    left: 459px;
+    background-color: rgba(35, 35, 35, 0.9) !important;
+    border-radius: 50%;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.download-button:hover {
+    opacity: 0.8;
+}
 
 .back-button {
   left: 20px;
@@ -139,8 +164,9 @@ const downloadImage = (fileUrl: string, fileName: string) => {
 }
 
 @media screen and (max-width: 900px) {
-
-
+  .download-button {
+    left: 8px;
+  }
 }
 
 </style>

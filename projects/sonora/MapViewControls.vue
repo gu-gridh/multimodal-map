@@ -134,9 +134,12 @@ const onBuilderClick = (builderId) => {
  store.updateZoom(allZoom);
  store.updateCenter(transformedCoordinates);
 
- if (selectedBuilderId.value !== builderId) {
-   selectedBuilderId.value = builderId;
- }
+ if (selectedBuilderId.value === builderId) {
+    selectedBuilderId.value = 0;
+    builderLayerVisible.value = false;
+  } else {
+    selectedBuilderId.value = builderId;
+  }
 };
 
 const filteredPlaces = computed(() => {
