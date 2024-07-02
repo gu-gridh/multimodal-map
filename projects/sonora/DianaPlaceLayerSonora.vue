@@ -6,10 +6,8 @@ import WebGLPointsLayer from "ol/layer/WebGLPoints.js";
 import { fromLonLat } from "ol/proj";
 import { DIANA_BASE } from "@/assets/diana";
 import markerIcon from "@/assets/marker-sonora.svg";
-import Style from "ol/style/Style";
 import Feature from "ol/Feature";
 import type Geometry from "ol/geom/Geometry";
-import Icon from "ol/style/Icon";
 import { mapStore } from "@/stores/store";
 import { storeToRefs } from "pinia";
 import Select from "ol/interaction/Select";
@@ -46,7 +44,7 @@ const fetchData = async (url) => {
     const data = await response.json();
     const geoJSONFormat = new GeoJSON({ featureProjection: "EPSG:3857" });
 
-    // Clear existing features
+    //Clear existing features
     vectorSource.value.clear();
 
     // Map over the features and transform them
@@ -96,6 +94,39 @@ const clearPopups = () => {
   hoverCoordinates.value = null;
   hoveredFeature.value = null;
   selectedCoordinates.value = null;
+};
+
+const handleBuilderIdChange = async (newId) => {
+  if (newId) {
+    clearPopups();
+    try {
+      const response = await fetch(`https://orgeldatabas.gu.se/webgoart/goart/builder.php?id=${newId}&lang=sv`);
+      const builderData = await response.json();
+
+      //Clear existing features
+      vectorSource.value.clear();
+
+      Object.values(builderData).forEach(builder => {
+        if (builder.lng && builder.lat) {
+          const coordinates = fromLonLat([parseFloat(builder.lng), parseFloat(builder.lat)]);
+          const builderFeature = new Feature({
+            geometry: new Point(coordinates),
+            name: builder.place, 
+            place_nr: builder.place_nr, 
+          });
+
+          vectorSource.value.addFeature(builderFeature);
+        }
+      });
+
+      if ('no_organs' in builderData) {
+        noPlaceCount.value = builderData.no_organs;
+      }
+
+    } catch (error) {
+      console.error("Error fetching builder data:", error);
+    }
+  }
 };
 
 onMounted(() => {
@@ -154,50 +185,33 @@ onMounted(() => {
         selectedFeature.value = undefined;
       }
     });
+
+    //check if selectedBuilderId is not 0 on mount
+    if (selectedBuilderId.value !== 0) {
+      handleBuilderIdChange(selectedBuilderId.value);
+    } else {
+      fetchData(props.apiUrl);
+    }
   } else {
     console.error("Map object is not initialized.");
   }
 });
+
 watch(selectedFeature, (newValue, oldValue) => {
   clearPopups();
 }); 
 
 watch(() => props.apiUrl, (newUrl) => {
-  if (newUrl) {
+  if (newUrl && selectedBuilderId.value === 0) {
     fetchData(newUrl);
   }
 }, { immediate: true });
 
-watch(selectedBuilderId, async (newId) => {
+watch(selectedBuilderId, (newId) => {
   if (newId) {
-    clearPopups();
-    try {
-      const response = await fetch(`https://orgeldatabas.gu.se/webgoart/goart/builder.php?id=${newId}&lang=sv`);
-      const builderData = await response.json();
-
-      // Clear existing features
-      vectorSource.value.clear();
-
-      Object.values(builderData).forEach(builder => {
-        if (builder.lng && builder.lat) {
-          const coordinates = fromLonLat([parseFloat(builder.lng), parseFloat(builder.lat)]);
-          const builderFeature = new Feature({
-            geometry: new Point(coordinates),
-            name: builder.place, 
-            place_nr: builder.place_nr, 
-          });
-
-          vectorSource.value.addFeature(builderFeature);
-        }
-      });
-
-      if ('no_organs' in builderData) {
-        noPlaceCount.value = builderData.no_organs;
-      }
-
-    } catch (error) {
-      console.error("Error fetching builder data:", error);
-    }
+    handleBuilderIdChange(newId);
+  } else {
+    fetchData(props.apiUrl);
   }
 });
 
