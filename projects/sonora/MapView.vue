@@ -57,7 +57,7 @@ watch(
 watch(showArchive, (newValue, oldValue) => {
   // Check if the archive was open before
   if (oldValue && !newValue) {
-    selectedBuilderId.value = null;  
+    selectedBuilderId.value = 0;  
   }
 });
 

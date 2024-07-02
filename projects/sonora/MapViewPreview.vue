@@ -52,7 +52,7 @@ const handlePageChange = (newPage) => {
 watch(selectedFeature, async (newFeature, oldFeature) => {
   if (newFeature) {
     lastInteraction.value = 'place';
-    selectedBuilderId.value = null;
+    selectedBuilderId.value = 0;
     const placeId = selectedFeature.value.get("number") ?? selectedFeature.value.get("place_nr") ?? selectedFeature.value.get("Nr");
     place.value = { id_: placeId };
     try {
@@ -120,12 +120,12 @@ watch(selectedBuilderId, async (newId) => {
   } else {
     builderData.value = null;
   }
-});
+}, { immediate: true });
 
 //deselecting place will close the preview
 function deselectPlace() { // Reset interaction states
   selectedFeature.value = undefined;
-  selectedBuilderId.value = null;
+  selectedBuilderId.value = 0;
   lastInteraction.value = 'none';
   builderLayerVisible.value = false;
 }
@@ -133,7 +133,7 @@ function deselectPlace() { // Reset interaction states
 //deselect builder when a place is clicked in the search results
 watch(() => placeClicked.value, (newValue) => {
   if (newValue) {
-    selectedBuilderId.value = null;
+    selectedBuilderId.value = 0;
     builderLayerVisible.value = false;
     placeClicked.value = false;
   }
