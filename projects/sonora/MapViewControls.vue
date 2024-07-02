@@ -66,13 +66,13 @@
 
        <!-- Rendering for 'builders' -->
        <template v-else-if="searchType === 'builders'">
-       <div v-for="(builder, index) in objectToArray(searchResults)" 
-           :key="index" 
-           class="search-result-item"
-           @click="onBuilderClick(builder.Id)">
-         {{ builder.Builder }}
-       </div>
-       </template>
+  <div v-for="(builder, index) in objectToArray(searchResults)" 
+      :key="index" 
+      :class="['search-result-item', { 'selected-builder': builder.Id === selectedBuilderId }]"
+      @click="onBuilderClick(builder.Id)">
+    {{ builder.Builder }}
+  </div>
+</template>
      </div>
    </div>
      <!-- Data Section -->
@@ -651,5 +651,15 @@ color:black!important;
 
 button:disabled {
  opacity: 0.5;
+}
+
+.selected-builder {
+  background-color: var(--theme-3) !important;
+  color: white;
+}
+
+.selected-builder:hover {
+  background-color: var(--theme-3) !important;
+  color: white;
 }
 </style>
