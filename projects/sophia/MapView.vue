@@ -22,6 +22,7 @@ import Title from "./Title.vue";
 import apiConfig from "./apiConfig"
 
 const { categories, tags, tagsLayerVisible, dataParams, imgParams } = storeToRefs(inscriptionsStore());
+const showGalleryInscriptions = ref(false);
 const store = mapStore();
 const inscriptions = inscriptionsStore();  // Get the instance of inscriptionsStore
 const { selectedFeature } = storeToRefs(store);
