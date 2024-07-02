@@ -39,7 +39,6 @@ const props = defineProps<{
 const emit = defineEmits(["update:modelValue", "click"]);
 
 const defaultOptionLabel = computed(() => {
-  console.log(i18n.global.locale)
   return i18n.global.locale === 'en' ? 'All' : 'все';
 });
 
