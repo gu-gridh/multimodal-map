@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, watch } from "vue";
 import ObjectViewComponent from "./ObjectViewComponentSonora.vue";
-import OpenSeadragon from "@/components/OpenSeadragonSequence.vue";
+import OpenSeadragon from "./OpenSeadragonSonora.vue";
 import type { ImageDeep } from "./types";
 
 const props = defineProps<{
@@ -39,14 +39,7 @@ const placesBeforeFiles = computed(() => {
   return places;
 });
 
-const downloadImage = (fileUrl: string, fileName: string) => {
-  const link = document.createElement('a');
-  link.href = fileUrl;
-  link.download = fileName;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-};
+
 </script>
 
 <template>
@@ -88,37 +81,10 @@ const downloadImage = (fileUrl: string, fileName: string) => {
         <div id="ZoomOut" class="NavButton"></div>
       </a>
     </div>
-    <a id="download" target="_blank">
-      <div id="" class="download-button compact" title="Download image"></div>
-    </a>
-
   </section>
 </template>
 
 <style scoped>
-.download-button {
-    pointer-events: auto;
-    background: url(@/assets/openseadragon/downloadbutton.png);
-    background-size: 80%;
-    background-repeat: no-repeat;
-    background-position: center;
-    width: 40px;
-    height: 40px;
-    cursor: pointer;
-    overflow: hidden;
-    position: absolute;
-    top: 250px;
-    left: 459px;
-    background-color: rgba(35, 35, 35, 0.9) !important;
-    border-radius: 50%;
-    user-select: none;
-    -webkit-user-select: none;
-}
-
-.download-button:hover {
-    opacity: 0.8;
-}
-
 .back-button {
   left: 20px;
   top: 40px;
@@ -161,12 +127,6 @@ const downloadImage = (fileUrl: string, fileName: string) => {
 
 .content{
   width: 100%;
-}
-
-@media screen and (max-width: 900px) {
-  .download-button {
-    left: 8px;
-  }
 }
 
 </style>
