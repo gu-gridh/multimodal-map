@@ -9,14 +9,34 @@ const props = defineProps({
     default: false
   }
 });
-
+ 
 const viewerEl = ref();
-const downloadButton = ref();
 const currentPage = ref(1);  // Define currentPage
 const isFullscreen = ref(false);
 
-const logCurrentImageUrl = () => {
-  console.log(`Current Image URL: ${props.src[currentPage.value - 1]}`);
+const downloadImage = () => {
+  const pageIndex = currentPage.value - 1;
+  const iiifFile = props.src[pageIndex].replace('/info.json', '');
+  const imageUrl = `${iiifFile}`;
+  const imgId = `image_${pageIndex + 1}`;
+
+  fetch(imageUrl)
+    .then(response => response.blob())
+    .then(blob => {
+      const url = window.URL.createObjectURL(blob);
+      const filename = `${imgId}.jpg`;
+      const a = document.createElement('a');
+      a.style.display = 'none';
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    })
+    .catch(error => {
+      console.error("Could not download the image", error);
+    });
 };
 
 onMounted(() => {  
@@ -55,7 +75,11 @@ onMounted(() => {
     isFullscreen.value = viewer.isFullPage(); //update isFullscreen state
   });
 
-  downloadButton.value.addEventListener('click', logCurrentImageUrl);
+  const downloadButton = document.getElementById('download');
+  downloadButton.addEventListener('click', function(event) {
+    event.preventDefault();
+    downloadImage();
+  });
 });
 </script>
 
@@ -79,7 +103,7 @@ onMounted(() => {
       </a>
       <a id="download" ref="downloadButton" target="_blank">
         <div id="" class="download-button compact" title="Download image"></div>
-    </a>
+      </a>
     </div> 
 
     <div id="ToolbarHorizontal">
