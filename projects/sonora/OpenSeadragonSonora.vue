@@ -4,6 +4,7 @@ import OpenSeadragon from "openseadragon";
 
 const props = defineProps({
   src: Array as () => string[],
+  downloadUrls: Array as () => string[],
   showReferenceStrip: {
     type: Boolean,
     default: false
@@ -14,29 +15,36 @@ const viewerEl = ref();
 const currentPage = ref(1);  // Define currentPage
 const isFullscreen = ref(false);
 
+// const downloadImage = () => {
+//   const pageIndex = currentPage.value - 1;
+//   const iiifFile = props.downloadUrls[pageIndex];
+//   const imgId = `image_${pageIndex + 1}`;
+
+//   fetch(iiifFile)
+//     .then(response => response.blob())
+//     .then(blob => {
+//       const url = window.URL.createObjectURL(blob);
+//       const filename = `${imgId}`;
+//       const a = document.createElement('a');
+//       a.style.display = 'none';
+//       a.href = url;
+//       a.download = filename;
+//       document.body.appendChild(a);
+//       a.click();
+//       window.URL.revokeObjectURL(url);
+//       document.body.removeChild(a);
+//     })
+//     .catch(error => {
+//       console.error("Could not download the image", error);
+//     });
+// };
+
+//open in new tab
 const downloadImage = () => {
   const pageIndex = currentPage.value - 1;
-  const iiifFile = props.src[pageIndex].replace('/info.json', '');
-  const imageUrl = `${iiifFile}`;
-  const imgId = `image_${pageIndex + 1}`;
+  const iiifFile = props.downloadUrls[pageIndex];
 
-  fetch(imageUrl)
-    .then(response => response.blob())
-    .then(blob => {
-      const url = window.URL.createObjectURL(blob);
-      const filename = `${imgId}.jpg`;
-      const a = document.createElement('a');
-      a.style.display = 'none';
-      a.href = url;
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
-    })
-    .catch(error => {
-      console.error("Could not download the image", error);
-    });
+  window.open(iiifFile, '_blank');
 };
 
 onMounted(() => {  

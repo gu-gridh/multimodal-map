@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, watch } from "vue";
+import { computed } from "vue";
 import ObjectViewComponent from "./ObjectViewComponentSonora.vue";
 import OpenSeadragon from "./OpenSeadragonSonora.vue";
 import type { ImageDeep } from "./types";
@@ -23,6 +23,16 @@ const imageUrls = computed(() => {
   for (const key in props.object) {
     if (props.object[key].Filename) {
       urls.push(props.object[key].Filename + '/info.json');
+    }
+  }
+  return urls;
+});
+
+const downloadUrls = computed(() => {
+  const urls = [];
+  for (const key in props.object) {
+    if (props.object[key].Download) {
+      urls.push(props.object[key].Download);
     }
   }
   return urls;
@@ -66,6 +76,7 @@ const placesBeforeFiles = computed(() => {
   <OpenSeadragon
       v-if="imageUrls.length > 0"
       :src="imageUrls"
+      :downloadUrls="downloadUrls"
       :showReferenceStrip="true"
       :key="imageUrls.join(',')"
       class="flex-1"
