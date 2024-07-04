@@ -3,7 +3,7 @@ import { computed, ref, defineProps, onMounted, inject, watch } from "vue";
 import GeoJSON from "ol/format/GeoJSON.js";
 import VectorSource from "ol/source/Vector";
 import WebGLPointsLayer from "ol/layer/WebGLPoints.js";
-import { fromLonLat } from "ol/proj";
+import { fromLonLat, toLonLat } from "ol/proj";
 import { MARITIMEENCOUNTERS_BASE } from "@/assets/maritimeencounters";
 import markerIcon from "@/assets/marker-white.svg";
 import markerGold from "@/assets/marker-gold.svg";
@@ -43,24 +43,14 @@ const props = defineProps({
   },
 });
 
-const updateFeatures = (features: Feature[]) => {
-  const geoJSONFormat = new GeoJSON({  });
-  const transformedFeatures = geoJSONFormat.readFeatures({
-    type: "FeatureCollection",
-    featureProjection: "EPSG:3857",
-    dataProjection: "EPSG:4326",
-    features,
-  });
-  
-  vectorSource.value.addFeatures(transformedFeatures);
-};
-
 const fetchData = async (initialUrl: string, params: Record<string, any>) => {
   let nextUrl = initialUrl;
   let initialParams = new URLSearchParams({ page_size: '1000', ...params }).toString();
   if (nextUrl && initialParams) {
     nextUrl = `${nextUrl}?${initialParams}`;
   }
+
+  const geoJSONFormat = new GeoJSON();
 
   while (nextUrl) {
     const res = await fetch(nextUrl.replace(/^http:/, "https:")).catch((err) => {
@@ -70,10 +60,33 @@ const fetchData = async (initialUrl: string, params: Record<string, any>) => {
     if (!res) continue;
 
     const data = await res.json();
-    const features = data.features || [];
 
-    // Update features immediately after fetching a batch
-    updateFeatures(features);
+    let olFeatures = geoJSONFormat.readFeatures(data);
+
+    //convert coordinates using fromLonLat
+    olFeatures.forEach(feature => {
+      let geometry = feature.getGeometry();
+      if (geometry.getType() === 'Point') {
+        let coords = geometry.getCoordinates();
+        //Ensure valid coordinates
+        if (coords.length === 2 && !isNaN(coords[0]) && !isNaN(coords[1])) {
+          const convertedCoords = fromLonLat([coords[1], coords[0]]);
+          geometry.setCoordinates(convertedCoords);
+        } else {
+          console.error(`Invalid coordinates for feature ID: ${feature.getId()}, Coordinates: ${coords}`);
+        }
+      }
+    });
+
+    //log coordinates of each feature
+   /*  olFeatures.forEach(feature => {
+      const geometry = feature.getGeometry();
+      const coords = geometry.getCoordinates();
+      const originalCoords = toLonLat(coords);
+      console.log(`Feature ID: ${feature.getId()}, Coordinates: ${originalCoords}`);
+    }); */
+
+    vectorSource.value.addFeatures(olFeatures);
 
     nextUrl = data.next ? data.next.replace(/^http:/, "https:") : null;
   }
@@ -88,7 +101,7 @@ const webGLPointsLayer = ref(
       symbol: {
         symbolType: "image",
         color: "#ffffff",
-        offset: [0, 20],
+        offset: [0, 0],
         size: [30, 45],
         src: markerIcon, // Use white marker
       },
@@ -96,7 +109,6 @@ const webGLPointsLayer = ref(
     zIndex: props.zIndex,
   })
 );
-
 
 const clearPopups = () => {
   hoverCoordinates.value = null;
