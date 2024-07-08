@@ -212,7 +212,7 @@ const processOrganData = (data) => {
         </div>
         <div class="placecard-content">
           <div class="placecard-metadata-content" v-if="builderData.Biografi">
-            <div class="builder-label">Biografi</div>
+            <div class="builder-label">{{$t('biography')}}</div>
             <div class="metadata-item-wide">
               <div class="biography">{{ builderData.Biografi }}</div>
             </div>
