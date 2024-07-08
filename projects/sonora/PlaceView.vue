@@ -15,9 +15,7 @@ const popupData = ref(null);
 const isPopupVisible = ref(false);
 const mousePosition = ref({ x: 0, y: 0 });
 const popupRef = ref(null);
-
-const linkData = ref({ builder: '', work: '' }); // Selected builder and work from placeviewcard 
-
+const linkData = ref({ builder: '', date: '', work: '' }); // Selected builder, date, and work from placeviewcard 
 const route = useRoute();
 const sort = ref('type');
 const groupedByYear = ref<{ [year: string]: (Image | Document | Media)[] }>({});
@@ -80,6 +78,7 @@ onMounted(async () => {
     if (matchingElement) {
       linkData.value = {
         builder: matchingElement.builder,
+        date: matchingElement.date,
         work: matchingElement.work,
       };
     }
@@ -188,13 +187,11 @@ const processPopUpData = (data) => {
 
 const filteredOrganDataBefore = computed(() => {
   if (!organData.value) return null;
-  console.log(organData.value.beforeDisposition)
   return organData.value.beforeDisposition;
 });
 
 const filteredOrganDataAfter = computed(() => {
   if (!organData.value) return null;
-  console.log(organData.value.afterDisposition)
   return organData.value.afterDisposition;
 });
 
@@ -236,6 +233,7 @@ const handleDisposition = async (event) => {
 
 const handleLinkClicked = (data) => {
   linkData.value.builder = data.builder;
+  linkData.value.date = data.date;
   linkData.value.work = data.work;
 };
 
@@ -254,7 +252,7 @@ const handleClickOutside = (event) => {
     </div>
     <div class="place-view">
       <div class="overview-row">
-        <div class="title-event" style="font-weight: 600;">{{ linkData.work }}</div>
+        <div class="title-event" style="font-weight: 600;">{{ linkData.work }}: {{ linkData.date }}</div>
         <div class="title-builder" style="font-weight: 300;">{{ linkData.builder }}</div>
       </div>
       <div class="place-gallery-container">

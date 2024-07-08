@@ -59,7 +59,7 @@ const handleLinkClick = (event, itemLink, item) => {
 
   if (newId) {
     router.push(`/place/${newId}`);
-    emit('link-clicked', { builder: item.builder, work: item.work });
+    emit('link-clicked', { builder: item.builder, date: item.date, work: item.work });
   }
 };
 
