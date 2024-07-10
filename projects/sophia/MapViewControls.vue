@@ -34,14 +34,46 @@
           </div>
         </div>
       </div>
-
-      <div class="search-section" style="float:left;">
-        <div class="section-title">{{ $t('searchpanels') }}</div>
-        <input type="text"
-          :placeholder="'...'" class="search-box" autofocus />
-        <div class="search-results">
-        </div>
+      <div class="section-title">{{ $t('searchtitle') }}</div>
+      <div class="toggle-buttons" style="margin-top: 10px">
+        <button style="float:left; border-radius:4px 0px 0px 0px" :class="{ active: searchType === 'surfaces' }" @click="setSearchType('surfaces')">{{ $t('panels') }}</button>
+        <button style="border-radius:0px 4px 0px 0px" :class="{ active: searchType === 'inscriptionobjects' }" @click="setSearchType('inscriptionobjects')">{{ $t('inscriptions') }}</button>
       </div>
+        <div class="search-section">
+          <input
+            ref="searchInput"
+            type="text"
+            v-model="searchQuery"
+            @input="handleSearch"
+            @focus="handleSearchBoxFocus"
+            :placeholder="searchType === 'surfaces' ? $t('searchsurfacesplaceholder') : $t('searchinscriptionsplaceholder')"
+            class="search-box"
+            autofocus
+          />
+          <div class="search-results">
+            <!-- Rendering for 'places' -->
+            <template v-if="searchType === 'surfaces'">
+              <div v-for="feature in filteredPlaces" 
+                  :key="feature.properties ? feature.properties.Nr : 'no-place'" 
+                  class="search-result-item"
+                  @click="onPlaceClick(feature)">
+                  {{ $t('searchsurfacesplaceholder') }}
+              </div>
+            </template>
+     
+            <!-- Rendering for 'builders' -->
+            <template v-else-if="searchType === 'inscriptions'">
+       <div v-for="(builder, index) in objectToArray(searchResults)" 
+           :key="index" 
+           :class="['search-result-item', { 'selected-builder': builder.Id === selectedBuilderId }]"
+           @click="onBuilderClick(builder.Id)">
+         {{ builder.Builder }}
+       </div>
+     </template>
+
+    </div>
+  </div>
+
     </div>
 
     <!-- if the markers are not loaded show the loader -->
@@ -114,6 +146,7 @@ const hiddenPanels = ref(0);
 const currentPanelCount = ref(0);
 const visibleAbout = ref(false);
 const { selectedFeature } = storeToRefs(mapStore());
+const searchType = ref('surfaces'); // Default to 'surfaces' 
 const searchResults = ref([]);
 const TAGS = ref<Record<string, string>>({});
 const LANGUAGE = ref<Record<string, string>>({});
@@ -123,6 +156,18 @@ const currentTag = ref(null);
 //const currentInscriptionType = ref(null);
 
 const baseURL = `${apiConfig.PANEL}?page_size=500`;
+
+const setSearchType = (type: string) => {
+ searchType.value = type;
+ handleSearch();
+};
+
+const handleSearchBoxFocus = () => {
+ if (firstSearchBoxClick.value && searchType.value === 'surfaces') {
+   fetchPlaces('');
+   firstSearchBoxClick.value = false; // Set to false after first fetch
+ }
+};
 
 onMounted(async () => {
   // await fetchDataAndPopulateRef("epoch", TAGS);
@@ -322,9 +367,9 @@ const toggleAboutVisibility = async () => {
   width: 98%;
   height: 50px;
   padding: 8px;
-  margin-top: 10px;
+  margin-top: 0px;
   border: 0px solid #ccc;
-  border-radius: 4px 4px 4px 4px;
+  border-radius: 0px 4px 4px 4px;
   overflow: hidden;
   background-color: rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(5px);
