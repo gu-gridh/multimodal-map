@@ -24,6 +24,7 @@ export default {
       } else {
         i18n.global.locale = 'en';
       }
+      localStorage.setItem('sonoraLanguage', i18n.global.locale);
     },
   },
   emits: ['toggle-about'],

@@ -3,6 +3,7 @@ import { ref, computed, onMounted, onUnmounted } from "vue";
 import ObjectViewComponent from "./ObjectViewComponentSonora.vue";
 import OpenSeadragon from "./OpenSeadragonSonora.vue";
 import type { ImageDeep } from "./types";
+import i18n from '../../src/translations/sonora';
 
 const props = defineProps<{
   object: ImageDeep;
@@ -85,7 +86,7 @@ onUnmounted(() => {
 <template>
   <div class="metadata">
     <ObjectViewComponent :title="(object['Titel'] ? object['Titel'].data : '')">
-      <button @click="togglePopup" class="open-popup-button">Help</button>
+      <button @click="togglePopup" class="open-popup-button">{{ $t('help') }}</button>
       <div class="objects">
         <div v-for="(field, key) in metadataFields" :key="key">
           <div class="label">{{ field.label }}:</div>
@@ -108,7 +109,7 @@ onUnmounted(() => {
         <p v-for="(field, key) in explFields" :key="key">
           <b>{{ field.label }}:</b> {{ field.data }}
         </p>
-        <button @click="togglePopup" class="close-popup-button">Close</button>
+        <button @click="togglePopup" class="close-popup-button">{{ $t('close') }}</button>
       </div>
     </div>
   </div>
@@ -137,6 +138,11 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
+#app p {
+  margin-bottom: 10px;
+  max-width: 400px;
+}
+
 .back-button {
   left: 20px;
   top: 40px;
@@ -206,8 +212,8 @@ onUnmounted(() => {
 
 .popup {
   position: fixed;
-  top: 45% !important;
-  left: 45% !important;
+  top: 40% !important;
+  left: 40% !important;
   transform: translate(-50%, -50%);
   background-color: white;
   padding: 15px;
@@ -220,6 +226,8 @@ onUnmounted(() => {
 
 @media (max-width: 900px) {
   .popup {
+    top: 50% !important;
+    left: 50% !important;
     width: 50%;
     height: 50%;
     overflow-y: auto;

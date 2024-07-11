@@ -68,7 +68,8 @@ const messages = {
       attributions4: "Carl Gustaf Lewenhaupt (1949–2000), an organist, organ consultant and organ researcher, affiliated with the Swedish National Heritage Board.",
       attributions5: "Dr Bertil Wester (1902–1976), art historian, museum curator and musicologist specialising in Swedish historical organs.",
       attributions6: "The Organ Committee of the Friends of Church Song, a very influential and active advisor on issues concerning organ-building and restorations of Swedish historical organs in the decades around mid-twentieth century.",
-      explore: "Explore",  
+      explore: "Explore",
+      help: "Help"
     },
 
     sv: {
@@ -138,7 +139,8 @@ const messages = {
       attributions4: "Carl Gustaf Lewenhaupt (1949–2000), organist, orgelkonsult och orgelforskare, knuten till Riksantikvarieämbetet.",
       attributions5: "Fil. dr Bertil Wester (1902–1976), konsthistoriker, museiintendent och musikforskare med specialisering på svenska historiska orglar.",
       attributions6: "Kyrkosångens Vänners orgelråd, under decennierna kring mitten av 1900-talet ett mycket inflytelserikt rådgivande organ för ärenden rörande orgelbyggnad och restaureringar av svenska historiska orglar.",
-      explore: "Utforska",  
+      explore: "Utforska",
+      help: "Hjälp"
     },
 };  
 
