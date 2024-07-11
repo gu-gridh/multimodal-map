@@ -390,10 +390,11 @@ export default {
 }
 
 .gallery__item .cut-off {
-  height:250px;
+  height:200px;
+  pointer-events:none;
   width:100%;
   position:absolute;
-  top:450px;
+  bottom:0px;
   background: linear-gradient(0deg, rgba(0, 0, 0, 1.0)5px, rgba(0, 0, 0, 0)100%) !important;
 }
 
