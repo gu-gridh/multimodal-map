@@ -4,7 +4,7 @@
       <div class="gallery__col-sizer"></div>
       <div class="gallery__gutter-sizer"></div>
       <div v-for="item in images" :key="item.uuid" class="gallery__item">
-
+        
         <!-- <router-link :to="`/panel/${item.name}?depth=2`" @click="updatePanelId(item)"> -->
           <a :href="`https://71808.dh.gu.se/?q=${item.name}`" target="_blank">
         <div class="item-info">
@@ -14,6 +14,7 @@
         </div>
         <img :src="`${item.attached_orthophoto}/full/450,/0/default.jpg`" loading="lazy" @load="imageLoaded" />
       </a>
+      <div class="cut-off"></div>
         <!-- </router-link> -->
       </div>
     </div>
@@ -215,7 +216,7 @@ export default {
   padding-right: 2%;
   z-index: 100 !important;
   background-color: black;
-  opacity: 0.8;
+  opacity: 0.9;
 }
 
 @media screen and (min-width: 1900px) {
@@ -386,6 +387,14 @@ export default {
 
 .gallery__item:hover .item-info {
   background: linear-gradient(0deg, rgba(0, 0, 0, 0.7) 0px, rgba(0, 0, 0, 0)30%) !important;
+}
+
+.gallery__item .cut-off {
+  height:250px;
+  width:100%;
+  position:absolute;
+  top:450px;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 1.0)5px, rgba(0, 0, 0, 0)100%) !important;
 }
 
 .gallery__item:hover .item-info-meta {
