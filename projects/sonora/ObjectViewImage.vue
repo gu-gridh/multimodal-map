@@ -74,6 +74,10 @@ const handleClickOutside = (event) => {
   }
 };
 
+//check and set the locale
+const currentLanguage = ref(localStorage.getItem('sonoraLanguage') || 'en');
+i18n.global.locale = currentLanguage.value;
+
 onMounted(() => {
   document.addEventListener('click', handleClickOutside);
 });
