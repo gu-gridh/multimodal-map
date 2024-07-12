@@ -10,20 +10,26 @@
     <div class="flex-machine">
       <div class="red-content">
 
-        <div class="about-main-title theme-color-text" v-bind:class="{ fullopacityui: visibleAbout }"
-          v-html="$t('sonoratitle')"></div>
+        <div class="about-main-title theme-color-text" v-bind:class="{ fullopacityui: visibleAbout }"> 
+          {{ $t('sonoratitle') }}
+        </div>
+
         <div class="about-sub-title theme-color-text" v-bind:class="{ fullopacityui: visibleAbout }"></div>
 
-        <div class="about-article-main" v-bind:class="{ fullopacityui: visibleAbout }">
-          {{ $t('aboutportalmain') }}
+          <div class="about-article-main" v-bind:class="{ fullopacityui: visibleAbout }">
+            {{ $t('aboutportalmain') }}
+          </div>
+
+        <button @click="$emit('close')" style="margin-top: 20px;">
+          <div class="p-1 px-2 category-button" style="width:auto; padding:5px 15px; text-align: center; cursor: pointer;"
+            v-bind:class="{ fullopacityui: visibleAbout }"> {{ $t('explore') }}</div>
+        </button>
+
+        <div class="about-article-sub" v-bind:class="{ fullopacityui: visibleAbout }">
+          {{ $t('aboutportalmain2') }} {{ $t('aboutportalmain3') }}
         </div>
 
-
-        <div class="about-article-sub" v-bind:class="{ fullopacityui: visibleAbout }" style="margin-top: 0px;">
-          {{ $t('aboutportalmain2') }} {{ $t('attributions') }}
-        </div>
-
-        <div class="about-article-sub-list" v-bind:class="{ fullopacityui: visibleAbout }"
+        <!-- <div class="about-article-sub-list" v-bind:class="{ fullopacityui: visibleAbout }"
           style="margin-top: 30px; text-align:left;">
           <ul>
             <li>{{ $t('attributions1') }}</li><br>
@@ -34,17 +40,13 @@
             <li>{{ $t('attributions5') }}</li><br>
             <li>{{ $t('attributions6') }}</li>
           </ul>
-        </div>
+        </div> -->
 
-        <div class="about-article-main" v-bind:class="{ fullopacityui: visibleAbout }"
+        <!-- <div class="about-article-main" v-bind:class="{ fullopacityui: visibleAbout }"
           style="margin-top: 20px; margin-bottom: 30px">
           {{ $t('aboutportalmain3') }}
-        </div>
+        </div> -->
 
-        <button @click="$emit('close')">
-          <div class="p-1 px-2 category-button" style="width:auto; padding:5px 15px; text-align: center; cursor: pointer;"
-            v-bind:class="{ fullopacityui: visibleAbout }"> {{ $t('explore') }}</div>
-        </button>
       </div>
       <!-- <div class="about-lower-border"> </div> -->
     </div>

@@ -252,7 +252,7 @@ const handleClickOutside = (event) => {
     </div>
     <div class="place-view">
       <div class="overview-row">
-        <div class="title-event" style="font-weight: 600;">{{ linkData.work }}: {{ linkData.date }}</div>
+        <div class="title-event" style="font-weight: 600;">{{ linkData.work }} {{ linkData.date }}</div>
         <div class="title-builder" style="font-weight: 300;">{{ linkData.builder }}</div>
       </div>
       <div class="place-gallery-container">
