@@ -63,6 +63,7 @@ const messages = {
       aboutportalmain3: "The project, conducted by the Göteborg International Organ Academy Association (FGIOA), has been funded in its entirety by Riksbankens Jubileumsfond, a leading Swedish foundation for research in the humanities and social sciences. Important collaboration partners include the Swedish National Heritage Board (Riksantikvarieämbetet, RAÄ), with the ATA (Antiquarian-Topographical Archive); and the University of Gothenburg, in particular the Gothenburg University Library and the Gothenburg Research Infrastructure in Digital Humanities (GRIDH).",
       explore: "Explore",
       help: "Help",
+      thearchives: "The Archives",
     },
 
     sv: {
@@ -127,6 +128,7 @@ const messages = {
       aboutportalmain3: "Projektet, som bedrivs av Föreningen för Göteborgs internationella orgelakademi (FGIOA), har finansierats i sin helhet av Riksbankens Jubileumsfond, en ledande svensk forskningsstiftelse för humaniora och samhällsvetenskap. Viktiga samarbetspartner är Riksantikvarieämbetet, med ATA (Antikvarisk-topografiska arkivet)., och Göteborgs universitet, i synnerhet Göteborgs universitetsbibliotek och GRIDH (Gothenburg Research Infrastructure in Digital Humanities).",
       explore: "Utforska",
       help: "Hjälp",
+      thearchives: "Arkiven",
     },
 };  
 
