@@ -349,7 +349,7 @@ ul {
 
 .carousel__image {
   max-width: 100%;
-  max-height: 300px;
+  max-height: 200px;
   margin: 0 auto;
 }
 
@@ -463,16 +463,6 @@ ul {
     min-height: 100px;
     width: 150px;
     margin: 10px;
-  }
-
-  .carousel__images {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .carousel__image {
-    width: 100%;
-    max-height: auto;
   }
 }
 </style>
