@@ -12,7 +12,8 @@ import { inscriptionsStore } from "./store";
 import { mapStore } from "@/stores/store";
 import { clean } from "@/assets/utils";
 import markerIcon from "@/assets/marker-white.svg";
-import MapViewGallery from "./MapViewGallery.vue";
+import MapViewGallery from "./MapViewGallerySurfaces.vue";
+import MapViewGalleryInscriptions from "./MapViewGalleryInscriptions.vue";
 import { ref } from "vue";
 import About from "./About.vue";
 import { onMounted, watch } from "vue";
@@ -22,7 +23,7 @@ import Title from "./Title.vue";
 import apiConfig from "./apiConfig"
 
 const { categories, tags, tagsLayerVisible, dataParams, imgParams } = storeToRefs(inscriptionsStore());
-const showGalleryInscriptions = ref(false);
+
 const store = mapStore();
 const inscriptions = inscriptionsStore();  // Get the instance of inscriptionsStore
 const { selectedFeature } = storeToRefs(store);
@@ -30,7 +31,9 @@ const minZoom = 20;
 const maxZoom = 24;
 const featureZoom = 15; //value between minZoom and maxZoom when you select a point 
 const visibleAbout = ref(false);
+const showPlan = ref(true);
 const showGallery = ref(false);
+const showGalleryInscriptions = ref(false);
 const showSecondFloor = ref(false);
 let visited = true; // Store the visited status outside of the hook
 
@@ -119,6 +122,7 @@ onMounted(() => {
   // Check if the "visited" key exists in session storage
   visited = sessionStorage.getItem("visited") === "true"; // Retrieve the visited status from session storage
   const storedShowGallery = localStorage.getItem("showGallery");
+  const storedShowGalleryInscriptions = localStorage.getItem("showGalleryInscriptions");
   const storedShowSecondFloor = localStorage.getItem("showSecondFloor");
 
   if (!visited) {
@@ -129,6 +133,10 @@ onMounted(() => {
 
   if (storedShowGallery) {
     showGallery.value = JSON.parse(storedShowGallery);
+  }
+
+  if (storedShowGalleryInscriptions) {
+    showGalleryInscriptions.value = JSON.parse(storedShowGalleryInscriptions);
   }
 
   if (storedShowSecondFloor) {
@@ -147,6 +155,10 @@ watch(showGallery, (newValue) => {
   localStorage.setItem("showGallery", JSON.stringify(newValue));
 });
 
+watch(showGalleryInscriptions, (newValue) => {
+  localStorage.setItem("showGalleryInscriptions", JSON.stringify(newValue));
+});
+
 watch(showSecondFloor, (newValue) => {
   localStorage.setItem("showSecondFloor", JSON.stringify(newValue));
 });
@@ -155,18 +167,18 @@ watch(showSecondFloor, (newValue) => {
 <template>
   <div style="display:flex; align-items: center; justify-content: center; pointer-events: none;">
     <div class="ui-mode ui-overlay ui-overlay-top">
-      <button class="item" v-bind:class="{ selected: !showGallery }" v-on:click="showGallery = false;">
+      <button class="item" v-bind:class="{ selected: showPlan }" v-on:click="showPlan = true; showGallery = false; showGalleryInscriptions = false;">
         {{ $t('plans') }}
       </button>
-      <button class="item" v-bind:class="{ selected: showGallery }" v-on:click="showGallery = true;">
+      <button class="item" v-bind:class="{ selected: showGallery }" v-on:click="showPlan = false; showGallery = true; showGalleryInscriptions = false;">
         {{ $t('panels') }}
       </button>
-      <button class="item" style="pointer-events:none" v-bind:class="{ selected: showGalleryInscriptions }" v-on:click="showGallery = true;">
+      <button class="item" v-bind:class="{ selected: showGalleryInscriptions }" v-on:click="showPlan = false; showGalleryInscriptions = true, showGallery = false;">
         {{ $t('inscriptions') }}
       </button>
     </div>
 
-    <div class="ui-mode ui-overlay tile-switcher ui-overlay-bottom" style="" v-if="!showGallery">
+    <div class="ui-mode ui-overlay tile-switcher ui-overlay-bottom" style="" v-if="showPlan">
       <button class="item" v-bind:class="{ selected: !showSecondFloor }" v-on:click="showSecondFloor = false;">
         {{ $t('groundfloor') }}
       </button>
@@ -177,6 +189,7 @@ watch(showSecondFloor, (newValue) => {
 
   </div>
   <MapViewGallery v-if="showGallery" />
+  <MapViewGalleryInscriptions v-if="showGalleryInscriptions" />
   <About :visibleAbout="visibleAbout" @close="visibleAbout = false" />
   <div class="gradient-blur">
       <div></div>
@@ -196,7 +209,7 @@ watch(showSecondFloor, (newValue) => {
     <template #background>
       <div class="map-container">
        
-        <MapComponent :shouldAutoMove="true" :min-zoom=minZoom :max-zoom=maxZoom v-if="!showGallery">
+        <MapComponent :shouldAutoMove="true" :min-zoom=minZoom :max-zoom=maxZoom v-if="showPlan">
           <template #layers>
             <SophiaPlaceLayer :params="tagParams" :zIndex=3 :showSecondFloor="showSecondFloor" />
           <div >
@@ -219,7 +232,7 @@ watch(showSecondFloor, (newValue) => {
     </template>
 
     <template #details>
-      <MapViewPreview v-if="!showGallery" />
+      <MapViewPreview v-if="showPlan" />
     </template>
 
   </MainLayout>
