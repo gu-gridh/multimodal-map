@@ -7,7 +7,7 @@
       <div class="control-organisation justify-left" style="pointer-events:auto; padding-bottom:10px; padding-top:10px;">
         <div class="tag-section">
           <div class="section-title">{{ $t('language') }}</div>
-          <div title="Narrow the result to a certain langueage group" class="broad-controls">
+          <div title="Narrow the result to a certain language group" class="broad-controls">
             <CategoryButtonList v-model="language" :categories="LANGUAGE" :limit="1" styleType="dropdown" class="my-2" 
             type="language" style="padding-right:30px;"/>
           </div>
@@ -21,7 +21,7 @@
               plans: $t('text'),
               models: $t('figure'),
               composite: $t('composite')
-            }" :limit="1" class="my-2" title="Pick a data type" @click="handleCategoryClick" />
+            }" :limit="1" class="my-2" title="Pick an inscription type" @click="handleCategoryClick" />
           </div>
         </div>
       </div>
