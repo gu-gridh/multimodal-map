@@ -7,19 +7,10 @@
       <div class="control-organisation justify-left" style="pointer-events:auto; padding-bottom:10px; padding-top:10px;">
         <div class="tag-section">
           <div class="section-title">{{ $t('language') }}</div>
-          <div title="Narrow the result to a certain necropolis" class="broad-controls">
+          <div title="Narrow the result to a certain langueage group" class="broad-controls">
             <CategoryButtonList v-model="language" :categories="LANGUAGE" :limit="1" styleType="dropdown" class="my-2" 
-            type="language" />
+            type="language" style="padding-right:30px;"/>
           </div>
-          <!-- <div style="display:inline; float:left; margin-right:0px; pointer-events:auto;">
-            <select title="Pick what inscription language you want filter by" class="dropdown theme-color-background my-2" >
-              <option title="" value="All datasets">{{ $t('alllanguages') }}</option>
-              <option title="" value="CTSG-2015">церковнослов'ян</option>
-              <option title="" value="CTSG-2015">Latin</option>
-              <option title="" value="CTSG-2015">Greek</option>
-              <option title="" value="CTSG-2015">Polish</option>
-            </select>
-          </div> -->
         </div>
 
         <div class="tag-section margin-20">
