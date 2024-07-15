@@ -105,8 +105,8 @@ export default {
         {
           id: '1',
           images: [
-            '/images/archive/Erici exempel SE_ATA_ENSK_31-1_F5_12_00118.jpg',
-            '/images/archive/Erici porträtt SE_ATA_ENSK_141-1_F1A_7_00125.jpg'
+            '/sonora_archive/Erici exempel SE_ATA_ENSK_31-1_F5_12_00118.jpg',
+            '/sonora_archive/Erici porträtt SE_ATA_ENSK_141-1_F1A_7_00125.jpg'
           ],
           title: 'Dr Einar Erici',
           content: `
@@ -128,8 +128,8 @@ export default {
         {
           id: '2',
           images: [ 
-            '/images/archive/Unnerbäck exempel 3_24-03-18_53899.jpg',
-            '/images/archive/Unnerbäck porträtt.jpg'
+            '/sonora_archive/Unnerbäck exempel 3_24-03-18_53899.jpg',
+            '/sonora_archive/Unnerbäck porträtt.jpg'
           ],
           title: 'Axel Unnerbäck',
           content: `Dr Axel Unnerbäck (b. 1938) was formerly the Head of the Division for the Documentation of Buildings at the Swedish National Heritage Board. He has worked as an organ expert and researcher, art historian, and building antiquarian, and has published extensively on the Swedish heritage of organs. During his long time working in the field, he built up a substantial reference archive containing information (both original documents and copies) about all kinds of organs in Sweden. As an organ researcher affiliated with GOArt (Göteborg Organ Art Center) at University of Gothenburg, he was responsible for the research on Swedish historical organs.`
@@ -137,8 +137,8 @@ export default {
         {
           id: '3',
           images: [
-            '/images/archive/Moberg exempel SE_ATA_ENSK_141-1_F1A_27_00442.jpg',
-            '/images/archive/Moberg porträtt SE_ATA_ENSK_141-1_F1A_39_00051.jpg'
+            '/sonora_archive/Moberg exempel SE_ATA_ENSK_141-1_F1A_27_00442.jpg',
+            '/sonora_archive/Moberg porträtt SE_ATA_ENSK_141-1_F1A_39_00051.jpg'
           ],
           title: 'The Moberg brothers',
           content: `
@@ -166,8 +166,8 @@ export default {
         {
           id: '4',
           images: [ 
-            '/images/archive/KSV exempel 240122_SONORA_0010_.jpeg',
-            '/images/archive/KSV exempel 240122_SONORA_0010_.jpeg'
+            '/sonora_archive/KSV exempel 240122_SONORA_0010_.jpeg',
+            '/sonora_archive/KSV exempel 240122_SONORA_0010_.jpeg'
           ],
           title: 'Carl Gustaf Lewenhaupt',
           content: `
@@ -184,8 +184,8 @@ export default {
         {
           id: '5',
           images: [
-            '/images/archive/Wester exempel SE_ATA_ENSK_131-1_F2_69_00063.jpg',
-            '/images/archive/Wester porträtt.jpg'
+            '/sonora_archive/Wester exempel SE_ATA_ENSK_131-1_F2_69_00063.jpg',
+            '/sonora_archive/Wester porträtt.jpg'
           ],
           title: 'Bertil Wester',
           content: `<p>Dr Bertil Wester (1902–1976), art historian, museum curator and musicologist specialising in Swedish historical organs, and a pioneer in academic organ research in Sweden. In 1936, he presented the first dissertation on historical organ building in Sweden, “Gotisk resning i svenska orglar”, and started a series of publications on Swedish Church Organs, which resulted in many articles on regional organ building traditions. He was a member of the Organ Committee of the Friends of Church Song, a very influential and active advisory body on issues concerning organ-building and restorations of Swedish historical organs in the decades around mid-twentieth century.</p>
@@ -218,8 +218,8 @@ export default {
         {
           id: '6',
           images: [
-            '/images/archive/KSV exempel 240122_SONORA_0010_.jpeg',
-            '/images/archive/KSV exempel 240122_SONORA_0010_.jpeg'
+            '/sonora_archive/KSV exempel 240122_SONORA_0010_.jpeg',
+            '/sonora_archive/KSV exempel 240122_SONORA_0010_.jpeg'
           ],
           title: 'The Organ Committee of the Friends of Church Song',
           content: '<p>The Friends of Church Song was an association formed in 1889 to promote singing in the Swedish churches. In 1934 they formed an organ committee to advise congregations looking to build a new organ or do work on an existing instrument. The three original members of the committee were the organists Henry Weman and Waldemar Åhlén, and the organ historian Bertil Wester. The committee was very influential in promoting the ideas of the organ reform movement in Sweden as well as stimulating the interest in early Swedish organs. In 1967, the Organ Council was dissolved following a dispute with the National Heritage Board over the 18th-century organ in Börstil.</p> <p>The archive is divided between two locations, with a portion forming part of the archive of Bertil Wester, and the remaining material (consisting of administration documents, and the personal archive of Henry Wehman) housed in the Special Collections of Uppsala University Library.</p>'
