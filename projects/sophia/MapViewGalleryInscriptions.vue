@@ -212,6 +212,7 @@ export default {
   margin-left: 32%;
   padding-left: 2%;
   padding-right: 2%;
+  padding-top:80px;
   z-index: 100 !important;
   background-color: black;
   opacity: 0.9;
@@ -263,7 +264,6 @@ export default {
 .gallery__item,
 .gallery__col-sizer {
   width: calc(16.6%);
-  max-height:200px;
 }
 
 .gallery__gutter-sizer {
@@ -324,7 +324,7 @@ export default {
 }
 
 .gallery__item {
-  margin-bottom: 10px;
+  margin-bottom: 2px;
   float: left;
   overflow: hidden !important;
   -webkit-transition-property: none!important;

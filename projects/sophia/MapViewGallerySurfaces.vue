@@ -12,7 +12,7 @@
             <h1>{{ $t('panel') }} {{ item.name }}</h1>
           </div>
         </div>
-        <img :src="`${item.attached_orthophoto}/full/450,/0/default.jpg`" loading="lazy" @load="imageLoaded" />
+        <img :src="`${item.attached_orthophoto}/full/300,/0/default.jpg`" loading="lazy" @load="imageLoaded" />
       </a>
       <div class="cut-off"></div>
         <!-- </router-link> -->
