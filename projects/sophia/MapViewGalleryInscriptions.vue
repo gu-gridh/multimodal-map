@@ -4,18 +4,15 @@
       <div class="gallery__col-sizer"></div>
       <div class="gallery__gutter-sizer"></div>
       <div v-for="item in images" :key="item.uuid" class="gallery__item">
-        
-        <!-- <router-link :to="`/panel/${item.name}?depth=2`" @click="updatePanelId(item)"> -->
-          <a :href="`https://71808.dh.gu.se/?q=${item.name}`" target="_blank">
-        <div class="item-info">
-          <div class="item-info-meta">
-            <h1>{{ $t('panel') }} {{ item.name }}</h1>
+        <a :href="`https://71808.dh.gu.se/?q=${item.name}`" target="_blank">
+          <div class="item-info">
+            <div class="item-info-meta">
+              <h1>{{ item.title }}</h1>
+            </div>
           </div>
-        </div>
-        <img :src="`${item.attached_orthophoto}/full/450,/0/default.jpg`" loading="lazy" @load="imageLoaded" />
-      </a>
-      <div class="cut-off"></div>
-        <!-- </router-link> -->
+          <img :src="item.url_to_iiif_clip" loading="lazy" @load="imageLoaded" />
+        </a>
+        <div class="cut-off"></div>
       </div>
     </div>
     <div class="page-load-status">
@@ -73,13 +70,14 @@ export default {
     const fetchData = async (requestedPageIndex) => {
       if (requestedPageIndex > lastFetchedPageIndex) {
         try {
-          const urlToFetch = `${apiConfig.IMAGE}?type_of_image=1&depth=2&${new URLSearchParams(store.imgParams).toString()}`; // type_of_image=1 only fetches Ortophotos
+          const urlToFetch = `https://saintsophia.dh.gu.se/api/inscriptions/inscription/`; //Update when api has been modified
           const res = await fetch(urlToFetch);
           const data = await res.json();
+
           const newImages = data.results.map(item => ({
-            attached_orthophoto: item.iiif_file,
-            name: item.panel.title,
-          })).filter(img => img && img.attached_orthophoto);
+            url_to_iiif_clip: item.url_to_iiif_clip,
+            title: item.title, 
+          })).filter(img => img && img.url_to_iiif_clip);
 
           images.value = [...images.value, ...newImages];
 
@@ -87,8 +85,8 @@ export default {
         } catch (error) {
           console.error("Error fetching additional images:", error);
         }
-      }
-    };
+        }
+      };
 
     const initMasonry = () => {
   const gallery = document.querySelector('.gallery');
@@ -372,7 +370,7 @@ export default {
   color: white;
   bottom: 0px;
   padding: 20px 25px;
-  padding-bottom: 40px !important;
+  padding-bottom: 10px !important;
   display: none;
 }
 
