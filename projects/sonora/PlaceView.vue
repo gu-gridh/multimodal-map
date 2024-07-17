@@ -448,10 +448,12 @@ table td {
     }
 
 .wide-second-td {
-  min-width:150px!important;
+  min-width: 150px !important;
+  width: 150px !important;
   padding-bottom: 5px;
-  padding-left:5px;
-  position:relative;
+  padding-left: 5px;
+  position: relative;
+  box-sizing: border-box;
 }
 
 .organ-historic-overview{
