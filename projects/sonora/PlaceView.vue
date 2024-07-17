@@ -372,7 +372,7 @@ const handleClickOutside = (event) => {
   flex-direction: column; 
   align-items: start; 
   width: 100%; 
-  padding-left:15px;
+  padding-left:50px;
 
 }
 
@@ -433,7 +433,7 @@ font-size: 30px;
 }
 
 .table-section {
- padding-left: 30px;
+ padding-left: 50px;
  padding-bottom: 30px;
 }
 

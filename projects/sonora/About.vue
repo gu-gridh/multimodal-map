@@ -370,7 +370,7 @@ ul {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: space-around;
   gap: 50px;
   padding: 30px 0;
 }
@@ -452,9 +452,11 @@ ul {
   }
 
   .about-logos-container {
-    display: block;
-    gap: 20px !important;
-    padding: 20px 20px 20px 20px;
+    display: flex;
+    flex-direction: column; 
+    gap: 20px;
+    padding: 20px;
+    align-items: center;
   }
 
   .about-logo {
