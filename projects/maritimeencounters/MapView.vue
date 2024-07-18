@@ -25,9 +25,9 @@ const { categories, tags, selectedRange, showUnknownRange, tagsLayerVisible, dat
 const store = mapStore();
 const maritimeencounters = maritimeencountersStore();  // Get the instance of maritimeencountersStore
 const { selectedFeature } = storeToRefs(store);
-const minZoom = 5;
-const maxZoom = 22;
-const featureZoom = 15; //value between minZoom and maxZoom when you select a point;
+const minZoom = 1;
+const maxZoom = 25;
+const featureZoom = 10; //value between minZoom and maxZoom when you select a point;
 const visibleAbout = ref(false);
 const showGallery = ref(false);
 let visited = true; // Store the visited status outside of the hook
@@ -166,7 +166,7 @@ watch(showGallery, (newValue) => {
           :shouldAutoMove="true" 
           :min-zoom=minZoom
           :max-zoom=maxZoom 
-          :restrictExtent="[-27.5, 35.10, 24.6, 66.0]"    
+          :restrictExtent="[-45.0, 32.00, 55.0, 75.0]"    
         > 
           <template #layers>
             <GeoJsonWebGLRenderer

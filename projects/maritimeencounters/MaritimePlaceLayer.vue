@@ -70,7 +70,7 @@ const fetchData = async (initialUrl: string, params: Record<string, any>) => {
         let coords = geometry.getCoordinates();
         //Ensure valid coordinates
         if (coords.length === 2 && !isNaN(coords[0]) && !isNaN(coords[1])) {
-          const convertedCoords = fromLonLat([coords[1], coords[0]]);
+          const convertedCoords = fromLonLat([coords[0], coords[1]]);
           geometry.setCoordinates(convertedCoords);
         } else {
           console.error(`Invalid coordinates for feature ID: ${feature.getId()}, Coordinates: ${coords}`);
