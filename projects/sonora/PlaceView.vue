@@ -264,10 +264,10 @@ const handleClickOutside = (event) => {
                 <td class="wide-second-td">{{ $t('documents') }}</td>
                 <div class="documents">
                   <div v-for="(doc, index) in documents" :key="index" class="document-link">
-                    <router-link :to="`/detail/image/${doc.Nr}`">
+                    <a :href="`/detail/image/${doc.Nr}`" target="_blank">
                       <div class="document-icon" />
                       {{ doc.Document }}
-                    </router-link>
+                    </a>
                   </div>
                 </div>
               </tr>

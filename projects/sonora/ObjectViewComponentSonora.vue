@@ -26,9 +26,9 @@ const goBack = () => {
           <h1 class="meta-title theme-title-typography">{{ title }}</h1>
         </slot>
       </div>
-      <div class="flex-1 text-center" >
+      <!-- <div class="flex-1 text-center" >
         <div @click="goBack" class="back-button"></div>
-      </div>
+      </div> -->
     </header>
 
     <main class="container metadata-posts" >
