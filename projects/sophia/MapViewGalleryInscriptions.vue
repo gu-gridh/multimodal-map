@@ -4,7 +4,7 @@
       <div class="gallery__col-sizer"></div>
       <div class="gallery__gutter-sizer"></div>
       <div v-for="item in images" :key="item.uuid" class="gallery__item">
-        <a :href="`https://71808.dh.gu.se/?q=${item.name}`" target="_blank">
+        <a :href="`https://71807.dh.gu.se/viewer/?q=${item.name}`" target="_blank">
           <div class="item-info">
             <div class="item-info-meta">
               <h1>{{ item.title }}</h1>
