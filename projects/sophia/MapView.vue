@@ -34,6 +34,7 @@ const visibleAbout = ref(false);
 const showPlan = ref(true);
 const showGallery = ref(false);
 const showGalleryInscriptions = ref(false);
+const showFirstFloor = ref(true);
 const showSecondFloor = ref(false);
 let visited = true; // Store the visited status outside of the hook
 
@@ -121,14 +122,20 @@ watch(
 onMounted(() => {
   // Check if the "visited" key exists in session storage
   visited = sessionStorage.getItem("visited") === "true"; // Retrieve the visited status from session storage
+  const storedShowPlan = localStorage.getItem("showPlan");
   const storedShowGallery = localStorage.getItem("showGallery");
   const storedShowGalleryInscriptions = localStorage.getItem("showGalleryInscriptions");
+  const storedShowFirstFloor = localStorage.getItem("showFirstFloor");
   const storedShowSecondFloor = localStorage.getItem("showSecondFloor");
 
   if (!visited) {
     // Hide the about component
     visibleAbout.value = true;
     sessionStorage.setItem("visited", "true");
+  }
+
+  if (storedShowPlan) {
+    showPlan.value = JSON.parse(storedShowPlan);
   }
 
   if (storedShowGallery) {
@@ -139,9 +146,13 @@ onMounted(() => {
     showGalleryInscriptions.value = JSON.parse(storedShowGalleryInscriptions);
   }
 
+/*   if (storedShowFirstFloor) {
+    showFirstFloor.value = JSON.parse(storedShowFirstFloor);
+  }
+
   if (storedShowSecondFloor) {
     showSecondFloor.value = JSON.parse(storedShowSecondFloor);
-  }
+  } */
 
 })
 
@@ -151,12 +162,20 @@ const toggleAboutVisibility = async () => {
   visibleAbout.value = !visibleAbout.value;
 };
 
+watch(showPlan, (newValue) => {
+  localStorage.setItem("showPlan", JSON.stringify(newValue));
+});
+
 watch(showGallery, (newValue) => {
   localStorage.setItem("showGallery", JSON.stringify(newValue));
 });
 
 watch(showGalleryInscriptions, (newValue) => {
   localStorage.setItem("showGalleryInscriptions", JSON.stringify(newValue));
+});
+
+watch(showFirstFloor, (newValue) => {
+  localStorage.setItem("showFirstFloor", JSON.stringify(newValue));
 });
 
 watch(showSecondFloor, (newValue) => {
