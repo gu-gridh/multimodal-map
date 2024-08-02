@@ -3,7 +3,6 @@ import { createI18n } from 'vue-i18n';
 const messages = {
     en: {
       portaltitle: "Saint \nSophia's\nInscriptions",
-      etruscanabout: "The portal is published by GRIDH at the university of Gothenburg in close collaboration with the Swedish Institute in Rome.",
       documentation: "Documentation by category",
       timeperiod: "Time period",
       tag: "Tag",
@@ -43,8 +42,10 @@ const messages = {
       plans: "Plans",
       type: "Type",
       period: "Period",
-      aboutportalmain:"",
-      aboutportal: "",
+      aboutportalmain:"Carved into its stone walls of Saint Sophia Cathedral there are more than 7,000 inscriptions. They span a thousand years and constitute a source of knowledge about cultural exchange, about language, migration, trade, and diversity in Europe.",
+      aboutportal: "This research infrastructure, which lets researchers and the public explore the inscriptions, is the result of a close collaboraton between Saint Sophia Cathedral Museum, the National Museum of the History of Ukraine and the Univerity of Gothenburg, Sweden.",
+      learnmore: "Learn more",
+      explore: "Explore",
       explore: "Explore",  
       documents: "Documents",
       sortbytype: "Sort by: TYPE",
@@ -66,7 +67,6 @@ const messages = {
 
     uk: {
       portaltitle: "Написи \nСвятої \nСофії",
-      etruscanabout: "The portal is published by GRIDH at the university of Gothenburg in close collaboration with the Swedish Institute in Rome.",
       documentation: "Documentation by category",
       timeperiod: "Time period",
       tag: "Tag",
@@ -104,9 +104,10 @@ const messages = {
       plans: "Плани",
       type: "Type",
       period: "Period",
-      aboutportalmain:"",
-      aboutportal: "",
-      explore: "Explore",  
+      aboutportalmain:"На його кам'яних стінах Софійського собору висічено понад 7000 написів. Вони охоплюють тисячу років і є джерелом знань про культурний обмін, мову, міграцію, торгівлю та різноманітність у Європі.",
+      aboutportal: "Ця дослідницька інфраструктура, яка дозволяє дослідникам і громадськості досліджувати написи, є результатом тісної співпраці між Музеєм собору Святої Софії, Національним музеєм історії України та Університетом Гетеборга, Швеція.",
+      learnmore: "Вивчайте більше",
+      explore: "Досліджуйте",  
       documents: "Documents",
       sortbytype: "Sort by: TYPE",
       sortbyyear: "Sort by: YEAR",

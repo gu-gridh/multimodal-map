@@ -188,4 +188,10 @@ a {
 #developer-info a:link {
   font-weight: 200;
 }
+
+@media screen and (max-width: 1090px) {
+.partners{
+  display:none;
+}
+}
 </style>
