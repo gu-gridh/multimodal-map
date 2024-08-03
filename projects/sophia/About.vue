@@ -216,7 +216,7 @@
   .left-content {
     width: 60%;
     float: right;
-    padding-top: 80px;
+    margin-top: 80px;
     padding-right: 10px;
     min-width: 800px;
     display: flex;
@@ -401,6 +401,7 @@
 
     .language-button {
       margin-left: 25px;
+      z-index: 10001;
     }
 
 
