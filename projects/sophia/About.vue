@@ -12,8 +12,11 @@
       </button>
     </div>
     <div class="main-about-content">
-
-
+      <div class="logo-area">
+        <div class="logo" style="background-image:url(/images/logo-sophia.png);"></div>
+        <div class="logo" style="background-image:url(/images/logo-gu.png);"></div>
+        <div class="logo" style="background-image:url(/images/logo-mist.png); width:220px; margin-top:25px; margin-left:10px;"></div>
+      </div>
       <div class="left-content">
         <div class="left-content-columns">
           <div class="left-content-column1">
@@ -99,6 +102,26 @@
 </script>
 
 <style scoped>
+  .logo-area{
+    position:absolute;
+    width:100%;
+    height:180px;
+    display:flex;
+    flex-direction:row;
+    justify-content:flex-start;
+    z-index:1000;
+    padding-left:15%;
+    pointer-events:none;
+    user-select: none;
+  }
+  .logo{
+    background-size:contain;
+    height:160px;
+    width:120px;
+    background-repeat: no-repeat;
+    margin-right:10px;
+    user-select: none;
+  }
   .about-container {
     color: black;
     overflow-y: auto;
@@ -119,6 +142,8 @@
     text-align: right;
     font-size: 7vw;
     top: 40%;
+    user-select: none;
+    pointer-events:none;
 
   }
 
@@ -132,6 +157,8 @@
     font-size: 3.5vw;
     margin-bottom: 0px;
     letter-spacing: 0px !important;
+    user-select: none;
+    pointer-events:none;
   }
 
   .sophia-article-main {
@@ -189,6 +216,7 @@
   .left-content {
     width: 60%;
     float: right;
+    padding-top: 80px;
     padding-right: 10px;
     min-width: 800px;
     display: flex;
@@ -271,6 +299,10 @@
   /*   Small screen adaption */
 
   @media screen and (max-width: 900px) {
+
+    .logo-area{
+      display:none;
+    }
    
     .main-about-content {
     display: flex;
