@@ -3,8 +3,8 @@
     <div class="gallery">
       <div class="gallery__col-sizer"></div>
       <div class="gallery__gutter-sizer"></div>
-      <div v-for="item in images" :key="item.uuid" class="gallery__item">
-        <a :href="`https://71807.dh.gu.se/viewer/?q=${item.name}`" target="_blank">
+      <div v-for="item in images" :key="item.uuid" class="gallery__item"> 
+        <a :href="`https://71807.dh.gu.se/viewer/?q=${item.panelTitle}/${item.id}`" target="_blank">
           <div class="item-info">
             <div class="item-info-meta">
               <h1>{{ item.title }}</h1>
@@ -70,13 +70,15 @@ export default {
     const fetchData = async (requestedPageIndex) => {
       if (requestedPageIndex > lastFetchedPageIndex) {
         try {
-          const urlToFetch = `https://saintsophia.dh.gu.se/api/inscriptions/inscription/`; //Update when api has been modified
+          const urlToFetch = `https://saintsophia.dh.gu.se/api/inscriptions/inscription/?depth=1`;
           const res = await fetch(urlToFetch);
           const data = await res.json();
 
           const newImages = data.results.map(item => ({
             url_to_iiif_clip: item.url_to_iiif_clip,
-            title: item.title, 
+            panelTitle: item.panel ? item.panel.title : 'Unknown', 
+            title: item.title,
+            id: item.id,
           })).filter(img => img && img.url_to_iiif_clip);
 
           images.value = [...images.value, ...newImages];
@@ -155,8 +157,10 @@ export default {
         const data = JSON.parse(bodyContent);
 
         const newImages = data.results.map(item => ({
-          attached_orthophoto: item.iiif_file,
-          name: item.panel.title,
+            url_to_iiif_clip: item.url_to_iiif_clip,
+            panelTitle: item.panel ? item.panel.title : 'Unknown', 
+            title: item.title,
+            id: item.id,
         })).filter(img => img !== null);
 
         images.value = [...images.value, ...newImages];
