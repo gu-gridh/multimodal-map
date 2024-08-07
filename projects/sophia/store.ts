@@ -1,6 +1,5 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
-import config from "./config";
 
 export const inscriptionsStore = defineStore("inscriptions", () => {
   const categories = ref<Array<string>>(["all"]);
@@ -10,11 +9,13 @@ export const inscriptionsStore = defineStore("inscriptions", () => {
   const tagsLayerVisible = ref(false); // Default visibility state for tags layer
   const dataParams = ref<Record<string, string | number | null>>({});
   const imgParams = ref<Record<string, string | number | null>>({});
-  // const selectedNecropolisCoordinates = ref<[number, number] | null>(null);
-  // const enable3D = ref<boolean>(false);
-  // const enablePlan = ref<boolean>(false);
   const areMapPointsLoaded = ref<boolean>(false);
   const panelId = ref<string | null>(null);
+  const selectedCategory = ref<number | null>(null); //the selected category number from mapviewcontrols
 
-  return { categories, tags, language, panelType, tagsLayerVisible, dataParams, areMapPointsLoaded, imgParams, panelId };
+  const setSelectedCategory = (categoryNumber: number | null) => {
+    selectedCategory.value = categoryNumber;
+  };  
+
+  return { categories, tags, language, panelType, tagsLayerVisible, dataParams, areMapPointsLoaded, imgParams, panelId, setSelectedCategory, selectedCategory };
 });

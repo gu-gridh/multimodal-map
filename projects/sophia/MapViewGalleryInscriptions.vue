@@ -45,8 +45,8 @@ export default {
     let lastFetchedPageIndex = 0;
 
     watch(
-      () => store.imgParams,
-      async (newParams, oldParams) => {
+      () => store.selectedCategory,
+      async (newCategory, oldCategory) => {
         pageIndex = 1;
         lastFetchedPageIndex = 0;
 
@@ -70,7 +70,15 @@ export default {
     const fetchData = async (requestedPageIndex) => {
       if (requestedPageIndex > lastFetchedPageIndex) {
         try {
-          const urlToFetch = `https://saintsophia.dh.gu.se/api/inscriptions/inscription/?depth=1`;
+          const baseUrl = `https://saintsophia.dh.gu.se/api/inscriptions/inscription/?depth=1`;
+      
+          //add the selectedCategory as a query parameter
+          const categoryParam = store.selectedCategory ? `&type_of_inscription=${store.selectedCategory}` : '';
+
+          //final URL
+          const urlToFetch = `${baseUrl}${categoryParam}`;
+
+          console.log(urlToFetch)
           const res = await fetch(urlToFetch);
           const data = await res.json();
 
@@ -88,7 +96,7 @@ export default {
           console.error("Error fetching additional images:", error);
         }
         }
-      };
+    };
 
     const initMasonry = () => {
   const gallery = document.querySelector('.gallery');
@@ -124,7 +132,15 @@ export default {
       }
       canIncrement = false; // Disable further increments
       const offset = (pageIndex - 1) * 25;
-      const url = `${apiConfig.IMAGE}?offset=${offset}&type_of_image=1&depth=2&${new URLSearchParams(store.imgParams).toString()}`;
+      const baseUrl = `https://saintsophia.dh.gu.se/api/inscriptions/inscription/?depth=1?offset=${offset}`;
+      
+      //add the selectedCategory as a query parameter
+      const categoryParam = store.selectedCategory ? `&type_of_inscription=${store.selectedCategory}` : '';
+
+      //final URL commented out
+      // const url = `${baseUrl}${categoryParam}`; 
+
+      const url = ``;
 
       // Use Promise syntax to handle the asynchronous 404 check
       checkFor404(url).then(async (is404) => {
@@ -408,12 +424,11 @@ export default {
   display: block;
 }
 
-.page-load-status {
+/* .page-load-status {
   display: none;
-  /* hidden by default */
   padding-top: 20px;
   border-top: 1px solid #DDD;
   text-align: center;
   color: #777;
-}
+} */
 </style>

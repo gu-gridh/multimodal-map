@@ -125,6 +125,7 @@ import i18n from '../../src/translations/sophia';
 
 const config = inject<InscriptionsProject>("config");
 const sophiaClient = new SophiaClient("inscriptions"); // Initialize SophiaClient
+const store = inscriptionsStore();
 const { categories, tags, language, dataParams, areMapPointsLoaded } = storeToRefs(inscriptionsStore());
 // Create a ref for last clicked category
 const lastClickedCategory = ref('');
@@ -153,12 +154,12 @@ const setSearchType = (type: string) => {
  handleSearch();
 };
 
-const handleSearchBoxFocus = () => {
- if (firstSearchBoxClick.value && searchType.value === 'surfaces') {
-   fetchPlaces('');
-   firstSearchBoxClick.value = false; // Set to false after first fetch
- }
-};
+// const handleSearchBoxFocus = () => {
+//  if (firstSearchBoxClick.value && searchType.value === 'surfaces') {
+//    fetchPlaces('');
+//    firstSearchBoxClick.value = false; // Set to false after first fetch
+//  }
+// };
 
 onMounted(async () => {
   // await fetchDataAndPopulateRef("epoch", TAGS);
@@ -186,30 +187,27 @@ async function fetchDataAndPopulateRef<T>(type: string, refToPopulate: any) {
 }
 
 const handleCategoryClick = (category: string) => {
-  // If the clicked category is the same as the last clicked one, default to "all"
+  //mapping categories to their respective numbers
+  const categoryMapping = {
+    plans: 1,
+    models: 2,
+    composite: 3
+  };
+
   if (lastClickedCategory.value === category) {
     categories.value = ["all"];
 
     // Clear the lastClickedCategory since it was unselected
     lastClickedCategory.value = '';
-    // if (category === 'models') {
-    //   enable3D.value = !enable3D.value;  // Toggle between true and false
-    // } else {
-    //   enable3D.value = false;
-    // }
-    // if (category === 'plans') {
-    //   enablePlan.value = !enablePlan.value;  // Toggle between true and false
-    // } else {
-    //   enablePlan.value = false;
-    // }
+    
+    // Reset selected category in the store
+    store.setSelectedCategory(null);
   } else {
-    // Add the clicked category only if it's not the same as the last clicked one
     categories.value = [category];
 
-    // Update last clicked category
     lastClickedCategory.value = category;
-    // enable3D.value = (category === 'models');
-    // enablePlan.value = (category === 'plans');
+    //store the corresponding category number in the store
+    store.setSelectedCategory(categoryMapping[category]);
   }
 };
 

@@ -22,7 +22,7 @@ import GeoJSON from "ol/format/GeoJSON";
 import Title from "./Title.vue";
 import apiConfig from "./apiConfig"
 
-const { categories, tags, tagsLayerVisible, dataParams, imgParams } = storeToRefs(inscriptionsStore());
+const { categories, tags, tagsLayerVisible, dataParams, imgParams, selectedCategory } = storeToRefs(inscriptionsStore());
 
 const store = mapStore();
 const inscriptions = inscriptionsStore();  // Get the instance of inscriptionsStore
@@ -56,16 +56,35 @@ watch(
   { immediate: true }
 );
 
-// Watcher for selectedNecropolisCoordinates changes
-// watch(
-//   selectedNecropolisCoordinates,
-//   (newCoordinates, oldCoordinates) => {
-//     if (newCoordinates !== oldCoordinates && newCoordinates) {
-//       store.updateCenter(newCoordinates);
-//       store.updateZoom(16);
-//     }
-//   },
-// );
+// if selectedCategory is not null, toggle to the inscriptions view
+watch(selectedCategory, (newValue, oldValue) => {
+  if (newValue !== null && newValue !== undefined) {
+    showPlan.value = false;
+    showGalleryInscriptions.value = true;
+    showGallery.value = false;
+  }
+});
+
+watch(showPlan, (newValue) => {
+  localStorage.setItem("showPlan", JSON.stringify(newValue));
+});
+
+watch(showGallery, (newValue) => {
+  localStorage.setItem("showGallery", JSON.stringify(newValue));
+});
+
+watch(showGalleryInscriptions, (newValue) => {
+  localStorage.setItem("showGalleryInscriptions", JSON.stringify(newValue));
+});
+
+watch(showFirstFloor, (newValue) => {
+  localStorage.setItem("showFirstFloor", JSON.stringify(newValue));
+});
+
+watch(showSecondFloor, (newValue) => {
+  localStorage.setItem("showSecondFloor", JSON.stringify(newValue));
+});
+
 
 /* Response for generating the URL for filtering map points down */
 const tagParams = computed(() => {
@@ -157,30 +176,9 @@ onMounted(() => {
 })
 
 const toggleAboutVisibility = async () => {
-  console.log('fired')
   await nextTick();
   visibleAbout.value = !visibleAbout.value;
 };
-
-watch(showPlan, (newValue) => {
-  localStorage.setItem("showPlan", JSON.stringify(newValue));
-});
-
-watch(showGallery, (newValue) => {
-  localStorage.setItem("showGallery", JSON.stringify(newValue));
-});
-
-watch(showGalleryInscriptions, (newValue) => {
-  localStorage.setItem("showGalleryInscriptions", JSON.stringify(newValue));
-});
-
-watch(showFirstFloor, (newValue) => {
-  localStorage.setItem("showFirstFloor", JSON.stringify(newValue));
-});
-
-watch(showSecondFloor, (newValue) => {
-  localStorage.setItem("showSecondFloor", JSON.stringify(newValue));
-});
 </script>
 
 <template>
