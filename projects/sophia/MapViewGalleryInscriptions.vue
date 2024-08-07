@@ -282,7 +282,7 @@ export default {
 
 .gallery__item,
 .gallery__col-sizer {
-  width: calc(16.6%);
+  width: calc(14.28%);
 }
 
 .gallery__gutter-sizer {
@@ -294,7 +294,7 @@ export default {
 
   .gallery__item,
   .gallery__col-sizer {
-    width: calc(20%);
+    width: calc(16.6%);
   }
 }
 
@@ -303,7 +303,7 @@ export default {
 
   .gallery__item,
   .gallery__col-sizer {
-    width: calc(25%);
+    width: calc(20%);
   }
 }
 
@@ -311,8 +311,16 @@ export default {
 
   .gallery__item,
   .gallery__col-sizer {
-    width: calc(33%);
+    width: calc(25%);
   }
+}
+
+@media screen and (max-width: 1200px) {
+
+.gallery__item,
+.gallery__col-sizer {
+  width: calc(33%);
+}
 }
 
 @media screen and (max-width: 1100px) {
