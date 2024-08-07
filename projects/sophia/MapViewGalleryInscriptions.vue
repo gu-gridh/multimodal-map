@@ -78,7 +78,6 @@ export default {
           //final URL
           const urlToFetch = `${baseUrl}${categoryParam}`;
 
-          console.log(urlToFetch)
           const res = await fetch(urlToFetch);
           const data = await res.json();
 

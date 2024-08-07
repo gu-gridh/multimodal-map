@@ -4,12 +4,13 @@
     <div v-if="areMapPointsLoaded">
 
       <!-- This creates a 2-column section with for the controls -->
-      <div class="control-organisation justify-left" style="pointer-events:auto; padding-bottom:10px; padding-top:10px;">
+      <div class="control-organisation justify-left"
+        style="pointer-events:auto; padding-bottom:10px; padding-top:10px;">
         <div class="tag-section">
           <div class="section-title">{{ $t('language') }}</div>
           <div title="Narrow the result to a certain language group" class="broad-controls">
-            <CategoryButtonList v-model="language" :categories="LANGUAGE" :limit="1" styleType="dropdown" class="my-2" 
-            type="language" style="padding-right:30px;"/>
+            <CategoryButtonList v-model="language" :categories="LANGUAGE" :limit="1" styleType="dropdown" class="my-2"
+              type="language" style="padding-right:30px;" />
           </div>
         </div>
 
@@ -27,43 +28,35 @@
       </div>
       <div class="section-title">{{ $t('searchtitle') }}</div>
       <div class="toggle-buttons" style="margin-top: 10px">
-        <button style="float:left; border-radius:4px 0px 0px 0px" :class="{ active: searchType === 'surfaces' }" @click="setSearchType('surfaces')">{{ $t('panels') }}</button>
-        <button style="border-radius:0px 4px 0px 0px" :class="{ active: searchType === 'inscriptionobjects' }" @click="setSearchType('inscriptionobjects')">{{ $t('inscriptions') }}</button>
+        <button style="float:left; border-radius:4px 0px 0px 0px" :class="{ active: searchType === 'surfaces' }"
+          @click="setSearchType('surfaces')">{{ $t('panels') }}</button>
+        <button style="border-radius:0px 4px 0px 0px" :class="{ active: searchType === 'inscriptionobjects' }"
+          @click="setSearchType('inscriptionobjects')">{{ $t('inscriptions') }}</button>
       </div>
-        <div class="search-section">
-          <input
-            ref="searchInput"
-            type="text"
-            v-model="searchQuery"
-            @input="handleSearch"
-            @focus="handleSearchBoxFocus"
-            :placeholder="searchType === 'surfaces' ? $t('searchsurfacesplaceholder') : $t('searchinscriptionsplaceholder')"
-            class="search-box"
-            autofocus
-          />
-          <div class="search-results">
-            <!-- Rendering for 'places' -->
-            <template v-if="searchType === 'surfaces'">
-              <div v-for="feature in filteredPlaces" 
-                  :key="feature.properties ? feature.properties.Nr : 'no-place'" 
-                  class="search-result-item"
-                  @click="onPlaceClick(feature)">
-                  {{ $t('searchsurfacesplaceholder') }}
-              </div>
-            </template>
-     
-            <!-- Rendering for 'builders' -->
-            <template v-else-if="searchType === 'inscriptions'">
-       <div v-for="(builder, index) in objectToArray(searchResults)" 
-           :key="index" 
-           :class="['search-result-item', { 'selected-builder': builder.Id === selectedBuilderId }]"
-           @click="onBuilderClick(builder.Id)">
-         {{ builder.Builder }}
-       </div>
-     </template>
+      <div class="search-section">
+        <input ref="searchInput" type="text" v-model="searchQuery" @input="handleSearch" @focus="handleSearchBoxFocus"
+          :placeholder="searchType === 'surfaces' ? $t('searchsurfacesplaceholder') : $t('searchinscriptionsplaceholder')"
+          class="search-box" autofocus />
+        <div class="search-results">
+          <!-- Rendering for 'places' -->
+          <template v-if="searchType === 'surfaces'">
+            <div v-for="feature in filteredPlaces" :key="feature.properties ? feature.properties.Nr : 'no-place'"
+              class="search-result-item" @click="onPlaceClick(feature)">
+              {{ feature.properties.Building }}
+            </div>
+          </template>
 
-    </div>
-  </div>
+          <!-- Rendering for 'builders' -->
+          <template v-else-if="searchType === 'inscriptionobjects'">
+            <div v-for="(builder, index) in objectToArray(searchResults)" :key="index"
+              :class="['search-result-item', { 'selected-builder': builder.Id === selectedBuilderId }]"
+              @click="onBuilderClick(builder.Id)">
+              {{ builder.Builder }}
+            </div>
+          </template>
+
+        </div>
+      </div>
 
     </div>
 
@@ -139,27 +132,42 @@ const currentPanelCount = ref(0);
 const visibleAbout = ref(false);
 const { selectedFeature } = storeToRefs(mapStore());
 const searchType = ref('surfaces'); // Default to 'surfaces' 
+const firstSearchBoxClick = ref(true);
+const searchQuery = ref('');
 const searchResults = ref([]);
 const TAGS = ref<Record<string, string>>({});
 const LANGUAGE = ref<Record<string, string>>({});
 //const INSCRIPTIONTYPE = ref<Record<string, string>>({});
 const currentTag = ref(null);
+import _debounce from 'lodash/debounce';
+const searchInput = ref(null);
 //const currentNecropolis = ref(null);
 //const currentInscriptionType = ref(null);
 
 const baseURL = `${apiConfig.PANEL}?page_size=500`;
 
 const setSearchType = (type: string) => {
- searchType.value = type;
- handleSearch();
+  searchType.value = type;
+  handleSearch();
 };
 
-// const handleSearchBoxFocus = () => {
-//  if (firstSearchBoxClick.value && searchType.value === 'surfaces') {
-//    fetchPlaces('');
-//    firstSearchBoxClick.value = false; // Set to false after first fetch
-//  }
-// };
+const handleSearchBoxFocus = () => {
+  if (firstSearchBoxClick.value && searchType.value === 'surfaces') {
+    fetchPlaces('');
+    firstSearchBoxClick.value = false; // Set to false after first fetch
+  }
+};
+
+const filteredPlaces = computed(() => {
+  if (searchResults.value && searchResults.value.features) {
+    return searchResults.value.features.filter(feature => feature.properties);
+  }
+  return [];
+});
+
+const objectToArray = (obj) => {
+  return obj ? Object.keys(obj).map(key => obj[key]) : [];
+};
 
 onMounted(async () => {
   // await fetchDataAndPopulateRef("epoch", TAGS);
@@ -199,7 +207,7 @@ const handleCategoryClick = (category: string) => {
 
     // Clear the lastClickedCategory since it was unselected
     lastClickedCategory.value = '';
-    
+
     // Reset selected category in the store
     store.setSelectedCategory(null);
   } else {
@@ -226,6 +234,49 @@ const fetchData = async (url: string) => {
   // totalThreed.value = data.objects_3d;
 };
 
+//fetch places
+const fetchPlaces = _debounce(async (query) => {
+  let apiUrl;
+  if (searchType.value === 'surfaces') {
+    // If query is empty, fetch all places
+    apiUrl = query
+      ? `https://orgeldatabas.gu.se/webgoart/goart/searchpl.php?seastr=${encodeURIComponent(query)}&btype=0&year1=1500&year2=1899&lang=sv`
+      : 'https://orgeldatabas.gu.se/webgoart/goart/searchpl.php?seastr=&btype=0&year1=1500&year2=1899&lang=sv';
+  }
+  try {
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+    searchResults.value = data ? data : [];
+  } catch (error) {
+    console.error('Error fetching search results:', error);
+    searchResults.value = [];
+  }
+}, 500);
+
+//fetch builders
+async function fetchBuilders() {
+  const apiUrl = `https://orgeldatabas.gu.se/webgoart/goart/searchbuilder.php?seastr=${encodeURIComponent(searchQuery.value)}&lang=sv`;
+  try {
+    const response = await fetch(apiUrl);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    searchResults.value = data;
+  } catch (error) {
+    console.error('Error fetching builders:', error);
+    searchResults.value = [];
+  }
+}
+
+const handleSearch = () => {
+  if (searchType.value === 'inscriptionobjects') {
+    fetchBuilders();
+  } else if (searchType.value === 'surfaces') {
+    fetchPlaces(searchQuery.value);
+  }
+};
+
 watch(
   () => dataParams.value,
   async (newTagParams, oldTagParams) => {
@@ -240,38 +291,6 @@ watch(() => i18n.global.locale, (newLocale) => {
   fetchDataAndPopulateRef('language', LANGUAGE);
 });
 
-const toggleAboutVisibility = async () => {
-  await nextTick();
-  visibleAbout.value = !visibleAbout.value;
-};
-
-// function handleSelectionClick(selectedValue: any, targetRef: any) {
-//   clearAll();
-//   const selectedCoordinates = NECROPOLICoordinates.value[selectedValue];
-//   if (selectedCoordinates) {
-//     const [x, y] = selectedCoordinates;
-
-//     const convertedCoordinates = transform([x, y], 'EPSG:4326', 'EPSG:3857');
-//     if (Array.isArray(convertedCoordinates) && convertedCoordinates.length === 2) {
-//       selectedNecropolisCoordinates.value = convertedCoordinates as [number, number];
-//     } else {
-//       console.error("Invalid coordinate format after transformation.");
-//     }
-
-//   }
-// }
-
-// function clearAll() {
-//   categories.value = ["all"];
-//   enablePlan.value = false;
-//   enable3D.value = false;
-//   //inscriptionType.value = ["all"];
-//   lastClickedCategory.value = '';
-//   tags.value = [];
-// }
-
-
-
 </script>
 
 <style>
@@ -281,7 +300,7 @@ const toggleAboutVisibility = async () => {
   width: 54% !important;
   min-width: 990px;
   max-width: 1000px;
-  font-size:95%;
+  font-size: 95%;
 }
 
 .loading-svg {
@@ -311,7 +330,7 @@ const toggleAboutVisibility = async () => {
 #app .section-title {
   margin-top: 6px;
   margin-bottom: -3px;
-  font-weight:200;
+  font-weight: 200;
   color: black;
 }
 
@@ -320,7 +339,7 @@ const toggleAboutVisibility = async () => {
   margin-bottom: 0px;
 }
 
-.dropdown{
+.dropdown {
   font-family: "Oswald", sans-serif;
   appearance: none !important;
   padding: 3px 10px 3px 10px;
@@ -328,11 +347,21 @@ const toggleAboutVisibility = async () => {
 
 
 .search-result-item {
-  font-weight: normal;
   /* Remove styling from anchor links */
   display: block;
   color: inherit;
   text-decoration: none;
+}
+
+.search-result-item {
+  padding: 8px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 1.0) !important;
+}
+
+.search-result-item:hover {
+  background-color: rgba(240, 240, 240, 1.0) !important;
 }
 
 .toggle-buttons button {
@@ -349,7 +378,7 @@ const toggleAboutVisibility = async () => {
 
 .search-section {
   position: relative;
-  width:100%;
+  width: 100%;
 }
 
 .search-box {
@@ -370,7 +399,7 @@ const toggleAboutVisibility = async () => {
 }
 
 .search-results {
-  width: 100%;
+  width: 98%;
   background-color: rgba(255, 255, 255, 1.0);
   border: 0px solid #ccc;
   border-top: none;
@@ -489,8 +518,8 @@ const toggleAboutVisibility = async () => {
 
   }
   .data-widget {
-width:100%;
-}
+    width: 100%;
+  }
 
   #app .control-organisation {
     width: 100%;
@@ -542,8 +571,7 @@ width:100%;
 @media screen and (max-width: 600px) {
 
   .data-widget {
-font-size:80%;
+    font-size: 80%;
+  }
 }
-}
-
 </style>
