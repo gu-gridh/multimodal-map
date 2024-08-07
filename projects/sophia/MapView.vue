@@ -16,6 +16,7 @@ import MapViewGallery from "./MapViewGallerySurfaces.vue";
 import MapViewGalleryInscriptions from "./MapViewGalleryInscriptions.vue";
 import { ref } from "vue";
 import About from "./About.vue";
+import Instructions from "./Instructions.vue";
 import { onMounted, watch } from "vue";
 import { nextTick } from "vue";
 import GeoJSON from "ol/format/GeoJSON";
@@ -31,6 +32,7 @@ const minZoom = 20;
 const maxZoom = 24;
 const featureZoom = 15; //value between minZoom and maxZoom when you select a point 
 const visibleAbout = ref(false);
+const visibleInstructions = ref(false);
 const showPlan = ref(true);
 const showGallery = ref(false);
 const showGalleryInscriptions = ref(false);
@@ -150,6 +152,7 @@ onMounted(() => {
   if (!visited) {
     // Hide the about component
     visibleAbout.value = true;
+    visibleInstructions.value = true;
     sessionStorage.setItem("visited", "true");
   }
 
@@ -178,6 +181,10 @@ onMounted(() => {
 const toggleAboutVisibility = async () => {
   await nextTick();
   visibleAbout.value = !visibleAbout.value;
+};
+const toggleInstructionsVisibility = async () => {
+  await nextTick();
+  visibleInstructions.value = !visibleInstructions.value;
 };
 </script>
 
@@ -208,6 +215,7 @@ const toggleAboutVisibility = async () => {
   <MapViewGallery v-if="showGallery" />
   <MapViewGalleryInscriptions v-if="showGalleryInscriptions" />
   <About :visibleAbout="visibleAbout" @close="visibleAbout = false" />
+  <Instructions :visibleInstructions="visibleInstructions" @close="visibleInstructions = false" />
   <div class="gradient-blur">
       <div></div>
       <div></div>
@@ -219,7 +227,8 @@ const toggleAboutVisibility = async () => {
   <MainLayout>
    
     <template #search>
-      <Title @toggle-about="toggleAboutVisibility" />
+      <Title @toggle-about="toggleAboutVisibility" @toggle-instructions="toggleInstructionsVisibility"/>
+
       <MapViewControls />
     </template>
 
