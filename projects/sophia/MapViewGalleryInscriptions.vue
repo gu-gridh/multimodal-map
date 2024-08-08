@@ -3,11 +3,12 @@
     <div class="gallery">
       <div class="gallery__col-sizer"></div>
       <div class="gallery__gutter-sizer"></div>
-      <div v-for="item in images" :key="item.uuid" class="gallery__item"> 
+      <div v-for="item in images" :key="item.id" class="gallery__item"> 
         <a :href="`https://71807.dh.gu.se/viewer/?q=${item.panelTitle}/${item.id}`" target="_blank">
           <div class="item-info">
             <div class="item-info-meta">
-              <h1>{{ item.title }}</h1>
+              <h1>{{ item.panelTitle }}:{{ item.id }}</h1>
+              <h2 v-if="item.subtitle" style="font-size: 12px;">{{ item.subtitle }}</h2>
             </div>
           </div>
           <img :src="item.url_to_iiif_clip" loading="lazy" @load="imageLoaded" />
@@ -83,8 +84,8 @@ export default {
 
           const newImages = data.results.map(item => ({
             url_to_iiif_clip: item.url_to_iiif_clip,
-            panelTitle: item.panel ? item.panel.title : 'Unknown', 
-            title: item.title,
+            panelTitle: item.panel ? item.panel.title : 'Unknown',
+            subtitle: item.title,
             id: item.id,
           })).filter(img => img && img.url_to_iiif_clip);
 
