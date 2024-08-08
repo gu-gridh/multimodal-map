@@ -55,7 +55,7 @@
 
           <div class="guide-instructions-item">
 						<div class="guide-instructions-item-icon"
-							style="background-image:url(/eyebuttonwhite.png)"></div>
+							style="background-image:url(/searchbuttonwhite.png)"></div>
 						<div class="guide-instructions-item-label">
 							<p id="4">Use the tags at the top of the Surfaces- and Inscriptions galleries to filter down the result to a partcular theme or keyword. you can combine several tags to narrow down the result</p>
 						</div>
@@ -64,7 +64,7 @@
 
 					<div class="guide-instructions-item">
 						<div class="guide-instructions-item-icon"
-							style="background-image:url(/eyebuttonwhite.png)"></div>
+							style="background-image:url(/searchbuttonwhite.png)"></div>
 						<div class="guide-instructions-item-label">
 							<p id="4">To the left you have controls to filter down the result to inscriptions in a particular language, or filter by type of inscription (Text, Figure or Composite).</p>
 						</div>
@@ -72,7 +72,7 @@
 
           <div class="guide-instructions-item">
 						<div class="guide-instructions-item-icon"
-							style="background-image:url(/eyebuttonwhite.png)"></div>
+							style="background-image:url(/searchbuttonwhite.png)"></div>
 						<div class="guide-instructions-item-label">
 							<p id="4">You can also use the search bar to search for a particular surface or inscription using room, name or tag. The inscription search lets you search both for structured data such as title, genre and tags, but also transcriptions and translations of the texts and descriptions of figures.</p>
 						</div>
@@ -80,9 +80,9 @@
 
           <div class="guide-instructions-item">
 						<div class="guide-instructions-item-icon"
-							style="background-image:url(/eyebuttonwhite.png)"></div>
+							style="background-image:url(/plus_big.png)"></div>
 						<div class="guide-instructions-item-label">
-							<p id="4">Click on a surface or inscription to enter the Viewer where you can explore all the documentation and asscoiated data. This includes high resolution orthophotos, topographical visualisations, interactive 3D data, RTI photography, and the possibility to explore the spatial context of the surface throiugh a 3D scan of the cathedral interiors.</p>
+							<p id="4">Click on a surface or inscription to enter the Viewer where you can explore all the documentation and asscoiated data. This includes high resolution orthophotos, topographical visualisations, interactive 3D data, RTI photography, and the possibility to explore the spatial context of the surface through a 3D scan of the cathedral interiors.</p>
 						</div>
 					</div>
 
