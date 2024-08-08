@@ -25,16 +25,18 @@
               <div class="sophia-sub-title">
                 {{ $t('userguide') }}
               </div>
+
+              <div class="sophia-article-main">
+                This portal makes available a scientifc documentation of the inscriptions of Saint Sophia Cathedral in
+                Kyiv.
+                The data collection has been carried out using a number of overlapping and complementary techniques to
+                ensure an as trustworty source material as possible.
+                To explore this rich and varied material, the portal presents several different inroads.
+              </div>
             </div>
           </div>
           <div class="left-content-column2">
-            <div class="sophia-article-main">
-              This portal makes available a scientifc documentation of the inscriptions of Saint Sophia Cathedral in
-              Kyiv.
-              The data collection has been carried out using a number of overlapping and complementary techniques to
-              ensure an as trustworty source material as possible.
-              To explore this rich and varied material, the portal presents several different inroads.
-            </div>
+         
 
             <h1>Features</h1>
 
@@ -289,18 +291,14 @@
   }
 
   .left-content-column1 {
-    float: right;
-    width: 30%;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
+    width: 35%;
     pointer-events:none;
   }
 
   .left-content-column2 {
     float: right;
     padding-left: 40px;
-    width: 70%;
+    width: 65%;
     margin-left: 40px;
     border-width: 0px 0px 0px 0.5px;
     border-style: dashed;
@@ -309,7 +307,12 @@
     margin-bottom: 20px;
   }
 
-  .title-fields {}
+  .title-fields {
+    display: flex;
+    flex-direction: column;
+    align-content: flex-end;
+    width:100%;
+  }
 
   .sophia-main-title {
     font-family: "Alumni Sans Pinstripe", sans-serif;
@@ -317,13 +320,15 @@
     font-weight: 100 !important;
     line-height: 0.7;
     text-align: right;
-    font-size: 7vw;
+    font-size: 5.5vw;
     user-select: none;
     pointer-events: none;
+
 
   }
 
   .sophia-sub-title {
+    align-self:end;
     font-family: "Alumni Sans Pinstripe", sans-serif;
     color: white !important;
     font-weight: 100 !important;
@@ -335,21 +340,25 @@
     letter-spacing: 0px !important;
     user-select: none;
     pointer-events: none;
-    width: auto;
+    width: 200px;
     word-spacing: 1000px;
   }
 
   .sophia-article-main {
+    align-self:end;
     font-family: "Oswald", sans-serif !important;
     color: white;
-    text-align: left;
+    text-align: right;
     font-size: 1.1em;
     line-height: 1.3;
     width: auto;
     font-weight: 100;
     padding: 0px;
-    margin: 0px;
     margin-bottom: 20px;
+    padding-left:40px;
+    margin-top:20px;
+    margin-right:0px;
+    max-width:450px;
   }
 
   .sophia-article-sub {
@@ -414,11 +423,11 @@
     }
 
     .sophia-main-title {
-      font-size: 7em;
+      font-size: 5em;
     }
 
     .sophia-sub-title {
-      font-size: 3.5em;
+      font-size: 3.0em;
     }
   }
 
@@ -514,12 +523,16 @@
       text-align: left;
       margin-left: 0px;
       font-size: 3.8em;
-
+      align-self:start;
     }
 
     .sophia-article-main {
+      align-self:start;
       padding-left: 0px !important;
-      margin: 0px;
+      margin-top: 20px;
+      text-align: left;
+      width:auto;
+      max-width:auto;
       margin-bottom: 30px;
       font-weight: 100 !important;
       font-size: 1.2em !important;
