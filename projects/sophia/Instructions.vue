@@ -128,7 +128,11 @@
         required: true,
       },
     },
-
+    data() {
+      return {
+        displayInstructions: this.visibleInstructions,
+      };
+    },
     watch: {
     visibleInstructions(newVal) {
       if (newVal) {
