@@ -17,55 +17,76 @@
         <div class="left-content-columns">
           <div class="left-content-column1">
             <div class="title-fields">
-              <div class="sophia-main-title theme-color-text" v-bind:class="{ fullopacityui: visibleAbout }">Написи
+              <div class="sophia-main-title" v-bind:class="{ fullopacityui: visibleAbout }">Написи
                 <br>Святої
                 <br>Софії
               </div>
-              <div class="sophia-sub-title theme-color-text" v-bind:class="{ fullopacityui: visibleAbout }">
-                User
-                <br>
-                Guide
+              <div class="sophia-sub-title" v-bind:class="{ fullopacityui: visibleAbout }">
+                {{ $t('userguide') }}
               </div>
             </div>
           </div>
           <div class="left-content-column2">
             <div class="sophia-article-main" v-bind:class="{ fullopacityui: visibleAbout }">
-              {{ $t('aboutportalmain') }}
+             This portal makes available a scientifc documentation of the inscriptions of Saint Sophia Cathedral in Kyiv. 
+             The data collection has been carried out using a number of overlapping and complementary techniques to ensure an as trustworty source material as possible. 
+             To explore this rich and varied material, the portal presents several different inroads. 
             </div>
         
+            <h1>Features</h1>
+             
+            <div class="guide-instructions-item">
+              <div class="guide-instructions-item-icon" style="background-image:url(/eyebuttonwhite.png)"></div>
+              <div class="guide-instructions-item-label">
+                <p id="4">Use the centrally placed widget at the top of the screen to switch betwen an interactive plan of the cathedral, a gallery of the documented Surfaces or a gallery of the individual Inscriptions. 
+                 </p>
+              </div>
+            </div>
             
-
 					<div class="guide-instructions-item">
 						<div class="guide-instructions-item-icon"
-							style="background-image:url(@/assets/marker-white.svg)"></div>
+							style="background-image:url(/eyebuttonwhite.png)"></div>
 						<div class="guide-instructions-item-label">
-							<p id="4">Test text that could describe for instance a filter function or search or something</p>
+							<p id="4">The interactive plan shows the position of all the documented surfaces rendered on top of a plan of the cathedral. The colours indicate the amount of annotated inscriptions for each surface, ranging from yeallow to bright red. 
+                Switch beteeen Ground Floor and Second Floor with the widget at the bottom of the page. 
+                Zoom in by scrolling or double-clicking, and click-and-drag to pan the view.</p>
 						</div>
 					</div>
 
-					<div class="guide-instructions-item">
+          <div class="guide-instructions-item">
 						<div class="guide-instructions-item-icon"
-							style="background-image:url(/viewer/shared/interface/colour_on.png)"></div>
+							style="background-image:url(/eyebuttonwhite.png)"></div>
 						<div class="guide-instructions-item-label">
-							<p id="5"></p>
+							<p id="4">Use the tags at the top of the Surfaces- and Inscriptions galleries to filter down the result to a partcular theme or keyword. you can combine several tags to narrow down the result</p>
 						</div>
 					</div>
+  
 
 					<div class="guide-instructions-item">
 						<div class="guide-instructions-item-icon"
-							style="background-image:url(/viewer/shared/interface/specular_on.png)"></div>
+							style="background-image:url(/eyebuttonwhite.png)"></div>
 						<div class="guide-instructions-item-label">
-							<p id="6"></p>
+							<p id="4">To the left you have controls to filter down the result to inscriptions in a particular language, or filter by type of inscription (Text, Figure or Composite).</p>
 						</div>
 					</div>
 
-					<div class="guide-instructions-item">
+          <div class="guide-instructions-item">
 						<div class="guide-instructions-item-icon"
-							style="background-image:url(/viewer/shared/interface/light_on.png)"></div>
+							style="background-image:url(/eyebuttonwhite.png)"></div>
 						<div class="guide-instructions-item-label">
-							<p id="7"></p>
+							<p id="4">You can also use the search bar to search for a particular surface or inscription using room, name or tag. The inscription search lets you search both for structured data such as title, genre and tags, but also transcriptions and translations of the texts and descriptions of figures.</p>
 						</div>
 					</div>
+
+          <div class="guide-instructions-item">
+						<div class="guide-instructions-item-icon"
+							style="background-image:url(/eyebuttonwhite.png)"></div>
+						<div class="guide-instructions-item-label">
+							<p id="4">Click on a surface or inscription to enter the Viewer where you can explore all the documentation and asscoiated data. This includes high resolution orthophotos, topographical visualisations, interactive 3D data, RTI photography, and the possibility to explore the spatial context of the surface throiugh a 3D scan of the cathedral interiors.</p>
+						</div>
+					</div>
+
+					
 
 			
 
@@ -121,6 +142,12 @@
 </script>
 
 <style scoped>
+  h1{
+color:white!important;
+font-size:2.0em;
+font-weight:100;
+margin-bottom:20px;
+  }
 
 .guide-instructions{
   width: 100%;
@@ -154,6 +181,7 @@
   justify-content: left;
   align-items:center;
   margin-bottom:15px;
+  min-height:60px;
 }
 
 .guide-instructions-item-icon{
@@ -162,8 +190,8 @@ min-height:32px;
 background-size: contain;
 background-repeat: no-repeat;
 background-position-y:50%;
-margin-left:5px;
-background-color:grey;
+margin-left:0px;
+
 
 }
 
@@ -176,6 +204,7 @@ background-color:grey;
   user-select: none;
   -webkit-user-select: none;
   cursor:default;
+ 
 }
 
 .guide-instructions-item-label p{
@@ -202,11 +231,77 @@ background-color:grey;
   transition: all 1.5s ease-in-out;
   opacity: 0.0;
   overflow-y: auto;
+
   }
 
   .fullopacity {
     background: rgba(0,0,0,0.9);
     backdrop-filter: blur(5px);
+  }
+
+  .main-about-content {
+    display: flex;
+    flex-direction: row;
+    align-items: top;
+    padding: 0px;
+    height: auto;
+    overflow-y: auto;
+  }
+
+  .left-content {
+    width: 100%;
+    float: right;
+    margin-top: 20px;
+    padding-right: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content:flex-end;
+    padding-top:0px;
+    padding-bottom:0px;
+ 
+  }
+
+  .right-content {
+    height: calc(100vh - 80px);
+    width: 00%;
+
+    background-size: cover;
+    float: right;
+  }
+
+
+  .left-content-columns {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    float: right;
+    padding-right: 10px;
+  }
+
+  .left-content-column1 {
+    float: right;
+    width: 30%;
+    display: flex;
+    flex-direction: row;
+    justify-content:flex-end;
+  }
+
+  .left-content-column2 {
+    float: right;
+    padding-left: 40px;
+    width: 70%;
+    margin-left: 40px;
+    border-width: 0px 0px 0px 0.5px;
+    border-style: dashed;
+    border-color: grey;
+    max-width: 750px;
+    margin-bottom:20px;
+  }
+
+  .title-fields{
+
   }
 
   .sophia-main-title {
@@ -216,7 +311,6 @@ background-color:grey;
     line-height: 0.7;
     text-align: right;
     font-size: 7vw;
-    top: 40%;
     user-select: none;
     pointer-events:none;
 
@@ -234,6 +328,8 @@ background-color:grey;
     letter-spacing: 0px !important;
     user-select: none;
     pointer-events:none;
+ width:auto;
+ word-spacing:1000px;
   }
 
   .sophia-article-main {
@@ -264,14 +360,7 @@ background-color:grey;
   }
 
 
-  .main-about-content {
-    display: flex;
-    flex-direction: row;
-    align-items: top;
-    padding: 0px;
-    height: calc(100vh - 80px);
-    overflow: hidden;
-  }
+
 
   .language-button {
     width: 120px;
@@ -289,51 +378,7 @@ background-color:grey;
 
   }
 
-  .left-content {
-    width: 100%;
-    float: right;
-    margin-top: 0px;
-    padding-right: 10px;
-    min-width: 800px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-  }
-
-  .right-content {
-    height: calc(100vh - 80px);
-    width: 00%;
-
-    background-size: cover;
-    float: right;
-  }
-
-
-  .left-content-columns {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    width: 100%;
-    float: right;
-    padding-right: 10px;
-
-  }
-
-  .left-content-column1 {
-    float: right;
-    width: 40%;
-  }
-
-  .left-content-column2 {
-    float: right;
-    padding-left: 40px;
-    width: 60%;
-    margin-left: 40px;
-    border-width: 0px 0px 0px 0.5px;
-    border-style: dashed;
-    border-color: grey;
-    max-width: 600px;
-  }
+  
 
 
 
@@ -375,10 +420,14 @@ background-color:grey;
   /*   Small screen adaption */
 
   @media screen and (max-width: 900px) {
+    h1{
+color:white!important;
+font-size:2.2em!important;
+font-weight:100;
+margin-bottom:20px;
+  }
 
-    .logo-area{
-      display:none;
-    }
+
    
     .main-about-content {
     display: flex;
@@ -390,14 +439,13 @@ background-color:grey;
   }
     .left-content {
       width: 100%;
-      float: left;
       padding-left: 50px;
       min-width: auto;
       padding-right: 20px;
       margin-top: 80px;
       z-index: 10000;
       position: absolute;
-      padding-bottom: 140px;
+      padding-bottom: 20px;
       display: block;
       flex-direction: row;
       align-items:flex-start;
@@ -415,7 +463,11 @@ background-color:grey;
       flex-direction: column;
       align-items: flex-start;
       width: 100%;
-      float: right;
+
+    }
+
+    .left-content-column1 {
+    width:100%;
     }
 
     .left-content-column2 {
@@ -445,12 +497,16 @@ background-color:grey;
     .sophia-main-title {
       text-align: left;
       margin-left: 0px;
+      width:auto;
+      display:none;
+   
     }
 
     .sophia-sub-title {
       text-align: left;
       margin-left: 0px;
       font-size: 3.8em;
+
     }
 
     .sophia-article-main {
@@ -481,39 +537,17 @@ background-color:grey;
       z-index: 10001;
     }
 
+    .guide-instructions-item-label{
+  margin-left:20px;
+  line-height: 1.4;
+  font-size:1.1em;
+
+}
+
 
   }
 
-  @media screen and (max-width: 600px) {
-    .right-content {}
-  }
-
-  .about-logo-top-right {
-    display: block;
-    pointer-events: none;
-    width: 180px;
-    height: 180px;
-    position: absolute;
-    /*   background: url(/images/logo.png); */
-    background-repeat: no-repeat;
-    background-size: contain;
-    top: 30px;
-    right: 40px;
-    opacity: 0.9;
-    transform: rotate(0deg);
-  }
 
 
-  .about-lower-border {
-    flex-grow: 1;
-    margin-top: 0px;
-    pointer-events: none;
-    width: 100%;
-    height: 300px;
-    position: relative;
-    /*   background:url(./images/about-etruscans.png); */
-    background-repeat: no-repeat;
-    background-size: cover;
-    opacity: 0.7;
-  }
+
 </style>

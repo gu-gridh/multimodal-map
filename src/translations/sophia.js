@@ -58,6 +58,7 @@ const messages = {
       drawings: "Drawings",
       showall: "Show all",
       exploreData: "Explore documentation",
+      userguide: "User\nguide",
       alldatasets: "All datasets",
       "categories": {
         "all": "All types",
@@ -120,6 +121,7 @@ const messages = {
       drawings: "Drawings",
       showall: "Show all",
       exploreData: "Вивчіть документацію",
+      userguide: "керівництво \n користувача",
       alldatasets: "All datasets",
       "categories": {
         "all": "Всі види",
