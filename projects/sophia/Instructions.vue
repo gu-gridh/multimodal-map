@@ -14,7 +14,7 @@
     <div class="main-about-content">
 
       <div class="left-content">
-        <div class="left-content-columns">
+        <div class="left-content-columns" >
           <div class="left-content-column1">
             <div class="title-fields">
               <div class="sophia-main-title">
@@ -128,7 +128,7 @@
         required: true,
       },
     },
-    
+
     watch: {
     visibleInstructions(newVal) {
       if (newVal) {
