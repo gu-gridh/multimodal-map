@@ -34,6 +34,13 @@
                 To explore this rich and varied material, the portal presents several different inroads.
               </div>
             </div>
+            <div class="explore-button">
+              <button @click="$emit('close')">
+                <div class="p-1 px-2 category-button"
+                  style="width:auto; padding:5px 15px; text-align: center; cursor: pointer;"
+                  v-bind:class="{ fullopacityui: visibleInstructions }">{{ $t('close') }}</div>
+              </button>
+            </div>
           </div>
           <div class="left-content-column2">
          
@@ -100,13 +107,7 @@
 
 
 
-            <div class="explore-button">
-              <button @click="$emit('close')">
-                <div class="p-1 px-2 category-button"
-                  style="width:auto; padding:5px 15px; text-align: center; cursor: pointer;"
-                  v-bind:class="{ fullopacityui: visibleInstructions }">{{ $t('close') }}</div>
-              </button>
-            </div>
+            
           </div>
         </div>
       </div>
@@ -354,7 +355,7 @@
     width: auto;
     font-weight: 100;
     padding: 0px;
-    margin-bottom: 20px;
+    margin-bottom: 0px;
     padding-left:40px;
     margin-top:20px;
     margin-right:0px;
@@ -389,8 +390,9 @@
   .explore-button {
     margin-top: 0px;
     position: relative;
-    float: left;
+    float: right;
     margin-left: 0px;
+    pointer-events:auto;
 
   }
 
@@ -509,6 +511,7 @@
       position: relative;
       float: left;
       margin-left: 0px;
+      margin-bottom: 20px;
     }
 
     .sophia-main-title {
@@ -531,9 +534,9 @@
       padding-left: 0px !important;
       margin-top: 20px;
       text-align: left;
-      width:auto;
-      max-width:auto;
-      margin-bottom: 30px;
+      width:100%;
+      max-width:100%;
+      margin-bottom: 0px;
       font-weight: 100 !important;
       font-size: 1.2em !important;
       padding-right: 0px !important;
