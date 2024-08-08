@@ -38,23 +38,19 @@
           :placeholder="searchType === 'surfaces' ? $t('searchsurfacesplaceholder') : $t('searchinscriptionsplaceholder')"
           class="search-box" autofocus />
         <div class="search-results">
-          <!-- Rendering for 'places' -->
+          <!-- Rendering for surfaces -->
           <template v-if="searchType === 'surfaces'">
-            <div v-for="feature in filteredPlaces" :key="feature.properties ? feature.properties.Nr : 'no-place'"
-              class="search-result-item" @click="onPlaceClick(feature)">
-              {{ feature.properties.Building }}
+            <div v-for="(surface, index) in objectToArray(searchResults)" :key="index" :class="['search-result-item']">
+              {{ surface?.title }}
             </div>
           </template>
-
-          <!-- Rendering for 'builders' -->
+          <!-- Rendering for inscriptions -->
           <template v-else-if="searchType === 'inscriptionobjects'">
-            <div v-for="(builder, index) in objectToArray(searchResults)" :key="index"
-              :class="['search-result-item', { 'selected-builder': builder.Id === selectedBuilderId }]"
-              @click="onBuilderClick(builder.Id)">
-              {{ builder.Builder }}
+            <div v-for="feature in filteredInscription" :key="feature.properties ? feature.properties.Nr : 'no-place'"
+              class="search-result-item">
+              {{ feature.displayText }}
             </div>
           </template>
-
         </div>
       </div>
 
@@ -153,14 +149,24 @@ const setSearchType = (type: string) => {
 
 const handleSearchBoxFocus = () => {
   if (firstSearchBoxClick.value && searchType.value === 'surfaces') {
-    fetchPlaces('');
+    fetchSurfaces();
     firstSearchBoxClick.value = false; // Set to false after first fetch
   }
 };
 
-const filteredPlaces = computed(() => {
-  if (searchResults.value && searchResults.value.features) {
-    return searchResults.value.features.filter(feature => feature.properties);
+const filteredInscription = computed(() => {
+  if (searchResults.value && Array.isArray(searchResults.value.results)) {
+    return searchResults.value.results.map(result => {
+      if (result && typeof result === 'object') {
+        const formattedTitle = result.title ? ` (${result.title})` : '';
+        return {
+          ...result,
+          displayText: `${result.panel}:${result.id}${formattedTitle}`
+        };
+      } else {
+        return { displayText: 'No data available' };
+      }
+    });
   }
   return [];
 });
@@ -170,15 +176,11 @@ const objectToArray = (obj) => {
 };
 
 onMounted(async () => {
-  // await fetchDataAndPopulateRef("epoch", TAGS);
-  //await fetchDataAndPopulateRef("typeofinscription", INSCRIPTIONTYPE);
   await fetchDataAndPopulateRef("language", LANGUAGE);
 
   const response = await fetch(baseURL);
   const data = await response.json();
 });
-
-// const NECROPOLICoordinates = ref<Record<string, [number, number]>>({});
 
 async function fetchDataAndPopulateRef<T>(type: string, refToPopulate: any) {
   try {
@@ -234,14 +236,11 @@ const fetchData = async (url: string) => {
   // totalThreed.value = data.objects_3d;
 };
 
-//fetch places
-const fetchPlaces = _debounce(async (query) => {
+//fetch inscriptions
+const fetchInscriptions = _debounce(async (query) => {
   let apiUrl;
-  if (searchType.value === 'surfaces') {
-    // If query is empty, fetch all places
-    apiUrl = query
-      ? `https://orgeldatabas.gu.se/webgoart/goart/searchpl.php?seastr=${encodeURIComponent(query)}&btype=0&year1=1500&year2=1899&lang=sv`
-      : 'https://orgeldatabas.gu.se/webgoart/goart/searchpl.php?seastr=&btype=0&year1=1500&year2=1899&lang=sv';
+  if (searchType.value === 'inscriptionobjects') {
+    apiUrl = `https://saintsophia.dh.gu.se/api/inscriptions/inscription-string/?str=${encodeURIComponent(query)}`
   }
   try {
     const response = await fetch(apiUrl);
@@ -253,27 +252,27 @@ const fetchPlaces = _debounce(async (query) => {
   }
 }, 500);
 
-//fetch builders
-async function fetchBuilders() {
-  const apiUrl = `https://orgeldatabas.gu.se/webgoart/goart/searchbuilder.php?seastr=${encodeURIComponent(searchQuery.value)}&lang=sv`;
+//fetch surfaces
+async function fetchSurfaces() {
+  const apiUrl = `https://saintsophia.dh.gu.se/api/inscriptions/panel-string/?str=${encodeURIComponent(searchQuery.value)}`;
   try {
     const response = await fetch(apiUrl);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const data = await response.json();
-    searchResults.value = data;
+    searchResults.value = data.results;
   } catch (error) {
-    console.error('Error fetching builders:', error);
+    console.error('Error fetching:', error);
     searchResults.value = [];
   }
 }
 
 const handleSearch = () => {
-  if (searchType.value === 'inscriptionobjects') {
-    fetchBuilders();
-  } else if (searchType.value === 'surfaces') {
-    fetchPlaces(searchQuery.value);
+  if (searchType.value === 'surfaces') {
+    fetchSurfaces();
+  } else if (searchType.value === 'inscriptionobjects') {
+    fetchInscriptions(searchQuery.value);
   }
 };
 
@@ -517,6 +516,7 @@ watch(() => i18n.global.locale, (newLocale) => {
     width: 100%;
 
   }
+
   .data-widget {
     width: 100%;
   }
