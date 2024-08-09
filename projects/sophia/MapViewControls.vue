@@ -36,7 +36,7 @@
       <div class="search-section">
         <input ref="searchInput" type="text" v-model="searchQuery" @input="handleSearch" @focus="handleSearchBoxFocus"
           :placeholder="searchType === 'surfaces' ? $t('searchsurfacesplaceholder') : $t('searchinscriptionsplaceholder')"
-          class="search-box" autofocus />
+          class="search-box"/>
         <div class="search-results">
           <!-- Rendering for surfaces -->
           <template v-if="searchType === 'surfaces'">

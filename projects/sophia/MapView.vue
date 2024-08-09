@@ -152,7 +152,6 @@ onMounted(() => {
   if (!visited) {
     // Hide the about component
     visibleAbout.value = true;
-    visibleInstructions.value = true;
     sessionStorage.setItem("visited", "true");
   }
 
