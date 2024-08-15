@@ -201,7 +201,7 @@ onMounted(() => {
       clickedFeatures.push(feature as Feature<Geometry>);
     });
 
-    if (clickedFeatures.length === 1) {
+    if (clickedFeatures.length >= 1) {
       // Unselect the hovered feature
       hoverCoordinates.value = null;
       hoveredFeature.value = null;
