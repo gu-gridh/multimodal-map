@@ -131,8 +131,8 @@ onMounted(() => {
 <style scoped>
 .download-button {
     pointer-events: auto;
-    background: url(@/assets/openseadragon/downloadbutton.png);
-    background-size: 80%;
+    background: url(@/assets/openseadragon/download.svg);
+    background-size: 55%;
     background-repeat: no-repeat;
     background-position: center;
     width: 40px;
