@@ -174,7 +174,7 @@
   }
 
   #Home {
-    background: url(@/assets/openseadragon/frame_small.png);
+    background: url(https://data.dh.gu.se/ui-icons/frame_small_white.png);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -185,7 +185,7 @@
   }
 
   #ZoomIn {
-    background: url(@/assets/openseadragon/plus_big.png);
+    background: url(https://data.dh.gu.se/ui-icons/zoomin_big_white.png);
     background-size: 100%;
     background-repeat: no-repeat;
     background-position: center;
@@ -196,7 +196,7 @@
   }
 
   #ZoomOut {
-    background: url(@/assets/openseadragon/minus_big.png);
+    background: url(https://data.dh.gu.se/ui-icons/zoomout_big_white.png);
     background-size: 100%;
     background-repeat: no-repeat;
     background-position: center;
@@ -207,7 +207,7 @@
   }
 
   #FullPage {
-    background: url(@/assets/openseadragon/expand_large.svg);
+    background: url(https://data.dh.gu.se/ui-icons/expand_white.svg);
     background-size: 100%;
     background-repeat: no-repeat;
     background-position: center;
@@ -253,11 +253,11 @@
   }
 
   #Prev {
-    background-image: url(@/assets/openseadragon/prev.png);
+    background-image: url(https://data.dh.gu.se/ui-icons/arrow_prev_white.png);
   }
 
   #Next {
-    background-image: url(@/assets/openseadragon/next.png);
+    background-image: url(https://data.dh.gu.se/ui-icons/arrow_next_white.png);
     margin-left: 10px;
   }
 

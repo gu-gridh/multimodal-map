@@ -59,6 +59,8 @@ const messages = {
       showall: "Show all",
       exploreData: "Explore documentation",
       userguide: "User\nguide",
+      aboutinstructions: "This portal makes available a scientifc documentation of the inscriptions of Saint Sophia Cathedral in Kyiv. The data collection has been carried out using a number of overlapping and complementary techniques to ensure an as trustworty source material as possible. To explore this rich and varied material, the portal presents several different inroads.",
+      close: "Close",
       alldatasets: "All datasets",
       "categories": {
         "all": "All types",
@@ -122,6 +124,8 @@ const messages = {
       showall: "Show all",
       exploreData: "Вивчіть документацію",
       userguide: "керівництво \n користувача",
+      aboutinstructions: "На цьому порталі доступна наукова документація написів Софійського собору в Києві. Збір даних проводився з використанням низки методів, що збігаються та доповнюють один одного, щоб забезпечити максимально надійний вихідний матеріал. Щоб дослідити цей багатий і різноманітний матеріал, портал пропонує кілька різних вторгнень.",
+      close: "Закрити",
       alldatasets: "All datasets",
       "categories": {
         "all": "Всі види",

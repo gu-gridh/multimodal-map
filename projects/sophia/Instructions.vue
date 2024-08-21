@@ -27,11 +27,7 @@
               </div>
 
               <div class="sophia-article-main">
-                This portal makes available a scientifc documentation of the inscriptions of Saint Sophia Cathedral in
-                Kyiv.
-                The data collection has been carried out using a number of overlapping and complementary techniques to
-                ensure an as trustworty source material as possible.
-                To explore this rich and varied material, the portal presents several different inroads.
+                {{ $t('aboutinstructions') }}
               </div>
             </div>
             <div class="explore-button">
@@ -341,7 +337,7 @@
     letter-spacing: 0px !important;
     user-select: none;
     pointer-events: none;
-    width: 200px;
+    width: auto;
     word-spacing: 1000px;
   }
 

@@ -160,7 +160,7 @@ a {
 }
 
 .download-link {
-  background: url("@/assets/interface/downloadbuttonwhite.png");
+  background: url("https://data.dh.gu.se/ui-icons/download_white_circle.png");
   background-size: 18px;
   background-position: 0px 50%;
   background-repeat: no-repeat;
@@ -169,7 +169,7 @@ a {
 }
 
 .site-link {
-  background: url("@/assets/interface/linkbuttonwhite.png");
+  background: url("https://data.dh.gu.se/ui-icons/arrow_link_white_circle.png");
   background-size: 18px;
   background-position: 0px 50%;
   background-repeat: no-repeat;
