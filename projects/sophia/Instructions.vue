@@ -45,45 +45,52 @@
 
             <div class="guide-instructions-item">
               <div class="guide-instructions-item-icon" style="background-image:url(/eyebuttonwhite.png)"></div>
-              <div class="guide-instructions-item-label">
-                <p id="4">Use the centrally placed widget at the top of the screen to switch betwen an interactive plan
+              <div class="guide-instructions-item-description">
+                <div class="guide-instructions-item-title">Multimodal exploration</div>
+                <p>Use the centrally placed widget at the top of the screen to switch betwen an interactive plan
                   of the cathedral, a gallery of the documented Surfaces or a gallery of the individual Inscriptions.
                 </p>
               </div>
             </div>
 
             <div class="guide-instructions-item">
-              <div class="guide-instructions-item-icon" style="background-image:url(/eyebuttonwhite.png)"></div>
-              <div class="guide-instructions-item-label">
-                <p id="4">The interactive plan shows the position of all the documented surfaces rendered on top of a
-                  plan of the cathedral. The colours indicate the amount of annotated inscriptions for each surface,
-                  ranging from yeallow to bright red.
-                  Switch beteeen Ground Floor and Second Floor with the widget at the bottom of the page.
-                  Zoom in by scrolling or double-clicking, and click-and-drag to pan the view.</p>
-              </div>
-            </div>
-
-            <div class="guide-instructions-item">
               <div class="guide-instructions-item-icon" style="background-image:url(/searchbuttonwhite.png)"></div>
-              <div class="guide-instructions-item-label">
-                <p id="4">Use the tags at the top of the Surfaces- and Inscriptions galleries to filter down the result
-                  to a partcular theme or keyword. you can combine several tags to narrow down the result</p>
+              <div class="guide-instructions-item-description">
+                <div class="guide-instructions-item-title">Filter by Genre and Keywords</div>
+                <p>Use the tags at the top of the Surfaces- and Inscriptions galleries to filter down the result
+                  to a particular genre or keyword. you can combine several tags to narrow down the result</p>
               </div>
             </div>
 
 
             <div class="guide-instructions-item">
               <div class="guide-instructions-item-icon" style="background-image:url(/searchbuttonwhite.png)"></div>
-              <div class="guide-instructions-item-label">
-                <p id="4">To the left you have controls to filter down the result to inscriptions in a particular
+              <div class="guide-instructions-item-description">
+                <div class="guide-instructions-item-title">Filter by Language or Type of Inscription</div>
+                <p>To the left you have controls to filter down the result to inscriptions in a particular
                   language, or filter by type of inscription (Text, Figure or Composite).</p>
               </div>
             </div>
 
+
+            <div class="guide-instructions-item">
+              <div class="guide-instructions-item-icon" style="background-image:url(/eyebuttonwhite.png)"></div>
+              <div class="guide-instructions-item-description">
+                <div class="guide-instructions-item-title">Interactive Plan</div>
+                <p>The interactive plan shows the position of all the documented surfaces rendered on top of a
+                  plan of the cathedral. The colours indicate the amount of annotated inscriptions for each surface,
+                  ranging from yellow to bright red. Switch beteeen Ground Floor and Second Floor with the widget at the bottom of the page.
+                  Zoom in by scrolling or double-clicking, and click-and-drag to pan the view.</p>
+              </div>
+            </div>
+
+        
+
             <div class="guide-instructions-item">
               <div class="guide-instructions-item-icon" style="background-image:url(/searchbuttonwhite.png)"></div>
-              <div class="guide-instructions-item-label">
-                <p id="4">You can also use the search bar to search for a particular surface or inscription using room,
+              <div class="guide-instructions-item-description">
+                <div class="guide-instructions-item-title">Powerful Search</div>
+                <p>You can  use the search bar to search for a particular surface or inscription using room,
                   name or tag. The inscription search lets you search both for structured data such as title, genre and
                   tags, but also transcriptions and translations of the texts and descriptions of figures.</p>
               </div>
@@ -91,8 +98,9 @@
 
             <div class="guide-instructions-item">
               <div class="guide-instructions-item-icon" style="background-image:url(/plus_big.png)"></div>
-              <div class="guide-instructions-item-label">
-                <p id="4">Click on a surface or inscription to enter the Viewer where you can explore all the
+              <div class="guide-instructions-item-description">
+                <div class="guide-instructions-item-title">Analytical tools</div>
+                <p>Click on a surface or inscription to enter the analytical tool where you can explore all the
                   documentation and asscoiated data. This includes high resolution orthophotos, topographical
                   visualisations, interactive 3D data, RTI photography, and the possibility to explore the spatial
                   context of the surface through a 3D scan of the cathedral interiors.</p>
@@ -220,7 +228,14 @@
 
   }
 
-  .guide-instructions-item-label {
+  .guide-instructions-item-title{
+    font-weight:600;
+    letter-spacing:0.05em;
+    color:rgb(180,100,100)
+  
+  }
+
+  .guide-instructions-item-description {
     color: white;
     margin-left: 20px;
     font-weight: 200;
@@ -229,7 +244,7 @@
     user-select: none;
     -webkit-user-select: none;
     cursor: default;
-
+    letter-spacing:0.02em;
   }
 
   .guide-instructions-item-label p {
