@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import ObjectViewComponent from "@/components/ObjectViewComponent.vue";
-import OpenSeadragon from "@/components/OpenSeadragon.vue";
+import OpenSeadragon from "/OpenSeadragon.vue";
 import type { ImageDeep } from "./types";
 
 defineProps<{

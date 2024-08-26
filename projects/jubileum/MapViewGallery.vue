@@ -4,7 +4,7 @@
     class="masonry-wall"
     :items="images"
     :column-width="300" 
-    :gap="10"
+    :gap="0"
   >
     <template v-slot:default="{ item }">
       <router-link
@@ -67,21 +67,22 @@ defineComponent({
   width: 100%; 
   height: 100%; 
   z-index: 99;
-  background-color: rgb(234, 228, 219);
-  padding: 0px 0px 0px 0px; 
+    padding: 0px 0px 0px 0px; 
   overflow-y: scroll;
   transition: all 0.5s ease-in-out;
+  z-index:249;
+  pointer-events: none;
 }
 
 @media (min-width: 900px) {
   #app .masonry-wall {
-    padding: 0px 0px 0px 550px; 
+    padding: 0px 0px 0px 450px; 
   }
 }
 
 @media (min-width: 1500px) {
   #app .masonry-wall {
-    padding: 0px 0px 0px 35%; 
+    padding: 0px 0px 0px 500px; 
   }
 }
 
@@ -95,15 +96,20 @@ defineComponent({
   position: relative;
   overflow: hidden;
   width: auto;
+  pointer-events: auto;
+  border-width:5px;
+  border-color:rgb(234, 228, 219);
+  border-style:solid;
 }
 
 .grid-item img {
   width:100%;
+  transform: scale(1.1);
   transition: all 0.2s ease-in-out;
 }
 
 .grid-item:hover img {
-  transform: scale(1.05);
+  transform: scale(1.15);
   z-index: 300; 
 }
 
