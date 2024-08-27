@@ -1,3 +1,4 @@
+
 {
   "extends": "@vue/tsconfig/tsconfig.web.json",
   "include": [
@@ -5,16 +6,22 @@
     "src/**/*",
     "src/**/*.vue",
     "src/**/*.json",
-    "projects/**/*"
+    "projects/jubileum/**/*"
+  ],
+  "exclude": [
+    "projects/jubileum/**/*"
   ],
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     },
+    "noImplicitAny": false,
+    "allowJs": true,
     // "target": "es5",
     "lib": ["es2019", "dom"]
   },
+
   "references": [
     {
       "path": "./tsconfig.config.json"
