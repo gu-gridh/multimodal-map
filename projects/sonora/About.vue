@@ -48,7 +48,7 @@
                   <img v-for="(image, index) in slide.images" :key="index" :src="image" alt="slide image" class="carousel__image" />
                 </div>
                 <div class="text-content">
-                  <h3>{{ slide.title }}</h3>
+                  <h3 v-html="$t(slide.title)"></h3>
                   <p v-html="$t(slide.content)" class="carousel__text"></p>
                 </div>
               </div>
@@ -105,55 +105,55 @@ export default {
         {
           id: '1',
           images: [
-            '/sonora_archive/Erici exempel SE_ATA_ENSK_31-1_F5_12_00118.jpg',
-            '/sonora_archive/Erici porträtt SE_ATA_ENSK_141-1_F1A_7_00125.jpg'
+            '/sonora_archive/Erici-1.jpg',
+            '/sonora_archive/Erici-2.jpg'
           ],
-          title: 'Dr Einar Erici',
+          title: 'erici_title',
           content: 'erici_content'
         },
         {
           id: '2',
           images: [ 
-            '/sonora_archive/Unnerbäck exempel 3_24-03-18_53899.jpg',
-            '/sonora_archive/Unnerbäck porträtt.jpg'
+            '/sonora_archive/Unnerbäck-1.jpg',
+            '/sonora_archive/Unnerbäck-2.jpg'
           ],
-          title: 'Axel Unnerbäck',
+          title: 'axel_title',
           content: 'axel_content'
         },
         {
           id: '3',
           images: [
-            '/sonora_archive/Moberg exempel SE_ATA_ENSK_141-1_F1A_27_00442.jpg',
-            '/sonora_archive/Moberg porträtt SE_ATA_ENSK_141-1_F1A_39_00051.jpg'
+            '/sonora_archive/Moberg-1.jpg',
+            '/sonora_archive/Moberg-2.jpg'
           ],
-          title: 'The Moberg brothers',
+          title: 'moberg_title',
           content: `moberg_content`
           },
         {
           id: '4',
           images: [ 
-            '/sonora_archive/KSV exempel 240122_SONORA_0010_.jpeg',
-            '/sonora_archive/KSV exempel 240122_SONORA_0010_.jpeg'
+            '/sonora_archive/Lewenhaput-1.JPG',
+            '/sonora_archive/Lewenhaput-2.JPEG'
           ],
-          title: 'Carl Gustaf Lewenhaupt',
+          title: 'lewenhaupt_title',
           content: `lewenhaupt_content`
         },
         {
           id: '5',
           images: [
-            '/sonora_archive/Wester exempel SE_ATA_ENSK_131-1_F2_69_00063.jpg',
-            '/sonora_archive/Wester porträtt.jpg'
+            '/sonora_archive/Wester-1.jpg',
+            '/sonora_archive/Wester-2.jpg'
           ],
-          title: 'Bertil Wester',
+          title: 'wester_title',
           content: `wester_content`
         },
         {
           id: '6',
           images: [
-            '/sonora_archive/KSV exempel 240122_SONORA_0010_.jpeg',
-            '/sonora_archive/KSV exempel 240122_SONORA_0010_.jpeg'
+            '/sonora_archive/KSV-1.jpeg',
+            '/sonora_archive/KSV-2.JPG'
           ],
-          title: 'The Organ Committee of the Friends of Church Song',
+          title: 'friends_of_church_song_title',
           content: `friends_of_church_song_content`
         },
       ],
@@ -280,8 +280,8 @@ ul {
 }
 
 .carousel__image {
-  max-width: 100%;
-  max-height: 200px;
+  max-width: 300px;
+  max-height: 300px;
   margin: 0 auto;
 }
 
