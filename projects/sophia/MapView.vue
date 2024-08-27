@@ -2,7 +2,7 @@
 import { computed } from "vue";
 import MainLayout from "@/MainLayout.vue";
 import MapViewControls from "./MapViewControls.vue";
-import MapComponent from "@/components/MapComponentRwanda.vue";
+import MapComponent from "./MapComponent.vue";
 import SophiaPlaceLayer from "./SophiaPlaceLayer.vue";
 import GeoJsonWebGLRenderer from "@/components/GeoJsonWebGLRenderer.vue";
 import FeatureSelection from "./FeatureSelection.vue";

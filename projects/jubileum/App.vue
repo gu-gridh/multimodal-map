@@ -85,6 +85,7 @@ body {
   padding-bottom: 0px;
   width: auto;
   pointer-events: none;
+  z-index:0!important;
 }
 
 #app .ol-zoom-in {
@@ -164,5 +165,18 @@ body {
     left: calc(50% + 0px);
     top: calc(100vh - 320px);
   }
+
+  .main-title {
+
+  text-align: left;
+
+}
+
+.sub-title {
+
+  text-align: left;
+
+}
+
 }
 </style>

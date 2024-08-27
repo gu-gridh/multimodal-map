@@ -14,15 +14,24 @@
 
 
     <div class="partners">
+     
+
       <div class="partner">
-        <a href="https://www.organacademy.se/svenskt-digitalt-orgelarkiv">
+        <a href="https://www.gu.se/">
+          <div class="link PartnerLogo" id="">GU</div>
+        </a>
+      </div>
+
+      <div class="partner">
+        <a href="https://ub.gu.se">
           <div class="link PartnerLogo" id="">UB</div>
         </a>
       </div>
 
       <div class="partner">
         <a href="https://dh.gu.se/">
-          <div class="link GRIDHLogo" id="">GU / GRIDH</div>
+          <div class="link GRIDHLogo" id="">GRIDH
+          </div>
         </a>
       </div>
 

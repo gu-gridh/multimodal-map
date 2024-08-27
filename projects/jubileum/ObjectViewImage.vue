@@ -59,10 +59,29 @@ const downloadImage = (fileUrl: string, fileName: string) => {
   </section>
 </template>
 
-<style scoped>
+<style>
+  .metadata{
+    background-color: rgb(234, 228, 219) !important;
+    color:black!important;
+  }
 .metadata .object-title {
   font-family: "Josefin Sans", sans-serif !important;
 
+}
+
+#app .meta-top-gradient{
+ background: linear-gradient(0deg, rgba(234, 228, 219, 0) 00%, rgba(234, 228, 219) 90%)!important;
+}
+
+.metadata .back-button {
+  left: 20px;
+  top: 43px;
+  background-image:url(https://data.dh.gu.se/ui-icons/arrow_back_black_circle.png)!important;
+  background-color: rgba(35, 35, 35, 0.0);
+}
+
+#app .meta-container a {
+ color:rgb(180,100,100);
 }
 
 h2{
@@ -79,12 +98,13 @@ font-size:1.0em;
 line-height:1.2;
 text-align:left;
 padding:0px 40px 0px 0px;
+font-weight: 300;
 }
 .illustration {
   height: calc(100vh - 80px);
 }
 
-.category-button{
+.metadata .category-button{
   margin-top:30px;
   cursor:pointer;
   font-size:1.1em;

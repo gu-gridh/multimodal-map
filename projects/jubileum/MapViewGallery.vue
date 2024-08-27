@@ -74,6 +74,12 @@ defineComponent({
   pointer-events: none;
 }
 
+@media (max-width: 900px) {
+  #app .masonry-wall {
+pointer-events: auto;
+  }
+}
+
 @media (min-width: 900px) {
   #app .masonry-wall {
     padding: 0px 0px 0px 450px; 

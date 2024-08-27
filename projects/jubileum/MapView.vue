@@ -2,7 +2,7 @@
   import { computed } from "vue";
   import MainLayout from "@/MainLayout.vue";
   import MapViewControls from "./MapViewControls.vue";
-  import MapComponent from "@/components/MapComponentRwanda.vue";
+  import MapComponent from "./MapComponent.vue";
   import DianaPlaceLayer from "@/components/DianaPlaceLayer.vue";
   import FeatureSelection from "./FeatureSelection.vue";
   import MapViewPreview from "./MapViewPreview.vue";
@@ -142,7 +142,7 @@
 
     <template #details>
 
-      <MapViewPreview />
+      <MapViewPreview v-if="!showGrid"/>
 
     </template>
 

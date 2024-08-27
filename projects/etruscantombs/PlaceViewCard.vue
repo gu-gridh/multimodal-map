@@ -184,7 +184,7 @@ onMounted(() => {
 .place-back-button {
   left: 40px;
   top: 80px;
-  background: url(@/assets/interface/backbutton.png);
+  background: url(https://data.dh.gu.se/ui-icons/arrow_back_black_circle.png);
   background-size: 100%;
   background-repeat: no-repeat;
   background-position: center;
