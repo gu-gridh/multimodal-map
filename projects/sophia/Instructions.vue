@@ -212,7 +212,7 @@
     transform: scale(1.5);
     translate: 0px 100px;
     transition: all 1.5s ease-in-out;
-    opacity: 1.0;
+    opacity: 0.0;
     overflow: hidden;
     overflow-y: auto;
   }
