@@ -25,19 +25,21 @@ const goBack = () => {
 
 <template>
      <div class="meta-top-gradient"> </div>
+     
   <div class="meta-container no-touch">
- 
+    <div class="flex-1 text-center" >
+      <div @click="goBack" class="back-button"></div>
+    </div>
 
     <header class="flex flex-row-reverse pt-8">
       <div class="flex-1" ></div>
       <div class="container" >
+      
         <slot name="title">
           <h1 class="meta-title theme-title-typography">{{ title }}</h1>
         </slot>
       </div>
-      <div class="flex-1 text-center" >
-        <div @click="goBack" class="back-button"></div>
-      </div>
+     
     </header>
 
     <main class="container metadata-posts" >
@@ -77,11 +79,10 @@ const goBack = () => {
 .back-button {
   left: 20px;
   top: 40px;
-  background: url(@/assets/backbutton.png);
+  background: url(https://data.dh.gu.se/ui-icons/arrow_back_white_circle.png);
   background-size: 100%;
   background-repeat: no-repeat;
   background-position: center;
-  background-color: rgba(35, 35, 35, 0.9);
   border-radius: 50%;
   width: 35px;
   height: 35px;
@@ -146,7 +147,7 @@ const goBack = () => {
 @media screen and (max-width: 900px) {
   .meta-top-gradient{
     width:100%;
-  margin-top:49.9vh;
+  margin-top:40vh;
 
 }
 }

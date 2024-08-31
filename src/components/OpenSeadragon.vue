@@ -22,9 +22,9 @@ onMounted(() => {
   viewer.value = OpenSeadragon({
     element: viewerEl.value,
     immediateRender: false,
-    visibilityRatio: 1.0,
-    minZoomImageRatio: 1.0,
-    homeFillsViewer: false,
+    visibilityRatio: 0.7,
+    minZoomImageRatio: 0.5,
+    homeFillsViewer: true,
     showZoomControl: true,
     showHomeControl: false,
     showFullPageControl: true,

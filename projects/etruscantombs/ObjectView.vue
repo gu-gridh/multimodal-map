@@ -36,14 +36,14 @@ const objectComponent = {
 <style>
 .metadata {
   float: left;
-  width: 450px;
+  width: 400px;
   height: 100vh;
-  background-color: black;
-  color: white;
+  color: black;
 }
+
 .illustration {
   float: left;
-  width: calc(100% - 450px);
+  width: calc(100% - 400px);
   background-color: black;
   height: 100vh;
 }

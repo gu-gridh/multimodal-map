@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import ObjectViewComponent from "@/components/ObjectViewComponentReturn.vue";
-import OpenSeadragon from "@/components/OpenSeadragon.vue";
+import OpenSeadragon from "@/components/openseadragon.vue";
 import type { ImageDeep } from "./types";
 
 const props = defineProps<{
@@ -77,9 +77,25 @@ const downloadImage = (fileUrl: string, fileName: string) => {
   </section>
 </template>
 
-<style scoped>
-.description ::v-deep * {
-  color: white !important;
+<style>
+
+.metadata .meta-title {
+  font-weight: 100;
+  font-size: 45px;
+  line-height: 1.0;
+  padding-right: 20px;
+  margin-top: 20px;
+  width: calc(100% - 25px);
+ 
+}
+
+.metadata .description {
+font-weight:300!important;
+padding:0px!important;
+}
+
+#app .metadata .label {
+font-weight:300!important;
 }
 
 .metadata .theme-button {
@@ -91,14 +107,75 @@ const downloadImage = (fileUrl: string, fileName: string) => {
   font-size:20px !important;
 }
 
-.download-button {
-  background: url("@/assets/interface/downloadbuttonwhite.png");
-  background-size: 25px;
-  background-repeat: no-repeat; 
-  padding: 6px 10px 6px 40px;
-  background-position: 6px 6px;
+.metadata .download-button {
+  background: url("https://data.dh.gu.se/ui-icons/download_white_circle.png")!important;
+  background-size: 25px!important;
+  background-repeat: no-repeat!important;
+  padding: 6px 10px 6px 40px!important;
+  background-position: 6px 6px!important;
   margin-top:0px !important;
-  
 }
+
+.meta-top-gradient{
+  margin-top:0vh;
+ width:400px!important;
+ height:30px;
+ background: linear-gradient(0deg, rgba(232, 228, 217,0) 00%, rgba(232, 228, 217,1) 90%);
+ z-index:100;
+ position:absolute;
+}
+
+.meta-container{
+  background-color: transparent!important;
+  overflow-y: auto;
+  height:calc(100vh - 80px);
+  padding-top:0px;
+  padding-bottom:30px;
+  padding-left:40px;
+  padding-right:0px;
+  -ms-overflow-style: none!important;
+  scrollbar-width: none;
+}
+
+.meta-container::-webkit-scrollbar {
+    width: 0px !important;
+    }
+
+  .meta-container .back-button {
+  left: 0px;
+  top: 30px;
+  background: url(https://data.dh.gu.se/ui-icons/arrow_back_black_circle.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: transparent!important;
+  border-radius: 50%;
+  width: 35px!important;
+  height: 35px!important;
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+}
+
+@media screen and (max-width: 900px) {
+  .meta-container .back-button {
+display:none;
+}
+
+.metadata .meta-title {
+
+  margin-top: 0px;
+
+ 
+}
+
+  .meta-top-gradient{
+    width:100%!important;
+  margin-top:50vh;
+
+}
+}
+
 </style>
 
