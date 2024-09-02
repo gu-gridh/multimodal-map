@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, defineProps, onMounted, inject, computed, onUnmounted } from 'vue';
 import type { Image, Document, Media } from './types';
-import type { DianaClient } from "@/assets/diana";
 import PlaceViewCard from "./PlaceViewCard.vue";
 import MapComponent from "@/components/MapComponent.vue";
 import { watch } from 'vue';
@@ -140,7 +139,7 @@ const processOrganData = (data) => {
       if (key === 'Disposition') {
         dispositionFound = true;
         processedData[key] = {
-          label: 'Disposition',
+          label: i18n.global.t('disposition'),
           data: data[key].substring(data[key].indexOf(';') + 1).trim(),
         };
       } else if (typeof data[key] === 'string' && data[key].includes(';')) {
@@ -309,7 +308,7 @@ const handleClickOutside = (event) => {
             <tbody>
               <div class="metadata-section">
                 <tr v-if="dispositionData">
-                  <td class="wide-second-td">{{ dispositionData.label  }}</td>
+                  <td class="wide-second-td">{{ dispositionData.label }}:</td>
                   <div class="organ-historic-overview" v-html="dispositionData.data" @click="handleDisposition"></div>
                   <div v-if="isPopupVisible" class="popup" ref="popupRef" :style="{ left: mousePosition.x +50 + 'px', top: mousePosition.y -100 + 'px' }">
                     <h3 v-if="popupData?.Verk">{{ $t('divisioninfo') }}</h3>

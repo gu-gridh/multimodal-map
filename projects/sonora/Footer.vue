@@ -7,11 +7,11 @@
             repository and development</a>
       
       </div>
-      <div class="links-stack">
+      <!-- <div class="links-stack">
         <a class="download-link" href="" target="_blank">
           Texts and images: CC BY 4.0</a>
         <a href="#" class="download-link link" @click="downloadData">Download the structured data</a>
-      </div>
+      </div> -->
     </div>
     <div class="partners">
       <a href="https://dh.gu.se/">
