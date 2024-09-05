@@ -138,8 +138,8 @@ export default {
         {
           id: '4',
           images: [ 
-            '/sonora_archive/Lewenhaput-1.jpg',
-            '/sonora_archive/Lewenhaput-2.JPEG'
+            '/sonora_archive/lewen1.jpg',
+            '/sonora_archive/lewen2.jpeg'
           ],
           title: 'lewenhaupt_title',
           content: `lewenhaupt_content`
@@ -156,8 +156,8 @@ export default {
         {
           id: '6',
           images: [
-            '/sonora_archive/KSV-1.jpeg',
-            '/sonora_archive/KSV-2.jpg'
+            '/sonora_archive/ksv1.jpeg',
+            '/sonora_archive/ksv2.jpg'
           ],
           title: 'friends_of_church_song_title',
           content: `friends_of_church_song_content`
