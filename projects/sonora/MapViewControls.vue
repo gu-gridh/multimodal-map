@@ -30,7 +30,7 @@
  <RangeSlider
    ref="rangeSliderRef"
    v-model="selectedRange"
-   :min="1500"
+   :min="1300"
    :max="1899"
    :step="1"
    class="my-2"

@@ -4,7 +4,7 @@ import config from "./config";
 
 export const sonoraStore = defineStore("sonora", () => {
   const categories = ref<Array<string>>(["all"]);
-  const selectedRange = ref([1500, 1899]);
+  const selectedRange = ref([1300, 1899]);
   const tags = ref<Array<string>>(["all"]);
   const necropoli = ref<Array<string>>(["all"]);
   const tombType = ref<Array<string>>(["all"]);

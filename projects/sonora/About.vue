@@ -45,7 +45,13 @@
             <Slide v-for="slide in slides" :key="slide.id">
               <div class="carousel__item">
                 <div class="carousel__images">
-                  <img v-for="(image, index) in slide.images" :key="index" :src="image" alt="slide image" class="carousel__image" />
+                  <img 
+                    v-for="(image, index) in slide.images" 
+                    :key="index" 
+                    :src="image" 
+                    alt="slide image" 
+                    :style="image === '/sonora_archive/Moberg-2.jpg' ? { maxHeight: '300px', margin: '0 auto' } : { maxWidth: '300px', maxHeight: '300px', margin: '0 auto' }"
+                  />
                 </div>
                 <div class="text-content">
                   <h3 v-html="$t(slide.title)"></h3>
@@ -114,8 +120,8 @@ export default {
         {
           id: '2',
           images: [ 
-            '/sonora_archive/Unnerbäck-1.jpg',
-            '/sonora_archive/Unnerbäck-2.jpg'
+            '/sonora_archive/Unnerback-1.jpg', 
+            '/sonora_archive/Unnerback-2.jpg'
           ],
           title: 'axel_title',
           content: 'axel_content'
@@ -132,7 +138,7 @@ export default {
         {
           id: '4',
           images: [ 
-            '/sonora_archive/Lewenhaput-1.JPG',
+            '/sonora_archive/Lewenhaput-1.jpg',
             '/sonora_archive/Lewenhaput-2.JPEG'
           ],
           title: 'lewenhaupt_title',
@@ -151,7 +157,7 @@ export default {
           id: '6',
           images: [
             '/sonora_archive/KSV-1.jpeg',
-            '/sonora_archive/KSV-2.JPG'
+            '/sonora_archive/KSV-2.jpg'
           ],
           title: 'friends_of_church_song_title',
           content: `friends_of_church_song_content`
