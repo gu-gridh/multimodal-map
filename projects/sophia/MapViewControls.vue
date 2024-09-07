@@ -66,12 +66,12 @@
   <div class="data-widget">
     <div class="data-widget-section">
       <div class="data-widget-item">
-        <h3>{{ $t('panelsshown') }}:</h3>
+        <h3>{{ $t('annotationsshown') }}:</h3>
         <p>{{ currentPanelCount }}</p>
       </div>
       <div class="data-widget-item">|</div>
       <div class="data-widget-item">
-        <h3>{{ $t('panelshidden') }}:</h3>
+        <h3>{{ $t('annotationshidden') }}:</h3>
         <p>{{ hiddenPanels }}</p>
       </div>
     </div>
@@ -96,6 +96,10 @@
       </div>
     </div>
   </div>
+
+  <div class="broad-controls theme-button category-button" style="float:left; margin-top:10px; width:auto; cursor:pointer">{{ $t('reset') }}</div>
+  
+
 </template>
 
 <script setup lang="ts">

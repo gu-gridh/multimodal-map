@@ -39,6 +39,7 @@ const messages = {
       drawings: "Drawings",
       showall: "Show all",
       alldatasets: "All datasets",
+      reset: "Reset all filters",
       "categories": {
         "all": "All types",
         "drawings": "Drawings",
@@ -84,6 +85,7 @@ const messages = {
       drawings: "Disegni",
       showall: "Mostra tutto",
       alldatasets: "Tutti i set di dati",
+      reset: "Reimposta tutto",
       "categories": {
         "all": "Tutti i tipi",
         "drawings": "Disegni",

@@ -227,7 +227,7 @@ const fetchData = async (requestedPageIndex) => {
   position:absolute;
   width:100%;
   height:calc(100% - 80px);
-  padding-left:33%;
+  padding-left:31%;
   z-index:100!important;
   background-color: rgba(232, 228, 217, 0.5) !important;
   backdrop-filter:blur(5px);

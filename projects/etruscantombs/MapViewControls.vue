@@ -129,6 +129,8 @@
       </div>
     </div>
   </div>
+  <div class="broad-controls theme-button category-button" style="float:left; margin-top:10px; width:auto; cursor:pointer">{{ $t('reset') }}</div>
+  
 </template>
 
 <script setup lang="ts">

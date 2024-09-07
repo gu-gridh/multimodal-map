@@ -43,6 +43,7 @@ body {
 .main-title {
   font-family: 'Teko', sans-serif;
   color: var(--theme-3) !important;
+  font-size: 5.5em;
 }
 
 .about {
@@ -56,6 +57,17 @@ body {
   min-width: 940px;
   max-width: 1000px;
   font-size:95%;
+}
+#app .left-pane-content {
+margin-left: -20px!important;
+margin-top: -20px!important;
+}
+
+@media screen and (max-width: 900px) {
+#app .left-pane-content {
+  margin-left: 0px!important;
+  margin-top: 0px!important;
+  }
 }
 
 .theme-button {

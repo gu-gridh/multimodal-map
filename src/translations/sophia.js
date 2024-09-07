@@ -10,6 +10,8 @@ const messages = {
       panels: "Surfaces",
       panelsshown: "Surfaces shown",
       panelshidden: "Surfaces hidden",
+      annotationsshown: "Inscriptions shown",
+      annotationshidden: "Inscriptions hidden",
       typeofdata: "Type of data",
       typeofinscription: "Type of inscription",
       dataset: "Dataset",
@@ -63,6 +65,7 @@ const messages = {
       close: "Close",
       video: "Video tutorial",
       alldatasets: "All datasets",
+      reset: "Reset all filters",
       "categories": {
         "all": "All types",
         "drawings": "Drawings",
@@ -80,6 +83,8 @@ const messages = {
       searchtitle: "Пошук поверхні або напису",
       panelsshown: "Показ поверхні",
       panelshidden: "Приховані поверхні",
+      annotationsshown: "Показані написи",
+      annotationshidden: "Написи приховані",
       typeofdata: "Type of data",
       typeofinscription: "Вид напису",
       dataset: "Dataset",
@@ -129,6 +134,7 @@ const messages = {
       close: "Закрити",
       video: "Відеоурок",
       alldatasets: "All datasets",
+      reset: "Reset all filters",
       "categories": {
         "all": "Всі види",
         "drawings": "Drawings",
