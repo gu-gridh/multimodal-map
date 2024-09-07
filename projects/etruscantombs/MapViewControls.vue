@@ -304,6 +304,10 @@ function clearAll() {
 
 }
 
+#app .tag-section .broad-controls {
+font-size:0.9em;
+}
+
 .loading-svg:hover {
   height: 240px;
   transform: scale(1.5);

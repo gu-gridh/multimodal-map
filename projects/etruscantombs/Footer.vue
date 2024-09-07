@@ -122,7 +122,7 @@ a {
 #developer-info {
   display: flex; 
   align-items: flex-end; 
-  margin-left: 50px;
+  margin-left: 30px;
   margin-top: 15px;
   font-size: 1.5em;
   line-height: 1.4;

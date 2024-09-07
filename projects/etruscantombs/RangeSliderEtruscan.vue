@@ -20,7 +20,7 @@
     <!-- <div class="start-end-box" style="margin-right: 5px">{{ formatBCYear(max) }}</div> -->
     <div class="checkbox-container" style="">
       <input type="checkbox" id="showUnknownRange" v-model="showUnknownRange">
-      <label style="margin-left:5px; margin-top:-3px; " for="showUnknownRange">Include unknown</label>
+      <label style="margin-left:5px; margin-top:-3px; font-size:0.9em; " for="showUnknownRange">Include unknown</label>
     </div> 
   </div>
 
