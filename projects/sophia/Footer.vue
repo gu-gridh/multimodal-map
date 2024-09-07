@@ -131,7 +131,7 @@ a {
 #developer-info {
   display: flex;
   align-items: flex-end;
-  margin-left: 50px;
+  margin-left: 35px;
   margin-top: 15px;
   font-size: 1.5em;
   line-height: 1.4;

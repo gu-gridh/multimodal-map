@@ -1,6 +1,19 @@
 <template>
   <div id="gallery-container">
+  
     <div class="gallery">
+      
+      <div class="gallery-filters" style="padding-left:10px; float:left; margin-bottom:20px; margin-top:-70px;">
+        <div class="gallery-filter-container">
+          <h1>Description</h1>
+          <div class="tag-container">
+            <div class="gallery-tag">Cross</div>
+            <div class="gallery-tag">Saint</div>
+            <div class="gallery-tag">Skull</div>
+          </div>
+        </div>
+      </div>
+
       <div class="gallery__col-sizer"></div>
       <div class="gallery__gutter-sizer"></div>
       <div v-for="item in images" :key="item.uuid" class="gallery__item">
@@ -208,32 +221,34 @@ export default {
 
 <style scoped>
 #gallery-container {
-  position: absolute;
-  width: 68%;
-  height: calc(100% - 80px);
-  margin-left: 32%;
-  padding-left: 2%;
-  padding-right: 2%;
-  z-index: 100 !important;
-  background-color: black;
-  opacity: 0.9;
-}
-
-@media screen and (min-width: 1900px) {
-  #gallery-container {
-    margin-left: 600px;
-    width: calc(100% - 600px);
+    position: absolute;
+    margin-left: 510px;
+    width: calc(100% - 510px);
+    height: calc(100% - 80px);
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-top: 0px;
+    z-index: 100 !important;
+    background-color: black;
+    opacity: 0.9;
   }
-}
 
-@media screen and (max-width: 1600px) {
-  #gallery-container {
-    margin-left: 550px;
-    width: calc(100% - 550px);
-    padding-left: 10px;
-    padding-right: 10px;
+  @media screen and (min-width: 1900px) {
+    #gallery-container {
+      margin-left: 510px;
+      width: calc(100% - 510px);
+    }
   }
-}
+
+  @media screen and (max-width: 1600px) {
+    #gallery-container {
+      margin-left: 510px;
+      width: calc(100% - 510px);
+      padding-left: 30px;
+      padding-right: 30px;
+    }
+  }
+
 
 @media screen and (max-width: 900px) {
   #gallery-container {
@@ -245,11 +260,15 @@ export default {
 }
 
 .gallery {
+  float:left;
+  width:100%;
   max-height: 100%;
   overflow-y: auto;
   max-width: 100%;
   /* Maximum width of the gallery */
   margin: 0 auto;
+  padding-top:150px;
+
   /* Top and bottom margin 0, left and right margin auto */
 }
 

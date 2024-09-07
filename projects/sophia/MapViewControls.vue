@@ -296,9 +296,8 @@ watch(() => i18n.global.locale, (newLocale) => {
 #app .left-pane {
   background: url("images/gradient.png");
   background-size: contain;
-  width: 54% !important;
-  min-width: 990px;
-  max-width: 1000px;
+  min-width: 960px;
+  max-width: 960px;
   font-size: 95%;
 }
 
@@ -336,6 +335,10 @@ watch(() => i18n.global.locale, (newLocale) => {
 #app .tag-section {
   margin-top: -5px;
   margin-bottom: 0px;
+}
+
+#app .tag-section .broad-controls {
+font-size:0.9em;
 }
 
 .dropdown {
