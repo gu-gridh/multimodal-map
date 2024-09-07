@@ -43,7 +43,7 @@
       </div>
 
      <div class="tag-section margin-3" >
-        <div class="section-title">{{ $t('timeperiod') }}</div>
+        <!-- <div class="section-title">{{ $t('timeperiod') }}</div> -->
         <div class="slider-widget">
           <div class="slider-section">
               <RangeSlider
