@@ -1,7 +1,7 @@
 <template>
     <!-- Checks if all points are loaded and only then show the controls -->
-  <div :class="{ 'non-interactive': !areMapPointsLoaded }">
-    <div v-if="areMapPointsLoaded">
+  <!-- <div :class="{ 'non-interactive': !areMapPointsLoaded }"> -->
+    <!-- <div v-if="areMapPointsLoaded"> -->
 
       <!-- This creates a 2-column section with for the controls -->
       <div class="control-organisation justify-left" style="margin-bottom:8px;">
@@ -90,13 +90,13 @@
           </div>
         </div>
       </div>
-    </div>
+    <!-- </div> -->
 
     <!-- if the markers are not loaded show the loader -->
-    <div v-else>
+   <!--  <div v-else>
       <div alt="Loading..." class="loading-svg" />
-    </div>
-  </div>
+    </div> -->
+  <!-- </div> -->
 
   <!-- Data Section -->
   <div class="data-widget">
@@ -129,7 +129,7 @@
       </div>
     </div>
   </div>
-  <div class="broad-controls theme-button category-button" style="float:left; margin-top:10px; width:auto; cursor:pointer">{{ $t('reset') }}</div>
+  <div id="resetfilters" class="broad-controls theme-button category-button" style="float:left; margin-top:10px; width:auto; cursor:pointer;  transition: all 0.2s ease-in-out;" @click="clearAll()">{{ $t('reset') }}</div>
   
 </template>
 
@@ -205,6 +205,8 @@ async function fetchDataAndPopulateRef<T>(type: string, refToPopulate: any) {
 }
 
 const handleCategoryClick = (category: string) => {
+  const resetbutton = document.getElementById('resetfilters');
+  resetbutton.style.display = "block";
   // If the clicked category is the same as the last clicked one, default to "all"
   if (lastClickedCategory.value === category) {
     categories.value = ["all"];
@@ -264,7 +266,8 @@ const toggleAboutVisibility = async () => {
 };
 
 function handleSelectionClick(selectedValue: any, targetRef: any) {
-  clearAll();
+  const resetbutton = document.getElementById('resetfilters');
+resetbutton.style.display = "block";
   const selectedCoordinates = NECROPOLICoordinates.value[selectedValue];
   if (selectedCoordinates) {
     const [x, y] = selectedCoordinates;
@@ -280,12 +283,16 @@ function handleSelectionClick(selectedValue: any, targetRef: any) {
 }
 
 function clearAll() {
+const resetbutton = document.getElementById('resetfilters');
+resetbutton.style.display = "none";
   categories.value = ["all"];
+  necropoli.value = ["all"];
   enablePlan.value = false;
   enable3D.value = false;
   tombType.value = ["all"];
   lastClickedCategory.value = '';
   tags.value = [];
+  
 }
 
 </script>
@@ -293,7 +300,7 @@ function clearAll() {
 <style>
 .loading-svg {
   width: 100%;
-  height: 200px;
+  height: 180px;
   background: url("/90-ring-with-bg.svg");
   background-size: 60px;
   background-repeat: no-repeat;
