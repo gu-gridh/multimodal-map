@@ -129,8 +129,9 @@
       </div>
     </div>
   </div>
-  <div id="resetfilters" class="broad-controls theme-button category-button" style="float:left; margin-top:10px; width:auto; cursor:pointer;  transition: all 0.2s ease-in-out;" @click="clearAll()">{{ $t('reset') }}</div>
-  
+  <div style="display:flex; flex-direction: row; justify-content:center; width:100%;">
+  <div id="resetfilters" class="broad-controls theme-button category-button" style="float:left; margin-top:15px; width:auto; cursor:pointer;  transition: all 0.2s ease-in-out; background-color:var(--theme-4); color:white;" @click="clearAll()">{{ $t('reset') }}</div>
+</div>
 </template>
 
 <script setup lang="ts">
