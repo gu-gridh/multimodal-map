@@ -97,8 +97,9 @@
     </div>
   </div>
 
-  <div class="broad-controls theme-button category-button" style="float:left; margin-top:10px; width:auto; cursor:pointer">{{ $t('reset') }}</div>
-  
+  <div style="display:flex; flex-direction: row; justify-content:center; width:100%;">
+    <div id="resetfilters" class="broad-controls theme-button category-button" style="display:none; margin-top:15px; width:auto; cursor:pointer;  transition: all 0.2s ease-in-out; background-color:var(--theme-4); color:white;" @click="clearAll()">{{ $t('reset') }}</div>
+  </div>
 
 </template>
 
@@ -201,6 +202,7 @@ async function fetchDataAndPopulateRef<T>(type: string, refToPopulate: any) {
 }
 
 const handleCategoryClick = (category: string) => {
+  showReset();
   //mapping categories to their respective numbers
   const categoryMapping = {
     plans: 1,
@@ -273,6 +275,7 @@ async function fetchSurfaces() {
 }
 
 const handleSearch = () => {
+  showReset();
   if (searchType.value === 'surfaces') {
     fetchSurfaces();
   } else if (searchType.value === 'inscriptionobjects') {
@@ -293,6 +296,20 @@ watch(
 watch(() => i18n.global.locale, (newLocale) => {
   fetchDataAndPopulateRef('language', LANGUAGE);
 });
+
+
+function clearAll() {
+const resetbutton = document.getElementById('resetfilters');
+resetbutton.style.display = "none";
+  categories.value = ["all"];
+  lastClickedCategory.value = '';
+  tags.value = [];
+}
+
+function showReset() {
+const resetbutton = document.getElementById('resetfilters');
+resetbutton.style.display = "block";
+}
 
 </script>
 

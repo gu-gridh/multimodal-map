@@ -130,7 +130,7 @@
     </div>
   </div>
   <div style="display:flex; flex-direction: row; justify-content:center; width:100%;">
-  <div id="resetfilters" class="broad-controls theme-button category-button" style="float:left; margin-top:15px; width:auto; cursor:pointer;  transition: all 0.2s ease-in-out; background-color:var(--theme-4); color:white;" @click="clearAll()">{{ $t('reset') }}</div>
+  <div id="resetfilters" class="broad-controls theme-button category-button" style="display:none; margin-top:15px; width:auto; cursor:pointer;  transition: all 0.2s ease-in-out; background-color:var(--theme-4); color:white;" @click="clearAll()">{{ $t('reset') }}</div>
 </div>
 </template>
 
@@ -206,8 +206,7 @@ async function fetchDataAndPopulateRef<T>(type: string, refToPopulate: any) {
 }
 
 const handleCategoryClick = (category: string) => {
-  const resetbutton = document.getElementById('resetfilters');
-  resetbutton.style.display = "block";
+ showReset();
   // If the clicked category is the same as the last clicked one, default to "all"
   if (lastClickedCategory.value === category) {
     categories.value = ["all"];
@@ -267,8 +266,7 @@ const toggleAboutVisibility = async () => {
 };
 
 function handleSelectionClick(selectedValue: any, targetRef: any) {
-  const resetbutton = document.getElementById('resetfilters');
-resetbutton.style.display = "block";
+  showReset();
   const selectedCoordinates = NECROPOLICoordinates.value[selectedValue];
   if (selectedCoordinates) {
     const [x, y] = selectedCoordinates;
@@ -291,9 +289,14 @@ resetbutton.style.display = "none";
   enablePlan.value = false;
   enable3D.value = false;
   tombType.value = ["all"];
+  dataSetValue.value = ["all"];
   lastClickedCategory.value = '';
   tags.value = [];
-  
+}
+
+function showReset() {
+const resetbutton = document.getElementById('resetfilters');
+resetbutton.style.display = "block";
 }
 
 </script>
