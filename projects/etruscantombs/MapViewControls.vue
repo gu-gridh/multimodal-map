@@ -9,7 +9,7 @@
           <div class="section-title">Dataset</div>
           <div title="Narrow the result to a certain dataset" class="broad-controls">
              <CategoryButtonDropdown v-model="dataSetValue" :categories="DATASET" :limit="1" styleType="dropdown" class="my-2"
-              type="datasets" />
+              type="datasets"/>
           </div>
         </div>
 
@@ -54,7 +54,7 @@
           <div class="section-title">Site</div>
           <div style="display:inline; float:left; margin-right:0px;">
             <CategoryButtonDropdown v-model="selectedSite" :categories="SITES" :limit="1" styleType="dropdown" class="my-2"
-            type="site" />
+            type="site"/>
           </div>
         </div>
 
@@ -75,7 +75,7 @@
         </div>
       </div>
     <!-- </div> -->
-     
+
       <!-- if the markers are not loaded show the loader -->
       <!--  <div v-else>
         <div alt="Loading..." class="loading-svg" />
@@ -114,12 +114,20 @@
     </div>
   </div>
   <div style="display:flex; flex-direction: row; justify-content:center; width:100%;">
-  <div id="resetfilters" class="broad-controls theme-button category-button" style="display:none; margin-top:15px; width:auto; cursor:pointer;  transition: all 0.2s ease-in-out; background-color:var(--theme-4); color:white;" @click="clearAll()">{{ $t('reset') }}</div>
-</div>
+    <div
+      id="resetfilters"
+      class="broad-controls theme-button category-button"
+      style="margin-top:15px; width:auto; cursor:pointer; transition: all 0.2s ease-in-out; background-color:var(--theme-4); color:white;"
+      v-if="isFilterModified"
+      @click="clearAll"
+    >
+      {{ $t('reset') }}
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { inject, ref, onMounted, watch } from "vue";
+import { inject, ref, computed, onMounted, watch } from "vue";
 import CategoryButtonDropdown from "./CategoryButtonDropdown.vue";
 import RangeSlider from "./RangeSliderEtruscan.vue";
 import CategoryButtonList from "@/components/input/CategoryButtonList.vue";
@@ -133,9 +141,23 @@ import { nextTick } from 'vue';
 
 const config = inject<EtruscanProject>("config");
 const dianaClient = new DianaClient("etruscantombs"); // Initialize DianaClient
-const { categories, selectedRange, tags, necropoli, tombType, dataSetValue, dataParams, selectedNecropolisCoordinates, enable3D, enablePlan, selectedSite } = storeToRefs(etruscanStore());
+const { categories, selectedRange, tags, necropoli, tombType, dataSetValue, dataParams, selectedNecropolisCoordinates, enable3D, enablePlan, selectedSite, showUnknownRange } = storeToRefs(etruscanStore());
 // Create a ref for last clicked category
 const lastClickedCategory = ref('');
+
+const isFilterModified = computed(() => {
+  return (
+    enablePlan.value !== false ||
+    enable3D.value !== false ||
+    tombType.value[0] !== "all" ||
+    selectedSite.value[0] !== "all" ||
+    showUnknownRange.value !== true ||
+    dataSetValue.value[0] !== "all" ||
+    lastClickedCategory.value !== '' ||
+    necropoli.value[0] !== "all" ||
+    selectedRange.value[0] !== -700 || selectedRange.value[1] !== -200
+  );
+});
 
 //initialize variables for data section
 const totalPhotographs = ref(0);
@@ -197,7 +219,6 @@ watch(selectedSite, async (newValue) => { //fetch necropolis based on the select
 });
 
 const handleCategoryClick = (category: string) => {
- showReset();
   // If the clicked category is the same as the last clicked one, default to "all"
   if (lastClickedCategory.value === category) {
     categories.value = ["all"];
@@ -257,7 +278,6 @@ const toggleAboutVisibility = async () => {
 };
 
 function handleSelectionClick(selectedValue: any, targetRef: any) {
-  showReset();
   const selectedCoordinates = NECROPOLICoordinates.value[selectedValue];
   if (selectedCoordinates) {
     const [x, y] = selectedCoordinates;
@@ -273,22 +293,16 @@ function handleSelectionClick(selectedValue: any, targetRef: any) {
 }
 
 function clearAll() {
-  const resetbutton = document.getElementById('resetfilters');
-  resetbutton.style.display = "none";
   categories.value = ["all"];
   necropoli.value = ["all"];
   enablePlan.value = false;
   enable3D.value = false;
   tombType.value = ["all"];
+  selectedSite.value = ["all"];
+  showUnknownRange.value = true;
   dataSetValue.value = ["all"];
   lastClickedCategory.value = '';
-  tags.value = [];
   selectedRange.value = [-700, -200]; //reset slider to the default range
-}
-
-function showReset() {
-  const resetbutton = document.getElementById('resetfilters');
-  resetbutton.style.display = "block";
 }
 </script>
 
