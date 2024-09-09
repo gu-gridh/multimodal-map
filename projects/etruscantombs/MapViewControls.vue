@@ -50,9 +50,9 @@
 
       <!-- This creates a 2-column section width for the controls -->
       <div class="control-organisation justify-space">
-        <div class="tag-section">
-          <div class="section-title">Site</div>
-          <div style="display:inline; float:left; margin-right:0px;">
+        <div class="tag-section ">
+          <div class="section-title">{{ $t('site') }}</div>
+          <div class="broad-controls">
             <CategoryButtonDropdown v-model="selectedSite" :categories="SITES" :limit="1" styleType="dropdown" class="my-2"
             type="site"/>
           </div>

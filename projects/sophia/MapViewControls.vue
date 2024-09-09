@@ -302,6 +302,7 @@ function clearAll() {
 const resetbutton = document.getElementById('resetfilters');
 resetbutton.style.display = "none";
   categories.value = ["all"];
+  language.value = ["all"];
   lastClickedCategory.value = '';
   tags.value = [];
 }

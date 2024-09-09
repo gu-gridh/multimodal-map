@@ -53,8 +53,8 @@ body {
 #app .left-pane {
   background: url("images/gradient.png");
   background-size: contain;
-  width: 56% !important;
-  min-width: 940px;
+  width: 54% !important;
+  min-width: 900px;
   max-width: 1000px;
   font-size:95%;
 }
@@ -69,6 +69,25 @@ margin-top: -20px!important;
   margin-top: 0px!important;
   }
 }
+
+
+@media screen and (max-width: 1400px) {
+  #app .placecard-title{
+    font-size:2.6em!important;
+  }
+  #app .placecard-text {
+    font-size:100%;
+  }
+
+ 
+  }
+
+  #app .right-pane {
+    width: 27% !important;
+    min-width: 420px;
+    max-width: 600px;
+  }
+  
 
 .theme-button {
   border-radius: 5px;
@@ -105,6 +124,17 @@ margin-top: -20px!important;
 }
 
 #app .right-pane {
-/* z-index: 0 !important; */
+  min-width: 100%;
+  max-width: 100%;
+  z-index:502!important;
+}
+
+#app .placecard {
+margin-top:0px;
+height:100%;
+}
+
+#app .toolbar-bottom-mini{
+  display:none;
 }
 }

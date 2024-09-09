@@ -7,7 +7,7 @@ import type {
   Image,
 } from "./types";
 import type { DianaClient } from "@/assets/diana";
-import OpenSeadragon from "@/components/OpenSeadragonSequence.vue";
+import OpenSeadragon from "./OpenSeadragonSequence.vue";
 import apiConfig from "./apiConfig"
 
 const { selectedFeature } = storeToRefs(mapStore());
@@ -157,5 +157,18 @@ function deselectPlace() {
 </template>
 
 <style>
+.metadata-item {
+  font-size:90%!important;
+}
 
+@media screen and (max-width: 900px) {
+  .placecard-title{
+  font-size:9.0em;
+
+}
+}
+
+.close-card-button{
+    left: calc(45px);
+  }
 </style>

@@ -13,6 +13,7 @@ import { clean } from "@/assets/utils";
 import MapViewGallery from "./MapViewGallery.vue";
 import { ref } from "vue";
 import About from "./About.vue";
+import Instructions from "./Instructions.vue";
 import { onMounted, watch } from "vue";
 import { nextTick } from "vue";
 import Title from "./Title.vue"
@@ -25,6 +26,7 @@ const minZoom = 10;
 const maxZoom = 22;
 const featureZoom = 15; //value between minZoom and maxZoom when you select a point 
 const visibleAbout = ref(false);
+const visibleInstructions = ref(false);
 const showGallery = ref(false);
 let visited = true; // Store the visited status outside of the hook
 
@@ -133,6 +135,11 @@ const toggleAboutVisibility = async () => {
   visibleAbout.value = !visibleAbout.value;
 };
 
+const toggleInstructionsVisibility = async () => {
+  await nextTick();
+  visibleInstructions.value = !visibleInstructions.value;
+};
+
 watch(showGallery, (newValue) => {
   localStorage.setItem("showGallery", JSON.stringify(newValue));
 });
@@ -151,9 +158,10 @@ watch(showGallery, (newValue) => {
   </div>
   <MapViewGallery v-if="showGallery" />
   <About :visibleAbout="visibleAbout" @close="visibleAbout = false" />
+  <Instructions :visibleInstructions="visibleInstructions" @close="visibleInstructions = false" />
   <MainLayout>
     <template #search>
-      <Title @toggle-about="toggleAboutVisibility" />
+      <Title @toggle-about="toggleAboutVisibility" @toggle-instructions="toggleInstructionsVisibility"/>
       <MapViewControls/>
     </template>
 

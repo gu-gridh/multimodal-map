@@ -5,6 +5,11 @@
       <div class="p-1 px-2 clickable category-button about-button">
         {{ $t('infobutton') }}</div>
     </button>
+    <button class="item" @click="$emit('toggle-instructions')">
+      <div class="p-1 px-2 clickable category-button about-button" style="margin-left: 10px;">
+        {{ $t('instructions') }}</div>
+    </button>
+    
     <button @click="toggleLanguage">
         <div class="p-1 px-2 clickable category-button about-button" style="
                 margin-left: 10px;
@@ -27,6 +32,7 @@ export default {
     },
   },
   emits: ['toggle-about'],
+  emits: ['toggle-instructions']
 };
 </script>
 
