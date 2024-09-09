@@ -1,8 +1,6 @@
 <template>
   
   <div class="range-slider-container">
-  
-    <!-- <div class="start-end-box">{{ formatBCYear(min) }}</div> -->
     <div
       style="width: 100%"
       :class="['clickable', 'range-slider-wrapper', { 'no-pointer-events': isSliderVisible === false }]"
@@ -17,7 +15,6 @@
         :format="v => `${Math.round(Math.abs(v))} BC`"
       />
     </div>
-    <!-- <div class="start-end-box" style="margin-right: 5px">{{ formatBCYear(max) }}</div> -->
     <div class="checkbox-container" style="">
       <input type="checkbox" id="showUnknownRange" v-model="showUnknownRange">
       <label style="margin-left:5px; margin-top:-3px; font-size:0.9em; " for="showUnknownRange">Include unknown</label>
@@ -46,13 +43,16 @@ const emit = defineEmits(["update:modelValue"]);
 const isSliderVisible = computed(() => props.isSliderVisible !== false); 
 const selection = ref<[number, number]>(props.modelValue);
 
-function formatBCYear(year: any): string {
-  return `${Math.abs(year)} BC`;
-}
-
 watch(selection, () => {
   emit("update:modelValue", selection.value);
 });
+
+watch(
+  () => props.modelValue,
+  (newValue) => {
+    selection.value = newValue;
+  },
+);
 </script>
 
 <style src="@vueform/slider/themes/default.css"></style>
@@ -105,9 +105,6 @@ watch(selection, () => {
   color: black;
 }
 
-
-
-
 .slider-blue{
   padding:0px;
 }
@@ -142,5 +139,4 @@ watch(selection, () => {
   background-color: var(--theme-3) !important;
   border: var(--theme-3) !important;
 }
-
 </style>

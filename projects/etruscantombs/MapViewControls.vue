@@ -1,21 +1,10 @@
 <template>
     <!-- Checks if all points are loaded and only then show the controls -->
-  <!-- <div :class="{ 'non-interactive': !areMapPointsLoaded }"> -->
-    <!-- <div v-if="areMapPointsLoaded"> -->
+      <!-- <div :class="{ 'non-interactive': !areMapPointsLoaded }"> -->
+      <!-- <div v-if="areMapPointsLoaded"> -->
 
       <!-- This creates a 2-column section with for the controls -->
       <div class="control-organisation justify-left" style="margin-bottom:8px;">
-
-        <!-- <div class="tag-section">
-          <div class="section-title">{{ $t('dataset') }}</div>
-          <div style="display:inline; float:left; margin-right:0px;">
-            <select title="pick what dataset you want to view data from" class="dropdown theme-color-background my-2">
-              <option title="View data from all datasets" value="All datasets">{{ $t('alldatasets') }}</option>
-              <option title="View data from the San Giovenale dataset by Fredrik Tobin-Dodd" value="CTSG-2015">CTSG-2015</option>
-            </select>
-          </div>
-        </div> -->
-
         <div class="tag-section margin-3">
           <div class="section-title">Dataset</div>
           <div title="Narrow the result to a certain dataset" class="broad-controls">
@@ -64,13 +53,8 @@
         <div class="tag-section">
           <div class="section-title">Site</div>
           <div style="display:inline; float:left; margin-right:0px;">
-            <select title="pick what dataset you want to view data from" class="dropdown theme-color-background my-2">
-              <option title="View data from all datasets" value="All datasets">All</option>
-              <option title="View data from San Giovenale" value="CTSG-2015">San Giovenale</option>
-              <option title="View data from San Giuliano" value="CTSG-2015">San Giuliano</option>
-              <option title="View data from Blera" value="CTSG-2015">Blera</option>
-              <option title="View data from Luni" value="CTSG-2015">Luni</option>
-            </select>
+            <CategoryButtonDropdown v-model="selectedSite" :categories="SITES" :limit="1" styleType="dropdown" class="my-2"
+            type="site" />
           </div>
         </div>
 
@@ -91,12 +75,12 @@
         </div>
       </div>
     <!-- </div> -->
-
-    <!-- if the markers are not loaded show the loader -->
-   <!--  <div v-else>
-      <div alt="Loading..." class="loading-svg" />
-    </div> -->
-  <!-- </div> -->
+     
+      <!-- if the markers are not loaded show the loader -->
+      <!--  <div v-else>
+        <div alt="Loading..." class="loading-svg" />
+      </div> -->
+    <!-- </div> -->
 
   <!-- Data Section -->
   <div class="data-widget">
@@ -135,7 +119,7 @@
 </template>
 
 <script setup lang="ts">
-import { inject, ref, onMounted, computed, defineProps, watch } from "vue";
+import { inject, ref, onMounted, watch } from "vue";
 import CategoryButtonDropdown from "./CategoryButtonDropdown.vue";
 import RangeSlider from "./RangeSliderEtruscan.vue";
 import CategoryButtonList from "@/components/input/CategoryButtonList.vue";
@@ -149,7 +133,7 @@ import { nextTick } from 'vue';
 
 const config = inject<EtruscanProject>("config");
 const dianaClient = new DianaClient("etruscantombs"); // Initialize DianaClient
-const { categories, selectedRange, tags, necropoli, tombType, dataSetValue, dataParams, selectedNecropolisCoordinates, enable3D, enablePlan, areMapPointsLoaded } = storeToRefs(etruscanStore());
+const { categories, selectedRange, tags, necropoli, tombType, dataSetValue, dataParams, selectedNecropolisCoordinates, enable3D, enablePlan, selectedSite } = storeToRefs(etruscanStore());
 // Create a ref for last clicked category
 const lastClickedCategory = ref('');
 
@@ -165,10 +149,8 @@ const TAGS = ref<Record<string, string>>({});
 const NECROPOLI = ref<Record<string, string>>({});
 const TOMBTYPE = ref<Record<string, string>>({});
 const DATASET = ref<Record<string, string>>({});
-//const currentTag = ref(null);
-// const currentNecropolis = ref(null);
+const SITES = ref<Record<string, string>>({});
 const currentTombType = ref(null);
-//const dataset = ref([]);
 
 const baseURL = `${apiConfig.PLACE}?page_size=500`;
 
@@ -176,34 +158,43 @@ onMounted(async () => {
   await fetchDataAndPopulateRef("epoch", TAGS);
   await fetchDataAndPopulateRef("necropolis", NECROPOLI);
   await fetchDataAndPopulateRef("typeoftomb", TOMBTYPE);
-  await fetchDataAndPopulateRef("epoch", DATASET); //use to populate the dataset
-
-  //const response = await fetch(baseURL);
-  //const data = await response.json();
+  await fetchDataAndPopulateRef("dataset", DATASET); //use to populate the dataset
+  await fetchDataAndPopulateRef("sites", SITES);
 });
 
 const NECROPOLICoordinates = ref<Record<string, [number, number]>>({});
 
-async function fetchDataAndPopulateRef<T>(type: string, refToPopulate: any) {
+async function fetchDataAndPopulateRef<T>(type: string, refToPopulate: any, params: Record<string, any> = {}) {
   try {
-    const data = await dianaClient.listAll<T>(type);
-    //var i = 1;
-      
+    const data = await dianaClient.listAll<T>(type, params);
+    refToPopulate.value = {};
+
     data.forEach((result: any) => {
       if (result.published) {
-        refToPopulate.value[result.id] = result.text;
-
-        // If the type is necropolis, store its coordinates
-        if (type === "necropolis" && result.geometry && result.geometry.coordinates) {
+        if (type === "dataset") {
+          refToPopulate.value[result.id] = result.short_name;
+        } else if (type === "necropolis" && result.geometry && result.geometry.coordinates) {
+          refToPopulate.value[result.id] = result.text; 
           NECROPOLICoordinates.value[result.id] = result.geometry.coordinates;
+        } else {
+          refToPopulate.value[result.id] = result.text;
         }
-        //i++;
       }
     });
   } catch (error) {
     console.error(`Error fetching data for type ${type}:`, error);
   }
 }
+
+watch(selectedSite, async (newValue) => { //fetch necropolis based on the selected site
+  if (newValue && newValue.length > 0 && newValue[0] !== "all") {
+    await fetchDataAndPopulateRef("necropolis", NECROPOLI, { site: newValue[0] });
+    necropoli.value = ["all"];
+  } else {
+    await fetchDataAndPopulateRef("necropolis", NECROPOLI);
+    necropoli.value = ["all"];
+  }
+});
 
 const handleCategoryClick = (category: string) => {
  showReset();
@@ -282,8 +273,8 @@ function handleSelectionClick(selectedValue: any, targetRef: any) {
 }
 
 function clearAll() {
-const resetbutton = document.getElementById('resetfilters');
-resetbutton.style.display = "none";
+  const resetbutton = document.getElementById('resetfilters');
+  resetbutton.style.display = "none";
   categories.value = ["all"];
   necropoli.value = ["all"];
   enablePlan.value = false;
@@ -292,13 +283,13 @@ resetbutton.style.display = "none";
   dataSetValue.value = ["all"];
   lastClickedCategory.value = '';
   tags.value = [];
+  selectedRange.value = [-700, -200]; //reset slider to the default range
 }
 
 function showReset() {
-const resetbutton = document.getElementById('resetfilters');
-resetbutton.style.display = "block";
+  const resetbutton = document.getElementById('resetfilters');
+  resetbutton.style.display = "block";
 }
-
 </script>
 
 <style>

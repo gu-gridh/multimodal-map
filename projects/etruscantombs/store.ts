@@ -7,6 +7,7 @@ export const etruscanStore = defineStore("etruscan", () => {
   const tags = ref<Array<string>>(["all"]);
   const dataSetValue = ref<Array<string>>(["all"]);
   const necropoli = ref<Array<string>>(["all"]);
+  const selectedSite = ref<Array<string>>(["all"]);
   const selectedRange = ref([-700, -200]);
   const showUnknownRange = ref(true);
   const tombType = ref<Array<string>>(["all"]);
@@ -19,5 +20,5 @@ export const etruscanStore = defineStore("etruscan", () => {
   const areMapPointsLoaded = ref<boolean>(false);
   const placeId = ref<string | null>(null);
 
-  return { categories, tags, dataSetValue, showUnknownRange, tagsLayerVisible, necropoli, selectedRange, tombType,  dataParams, selectedNecropolisCoordinates, enable3D, enablePlan, areMapPointsLoaded, imgParams, placeId };
+  return { categories, tags, dataSetValue, showUnknownRange, tagsLayerVisible, necropoli, selectedRange, tombType,  dataParams, selectedNecropolisCoordinates, enable3D, enablePlan, areMapPointsLoaded, imgParams, placeId, selectedSite };
 });

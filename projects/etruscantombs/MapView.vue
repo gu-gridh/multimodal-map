@@ -5,23 +5,19 @@ import MapViewControls from "./MapViewControls.vue";
 import MapComponent from "@/components/MapComponent.vue";
 import DianaPlaceLayer from "./DianaPlaceLayerEtruscan.vue";
 import GeoJsonWebGLRenderer from "@/components/GeoJsonWebGLRenderer.vue";
-import FeatureSelection from "./FeatureSelection.vue";
 import MapViewPreview from "./MapViewPreview.vue";
 import { storeToRefs } from "pinia";
 import { etruscanStore } from "./store";
 import { mapStore } from "@/stores/store";
 import { clean } from "@/assets/utils";
-import markerIcon from "@/assets/marker-white.svg";
 import MapViewGallery from "./MapViewGallery.vue";
 import { ref } from "vue";
 import About from "./About.vue";
 import { onMounted, watch } from "vue";
 import { nextTick } from "vue";
-import GeoJSON from "ol/format/GeoJSON";
 import Title from "./Title.vue"
-import apiConfig from "./apiConfig"
 
-const { categories, tags, selectedRange, necropoli, showUnknownRange, tombType, tagsLayerVisible, dataSetValue, dataParams, imgParams, selectedNecropolisCoordinates, enable3D, enablePlan } = storeToRefs(etruscanStore());
+const { selectedRange, necropoli, showUnknownRange, tombType, dataSetValue, dataParams, selectedNecropolisCoordinates, enable3D, enablePlan, selectedSite } = storeToRefs(etruscanStore());
 const store = mapStore();
 const etruscan = etruscanStore();  // Get the instance of etruscanStore
 const { selectedFeature } = storeToRefs(store);
@@ -69,8 +65,9 @@ const tagParams = computed(() => {
   const dataset = dataSetValue.value[0];
   const selectedRangeValue = selectedRange.value;
   const show_unknown = showUnknownRange.value;
+  const site = selectedSite.value[0];
 
-  const initialParams: any  = { necropolis, type, dataset, show_unknown: show_unknown.toString() };
+  const initialParams: any  = { necropolis, type, dataset, site, show_unknown: show_unknown.toString() };
 
    if (selectedRangeValue.length === 2) {
     initialParams.minyear = Math.round(Math.abs(selectedRangeValue[0]));
