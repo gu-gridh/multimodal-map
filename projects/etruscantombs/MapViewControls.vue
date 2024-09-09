@@ -226,12 +226,12 @@ const handleCategoryClick = (category: string) => {
     // Clear the lastClickedCategory since it was unselected
     lastClickedCategory.value = '';
     if (category === 'models') {
-      enable3D.value = !enable3D.value;  // Toggle between true and false
+      enable3D.value = !enable3D.value;  
     } else {
       enable3D.value = false;
     }
     if (category === 'plans') {
-      enablePlan.value = !enablePlan.value;  // Toggle between true and false
+      enablePlan.value = !enablePlan.value;  
     } else {
       enablePlan.value = false;
     }
@@ -344,21 +344,6 @@ font-size:0.9em;
   margin-top: -5px;
   margin-bottom: 0px;
 }
-
-/* #app .range-slider-container {
-  display: flex;
-  width: 100%;
-  height: 90px;
-  align-items: bottom;
-  padding: 25px 0 0 0;
-  background-color: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(3px);
-} */
-
-/* #app .range-slider-wrapper {
-  padding-left: 5px;
-  padding-right: 5px;
-} */
 
 #app .start-end-box {
   width: 15%;
