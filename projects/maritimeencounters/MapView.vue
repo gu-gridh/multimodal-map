@@ -4,22 +4,17 @@ import MainLayout from "@/MainLayout.vue";
 import MapViewControls from "./MapViewControls.vue";
 import MapComponent from "@/components/MapComponent.vue";
 import MaritimePlaceLayer from "./MaritimePlaceLayer.vue";
-import GeoJsonWebGLRenderer from "@/components/GeoJsonWebGLRenderer.vue";
-import FeatureSelection from "./FeatureSelection.vue";
 import MapViewPreview from "./MapViewPreview.vue";
 import { storeToRefs } from "pinia";
 import { maritimeencountersStore } from "./store";
 import { mapStore } from "@/stores/store";
 import { clean } from "@/assets/utils";
-import markerIcon from "@/assets/marker-white.svg";
 import MapViewGallery from "./MapViewGallery.vue";
 import { ref } from "vue";
 import About from "./About.vue";
 import { onMounted, watch } from "vue";
 import { nextTick } from "vue";
-import GeoJSON from "ol/format/GeoJSON";
 import Title from "./Title.vue"
-import apiConfig from "./apiConfig"
 
 const { categories, tags, selectedRange, showUnknownRange, tagsLayerVisible, dataSetValue, dataParams, imgParams } = storeToRefs(maritimeencountersStore());
 const store = mapStore();
@@ -157,7 +152,7 @@ watch(showGallery, (newValue) => {
   <MainLayout>
     <template #search>
       <Title @toggle-about="toggleAboutVisibility" />
-      <!-- <MapViewControls/> -->
+      <MapViewControls/>
     </template>
 
     <template #background>
@@ -169,26 +164,6 @@ watch(showGallery, (newValue) => {
           :restrictExtent="[-45.0, 32.00, 55.0, 75.0]"    
         > 
           <template #layers>
-            <GeoJsonWebGLRenderer
-              :externalUrl="'https://data.dh.gu.se/geography/SGElevationMain.geojson'"
-              :zIndex=-0
-              :style="{
-                'stroke-color': [0, 0, 0, 0.18],
-                'stroke-width': 1,
-                'fill-color': [255, 0, 0, 1]
-              }"
-            >
-            </GeoJsonWebGLRenderer>
-            <GeoJsonWebGLRenderer
-              :externalUrl="'https://data.dh.gu.se/geography/SGElevationEdge.geojson'"
-              :zIndex=0
-              :style="{
-                'stroke-color': [0, 0, 0, 0.1],
-                'stroke-width': 1,
-                'fill-color': [0, 255, 0, 1]
-              }"
-            >
-            </GeoJsonWebGLRenderer>
              <MaritimePlaceLayer :params="tagParams" :zIndex=20>
              </MaritimePlaceLayer> 
           </template>
