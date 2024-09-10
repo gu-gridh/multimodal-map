@@ -17,8 +17,8 @@
           <div class="title-fields">
 
             <!--  Main title or logo of the site -->
-            <div class="instructions-main-title" style="word-spacing:100vw">
-              {{ $t('etruscantitle') }}
+            <div class="instructions-main-title" style="">
+              Tombe<br>Etrusche<br> A Camera
             </div>
 
             <!--  User Guide or Instructions title -->
@@ -63,7 +63,7 @@
           <div class="instructions-item">
             <!--  Feature icon -->
             <div class="instructions-item-icon"
-              style="background-image:url(https://data.dh.gu.se/ui-icons/inspect_white.png)"></div>
+              style="background-image:url(https://data.dh.gu.se/ui-icons/inspect_black.png)"></div>
             <div class="instructions-item-description">
               <!--  Feature Title -->
               <div class="instructions-item-title">Multimodal exploration</div>
@@ -77,7 +77,7 @@
 
                <div class="instructions-item">
                 <div class="instructions-item-icon"
-                  style="background-image:url(https://data.dh.gu.se/ui-icons/inspect_white.png)"></div>
+                  style="background-image:url(https://data.dh.gu.se/ui-icons/inspect_black.png)"></div>
                 <div class="instructions-item-description">
                   <div class="instructions-item-title">Interactive Map</div>
                   <p>The interactive plan shows the position of tombs. Zoom in by scrolling or double-clicking, and click-and-drag to pan the view. Click on a tomb to see a preciew.</p>
@@ -89,7 +89,7 @@
 
                    <div class="instructions-item">
                     <div class="instructions-item-icon"
-                      style="background-image:url(https://data.dh.gu.se/ui-icons/search_white.png)"></div>
+                      style="background-image:url(https://data.dh.gu.se/ui-icons/search_black.png)"></div>
                     <div class="instructions-item-description">
                       <div class="instructions-item-title">Filter by dataset or type of data</div>
                       <p>To the left you have controls to filter down the result to tombs in a particular dataset 
@@ -101,7 +101,7 @@
 
           <div class="instructions-item">
             <div class="instructions-item-icon"
-              style="background-image:url(https://data.dh.gu.se/ui-icons/search_white.png)"></div>
+              style="background-image:url(https://data.dh.gu.se/ui-icons/search_black.png)"></div>
             <div class="instructions-item-description">
               <div class="instructions-item-title">Filter by time period, necropolis or type</div>
               <p>You can also filter the tombs by time period, those belonging to a certain site and necropolis, or tombs of a certain type</p>
@@ -115,7 +115,7 @@
 
           <div class="instructions-item">
             <div class="instructions-item-icon"
-              style="background-image:url(https://data.dh.gu.se/ui-icons/zoomin_big_white.png)"></div>
+              style="background-image:url(https://data.dh.gu.se/ui-icons/zoomin_big_black.png)"></div>
             <div class="instructions-item-description">
               <div class="instructions-item-title">Analytical Tools</div>
               <p>Click on a tomb to enter the analytical tool where you can explore all the
@@ -205,7 +205,7 @@
     transform: scale(1.0);
     translate: 0px 0px;
     transition: all 0.1s ease-in-out;
-    background: rgba(0, 0, 0, 0.9);
+    background: linear-gradient(90deg, rgba(245, 235, 225, 1) 0%, rgba(245, 235, 225, 0.8) 100%) !important;
     backdrop-filter: blur(5px);
   }
 
@@ -254,7 +254,7 @@
   }
 
   h1 {
-    color: white !important;
+    color: black !important;
     font-size: 2.0em;
     font-weight: 100;
     margin-bottom: 20px;
@@ -313,7 +313,7 @@
   }
 
   .instructions-item-description {
-    color: white;
+    color: black;
     margin-left: 20px;
     font-weight: 200;
     line-height: 1.3;
@@ -321,7 +321,7 @@
     user-select: none;
     -webkit-user-select: none;
     cursor: default;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.00em;
   }
 
   .instructions-item-label p {
@@ -333,7 +333,7 @@
     margin-left: 10px;
     margin-top: 10px;
     z-index: 10001;
-    color: white;
+    color: black;
   }
 
   .main-about-content {
@@ -352,7 +352,7 @@
 
   .instructions-main-title {
     font-family: 'Teko', sans-serif;
-    color: white !important;
+    color: rgb(180, 100, 100);
     font-weight: 100 !important;
     line-height: 0.7;
     text-align: right;
@@ -364,7 +364,7 @@
   .instructions-sub-title {
     align-self: end;
     font-family: 'Teko', sans-serif;
-    color: white !important;
+    color: rgb(180, 100, 100);
     font-weight: 100 !important;
     line-height: 0.8;
     text-align: right;
@@ -397,8 +397,8 @@
 
   .instructions-article-main {
     align-self: end;
-    font-family: "Barlow-condesed", sans-serif !important;
-    color: white;
+    font-family: "Barlow Condensed", sans-serif !important;
+    color: black;
     text-align: right;
     font-size: 1.1em;
     line-height: 1.3;
@@ -425,7 +425,6 @@
     position: relative;
     margin-left: 20px;
     pointer-events: auto;
-
   }
 
 
@@ -434,18 +433,23 @@
 
 
   .category-button {
-    font-family: "Oswald", sans-serif !important;
+    font-family: "Barlow Condensed", sans-serif !important;
     margin-top: 30px;
     float: left;
     font-size: 1.0em !important;
     font-weight: 300;
-    transition: all 0.4s ease-in-out;
+    transition: all 0.1s ease-in-out;
     padding: 4px 15px !important;
     z-index: 1000;
     opacity: 1.0;
     right: 0px;
+    color: black !important;
+    background-color: rgb(250, 250, 250) !important;
+  }
+
+  .category-button:hover {
     color: white !important;
-    background-color: rgb(50, 50, 50) !important;
+    background-color: rgb(180, 100, 100) !important;
   }
 
   /*   Mid screen adaption */
