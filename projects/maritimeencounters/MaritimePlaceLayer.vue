@@ -41,21 +41,23 @@ const fetchData = async (initialUrl: string, params: Record<string, any>) => {
     const data = await res.json();
 
     data.features.forEach((feature: any) => {
-      const coords = feature.geometry.coordinates;
-      if (coords.length === 2 && !isNaN(coords[0]) && !isNaN(coords[1])) {
-        const latLng = L.latLng(coords[1], coords[0]);
+      if (feature.geometry && feature.geometry.coordinates && feature.geometry.coordinates.length === 2) {
+        const coords = feature.geometry.coordinates;
+        if (!isNaN(coords[0]) && !isNaN(coords[1])) {
+          const latLng = L.latLng(coords[1], coords[0]);
 
-        const marker = L.marker(latLng, {
-          icon: L.icon({
-            iconUrl: markerIcon,
-            iconSize: [30, 45],
-          }),
-        });
+          const marker = L.marker(latLng, {
+            icon: L.icon({
+              iconUrl: markerIcon,
+              iconSize: [30, 45],
+            }),
+          });
 
-        //popup to each marker
-        marker.bindPopup(`<b>Feature ID:</b> ${feature.id}<br><b>Name:</b> ${feature.properties.name}`);
+          //popup to each marker
+          marker.bindPopup(`<b>Feature ID:</b> ${feature.id}<br><b>Name:</b> ${feature.properties.name}`);
 
-        markerClusterGroup.value?.addLayer(marker);
+          markerClusterGroup.value?.addLayer(marker);
+        }
       }
     });
 
@@ -74,7 +76,13 @@ onMounted(() => {
     spiderfyOnMaxZoom: true,  //spiderfy
     showCoverageOnHover: true,
     zoomToBoundsOnClick: true,
+    maxClusterRadius: 100,
   });
+
+  //Override _getExpandedVisibleBounds to limit to current map bounds
+  markerClusterGroup.value._getExpandedVisibleBounds = function () {
+    return markerClusterGroup.value?._map?.getBounds();
+  };
 
   map.value.addLayer(markerClusterGroup.value);
 
