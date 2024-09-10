@@ -9,7 +9,7 @@ import markerIcon from "@/assets/marker-white.svg";
 
 const map = ref<L.Map | null>(null);
 const markerClusterGroup = ref<L.MarkerClusterGroup | null>(null);
-let hoverPopup = ref<L.Popup | null>(null); //active hover popup
+let hoverPopup = ref<L.Popup | null>(null);  //active hover popup
 
 const props = defineProps({
   mapOptions: {
@@ -41,6 +41,7 @@ const fetchData = async (initialUrl: string, params: Record<string, any>) => {
 
     const data = await res.json();
 
+    const markersToAdd = [];
     data.features.forEach((feature: any) => {
       if (feature.geometry && feature.geometry.coordinates && feature.geometry.coordinates.length === 2) {
         const coords = feature.geometry.coordinates;
@@ -77,10 +78,12 @@ const fetchData = async (initialUrl: string, params: Record<string, any>) => {
             });
           });
 
-          markerClusterGroup.value?.addLayer(marker);
+          markersToAdd.push(marker);
         }
       }
     });
+
+    markerClusterGroup.value?.addLayers(markersToAdd);
 
     nextUrl = data.next ? data.next.replace(/^http:/, "https:") : null;
   }
@@ -102,6 +105,7 @@ onMounted(() => {
     showCoverageOnHover: true,
     zoomToBoundsOnClick: true,
     maxClusterRadius: 100,
+    chunkedLoading: true,  //Enable chunked loading
   });
 
   // Override _getExpandedVisibleBounds to limit to current map bounds
