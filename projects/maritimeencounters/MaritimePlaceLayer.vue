@@ -9,6 +9,7 @@ import markerIcon from "@/assets/marker-white.svg";
 
 const map = ref<L.Map | null>(null);
 const markerClusterGroup = ref<L.MarkerClusterGroup | null>(null);
+let hoverPopup = ref<L.Popup | null>(null); //active hover popup
 
 const props = defineProps({
   mapOptions: {
@@ -53,8 +54,28 @@ const fetchData = async (initialUrl: string, params: Record<string, any>) => {
             }),
           });
 
-          //popup to each marker
-          marker.bindPopup(`<b>Feature ID:</b> ${feature.id}<br><b>Name:</b> ${feature.properties.name}`);
+          //show coordinates and name on hover
+          marker.on("mouseover", () => {
+            //close any existing hover popup
+            if (hoverPopup.value) {
+              map.value?.closePopup(hoverPopup.value);
+            }
+
+            hoverPopup.value = L.popup({
+              closeButton: false,
+              offset: L.point(0, -30),
+            })
+              .setLatLng(latLng)
+              .setContent(
+                `<b>Name:</b> ${feature.properties.name}<br><b>Coordinates:</b> ${coords[1].toFixed(6)}, ${coords[0].toFixed(6)}`
+              )
+              .openOn(map.value as L.Map);
+
+            marker.on("mouseout", () => {
+              map.value?.closePopup(hoverPopup.value as L.Popup);
+              hoverPopup.value = null;
+            });
+          });
 
           markerClusterGroup.value?.addLayer(marker);
         }
@@ -66,10 +87,14 @@ const fetchData = async (initialUrl: string, params: Record<string, any>) => {
 };
 
 onMounted(() => {
-  map.value = L.map("map").setView(props.mapOptions.center, props.mapOptions.zoom);
+  map.value = L.map("map", {
+    zoomAnimation: true,
+    fadeAnimation: true,
+    markerZoomAnimation: true
+  }).setView(props.mapOptions.center, props.mapOptions.zoom);
 
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    maxZoom: 11, //19
+    maxZoom: 19, //11
   }).addTo(map.value);
 
   markerClusterGroup.value = L.markerClusterGroup({
@@ -79,7 +104,7 @@ onMounted(() => {
     maxClusterRadius: 100,
   });
 
-  //Override _getExpandedVisibleBounds to limit to current map bounds
+  // Override _getExpandedVisibleBounds to limit to current map bounds
   markerClusterGroup.value._getExpandedVisibleBounds = function () {
     return markerClusterGroup.value?._map?.getBounds();
   };
@@ -87,8 +112,16 @@ onMounted(() => {
   map.value.addLayer(markerClusterGroup.value);
 
   fetchData("https://maritime-encounters.dh.gu.se/api/resources/site_coordinates", props.params);
+
+  //close any active hover popup before zooming
+  map.value.on('zoomstart', () => {
+    if (hoverPopup.value) {
+      map.value?.closePopup(hoverPopup.value);
+      hoverPopup.value = null;
+    }
+  });
 });
-</script>
+</script> 
 
 <template>
   <div id="map" style="width: 100%; height: 100vh;"></div>
