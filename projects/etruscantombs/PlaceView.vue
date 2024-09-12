@@ -2,12 +2,11 @@
 import { ref, onMounted, inject, computed, nextTick, watch } from 'vue';
 import type { Image, Observation, Document, Pointcloud, Mesh } from './types';
 import type { DianaClient } from "@/assets/diana";
-import { storeToRefs } from "pinia";
 import PlaceViewCard from "./PlaceViewCard.vue";
 import MapComponent from "@/components/MapComponent.vue";
 import i18n from '../../src/translations/etruscan';
 import { etruscanStore } from "./store";
-import { useRoute, useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
 import apiConfig from "./apiConfig";
 import Masonry from 'masonry-layout';
 import imagesLoaded from 'imagesloaded';
@@ -23,7 +22,6 @@ const diana = inject("diana") as DianaClient;
 const images = ref<Image[]>([]);
 const plans = ref<Image[]>([]);
 const route = useRoute();
-const router = useRouter();
 const nextPageUrl = ref<string | null>(null);
 const hasMoreImages = ref(true);
 const isLoading = ref(false);
@@ -91,7 +89,6 @@ function isMesh(item: any): item is Mesh {
 function isDocument(item: any): item is Mesh {
     return 'upload' in item;
 }
-
 
 function toggleLanguage() {
     if (i18n.global.locale === 'en') {
@@ -479,7 +476,6 @@ async function initMasonry() {
             </div>
         </div>
     </div>
-
     <MapComponent />
 </template>
     
