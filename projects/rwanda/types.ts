@@ -1,5 +1,4 @@
 import type { Project } from "@/types/project";
-import type { Geometry } from "ol/geom";
 
 export type RwandaProject = Project & {
   urls: Record<string, string>;

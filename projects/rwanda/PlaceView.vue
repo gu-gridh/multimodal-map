@@ -27,7 +27,6 @@ const placeDescription = ref()
 const placeNames: any = ref([])
 const placeGeoJson = ref()
 const coordinates: any = ref([])
-const showMore = ref(true)
 const documents = ref<Array<Document>>([])
 
 //Capitalize first letter since some are lowercase in database
