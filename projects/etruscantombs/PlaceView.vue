@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, defineProps, onMounted, inject, computed, nextTick, watch } from 'vue';
+import { ref, onMounted, inject, computed, nextTick, watch } from 'vue';
 import type { Image, Observation, Document, Pointcloud, Mesh } from './types';
 import type { DianaClient } from "@/assets/diana";
 import { storeToRefs } from "pinia";
@@ -7,7 +7,7 @@ import PlaceViewCard from "./PlaceViewCard.vue";
 import MapComponent from "@/components/MapComponent.vue";
 import i18n from '../../src/translations/etruscan';
 import { etruscanStore } from "./store";
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import apiConfig from "./apiConfig";
 import Masonry from 'masonry-layout';
 import imagesLoaded from 'imagesloaded';
@@ -17,22 +17,28 @@ const plansMsnry = ref<Masonry | null>(null);
 
 const sort = ref('type');
 const etruscan = etruscanStore();
-const { placeId } = storeToRefs(etruscanStore());
 const groupedByYear = ref<{ [year: string]: (Image | Observation | Document | Pointcloud | Mesh)[] }>({});
 const id = computed(() => etruscan.placeId);
 const diana = inject("diana") as DianaClient;
 const images = ref<Image[]>([]);
 const plans = ref<Image[]>([]);
 const route = useRoute();
+const router = useRouter();
 const nextPageUrl = ref<string | null>(null);
 const hasMoreImages = ref(true);
 const isLoading = ref(false);
+const selectedDataset = ref<string | null>(null); 
+const cloneTombOptions = ref<{ id: number, datasetId: number, datasetName: string }[]>([]);
 
 let observations = ref<Observation[]>([]);
 let documents = ref<Document[]>([]);
 let pointcloud = ref<Pointcloud[]>([]);
 let mesh = ref<Mesh[]>([]);
-let place = ref();
+
+const datasetsMap = {
+    1: "CTSG-2015",
+    2: "SIR",
+};
 
 const combined3DModels = computed(() => [
     ...mesh.value.map(m => ({ ...m, modelType: 'mesh' })),
@@ -147,15 +153,27 @@ onMounted(async () => {
     urlId = urlId.replace(/_/g, ' ');
 
     // Check if placeId is undefined or null and fetch for the id based on the name
-    if (etruscan.placeId === null || etruscan.placeId === undefined) {
-        const response = await fetch(`${apiConfig.PLACE}?name=${urlId}`);
-        const data = await response.json();
+    const response = await fetch(`${apiConfig.PLACE}?name=${urlId}`);
+    const data = await response.json();
 
-        if (data.features && data.features.length > 0) {
-            etruscan.placeId = data.features[0].id;
-        }
+    if (data.features && data.features.length > 0) {
+        const mainFeature = data.features[0];
+        etruscan.placeId = mainFeature.id;
+        const mainDatasetId = mainFeature.properties.dataset.id;
+        selectedDataset.value = datasetsMap[mainDatasetId] || "Unknown Dataset";
+
+        //check clone_tombs for different dataset IDs
+        mainFeature.properties.clone_tombs.forEach(cloneTomb => {
+            if (cloneTomb.dataset !== mainDatasetId) {
+                cloneTombOptions.value.push({
+                    id: parseInt(cloneTomb.name), //we don't use ID we use name in routing
+                    datasetId: cloneTomb.dataset,
+                    datasetName: datasetsMap[cloneTomb.dataset] || "Unknown Dataset"
+                });
+            }
+        });
     }
-
+    
     if (id) {
         const [fetchedImages, fetchedObservations, fetchedDocuments, fetchedPointclouds, fetchedMeshes, fetchedPlans] = await Promise.all
             ([
@@ -206,6 +224,13 @@ function groupAndSortByYear(allItems: (Image | Observation | Document | Pointclo
 function createPlaceURL() {
     const url = `${apiConfig.ADMIN_PLACE}${id.value}`;
     window.open(url, "_blank");
+}
+
+function handleCloneTombChange(event: Event) {
+    const selectedNameAsInt = parseInt((event.target as HTMLSelectElement).value);
+    if (selectedNameAsInt) {
+        window.location.href = `/place/${selectedNameAsInt}`;
+    }
 }
 
 async function initMasonry() {
@@ -270,9 +295,14 @@ async function initMasonry() {
                 </div>
 
                 <div>
-                    <select class="dropdown theme-color-background">
-                        <option value="All datasets">{{ $t('alldatasets') }}</option>
-                        <option value="CTSG-2015">CTSG-2015</option>
+                    <select class="dropdown theme-color-background" @change="handleCloneTombChange">
+                        <option :value="null">{{ selectedDataset }}</option>
+                        <option 
+                            v-for="option in cloneTombOptions" 
+                            :key="option.id" 
+                            :value="option.id">
+                            {{ option.datasetName }}
+                        </option>
                     </select>
                 </div>
 
