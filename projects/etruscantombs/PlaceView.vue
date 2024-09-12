@@ -102,6 +102,7 @@ async function fetchMoreImages() {
     isLoading.value = true;
 
     try {
+        const newImages = [];
         while (nextPageUrl.value) {
             const response = await fetch(nextPageUrl.value) as Response;
             if (!response.ok) {
@@ -115,25 +116,19 @@ async function fetchMoreImages() {
 
             hasMoreImages.value = !!data.next;
 
-            const newImages = data.results.filter((image: Image) => image.published);
-            images.value = [...images.value, ...newImages];
+            newImages.push(...data.results.filter((image: Image) => image.published));
         }
-        // Now update the grouped and sorted items
+        images.value = [...images.value, ...newImages];
+
         groupAndSortByYear([...images.value, ...plans.value, ...observations.value, ...documents.value, ...pointcloud.value, ...mesh.value]);
 
-        await nextTick();
+        await nextTick(); 
 
         const photoGallery = document.querySelector('.placeview-masonry-gallery');
         if (photoGallery) {
-            await new Promise(resolve => {
-                imagesLoaded(photoGallery, resolve);
-            });
-
-            // Recalculate Masonry layout after images are loaded
-            if (msnry.value?.reloadItems && msnry.value?.layout) {
-                msnry.value.reloadItems();
-                msnry.value.layout();
-            }
+            await new Promise(resolve => imagesLoaded(photoGallery, resolve));
+            msnry.value?.reloadItems();
+            msnry.value?.layout();
         }
     } catch (error) {
         console.error("Failed to fetch more images:", error);
