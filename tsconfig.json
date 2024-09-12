@@ -7,11 +7,16 @@
     "src/**/*.json",
     "projects/rwanda/**/*"
   ],
+  "exclude": [
+    "projects/sonora/**/*"
+  ],
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     },
+    "noImplicitAny": false,
+    "allowJs": true,
     // "target": "es5",
     "lib": ["es2019", "dom"]
   },
