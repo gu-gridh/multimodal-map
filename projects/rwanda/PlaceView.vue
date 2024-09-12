@@ -109,8 +109,7 @@ const fetchDocuments = async (id: number) => {
 }
 
 //fetch place data
-const fetchPlaceData =async () => {
-  
+const fetchPlaceData =async () => {  
     //if place is selected on map
     if(selectedFeature.value !== undefined || null) {
         place.value = selectedFeature.value
