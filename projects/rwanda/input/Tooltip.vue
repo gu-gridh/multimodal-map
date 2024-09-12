@@ -1,6 +1,6 @@
 <template>
     <div class="tooltip-wrapper">
-        <slot />
+        <slot ></slot>
         <span :class="tooltipClasses">{{ text }}</span>
     </div>
 </template>
