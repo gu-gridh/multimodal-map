@@ -209,7 +209,7 @@ body {
     padding-right: 30px;
     width: auto;
     height: auto;
-    background-image: url("/dropdown-arrow.png");
+    background-image: url(https://data.dh.gu.se/ui-icons/dropdown-arrow_white.png);
     background-size: 15px;
     background-repeat: no-repeat;
     background-position: calc(100% - 10px) 55%;

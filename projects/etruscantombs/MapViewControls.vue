@@ -129,7 +129,7 @@
 <script setup lang="ts">
 import { inject, ref, computed, onMounted, watch } from "vue";
 import CategoryButtonDropdown from "./CategoryButtonDropdown.vue";
-import RangeSlider from "./RangeSliderEtruscan.vue";
+import RangeSlider from "./RangeSlider.vue";
 import CategoryButtonList from "@/components/input/CategoryButtonList.vue";
 import { storeToRefs } from "pinia";
 import { etruscanStore } from "./store";

@@ -70,6 +70,11 @@ margin-top: -20px!important;
   }
 }
 
+.placecard {
+  height: calc(100vh - 33vh);
+  margin-top: 85px;
+}
+
 
 @media screen and (max-width: 1400px) {
   #app .placecard-title{

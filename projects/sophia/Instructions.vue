@@ -320,8 +320,7 @@
     background-repeat: no-repeat;
     background-position-y: 50%;
     margin-left: 0px;
-
-
+    margin-top:-15px;
   }
 
   .instructions-item-title {

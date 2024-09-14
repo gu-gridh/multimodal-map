@@ -17,7 +17,7 @@
     </div>
     <div class="checkbox-container" style="">
       <input type="checkbox" id="showUnknownRange" v-model="showUnknownRange">
-      <label style="margin-left:5px; margin-top:-3px; font-size:0.9em; " for="showUnknownRange">Include unknown</label>
+      <label style="margin-left:5px; margin-top:-3px; font-size:0.9em; " for="showUnknownRange">{{ $t('includeunknown') }}</label>
     </div> 
   </div>
 
@@ -94,7 +94,8 @@ watch(
   height: 100%;
   transform: scale(0);
   clip-path:circle(1);
-  background-color:var(--theme-3) !important; 
+  background-image:url(https://data.dh.gu.se/ui-icons/check_cross_red.png);
+  background-size: cover;
 }
 
 .checkbox-container input[type="checkbox"]:checked::before {

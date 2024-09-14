@@ -23,7 +23,7 @@
 
             <!--  User Guide or Instructions title -->
             <div class="instructions-sub-title">
-              {{ $t('userguide') }}
+              {{ $t('instructions') }}
             </div>
 
             <!--  Short text summarising the intent if the site -->
@@ -36,9 +36,11 @@
 
             <!--  Button to go to video tutorial on GU-Play -->
             <div class="explore-button">
-              <button @click="$emit('close')">
+              <button>
+                <a href="https://play.gu.se/media/Etruscan+Tombs+Guide/0_ev6ow83l" target="_blank">
                 <div class="p-1 px-2 category-button"
                   style="width:auto; padding:5px 15px; text-align: center; cursor: pointer;">{{ $t('video') }}</div>
+                </a>
               </button>
             </div>
 
@@ -58,7 +60,7 @@
 
         <!--  Features column -->
         <div class="content-column2">
-          <h1>Features</h1>
+          <h1>{{ $t('features') }}</h1>
           <!--  Individiual feature -->
           <div class="instructions-item">
             <!--  Feature icon -->
@@ -66,34 +68,21 @@
               style="background-image:url(https://data.dh.gu.se/ui-icons/inspect_black.png)"></div>
             <div class="instructions-item-description">
               <!--  Feature Title -->
-              <div class="instructions-item-title">Multimodal exploration</div>
+              <div class="instructions-item-title">{{ $t('f1title') }}</div>
               <!--  Feature Description -->
-              <p>Use the centrally placed widget at the top of the screen to switch betwen an interactive map or a gallery of the tombs. These views are dymanically updated base don the filters you activate.
-              </p>
+              <p>{{ $t('f1description') }}</p>
             </div>
           </div>
 
-               <!-- repeat -->
-
-               <div class="instructions-item">
-                <div class="instructions-item-icon"
-                  style="background-image:url(https://data.dh.gu.se/ui-icons/inspect_black.png)"></div>
-                <div class="instructions-item-description">
-                  <div class="instructions-item-title">Interactive Map</div>
-                  <p>The interactive plan shows the position of tombs. Zoom in by scrolling or double-clicking, and click-and-drag to pan the view. Click on a tomb to see a preciew.</p>
-                </div>
-              </div>
-
-
+            
                    <!-- repeat -->
 
                    <div class="instructions-item">
                     <div class="instructions-item-icon"
                       style="background-image:url(https://data.dh.gu.se/ui-icons/search_black.png)"></div>
                     <div class="instructions-item-description">
-                      <div class="instructions-item-title">Filter by dataset or type of data</div>
-                      <p>To the left you have controls to filter down the result to tombs in a particular dataset 
-                        or that contains drawings or 3d models. </p>
+                      <div class="instructions-item-title">{{ $t('f2title') }}</div>
+                      <p>{{ $t('f2description') }}</p>
                     </div>
                   </div>
 
@@ -103,12 +92,10 @@
             <div class="instructions-item-icon"
               style="background-image:url(https://data.dh.gu.se/ui-icons/search_black.png)"></div>
             <div class="instructions-item-description">
-              <div class="instructions-item-title">Filter by time period, necropolis or type</div>
-              <p>You can also filter the tombs by time period, those belonging to a certain site and necropolis, or tombs of a certain type</p>
+              <div class="instructions-item-title">{{ $t('f3title') }} </div>
+              <p>{{ $t('f3description') }}</p>
             </div>
           </div>
-
-         
 
     
           <!-- repeat -->
@@ -117,10 +104,8 @@
             <div class="instructions-item-icon"
               style="background-image:url(https://data.dh.gu.se/ui-icons/zoomin_big_black.png)"></div>
             <div class="instructions-item-description">
-              <div class="instructions-item-title">Analytical Tools</div>
-              <p>Click on a tomb to enter the analytical tool where you can explore all the
-                documentation and asscoiated data. This includes photographs, drawings
-                documents, observations, and interactive 3D data.</p>
+              <div class="instructions-item-title">{{ $t('f4title') }}</div>
+              <p>{{ $t('f4description') }}</p>
             </div>
           </div>
         </div>
@@ -254,10 +239,11 @@
   }
 
   h1 {
-    color: black !important;
-    font-size: 2.0em;
-    font-weight: 100;
-    margin-bottom: 20px;
+    font-family: 'Teko', sans-serif;
+    color: rgb(180, 100, 100);
+    font-size: 3.0em;
+    font-weight: 500;
+    margin-bottom: 10px;
   }
 
   .instructions {
@@ -302,6 +288,7 @@
     background-repeat: no-repeat;
     background-position-y: 50%;
     margin-left: 0px;
+    margin-top:-15px;
 
 
   }
@@ -375,7 +362,7 @@
     user-select: none;
     pointer-events: none;
     width: auto;
-    word-spacing: 1000px;
+    word-spacing: 1px;
   }
 
   @media screen and (min-width: 2100px) {
@@ -470,9 +457,9 @@
 
   @media screen and (max-width: 900px) {
     h1 {
-      color: white !important;
+      color: vlack !important;
       font-size: 2.2em !important;
-      font-weight: 100;
+      font-weight: 500;
       margin-bottom: 20px;
     }
 
