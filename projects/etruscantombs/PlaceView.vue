@@ -34,7 +34,7 @@ let pointcloud = ref<Pointcloud[]>([]);
 let mesh = ref<Mesh[]>([]);
 
 const datasetsMap = {
-    1: "CTSG-2015",
+    1: "CTSG",
     2: "SIR",
 };
 

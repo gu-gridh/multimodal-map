@@ -9,7 +9,7 @@
     />
   </div>
   <select v-else :value="modelValue[0]" class="dropdown theme-color-background" @change="dropdownToggle($event)">
-    <option value="all">All</option>
+    <option value="all">{{ $t('all') }}</option>
     <option 
       v-for="(label, key) in categories"
       :key="key"
