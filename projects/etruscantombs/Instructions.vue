@@ -225,7 +225,7 @@
     margin-left: 40px;
     border-width: 0px 0px 0px 0.5px;
     border-style: dashed;
-    border-color: grey;
+    border-color: rgb(180,100,100);
     max-width: 750px;
     margin-bottom: 20px;
   }
