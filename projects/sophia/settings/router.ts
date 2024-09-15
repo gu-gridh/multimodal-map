@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import MapView from "./MapView.vue";
+import MapView from "../MapView.vue";
 
 
 const router = createRouter({

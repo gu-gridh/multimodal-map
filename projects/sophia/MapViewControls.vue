@@ -9,7 +9,7 @@
         <div class="tag-section">
           <div class="section-title">{{ $t('language') }}</div>
           <div title="Narrow the result to a certain language group" class="broad-controls">
-            <CategoryButtonList v-model="language" :categories="LANGUAGE" :limit="1" styleType="dropdown" class="my-2"
+            <Dropdown v-model="language" :categories="LANGUAGE" :limit="1" styleType="dropdown" class="my-2"
               type="language" style="padding-right:30px;" />
           </div>
         </div>
@@ -105,15 +105,15 @@
 
 <script setup lang="ts">
 import { inject, ref, onMounted, computed, defineProps, watch } from "vue";
-import CategoryButtonList from "./CategoryButtonDropdown.vue";
+import Dropdown from "./MapViewControlsDropdown.vue";
 import CategoryButton from "@/components/input/CategoryButtonList.vue";
 import { storeToRefs } from "pinia";
-import { inscriptionsStore } from "./store";
+import { inscriptionsStore } from "./settings/store";
 import { mapStore } from "@/stores/store";
 import type { InscriptionsProject } from "./types";
 import { SophiaClient } from "@/assets/saintsophia";
 import { transform } from 'ol/proj';
-import apiConfig from "./apiConfig"
+import apiConfig from "./settings/apiConfig"
 import { nextTick } from 'vue';
 import i18n from '../../src/translations/sophia';
 

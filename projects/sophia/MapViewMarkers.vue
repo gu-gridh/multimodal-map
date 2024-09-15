@@ -15,7 +15,7 @@ import Icon from "ol/style/Icon";
 import { mapStore } from "@/stores/store";
 import { storeToRefs } from "pinia";
 import Select from "ol/interaction/Select";
-import { inscriptionsStore } from "./store";
+import { inscriptionsStore } from "./settings/store";
 import { pointerMove } from "ol/events/condition";
 import type Map from "ol/Map";
 import { Vector as VectorLayer } from "ol/layer.js"

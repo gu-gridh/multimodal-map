@@ -2,13 +2,13 @@
 import { watchEffect, ref, inject, toRaw, isProxy } from "vue";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
-import { inscriptionsStore } from "./store";
+import { inscriptionsStore } from "./settings/store";
 import type {
   Image, PanelMetadata, Inscription, Language,
 } from "./types";
 import type { SophiaClient } from "@/assets/saintsophia";
-import OpenSeadragon from "./OpenSeadragonSequence.vue";
-import apiConfig from "./apiConfig"
+import OpenSeadragon from "./MapViewPreviewImage.vue";
+import apiConfig from "./settings/apiConfig"
 
 const { selectedFeature } = storeToRefs(mapStore());
 // const { panelId } = storeToRefs(inscriptionsStore());

@@ -2,13 +2,12 @@
 import { computed } from "vue";
 import MainLayout from "@/MainLayout.vue";
 import MapViewControls from "./MapViewControls.vue";
-import MapComponent from "./MapComponent.vue";
-import SophiaPlaceLayer from "./SophiaPlaceLayer.vue";
+import MapComponent from "./MapViewComponent.vue";
+import MapViewMarkers from "./MapViewMarkers.vue";
 import GeoJsonWebGLRenderer from "@/components/GeoJsonWebGLRenderer.vue";
-import FeatureSelection from "./FeatureSelection.vue";
 import MapViewPreview from "./MapViewPreview.vue";
 import { storeToRefs } from "pinia";
-import { inscriptionsStore } from "./store";
+import { inscriptionsStore } from "./settings/store";
 import { mapStore } from "@/stores/store";
 import { clean } from "@/assets/utils";
 import markerIcon from "@/assets/marker-white.svg";
@@ -20,8 +19,8 @@ import Instructions from "./Instructions.vue";
 import { onMounted, watch } from "vue";
 import { nextTick } from "vue";
 import GeoJSON from "ol/format/GeoJSON";
-import Title from "./Title.vue";
-import apiConfig from "./apiConfig"
+import Title from "./MapViewTitle.vue";
+import apiConfig from "./settings/apiConfig"
 
 const { categories, tags, tagsLayerVisible, dataParams, imgParams, selectedCategory } = storeToRefs(inscriptionsStore());
 
@@ -236,7 +235,7 @@ const toggleInstructionsVisibility = async () => {
        
         <MapComponent :shouldAutoMove="true" :min-zoom=minZoom :max-zoom=maxZoom v-if="showPlan">
           <template #layers>
-            <SophiaPlaceLayer :params="tagParams" :zIndex=3 :showSecondFloor="showSecondFloor" />
+            <MapViewMarkers :params="tagParams" :zIndex=3 :showSecondFloor="showSecondFloor" />
           <div >
             <ol-tile-layer className="floor-plans" v-if="!showSecondFloor">
               <ol-source-xyz url="https://data.dh.gu.se/tiles/saint_sophia_ground_floor/{z}/{x}/{y}.png" />

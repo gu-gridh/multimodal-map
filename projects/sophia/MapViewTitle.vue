@@ -1,6 +1,5 @@
 <template>
     <div class="main-title">{{ $t('portaltitle') }}</div>
-    <div class="about">{{ $t('etruscanabout') }}</div>
     <button class="item" @click="$emit('toggle-about')">
       <div class="p-1 px-2 clickable category-button about-button">
         {{ $t('infobutton') }}</div>
