@@ -2,16 +2,6 @@
   <div id="gallery-container">
     <div class="gallery-filters">
       <div class="gallery-filter-container">
-        <h1>Writing system</h1>
-        <div class="tag-container">
-          <div class="gallery-tag">Latin</div>
-          <div class="gallery-tag">Cyrillic</div>
-          <div class="gallery-tag">Hebrew</div>
-          <div class="gallery-tag">Arabic</div>
-        </div>
-      </div>
-
-      <div class="gallery-filter-container">
         <h1>Genre</h1>
         <div class="tag-container">
           <div class="gallery-tag">Prayer</div>
