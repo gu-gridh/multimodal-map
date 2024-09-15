@@ -6,15 +6,8 @@
       <!-- This creates a 2-column section with for the controls -->
       <div class="control-organisation justify-left"
         style="pointer-events:auto; padding-bottom:10px; padding-top:10px;">
+
         <div class="tag-section">
-          <div class="section-title">{{ $t('language') }}</div>
-          <div title="Narrow the result to a certain language group" class="broad-controls">
-            <Dropdown v-model="language" :categories="LANGUAGE" :limit="1" styleType="dropdown" class="my-2"
-              type="language" style="padding-right:30px;" />
-          </div>
-        </div>
-        
-        <div class="tag-section margin-20">
           <div class="section-title">{{ $t('typeofinscription') }}</div>
           <div class="broad-controls">
             <Dropdown v-model="categories" :categories="{
@@ -25,6 +18,28 @@
             }" :limit="1" class="my-2" title="Pick an inscription type" @click="handleCategoryClick" style="padding-right:30px;"/>
           </div>
         </div>
+
+        <div class="tag-section margin-20">
+          <div class="section-title">{{ $t('writingsystem') }}</div>
+          <div class="broad-controls">
+            <Dropdown v-model="categories" :categories="{
+              textualgraffiti: $t('textualgraffiti'),
+              pictorialgraffiti: $t('pictorialgraffiti'),
+              composite: $t('composite'),
+              monograms: $t('monograms'),
+            }" :limit="1" class="my-2" title="Pick an inscription type" @click="handleCategoryClick" style="padding-right:30px;"/>
+          </div>
+        </div>
+
+        <div class="tag-section margin-20">
+          <div class="section-title">{{ $t('language') }}</div>
+          <div title="Narrow the result to a certain language group" class="broad-controls">
+            <Dropdown v-model="language" :categories="LANGUAGE" :limit="1" styleType="dropdown" class="my-2"
+              type="language" style="padding-right:30px;" />
+          </div>
+        </div>
+        
+       
       </div>
       <div class="section-title">{{ $t('searchtitle') }}</div>
       <div class="toggle-buttons" style="margin-top: 10px">
