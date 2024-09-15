@@ -190,7 +190,7 @@
     transform: scale(1.0);
     translate: 0px 0px;
     transition: all 0.1s ease-in-out;
-    background: linear-gradient(90deg, rgba(108, 136, 139, 1) 0%, rgba(245, 235, 225, 0.8) 100%) !important;
+    background: linear-gradient(90deg, rgba(88, 116, 119, 1) 0%, rgba(185, 175, 165, 0.85) 100%) !important;
     backdrop-filter: blur(5px);
   }
 

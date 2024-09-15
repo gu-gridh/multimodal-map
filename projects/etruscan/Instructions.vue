@@ -311,6 +311,10 @@
     letter-spacing: 0.00em;
   }
 
+  .instructions-item-description p{
+margin-bottom:10px;
+  }
+
   .instructions-item-label p {
     display: inline;
     /* font-weight:700; */

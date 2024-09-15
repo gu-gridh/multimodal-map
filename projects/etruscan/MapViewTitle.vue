@@ -1,6 +1,6 @@
 <template>
-    <div class="main-title">{{ $t('etruscantitle') }}</div>
-    <div class="about">{{ $t('etruscanabout') }}</div>
+    <div class="main-title">{{ $t('title') }}</div>
+    <div class="about">{{ $t('about') }}</div>
     <button class="item" @click="$emit('toggle-about')">
       <div class="p-1 px-2 clickable category-button about-button">
         {{ $t('infobutton') }}</div>
