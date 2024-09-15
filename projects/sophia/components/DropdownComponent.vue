@@ -21,10 +21,10 @@
 
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
-import CategoryButton from "../../src/components/input/CategoryButton.vue";
-import { inscriptionsStore } from "./settings/store";
+import CategoryButton from "../../../src/components/input/CategoryButton.vue";
+import { inscriptionsStore } from "../settings/store";
 import { computed } from 'vue';
-import i18n from '../../src/translations/sophia';
+import i18n from '../../../src/translations/sophia';
 // const { selectedNecropolisCoordinates } = storeToRefs(inscriptionsStore());
 
 

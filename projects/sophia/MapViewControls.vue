@@ -105,7 +105,7 @@
 
 <script setup lang="ts">
 import { inject, ref, onMounted, computed, defineProps, watch } from "vue";
-import Dropdown from "./MapViewControlsDropdown.vue";
+import Dropdown from "./components/DropdownComponent.vue";
 import CategoryButton from "@/components/input/CategoryButtonList.vue";
 import { storeToRefs } from "pinia";
 import { inscriptionsStore } from "./settings/store";

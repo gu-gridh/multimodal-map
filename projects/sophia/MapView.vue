@@ -2,7 +2,7 @@
 import { computed } from "vue";
 import MainLayout from "@/MainLayout.vue";
 import MapViewControls from "./MapViewControls.vue";
-import MapComponent from "./MapViewComponent.vue";
+import MapComponent from "./components/MapComponent.vue";
 import MapViewMarkers from "./MapViewMarkers.vue";
 import GeoJsonWebGLRenderer from "@/components/GeoJsonWebGLRenderer.vue";
 import MapViewPreview from "./MapViewPreview.vue";
