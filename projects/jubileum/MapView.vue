@@ -4,7 +4,7 @@
   import MapViewControls from "./MapViewControls.vue";
   import MapComponent from "./MapComponent.vue";
   import DianaPlaceLayer from "@/components/DianaPlaceLayer.vue";
-  import FeatureSelection from "./FeatureSelection.vue";
+  import MapViewFeatureSelection from "./MapViewFeatureSelection.vue";
   import MapViewPreview from "./MapViewPreview.vue";
   import { storeToRefs } from "pinia";
   import { jubileumStore } from "./settings/store";
@@ -61,7 +61,7 @@
     visibleAbout.value = true;
     sessionStorage.setItem("visited", "true");
   }
-  
+
   });
 
   watch(showGrid, (newValue) => {
@@ -131,7 +131,7 @@
                 <ol-style-icon :src="markerIcon" :scale="1.0" :displacement="[-10, 45]"
                   :anchor="[0.0, 0.0]"></ol-style-icon>
               </ol-style>
-              <FeatureSelection />
+              <MapViewFeatureSelection />
             </DianaPlaceLayer>
 
             <ol-tile-layer className="map-tiles">
