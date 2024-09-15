@@ -17,10 +17,8 @@
           <div class="title-fields">
 
             <!--  Main title or logo of the site -->
-            <div class="instructions-main-title" style="word-spacing:100vw">
-              Написи
-              Святої
-              Софії
+            <div class="instructions-main-title" style="">
+              Svenskt<br>Digitalt<br>Orgelarkiv
             </div>
 
             <!--  User Guide or Instructions title -->
@@ -38,9 +36,11 @@
 
             <!--  Button to go to video tutorial on GU-Play -->
             <div class="explore-button">
-              <button @click="$emit('close')">
+              <button>
+                <a href="https://play.gu.se/media/Etruscan+Tombs+Guide/0_ev6ow83l" target="_blank">
                 <div class="p-1 px-2 category-button"
                   style="width:auto; padding:5px 15px; text-align: center; cursor: pointer;">{{ $t('video') }}</div>
+                </a>
               </button>
             </div>
 
@@ -70,10 +70,21 @@
               <!--  Feature Title -->
               <div class="instructions-item-title">{{ $t('f1title') }}</div>
               <!--  Feature Description -->
-              <p>{{ $t('f1description') }}
-              </p>
+              <p>{{ $t('f1description') }}</p>
             </div>
           </div>
+
+            
+                   <!-- repeat -->
+
+                   <div class="instructions-item">
+                    <div class="instructions-item-icon"
+                      style="background-image:url(https://data.dh.gu.se/ui-icons/search_white.png)"></div>
+                    <div class="instructions-item-description">
+                      <div class="instructions-item-title">{{ $t('f2title') }}</div>
+                      <p>{{ $t('f2description') }}</p>
+                    </div>
+                  </div>
 
           <!-- repeat -->
 
@@ -81,52 +92,20 @@
             <div class="instructions-item-icon"
               style="background-image:url(https://data.dh.gu.se/ui-icons/search_white.png)"></div>
             <div class="instructions-item-description">
-              <div class="instructions-item-title">{{ $t('f2title') }}</div>
-              <p>{{ $t('f2description') }}</p>
-            </div>
-          </div>
-
-          <!-- repeat -->
-
-          <div class="instructions-item">
-            <div class="instructions-item-icon"
-              style="background-image:url(https://data.dh.gu.se/ui-icons/search_white.png)"></div>
-            <div class="instructions-item-description">
-              <div class="instructions-item-title">{{ $t('f3title') }}</div>
+              <div class="instructions-item-title">{{ $t('f3title') }} </div>
               <p>{{ $t('f3description') }}</p>
             </div>
           </div>
 
-          <!-- repeat -->
-
-          <div class="instructions-item">
-            <div class="instructions-item-icon"
-              style="background-image:url(https://data.dh.gu.se/ui-icons/inspect_white.png)"></div>
-            <div class="instructions-item-description">
-              <div class="instructions-item-title">{{ $t('f4title') }}</div>
-              <p>{{ $t('f4description') }}</p>
-            </div>
-          </div>
-
-          <!-- repeat -->
-
-          <div class="instructions-item">
-            <div class="instructions-item-icon"
-              style="background-image:url(https://data.dh.gu.se/ui-icons/search_white.png)"></div>
-            <div class="instructions-item-description">
-              <div class="instructions-item-title">{{ $t('f5title') }}</div>
-              <p>{{ $t('f5description') }}</p>
-            </div>
-          </div>
-
+    
           <!-- repeat -->
 
           <div class="instructions-item">
             <div class="instructions-item-icon"
               style="background-image:url(https://data.dh.gu.se/ui-icons/zoomin_big_white.png)"></div>
             <div class="instructions-item-description">
-              <div class="instructions-item-title">{{ $t('f6title') }}</div>
-              <p>{{ $t('f6description') }}</p>
+              <div class="instructions-item-title">{{ $t('f4title') }}</div>
+              <p>{{ $t('f4description') }}</p>
             </div>
           </div>
         </div>
@@ -139,7 +118,7 @@
 
 <script lang="ts">
 
-  import i18n from '../../src/translations/sophia';
+  import i18n from '../../src/translations/etruscan.js';
 
   export default {
     name: "aboutinstructionsview",
@@ -170,13 +149,13 @@
     methods: {
       toggleLanguage() {
         if (i18n.global.locale === 'en') {
-          i18n.global.locale = 'uk';
+          i18n.global.locale = 'it';
         } else {
           i18n.global.locale = 'en';
         }
       },
-      toggleLanguageUK() {
-        i18n.global.locale = 'uk';
+      toggleLanguageIT() {
+        i18n.global.locale = 'it';
       },
       toggleLanguageEN() {
         i18n.global.locale = 'en';
@@ -211,7 +190,7 @@
     transform: scale(1.0);
     translate: 0px 0px;
     transition: all 0.1s ease-in-out;
-    background: rgba(0, 0, 0, 0.9);
+    background: linear-gradient(90deg, rgba(108, 136, 139, 1) 0%, rgba(245, 235, 225, 0.8) 100%) !important;
     backdrop-filter: blur(5px);
   }
 
@@ -246,7 +225,7 @@
     margin-left: 40px;
     border-width: 0px 0px 0px 0.5px;
     border-style: dashed;
-    border-color: grey;
+    border-color: white;
     max-width: 750px;
     margin-bottom: 20px;
   }
@@ -260,10 +239,11 @@
   }
 
   h1 {
-    color: white !important;
-    font-size: 2.0em;
-    font-weight: 100;
-    margin-bottom: 20px;
+    font-family: 'Teko', sans-serif;
+    color: white;
+    font-size: 3.0em;
+    font-weight: 500;
+    margin-bottom: 10px;
   }
 
   .instructions {
@@ -297,7 +277,7 @@
     flex-direction: row;
     justify-content: left;
     align-items: center;
-    margin-bottom: 15px;
+    margin-bottom: 0px;
     min-height: 60px;
   }
 
@@ -309,12 +289,14 @@
     background-position-y: 50%;
     margin-left: 0px;
     margin-top:-15px;
+
+
   }
 
   .instructions-item-title {
     font-weight: 600;
     letter-spacing: 0.05em;
-    color: rgb(180, 100, 100)
+    color: white;
   }
 
   .instructions-item-description {
@@ -326,7 +308,7 @@
     user-select: none;
     -webkit-user-select: none;
     cursor: default;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.00em;
   }
 
   .instructions-item-label p {
@@ -356,8 +338,8 @@
   }
 
   .instructions-main-title {
-    font-family: "Alumni Sans Pinstripe", sans-serif;
-    color: white !important;
+    font-family: 'Teko', sans-serif;
+    color: white;
     font-weight: 100 !important;
     line-height: 0.7;
     text-align: right;
@@ -368,8 +350,8 @@
 
   .instructions-sub-title {
     align-self: end;
-    font-family: "Alumni Sans Pinstripe", sans-serif;
-    color: white !important;
+    font-family: 'Teko', sans-serif;
+    color: white;
     font-weight: 100 !important;
     line-height: 0.8;
     text-align: right;
@@ -380,7 +362,7 @@
     user-select: none;
     pointer-events: none;
     width: auto;
-    word-spacing: 1000px;
+    word-spacing: 1px;
   }
 
   @media screen and (min-width: 2100px) {
@@ -402,7 +384,7 @@
 
   .instructions-article-main {
     align-self: end;
-    font-family: "Oswald", sans-serif !important;
+    font-family: "Barlow Condensed", sans-serif !important;
     color: white;
     text-align: right;
     font-size: 1.1em;
@@ -430,7 +412,6 @@
     position: relative;
     margin-left: 20px;
     pointer-events: auto;
-
   }
 
 
@@ -439,18 +420,23 @@
 
 
   .category-button {
-    font-family: "Oswald", sans-serif !important;
+    font-family: "Barlow Condensed", sans-serif !important;
     margin-top: 30px;
     float: left;
     font-size: 1.0em !important;
     font-weight: 300;
-    transition: all 0.4s ease-in-out;
+    transition: all 0.1s ease-in-out;
     padding: 4px 15px !important;
     z-index: 1000;
     opacity: 1.0;
     right: 0px;
+    color: black !important;
+    background-color: rgb(250, 250, 250) !important;
+  }
+
+  .category-button:hover {
     color: white !important;
-    background-color: rgb(50, 50, 50) !important;
+    background-color: rgb(180, 100, 100) !important;
   }
 
   /*   Mid screen adaption */
@@ -471,9 +457,9 @@
 
   @media screen and (max-width: 900px) {
     h1 {
-      color: white !important;
+      color: vlack !important;
       font-size: 2.2em !important;
-      font-weight: 100;
+      font-weight: 500;
       margin-bottom: 20px;
     }
 

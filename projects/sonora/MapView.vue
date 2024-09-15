@@ -15,6 +15,7 @@ import MapViewGallery from "./MapViewGallery.vue";
 import MapViewArchive from "./MapViewArchive.vue";
 import { ref } from "vue";
 import About from "./About.vue";
+import Instructions from "./Instructions.vue";
 import { onMounted, watch } from "vue";
 import { nextTick } from "vue";
 import GeoJSON from "ol/format/GeoJSON";
@@ -28,6 +29,7 @@ const minZoom = 9;
 const maxZoom = 20;
 const featureZoom = 16; //value between minZoom and maxZoom when you select a point 
 const visibleAbout = ref(false);
+const visibleInstructions = ref(false);
 const mapViewControls = ref(null);
 const showGrid = ref(false);
 const showArchive = ref(false);
@@ -96,6 +98,11 @@ const toggleAboutVisibility = async () => {
   visibleAbout.value = !visibleAbout.value;
 };
 
+const toggleInstructionsVisibility = async () => {
+  await nextTick();
+  visibleInstructions.value = !visibleInstructions.value;
+};
+
 watch(showGrid, (newValue) => {
   localStorage.setItem("showGrid", JSON.stringify(newValue));
 });
@@ -112,6 +119,8 @@ watch(visibleAbout, async (newVal) => {
     }
   }
 });
+
+
 </script>
 
 <template>
@@ -131,9 +140,10 @@ watch(visibleAbout, async (newVal) => {
   <MapViewGallery v-if="showGrid && !showArchive" />
   <MapViewArchive v-if="showArchive" />
   <About :visibleAbout="visibleAbout" @close="visibleAbout = false" />
+  <Instructions :visibleInstructions="visibleInstructions" @close="visibleInstructions = false" />
   <MainLayout>
     <template #search>
-      <Title @toggle-about="toggleAboutVisibility" />
+      <Title @toggle-about="toggleAboutVisibility" @toggle-instructions="toggleInstructionsVisibility"/>
       <MapViewControls ref="mapViewControls" />
     </template>
 
