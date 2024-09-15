@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
-import MapView from "./MapView.vue";
-import ObjectView from "./ObjectView.vue";
+import MapView from "../MapView.vue";
+import ObjectView from "../ObjectView.vue";
 
 const router = createRouter({
   history: createWebHistory(),

@@ -7,7 +7,7 @@
   import FeatureSelection from "./FeatureSelection.vue";
   import MapViewPreview from "./MapViewPreview.vue";
   import { storeToRefs } from "pinia";
-  import { jubileumStore } from "./store";
+  import { jubileumStore } from "./settings/store";
   import { mapStore } from "@/stores/store";
   import { clean } from "@/assets/utils";
   import markerIcon from "@/assets/marker-white.svg";
@@ -51,10 +51,17 @@
   const visibleAbout = ref(false);
 
   onMounted(() => {
+    const visited = sessionStorage.getItem("visited") === "true"; // Retrieve the visited status from session storage
     const storedShowGrid = localStorage.getItem("showGrid");
     if (storedShowGrid) {
       showGrid.value = JSON.parse(storedShowGrid);
     }
+    if (!visited) {
+    // Hide the about component
+    visibleAbout.value = true;
+    sessionStorage.setItem("visited", "true");
+  }
+  
   });
 
   watch(showGrid, (newValue) => {
