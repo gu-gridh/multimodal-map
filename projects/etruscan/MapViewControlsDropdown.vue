@@ -22,7 +22,7 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import CategoryButton from "../../src/components/input/CategoryButton.vue";
-import { etruscanStore } from "./store";
+import { etruscanStore } from "./settings/store";
 const { selectedNecropolisCoordinates } = storeToRefs(etruscanStore());
 
 

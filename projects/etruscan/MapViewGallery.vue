@@ -44,8 +44,8 @@ import { onMounted, ref, watch } from 'vue';
 import Masonry from 'masonry-layout';
 import imagesLoaded from 'imagesloaded';
 import InfiniteScroll from 'infinite-scroll';
-import { etruscanStore } from "./store";
-import apiConfig from "./apiConfig";
+import { etruscanStore } from "./settings/store";
+import apiConfig from "./settings/apiConfig";
 
 export default {
   setup() {

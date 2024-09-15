@@ -26,7 +26,7 @@
 <script setup lang="ts">
 import Slider from "@vueform/slider";
 import { storeToRefs } from "pinia";
-import { etruscanStore } from "./store";
+import { etruscanStore } from "./settings/store";
 import { ref, watch, computed } from "vue";
 const { showUnknownRange } = storeToRefs(etruscanStore());
 const props = withDefaults(defineProps<{

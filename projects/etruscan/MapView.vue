@@ -3,11 +3,11 @@ import { computed } from "vue";
 import MainLayout from "@/MainLayout.vue";
 import MapViewControls from "./MapViewControls.vue";
 import MapComponent from "@/components/MapComponent.vue";
-import DianaPlaceLayer from "./DianaPlaceLayerEtruscan.vue";
+import MapViewMarkers from "./MapViewMarkers.vue";
 import GeoJsonWebGLRenderer from "@/components/GeoJsonWebGLRenderer.vue";
 import MapViewPreview from "./MapViewPreview.vue";
 import { storeToRefs } from "pinia";
-import { etruscanStore } from "./store";
+import { etruscanStore } from "./settings/store";
 import { mapStore } from "@/stores/store";
 import { clean } from "@/assets/utils";
 import MapViewGallery from "./MapViewGallery.vue";
@@ -16,7 +16,7 @@ import About from "./About.vue";
 import Instructions from "./Instructions.vue";
 import { onMounted, watch } from "vue";
 import { nextTick } from "vue";
-import Title from "./Title.vue"
+import Title from "./MapViewTitle.vue"
 
 const { selectedRange, necropoli, showUnknownRange, tombType, dataSetValue, dataParams, selectedNecropolisCoordinates, enable3D, enablePlan, selectedSite } = storeToRefs(etruscanStore());
 const store = mapStore();
@@ -194,8 +194,8 @@ watch(showGallery, (newValue) => {
               }"
             >
             </GeoJsonWebGLRenderer>
-            <DianaPlaceLayer :params="tagParams" :zIndex=20>
-            </DianaPlaceLayer>
+            <MapViewMarkers :params="tagParams" :zIndex=20>
+            </MapViewMarkers>
           </template>
           
         </MapComponent>  

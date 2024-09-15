@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { ref, onMounted, inject, computed, nextTick, watch } from 'vue';
-import type { Image, Observation, Document, Pointcloud, Mesh } from './types';
+import type { Image, Observation, Document, Pointcloud, Mesh } from './settings/types';
 import type { DianaClient } from "@/assets/diana";
 import PlaceViewCard from "./PlaceViewCard.vue";
 import MapComponent from "@/components/MapComponent.vue";
 import i18n from '../../src/translations/etruscan';
-import { etruscanStore } from "./store";
+import { etruscanStore } from "./settings/store";
 import { useRoute } from 'vue-router';
-import apiConfig from "./apiConfig";
+import apiConfig from "./settings/apiConfig";
 import Masonry from 'masonry-layout';
 import imagesLoaded from 'imagesloaded';
 
@@ -352,7 +352,7 @@ async function initMasonry() {
                         <div class="plans-masonry-gallery">
                             <div v-for="(image, index) in plans" :key="index" class="plan-gallery__item">
                                 <div class="masonry-image" v-if="'iiif_file' in image">
-                                    <a :href="`http://localhost:8098/viewer/?q=${image.id}/orthophoto`" target="_blank">
+                                    <a :href="`http://localhost:8098/viewer/?q=${image.id}/image`" target="_blank">
                                         <div class="meta-data-overlay">
                                             <div class="meta-data-overlay-text">{{ image.title }}</div>
                                             <div class="meta-data-overlay-text"> {{ image.type_of_image[0].text }}</div>
@@ -375,7 +375,7 @@ async function initMasonry() {
                         <div class="placeview-masonry-gallery">
                             <div v-for="(image, index) in images" :key="index" class="gallery__item">
                                 <div class="masonry-image" v-if="'iiif_file' in image">
-                                    <a :href="`http://localhost:8098/viewer/?q=${image.id}/orthophoto`" target="_blank">
+                                    <a :href="`http://localhost:8098/viewer/?q=${image.id}/image`" target="_blank">
                                         <div class="meta-data-overlay">
                                             <div class="meta-data-overlay-text">{{ image.title }}</div>
                                             <div class="meta-data-overlay-text">{{ image.type_of_image[0].text }}</div>
@@ -412,7 +412,7 @@ async function initMasonry() {
                             :class="(isImage(item) || isPointcloud(item) || isMesh(item)) ? 'image-placeholder square' : ''">
                             <!-- If the item is an image -->
                             <div class="image-square" v-if="'iiif_file' in item">
-                                <a v-if="item.iiif_file" :href="`http://localhost:8098/viewer/?q=${item.id}/orthophoto`" target="_blank">
+                                <a v-if="item.iiif_file" :href="`http://localhost:8098/viewer/?q=${item.id}/image`" target="_blank">
                                     <div class="meta-data-overlay">
                                         <div class="meta-data-overlay-text">{{ item.title }}</div>
                                         <div class="meta-data-overlay-text">{{ item.type_of_image[0].text }}</div>

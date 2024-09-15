@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import router from './router'
+import router from './settings/router'
 import { ref, inject, onMounted } from "vue"
 import markerIcon from "@/assets/marker-red-etruscan.svg";
 import i18n from '../../src/translations/etruscan';
-import apiConfig from "./apiConfig"
+import apiConfig from "./settings/apiConfig"
 
 const props = defineProps<{
   id: string;
@@ -118,7 +118,7 @@ onMounted(() => {
    
         <div class="placecard-text">
       
-          <div class="placecard-title theme-color-text theme-title-typography">{{ $t('tomb') }} {{ title }}</div>
+          <div class="placecard-title theme-color-text theme-title-typography">CTSG {{ title }}</div>
           <div class="placecard-subtitle theme-color-text theme-title-typography">{{ subtitle }}</div>
 
           <div class="placecard-metadata-content">

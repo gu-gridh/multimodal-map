@@ -9,7 +9,7 @@ import type Geometry from "ol/geom/Geometry";
 import { mapStore } from "@/stores/store";
 import { storeToRefs } from "pinia";
 import Select from "ol/interaction/Select";
-import { etruscanStore } from "./store";
+import { etruscanStore } from "./settings/store";
 import { pointerMove } from "ol/events/condition";
 import type Map from "ol/Map";
 
@@ -174,7 +174,7 @@ watch(
   >
     <div
       class="ol-popup-content"
-      v-html="'Tomb ' + (hoveredFeature ? hoveredFeature.get('name') : '')"
+      v-html="'CTSG ' + (hoveredFeature ? hoveredFeature.get('name') : '')"
     ></div>
   </ol-overlay>
 
@@ -185,7 +185,7 @@ watch(
   >
     <div
       class="ol-popup-content"
-      v-html="'Tomb ' + (selectedFeature ? selectedFeature.get('name') : '')"
+      v-html="'CTSG ' + (selectedFeature ? selectedFeature.get('name') : '')"
     ></div>
   </ol-overlay>
 </template>

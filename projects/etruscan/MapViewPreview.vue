@@ -2,13 +2,11 @@
 import { watchEffect, ref, inject } from "vue";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
-import { etruscanStore } from "./store";
-import type {
-  Image,
-} from "./types";
+import { etruscanStore } from "./settings/store";
+import type {Image,} from "./settings/types";
 import type { DianaClient } from "@/assets/diana";
-import OpenSeadragon from "./OpenSeadragonSequence.vue";
-import apiConfig from "./apiConfig"
+import OpenSeadragon from "./MapViewPreviewImage.vue";
+import apiConfig from "./settings/apiConfig"
 
 const { selectedFeature } = storeToRefs(mapStore());
 const { placeId } = storeToRefs(etruscanStore());
@@ -105,7 +103,7 @@ function deselectPlace() {
 
       <div class="placecard-bottom">
         <div class="placecard-text">
-          <div class="placecard-title theme-color-text theme-title-typography">CTSG {{ selectedFeature.get("name") }}</div>
+          <div class="placecard-title theme-color-text theme-title-typography">CTSG - {{ selectedFeature.get("name") }}</div>
           <div class="placecard-subtitle theme-color-text theme-title-typography">{{ subtitle }}</div>
           <!-- <button class="theme-button theme-color-background">{{ $t('threedmodel') }}</button> -->
         </div>
@@ -128,6 +126,7 @@ function deselectPlace() {
               <div class="label">{{ $t('chambers') }}:</div>
               <div class="tag theme-color-text">{{ chambers }}</div>
             </div>
+            
             <div class="metadata-item">
               <div class="short-label">{{ $t('period') }}:</div>
               <div class="tag theme-color-text">{{ period }}</div>

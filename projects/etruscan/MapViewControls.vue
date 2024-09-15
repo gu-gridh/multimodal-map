@@ -8,7 +8,7 @@
         <div class="tag-section margin-3">
           <div class="section-title">Dataset</div>
           <div title="Narrow the result to a certain dataset" class="broad-controls">
-             <CategoryButtonDropdown v-model="dataSetValue" :categories="DATASET" :limit="1" styleType="dropdown" class="my-2"
+             <Dropdown v-model="dataSetValue" :categories="DATASET" :limit="1" styleType="dropdown" class="my-2"
               type="datasets"/>
           </div>
         </div>
@@ -53,7 +53,7 @@
         <div class="tag-section ">
           <div class="section-title">{{ $t('site') }}</div>
           <div class="broad-controls">
-            <CategoryButtonDropdown v-model="selectedSite" :categories="SITES" :limit="1" styleType="dropdown" class="my-2"
+            <Dropdown v-model="selectedSite" :categories="SITES" :limit="1" styleType="dropdown" class="my-2"
             type="site"/>
           </div>
         </div>
@@ -61,7 +61,7 @@
         <div class="tag-section margin-5">
           <div class="section-title">{{ $t('necropolisname') }}</div>
           <div title="Narrow the result to a certain necropolis" class="broad-controls">
-            <CategoryButtonDropdown v-model="necropoli" :categories="NECROPOLI" :limit="1" styleType="dropdown" class="my-2"
+            <Dropdown v-model="necropoli" :categories="NECROPOLI" :limit="1" styleType="dropdown" class="my-2"
               type="necropolis" @click="handleSelectionClick($event, currentTombType)" />
           </div>
         </div>
@@ -69,7 +69,7 @@
         <div class="tag-section margin-5">
           <div  class="section-title">{{ $t('tombtype') }}</div>
           <div title="Narrow the result to a certain tomb type" class="broad-controls">
-            <CategoryButtonDropdown v-model="tombType" :categories="TOMBTYPE" :limit="1" styleType="dropdown" class="my-2"
+            <Dropdown v-model="tombType" :categories="TOMBTYPE" :limit="1" styleType="dropdown" class="my-2"
               type="tombType" />
           </div>
         </div>
@@ -128,15 +128,15 @@
 
 <script setup lang="ts">
 import { inject, ref, computed, onMounted, watch } from "vue";
-import CategoryButtonDropdown from "./CategoryButtonDropdown.vue";
-import RangeSlider from "./RangeSlider.vue";
+import Dropdown from "./MapViewControlsDropdown.vue";
+import RangeSlider from "./MapViewControlsRangeSlider.vue";
 import CategoryButtonList from "@/components/input/CategoryButtonList.vue";
 import { storeToRefs } from "pinia";
-import { etruscanStore } from "./store";
-import type { EtruscanProject } from "./types";
+import { etruscanStore } from "./settings/store";
+import type { EtruscanProject } from "./settings/types";
 import { DianaClient } from "@/assets/diana";
 import { transform } from 'ol/proj';
-import apiConfig from "./apiConfig"
+import apiConfig from "./settings/apiConfig"
 import { nextTick } from 'vue';
 
 const config = inject<EtruscanProject>("config");
