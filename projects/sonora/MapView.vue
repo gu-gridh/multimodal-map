@@ -2,13 +2,12 @@
 import { computed } from "vue";
 import MainLayout from "@/MainLayout.vue";
 import MapViewControls from "./MapViewControls.vue";
-import MapComponent from "@/components/MapComponentRwanda.vue";
-import DianaPlaceLayer from "./DianaPlaceLayerSonora.vue";
+import MapComponent from "./components/MapComponent.vue";
+import DianaPlaceLayer from "./MapViewMarkers.vue";
 import GeoJsonWebGLRenderer from "@/components/GeoJsonWebGLRenderer.vue";
-import FeatureSelection from "./FeatureSelection.vue";
 import MapViewPreview from "./MapViewPreview.vue";
 import { storeToRefs } from "pinia";
-import { sonoraStore } from "./store";
+import { sonoraStore } from "./settings/store";
 import { mapStore } from "@/stores/store";
 import { clean } from "@/assets/utils";
 import markerIcon from "@/assets/marker-white.svg";
@@ -19,7 +18,7 @@ import About from "./About.vue";
 import { onMounted, watch } from "vue";
 import { nextTick } from "vue";
 import GeoJSON from "ol/format/GeoJSON";
-import Title from "./Title.vue"
+import Title from "./MapViewTitle.vue"
 
 const { categories, tags, necropoli, tombType, placesLayerVisible, tagsLayerVisible, dataParams, enable3D, selectedBuilderId } = storeToRefs(sonoraStore());
 const store = mapStore();

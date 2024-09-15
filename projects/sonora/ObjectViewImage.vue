@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from "vue";
-import ObjectViewComponent from "./ObjectViewComponentSonora.vue";
-import OpenSeadragon from "./OpenSeadragonSonora.vue";
-import type { ImageDeep } from "./types";
+import ObjectViewComponent from "./ObjectViewComponent.vue";
+import OpenSeadragon from "./MapViewPreviewImage.vue";
+import type { ImageDeep } from "./settings/types";
 import i18n from '../../src/translations/sonora';
 
 const props = defineProps<{

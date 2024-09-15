@@ -100,6 +100,10 @@ body {
   font-size:110%;
 }
 
+#app .right-pane {
+  max-width:600px!important; 
+  }
+
 
 
 @media screen and (max-width: 900px) {
@@ -107,9 +111,7 @@ body {
     background: linear-gradient(180deg, rgba(232, 228, 217, 0) 0px, var(--theme-1) 300px) !important;
 }
 
-#app .right-pane {
-/* z-index: 0 !important; */
-}
+
 
 .organ-historic-overview a {
   color: var(--theme-3) !important;
@@ -119,12 +121,8 @@ body {
   color: black!important;
 }
 
-.placecard {
-  height: calc(100vh - 32vh);
-  margin-top: 12%;
-  font-size:90%;
-  font-weight:300;
-}
+
+
 #app .left-pane {
   margin-top: calc(100vh - 20vh)!important;
   z-index:1000!important;

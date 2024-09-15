@@ -28,12 +28,12 @@
 
 <script lang="ts" setup>
 import { ref, inject, onMounted, defineComponent, watch } from "vue";
-import type { Image } from "./types";
+import type { Image } from "./settings/types";
 import type { DianaClient } from "@/assets/diana";
 import Masonry from 'masonry-layout';
 import InfiniteScroll from 'infinite-scroll';
 import imagesLoaded from 'imagesloaded';
-import { sonoraStore } from "./store";
+import { sonoraStore } from "./settings/store";
 import { storeToRefs } from "pinia";
 
 const { dataParams, selectedBuilderId } = storeToRefs(sonoraStore());
@@ -196,7 +196,7 @@ imagesLoaded(document.querySelector('.gallery'), () => {
   position:absolute;
   width:100%;
   height:calc(100% - 80px);
-  padding-left:33%;
+  padding-left:29%;
   z-index:100!important;
   background-color: rgba(232, 228, 217, 0.9) !important;
   backdrop-filter:blur(5px);

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { inject, ref, watchEffect, onMounted } from "vue";
-import type { Image } from "./types";
+import type { Image } from "./settings/types";
 import type { DianaClient } from "@/assets/diana";
 import ObjectViewImage from "./ObjectViewImage.vue";
 import i18n from '../../src/translations/sonora';

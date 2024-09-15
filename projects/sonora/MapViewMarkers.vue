@@ -11,7 +11,7 @@ import type Geometry from "ol/geom/Geometry";
 import { mapStore } from "@/stores/store";
 import { storeToRefs } from "pinia";
 import Select from "ol/interaction/Select";
-import { sonoraStore } from "./store";
+import { sonoraStore } from "./settings/store";
 import { pointerMove } from "ol/events/condition";
 import type Map from "ol/Map";
 import Point from "ol/geom/Point";

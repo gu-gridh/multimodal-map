@@ -21,8 +21,8 @@
 
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
-import CategoryButton from "../../src/components/input/CategoryButton.vue";
-import { sonoraStore } from "./store";
+import CategoryButton from "../../../src/components/input/CategoryButton.vue";
+import { sonoraStore } from "../settings/store";
 // const { selectedNecropolisCoordinates } = storeToRefs(sonoraStore());
 
 

@@ -88,12 +88,12 @@
 
 <script setup lang="ts">
 import { inject, ref, onMounted, computed, defineProps, nextTick, watch } from "vue";
-import CategoryButtonList from "./CategoryButtonDropdown.vue";
+import Dropdown from "./components/DropdownComponent.vue";
 import CategoryButton from "@/components/input/CategoryButtonList.vue";
 import { storeToRefs } from "pinia";
 import { fromLonLat } from "ol/proj";
 import { mapStore } from "@/stores/store";
-import { sonoraStore } from "./store";
+import { sonoraStore } from "./settings/store";
 import type { SonoraProject } from "./types";
 import { DianaClient } from "@/assets/diana";
 import { transform } from 'ol/proj';

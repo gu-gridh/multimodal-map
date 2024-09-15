@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import { watchEffect, ref, inject, computed, watch } from "vue";
 import { storeToRefs } from "pinia";
-import { sonoraStore } from "./store";
+import { sonoraStore } from "./settings/store";
 import { mapStore } from "@/stores/store";
 import type {
   Image
-} from "./types";
+} from "./settings/types";
 import type { DianaClient } from "@/assets/diana";
 import OpenSeadragon from "@/components/OpenSeadragonNonPyramid.vue";
 import placeholderImage from './images/placeholder.png';
@@ -229,6 +229,13 @@ const processOrganData = (data) => {
 </template>
 
 <style>
+.placecard {
+  height: calc(100vh - 32vh)!important;
+  margin-top: 12vh;
+  font-size:90%;
+  font-weight:300;
+}
+
 .placecard-top{
   height:65%;
 }
@@ -251,12 +258,20 @@ const processOrganData = (data) => {
   padding:10px;
 }
 
-.placecard-title {
-
-  font-size:2.5vw;
+#app .placecard-title {
+  font-size:35px!important;
   padding-bottom:5px;
   font-weight:300;
   margin-left:-1px;
+}
+
+
+
+#app .placecard-subtitle {
+  font-size:25px!important;
+padding-bottom:5px;
+font-weight:300;
+margin-left:-1px;
 
 }
 

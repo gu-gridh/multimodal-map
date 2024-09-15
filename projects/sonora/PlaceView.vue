@@ -361,6 +361,13 @@ const handleClickOutside = (event) => {
 </template>
     
 <style scoped>
+  .main-container {
+  background-color: rgba(84, 105, 108, 0.7) !important;
+  backdrop-filter: blur(10px) saturate(50%) brightness(100%);
+  color: white;
+  height:calc(100vh - 80px);
+}
+
 .place-view {
   margin-left: 20px;
   padding-top: 35px;
@@ -463,11 +470,7 @@ table td {
 
 
 
-.main-container {
-  background-color: rgba(84, 105, 108, 0.7) !important;
-  backdrop-filter: blur(10px) saturate(50%) brightness(100%);
-  color: white;
-}
+
 
 .content-table td {
   color: white;
@@ -525,11 +528,10 @@ margin-bottom:5px!important;
 }
 
 #app .place-view {
-
         width: calc(100%) !important;
- 
         margin-left: 0px !important;
-        padding-left: 15px;
+        padding-left: 0px;
+        padding-bottom:100px;
      
     }
 
@@ -539,7 +541,9 @@ margin-bottom:5px!important;
 }
 
 .table-section{
-  font-size:120%;
+font-size:120%;
+ padding-left: 20px;
+ padding-bottom: 30px;
 }
 
 .tag.theme-color-text {
@@ -550,17 +554,22 @@ margin-bottom:5px!important;
   backdrop-filter: blur(10px) saturate(50%) brightness(100%);
 }
 
+.overview-row {
+  padding-left:20px;
+
+}
+
 .title-event{
   color:black;
-  margin-left:-10px;
+  margin-left:0px;
   background-color:transparent;
   padding-right:15px!important;
-  margin-bottom:5px;
+  margin-bottom:10px;
 }
 
 .title-builder{
   color:black;
-  margin-left:-10px;
+  margin-left:0px;
   margin-bottom:20px;
   padding-right:15px!important;
   line-height:1.1;
@@ -571,9 +580,20 @@ margin-bottom:5px!important;
   margin-top:0px;
 }
 
+.wide-second-td {
+  min-width: 100px !important;
+  width:120px !important;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  position: relative;
+  box-sizing: border-box;
+  font-size:0.9em;
+}
+
 .tag{
   position:relative;
   float:left;
+  font-size:0.9em;
 }
 
 .documents{
@@ -584,7 +604,7 @@ margin-bottom:5px!important;
 .document-icon {
   height: 1.3em;
   vertical-align: middle;
-  margin-right: 8px;
+  margin-right: 0px;
   margin-top:-6px;
   display: inline-block;
   background-image: url("@/assets/document-black.svg");
@@ -595,12 +615,12 @@ margin-bottom:5px!important;
 .document-link {
   display: flex;
   align-items: left;
-  font-size: 1.05em;
+  font-size: 0.9em;
   padding-bottom: 5px;
   color:black;
   font-weight:100!important;
   line-height:1.5;
-  padding-left:5px;
+  padding-left:0px;
 }
 
 .document-link a {

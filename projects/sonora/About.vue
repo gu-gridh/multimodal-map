@@ -20,14 +20,15 @@
           {{ $t('aboutportalmain') }}
         </div>
 
-        <button @click="$emit('close')" style="margin-top: 20px;">
-          <div class="p-1 px-2 category-button" style="width:auto; padding:5px 15px; text-align: center; cursor: pointer;"
-            v-bind:class="{ fullopacityui: visibleAbout }"> {{ $t('explore') }}</div>
-        </button>
 
         <div class="about-article-sub" v-bind:class="{ fullopacityui: visibleAbout }">
           {{ $t('aboutportalmain2') }} {{ $t('aboutportalmain3') }}
         </div>
+
+        <button @click="$emit('close')" style="margin-top: 30px;">
+          <div class="p-1 px-2 category-button" style="width:auto; padding:5px 15px; text-align: center; cursor: pointer;"
+            v-bind:class="{ fullopacityui: visibleAbout }"> {{ $t('explore') }}</div>
+        </button>
 
         <div class="about-logos-container">
           <div class="about-logo about-logo-bottom"></div>
@@ -381,8 +382,18 @@ ul {
   }
 
   .about-main-title {
-    font-size: 5.0em!important;
+    font-size: 3.5em!important;
   }
+
+  .about-article-main {
+    font-size: 1.3em!important;
+    font-weight:300;
+}
+
+.about-article-sub {
+  font-size: 1.0em!important;
+    font-weight:300;
+}
 
   .carousel-container {
     max-width: 100%;
@@ -399,10 +410,13 @@ ul {
 
   .about-logo {
     float: left;
-    height: auto;
-    min-height: 100px;
-    width: 150px;
-    margin: 10px;
+   height: 100px;
+    width: 200px;
+    margin: 0px;
   }
+
+  .about-logo-bottom {
+  margin-bottom:20px;
+}
 }
 </style>
