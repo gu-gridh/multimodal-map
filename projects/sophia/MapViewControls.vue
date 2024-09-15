@@ -13,16 +13,16 @@
               type="language" style="padding-right:30px;" />
           </div>
         </div>
-
+        
         <div class="tag-section margin-20">
           <div class="section-title">{{ $t('typeofinscription') }}</div>
           <div class="broad-controls">
-            <CategoryButton v-model="categories" :categories="{
-              all: $t('categories.all'),
-              plans: $t('text'),
-              models: $t('figure'),
-              composite: $t('composite')
-            }" :limit="1" class="my-2" title="Pick an inscription type" @click="handleCategoryClick" />
+            <Dropdown v-model="categories" :categories="{
+              textualgraffiti: $t('textualgraffiti'),
+              pictorialgraffiti: $t('pictorialgraffiti'),
+              composite: $t('composite'),
+              monograms: $t('monograms'),
+            }" :limit="1" class="my-2" title="Pick an inscription type" @click="handleCategoryClick" style="padding-right:30px;"/>
           </div>
         </div>
       </div>
@@ -205,9 +205,10 @@ const handleCategoryClick = (category: string) => {
   showReset();
   //mapping categories to their respective numbers
   const categoryMapping = {
-    plans: 1,
-    models: 2,
-    composite: 3
+    textualgraffiti: 1,
+    pictorialgraffiti: 2,
+    composite: 3,
+    monograms:4
   };
 
   if (lastClickedCategory.value === category) {

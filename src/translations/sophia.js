@@ -78,9 +78,14 @@ const messages = {
       f5description:"You can use the search bar to search for a particular surface or inscription using room, name or tag. The inscription search lets you search both for structured data such as title, genre and tags, but also transcriptions and translations of the texts and descriptions of figures.",
       f6title: "Analytical Tools",
       f6description:"Click on a surface or inscription to enter the analytical tool where you can explore all the documentation and asscoiated data. This includes high resolution orthophotos, topographical visualisations, interactive 3D data, RTI photography, and the possibility to explore the spatial context of the surface through a 3D scan of the cathedral interiors.",
+      textualgraffiti:"Textual graffiti",
+      pictorialgraffiti:"Pictorial graffiti",
+      monograms:"Monograms",
       "categories": {
         "all": "All types",
         "drawings": "Drawings",
+        "pictorialgraffiti": "Pictorial Graffiti",
+        "textualgraffiti": "Textual Graffiti",
         "models": "3D models"
       },
     },
@@ -159,7 +164,9 @@ const messages = {
       f5description:"You can use the search bar to search for a particular surface or inscription using room, name or tag. The inscription search lets you search both for structured data such as title, genre and tags, but also transcriptions and translations of the texts and descriptions of figures.",
       f6title: "Analytical Tools",
       f6description:"Click on a surface or inscription to enter the analytical tool where you can explore all the documentation and asscoiated data. This includes high resolution orthophotos, topographical visualisations, interactive 3D data, RTI photography, and the possibility to explore the spatial context of the surface through a 3D scan of the cathedral interiors.",
-
+      textualgraffiti:"Текстове графіті",
+      pictorialgraffiti:"Живописні графіті",
+      monograms:"Вензелі",
       "categories": {
         "all": "Всі види",
         "drawings": "Drawings",
