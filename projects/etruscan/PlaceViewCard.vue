@@ -113,7 +113,7 @@ onMounted(() => {
               </ol-style>
             </ol-vector-layer>
           </ol-map>
-          <div class="placeview-main-title theme-title-typography theme-color-text">{{ $t('etruscantitle') }}</div>
+          <div class="placeview-main-title theme-title-typography theme-color-text">{{ $t('title') }}</div>
         </div>
    
         <div class="placecard-text">
