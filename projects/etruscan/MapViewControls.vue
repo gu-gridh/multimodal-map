@@ -189,20 +189,34 @@ const NECROPOLICoordinates = ref<Record<string, [number, number]>>({});
 async function fetchDataAndPopulateRef<T>(type: string, refToPopulate: any, params: Record<string, any> = {}) {
   try {
     const data = await dianaClient.listAll<T>(type, params);
-    refToPopulate.value = {};
-
-    data.forEach((result: any) => {
-      if (result.published) {
-        if (type === "dataset") {
-          refToPopulate.value[result.id] = result.short_name;
-        } else if (type === "necropolis" && result.geometry && result.geometry.coordinates) {
-          refToPopulate.value[result.id] = result.text; 
-          NECROPOLICoordinates.value[result.id] = result.geometry.coordinates;
-        } else {
-          refToPopulate.value[result.id] = result.text;
+    
+    if (type === "necropolis") {
+      //necropolis type
+      refToPopulate.value = data.map((result: any) => {
+        if (result.published) {
+          if (result.geometry && result.geometry.coordinates) {
+            NECROPOLICoordinates.value[result.id] = result.geometry.coordinates;
+          }
+          return {
+            id: result.id,
+            text: result.text,
+            coordinates: result.geometry ? result.geometry.coordinates : null,
+          };
         }
-      }
-    });
+      })
+    } else {
+      refToPopulate.value = {};
+
+      data.forEach((result: any) => {
+        if (result.published) {
+          if (type === "dataset") {
+            refToPopulate.value[result.id] = result.short_name;
+          } else {
+            refToPopulate.value[result.id] = result.text;
+          }
+        }
+      });
+    }
   } catch (error) {
     console.error(`Error fetching data for type ${type}:`, error);
   }
