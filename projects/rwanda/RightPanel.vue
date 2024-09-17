@@ -59,6 +59,8 @@ watchEffect(async () => {
     display: flex;
     color: white !important;
     overflow-y: auto;
+    line-height:1.1;
+    font-weight:100;
 }
 .container {
     width: 100%;
@@ -74,7 +76,7 @@ watchEffect(async () => {
 }
 
 em {
-    color: #ca8888;
+    color: var(--theme-2);
 }
 
 .image-container {

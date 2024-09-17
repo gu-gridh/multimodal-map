@@ -21,8 +21,8 @@ provide("diana", endpoint);
 
 :root {
   --theme-1: rgb(200,200,200);
-  --theme-2: rgb(220, 60, 60);
-  --theme-3: rgb(180, 30, 30);
+  --theme-2: rgb(200, 60, 60);
+  --theme-3: rgb(180, 40, 40);
 }
 
 html,

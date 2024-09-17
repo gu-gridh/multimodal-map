@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import ObjectViewComponent from "@/components/ObjectViewComponent.vue";
-import OpenSeadragon from "@/components/OpenSeadragon.vue";
+import ObjectViewComponent from "./ObjectViewComponent.vue";
+import OpenSeadragon from "./OpenSeadragon.vue";
 import type { Image } from "./types";
 import { onMounted, ref, inject } from "vue";
 import type { DianaClient } from "@/assets/diana";
@@ -38,23 +38,49 @@ const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
   <section class="illustration flex">
     <OpenSeadragon v-if="iiif_url" :src="`${iiif_url}/info.json`" class="flex-1" />
 
-    <!-- <div id="ToolbarVertical">
-      <a id="full-page" href="#full-page">
-        <div id="FullPage" class="NavButton"></div>
-      </a>
-      <a id="zoom-in" href="#zoom-in">
-        <div id="ZoomIn" class="NavButton"></div>
-      </a>
-      <a id="zoom-out" href="#zoom-out">
-        <div id="ZoomOut" class="NavButton"></div>
-      </a>
-    </div> -->
-
   </section>
 </div>
 </template>
 
-<style scoped>
+<style>
+
+.meta-top-gradient{
+  margin-top:0vh;
+ width:350px;
+ height:30px;
+ background: linear-gradient(0deg, rgba(0,0,0,0) 00%, rgba(0,0,0,1) 90%);
+ z-index:100;
+ position:absolute;
+ margin-left:-15px;
+}
+
+
+.meta-container{
+  overflow-y: auto;
+  height:calc(100vh - 80px);
+  padding-bottom:30px;
+  padding-left:60px;
+  padding-right:20px;
+  -ms-overflow-style: none!important;
+  scrollbar-width: none;
+}
+
+.container{
+  margin-left:0px;
+}
+
+.meta-title {
+  font-weight: 600!important;
+  font-size: 35px;
+  line-height: 1.0;
+  padding-right: 20px;
+  margin-top: -15px;
+  width: calc(100% - 25px);
+  padding-left:0px;
+  position:relative;
+  margin-left:0px;
+ 
+}
 
 .category-button{
   width:123px !important;
@@ -65,6 +91,7 @@ const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
   overflow:hidden !important;
   margin-bottom: 10px;
   padding: 0px 0px;
+  width:350px;
 
 }
 
@@ -75,7 +102,7 @@ const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
 .toPlace {
   margin-top: 50px; 
-  color: rgb(180,100,100);
+  color: var(--theme-2);
   font-size:1.1em !important;
   cursor: pointer;
 }
@@ -106,6 +133,16 @@ const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
  .metadata .category-button{
   width:100%!important;
 margin-top:50px!important;
+}
+
+.meta-top-gradient{
+  margin-top:0vh;
+ width:100%;
+ height:30px;
+ background: linear-gradient(0deg, rgba(0,0,0,0) 00%, rgba(0,0,0,1) 90%);
+ z-index:100;
+ position:absolute;
+ margin-top:50vh;
 }
 }
 

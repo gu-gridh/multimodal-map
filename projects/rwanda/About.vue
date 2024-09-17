@@ -66,7 +66,7 @@ body{
   transition: all 0.5s ease-in-out;
   opacity:0.0;
   overflow-y:auto;
-  background: linear-gradient(90deg, rgba(245, 235, 225,1) 0%, rgba(245, 235, 225,0.8) 30%);
+  background: linear-gradient(90deg, rgba(235, 235, 235,1) 0%, rgba(235, 235, 235,0.8) 30%);
 
 }
 
@@ -76,7 +76,7 @@ body{
   pointer-events:auto;
   transform:scale(1.0);
   translate: 0px 0px;
-  background: linear-gradient(90deg, rgba(245, 235, 225,1) 0%, rgba(245, 235, 225,0.8) 100%);
+  background: linear-gradient(90deg, rgba(235, 235, 235,1) 0%, rgba(235, 235, 235,0.8) 100%);
 }
 
 .flex-machine{
@@ -105,7 +105,7 @@ body{
   font-weight: 600;
   letter-spacing: -0.2rem;
   text-align: center;
-  color:rgb(180,100,100);
+  color:var(--theme-2);
   opacity:0.0;
   margin-bottom:40px;
   transition: all 0.4s ease-in-out;
@@ -122,7 +122,7 @@ body{
   font-weight: 100;
   letter-spacing: -0.2rem;
   text-align: center;
-  color:rgb(180,100,100);
+  color:var(--theme-2);
   opacity:0.0;
   margin-bottom:40px;
   transition: all 0.4s ease-in-out;
@@ -168,7 +168,7 @@ font-size: 1.7em;
   font-size:2em;
   font-weight:400;
   transition: all 0.4s ease-in-out;
-  background-color:rgb(230,230,230);
+  background-color:var(--theme-1);
   padding:10px 20px !important;
   z-index:1000;
   opacity:1.0;

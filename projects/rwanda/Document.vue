@@ -21,7 +21,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Document } from './types';
+import type { Document } from './settings/types';
 import { ref, onMounted, inject } from 'vue';
 import type { DianaClient } from "@/assets/diana";
 import router from '@/router';

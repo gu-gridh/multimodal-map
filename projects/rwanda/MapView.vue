@@ -13,6 +13,7 @@ import DianaPlaceLayer from "@/components/DianaPlaceLayer.vue";
 import FeatureSelection from "@/components/FeatureSelection.vue";
 import type { Place } from "./types";
 import About from "./About.vue";
+import Instructions from "./Instructions.vue";
 import AutocompleteComponent from "@/components/input/AutocompleteComponent.vue";
 import { useRwandaMap } from "./settings/map.composable";
 import { rwandaStore } from "./settings/rwandaStore";
@@ -28,6 +29,7 @@ config.getFeatureDisplayName = getName;
 provide("config", config);
 
 const visibleAbout = ref(false);
+const visibleInstructions = ref(false);
 
 const route = useRoute();
 
@@ -80,6 +82,7 @@ watch(route, () => {
 
 <template>
   <About :visibleAbout="visibleAbout" @close="visibleAbout = false"/>
+  <Instructions :visibleInstructions="visibleInstructions" @close="visibleInstructions = false"/>
   <MainLayout>
     <template #search>
       <button class="item"  @click="visibleAbout = true;">
@@ -93,6 +96,20 @@ watch(route, () => {
             >More info
         </div>
       </button>
+      
+      <button class="item"  @click="visibleInstructions = true;">
+        <div
+          class="p-1 px-3 clickable category-button about-button"
+          style="
+            width: auto;
+            text-align: center;
+            margin-top: -5px;
+            cursor: pointer;
+            margin-left:10px;"
+            >User Guide
+        </div>
+      </button>
+
       <div class="search-container">
         <AutocompleteComponent
           placeholderText="Search place names..."
