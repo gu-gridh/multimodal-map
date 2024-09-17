@@ -18,10 +18,10 @@ const PLACE_TYPES = {
   building: "Buildings",
 }
 const INFORMANTS = {
-  "Young male": "Young 	&#9794;",
-  "Old male": "Old 	&#9794;",
-  "Young female": "Young &#9792;",
-  "Old female": "Old &#9792;"
+  "Young male": "Young 	person",
+  "Old male": "Old person",
+/*   "Young female": "Young &#9792;",
+  "Old female": "Old &#9792;" */
 }
 const PERIODS = {
   "Before 1899": "Pre-colonial",
@@ -69,9 +69,11 @@ const handleSourcesClick = (key: string) => {
       :value="allLayer"
       @toggle="handleSourcesClick('all')"
       class="filter-button"
+      style="margin-left:0px;"
     />
     <div class="main-filters">
-    <div class="filter-heading">Names of places </div>
+      <div style="width:320px; display:flex; flex-direction: row;  align-items: center;">
+    <div class="filter-heading">Places:</div>
       <CategoryButtonList 
         v-model="placeTypes"
         :categories="PLACE_TYPES"
@@ -79,7 +81,9 @@ const handleSourcesClick = (key: string) => {
         class="filter-button"
         @click="handleSourcesClick"
       />
-    <div class="filter-heading">Sources</div>
+    </div>
+      <div style="width:320px; display:flex; flex-direction: row;  align-items: center;">
+    <div class="filter-heading">Sources:</div>
       <CategoryButtonList 
         v-model="sources"
         :categories="SOURCES"
@@ -87,7 +91,9 @@ const handleSourcesClick = (key: string) => {
         class="filter-button"
         @click="handleSourcesClick"
       />
-      <div class="filter-heading" v-show="sources.includes('text')">Informants</div>
+    </div>
+    <div style="width:320px; display:flex; flex-direction: row;  align-items: center;">
+      <div class="filter-heading" v-show="sources.includes('text')">Informants:</div>
       <CategoryButtonList 
         v-show="sources.includes('text')"
         v-model="informants"
@@ -96,9 +102,9 @@ const handleSourcesClick = (key: string) => {
         class="filter-button"
         @click="handleSourcesClick"
       />
-
+    </div>
    
-    <div style="width:100%; display:flex; flex-direction: row;">
+    <div style="width:320px; display:flex; flex-direction: row; justify-content:space-between; align-items: center;">
       <div>
      <div class="filter-heading">Languages</div>
       <Dropdown 
@@ -108,7 +114,8 @@ const handleSourcesClick = (key: string) => {
         class="filter-button lang-buttons"
         @click="handleSourcesClick" />
       </div>
-      <div style="margin-left:20px;">
+      <div style="height: 55px; margin-top:25px; width:2px;border-style: dotted; border-width:0px 1px 0 0; border-color:var(--theme-3);">  </div>
+      <div style="">
     <div class="filter-heading">Time Periods</div>
       <Dropdown 
         v-model="periods"
@@ -129,9 +136,11 @@ const handleSourcesClick = (key: string) => {
 }
 #app .filter-heading {
   font-size: 1em!important;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
   margin-top: 15px;
   font-weight: 300;
+  min-width:90px;
+  line-height:1.6;
 }
 .main-filters{
   font-size:100%;
