@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Image } from "./types";
+import type { Image } from "./settings/types";
 
 defineProps<{
   image: Image;

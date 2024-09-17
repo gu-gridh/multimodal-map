@@ -7,11 +7,11 @@
             repository and development</a>
       
       </div>
-      <div class="links-stack">
+      <!-- <div class="links-stack">
         <a class="download-link" href="" target="_blank">
           Texts and images: CC BY 4.0</a>
         <a href="#" class="download-link link" @click="downloadData">Download the structured data</a>
-      </div>
+      </div> -->
     </div>
     <div class="partners">
       <a href="https://dh.gu.se/">
@@ -157,7 +157,7 @@ a {
 }
 
 .download-link {
-  background: url("@/assets/interface/downloadbuttonwhite.png");
+  background: url("https://data.dh.gu.se/ui-icons/download_white_circle.png");
   background-size: 18px;
   background-position: 0px 50%;
   background-repeat: no-repeat;
@@ -166,7 +166,7 @@ a {
 }
 
 .site-link {
-  background: url("@/assets/interface/linkbuttonwhite.png");
+  background: url("https://data.dh.gu.se/ui-icons/arrow_link_white_circle.png");
   background-size: 18px;
   background-position: 0px 50%;
   background-repeat: no-repeat;

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import CategoryButtonList from "@/components/input/CategoryButtonList.vue";
 import { storeToRefs } from "pinia";
-import { jubileumStore } from "./store";
+import { jubileumStore } from "./settings/store";
 
 const { categories } = storeToRefs(jubileumStore());
 

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { provide } from "vue";
-import config from "./config";
+import config from "./settings/config";
 import Footer from "./Footer.vue";
 import { DianaClient } from "@/assets/diana";
 
@@ -52,18 +52,20 @@ body {
 }
 
 #app .about {
-  width:90%
+  width:90%;
+  font-size:90%;
+  text-align:justify;
 }
 
 #app .left-pane {
   background: url("@/assets/gradient-jubileum.png");
   background-size: contain;
-  z-index: 500;
-  width:50%
+  z-index: 249;
+  width:1200px;
 }
 
 .left-pane-layer {
-  padding: 0px 420px 0px 0px !important;
+  padding: 0px 720px 0px 0px !important;
   pointer-events: none !important;
   height: 100vh !important;
   width: 100% !important;
@@ -83,6 +85,7 @@ body {
   padding-bottom: 0px;
   width: auto;
   pointer-events: none;
+  z-index:0!important;
 }
 
 #app .ol-zoom-in {
@@ -127,10 +130,15 @@ body {
     padding-top: 70px !important;
   }
 
+  .ui-mode {
+    z-index:10001 !important;
+  }
+
   .ui-overlay {
     margin-top: 25px !important;
     margin-left: 0px !important;
     font-size: 120% !important;
+    z-index:10001 !important;
   }
 
   #app .masonry-grid {
@@ -157,5 +165,18 @@ body {
     left: calc(50% + 0px);
     top: calc(100vh - 320px);
   }
+
+  .main-title {
+
+  text-align: left;
+
+}
+
+.sub-title {
+
+  text-align: left;
+
+}
+
 }
 </style>

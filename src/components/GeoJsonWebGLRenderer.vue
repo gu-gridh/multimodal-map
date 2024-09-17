@@ -74,7 +74,6 @@ onMounted(() => {
     if (map) {
       console.log("Current map layers: ", map.getLayers().getArray());
       map.addLayer(vectorLayer);
-      console.log('Layer added');
     }
   } catch (e) {
     console.error("An error occurred during component mounting: ", e);

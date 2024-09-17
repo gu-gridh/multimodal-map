@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import router from './router'
+import router from './settings/router'
 import { ref, inject, onMounted, nextTick } from "vue"
 import markerIcon from "@/assets/marker-red.svg";
 import { watch } from 'vue';
@@ -124,7 +124,7 @@ onMounted(() => {
   top:80px;
   text-shadow: 0px 0px 50px rgba(0,0,0,0.8);
   white-space: pre-line;
-  line-height: 0.9;
+  line-height: 1.0;
   width: 250px;
   font-weight: 600;
   letter-spacing: 0.05rem;

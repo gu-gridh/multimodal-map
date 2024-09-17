@@ -1,0 +1,21 @@
+import { ref } from "vue";
+import { defineStore } from "pinia";
+
+export const inscriptionsStore = defineStore("inscriptions", () => {
+  const categories = ref<Array<string>>(["all"]);
+  const tags = ref<Array<string>>(["all"]);
+  const language = ref<Array<string>>(["all"]);
+  const panelType = ref<Array<string>>(["all"]);
+  const tagsLayerVisible = ref(false); // Default visibility state for tags layer
+  const dataParams = ref<Record<string, string | number | null>>({});
+  const imgParams = ref<Record<string, string | number | null>>({});
+  const areMapPointsLoaded = ref<boolean>(false);
+  const panelId = ref<string | null>(null);
+  const selectedCategory = ref<number | null>(null); //the selected category number from mapviewcontrols
+
+  const setSelectedCategory = (categoryNumber: number | null) => {
+    selectedCategory.value = categoryNumber;
+  };  
+
+  return { categories, tags, language, panelType, tagsLayerVisible, dataParams, areMapPointsLoaded, imgParams, panelId, setSelectedCategory, selectedCategory };
+});

@@ -4894,6 +4894,11 @@ vue-tsc@^0.40.7:
     "@volar/vue-language-core" "0.40.13"
     "@volar/vue-typescript" "0.40.13"
 
+vue3-carousel@^0.3.3:
+  version "0.3.3"
+  resolved "https://registry.yarnpkg.com/vue3-carousel/-/vue3-carousel-0.3.3.tgz#72cdddbeb5ab64dc6fc7d54ab133b644e4a72f8f"
+  integrity sha512-VsuOBE4LG9lxAiYGR9U7ps4RyJ4oFQGzk79/49ybvoxzNpahPAVWIDHKK3a1lOv0CSplFq6u4FvaFLZ8x3FgWg==
+
 vue3-openlayers@^0.1.70:
   version "0.1.75"
   resolved "https://registry.npmjs.org/vue3-openlayers/-/vue3-openlayers-0.1.75.tgz"

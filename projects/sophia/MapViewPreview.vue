@@ -2,13 +2,13 @@
 import { watchEffect, ref, inject, toRaw, isProxy } from "vue";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
-import { inscriptionsStore } from "./store";
+import { inscriptionsStore } from "./settings/store";
 import type {
   Image, PanelMetadata, Inscription, Language,
 } from "./types";
 import type { SophiaClient } from "@/assets/saintsophia";
-import OpenSeadragon from "./OpenSeadragonSequence.vue";
-import apiConfig from "./apiConfig"
+import OpenSeadragon from "./MapViewPreviewImage.vue";
+import apiConfig from "./settings/apiConfig"
 
 const { selectedFeature } = storeToRefs(mapStore());
 // const { panelId } = storeToRefs(inscriptionsStore());
@@ -128,7 +128,7 @@ function deselectPlace() {
       </div>
 
       <div class="placecard-center-button">
-        <a :href="`https://71808.dh.gu.se/?q=${selectedFeature.get('title')}`" target="_blank">
+        <a :href="`https://71807.dh.gu.se/viewer/?q=${selectedFeature.get('title')}/orthophoto`">
           <button class="theme-button theme-color-background" style="margin-top:0px;">{{ $t('exploreData') }}</button>
         </a>
       </div>

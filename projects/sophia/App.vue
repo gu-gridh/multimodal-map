@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { provide } from "vue";
-import config from "./config";
+import config from "./settings/config";
 import Footer from './Footer.vue';
 import { SophiaClient } from "@/assets/saintsophia";
 

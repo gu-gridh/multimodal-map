@@ -131,7 +131,7 @@ a {
 #developer-info {
   display: flex;
   align-items: flex-end;
-  margin-left: 50px;
+  margin-left: 35px;
   margin-top: 15px;
   font-size: 1.5em;
   line-height: 1.4;
@@ -160,7 +160,7 @@ a {
 }
 
 .download-link {
-  background: url("@/assets/interface/downloadbuttonwhite.png");
+  background: url("https://data.dh.gu.se/ui-icons/download_white_circle.png");
   background-size: 18px;
   background-position: 0px 50%;
   background-repeat: no-repeat;
@@ -169,7 +169,7 @@ a {
 }
 
 .site-link {
-  background: url("@/assets/interface/linkbuttonwhite.png");
+  background: url("https://data.dh.gu.se/ui-icons/arrow_link_white_circle.png");
   background-size: 18px;
   background-position: 0px 50%;
   background-repeat: no-repeat;
@@ -187,5 +187,11 @@ a {
 
 #developer-info a:link {
   font-weight: 200;
+}
+
+@media screen and (max-width: 1090px) {
+.partners{
+  display:none;
+}
 }
 </style>

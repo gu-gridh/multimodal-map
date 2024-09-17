@@ -18,17 +18,25 @@ provide("diana", endpoint);
 <style>
 
 /* Project theme in regards to colour and fonts */
+
+:root {
+  --theme-1: rgb(200,200,200);
+  --theme-2: rgb(220, 60, 60);
+  --theme-2: rgb(190, 30, 30);
+}
+
 html,
 body {
   font-family: "Barlow Condensed", sans-serif !important;
-  background-color:rgb(200,200,200)!important;
+  background-color:var(--theme-1)!important;
 }
 
 .main-title {
-  font-size:4.5vw;
+  font-size:4.0vw;
   line-height: 0.8;
   font-weight: 600;
-  color:rgb(180,100,100);
+  color:var(--theme-2);
+  word-spacing: 100vw;
 }
 
 .about {
@@ -46,7 +54,6 @@ body {
   font-size:1.2vw;
   background: url("@/assets/gradient-rephotography.png");
   background-size: contain;
-
 }
 
 
@@ -75,7 +82,7 @@ body {
   font-size: 50px;
   font-weight: 100;
   border-radius: 50%;
-  background-color: rgb(180, 100, 100);
+  background-color: var(--theme-2);
   color: white;
   transform: rotate(45deg);
   cursor: pointer;
@@ -96,7 +103,14 @@ body {
 }
 
 .close-button:hover {
-  background-color: rgb(140, 100, 100);
+  background-color: var(--theme-3);
+}
+
+.category-button {
+    background-color: white;
+    color: black;
+    border-radius: 4px;
+    padding:3px 20px!important;
 }
 
 @media (max-width: 900px) {
@@ -105,12 +119,27 @@ body {
   font-weight: 600 !important;
   font-size: 60px !important;
   width: auto !important;
-  white-space: nowrap !important;
+
 }
 
 #app .about-button {
   font-size: 16px !important;
+  color:black!important;
 }
+
+.main-filters .category-button {
+    color: rgb(71, 85, 105);
+    border-radius: 4px;
+    background-color:rgb(235,235,235)!important;
+    padding:3px 20px!important;
+}
+
+
+
+.left-pane-layer {
+ 
+}
+
 }
 
 </style>

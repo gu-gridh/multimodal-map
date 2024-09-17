@@ -4,44 +4,71 @@
     <div v-if="areMapPointsLoaded">
 
       <!-- This creates a 2-column section with for the controls -->
-      <div class="control-organisation justify-left" style="pointer-events:auto; padding-bottom:10px; padding-top:10px;">
+      <div class="control-organisation justify-left"
+        style="pointer-events:auto; padding-bottom:10px; padding-top:10px;">
+
         <div class="tag-section">
-          <div class="section-title">{{ $t('language') }}</div>
-          <div title="Narrow the result to a certain necropolis" class="broad-controls">
-            <CategoryButtonList v-model="language" :categories="LANGUAGE" :limit="1" styleType="dropdown" class="my-2" 
-            type="language" />
+          <div class="section-title">{{ $t('typeofinscription') }}</div>
+          <div class="broad-controls">
+            <Dropdown v-model="categories" :categories="{
+              textualgraffiti: $t('textualgraffiti'),
+              pictorialgraffiti: $t('pictorialgraffiti'),
+              composite: $t('composite'),
+              monograms: $t('monograms'),
+            }" :limit="1" class="my-2" title="Pick an inscription type" @click="handleCategoryClick" style="padding-right:30px;"/>
           </div>
-          <!-- <div style="display:inline; float:left; margin-right:0px; pointer-events:auto;">
-            <select title="Pick what inscription language you want filter by" class="dropdown theme-color-background my-2" >
-              <option title="" value="All datasets">{{ $t('alllanguages') }}</option>
-              <option title="" value="CTSG-2015">церковнослов'ян</option>
-              <option title="" value="CTSG-2015">Latin</option>
-              <option title="" value="CTSG-2015">Greek</option>
-              <option title="" value="CTSG-2015">Polish</option>
-            </select>
-          </div> -->
         </div>
 
         <div class="tag-section margin-20">
-          <div class="section-title">{{ $t('typeofinscription') }}</div>
+          <div class="section-title">{{ $t('writingsystem') }}</div>
           <div class="broad-controls">
-            <CategoryButton v-model="categories" :categories="{
-              all: $t('categories.all'),
-              plans: $t('text'),
-              models: $t('figure'),
-              composite: $t('composite')
-            }" :limit="1" class="my-2" title="Pick a data type" @click="handleCategoryClick" />
+            <Dropdown v-model="categories" :categories="{
+              textualgraffiti: $t('textualgraffiti'),
+              pictorialgraffiti: $t('pictorialgraffiti'),
+              composite: $t('composite'),
+              monograms: $t('monograms'),
+            }" :limit="1" class="my-2" title="Pick an inscription type" @click="handleCategoryClick" style="padding-right:30px;"/>
           </div>
+        </div>
+
+        <div class="tag-section margin-20">
+          <div class="section-title">{{ $t('language') }}</div>
+          <div title="Narrow the result to a certain language group" class="broad-controls">
+            <Dropdown v-model="language" :categories="LANGUAGE" :limit="1" styleType="dropdown" class="my-2"
+              type="language" style="padding-right:30px;" />
+          </div>
+        </div>
+        
+       
+      </div>
+      <div class="section-title">{{ $t('searchtitle') }}</div>
+      <div class="toggle-buttons" style="margin-top: 10px">
+        <button style="float:left; border-radius:4px 0px 0px 0px" :class="{ active: searchType === 'surfaces' }"
+          @click="setSearchType('surfaces')">{{ $t('panels') }}</button>
+        <button style="border-radius:0px 4px 0px 0px" :class="{ active: searchType === 'inscriptionobjects' }"
+          @click="setSearchType('inscriptionobjects')">{{ $t('inscriptions') }}</button>
+      </div>
+      <div class="search-section">
+        <input ref="searchInput" type="text" v-model="searchQuery" @input="handleSearch" @focus="handleSearchBoxFocus"
+          :placeholder="searchType === 'surfaces' ? $t('searchsurfacesplaceholder') : $t('searchinscriptionsplaceholder')"
+          class="search-box"/>
+        <div class="search-results">
+          <!-- Rendering for surfaces -->
+          <template v-if="searchType === 'surfaces'">
+            <div v-for="(surface, index) in objectToArray(searchResults)" :key="index" :class="['search-result-item']">
+              {{ surface?.title }}
+            </div>
+          </template>
+          <!-- Rendering for inscriptions -->
+          <template v-else-if="searchType === 'inscriptionobjects'">
+            <div v-for="feature in filteredInscription" :key="feature.properties ? feature.properties.Nr : 'no-place'"
+              class="search-result-item">
+              {{ feature.displayText }}
+            </div>
+          </template>
         </div>
       </div>
 
-      <div class="search-section" style="float:left;">
-        <div class="section-title">{{ $t('searchpanels') }}</div>
-        <input type="text"
-          :placeholder="'...'" class="search-box" autofocus />
-        <div class="search-results">
-        </div>
-      </div>
     </div>
 
     <!-- if the markers are not loaded show the loader -->
@@ -54,12 +81,12 @@
   <div class="data-widget">
     <div class="data-widget-section">
       <div class="data-widget-item">
-        <h3>{{ $t('panelsshown') }}:</h3>
+        <h3>{{ $t('annotationsshown') }}:</h3>
         <p>{{ currentPanelCount }}</p>
       </div>
       <div class="data-widget-item">|</div>
       <div class="data-widget-item">
-        <h3>{{ $t('panelshidden') }}:</h3>
+        <h3>{{ $t('annotationshidden') }}:</h3>
         <p>{{ hiddenPanels }}</p>
       </div>
     </div>
@@ -84,24 +111,30 @@
       </div>
     </div>
   </div>
+
+  <div style="display:flex; flex-direction: row; justify-content:center; width:100%;">
+    <div id="resetfilters" class="broad-controls theme-button category-button" style="display:none; margin-top:15px; width:auto; cursor:pointer;  transition: all 0.2s ease-in-out; background-color:var(--theme-4); color:white;" @click="clearAll()">{{ $t('reset') }}</div>
+  </div>
+
 </template>
 
 <script setup lang="ts">
 import { inject, ref, onMounted, computed, defineProps, watch } from "vue";
-import CategoryButtonList from "./CategoryButtonDropdown.vue";
+import Dropdown from "./components/DropdownComponent.vue";
 import CategoryButton from "@/components/input/CategoryButtonList.vue";
 import { storeToRefs } from "pinia";
-import { inscriptionsStore } from "./store";
+import { inscriptionsStore } from "./settings/store";
 import { mapStore } from "@/stores/store";
 import type { InscriptionsProject } from "./types";
 import { SophiaClient } from "@/assets/saintsophia";
 import { transform } from 'ol/proj';
-import apiConfig from "./apiConfig"
+import apiConfig from "./settings/apiConfig"
 import { nextTick } from 'vue';
 import i18n from '../../src/translations/sophia';
 
 const config = inject<InscriptionsProject>("config");
 const sophiaClient = new SophiaClient("inscriptions"); // Initialize SophiaClient
+const store = inscriptionsStore();
 const { categories, tags, language, dataParams, areMapPointsLoaded } = storeToRefs(inscriptionsStore());
 // Create a ref for last clicked category
 const lastClickedCategory = ref('');
@@ -114,26 +147,60 @@ const hiddenPanels = ref(0);
 const currentPanelCount = ref(0);
 const visibleAbout = ref(false);
 const { selectedFeature } = storeToRefs(mapStore());
+const searchType = ref('surfaces'); // Default to 'surfaces' 
+const firstSearchBoxClick = ref(true);
+const searchQuery = ref('');
 const searchResults = ref([]);
 const TAGS = ref<Record<string, string>>({});
 const LANGUAGE = ref<Record<string, string>>({});
 //const INSCRIPTIONTYPE = ref<Record<string, string>>({});
 const currentTag = ref(null);
+import _debounce from 'lodash/debounce';
+const searchInput = ref(null);
 //const currentNecropolis = ref(null);
 //const currentInscriptionType = ref(null);
 
 const baseURL = `${apiConfig.PANEL}?page_size=500`;
 
+const setSearchType = (type: string) => {
+  searchType.value = type;
+  handleSearch();
+};
+
+const handleSearchBoxFocus = () => {
+  if (firstSearchBoxClick.value && searchType.value === 'surfaces') {
+    fetchSurfaces();
+    firstSearchBoxClick.value = false; // Set to false after first fetch
+  }
+};
+
+const filteredInscription = computed(() => {
+  if (searchResults.value && Array.isArray(searchResults.value.results)) {
+    return searchResults.value.results.map(result => {
+      if (result && typeof result === 'object') {
+        const formattedTitle = result.title ? ` (${result.title})` : '';
+        return {
+          ...result,
+          displayText: `${result.panel}:${result.id}${formattedTitle}`
+        };
+      } else {
+        return { displayText: 'No data available' };
+      }
+    });
+  }
+  return [];
+});
+
+const objectToArray = (obj) => {
+  return obj ? Object.keys(obj).map(key => obj[key]) : [];
+};
+
 onMounted(async () => {
-  // await fetchDataAndPopulateRef("epoch", TAGS);
-  //await fetchDataAndPopulateRef("typeofinscription", INSCRIPTIONTYPE);
   await fetchDataAndPopulateRef("language", LANGUAGE);
 
   const response = await fetch(baseURL);
   const data = await response.json();
 });
-
-// const NECROPOLICoordinates = ref<Record<string, [number, number]>>({});
 
 async function fetchDataAndPopulateRef<T>(type: string, refToPopulate: any) {
   try {
@@ -150,30 +217,29 @@ async function fetchDataAndPopulateRef<T>(type: string, refToPopulate: any) {
 }
 
 const handleCategoryClick = (category: string) => {
-  // If the clicked category is the same as the last clicked one, default to "all"
+  showReset();
+  //mapping categories to their respective numbers
+  const categoryMapping = {
+    textualgraffiti: 1,
+    pictorialgraffiti: 2,
+    composite: 3,
+    monograms:4
+  };
+
   if (lastClickedCategory.value === category) {
     categories.value = ["all"];
 
     // Clear the lastClickedCategory since it was unselected
     lastClickedCategory.value = '';
-    // if (category === 'models') {
-    //   enable3D.value = !enable3D.value;  // Toggle between true and false
-    // } else {
-    //   enable3D.value = false;
-    // }
-    // if (category === 'plans') {
-    //   enablePlan.value = !enablePlan.value;  // Toggle between true and false
-    // } else {
-    //   enablePlan.value = false;
-    // }
+
+    // Reset selected category in the store
+    store.setSelectedCategory(null);
   } else {
-    // Add the clicked category only if it's not the same as the last clicked one
     categories.value = [category];
 
-    // Update last clicked category
     lastClickedCategory.value = category;
-    // enable3D.value = (category === 'models');
-    // enablePlan.value = (category === 'plans');
+    //store the corresponding category number in the store
+    store.setSelectedCategory(categoryMapping[category]);
   }
 };
 
@@ -192,6 +258,47 @@ const fetchData = async (url: string) => {
   // totalThreed.value = data.objects_3d;
 };
 
+//fetch inscriptions
+const fetchInscriptions = _debounce(async (query) => {
+  let apiUrl;
+  if (searchType.value === 'inscriptionobjects') {
+    apiUrl = `https://saintsophia.dh.gu.se/api/inscriptions/inscription-string/?str=${encodeURIComponent(query)}`
+  }
+  try {
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+    searchResults.value = data ? data : [];
+  } catch (error) {
+    console.error('Error fetching search results:', error);
+    searchResults.value = [];
+  }
+}, 500);
+
+//fetch surfaces
+async function fetchSurfaces() {
+  const apiUrl = `https://saintsophia.dh.gu.se/api/inscriptions/panel-string/?str=${encodeURIComponent(searchQuery.value)}`;
+  try {
+    const response = await fetch(apiUrl);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    searchResults.value = data.results;
+  } catch (error) {
+    console.error('Error fetching:', error);
+    searchResults.value = [];
+  }
+}
+
+const handleSearch = () => {
+  showReset();
+  if (searchType.value === 'surfaces') {
+    fetchSurfaces();
+  } else if (searchType.value === 'inscriptionobjects') {
+    fetchInscriptions(searchQuery.value);
+  }
+};
+
 watch(
   () => dataParams.value,
   async (newTagParams, oldTagParams) => {
@@ -206,37 +313,20 @@ watch(() => i18n.global.locale, (newLocale) => {
   fetchDataAndPopulateRef('language', LANGUAGE);
 });
 
-const toggleAboutVisibility = async () => {
-  await nextTick();
-  visibleAbout.value = !visibleAbout.value;
-};
 
-// function handleSelectionClick(selectedValue: any, targetRef: any) {
-//   clearAll();
-//   const selectedCoordinates = NECROPOLICoordinates.value[selectedValue];
-//   if (selectedCoordinates) {
-//     const [x, y] = selectedCoordinates;
+function clearAll() {
+const resetbutton = document.getElementById('resetfilters');
+resetbutton.style.display = "none";
+  categories.value = ["all"];
+  language.value = ["all"];
+  lastClickedCategory.value = '';
+  tags.value = [];
+}
 
-//     const convertedCoordinates = transform([x, y], 'EPSG:4326', 'EPSG:3857');
-//     if (Array.isArray(convertedCoordinates) && convertedCoordinates.length === 2) {
-//       selectedNecropolisCoordinates.value = convertedCoordinates as [number, number];
-//     } else {
-//       console.error("Invalid coordinate format after transformation.");
-//     }
-
-//   }
-// }
-
-// function clearAll() {
-//   categories.value = ["all"];
-//   enablePlan.value = false;
-//   enable3D.value = false;
-//   //inscriptionType.value = ["all"];
-//   lastClickedCategory.value = '';
-//   tags.value = [];
-// }
-
-
+function showReset() {
+const resetbutton = document.getElementById('resetfilters');
+resetbutton.style.display = "block";
+}
 
 </script>
 
@@ -244,10 +334,9 @@ const toggleAboutVisibility = async () => {
 #app .left-pane {
   background: url("images/gradient.png");
   background-size: contain;
-  width: 54% !important;
-  min-width: 990px;
-  max-width: 1000px;
-  font-size:95%;
+  min-width: 960px;
+  max-width: 960px;
+  font-size: 95%;
 }
 
 .loading-svg {
@@ -277,7 +366,7 @@ const toggleAboutVisibility = async () => {
 #app .section-title {
   margin-top: 6px;
   margin-bottom: -3px;
-  font-weight:200;
+  font-weight: 200;
   color: black;
 }
 
@@ -286,7 +375,11 @@ const toggleAboutVisibility = async () => {
   margin-bottom: 0px;
 }
 
-.dropdown{
+#app .tag-section .broad-controls {
+font-size:0.9em;
+}
+
+.dropdown {
   font-family: "Oswald", sans-serif;
   appearance: none !important;
   padding: 3px 10px 3px 10px;
@@ -294,11 +387,21 @@ const toggleAboutVisibility = async () => {
 
 
 .search-result-item {
-  font-weight: normal;
   /* Remove styling from anchor links */
   display: block;
   color: inherit;
   text-decoration: none;
+}
+
+.search-result-item {
+  padding: 8px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 1.0) !important;
+}
+
+.search-result-item:hover {
+  background-color: rgba(240, 240, 240, 1.0) !important;
 }
 
 .toggle-buttons button {
@@ -315,16 +418,16 @@ const toggleAboutVisibility = async () => {
 
 .search-section {
   position: relative;
-  width:100%;
+  width: 100%;
 }
 
 .search-box {
   width: 98%;
   height: 50px;
   padding: 8px;
-  margin-top: 10px;
+  margin-top: 0px;
   border: 0px solid #ccc;
-  border-radius: 4px 4px 4px 4px;
+  border-radius: 0px 4px 4px 4px;
   overflow: hidden;
   background-color: rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(5px);
@@ -336,7 +439,7 @@ const toggleAboutVisibility = async () => {
 }
 
 .search-results {
-  width: 100%;
+  width: 98%;
   background-color: rgba(255, 255, 255, 1.0);
   border: 0px solid #ccc;
   border-top: none;
@@ -454,9 +557,10 @@ const toggleAboutVisibility = async () => {
     width: 100%;
 
   }
+
   .data-widget {
-width:100%;
-}
+    width: 100%;
+  }
 
   #app .control-organisation {
     width: 100%;
@@ -508,8 +612,7 @@ width:100%;
 @media screen and (max-width: 600px) {
 
   .data-widget {
-font-size:80%;
+    font-size: 80%;
+  }
 }
-}
-
 </style>

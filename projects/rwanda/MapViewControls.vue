@@ -69,6 +69,7 @@ const handleSourcesClick = (key: string) => {
       @toggle="handleSourcesClick('all')"
       class="filter-button"
     />
+    <div class="main-filters">
     <div class="filter-heading">NAMES OF PLACES </div>
       <CategoryButtonList 
         v-model="placeTypes"
@@ -112,6 +113,7 @@ const handleSourcesClick = (key: string) => {
         @click="handleSourcesClick"
       />
     </div>
+  </div>
 </template>
 
 <style>

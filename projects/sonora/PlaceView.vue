@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, defineProps, onMounted, inject, computed, onUnmounted } from 'vue';
 import type { Image, Document, Media } from './types';
-import type { DianaClient } from "@/assets/diana";
 import PlaceViewCard from "./PlaceViewCard.vue";
 import MapComponent from "@/components/MapComponent.vue";
 import { watch } from 'vue';
@@ -140,7 +139,7 @@ const processOrganData = (data) => {
       if (key === 'Disposition') {
         dispositionFound = true;
         processedData[key] = {
-          label: 'Disposition',
+          label: i18n.global.t('disposition'),
           data: data[key].substring(data[key].indexOf(';') + 1).trim(),
         };
       } else if (typeof data[key] === 'string' && data[key].includes(';')) {
@@ -252,7 +251,7 @@ const handleClickOutside = (event) => {
     </div>
     <div class="place-view">
       <div class="overview-row">
-        <div class="title-event" style="font-weight: 600;">{{ linkData.work }}: {{ linkData.date }}</div>
+        <div class="title-event" style="font-weight: 600;">{{ linkData.work }} {{ linkData.date }}</div>
         <div class="title-builder" style="font-weight: 300;">{{ linkData.builder }}</div>
       </div>
       <div class="place-gallery-container">
@@ -264,10 +263,10 @@ const handleClickOutside = (event) => {
                 <td class="wide-second-td">{{ $t('documents') }}</td>
                 <div class="documents">
                   <div v-for="(doc, index) in documents" :key="index" class="document-link">
-                    <router-link :to="`/detail/image/${doc.Nr}`">
+                    <a :href="`/detail/image/${doc.Nr}`" target="_blank">
                       <div class="document-icon" />
                       {{ doc.Document }}
-                    </router-link>
+                    </a>
                   </div>
                 </div>
               </tr>
@@ -309,7 +308,7 @@ const handleClickOutside = (event) => {
             <tbody>
               <div class="metadata-section">
                 <tr v-if="dispositionData">
-                  <td class="wide-second-td">{{ dispositionData.label  }}</td>
+                  <td class="wide-second-td">{{ dispositionData.label }}:</td>
                   <div class="organ-historic-overview" v-html="dispositionData.data" @click="handleDisposition"></div>
                   <div v-if="isPopupVisible" class="popup" ref="popupRef" :style="{ left: mousePosition.x +50 + 'px', top: mousePosition.y -100 + 'px' }">
                     <h3 v-if="popupData?.Verk">{{ $t('divisioninfo') }}</h3>
@@ -362,6 +361,13 @@ const handleClickOutside = (event) => {
 </template>
     
 <style scoped>
+  .main-container {
+  background-color: rgba(84, 105, 108, 0.7) !important;
+  backdrop-filter: blur(10px) saturate(50%) brightness(100%);
+  color: white;
+  height:calc(100vh - 80px);
+}
+
 .place-view {
   margin-left: 20px;
   padding-top: 35px;
@@ -372,7 +378,7 @@ const handleClickOutside = (event) => {
   flex-direction: column; 
   align-items: start; 
   width: 100%; 
-  padding-left:15px;
+  padding-left:50px;
 
 }
 
@@ -433,7 +439,7 @@ font-size: 30px;
 }
 
 .table-section {
- padding-left: 30px;
+ padding-left: 50px;
  padding-bottom: 30px;
 }
 
@@ -448,10 +454,12 @@ table td {
     }
 
 .wide-second-td {
-  min-width:150px!important;
+  min-width: 150px !important;
+  width: 150px !important;
   padding-bottom: 5px;
-  padding-left:5px;
-  position:relative;
+  padding-left: 5px;
+  position: relative;
+  box-sizing: border-box;
 }
 
 .organ-historic-overview{
@@ -462,11 +470,7 @@ table td {
 
 
 
-.main-container {
-  background-color: rgba(84, 105, 108, 0.7) !important;
-  backdrop-filter: blur(10px) saturate(50%) brightness(100%);
-  color: white;
-}
+
 
 .content-table td {
   color: white;
@@ -524,11 +528,10 @@ margin-bottom:5px!important;
 }
 
 #app .place-view {
-
         width: calc(100%) !important;
- 
         margin-left: 0px !important;
-        padding-left: 15px;
+        padding-left: 0px;
+        padding-bottom:100px;
      
     }
 
@@ -538,7 +541,9 @@ margin-bottom:5px!important;
 }
 
 .table-section{
-  font-size:120%;
+font-size:120%;
+ padding-left: 20px;
+ padding-bottom: 30px;
 }
 
 .tag.theme-color-text {
@@ -549,17 +554,22 @@ margin-bottom:5px!important;
   backdrop-filter: blur(10px) saturate(50%) brightness(100%);
 }
 
+.overview-row {
+  padding-left:20px;
+
+}
+
 .title-event{
   color:black;
-  margin-left:-10px;
+  margin-left:0px;
   background-color:transparent;
   padding-right:15px!important;
-  margin-bottom:5px;
+  margin-bottom:10px;
 }
 
 .title-builder{
   color:black;
-  margin-left:-10px;
+  margin-left:0px;
   margin-bottom:20px;
   padding-right:15px!important;
   line-height:1.1;
@@ -570,9 +580,20 @@ margin-bottom:5px!important;
   margin-top:0px;
 }
 
+.wide-second-td {
+  min-width: 100px !important;
+  width:120px !important;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  position: relative;
+  box-sizing: border-box;
+  font-size:0.9em;
+}
+
 .tag{
   position:relative;
   float:left;
+  font-size:0.9em;
 }
 
 .documents{
@@ -583,7 +604,7 @@ margin-bottom:5px!important;
 .document-icon {
   height: 1.3em;
   vertical-align: middle;
-  margin-right: 8px;
+  margin-right: 0px;
   margin-top:-6px;
   display: inline-block;
   background-image: url("@/assets/document-black.svg");
@@ -594,12 +615,12 @@ margin-bottom:5px!important;
 .document-link {
   display: flex;
   align-items: left;
-  font-size: 1.05em;
+  font-size: 0.9em;
   padding-bottom: 5px;
   color:black;
   font-weight:100!important;
   line-height:1.5;
-  padding-left:5px;
+  padding-left:0px;
 }
 
 .document-link a {
