@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
-import { rwandaStore } from "./rwandaStore";
+import { rwandaStore } from "./settings/rwandaStore";
 import CategoryButtonList from "@/components/input/CategoryButtonList.vue";
 import ButtonList from "./input/ButtonList.vue";
 import CategoryButton from "@/components/input/CategoryButton.vue";

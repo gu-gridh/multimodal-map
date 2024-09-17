@@ -332,7 +332,8 @@ const showMoreInterviews =() => {
 }
 .lang {
   border-radius: 5px;
-  background: rgb(180, 100, 100);
+  background: var(--theme-2);
+  min-width:55px;
   padding: 4px;
   display: inline-block;
   width: auto;

@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import { provide, ref, watch } from "vue";
-import configRaw from "./config";
+import configRaw from "./settings/config";
 import MainLayout from "@/MainLayout.vue";
 import MapViewControls from "./MapViewControls.vue";
 import type { Project } from "@/types/project";
-import { formatNames } from "./names";
+import { formatNames } from "./settings/names";
 import type Feature from "ol/Feature";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
@@ -14,8 +14,8 @@ import FeatureSelection from "@/components/FeatureSelection.vue";
 import type { Place } from "./types";
 import About from "./About.vue";
 import AutocompleteComponent from "@/components/input/AutocompleteComponent.vue";
-import { useRwandaMap } from "./map.composable";
-import { rwandaStore } from "./rwandaStore";
+import { useRwandaMap } from "./settings/map.composable";
+import { rwandaStore } from "./settings/rwandaStore";
 import { useRoute } from "vue-router";
 
 function getName(f: Feature): string {
@@ -118,7 +118,7 @@ watch(route, () => {
               corrected: true,
             }">
             <ol-style>
-              <ol-style-stroke color="#dc6464" :width="2"></ol-style-stroke>
+              <ol-style-stroke color="#dc6464" :width="4"></ol-style-stroke>
             </ol-style>
           </DianaPlaceLayer>
           <!-- Advanced search layers -->
@@ -135,7 +135,7 @@ watch(route, () => {
             }"
           >
           <ol-style >
-              <ol-style-stroke color="#5585b5" :width="3"></ol-style-stroke>
+              <ol-style-stroke color="rgb(100,100,250)" :width="4"></ol-style-stroke>
             </ol-style>
             <FeatureSelection/>
           </DianaPlaceLayer>
@@ -153,7 +153,7 @@ watch(route, () => {
             }"
           >
             <ol-style>
-              <ol-style-stroke color="rgb(180,100,100)" :width="3"></ol-style-stroke>
+              <ol-style-stroke color="rgb(220,60,60)" :width="4"></ol-style-stroke>
             </ol-style>
             <FeatureSelection />
           </DianaPlaceLayer>
@@ -175,7 +175,7 @@ watch(route, () => {
 }
 
 #app .tile-layer {
-  filter: grayscale(80%);
+  filter: grayscale(65%);
 }
 
 #app #transparent {

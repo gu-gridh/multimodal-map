@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { provide } from "vue";
-import config from "./config";
+import config from "./settings/config";
 import Footer from './Footer.vue';
 import { DianaClient } from "@/assets/diana";
 import Grid from "./Grid.vue";
@@ -22,7 +22,7 @@ provide("diana", endpoint);
 :root {
   --theme-1: rgb(200,200,200);
   --theme-2: rgb(220, 60, 60);
-  --theme-2: rgb(190, 30, 30);
+  --theme-3: rgb(180, 30, 30);
 }
 
 html,
@@ -111,6 +111,14 @@ body {
     color: black;
     border-radius: 4px;
     padding:3px 20px!important;
+}
+
+.category-button:hover {
+  background-color: var(--theme-3)!important;
+}
+
+#app .category-button.active{
+  background-color: var(--theme-2);
 }
 
 @media (max-width: 900px) {
