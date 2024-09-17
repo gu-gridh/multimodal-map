@@ -18,17 +18,23 @@ provide("diana", endpoint);
 <style>
 
 /* Project theme in regards to colour and fonts */
+
+:root {
+  --theme-1: rgb(200,200,200);
+  --theme-2: rgb(220, 60, 60);
+}
+
 html,
 body {
   font-family: "Barlow Condensed", sans-serif !important;
-  background-color:rgb(200,200,200)!important;
+  background-color:var(--theme-1)!important;
 }
 
 .main-title {
   font-size:4.0vw;
   line-height: 0.8;
   font-weight: 600;
-  color:rgb(220,60,60);
+  color:var(--theme-2);
   word-spacing: 100vw;
 }
 
