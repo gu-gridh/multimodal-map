@@ -1,5 +1,5 @@
 <template>
-  <div class="about-container" v-bind:class="{fullopacity: visibleAbout}">
+  <div class="about-container" v-bind:class="{fullopacity: visibleAbout}"  :style="{ display: displayAbout ? 'block' : 'none' }">
     <div class="flex-machine">
       <div class="red-content">
         <div class="about-main-title" v-bind:class="{fullopacityui: visibleAbout}">READING THE SIGNS</div>
@@ -48,6 +48,27 @@
         required: true,
       },
     },
+    data() {
+    return {
+      displayAbout: this.visibleAbout,
+    };
+  },
+  watch: {
+    visibleAbout(newVal) {
+      if (newVal) {
+        // If visibleInstructions is true, immediately show the container
+        this.displayAbout = true;
+      } else {
+        // if visibleInstructions is false, wait for the transition to finish before hiding
+        setTimeout(() => {
+          this.displayAbout = false;
+        }, 1000); // transition duration
+      }
+    },
+  },
+  methods: {
+    
+  },
   };
 </script>
 
