@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, onMounted, defineProps, toRaw } from "vue";
+import { ref, onMounted, defineProps, toRaw, watch } from "vue";
 import L from "leaflet";
 import "leaflet.markercluster";
 import "leaflet/dist/leaflet.css";
@@ -10,6 +10,7 @@ import markerIcon from "@/assets/marker-white.svg";
 const map = ref<L.Map | null>(null);
 const markerClusterGroup = ref<L.MarkerClusterGroup | null>(null);
 let hoverPopup = ref<L.Popup | null>(null);  //active hover popup
+let polylineLayer = ref<L.LayerGroup | null>(null);
 
 const props = defineProps({
   mapOptions: {
@@ -23,7 +24,32 @@ const props = defineProps({
     type: Object,
     default: () => ({}),
   },
+  showConnections: {
+    type: Boolean,
+    default: false,
+  },
 });
+
+//coordinates to draw lines to
+const targetCoordinates = [
+  L.latLng(4.1129, 2.5911),
+  L.latLng(70.81392, 27.96125),
+  L.latLng(53.1258, -9.7681),
+  L.latLng(48.8427, 8.0221)
+];
+
+//draw lines to the specified coordinates for testing
+const drawConnections = (startLatLng: L.LatLng) => {
+  const lines = targetCoordinates.map(targetLatLng => 
+    L.polyline([startLatLng, targetLatLng], { color: 'red' })
+  );
+
+  if (!polylineLayer.value) {
+    polylineLayer.value = L.layerGroup().addTo(toRaw(map.value)!);
+  }
+  polylineLayer.value.clearLayers();
+  lines.forEach(line => polylineLayer.value?.addLayer(line));
+};
 
 const fetchData = async (initialUrl: string, params: Record<string, any>) => {
   let nextUrl = initialUrl;
@@ -55,9 +81,13 @@ const fetchData = async (initialUrl: string, params: Record<string, any>) => {
             }),
           });
 
-          //show coordinates and name on hover
+          marker.on("click", () => {
+            if (props.showConnections && coords[1] === 55.99446 && coords[0] === 55.99446) {
+              drawConnections(latLng);
+            }
+          });
+
           marker.on("mouseover", () => {
-            //close any existing hover popup
             if (hoverPopup.value) {
               toRaw(map.value)?.closePopup(hoverPopup.value);
             }
@@ -89,6 +119,12 @@ const fetchData = async (initialUrl: string, params: Record<string, any>) => {
   }
 };
 
+watch(() => props.showConnections, (newVal) => {  //clear lines when showConnections is off
+  if (!newVal && polylineLayer.value) {
+    polylineLayer.value.clearLayers(); 
+  }
+});
+
 onMounted(() => {
   map.value = L.map("map", {
     zoomAnimation: true,
@@ -117,7 +153,7 @@ onMounted(() => {
 
   fetchData("https://maritime-encounters.dh.gu.se/api/resources/site_coordinates", props.params);
 
-  //close any active hover popup before zooming
+  // close any active hover popup before zooming
   toRaw(map.value)?.on('zoomstart', () => {
     if (hoverPopup.value) {
       toRaw(map.value)?.closePopup(toRaw(hoverPopup.value));

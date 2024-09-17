@@ -4,19 +4,17 @@ import MainLayout from "@/MainLayout.vue";
 import MapViewControls from "./MapViewControls.vue";
 import MapComponent from "@/components/MapComponent.vue";
 import MaritimePlaceLayer from "./MaritimePlaceLayer.vue";
-import MapViewPreview from "./MapViewPreview.vue";
 import { storeToRefs } from "pinia";
 import { maritimeencountersStore } from "./store";
 import { mapStore } from "@/stores/store";
 import { clean } from "@/assets/utils";
-import MapViewGallery from "./MapViewGallery.vue";
 import { ref } from "vue";
 import About from "./About.vue";
 import { onMounted, watch } from "vue";
 import { nextTick } from "vue";
 import Title from "./Title.vue"
 
-const { categories, tags, selectedRange, showUnknownRange, tagsLayerVisible, dataSetValue, dataParams, imgParams } = storeToRefs(maritimeencountersStore());
+const { selectedRange, showUnknownRange, dataSetValue, dataParams } = storeToRefs(maritimeencountersStore());
 const store = mapStore();
 const maritimeencounters = maritimeencountersStore();  // Get the instance of maritimeencountersStore
 const { selectedFeature } = storeToRefs(store);
@@ -24,8 +22,12 @@ const minZoom = 1;
 const maxZoom = 25;
 const featureZoom = 10; //value between minZoom and maxZoom when you select a point;
 const visibleAbout = ref(false);
-const showGallery = ref(false);
+const showConnections = ref(false);
 let visited = true; // Store the visited status outside of the hook
+
+const toggleConnections = () => {
+  showConnections.value = !showConnections.value;
+};
 
 // Watcher for selectedFeature changes
 watch(
@@ -45,17 +47,6 @@ watch(
   },
   { immediate: true }
 );
-
-// Watcher for selectedNecropolisCoordinates changes
-// watch(
-//   selectedNecropolisCoordinates,
-//   (newCoordinates, oldCoordinates) => {
-//     if (newCoordinates !== oldCoordinates && newCoordinates) {
-//       store.updateCenter(newCoordinates);
-//       store.updateZoom(16);
-//     }
-//   },
-// );
 
 /* Response for generating the URL for filtering map points down */
 const tagParams = computed(() => {
@@ -83,19 +74,6 @@ const tagParams = computed(() => {
   // Further clean to remove null or undefined values
   const params = clean(cleanedParams);
 
-  //filter for just 3D points
-  // if (enable3D.value) {
-  //   (params as any)['with_3D'] = 'true';
-  // } else {
-  //   delete (params as any)['with_3D'];
-  // }
-
-  // if (enablePlan.value) {
-  //   (params as any)['with_plan'] = 'true';
-  // } else {
-  //   delete (params as any)['with_plan'];
-  // }
-
   maritimeencounters.imgParams = params;
   return params;
 });
@@ -111,43 +89,32 @@ watch(
 onMounted(() => {
   // Check if the "visited" key exists in session storage
   visited = sessionStorage.getItem("visited") === "true"; // Retrieve the visited status from session storage
-  const storedShowGallery = localStorage.getItem("showGallery");
 
   if (!visited) {
     // Hide the about component
     visibleAbout.value = true;
     sessionStorage.setItem("visited", "true");
   }
-
-  if (storedShowGallery) {
-    showGallery.value = JSON.parse(storedShowGallery);
-  }
-
 })
 
 const toggleAboutVisibility = async () => {
-  console.log('fired')
   await nextTick();
   visibleAbout.value = !visibleAbout.value;
 };
-
-watch(showGallery, (newValue) => {
-  localStorage.setItem("showGallery", JSON.stringify(newValue));
-});
 </script>
 
 <template>
   <div style="display:flex; align-items: center; justify-content: center; pointer-events: none;">
-    <div class="ui-mode ui-overlay">
-      <!-- <button class="item" v-bind:class="{ selected: !showGallery }" v-on:click="showGallery = false;">
-        {{ $t('map') }}
+    <div class="ui-mode ui-overlay" style="z-index: 1000;">
+      <button 
+        class="item" 
+        @click="toggleConnections" 
+        :style="{ color: showConnections ? 'white' : 'grey' }"
+      >
+        Show Connections 
       </button>
-      <button class="item" v-bind:class="{ selected: showGallery }" v-on:click="showGallery = true;">
-        {{ $t('gallery') }}
-      </button> -->
     </div>
   </div>
-  <MapViewGallery v-if="showGallery" />
   <About :visibleAbout="visibleAbout" @close="visibleAbout = false" />
   <MainLayout>
     <template #search>
@@ -164,16 +131,12 @@ watch(showGallery, (newValue) => {
           :restrictExtent="[-45.0, 32.00, 55.0, 75.0]"    
         > 
           <template #layers>
-             <MaritimePlaceLayer :params="tagParams" :zIndex=20>
-             </MaritimePlaceLayer> 
+            <MaritimePlaceLayer :params="tagParams" :showConnections="showConnections">
+            </MaritimePlaceLayer> 
           </template>
           
         </MapComponent>  
       </div> 
-    </template>
-
-    <template #details>
-      <MapViewPreview v-if="!showGallery"/>
     </template>
 
   </MainLayout>
