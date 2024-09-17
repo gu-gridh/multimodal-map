@@ -26,11 +26,7 @@
   </script>
   
   <style scoped>
-  .category-button {
-    background-color: white;
-    color: rgb(71, 85, 105);
-    border-radius: 4px;
-  }
+
   
   .category-button:hover {
     background-color: #096058;
