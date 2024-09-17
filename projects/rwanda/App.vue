@@ -22,6 +22,7 @@ provide("diana", endpoint);
 :root {
   --theme-1: rgb(200,200,200);
   --theme-2: rgb(220, 60, 60);
+  --theme-2: rgb(190, 30, 30);
 }
 
 html,
@@ -81,7 +82,7 @@ body {
   font-size: 50px;
   font-weight: 100;
   border-radius: 50%;
-  background-color: rgb(220,60,60);
+  background-color: var(--theme-2);
   color: white;
   transform: rotate(45deg);
   cursor: pointer;
@@ -102,7 +103,7 @@ body {
 }
 
 .close-button:hover {
-  background-color: rgbrgb(180,30,30);
+  background-color: var(--theme-3);
 }
 
 .category-button {
