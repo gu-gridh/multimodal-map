@@ -5,6 +5,9 @@
       <div class="p-1 px-2 clickable category-button about-button">
         {{ "About the portal" }}</div>
     </button>
+    <button class="item" style="margin-left: 20px;">
+      <div class="p-1 px-2 clickable category-button about-button">Download the data</div>
+    </button>
     <!-- <button @click="toggleLanguage">
         <div class="p-1 px-2 clickable category-button about-button" style="
                 margin-left: 10px;

@@ -6,6 +6,7 @@ import "leaflet/dist/leaflet.css";
 import "leaflet.markercluster/dist/MarkerCluster.css"; 
 import "leaflet.markercluster/dist/MarkerCluster.Default.css"; 
 import markerIcon from "@/assets/marker-white.svg";
+import countryMinified from "./country_1_minified.json"; 
 
 const map = ref<L.Map | null>(null);
 const markerClusterGroup = ref<L.MarkerClusterGroup | null>(null);
@@ -37,6 +38,20 @@ const targetCoordinates = [
   L.latLng(53.1258, -9.7681),
   L.latLng(48.8427, 8.0221)
 ];
+
+const renderGeoJSON = (geojson: any) => {
+  if (countryMinified.value) {
+    countryMinified.value.remove();
+  }
+
+  countryMinified.value = L.geoJSON(geojson, {
+    style: {
+      color: "#ff7800",
+      weight: 2,
+      opacity: 0.65,
+    },
+  }).addTo(toRaw(map.value)!);
+};
 
 //draw lines to the specified coordinates for testing
 const drawConnections = (startLatLng: L.LatLng) => {
@@ -135,6 +150,8 @@ onMounted(() => {
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     maxZoom: 19, //11
   }).addTo(toRaw(map.value));
+
+  renderGeoJSON(countryMinified);
 
   markerClusterGroup.value = L.markerClusterGroup({
     spiderfyOnMaxZoom: true,  //spiderfy
