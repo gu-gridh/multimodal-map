@@ -20,11 +20,10 @@
 </template>
 
 <script setup lang="ts">
-import { storeToRefs } from "pinia";
+// import { storeToRefs } from "pinia";
 import CategoryButton from "../../src/components/input/CategoryButton.vue";
-import { maritimeencountersStore } from "./store";
+// import { maritimeencountersStore } from "./store";
 // const { selectedNecropolisCoordinates } = storeToRefs(maritimeencountersStore());
-
 
 const props = defineProps<{
   modelValue: string[];

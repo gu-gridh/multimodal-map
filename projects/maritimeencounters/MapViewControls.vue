@@ -6,10 +6,10 @@
     <!-- This creates a 2-column section with for the controls -->
     <div class="control-organisation justify-left" style="margin-bottom:8px;">
       <div class="tag-section margin-3">
-        <div class="section-title">Dataset</div>
+        <div class="section-title">Subproject</div>
         <div title="Narrow the result to a certain dataset" class="broad-controls">
-           <CategoryButtonDropdown v-model="dataSetValue" :categories="DATASET" :limit="1" styleType="dropdown" class="my-2"
-            type="datasets"/>
+          <CategoryButtonDropdown v-model="dataSetValue" :categories="{ '1': '1', '2': '2', '3': '3', '4': '4' }" :limit="1" styleType="dropdown" class="my-2"
+          type="datasets"/>
         </div>
       </div>
 
@@ -19,8 +19,9 @@
           <CategoryButtonList v-model="categories" 
               :categories="{
                 all: 'All', 
-                plans: 'Drawings', 
-                models: 'Models'
+                Isotopes: 'Isotopes', 
+                Boats: 'Boats',
+                aDna: 'aDNA',
               }" 
               :limit="1" 
               class="my-2"
@@ -38,8 +39,8 @@
             <RangeSlider
               ref="rangeSliderRef"
               v-model="selectedRange"
-              :min="-700"
-              :max="-200"
+              :min="-1500"
+              :max="-500"
               :step="1"
               class="my-2"
               :isSliderVisible="true"
@@ -51,26 +52,18 @@
     <!-- This creates a 2-column section width for the controls -->
     <div class="control-organisation justify-space">
       <div class="tag-section ">
-        <div class="section-title">Site</div>
-        <div class="broad-controls">
-          <CategoryButtonDropdown v-model="selectedSite" :categories="SITES" :limit="1" styleType="dropdown" class="my-2"
-          type="site"/>
+        <div class="section-title">Country</div>
+        <div class="broad-controls" style="width:170px">
+          <CategoryButtonDropdown v-model="selectedSite" :categories="{ '1': 'England', '2': 'Spain', '3': 'France', '4': 'Sweden' }" :limit="1" styleType="dropdown" class="my-2"
+          type="site" style="width:100%"/>
         </div>
       </div>
 
       <div class="tag-section margin-5">
-        <div class="section-title">Site Name</div>
-        <div title="Narrow the result to a certain site" class="broad-controls">
-          <CategoryButtonDropdown v-model="necropoli" :categories="NECROPOLI" :limit="1" styleType="dropdown" class="my-2"
-            type="necropolis" @click="handleSelectionClick($event, currentTombType)" />
-        </div>
-      </div>
-
-      <div class="tag-section margin-5">
-        <div  class="section-title">Type</div>
-        <div title="Narrow the result to a certain type" class="broad-controls">
-          <CategoryButtonDropdown v-model="tombType" :categories="TOMBTYPE" :limit="1" styleType="dropdown" class="my-2"
-            type="tombType" />
+        <div class="section-title">Sites</div>
+        <div title="Narrow the result to a certain site" class="broad-controls" style="width:170px">
+          <CategoryButtonDropdown v-model="necropoli" :categories="{ '1': 'Knocknagur', '2': 'Carrickshedoge', '3': 'Ballyvalley Mountain, Clonallan Glebe', '4': 'Scrabo Hill' }" :limit="1" styleType="dropdown" class="my-2"
+            type="necropolis" @click="handleSelectionClick($event, currentTombType)" style="width:100%"/>
         </div>
       </div>
     </div>
@@ -93,23 +86,6 @@
     <div class="data-widget-item">
       <h3>Points Hidden:</h3>
       <p>{{ hiddenTombs }}</p>
-    </div>
-  </div>
-
-  <div class="data-widget-divider"></div>
-
-  <div class="data-widget-section">
-    <div class="data-widget-item">
-      <h3>Photographs:</h3>
-      <p>{{ totalPhotographs }}</p>
-    </div>
-    <div class="data-widget-item">
-      <h3>Drawings:</h3>
-      <p>{{ totalPlans }}</p>
-    </div>
-    <div class="data-widget-item">
-      <h3>3d Models:</h3>
-      <p>{{ totalThreed }}</p>
     </div>
   </div>
 </div>
@@ -155,7 +131,7 @@ return (
   dataSetValue.value[0] !== "all" ||
   lastClickedCategory.value !== '' ||
   necropoli.value[0] !== "all" ||
-  selectedRange.value[0] !== -700 || selectedRange.value[1] !== -200
+  selectedRange.value[0] !== -1500 || selectedRange.value[1] !== -500
 );
 });
 
@@ -283,7 +259,7 @@ selectedSite.value = ["all"];
 showUnknownRange.value = true;
 dataSetValue.value = ["all"];
 lastClickedCategory.value = '';
-selectedRange.value = [-700, -200]; //reset slider to the default range
+selectedRange.value = [-1500, -500]; //reset slider to the default range
 }
 </script>
 
@@ -397,9 +373,6 @@ border-color: var(--theme-3);
 border-width: 1px 0px 0px 0px;
 height: 1px;
 }
-
-
-.data-widget-item {}
 
 .data-widget-item h3 {
 display: inline;
