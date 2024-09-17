@@ -71,7 +71,7 @@ body{
 }
 
 .fullopacity{
-  backdrop-filter:blur(5px);
+  backdrop-filter:blur(20px);
   opacity:1.0;
   pointer-events:auto;
   transform:scale(1.0);
@@ -97,6 +97,7 @@ body{
 }
 
 .about-main-title {
+  font-family: 'Teko', sans-serif;
   margin-top:100px;
   flex-basis:auto;
   width:100%;

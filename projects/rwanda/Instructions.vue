@@ -13,7 +13,7 @@
 
             <!--  Main title or logo of the site -->
             <div class="instructions-main-title" style="">
-              Reading<br>the<br>Signs
+              Reading<br>the Signs
             </div>
 
             <!--  User Guide or Instructions title -->
@@ -168,7 +168,7 @@ export default {
     translate: 0px 0px;
     transition: all 0.1s ease-in-out;
     background: linear-gradient(90deg, rgba(235, 235, 235, 1) 0%, rgba(235, 235, 235, 0.85) 100%) !important;
-    backdrop-filter: blur(5px);
+    backdrop-filter: blur(15px);
   }
 
   /* adapt min-height to encompass all features */
@@ -219,7 +219,7 @@ export default {
     color:var(--theme-2);
     font-size: 3.0em;
     font-weight: 500;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
   }
 
   .instructions {
@@ -270,9 +270,11 @@ export default {
   }
 
   .instructions-item-title {
+
     font-weight: 600;
     letter-spacing: 0.05em;
     color:var(--theme-2);
+    font-size: 1.2em;
   }
 
   .instructions-item-description {
@@ -313,12 +315,13 @@ export default {
   }
 
   .instructions-main-title {
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: 'Teko', sans-serif;
+    font-size: 0.95em;
     color:var(--theme-2);
     font-weight: 600 !important;
     line-height: 0.8;
     text-align: right;
-    font-size: 5.0vw;
+    font-size: 6.0vw;
     user-select: none;
     pointer-events: none;
   }

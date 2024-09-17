@@ -32,11 +32,13 @@ body {
 }
 
 .main-title {
-  font-size:4.0vw;
+  font-family: 'Teko', sans-serif;
+  font-size:5.5vw;
   line-height: 0.8;
   font-weight: 600;
   color:var(--theme-2);
-  word-spacing: 100vw;
+  margin-top:1vh;
+
 }
 
 .about {
@@ -51,9 +53,10 @@ body {
 }
 
 #app .left-pane {
-  font-size:1.2vw;
-  background: url("@/assets/gradient-rephotography.png");
+  font-size:1.2em;
+  background: url("./images/gradient.png");
   background-size: contain;
+  min-width:900px!important;
 }
 
 
@@ -106,19 +109,28 @@ body {
   background-color: var(--theme-3);
 }
 
-.category-button {
-    background-color: white;
-    color: black;
+.main-filters .category-button {
+    background-color: white!important;
+    color: black!important;
     border-radius: 4px;
-    padding:3px 20px!important;
+    padding:5px 20px!important;
+    margin-top:3px!important;
 }
 
-.category-button:hover {
-  background-color: var(--theme-3)!important;
-}
-
-#app .category-button.active{
+.dropdown{
+  margin-top:0px;
   background-color: var(--theme-2);
+  color:white!important;
+}
+
+.main-filters .category-button:hover {
+  background-color: var(--theme-3)!important;
+  color:white!important;
+}
+
+.main-filters .category-button.active{
+  background-color: var(--theme-2)!important;
+  color:white!important;
 }
 
 @media (max-width: 900px) {

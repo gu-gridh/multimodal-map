@@ -3,6 +3,7 @@ import { storeToRefs } from "pinia";
 import { rwandaStore } from "./settings/rwandaStore";
 import CategoryButtonList from "@/components/input/CategoryButtonList.vue";
 import ButtonList from "./input/ButtonList.vue";
+import Dropdown from "./input/DropdownComponent.vue";
 import CategoryButton from "@/components/input/CategoryButton.vue";
 
 //Filtering map controls
@@ -62,7 +63,7 @@ const handleSourcesClick = (key: string) => {
 </script>
 
 <template>
-  <div class="filter-container">
+  <div class="filter-container" style="margin-top:20px;">
     <CategoryButton
       :text="'Show all'"
       :value="allLayer"
@@ -70,7 +71,7 @@ const handleSourcesClick = (key: string) => {
       class="filter-button"
     />
     <div class="main-filters">
-    <div class="filter-heading">NAMES OF PLACES </div>
+    <div class="filter-heading">Names of places </div>
       <CategoryButtonList 
         v-model="placeTypes"
         :categories="PLACE_TYPES"
@@ -78,7 +79,7 @@ const handleSourcesClick = (key: string) => {
         class="filter-button"
         @click="handleSourcesClick"
       />
-    <div class="filter-heading">SOURCES</div>
+    <div class="filter-heading">Sources</div>
       <CategoryButtonList 
         v-model="sources"
         :categories="SOURCES"
@@ -86,7 +87,7 @@ const handleSourcesClick = (key: string) => {
         class="filter-button"
         @click="handleSourcesClick"
       />
-      <div class="filter-heading" v-show="sources.includes('text')">INFORMANTS</div>
+      <div class="filter-heading" v-show="sources.includes('text')">Informants</div>
       <CategoryButtonList 
         v-show="sources.includes('text')"
         v-model="informants"
@@ -95,17 +96,21 @@ const handleSourcesClick = (key: string) => {
         class="filter-button"
         @click="handleSourcesClick"
       />
-    
-      <div class="filter-heading">LANGUAGES</div>
-      <ButtonList 
+
+   
+    <div style="width:100%; display:flex; flex-direction: row;">
+      <div>
+     <div class="filter-heading">Languages</div>
+      <Dropdown 
         v-model="languages"
         :categories="LANGUAGES"
         :limit="1"
         class="filter-button lang-buttons"
-        @click="handleSourcesClick"
-      />
-    <div class="filter-heading">TIME PERIODS</div>
-      <ButtonList 
+        @click="handleSourcesClick" />
+      </div>
+      <div style="margin-left:20px;">
+    <div class="filter-heading">Time Periods</div>
+      <Dropdown 
         v-model="periods"
         :categories="PERIODS"
         :limit="1"
@@ -114,23 +119,31 @@ const handleSourcesClick = (key: string) => {
       />
     </div>
   </div>
+  </div>
+  </div>
 </template>
 
 <style>
 .filter-button {
-  font-size: 0.8vw;
+  font-size: 0.8em;
 }
-.filter-heading {
-  font-size: 1vw;
-  margin-bottom: 2px;
-  margin-top: 10px;
-  font-weight: 500;
-
+#app .filter-heading {
+  font-size: 1em!important;
+  margin-bottom: 5px;
+  margin-top: 15px;
+  font-weight: 300;
+}
+.main-filters{
+  font-size:100%;
 }
 .checkboxes {
   display: inline-block;
   position: relative;
   padding-right: 5px;
+}
+
+.dropdown{
+
 }
 
 #app .searchbox{
@@ -157,7 +170,7 @@ const handleSourcesClick = (key: string) => {
 }
 
 #app .searchbox-menu-text-active{ 
- background-color:rgb(180,100,100);
+  background-color: var(--theme-3);
 }
 
 #app .searchbox-menu-text-active{
@@ -199,12 +212,12 @@ const handleSourcesClick = (key: string) => {
 }
 
 #app .category-button:hover {
-  background-color: rgb(180, 100, 100);
+  background-color: var(--theme-2);
   color: white;
 }
 
 #app .category-button.active {
-  background-color: rgb(180, 100, 100);
+  background-color: var(--theme-2);
   color: white;
 }
 
@@ -225,7 +238,7 @@ color:rgb(180,100,100);
     font-size: 16px;
   }
   .filter-heading {
-    font-size: 18px;;
+    font-size: 18px;
   }
 }
 
