@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, onMounted, defineProps } from "vue";
+import { ref, onMounted, defineProps, toRaw } from "vue";
 import L from "leaflet";
 import "leaflet.markercluster";
 import "leaflet/dist/leaflet.css";
@@ -59,7 +59,7 @@ const fetchData = async (initialUrl: string, params: Record<string, any>) => {
           marker.on("mouseover", () => {
             //close any existing hover popup
             if (hoverPopup.value) {
-              map.value?.closePopup(hoverPopup.value);
+              toRaw(map.value)?.closePopup(hoverPopup.value);
             }
 
             hoverPopup.value = L.popup({
@@ -70,10 +70,10 @@ const fetchData = async (initialUrl: string, params: Record<string, any>) => {
               .setContent(
                 `<b>Name:</b> ${feature.properties.name}<br><b>Coordinates:</b> ${coords[1].toFixed(6)}, ${coords[0].toFixed(6)}`
               )
-              .openOn(map.value as L.Map);
+              .openOn(toRaw(map.value) as L.Map);
 
             marker.on("mouseout", () => {
-              map.value?.closePopup(hoverPopup.value as L.Popup);
+              toRaw(map.value)?.closePopup(toRaw(hoverPopup.value) as L.Popup);
               hoverPopup.value = null;
             });
           });
@@ -83,7 +83,7 @@ const fetchData = async (initialUrl: string, params: Record<string, any>) => {
       }
     });
 
-    markerClusterGroup.value?.addLayers(markersToAdd);
+    toRaw(markerClusterGroup.value)?.addLayers(markersToAdd);
 
     nextUrl = data.next ? data.next.replace(/^http:/, "https:") : null;
   }
@@ -98,7 +98,7 @@ onMounted(() => {
 
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     maxZoom: 19, //11
-  }).addTo(map.value);
+  }).addTo(toRaw(map.value));
 
   markerClusterGroup.value = L.markerClusterGroup({
     spiderfyOnMaxZoom: true,  //spiderfy
@@ -110,17 +110,17 @@ onMounted(() => {
 
   // Override _getExpandedVisibleBounds to limit to current map bounds
   markerClusterGroup.value._getExpandedVisibleBounds = function () {
-    return markerClusterGroup.value?._map?.getBounds();
+    return toRaw(markerClusterGroup.value)?._map?.getBounds();
   };
 
-  map.value.addLayer(markerClusterGroup.value);
+  toRaw(map.value)?.addLayer(toRaw(markerClusterGroup.value));
 
   fetchData("https://maritime-encounters.dh.gu.se/api/resources/site_coordinates", props.params);
 
   //close any active hover popup before zooming
-  map.value.on('zoomstart', () => {
+  toRaw(map.value)?.on('zoomstart', () => {
     if (hoverPopup.value) {
-      map.value?.closePopup(hoverPopup.value);
+      toRaw(map.value)?.closePopup(toRaw(hoverPopup.value));
       hoverPopup.value = null;
     }
   });
