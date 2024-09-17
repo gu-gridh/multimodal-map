@@ -1,4 +1,5 @@
 <template>
+
   <div v-if="styleType === 'button'" class="flex flex-wrap gap-2">
     <CategoryButton
       v-for="(label, key) in categories"
@@ -8,6 +9,7 @@
       @toggle="toggle(key)"
     />
   </div>
+
   <select v-else :value="modelValue[0]" class="dropdown" @change="dropdownToggle($event)">
     <option value="all">All</option>
     <option 
@@ -24,15 +26,13 @@ import { storeToRefs } from "pinia";
 import CategoryButton from "../../../src/components/input/CategoryButton.vue";
 import { computed } from 'vue';
 import i18n from '../../../src/translations/rwanda';
-// const { selectedNecropolisCoordinates } = storeToRefs(inscriptionsStore());
-
 
 const props = defineProps<{
   modelValue: string[];
   categories: Record<string, string>;
   limit?: 1;
   styleType?: "button" | "dropdown";
-  type?: "language" | "tombType";
+  type?: "language" | "timeperiod";
 }>();
 
 const emit = defineEmits(["update:modelValue", "click"]);
