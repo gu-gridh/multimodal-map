@@ -82,7 +82,7 @@ const handleSourcesClick = (key: string) => {
         @click="handleSourcesClick"
       />
     </div>
-      <div style="width:320px; display:flex; flex-direction: row;  align-items: center;">
+      <div style="width:500px; display:flex; flex-direction: row;  align-items: center;">
     <div class="filter-heading">Sources:</div>
       <CategoryButtonList 
         v-model="sources"
@@ -104,7 +104,7 @@ const handleSourcesClick = (key: string) => {
       />
     </div>
    
-    <div style="width:320px; display:flex; flex-direction: row; justify-content:space-between; align-items: center;">
+    <div style="width:360px; display:flex; flex-direction: row; justify-content:space-between; align-items: center;">
       <div>
      <div class="filter-heading">Languages</div>
       <Dropdown 
@@ -244,7 +244,7 @@ color:rgb(180,100,100);
 
 @media (max-width: 1024px) {
   .filter-button {
-    font-size: 16px;
+    
   }
   .filter-heading {
     font-size: 18px;

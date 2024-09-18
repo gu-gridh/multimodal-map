@@ -324,7 +324,8 @@ display:none;
   flex-direction: column;
   height:auto;
   margin-top: 0px;
-  width:70%;
+  width:360px;
+  position:relative;
 }
 .mapoverlay{
 z-index: 100;
