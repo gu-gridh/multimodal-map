@@ -1,16 +1,5 @@
 <template>
-
-  <div v-if="styleType === 'button'" class="flex flex-wrap gap-2">
-    <CategoryButton
-      v-for="(label, key) in categories"
-      :key="key"
-      :text="label"
-      :value="!!modelValue.includes(key)"
-      @toggle="toggle(key)"
-    />
-  </div>
-
-  <select v-else :value="modelValue[0]" class="dropdown" @change="dropdownToggle($event)">
+  <select :value="modelValue[0]" class="dropdown" @change="dropdownToggle($event)">
     <option value="all">All</option>
     <option 
       v-for="(label, key) in categories"
@@ -23,7 +12,6 @@
 
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
-import CategoryButton from "../../../src/components/input/CategoryButton.vue";
 import { computed } from 'vue';
 import i18n from '../../../src/translations/rwanda';
 
@@ -81,5 +69,7 @@ function handleToggle(key: string) {
 </script>
 
 <style scoped>
-
+.dropdown{
+  color:white;
+}
 </style>

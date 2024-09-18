@@ -104,9 +104,9 @@ const handleSourcesClick = (key: string) => {
       />
     </div>
    
-    <div style="width:360px; display:flex; flex-direction: row; justify-content:space-between; align-items: center;">
+    <div class="shadow-md filter-group" style="">
       <div>
-     <div class="filter-heading">Languages</div>
+     <div class="filter-heading-small">Languages</div>
       <Dropdown 
         v-model="languages"
         :categories="LANGUAGES"
@@ -114,9 +114,9 @@ const handleSourcesClick = (key: string) => {
         class="filter-button lang-buttons"
         @click="handleSourcesClick" />
       </div>
-      <div style="height: 60px; margin-top:25px; width:2px;border-style: dotted; border-width:0px 1.5px 0 0; border-color:var(--theme-3);">  </div>
+      <div style="height: 60px; margin-top:0px; width:2px;border-style: dotted; border-width:0px 1.0px 0 0; border-color:var(--theme-3);">  </div>
       <div style="">
-    <div class="filter-heading">Time Periods</div>
+    <div class="filter-heading-small">Time Periods</div>
       <Dropdown 
         v-model="periods"
         :categories="PERIODS"
@@ -134,13 +134,33 @@ const handleSourcesClick = (key: string) => {
 .filter-button {
   font-size: 0.8em;
 }
+.filter-group{
+  width:360px; 
+  margin-top:10px;
+  display:flex; 
+  flex-direction: row; 
+  justify-content:space-between; 
+  align-items: center; 
+  padding:10px 15px 10px 15px; 
+  border-radius:10px; 
+  background-color:rgba(255,255,255,0.8);
+}
 #app .filter-heading {
   font-size: 1em!important;
   margin-bottom: 10px;
-  margin-top: 15px;
+  margin-top: 10px;
+  font-weight: 300;
+  min-width:100px;
+  line-height:1.6;
+}
+
+#app .filter-heading-small {
+  font-size: 0.85em!important;
+  margin-bottom: 10px;
+  margin-top: 0px;
   font-weight: 300;
   min-width:90px;
-  line-height:1.6;
+  line-height:1.1;
 }
 .main-filters{
   font-size:100%;

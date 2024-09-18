@@ -218,7 +218,7 @@ export default {
   h1 {
     color:var(--theme-2);
     font-size: 3.0em;
-    font-weight: 500;
+    font-weight: 200;
     margin-bottom: 20px;
   }
 
@@ -413,7 +413,7 @@ export default {
 
   .category-button:hover {
     color: white !important;
-    background-color: rgb(180, 100, 100) !important;
+    background-color: var(--theme-3)!important;
   }
 
   /*   Mid screen adaption */

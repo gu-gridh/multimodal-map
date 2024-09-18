@@ -34,7 +34,7 @@ watchEffect(async () => {
     </div>
     <div v-else class="right-panel-initial">
         <div class="container">
-            <div class="image-container">
+            <div class="">
                 <img src="./images/streetsigns.jpg" alt="streetsigns"/>
             </div>
             <div class="info-text">
@@ -76,7 +76,7 @@ watchEffect(async () => {
 }
 
 em {
-    color: var(--theme-2);
+    color: var(--theme-4);
 }
 
 .image-container {

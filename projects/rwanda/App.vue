@@ -23,6 +23,7 @@ provide("diana", endpoint);
   --theme-1: rgb(200,200,200);
   --theme-2: rgb(200, 60, 60);
   --theme-3: rgb(180, 40, 40);
+  --theme-4: rgb(240, 100, 100);
 }
 
 html,

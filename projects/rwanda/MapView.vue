@@ -323,7 +323,7 @@ display:none;
   display:flex;
   flex-direction: column;
   height:auto;
-  margin-top: 0px;
+  margin-top: -10px;
   width:360px;
   position:relative!important;
 }
