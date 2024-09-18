@@ -9,16 +9,15 @@ import OpenSeadragon from "./MapViewPreviewImage.vue";
 import apiConfig from "./settings/apiConfig"
 
 const { selectedFeature } = storeToRefs(mapStore());
-const { placeId } = storeToRefs(etruscanStore());
 const etruscan = etruscanStore();
 const diana = inject("diana") as DianaClient;
 const images = ref<Image[]>();
 const imageUrls = ref<string[]>([]);
-let text = ref(false)
 let place = ref()
 const necropolisName = ref<string | null>(null);
 const chambers = ref<number | null>(null);
 const type = ref<string | null>(null);
+const dataset = ref<string | null>(null);
 const period = ref<string | null>(null);
 const subtitle = ref<string | null>(null);
 const description = ref<string | null>(null);
@@ -32,6 +31,8 @@ watchEffect(async () => {
   period.value = null;
   subtitle.value = null;
   description.value = null;
+  dataset.value = null;
+
   if (selectedFeature.value) {
     const placeName = selectedFeature.value.get("name");
     const placeId = selectedFeature.value.getId();
@@ -49,11 +50,12 @@ watchEffect(async () => {
       // Populate place details
       if (images.value[0].tomb) {
         necropolisName.value = images.value[0].tomb?.necropolis?.text || null;
-        chambers.value = images.value[0].tomb.number_of_chambers || null;
-        type.value = images.value[0].tomb.type.text || null;
-        period.value = images.value[0].tomb.epoch.text || null;
-        subtitle.value = images.value[0].tomb.subtitle || null;
-        description.value = images.value[0].tomb.description || null;
+        chambers.value = images.value[0].tomb?.number_of_chambers || null;
+        dataset.value = images.value[0].tomb?.dataset.short_name || null;
+        type.value = images.value[0].tomb?.type.text || null;
+        period.value = images.value[0].tomb?.epoch.text || null;
+        subtitle.value = images.value[0].tomb?.subtitle || null;
+        description.value = images.value[0].tomb?.description || null;
       }
     } else {
       hasImages.value = false;
@@ -65,6 +67,7 @@ watchEffect(async () => {
         const feature = geojsonData.features[0];
         necropolisName.value = feature.properties.necropolis?.text || null;
         chambers.value = feature.properties.number_of_chambers || null;
+        dataset.value = feature.properties.dataset?.short_name || null;
         type.value = feature.properties.type?.text || null;
         period.value = feature.properties.epoch?.text || null;
         subtitle.value = feature.properties.subtitle || null;
@@ -103,7 +106,9 @@ function deselectPlace() {
 
       <div class="placecard-bottom">
         <div class="placecard-text">
-          <div class="placecard-title theme-color-text theme-title-typography">CTSG - {{ selectedFeature.get("name") }}</div>
+          <div class="placecard-title theme-color-text theme-title-typography">
+            {{ dataset ? (dataset + ' - ' + selectedFeature.get('name')) : selectedFeature.get('name') }}
+          </div>
           <div class="placecard-subtitle theme-color-text theme-title-typography">{{ subtitle }}</div>
           <!-- <button class="theme-button theme-color-background">{{ $t('threedmodel') }}</button> -->
         </div>
@@ -134,7 +139,7 @@ function deselectPlace() {
          
             <div class="metadata-item">
               <div class="label">{{ $t('dataset') }}:</div>
-              <div class="dataset-tag">CTSG</div>
+              <div v-if="dataset" class="dataset-tag">{{ dataset }}</div>
             </div>
 
           </div>

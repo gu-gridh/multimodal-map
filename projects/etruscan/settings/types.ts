@@ -41,6 +41,9 @@ export type Tomb = {
     id: number;
     text: string;
   };
+  dataset: {
+    short_name: string;
+  };
   epoch: {
     id: number;
     text: string;
