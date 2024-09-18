@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Grid from "../Grid.vue";
 import ObjectViewImage from "../ObjectViewImage.vue";
-import Document from "../Document.vue";
+import Document from "../ObjectViewDocument.vue";
 
 const router = createRouter({
   history: createWebHistory(),

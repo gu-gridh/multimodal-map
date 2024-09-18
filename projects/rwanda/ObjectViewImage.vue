@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import ObjectViewComponent from "./ObjectViewComponent.vue";
 import OpenSeadragon from "./OpenSeadragon.vue";
-import type { Image } from "./types";
+import type { Image } from "./settings/types";
 import { onMounted, ref, inject } from "vue";
 import type { DianaClient } from "@/assets/diana";
 
