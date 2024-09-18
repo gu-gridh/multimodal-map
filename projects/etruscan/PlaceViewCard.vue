@@ -116,7 +116,7 @@ onMounted(() => {
    
         <div class="placecard-text">
       
-          <div class="placecard-title theme-color-text theme-title-typography">{{ dataset }} {{ title }}</div>
+          <div class="placecard-title theme-color-text theme-title-typography">{{ dataset }} - {{ title }}</div>
           <div class="placecard-subtitle theme-color-text theme-title-typography">{{ subtitle }}</div>
 
           <div class="placecard-metadata-content">

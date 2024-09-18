@@ -174,7 +174,7 @@ watch(
   >
     <div
       class="ol-popup-content"
-      v-html="(hoveredFeature ? hoveredFeature.get('dataset')?.short_name : '') + ' ' + (hoveredFeature ? hoveredFeature.get('name') : '')"
+      v-html="(hoveredFeature ? hoveredFeature.get('dataset')?.short_name : '') + ' - ' + (hoveredFeature ? hoveredFeature.get('name') : '')"
     ></div>
   </ol-overlay>
 
