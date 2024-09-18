@@ -162,4 +162,14 @@ body {
 
 }
 
+@media screen and (min-width: 1900px) {
+
+
+
+#app .filter-container {
+  height:auto!important;
+
+}
+} 
+
 </style>

@@ -325,7 +325,7 @@ display:none;
   height:auto;
   margin-top: 0px;
   width:360px;
-  position:relative;
+  position:relative!important;
 }
 .mapoverlay{
 z-index: 100;
