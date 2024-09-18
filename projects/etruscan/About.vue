@@ -12,7 +12,7 @@
       <div class="red-content">
 
         <div class="about-main-title theme-color-text" v-bind:class="{fullopacityui: visibleAbout}">{{
-          $t('etruscantitle') }}</div>
+          $t('title') }}</div>
         <div class="about-sub-title theme-color-text" v-bind:class="{fullopacityui: visibleAbout}"></div>
 
         <div class="about-article-main" v-bind:class="{fullopacityui: visibleAbout}">
