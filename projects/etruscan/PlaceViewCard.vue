@@ -2,7 +2,6 @@
 import router from './settings/router'
 import { ref, inject, onMounted } from "vue"
 import markerIcon from "@/assets/marker-red-etruscan.svg";
-import i18n from '../../src/translations/etruscan';
 import apiConfig from "./settings/apiConfig"
 
 const props = defineProps<{
@@ -22,6 +21,7 @@ const title = ref<string | null>(null);
 const necropolisName = ref<string | null>(null);
 const chambers = ref<number | null>(null);
 const type = ref<string | null>(null);
+const dataset = ref<string | null>(null);
 const period = ref<string | null>(null);
 const subtitle = ref<string | null>(null);
 const description = ref<string | null>(null);
@@ -29,8 +29,6 @@ const description = ref<string | null>(null);
 const projection = ref("EPSG:4326");
 const zoom = ref(16);
 const rotation = ref(0);
-const strokeWidth = ref(5);
-const strokeColor = ref("red");
 const center = ref([11.999722, 42.224444])
 const minZoom = ref(12)
 
@@ -62,11 +60,11 @@ const fetchPlaceData = async () => {
       const feature = data.features[0];
       const properties = feature.properties;
 
-      // Assign fetched data to Vue Ref variables
       title.value = properties.name || null;
       necropolisName.value = properties.necropolis?.text || null;
       chambers.value = properties.number_of_chambers || null;
       type.value = properties.type?.text || null;
+      dataset.value = properties.dataset?.short_name || null;
       period.value = properties.epoch?.text || null;
       subtitle.value = properties.subtitle || null;
       description.value = properties.description || null;
@@ -118,7 +116,7 @@ onMounted(() => {
    
         <div class="placecard-text">
       
-          <div class="placecard-title theme-color-text theme-title-typography">CTSG {{ title }}</div>
+          <div class="placecard-title theme-color-text theme-title-typography">{{ dataset }} {{ title }}</div>
           <div class="placecard-subtitle theme-color-text theme-title-typography">{{ subtitle }}</div>
 
           <div class="placecard-metadata-content">
@@ -149,7 +147,7 @@ onMounted(() => {
 
             <div class="metadata-item">
               <div class="label">{{ $t('dataset') }}:</div>
-              <div class="dataset-tag">CTSG</div>
+              <div class="dataset-tag">{{ dataset }}</div>
             </div>
 
           </div>

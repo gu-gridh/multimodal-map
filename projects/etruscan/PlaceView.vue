@@ -13,7 +13,6 @@ import imagesLoaded from 'imagesloaded';
 
 const msnry = ref<Masonry | null>(null);
 const plansMsnry = ref<Masonry | null>(null);
-
 const sort = ref('type');
 const etruscan = etruscanStore();
 const groupedByYear = ref<{ [year: string]: (Image | Observation | Document | Pointcloud | Mesh)[] }>({});
@@ -147,10 +146,10 @@ onMounted(async () => {
         urlId = urlId[0];
     }
 
-    urlId = urlId.replace(/_/g, ' ');
+    urlId = urlId.split('_')[1];
 
     // Check if placeId is undefined or null and fetch for the id based on the name
-    const response = await fetch(`${apiConfig.PLACE}?name=${urlId}`);
+    const response = await fetch(`https://diana.dh.gu.se/api/etruscantombs/geojson/place/?name=${urlId}`);
     const data = await response.json();
 
     if (data.features && data.features.length > 0) {
@@ -224,9 +223,12 @@ function createPlaceURL() {
 }
 
 function handleCloneTombChange(event: Event) {
-    const selectedNameAsInt = parseInt((event.target as HTMLSelectElement).value);
-    if (selectedNameAsInt) {
-        window.location.href = `/place/${selectedNameAsInt}`;
+    const selectedId = parseInt((event.target as HTMLSelectElement).value);
+    const selectedOption = cloneTombOptions.value.find(option => option.id === selectedId);
+
+    if (selectedOption) {
+        selectedDataset.value = selectedOption.datasetName;
+        window.location.href = `/place/${selectedDataset.value}_${selectedOption.id}`;
     }
 }
 
