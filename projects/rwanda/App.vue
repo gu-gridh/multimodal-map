@@ -60,6 +60,7 @@ body {
   min-width:900px!important;
   pointer-events: none!important;
   user-select: none!important;
+
 }
 
 
@@ -71,7 +72,7 @@ body {
 }
 
 .left-pane-content {
-
+  padding:30px 0px 30px 50px!important;
   pointer-events: none!important;
   user-select: none!important;
 }
