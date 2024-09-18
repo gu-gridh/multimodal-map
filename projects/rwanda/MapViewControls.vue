@@ -114,7 +114,7 @@ const handleSourcesClick = (key: string) => {
         class="filter-button lang-buttons"
         @click="handleSourcesClick" />
       </div>
-      <div style="height: 55px; margin-top:25px; width:2px;border-style: dotted; border-width:0px 1px 0 0; border-color:var(--theme-3);">  </div>
+      <div style="height: 55px; margin-top:25px; width:2px;border-style: dotted; border-width:0px 1.5px 0 0; border-color:var(--theme-3);">  </div>
       <div style="">
     <div class="filter-heading">Time Periods</div>
       <Dropdown 
