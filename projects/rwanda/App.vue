@@ -57,12 +57,22 @@ body {
   background: url("./images/gradient.png");
   background-size: contain;
   min-width:900px!important;
+  pointer-events: none!important;
+  user-select: none!important;
 }
 
 
 
 .left-pane-layer {
   padding: 0px 380px 0px 0px !important;
+  pointer-events: none!important;
+  user-select: none!important;
+}
+
+.left-pane-content {
+
+  pointer-events: none!important;
+  user-select: none!important;
 }
 
 #app .mapview-preview {
@@ -121,6 +131,8 @@ body {
   margin-top:0px;
   background-color: var(--theme-2);
   color:white!important;
+  pointer-events: auto!important;
+  user-select: auto!important;
 }
 
 .main-filters .category-button:hover {
