@@ -174,7 +174,7 @@ watch(
   >
     <div
       class="ol-popup-content"
-      v-html="'CTSG ' + (hoveredFeature ? hoveredFeature.get('name') : '')"
+      v-html="(hoveredFeature ? hoveredFeature.get('dataset')?.short_name : '') + ' ' + (hoveredFeature ? hoveredFeature.get('name') : '')"
     ></div>
   </ol-overlay>
 
@@ -185,7 +185,7 @@ watch(
   >
     <div
       class="ol-popup-content"
-      v-html="'CTSG ' + (selectedFeature ? selectedFeature.get('name') : '')"
+      v-html="(selectedFeature ? selectedFeature.get('dataset')?.short_name : '') + ' ' + (selectedFeature ? selectedFeature.get('name') : '')"
     ></div>
   </ol-overlay>
 </template>
