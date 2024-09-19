@@ -152,8 +152,8 @@ function deselectPlace() {
       </div>
 
       <div class="placecard-center-button">
-        <router-link :to="`/place/${dataset}_${(place?.id_ || '').replace(/ /g, '_')}`">
-            <button class="theme-button theme-color-background" style="margin-top:0px;">{{ $t('moreinfo') }}</button>
+        <router-link :to="`/${dataset}_${(place?.id_ || '').replace(/ /g, '_')}`">
+          <button class="theme-button theme-color-background" style="margin-top:0px;">{{ $t('moreinfo') }}</button>
         </router-link>
       </div>
     </div>

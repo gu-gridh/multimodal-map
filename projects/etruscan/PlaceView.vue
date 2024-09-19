@@ -146,7 +146,8 @@ onMounted(async () => {
         urlId = urlId[0];
     }
 
-    urlId = urlId.split('_')[1];
+    urlId = urlId.split('/').pop().split('_').slice(1).join('_'); //get everything after the first _ in the URL
+    urlId = urlId.replace(/_/g, '%20'); //replace _ with spaces
 
     // Check if placeId is undefined or null and fetch for the id based on the name
     const response = await fetch(`https://diana.dh.gu.se/api/etruscantombs/geojson/place/?name=${urlId}`);
@@ -161,8 +162,11 @@ onMounted(async () => {
         //check clone_tombs for different dataset IDs
         mainFeature.properties.clone_tombs.forEach(cloneTomb => {
             if (cloneTomb.dataset !== mainDatasetId) {
+                //determine the id based on the name
+                const id = isNaN(parseInt(cloneTomb.name)) ? cloneTomb.name : parseInt(cloneTomb.name);
+
                 cloneTombOptions.value.push({
-                    id: parseInt(cloneTomb.name), //we don't use ID we use name in routing
+                    id: id,
                     datasetId: cloneTomb.dataset,
                     datasetName: datasetsMap[cloneTomb.dataset] || "Unknown Dataset"
                 });
@@ -223,12 +227,12 @@ function createPlaceURL() {
 }
 
 function handleCloneTombChange(event: Event) {
-    const selectedId = parseInt((event.target as HTMLSelectElement).value);
-    const selectedOption = cloneTombOptions.value.find(option => option.id === selectedId);
-
+    const selectedValue = (event.target as HTMLSelectElement).value;
+    const selectedOption = cloneTombOptions.value.find(option => option.id.toString() === selectedValue);
     if (selectedOption) {
-        selectedDataset.value = selectedOption.datasetName;
-        window.location.href = `/place/${selectedDataset.value}_${selectedOption.id}`;
+        selectedDataset.value = selectedOption.datasetName;        
+        const formattedId = selectedOption.id.toString().replace(/\s+/g, '_');
+        window.location.href = `/${selectedDataset.value}_${formattedId}`;
     }
 }
 
@@ -300,7 +304,7 @@ async function initMasonry() {
                             v-for="option in cloneTombOptions" 
                             :key="option.id" 
                             :value="option.id">
-                            {{ option.datasetName }}
+                            {{ option.datasetName}}
                         </option>
                     </select>
                 </div>

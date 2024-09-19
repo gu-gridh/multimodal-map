@@ -10,7 +10,7 @@
       >
       
         <router-link
-          :to="`/place/${item.name}`"
+          :to="`/${item.name}`"
           @click="updatePlaceId(item)"
         >
         <div class="item-info">

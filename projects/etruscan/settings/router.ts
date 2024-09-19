@@ -12,7 +12,7 @@ const router = createRouter({
       component: MapView,
     },
     {
-      path: "/place/:name",
+      path: "/:name",
       name: "place",
       component: PlaceView,
       props: route => {
@@ -21,12 +21,6 @@ const router = createRouter({
         return { name: name.replace(/_/g, ' ') };
       }
     },
-    /* {
-      path: "/detail/:type/:id",
-      name: "detail",
-      component: ObjectView,
-      props: true,
-    }, */
   ],
 });
 
