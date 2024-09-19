@@ -13,12 +13,13 @@ import { clean } from "@/assets/utils";
 import MapViewGallery from "./MapViewGallery.vue";
 import { ref } from "vue";
 import About from "./About.vue";
+import { transform } from "ol/proj";
 import Instructions from "./Instructions.vue";
 import { onMounted, watch } from "vue";
 import { nextTick } from "vue";
 import Title from "./MapViewTitle.vue"
 
-const { selectedRange, necropoli, showUnknownRange, tombType, dataSetValue, dataParams, selectedNecropolisCoordinates, enable3D, enablePlan, selectedSite } = storeToRefs(etruscanStore());
+const { selectedRange, necropoli, showUnknownRange, tombType, dataSetValue, dataParams, enable3D, enablePlan, selectedSite } = storeToRefs(etruscanStore());
 const store = mapStore();
 const etruscan = etruscanStore();  // Get the instance of etruscanStore
 const { selectedFeature } = storeToRefs(store);
@@ -47,17 +48,6 @@ watch(
     }
   },
   { immediate: true }
-);
-
-// Watcher for selectedNecropolisCoordinates changes
-watch(
-  selectedNecropolisCoordinates,
-  (newCoordinates, oldCoordinates) => {
-    if (newCoordinates !== oldCoordinates && newCoordinates) {
-      store.updateCenter(newCoordinates);
-      store.updateZoom(16);
-    }
-  },
 );
 
 /* Response for generating the URL for filtering map points down */
@@ -106,10 +96,30 @@ const tagParams = computed(() => {
 
 watch(
   tagParams, 
-  (newParams) => {
+  async (newParams) => {
     dataParams.value = newParams;
-  }, 
-  { immediate: true }
+    //fetch bounding box data based on tagParams
+    const queryString = new URLSearchParams(newParams).toString();
+    const response = await fetch(`https://diana.dh.gu.se/api/etruscantombs/boundingbox/?${queryString}`);
+    if (response.ok) {
+      const bbox = await response.json();
+
+      if (bbox && bbox.min_latitude && bbox.max_latitude && bbox.min_longitude && bbox.max_longitude) {
+        //transform the coordinates from EPSG:4326 to EPSG:3857
+        const minCoords = transform([bbox.min_longitude, bbox.min_latitude], 'EPSG:4326', 'EPSG:3857');
+        const maxCoords = transform([bbox.max_longitude, bbox.max_latitude], 'EPSG:4326', 'EPSG:3857');
+
+        if (Array.isArray(minCoords) && Array.isArray(maxCoords)) {
+          //update map bounds
+          store.updateBounds([minCoords, maxCoords]);
+        } else {
+          console.error("Failed to transform bounding box coordinates.");
+        }
+      }
+    } else {
+      console.error("Failed to fetch bounding box data.");
+    }
+  }
 );
 
 onMounted(() => {

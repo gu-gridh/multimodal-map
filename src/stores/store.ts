@@ -34,6 +34,15 @@ export const mapStore = defineStore("map", () => {
     galleryImages.value = newImages
   }
 
+  function updateBounds(bbox: [[number, number], [number, number]]) {
+    extent.value = [
+      bbox[0][0], //min latitude
+      bbox[0][1], //min longitude
+      bbox[1][0], //max latitude
+      bbox[1][1]  //max longitude
+    ];
+  }
+
   return { 
     extent, 
     center, 
@@ -46,6 +55,7 @@ export const mapStore = defineStore("map", () => {
     updateCenter, 
     updateZoom,
     updateResults,
-    updateGalleryImages
+    updateGalleryImages,
+    updateBounds
   };
 });

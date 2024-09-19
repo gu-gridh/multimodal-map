@@ -173,6 +173,15 @@ onMounted(() => {
       }
     },
   );
+
+  watch(
+    () => store.extent,
+    (newExtent) => {
+      if (newExtent && newExtent.length === 4) {
+        map.value.map.getView().fit(newExtent, { duration: 500 });
+      }
+    }
+  );
 });
 
 function onMoveEnd() {

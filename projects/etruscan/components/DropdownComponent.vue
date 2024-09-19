@@ -31,10 +31,6 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { storeToRefs } from "pinia";
-import CategoryButton from "../../../src/components/input/CategoryButton.vue";
-import { etruscanStore } from "../settings/store";
-const { selectedNecropolisCoordinates } = storeToRefs(etruscanStore());
 
 const props = defineProps<{
   modelValue: string[];
@@ -71,12 +67,6 @@ function dropdownToggle(event: Event) {
 function handleToggle(key: string) {
   if (key === 'all') {
     emit("update:modelValue", ['all']); // Set modelValue to ['all']
-    
-    // If this dropdown is for "Necropolis", then move the map
-    if (props.type === 'necropolis') {
-      selectedNecropolisCoordinates.value = [1335733.925763396, 5194636.579769473];
-    }
-
     emit('click', 'all'); // Emit the special 'all' value
     return;
   }

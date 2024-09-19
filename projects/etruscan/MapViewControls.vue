@@ -62,7 +62,7 @@
           <div class="section-title">{{ $t('necropolisname') }}</div>
           <div title="Narrow the result to a certain necropolis" class="broad-controls">
             <Dropdown v-model="necropoli" :categories="NECROPOLI" :limit="1" styleType="dropdown" class="my-2"
-              type="necropolis" @click="handleSelectionClick($event, currentTombType)" />
+              type="necropolis" />
           </div>
         </div>
 
@@ -135,13 +135,12 @@ import { storeToRefs } from "pinia";
 import { etruscanStore } from "./settings/store";
 import type { EtruscanProject } from "./settings/types";
 import { DianaClient } from "@/assets/diana";
-import { transform } from 'ol/proj';
 import apiConfig from "./settings/apiConfig"
 import { nextTick } from 'vue';
 
 const config = inject<EtruscanProject>("config");
 const dianaClient = new DianaClient("etruscantombs"); // Initialize DianaClient
-const { categories, selectedRange, tags, necropoli, tombType, dataSetValue, dataParams, selectedNecropolisCoordinates, enable3D, enablePlan, selectedSite, showUnknownRange } = storeToRefs(etruscanStore());
+const { categories, selectedRange, tags, necropoli, tombType, dataSetValue, dataParams, enable3D, enablePlan, selectedSite, showUnknownRange } = storeToRefs(etruscanStore());
 // Create a ref for last clicked category
 const lastClickedCategory = ref('');
 
@@ -290,21 +289,6 @@ const toggleAboutVisibility = async () => {
   await nextTick();
   visibleAbout.value = !visibleAbout.value;
 };
-
-function handleSelectionClick(selectedValue: any, targetRef: any) {
-  const selectedCoordinates = NECROPOLICoordinates.value[selectedValue];
-  if (selectedCoordinates) {
-    const [x, y] = selectedCoordinates;
-
-    const convertedCoordinates = transform([x, y], 'EPSG:4326', 'EPSG:3857');
-    if (Array.isArray(convertedCoordinates) && convertedCoordinates.length === 2) {
-        selectedNecropolisCoordinates.value = convertedCoordinates as [number, number];
-    } else {
-        console.error("Invalid coordinate format after transformation.");
-    }
-
-  }
-}
 
 function clearAll() {
   categories.value = ["all"];
