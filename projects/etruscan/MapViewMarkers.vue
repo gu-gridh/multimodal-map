@@ -185,7 +185,7 @@ watch(
   >
     <div
       class="ol-popup-content"
-      v-html="(selectedFeature ? selectedFeature.get('dataset')?.short_name : '') + ' ' + (selectedFeature ? selectedFeature.get('name') : '')"
+      v-html="(selectedFeature ? selectedFeature.get('dataset')?.short_name : '') + ' - ' + (selectedFeature ? selectedFeature.get('name') : '')"
     ></div>
   </ol-overlay>
 </template>
