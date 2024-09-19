@@ -117,7 +117,7 @@ function deselectPlace() {
 
             <div class="metadata-item">
               <div class="short-label">{{ $t('site') }}:</div>
-              <div class="tag theme-color-text">San Giovenale</div>
+              <div class="tag theme-color-text">{{ siteName }}</div>
             </div>
             <div class="metadata-item">
               <div class="label">Necropolis:</div>
