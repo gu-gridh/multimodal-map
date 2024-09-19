@@ -10,7 +10,7 @@
       >
       
         <router-link
-          :to="`/${item.name}`"
+           :to="`/${item.datasetShortName}_${item.name.replace(/\s+/g, '_')}`"
           @click="updatePlaceId(item)"
         >
         <div class="item-info">
@@ -92,7 +92,8 @@ const fetchData = async (requestedPageIndex) => {
           default_image: feature.properties.default_image ? feature.properties.default_image.iiif_file : null,
           first_photograph_id: feature.properties.first_photograph_id ? feature.properties.first_photograph_id.iiif_file : null,
           name: feature.properties.name,
-          necropolis: feature.properties.necropolis.text
+          necropolis: feature.properties.necropolis.text,
+          datasetShortName: feature.properties.dataset.short_name
         })).filter(img => img && (img.default_image || img.first_photograph_id));
       
       images.value = [...images.value, ...newImages];
