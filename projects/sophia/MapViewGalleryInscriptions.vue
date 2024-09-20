@@ -30,7 +30,7 @@
               <h2 v-if="item.subtitle" style="font-size: 12px;">{{ item.subtitle }}</h2>
             </div>
           </div>
-          <img :src="item.url_to_iiif_clip" loading="lazy" @load="imageLoaded" />
+          <img :src="`${item.inscription_iiif_url}/!300,700/0/default.jpg`" loading="lazy" @load="imageLoaded" />
         </a>
         <div class="cut-off"></div>
       </div>
@@ -97,16 +97,17 @@
 
             //final URL
             const urlToFetch = `${baseUrl}${categoryParam}`;
+            console.log(urlToFetch)
 
             const res = await fetch(urlToFetch);
             const data = await res.json();
 
             const newImages = data.results.map(item => ({
-              url_to_iiif_clip: item.url_to_iiif_clip,
+              inscription_iiif_url: item.inscription_iiif_url,
               panelTitle: item.panel ? item.panel.title : 'Unknown',
               subtitle: item.title,
               id: item.id,
-            })).filter(img => img && img.url_to_iiif_clip);
+            })).filter(img => img && img.inscription_iiif_url);
 
             images.value = [...images.value, ...newImages];
 
@@ -192,7 +193,7 @@
               const data = JSON.parse(bodyContent);
 
               const newImages = data.results.map(item => ({
-                url_to_iiif_clip: item.url_to_iiif_clip,
+                inscription_iiif_url: item.inscription_iiif_url,
                 panelTitle: item.panel ? item.panel.title : 'Unknown',
                 title: item.title,
                 id: item.id,
