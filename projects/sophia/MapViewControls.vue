@@ -31,14 +31,10 @@
 
         <div class="control-group">
           <div class="tag-section">
-            <div class="section-title">{{ $t('writingsystem') }}</div>
-            <div class="broad-controls">
-              <Dropdown v-model="categories" :categories="{
-              textualgraffiti: $t('textualgraffiti'),
-              pictorialgraffiti: $t('pictorialgraffiti'),
-              composite: $t('composite'),
-            }" :limit="1" class="my-2" title="Pick an inscription type" @click="handleCategoryClick"
-                style="padding-right:30px;" />
+            <div class="section-title">{{ $t('textualgenre') }}</div>
+            <div title="Narrow the result to a certain language group" class="broad-controls">
+              <Dropdown v-model="language" :categories="LANGUAGE" :limit="1" styleType="dropdown" class="my-2"
+                type="language" style="padding-right:30px;" />
             </div>
           </div>
 
@@ -51,26 +47,27 @@
           </div>
         </div>
 
-          <div class="tag-section">
-            <div class="section-title">{{ $t('language') }}</div>
-            <div title="Narrow the result to a certain language group" class="broad-controls">
-              <Dropdown v-model="language" :categories="LANGUAGE" :limit="1" styleType="dropdown" class="my-2"
-                type="language" style="padding-right:30px;" />
-            </div>
+        <div class="tag-section">
+          <div class="section-title">{{ $t('language') }}</div>
+          <div title="Narrow the result to a certain language group" class="broad-controls">
+            <Dropdown v-model="language" :categories="LANGUAGE" :limit="1" styleType="dropdown" class="my-2"
+              type="language" style="padding-right:30px;" />
           </div>
-      
+        </div>
+
 
 
 
 
 
       </div>
-      <div class="section-title">{{ $t('searchtitle') }}</div>
+      <!-- <div class="section-title">{{ $t('searchtitle') }}</div> -->
       <div class="toggle-buttons" style="margin-top: 10px">
-        <button style="float:left; border-radius:4px 0px 0px 0px" :class="{ active: searchType === 'surfaces' }"
-          @click="setSearchType('surfaces')">{{ $t('panels') }}</button>
-        <button style="border-radius:0px 4px 0px 0px" :class="{ active: searchType === 'inscriptionobjects' }"
-          @click="setSearchType('inscriptionobjects')">{{ $t('inscriptions') }}</button>
+        <button style="float:left; border-radius:5px 0px 0px 0px" :class="{ active: searchType === 'inscriptionobjects' }"
+        @click="setSearchType('inscriptionobjects')">{{ $t('inscriptions') }}</button>
+        <button style="border-radius:0px 5px 0px 0px" :class="{ active: searchType === 'surfaces' }"
+        @click="setSearchType('surfaces')">{{ $t('panels') }}</button>
+         
       </div>
       <div class="search-section">
         <input ref="searchInput" type="text" v-model="searchQuery" @input="handleSearch" @focus="handleSearchBoxFocus"
@@ -173,7 +170,7 @@
   const currentPanelCount = ref(0);
   const visibleAbout = ref(false);
   const { selectedFeature } = storeToRefs(mapStore());
-  const searchType = ref('surfaces'); // Default to 'surfaces' 
+  const searchType = ref('inscriptionobjects'); // Default to 'surfaces' 
   const firstSearchBoxClick = ref(true);
   const searchQuery = ref('');
   const searchResults = ref([]);
@@ -389,8 +386,8 @@
     justify-content: left;
   }
 
-  .control-group{
-    margin-right:20px;
+  .control-group {
+    margin-right: 20px;
   }
 
   #app .section-title {
@@ -398,7 +395,7 @@
     margin-bottom: -3px;
     font-weight: 300;
     color: black;
-    font-size:1.0em;
+    font-size: 1.0em;
   }
 
   #app .tag-section {
@@ -454,14 +451,15 @@
 
   .search-box {
     width: 98%;
-    height: 50px;
-    padding: 8px;
+    height: 60px;
+    padding: 8px 8px 8px 12px;
     margin-top: 0px;
     border: 0px solid #ccc;
-    border-radius: 0px 8px 8px 8px;
-    overflow: hidden;
+    border-radius: 0px 5px 5px 5px;
+    overflow: none;
     background-color: rgba(255, 255, 255, 0.6);
     backdrop-filter: blur(5px);
+    font-size:1.2em;
     /* focus:none; */
   }
 
@@ -475,11 +473,13 @@
     border: 0px solid #ccc;
     border-top: none;
     border-radius: 0px 0px 8px 8px;
-    margin-top: -4px;
+    margin-top: -5px;
     z-index: 1000;
-    max-height: 120px;
+    max-height: 140px;
     overflow-y: auto;
     transition: all 0.4s;
+    position:absolute;
+    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.1);
   }
 
   /* #app .range-slider-container {
