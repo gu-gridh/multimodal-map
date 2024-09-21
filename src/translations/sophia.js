@@ -82,6 +82,8 @@ const messages = {
       pictorialgraffiti:"Pictorial graffiti",
       monograms:"Monograms",
       writingsystem:"Writing system",
+      textualgenre:"Textual genre",
+      pictorialdescription:"Pictorial description",
       "categories": {
         "all": "All types",
         "drawings": "Drawings",
@@ -169,6 +171,8 @@ const messages = {
       pictorialgraffiti:"Живописні графіті",
       monograms:"Вензелі",
       writingsystem:"Writing system",
+      textualgenre:"Текстовий жанр",
+      pictorialdescription:"Картинний опис",
       "categories": {
         "all": "Всі види",
         "drawings": "Drawings",

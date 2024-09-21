@@ -1,20 +1,31 @@
 <template>
   <div id="gallery-container">
     <div class="gallery-filters">
+      
+
       <div class="gallery-filter-container">
-        <h1>Genre</h1>
+        <h1>Condition</h1>
         <div class="tag-container">
-          <div class="gallery-tag">Prayer</div>
-          <div class="gallery-tag">Journal</div>
+          <div class="gallery-tag">Fragment</div>
+          <div class="gallery-tag">Damaged</div>
+          <div class="gallery-tag">Preserved</div>
         </div>
       </div>
 
       <div class="gallery-filter-container">
-        <h1>Description</h1>
+        <h1>Alignment</h1>
         <div class="tag-container">
-          <div class="gallery-tag">Cross</div>
-          <div class="gallery-tag">Saint</div>
-          <div class="gallery-tag">Skull</div>
+          <div class="gallery-tag">Aligned</div>
+          <div class="gallery-tag">Insclinating</div>
+          <div class="gallery-tag">Declinating</div>
+        </div>
+      </div>
+
+      <div class="gallery-filter-container">
+        <h1>Extra-alpabetical signs</h1>
+        <div class="tag-container">
+          <div class="gallery-tag">Cross </div>
+          <div class="gallery-tag">Counting</div>
         </div>
       </div>
 
