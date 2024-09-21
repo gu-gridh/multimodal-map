@@ -39,7 +39,7 @@ const props = defineProps<{
 const emit = defineEmits(["update:modelValue", "click"]);
 
 const defaultOptionLabel = computed(() => {
-  return i18n.global.locale === 'en' ? 'All' : 'Bсе';
+  return i18n.global.locale === 'en' ? 'Show all' : 'Показати все';
 });
 
 function toggle(key: string) {
