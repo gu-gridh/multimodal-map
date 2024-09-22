@@ -6,6 +6,7 @@
       <div class="gallery-filter-container">
         <h1>Condition</h1>
         <div class="tag-container">
+          <div class="gallery-tag">Show all</div>
           <div class="gallery-tag">Fragment</div>
           <div class="gallery-tag">Damaged</div>
           <div class="gallery-tag">Preserved</div>
@@ -15,6 +16,7 @@
       <div class="gallery-filter-container">
         <h1>Alignment</h1>
         <div class="tag-container">
+          <div class="gallery-tag">Show all</div>
           <div class="gallery-tag">Aligned</div>
           <div class="gallery-tag">Insclinating</div>
           <div class="gallery-tag">Declinating</div>
@@ -24,6 +26,7 @@
       <div class="gallery-filter-container">
         <h1>Extra-alpabetical signs</h1>
         <div class="tag-container">
+          <div class="gallery-tag">Show all</div>
           <div class="gallery-tag">Cross </div>
           <div class="gallery-tag">Counting</div>
         </div>
