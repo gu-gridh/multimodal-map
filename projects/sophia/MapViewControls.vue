@@ -1,12 +1,11 @@
 <template>
   <!-- Checks if all points are loaded and only then show the controls -->
+  <div class="filtercontrolwidgets" >
   <div :class="{ 'non-interactive': !areMapPointsLoaded }">
     <div v-if="areMapPointsLoaded">
-
-      <!-- This creates a 2-column section with for the controls -->
-      <div class="control-organisation justify-left"
-        style="pointer-events:auto; padding-bottom:10px; padding-top:10px; display:flex; flex-direction:row;">
-
+      <div class="filtercontrolwidgets" >
+      <!-- This organises the three top dropdown columns -->
+      <div class="control-organisation" style="pointer-events:auto; padding-bottom:10px; padding-top:10px; display:flex; flex-direction:row;">
         <div class="control-group">
           <div class="tag-section">
             <div class="section-title">{{ $t('typeofinscription') }}</div>
@@ -31,7 +30,7 @@
 
         <div class="control-group">
           <div class="tag-section">
-            <div class="section-title">{{ $t('textualgenre') }}</div>
+            <div class="section-title">{{ $t('writingsystem') }}</div>
             <div title="Narrow the result to a certain language group" class="broad-controls">
               <Dropdown v-model="language" :categories="LANGUAGE" :limit="1" styleType="dropdown" class="my-2"
                 type="language" style="padding-right:30px;" />
@@ -55,21 +54,17 @@
           </div>
         </div>
 
-
-
-
-
-
       </div>
+
       <!-- <div class="section-title">{{ $t('searchtitle') }}</div> -->
-      <div class="toggle-buttons" style="margin-top: 10px">
-        <button style="float:left; border-radius:5px 0px 0px 0px" :class="{ active: searchType === 'inscriptionobjects' }"
-        @click="setSearchType('inscriptionobjects')">{{ $t('inscriptions') }}</button>
-        <button style="border-radius:0px 5px 0px 0px" :class="{ active: searchType === 'surfaces' }"
-        @click="setSearchType('surfaces')">{{ $t('panels') }}</button>
-         
-      </div>
       <div class="search-section">
+        <div class="toggle-buttons" style="margin-top: 10px">
+          <button style="" :class="{ active: searchType === 'inscriptionobjects' }"
+            @click="setSearchType('inscriptionobjects')">{{ $t('inscriptions') }}</button>
+          <button style="" :class="{ active: searchType === 'surfaces' }" @click="setSearchType('surfaces')">{{
+            $t('panels') }}</button>
+        </div>
+
         <input ref="searchInput" type="text" v-model="searchQuery" @input="handleSearch" @focus="handleSearchBoxFocus"
           :placeholder="searchType === 'surfaces' ? $t('searchsurfacesplaceholder') : $t('searchinscriptionsplaceholder')"
           class="search-box" />
@@ -89,7 +84,7 @@
           </template>
         </div>
       </div>
-
+    </div>
     </div>
 
     <!-- if the markers are not loaded show the loader -->
@@ -138,7 +133,7 @@
       style="display:none; margin-top:15px; width:auto; cursor:pointer;  transition: all 0.2s ease-in-out; background-color:var(--theme-4); color:white;"
       @click="clearAll()">{{ $t('reset') }}</div>
   </div>
-
+</div>
 </template>
 
 <script setup lang="ts">
@@ -362,6 +357,11 @@
     font-size: 95%;
   }
 
+  .filtercontrolwidgets{
+display:flex;
+flex-direction: column;
+  }
+
   .loading-svg {
     width: 100%;
     height: 200px;
@@ -392,7 +392,7 @@
 
   #app .section-title {
     margin-top: 6px;
-    margin-bottom: -3px;
+    margin-bottom: -5px;
     font-weight: 300;
     color: black;
     font-size: 1.0em;
@@ -414,6 +414,21 @@
   }
 
 
+
+  .search-section {
+    width: 98%;
+    height: auto;
+    padding: 0px 8px 12px 12px;
+    margin-top: 0px;
+    border: 0px solid #ccc;
+    border-radius: 8px;
+    overflow: none;
+    background-color: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(5px);
+    z-index: 200000;
+
+  }
+
   .search-result-item {
     /* Remove styling from anchor links */
     display: block;
@@ -425,7 +440,6 @@
     padding: 8px;
     border-bottom: 1px solid #eee;
     cursor: pointer;
-    background-color: rgba(255, 255, 255, 1.0) !important;
   }
 
   .search-result-item:hover {
@@ -433,33 +447,25 @@
   }
 
   .toggle-buttons button {
-    padding: 2px 12px;
-    background-color: rgba(255, 255, 255, 0.3);
+    font-weight: 400;
     cursor: pointer;
-    margin-bottom: 0px;
+    margin-bottom: 5px;
+    margin-right:15px;
     color: rgb(80, 80, 80);
   }
 
   .toggle-buttons button.active {
-    background-color: rgba(255, 255, 255, 0.6);
+   color:rgb(180,100,100);
+   text-decoration:dashed;
+   text-decoration-style: dashed;
+   text-decoration-thickness: 2px;
+   text-decoration-line: underline;
   }
 
-  .search-section {
-    position: relative;
-    width: 100%;
-  }
 
   .search-box {
-    width: 98%;
-    height: 60px;
-    padding: 8px 8px 8px 12px;
-    margin-top: 0px;
-    border: 0px solid #ccc;
-    border-radius: 0px 5px 5px 5px;
-    overflow: none;
-    background-color: rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(5px);
-    font-size:1.2em;
+    font-size: 1.2em;
+    background-color: transparent;
     /* focus:none; */
   }
 
@@ -468,17 +474,18 @@
   }
 
   .search-results {
-    width: 98%;
+    z-index: 200000;
+    width: 100%;
     background-color: rgba(255, 255, 255, 1.0);
     border: 0px solid #ccc;
     border-top: none;
     border-radius: 0px 0px 8px 8px;
-    margin-top: -5px;
-    z-index: 1000;
+    margin-top: 6px;
+    margin-left: -12px;
     max-height: 140px;
     overflow-y: auto;
     transition: all 0.4s;
-    position:absolute;
+    position: absolute;
     box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.1);
   }
 
