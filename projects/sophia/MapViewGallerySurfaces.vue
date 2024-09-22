@@ -7,6 +7,7 @@
         <div class="gallery-filter-container">
           <h1>Description</h1>
           <div class="tag-container">
+            <div class="gallery-tag">Show all</div>
             <div class="gallery-tag">Cross</div>
             <div class="gallery-tag">Saint</div>
             <div class="gallery-tag">Skull</div>
