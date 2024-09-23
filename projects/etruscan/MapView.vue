@@ -96,7 +96,17 @@ const tagParams = computed(() => {
 
 watch(
   tagParams, 
-  async (newParams) => {
+  async (newParams, oldParams) => {
+    //check if dataset, site, or necropolis have changed
+    const hasRelevantChange = ['dataset', 'site', 'necropolis'].some(key => {
+      return JSON.stringify(newParams[key]) !== JSON.stringify(oldParams[key]);
+    });
+
+    if (!hasRelevantChange) {
+      // console.log("no relevant change detected, skipping API call.");
+      return;
+    }
+
     dataParams.value = newParams;
     //fetch bounding box data based on tagParams
     const queryString = new URLSearchParams(newParams).toString();
@@ -105,9 +115,18 @@ watch(
       const bbox = await response.json();
 
       if (bbox && bbox.min_latitude && bbox.max_latitude && bbox.min_longitude && bbox.max_longitude) {
+        //buffer
+        const bufferValue = .025;
+
+        //apply buffer to the bounding box
+        const bufferedMinLongitude = bbox.min_longitude - bufferValue;
+        const bufferedMinLatitude = bbox.min_latitude - bufferValue;
+        const bufferedMaxLongitude = bbox.max_longitude + bufferValue;
+        const bufferedMaxLatitude = bbox.max_latitude + bufferValue;
+
         //transform the coordinates from EPSG:4326 to EPSG:3857
-        const minCoords = transform([bbox.min_longitude, bbox.min_latitude], 'EPSG:4326', 'EPSG:3857');
-        const maxCoords = transform([bbox.max_longitude, bbox.max_latitude], 'EPSG:4326', 'EPSG:3857');
+        const minCoords = transform([bufferedMinLongitude, bufferedMinLatitude], 'EPSG:4326', 'EPSG:3857');
+        const maxCoords = transform([bufferedMaxLongitude, bufferedMaxLatitude], 'EPSG:4326', 'EPSG:3857');
 
         if (Array.isArray(minCoords) && Array.isArray(maxCoords)) {
           //update map bounds
