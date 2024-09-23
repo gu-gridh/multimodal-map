@@ -21,6 +21,7 @@ const dataset = ref<string | null>(null);
 const period = ref<string | null>(null);
 const subtitle = ref<string | null>(null);
 const description = ref<string | null>(null);
+const siteName = ref<string | null>(null);
 const hasImages = ref<boolean>(false);
 
 //when a place is selected, fetch image and info
@@ -38,7 +39,7 @@ watchEffect(async () => {
     const placeId = selectedFeature.value.getId();
     etruscan.placeId = placeId as string | null;
     place.value = { id_: placeName };
-    images.value = await diana.listAll<Image>("image", { tomb: placeId, depth: 2, type_of_image: 2 });
+    images.value = await diana.listAll<Image>("image", { tomb: placeId, depth: 3, type_of_image: 2 });
     // If images are available
     if (images.value.length > 0) {
       hasImages.value = true;
@@ -56,6 +57,7 @@ watchEffect(async () => {
         period.value = images.value[0].tomb?.epoch.text || null;
         subtitle.value = images.value[0].tomb?.subtitle || null;
         description.value = images.value[0].tomb?.description || null;
+        siteName.value = images.value[0].tomb?.necropolis?.site?.text || null;
       }
     } else {
       hasImages.value = false;
@@ -72,6 +74,7 @@ watchEffect(async () => {
         period.value = feature.properties.epoch?.text || null;
         subtitle.value = feature.properties.subtitle || null;
         description.value = feature.properties.description || null;
+        siteName.value = feature.properties.necropolis.site.text || null;
       }
     }
   } else {

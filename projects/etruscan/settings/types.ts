@@ -36,6 +36,10 @@ export type Tomb = {
   necropolis: {
     id: number;
     text: string;
+    site: {
+      id: number;
+      text: string;
+    };
   };
   type: {
     id: number;

@@ -103,7 +103,7 @@ watch(
     });
 
     if (!hasRelevantChange) {
-      // console.log("no relevant change detected, skipping API call.");
+      dataParams.value = newParams;
       return;
     }
 

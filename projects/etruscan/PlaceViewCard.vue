@@ -19,13 +19,13 @@ const capitalize = (word: String) => {
 
 const title = ref<string | null>(null);
 const necropolisName = ref<string | null>(null);
+const siteName = ref<string | null>(null);
 const chambers = ref<number | null>(null);
 const type = ref<string | null>(null);
 const dataset = ref<string | null>(null);
 const period = ref<string | null>(null);
 const subtitle = ref<string | null>(null);
 const description = ref<string | null>(null);
-
 const projection = ref("EPSG:4326");
 const zoom = ref(16);
 const rotation = ref(0);
@@ -68,6 +68,7 @@ const fetchPlaceData = async () => {
       period.value = properties.epoch?.text || null;
       subtitle.value = properties.subtitle || null;
       description.value = properties.description || null;
+      siteName.value = properties.necropolis?.site?.text || null;
     }
   } catch (error) {
     console.error("Failed to fetch data", error);
@@ -122,7 +123,7 @@ onMounted(() => {
           <div class="placecard-metadata-content">
             <div class="metadata-item">
               <div class="short-label">{{ $t('site') }}:</div>
-              <div class="tag theme-color-text">San Giovenale</div>
+              <div class="tag theme-color-text">{{ siteName }}</div>
             </div>
 
             <div class="metadata-item">

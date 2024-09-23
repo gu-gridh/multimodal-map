@@ -264,7 +264,7 @@
   #currentpage {
     font-family: "Oswald", sans-serif !important;
     color: white;
-    font-size: 0.8em !important;
+    font-size: 0.7em !important;
     font-weight: 100;
     pointer-events: none !important;
   }

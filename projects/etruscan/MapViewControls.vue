@@ -280,7 +280,7 @@ watch(
   async (newTagParams, oldTagParams) => {
   const queryParams = new URLSearchParams(Object.fromEntries(Object.entries(newTagParams).map(([k, v]) => [k, String(v)])));
   const urlWithParams = `https://diana.dh.gu.se/api/etruscantombs/info/tombs/?${queryParams.toString()}`;
-   await fetchData(urlWithParams);
+  await fetchData(urlWithParams);
   },
   { immediate: true }
 );
