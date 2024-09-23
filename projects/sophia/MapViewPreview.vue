@@ -128,8 +128,8 @@ function deselectPlace() {
       </div>
 
       <div class="placecard-center-button">
-        <a :href="`https://292d2fd034.dh.gu.se/?q=${selectedFeature.get('title')}`" target="_blank">
-          <button class="theme-button theme-color-background" style="margin-top:0px;">{{ $t('moreinfo') }}</button>
+        <a :href="`https://71808.dh.gu.se/?q=${selectedFeature.get('title')}`" target="_blank">
+          <button class="theme-button theme-color-background" style="margin-top:0px;">{{ $t('exploreData') }}</button>
         </a>
       </div>
     </div>
@@ -137,6 +137,10 @@ function deselectPlace() {
 </template>
 
 <style>
+   .close-card-button{
+    left: calc(45px);
+  }
+
 .osd{
   background-color:black!important;
 }

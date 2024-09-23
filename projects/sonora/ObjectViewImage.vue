@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { computed, watch } from "vue";
+import { computed } from "vue";
 import ObjectViewComponent from "./ObjectViewComponentSonora.vue";
-import OpenSeadragon from "@/components/OpenSeadragonSequence.vue";
+import OpenSeadragon from "./OpenSeadragonSonora.vue";
 import type { ImageDeep } from "./types";
 
 const props = defineProps<{
@@ -28,6 +28,16 @@ const imageUrls = computed(() => {
   return urls;
 });
 
+const downloadUrls = computed(() => {
+  const urls = [];
+  for (const key in props.object) {
+    if (props.object[key].Download) {
+      urls.push(props.object[key].Download);
+    }
+  }
+  return urls;
+});
+
 const placesBeforeFiles = computed(() => {
   const places = [];
   for (const key in props.object) {
@@ -39,14 +49,7 @@ const placesBeforeFiles = computed(() => {
   return places;
 });
 
-const downloadImage = (fileUrl: string, fileName: string) => {
-  const link = document.createElement('a');
-  link.href = fileUrl;
-  link.download = fileName;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-};
+
 </script>
 
 <template>
@@ -73,6 +76,7 @@ const downloadImage = (fileUrl: string, fileName: string) => {
   <OpenSeadragon
       v-if="imageUrls.length > 0"
       :src="imageUrls"
+      :downloadUrls="downloadUrls"
       :showReferenceStrip="true"
       :key="imageUrls.join(',')"
       class="flex-1"
@@ -88,12 +92,10 @@ const downloadImage = (fileUrl: string, fileName: string) => {
         <div id="ZoomOut" class="NavButton"></div>
       </a>
     </div>
-
   </section>
 </template>
 
 <style scoped>
-
 .back-button {
   left: 20px;
   top: 40px;
@@ -136,11 +138,6 @@ const downloadImage = (fileUrl: string, fileName: string) => {
 
 .content{
   width: 100%;
-}
-
-@media screen and (max-width: 900px) {
-
-
 }
 
 </style>

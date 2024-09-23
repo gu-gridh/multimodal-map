@@ -98,6 +98,7 @@ import { SophiaClient } from "@/assets/saintsophia";
 import { transform } from 'ol/proj';
 import apiConfig from "./apiConfig"
 import { nextTick } from 'vue';
+import i18n from '../../src/translations/sophia';
 
 const config = inject<InscriptionsProject>("config");
 const sophiaClient = new SophiaClient("inscriptions"); // Initialize SophiaClient
@@ -139,18 +140,14 @@ async function fetchDataAndPopulateRef<T>(type: string, refToPopulate: any) {
     const data = await sophiaClient.listAll<T>(type);
     data.forEach((result: any) => {
       if (result.published) {
-        refToPopulate.value[result.id] = result.text;
-
-        // If the type is necropolis, store its coordinates
-        // if (type === "necropolis" && result.geometry && result.geometry.coordinates) {
-        //   NECROPOLICoordinates.value[result.id] = result.geometry.coordinates;
-        // }
+        const textKey = i18n.global.locale === 'uk' ? 'text_ukr' : 'text';
+        refToPopulate.value[result.id] = result[textKey];
       }
     });
   } catch (error) {
     console.error(`Error fetching data for type ${type}:`, error);
   }
-} 
+}
 
 const handleCategoryClick = (category: string) => {
   // If the clicked category is the same as the last clicked one, default to "all"
@@ -204,6 +201,10 @@ watch(
   },
   { immediate: true }
 );
+
+watch(() => i18n.global.locale, (newLocale) => {
+  fetchDataAndPopulateRef('language', LANGUAGE);
+});
 
 const toggleAboutVisibility = async () => {
   await nextTick();

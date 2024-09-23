@@ -53,6 +53,7 @@ const messages = {
       nophoto: "No photographs available",
       drawings: "Drawings",
       showall: "Show all",
+      exploreData: "Explore documentation",
       alldatasets: "All datasets",
       "categories": {
         "all": "All types",
@@ -113,6 +114,7 @@ const messages = {
       nophoto: "No photographs available",
       drawings: "Drawings",
       showall: "Show all",
+      exploreData: "Вивчіть документацію",
       alldatasets: "All datasets",
       "categories": {
         "all": "Всі види",

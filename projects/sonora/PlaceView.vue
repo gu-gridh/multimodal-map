@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, defineProps, onMounted, inject, computed, onUnmounted } from 'vue';
-import type { Image, Observation, Document, Pointcloud, Mesh } from './types';
+import type { Image, Document, Media } from './types';
 import type { DianaClient } from "@/assets/diana";
 import PlaceViewCard from "./PlaceViewCard.vue";
 import MapComponent from "@/components/MapComponent.vue";
@@ -20,9 +20,10 @@ const linkData = ref({ builder: '', work: '' }); // Selected builder and work fr
 
 const route = useRoute();
 const sort = ref('type');
-const groupedByYear = ref<{ [year: string]: (Image | Observation | Document | Pointcloud | Mesh)[] }>({});
+const groupedByYear = ref<{ [year: string]: (Image | Document | Media)[] }>({});
 const { id } = defineProps<{ id: string; }>();
 let documents = ref<Document[]>([]); // Initialized as an empty array
+let media = ref<Media[]>([]); // Initialized as an empty array
 
 watch(() => route.params.id, async (newId) => {
   if (newId) {
@@ -36,10 +37,14 @@ watch(() => route.params.id, async (newId) => {
       let data = await response.json();
       organData.value = processOrganData(data);
 
+      media.value = [];
       documents.value = [];
       for (const key in data) {
         if (data[key].Document) {
           documents.value.push(data[key]);
+        }
+        if (data[key].Linkaddr) {
+          media.value.push(data[key]);
         }
       }
     } catch (error) {
@@ -64,6 +69,9 @@ onMounted(async () => {
     for (const key in data) {
       if (data[key].Document) {
         documents.value.push(data[key]);
+      }
+      if (data[key].Linkaddr) {
+        media.value.push(data[key]);
       }
     }
 
@@ -205,10 +213,10 @@ const handleClickOutside = (event) => {
       </div>
       <div class="place-gallery-container">
         <!-- Documents -->
-        <div class="table-section">
-          <table class="content-table" v-if="organData">
+        <div class="table-section" v-if="documents.length > 0">
+          <table class="content-table">
             <tbody>
-              <tr v-if="documents.length > 0">
+              <tr>
                 <td class="wide-second-td">{{ $t('documents') }}</td>
                 <div class="documents">
                   <div v-for="(doc, index) in documents" :key="index" class="document-link">
@@ -216,6 +224,25 @@ const handleClickOutside = (event) => {
                       <div class="document-icon" />
                       {{ doc.Document }}
                     </router-link>
+                  </div>
+                </div>
+           
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- Media -->
+        <div class="table-section" v-if="media.length > 0">
+          <table class="content-table">
+            <tbody>
+              <tr>
+                <td class="wide-second-td">Media:</td>
+                <div class="documents">
+                  <div v-for="(item, index) in media" :key="index" class="document-link">
+                      <a :href="item.Linkaddr" target="_blank" rel="noopener noreferrer">
+                        <div class="media-icon"></div>
+                        {{ item.Linkname }}
+                      </a>
                   </div>
                 </div>
            
@@ -317,6 +344,18 @@ font-size: 30px;
   margin-top:-6px;
   display: inline-block;
   background-image: url("@/assets/document-white.svg");
+  background-repeat: no-repeat;
+  background-size: contain;
+  width:25px;
+}
+
+.media-icon {
+  height: 1.3em;
+  vertical-align: middle;
+  margin-right: 8px;
+  margin-top:-6px;
+  display: inline-block;
+  background-image: url("@/assets/play_arrow.svg");
   background-repeat: no-repeat;
   background-size: contain;
   width:25px;

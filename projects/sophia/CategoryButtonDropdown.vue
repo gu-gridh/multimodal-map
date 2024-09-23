@@ -9,7 +9,7 @@
     />
   </div>
   <select v-else :value="modelValue[0]" class="dropdown theme-color-background" @change="dropdownToggle($event)">
-    <option value="all">All</option>
+    <option value="all">{{ defaultOptionLabel }}</option>
     <option 
       v-for="(label, key) in categories"
       :key="key"
@@ -23,6 +23,8 @@
 import { storeToRefs } from "pinia";
 import CategoryButton from "../../src/components/input/CategoryButton.vue";
 import { inscriptionsStore } from "./store";
+import { computed } from 'vue';
+import i18n from '../../src/translations/sophia';
 // const { selectedNecropolisCoordinates } = storeToRefs(inscriptionsStore());
 
 
@@ -35,6 +37,10 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits(["update:modelValue", "click"]);
+
+const defaultOptionLabel = computed(() => {
+  return i18n.global.locale === 'en' ? 'All' : 'все';
+});
 
 function toggle(key: string) {
   handleToggle(key);

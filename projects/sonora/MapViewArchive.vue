@@ -31,7 +31,8 @@
         <router-link v-for="doc in filteredSearchResults" 
               :key="doc.Dokument_nr" 
               :to="`/detail/image/${doc.Dokument_nr}`" 
-              class="search-result-item">
+              class="search-result-item"
+              target="_blank">
                 {{ doc.Titel }}
         </router-link>
       </div>
