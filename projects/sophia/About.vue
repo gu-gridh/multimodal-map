@@ -13,9 +13,9 @@
     </div>
     <div class="main-about-content">
       <div class="logo-area">
-        <div class="logo" style="background-image:url(/images/logo-sophia.png);"></div>
-        <div class="logo" style="background-image:url(/images/logo-gu.png);"></div>
-        <div class="logo" style="background-image:url(/images/logo-mist.png); width:220px; margin-top:25px; margin-left:10px;"></div>
+        <div class="logo" style="background-image:url(/sophia_about/logo-sophia.png);"></div>
+        <div class="logo" style="background-image:url(/sophia_about/logo-gu.png);"></div>
+        <div class="logo" style="background-image:url(/sophia_about/logo-mist.png); width:220px; margin-top:25px; margin-left:10px;"></div>
       </div>
       <div class="left-content">
         <div class="left-content-columns">
@@ -227,7 +227,7 @@
   .right-content {
     height: calc(100vh - 80px);
     width: 40%;
-    background: url(/images/saintsophia.jpg);
+    background: url(/sophia_about/saintsophia.jpg);
     background-size: cover;
     float: right;
   }
