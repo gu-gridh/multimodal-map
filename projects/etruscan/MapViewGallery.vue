@@ -83,7 +83,7 @@ const updatePlaceId = (item) => {
 const fetchData = async (requestedPageIndex) => {
   if (requestedPageIndex > lastFetchedPageIndex) {
     try {
-      const urlToFetch = `${apiConfig.PLACE}?page=${requestedPageIndex}&${new URLSearchParams(store.imgParams).toString()}`;
+      const urlToFetch = `${apiConfig.PLACE}?depth=1&page=${requestedPageIndex}&${new URLSearchParams(store.imgParams).toString()}`;
       const res = await fetch(urlToFetch);
       const data = await res.json();
       const newImages = data.features.map(feature => ({
@@ -138,7 +138,7 @@ const fetchData = async (requestedPageIndex) => {
         pageIndex++;  // Increment pageIndex for the next set of data
       }
       canIncrement = false; // Disable further increments
-      const url = `${apiConfig.PLACE}?page=${pageIndex}&${new URLSearchParams(store.imgParams).toString()}`;
+      const url = `${apiConfig.PLACE}?depth=1&page=${pageIndex}&${new URLSearchParams(store.imgParams).toString()}`;
 
        // Use Promise syntax to handle the asynchronous 404 check
   checkFor404(url).then(async (is404) => {
@@ -176,7 +176,8 @@ const fetchData = async (requestedPageIndex) => {
                 default_image: feature.properties.default_image ? feature.properties.default_image.iiif_file : null,
                 first_photograph_id: feature.properties.first_photograph_id ? feature.properties.first_photograph_id.iiif_file : null,
                 name: feature.properties.name,
-                necropolis: feature.properties.necropolis.text
+                necropolis: feature.properties.necropolis.text,
+                datasetShortName: feature.properties.dataset.short_name
               })).filter(img => img !== null);        
 
           images.value = [...images.value, ...newImages];
