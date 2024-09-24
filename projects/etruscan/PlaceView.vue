@@ -150,7 +150,7 @@ onMounted(async () => {
     urlId = urlId.replace(/_/g, '%20'); //replace _ with spaces
 
     // Check if placeId is undefined or null and fetch for the id based on the name
-    const response = await fetch(`https://diana.dh.gu.se/api/etruscantombs/geojson/place/?name=${urlId}`);
+    const response = await fetch(`https://diana.dh.gu.se/api/etruscantombs/geojson/place/?name=${urlId}&depth=1`);
     const data = await response.json();
 
     if (data.features && data.features.length > 0) {

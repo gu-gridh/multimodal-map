@@ -54,7 +54,7 @@ const setCenter = async () => {
 
 const fetchPlaceData = async () => {
   try {
-    const response = await fetch(`${apiConfig.PLACE}?id=${props.id}`);
+    const response = await fetch(`${apiConfig.PLACE}?id=${props.id}&depth=2`);
     if (response.ok) {
       const data = await response.json();
       const feature = data.features[0];

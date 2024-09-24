@@ -171,9 +171,6 @@ const NECROPOLI = ref<Record<string, string>>({});
 const TOMBTYPE = ref<Record<string, string>>({});
 const DATASET = ref<Record<string, string>>({});
 const SITES = ref<Record<string, string>>({});
-const currentTombType = ref(null);
-
-const baseURL = `${apiConfig.PLACE}?page_size=500`;
 
 onMounted(async () => {
   await fetchDataAndPopulateRef("epoch", TAGS);

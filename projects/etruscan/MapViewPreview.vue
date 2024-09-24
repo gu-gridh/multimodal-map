@@ -63,7 +63,7 @@ watchEffect(async () => {
       hasImages.value = false;
       imageUrls.value = [];
       // If no images are available, fetch details from `geojson/place` endpoint
-      const response = await fetch(`${apiConfig.PLACE}?id=${placeId}`);
+      const response = await fetch(`${apiConfig.PLACE}?id=${placeId}&depth=2`);
       const geojsonData = await response.json();
       if (geojsonData.features.length > 0) {
         const feature = geojsonData.features[0];
