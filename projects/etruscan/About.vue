@@ -48,7 +48,7 @@
 
 
 <script lang="ts">
- // @ts-nocheck
+
   import i18n from '../../src/translations/etruscan';
 
   export default {
