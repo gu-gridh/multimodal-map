@@ -332,7 +332,7 @@ async function initMasonry() {
                     <tr v-if="combined3DModels.length > 0">
                         <td>{{ $t('threedmodels') }}</td>
                         <td><div v-for="(model, index) in combined3DModels" :key="index" class="image-placeholder square"> 
-                            <a v-if="model.modelType === 'mesh'" :href="`http://localhost:8098/viewer/?q=${model.id}/pointcloud`"
+                            <a v-if="model.modelType === 'mesh'" :href="`http://localhost:8094/viewer/?q=${model.id}/pointcloud`"
                                 target="_blank">
                                 <div class="meta-data-overlay">
                                     <div class="meta-data-overlay-text">{{ model.title }}</div>
@@ -343,7 +343,7 @@ async function initMasonry() {
                                     class="image-square" />
                             </a>
                             <a v-else-if="model.modelType === 'pointcloud'"
-                                :href="`http://localhost:8098/viewer/?q=${model.id}/pointcloud`" target="_blank">
+                                :href="`http://localhost:8094/viewer/?q=${model.id}/pointcloud`" target="_blank">
                                 <div class="meta-data-overlay">
                                     <div class="meta-data-overlay-text">{{ model.title }}</div>
                                     <div class="meta-data-overlay-text">{{ model.technique ? model.technique.text : 'N/A' }}
@@ -360,7 +360,7 @@ async function initMasonry() {
                         <td><div class="plans-masonry-gallery">
                             <div v-for="(image, index) in plans" :key="index" class="plan-gallery__item">
                                 <div class="masonry-image" v-if="'iiif_file' in image">
-                                    <a :href="`http://localhost:8098/viewer/?q=${image.id}/image`" target="_blank">
+                                    <a :href="`http://localhost:8094/viewer/?q=${image.id}/image`" target="_blank">
                                         <div class="meta-data-overlay">
                                             <div class="meta-data-overlay-text">{{ image.title }}</div>
                                             <div class="meta-data-overlay-text"> {{ image.type_of_image[0].text }}</div>
@@ -387,7 +387,7 @@ async function initMasonry() {
                         <td><div class="placeview-masonry-gallery">
                             <div v-for="(image, index) in images" :key="index" class="gallery__item">
                                 <div class="masonry-image" v-if="'iiif_file' in image">
-                                    <a :href="`http://localhost:8098/viewer/?q=${image.id}/image`" target="_blank">
+                                    <a :href="`http://localhost:8094/viewer/?q=${image.id}/image`" target="_blank">
                                         <div class="meta-data-overlay">
                                             <div class="meta-data-overlay-text">{{ image.title }}</div>
                                             <div class="meta-data-overlay-text">{{ image.type_of_image[0].text }}</div>
@@ -423,7 +423,7 @@ async function initMasonry() {
                             :class="(isImage(item) || isPointcloud(item) || isMesh(item)) ? 'image-placeholder square' : ''">
                             <!-- If the item is an image -->
                             <div class="image-square" v-if="'iiif_file' in item">
-                                <a v-if="item.iiif_file" :href="`http://localhost:8098/viewer/?q=${item.id}/image`" target="_blank">
+                                <a v-if="item.iiif_file" :href="`http://localhost:8094/viewer/?q=${item.id}/image`" target="_blank">
                                     <div class="meta-data-overlay">
                                         <div class="meta-data-overlay-text">{{ item.title }}</div>
                                         <div class="meta-data-overlay-text">{{ item.type_of_image[0].text }}</div>
@@ -447,7 +447,7 @@ async function initMasonry() {
 
                             <!-- If the item is a pointcloud -->
                             <a v-else-if="isPointcloud(item)"
-                                :href="` http://localhost:8098/viewer/?q=${item.id}/pointcloud`" target="_blank">
+                                :href="` http://localhost:8094/viewer/?q=${item.id}/pointcloud`" target="_blank">
                                 <div class="meta-data-overlay">
                                     <div class="meta-data-overlay-text">{{ item.title }}</div>
                                     <div class="meta-data-overlay-text">{{ item.technique ? item.technique.text : 'N/A' }}
@@ -458,7 +458,7 @@ async function initMasonry() {
                             </a>
 
                             <!-- If the item is a mesh -->
-                            <a v-else-if="isMesh(item)" :href="`http://localhost:8098/viewer/?q=${item.id}/pointcloud`"
+                            <a v-else-if="isMesh(item)" :href="`http://localhost:8094/viewer/?q=${item.id}/pointcloud`"
                                 target="_blank">
                                 <div class="meta-data-overlay">
                                     <div class="meta-data-overlay-text">{{ item.title }}</div>
