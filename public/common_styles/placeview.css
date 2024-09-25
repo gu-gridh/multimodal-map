@@ -23,7 +23,7 @@ table p {
 }
 
 table td {
-    width: 130px !important;
+    width: auto;
 }
 
 .main-container {
@@ -68,18 +68,25 @@ table td {
 
 .content-table {
   width:100%;
+  margin-left: 20px;
 }
 
 .content-table-date{
     width:100%;
+    margin-left: 20px;
 }
 
 .content-table td {
-    padding-right: 15px;
     padding-top: 2px;
-    width: 130px;
     vertical-align: top;
-    text-align: right;
+    text-align: left;
+}
+
+@media screen and (max-width: 900px) {
+    .content-table tr td:nth-child(1)
+    {
+        width: 80px;
+    }
 }
 
 .content-table-date td {
@@ -87,7 +94,7 @@ table td {
     padding-top: 2px;
     padding-right: 35px;
     vertical-align: top;
-    text-align: center;
+    text-align: left;
 }
 
 .masonry-gallery{
@@ -348,11 +355,6 @@ transform:scale(1.05);
         overflow: auto !important;
     }
 
-    .content-table td {
-        color:black!important;
-     }
-
-
     #app .main-container {
         position: relative !important;
         display: block !important;
@@ -450,10 +452,6 @@ transform:scale(1.05);
         max-width: 420px;
         background-color: rgb(240, 240, 240);
 
-    }
-
-    table td {
-        width: 80px !important;
     }
 
     .place-gallery-container .dropdown {

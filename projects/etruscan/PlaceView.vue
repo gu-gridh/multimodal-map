@@ -313,23 +313,25 @@ async function initMasonry() {
                 <table class="content-table" v-if="sort == 'type'">
                     <tr v-if="documents.length > 0">
                         <td>{{ $t('documents') }}</td>
-                        <a v-for="(document, index) in documents" :key="index" :href="document.upload" target="_blank"
-                            download>
-                            <div class="image-placeholder document-placeholder">
-                                <div class="document-title">{{ document.title }}</div>
-                                <p class="documentlabel">{{ $t('type') }}:</p>
-                                <p class="documentdata theme-color-text">{{ document.type_names[0] }}</p>
-                                <p class="documentlabel">{{ $t('size') }}:</p>
-                                <p class="documentdata theme-color-text">{{ document.size }} MB</p>
-                                <p class="documentlabel">{{ $t('published') }}:</p>
-                                <p class="documentdata theme-color-text">{{ document.date }}</p>
-                            </div>
-                        </a>
+                        <td>
+                            <a v-for="(document, index) in documents" :key="index" :href="document.upload" target="_blank"
+                                download>
+                                <div class="image-placeholder document-placeholder">
+                                    <div class="document-title">{{ document.title }}</div>
+                                    <p class="documentlabel">{{ $t('type') }}:</p>
+                                    <p class="documentdata theme-color-text">{{ document.type_names[0] }}</p>
+                                    <p class="documentlabel">{{ $t('size') }}:</p>
+                                    <p class="documentdata theme-color-text">{{ document.size }} MB</p>
+                                    <p class="documentlabel">{{ $t('published') }}:</p>
+                                    <p class="documentdata theme-color-text">{{ document.date }}</p>
+                                </div>
+                            </a>
+                        </td>
                     </tr>
 
                     <tr v-if="combined3DModels.length > 0">
                         <td>{{ $t('threedmodels') }}</td>
-                        <div v-for="(model, index) in combined3DModels" :key="index" class="image-placeholder square"> 
+                        <td><div v-for="(model, index) in combined3DModels" :key="index" class="image-placeholder square"> 
                             <a v-if="model.modelType === 'mesh'" :href="`http://localhost:8098/viewer/?q=${model.id}/pointcloud`"
                                 target="_blank">
                                 <div class="meta-data-overlay">
@@ -350,12 +352,12 @@ async function initMasonry() {
                                 <img :src="`${model.preview_image.iiif_file}/full/400,/0/default.jpg`" :alt="model.title"
                                     class="image-square" />
                             </a>
-                        </div>
+                        </div></td>
                     </tr>
 
                     <tr v-if="plans.length > 0">
                         <td>{{ $t('drawings') }}</td>
-                        <div class="plans-masonry-gallery">
+                        <td><div class="plans-masonry-gallery">
                             <div v-for="(image, index) in plans" :key="index" class="plan-gallery__item">
                                 <div class="masonry-image" v-if="'iiif_file' in image">
                                     <a :href="`http://localhost:8098/viewer/?q=${image.id}/image`" target="_blank">
@@ -368,17 +370,21 @@ async function initMasonry() {
                                     </a>
                                 </div>
                             </div>
-                        </div>
+                        </div></td>
                     </tr>
                     <tr v-if="images.length > 0">
                         <td>
-                            <a :href="`${apiConfig.ADMIN_IMAGE}?q=${route.params.name}`">
-                                {{ $t('photographs') }}
-                            </a>
-                            <button class="show-button theme-color-background" v-if="nextPageUrl" @click="fetchMoreImages"
-                                :disabled="isLoading">{{ $t('showall') }}</button>
+                            <div style="display: flex; flex-direction: column; align-items: flex-start;">
+                                <a :href="`${apiConfig.ADMIN_IMAGE}?q=${route.params.name}`">
+                                    {{ $t('photographs') }}
+                                </a>
+                                <button class="show-button theme-color-background" v-if="nextPageUrl" 
+                                    @click="fetchMoreImages" :disabled="isLoading">
+                                    {{ $t('showall') }}
+                                </button>
+                            </div>
                         </td>
-                        <div class="placeview-masonry-gallery">
+                        <td><div class="placeview-masonry-gallery">
                             <div v-for="(image, index) in images" :key="index" class="gallery__item">
                                 <div class="masonry-image" v-if="'iiif_file' in image">
                                     <a :href="`http://localhost:8098/viewer/?q=${image.id}/image`" target="_blank">
@@ -391,12 +397,12 @@ async function initMasonry() {
                                     </a>
                                 </div>
                             </div>
-                        </div>
+                        </div></td>
                     </tr>
 
                     <tr v-if="observations.length > 0">
                         <td>Observations</td>
-                        <div v-for="(observation, index) in observations" :key="index"
+                        <td><div v-for="(observation, index) in observations" :key="index"
                             class="image-placeholder observation-placeholder">
                             <div class="observation-title">
                                 {{ observation.title }}
@@ -406,15 +412,14 @@ async function initMasonry() {
                             </div>
                             <div class="observation-body" v-html="observation.observation">
                             </div>
-                        </div>
+                        </div></td>
                     </tr>
                 </table>
 
                 <table class="content-table-date" v-else-if="sort == 'year'">
                     <tr v-for="[year, items] in sortedGroupedByYear" :key="year">
                         <td style="font-size:1.5em; font-weight:200; text-align:right;">{{ year }}</td>
-
-                        <div v-for="(item, index) in items" :key="index"
+                        <td><div v-for="(item, index) in items" :key="index"
                             :class="(isImage(item) || isPointcloud(item) || isMesh(item)) ? 'image-placeholder square' : ''">
                             <!-- If the item is an image -->
                             <div class="image-square" v-if="'iiif_file' in item">
@@ -476,7 +481,7 @@ async function initMasonry() {
                                     <p class="documentdata theme-color-text">{{ item.date }}</p>
                                 </div>
                             </a>
-                        </div>
+                        </div></td>
                     </tr>
                 </table>
             </div>
@@ -503,7 +508,6 @@ margin-left:130px;
     float: right;
     font-size: 0.9em;
     margin-top: 5px;
-    margin-left: 20px;
     transition: all 0.2s ease-in-out;
     min-width:60px;
 }
