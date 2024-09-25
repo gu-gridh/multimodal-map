@@ -26,6 +26,10 @@ table td {
     width: auto;
 }
 
+.content-table td:nth-child(1) {
+    width: 100px;
+}
+
 .main-container {
     position:absolute;
     display: flex;
