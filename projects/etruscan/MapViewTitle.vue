@@ -31,8 +31,7 @@ export default {
       }
     },
   },
-  emits: ['toggle-about'],
-  emits: ['toggle-instructions']
+  emits: ['toggle-about', 'toggle-instructions'],
 };
 </script>
 

@@ -72,7 +72,6 @@ const vectorLayer = new WebGLVectorLayer({
 onMounted(() => {
   try {
     if (map) {
-      console.log("Current map layers: ", map.getLayers().getArray());
       map.addLayer(vectorLayer);
     }
   } catch (e) {

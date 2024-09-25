@@ -5,7 +5,7 @@ import markerIcon from "@/assets/marker-red-etruscan.svg";
 import apiConfig from "./settings/apiConfig"
 
 const props = defineProps<{
-  id: string;
+  id: string | number;
 }>();
 
 const capitalize = (word: String) => {

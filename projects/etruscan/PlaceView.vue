@@ -27,6 +27,10 @@ const isLoading = ref(false);
 const selectedDataset = ref<string | null>(null); 
 const cloneTombOptions = ref<{ id: number, datasetId: number, datasetName: string }[]>([]);
 
+const props = defineProps<{
+  name: string;
+}>();
+
 let observations = ref<Observation[]>([]);
 let documents = ref<Document[]>([]);
 let pointcloud = ref<Pointcloud[]>([]);
