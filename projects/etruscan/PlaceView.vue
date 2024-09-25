@@ -1,5 +1,4 @@
 <script setup lang="ts">
- // @ts-nocheck
 import { ref, onMounted, inject, computed, nextTick, watch } from 'vue';
 import type { Image, Observation, Document, Pointcloud, Mesh } from './settings/types';
 import type { DianaClient } from "@/assets/diana";
