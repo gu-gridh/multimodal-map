@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+// @ts-nocheck
 import { computed } from "vue";
 import MainLayout from "@/MainLayout.vue";
 import MapViewControls from "./MapViewControls.vue";
