@@ -116,7 +116,7 @@ watch(
 
       if (bbox && bbox.min_latitude && bbox.max_latitude && bbox.min_longitude && bbox.max_longitude) {
         //buffer
-        const bufferValue = .025;
+        const bufferValue = 0.01;
 
         //apply buffer to the bounding box
         const bufferedMinLongitude = bbox.min_longitude - bufferValue;
