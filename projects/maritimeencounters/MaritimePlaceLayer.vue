@@ -12,6 +12,7 @@ const map = ref<L.Map | null>(null);
 const markerClusterGroup = ref<L.MarkerClusterGroup | null>(null);
 let hoverPopup = ref<L.Popup | null>(null);  //active hover popup
 let polylineLayer = ref<L.LayerGroup | null>(null);
+const fetchedIds = new Set<number>();
 
 const props = defineProps({
   mapOptions: {
@@ -67,71 +68,87 @@ const drawConnections = (startLatLng: L.LatLng) => {
 };
 
 const fetchData = async (initialUrl: string, params: Record<string, any>) => {
-  let nextUrl = initialUrl;
-  let initialParams = new URLSearchParams({ page_size: '1000', ...params }).toString();
-  if (nextUrl && initialParams) {
-    nextUrl = `${nextUrl}?${initialParams}`;
-  }
+  return new Promise(async (resolve, reject) => {
+    let nextUrl = initialUrl;
+    let initialParams = new URLSearchParams({ page_size: '1000', ...params }).toString();
+    if (nextUrl && initialParams) {
+      nextUrl = `${nextUrl}?${initialParams}`;
+      console.log(nextUrl);
+    }
 
-  while (nextUrl) {
-    const res = await fetch(nextUrl.replace(/^http:/, "https:")).catch((err) => {
-      throw err;
-    });
+    while (nextUrl) {
+      try {
+        const res = await fetch(nextUrl.replace(/^http:/, "https:"));
+        if (!res.ok) throw new Error("Failed to fetch data");
 
-    if (!res) continue;
+        const data = await res.json();
 
-    const data = await res.json();
+        const markersToAdd = [];
+        data.features.forEach((feature: any) => {
+        const featureId = feature.id;
+          
+         if (fetchedIds.has(featureId)) return;
 
-    const markersToAdd = [];
-    data.features.forEach((feature: any) => {
-      if (feature.geometry && feature.geometry.coordinates && feature.geometry.coordinates.length === 2) {
-        const coords = feature.geometry.coordinates;
-        if (!isNaN(coords[0]) && !isNaN(coords[1])) {
-          const latLng = L.latLng(coords[1], coords[0]);
+          fetchedIds.add(featureId); //add id to set to prevent duplicates
 
-          const marker = L.marker(latLng, {
-            icon: L.icon({
-              iconUrl: markerIcon,
-              iconSize: [30, 45],
-            }),
-          });
+          if (feature.geometry && feature.geometry.coordinates && feature.geometry.coordinates.length === 2) {
+            const coords = feature.geometry.coordinates;
+            if (!isNaN(coords[0]) && !isNaN(coords[1])) {
+              const latLng = L.latLng(coords[1], coords[0]);
 
-          marker.on("click", () => {
-            if (props.showConnections && coords[1] === 55.99446 && coords[0] === 55.99446) {
-              drawConnections(latLng);
+              const marker = L.marker(latLng, {
+                icon: L.icon({
+                  iconUrl: markerIcon,
+                  iconSize: [30, 45],
+                }),
+              });
+
+              marker.on("click", () => {
+                if (props.showConnections && coords[1] === 55.99446 && coords[0] === 55.99446) {
+                  drawConnections(latLng);
+                }
+              });
+
+              marker.on("mouseover", () => {
+                if (hoverPopup.value) {
+                  toRaw(map.value)?.closePopup(hoverPopup.value);
+                }
+
+                hoverPopup.value = L.popup({
+                  closeButton: false,
+                  offset: L.point(0, -30),
+                })
+                  .setLatLng(latLng)
+                  .setContent(
+                    `<b>Name:</b> ${feature.properties.name}<br><b>Coordinates:</b> ${coords[1].toFixed(6)}, ${coords[0].toFixed(6)}`
+                  )
+                  .openOn(toRaw(map.value) as L.Map);
+
+                marker.on("mouseout", () => {
+                  toRaw(map.value)?.closePopup(toRaw(hoverPopup.value) as L.Popup);
+                  hoverPopup.value = null;
+                });
+              });
+
+              markersToAdd.push(marker);
             }
-          });
+          }
+        });
 
-          marker.on("mouseover", () => {
-            if (hoverPopup.value) {
-              toRaw(map.value)?.closePopup(hoverPopup.value);
-            }
+        toRaw(markerClusterGroup.value)?.addLayers(markersToAdd);
+        console.log(`Added ${markersToAdd.length} markers to cluster group`);
 
-            hoverPopup.value = L.popup({
-              closeButton: false,
-              offset: L.point(0, -30),
-            })
-              .setLatLng(latLng)
-              .setContent(
-                `<b>Name:</b> ${feature.properties.name}<br><b>Coordinates:</b> ${coords[1].toFixed(6)}, ${coords[0].toFixed(6)}`
-              )
-              .openOn(toRaw(map.value) as L.Map);
+        nextUrl = data.next ? data.next.replace(/^http:/, "https:") : null;
 
-            marker.on("mouseout", () => {
-              toRaw(map.value)?.closePopup(toRaw(hoverPopup.value) as L.Popup);
-              hoverPopup.value = null;
-            });
-          });
-
-          markersToAdd.push(marker);
-        }
+      } catch (err) {
+        console.error(err);
+        reject(err);
       }
-    });
+    }
 
-    toRaw(markerClusterGroup.value)?.addLayers(markersToAdd);
-
-    nextUrl = data.next ? data.next.replace(/^http:/, "https:") : null;
-  }
+    resolve(); //when all pages are processed
+    console.log('Fetched IDs:', Array.from(fetchedIds));
+  });
 };
 
 watch(() => props.showConnections, (newVal) => {  //clear lines when showConnections is off
@@ -145,7 +162,7 @@ onMounted(() => {
     zoomAnimation: true,
     fadeAnimation: true,
     markerZoomAnimation: true
-  }).setView(props.mapOptions.center, props.mapOptions.zoom);
+  }).setView([58.0, 12.0], 9); //gothenburg
 
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     maxZoom: 19, //11
@@ -154,11 +171,11 @@ onMounted(() => {
   renderGeoJSON(countryMinified);
 
   markerClusterGroup.value = L.markerClusterGroup({
-    spiderfyOnMaxZoom: true,  //spiderfy
+    spiderfyOnMaxZoom: true, 
     showCoverageOnHover: true,
     zoomToBoundsOnClick: true,
     maxClusterRadius: 100,
-    chunkedLoading: true,  //Enable chunked loading
+    chunkedLoading: true,
   });
 
   // Override _getExpandedVisibleBounds to limit to current map bounds
@@ -168,9 +185,24 @@ onMounted(() => {
 
   toRaw(map.value)?.addLayer(toRaw(markerClusterGroup.value));
 
-  fetchData("https://maritime-encounters.dh.gu.se/api/resources/site_coordinates", props.params);
+  //fetch bounding box
+  const bbox = map.value?.getBounds().toBBoxString();
+  const urlWithBBox = `https://maritime-encounters.dh.gu.se/api/resources/site_coordinates/?in_bbox=${bbox}&page_size=100`;
 
-  // close any active hover popup before zooming
+  //fetch the full dataset after bounding box
+  fetchData(urlWithBBox, {})
+    .then(() => {
+      console.log('bbox fetch completed. Now fetching the full dataset.');
+      return fetchData("https://maritime-encounters.dh.gu.se/api/resources/site_coordinates", {});
+    })
+    .then(() => {
+      console.log('Full dataset fetch completed.');
+    })
+    .catch(err => {
+      console.error("Error during fetching:", err);
+    });
+
+  //close any active hover popup before zooming
   toRaw(map.value)?.on('zoomstart', () => {
     if (hoverPopup.value) {
       toRaw(map.value)?.closePopup(toRaw(hoverPopup.value));
