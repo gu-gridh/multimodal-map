@@ -2,6 +2,8 @@
 import { ref, onMounted, defineProps, toRaw, watch } from "vue";
 import L from "leaflet";
 import "leaflet.markercluster";
+import { mapStore } from "@/stores/store";
+import { storeToRefs } from "pinia";
 import "leaflet/dist/leaflet.css";
 import "leaflet.markercluster/dist/MarkerCluster.css"; 
 import "leaflet.markercluster/dist/MarkerCluster.Default.css"; 
@@ -13,6 +15,7 @@ const markerClusterGroup = ref<L.MarkerClusterGroup | null>(null);
 let hoverPopup = ref<L.Popup | null>(null);  //active hover popup
 let polylineLayer = ref<L.LayerGroup | null>(null);
 const fetchedIds = new Set<number>();
+const { selectedFeature } = storeToRefs(mapStore());
 
 const props = defineProps({
   mapOptions: {
@@ -104,6 +107,8 @@ const fetchData = async (initialUrl: string, params: Record<string, any>) => {
               });
 
               marker.on("click", () => {
+                selectedFeature.value = featureId;
+
                 if (props.showConnections && coords[1] === 55.99446 && coords[0] === 55.99446) {
                   drawConnections(latLng);
                 }

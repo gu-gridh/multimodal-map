@@ -4,6 +4,7 @@ import MainLayout from "@/MainLayout.vue";
 import MapViewControls from "./MapViewControls.vue";
 import MapComponent from "@/components/MapComponent.vue";
 import MaritimePlaceLayer from "./MaritimePlaceLayer.vue";
+import MapViewPreview from "./MapViewPreview.vue";
 import { storeToRefs } from "pinia";
 import { maritimeencountersStore } from "./store";
 import { mapStore } from "@/stores/store";
@@ -137,6 +138,10 @@ const toggleAboutVisibility = async () => {
           
         </MapComponent>  
       </div> 
+    </template>
+
+    <template #details>
+      <MapViewPreview/>
     </template>
 
   </MainLayout>
