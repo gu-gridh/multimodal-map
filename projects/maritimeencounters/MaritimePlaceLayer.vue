@@ -17,6 +17,7 @@ const { selectedFeature } = storeToRefs(mapStore());
 
 let hoverPopup = ref<L.Popup | null>(null);  //active hover popup
 let polylineLayer = ref<L.LayerGroup | null>(null);
+let abortController: AbortController | null = null;
 
 const props = defineProps({
   mapOptions: {
@@ -44,13 +45,9 @@ const targetCoordinates = [
   L.latLng(48.8427, 8.0221)
 ];
 
-const renderGeoJSON = (geojsonArray: { name: string, data: any }[]) => {
-  Object.values(toRaw(layerGroupMap.value)).forEach(layerGroup => {
-    layerGroup.remove();
-  });
-
+const renderGeoJSON = (geojsonArray: { name: string, data: any, id: string }[]) => {
   geojsonArray.forEach((geojsonItem) => {
-    const { name, data } = geojsonItem;
+    const { name, data, id } = geojsonItem;
 
     const geoJSONLayer = L.geoJSON(data, {
       style: {
@@ -62,7 +59,7 @@ const renderGeoJSON = (geojsonArray: { name: string, data: any }[]) => {
 
     const layerGroup = L.layerGroup([geoJSONLayer]);
 
-    //add hover event listeners to each marker
+    //add hover event listeners to each polygon
     geoJSONLayer.eachLayer((layer) => {
       const polygon = layer as L.Polygon;
 
@@ -76,6 +73,28 @@ const renderGeoJSON = (geojsonArray: { name: string, data: any }[]) => {
         polygon.setStyle({
           opacity: 0, //hide polygon when not hovering
         });
+      });
+
+      //when clicking on the polygon clear the markers and fetch new data
+      polygon.on('click', async () => {
+        const bounds = polygon.getBounds();
+        toRaw(map.value)?.fitBounds(bounds, {
+          padding: [20, 20],
+          maxZoom: 10,
+        });
+
+        //clear markers
+        toRaw(markerClusterGroup.value)?.clearLayers();
+        fetchedIds.clear();
+
+        //fetch new data based on the clicked country's ID
+        const url = `https://maritime-encounters.dh.gu.se/api/resources/site_coordinates/?ADM0=${id}&page_size=1000`;
+
+        try {
+          await fetchData(url, {});
+        } catch (error) {
+          console.error("Error fetching data for country ID:", id, error);
+        }
       });
     });
 
@@ -98,28 +117,35 @@ const drawConnections = (startLatLng: L.LatLng) => {
 };
 
 const fetchData = async (initialUrl: string, params: Record<string, any>) => {
+  if (abortController) {
+    abortController.abort();
+    console.log("Previous fetch aborted");
+  }
+
+  abortController = new AbortController();
+  const signal = abortController.signal;
+
   return new Promise(async (resolve, reject) => {
     let nextUrl = initialUrl;
-    let initialParams = new URLSearchParams({ page_size: '1000', ...params }).toString();
+    let initialParams = new URLSearchParams({ ...params }).toString();
     if (nextUrl && initialParams) {
       nextUrl = `${nextUrl}?${initialParams}`;
-      console.log(nextUrl);
     }
 
     while (nextUrl) {
       try {
-        const res = await fetch(nextUrl.replace(/^http:/, "https:"));
+        const res = await fetch(nextUrl.replace(/^http:/, "https:"), { signal });
         if (!res.ok) throw new Error("Failed to fetch data");
 
         const data = await res.json();
 
         const markersToAdd = [];
         data.features.forEach((feature: any) => {
-        const featureId = feature.id;
-          
-         if (fetchedIds.has(featureId)) return;
+          const featureId = feature.id;
 
-          fetchedIds.add(featureId); //add id to set to prevent duplicates
+          if (fetchedIds.has(featureId)) return;
+
+          fetchedIds.add(featureId); // add id to set to prevent duplicates
 
           if (feature.geometry && feature.geometry.coordinates && feature.geometry.coordinates.length === 2) {
             const coords = feature.geometry.coordinates;
@@ -168,18 +194,22 @@ const fetchData = async (initialUrl: string, params: Record<string, any>) => {
         });
 
         toRaw(markerClusterGroup.value)?.addLayers(markersToAdd);
-        console.log(`Added ${markersToAdd.length} markers to cluster group`);
 
         nextUrl = data.next ? data.next.replace(/^http:/, "https:") : null;
 
       } catch (err) {
-        console.error(err);
-        reject(err);
+        if (err.name === "AbortError") {
+          console.log("Fetch request was aborted");
+          return; //if fetch is aborted
+        } else {
+          console.error("Error fetching data:", err);
+          reject(err);
+        }
       }
     }
 
     resolve(); //when all pages are processed
-    console.log('Fetched IDs:', Array.from(fetchedIds));
+    abortController = null;
   });
 };
 
@@ -197,27 +227,27 @@ onMounted(async () => {
   }).setView([58.0, 12.0], 9); //gothenburg
 
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    maxZoom: 19, //11
+    maxZoom: 19,
     minZoom: 3
   }).addTo(toRaw(map.value));
 
   const geojsonFiles = [
-    { name: "Denmark", url: "./polygons/denmark_simplified.json" },
-    { name: "Sweden", url: "./polygons/sweden_simplified.json" },
-    { name: "Germany", url: "./polygons/germany_simplified.json" },
-    { name: "Norway", url: "./polygons/norway_simplified.json" },
-    { name: "Finland", url: "./polygons/finland_simplified.json" },
-    { name: "UK", url: "./polygons/uk_simplified.json" },
-    { name: "Portugal", url: "./polygons/portugal_simplified.json" },
-    { name: "Poland", url: "./polygons/poland_simplified.json" },
-    { name: "Ireland", url: "./polygons/ireland_simplified.json" },
-    { name: "France", url: "./polygons/france_simplified.json" },
-    { name: "Netherlands", url: "./polygons/netherlands_simplified.json" },
-    { name: "Belgium", url: "./polygons/belgium_simplified.json" },
-    { name: "Czech", url: "./polygons/czech_simplified.json" },
-    { name: "Aland", url: "./polygons/aland_simplified.json" },
-    { name: "Russia", url: "./polygons/russia_simplified.json" },
-    { name: "Spain", url: "./polygons/spain_simplified.json" },
+    { name: "Denmark", url: "./polygons/denmark_simplified.json",  id:"2"}, 
+    { name: "Sweden", url: "./polygons/sweden_simplified.json",  id:"10" }, 
+    { name: "Germany", url: "./polygons/germany_simplified.json",  id:"1"},
+    { name: "Norway", url: "./polygons/norway_simplified.json",  id:"7" },
+    { name: "Finland", url: "./polygons/finland_simplified.json",  id:"4"},
+    { name: "UK", url: "./polygons/uk_simplified.json",  id:"6"},
+    { name: "Portugal", url: "./polygons/portugal_simplified.json",  id:"9"},
+    { name: "Poland", url: "./polygons/poland_simplified.json",  id:"8" },
+    { name: "Ireland", url: "./polygons/ireland_simplified.json",  id:"11" },
+    { name: "France", url: "./polygons/france_simplified.json",  id:"5" },
+    { name: "Netherlands", url: "./polygons/netherlands_simplified.json",  id:"16"},
+    { name: "Belgium", url: "./polygons/belgium_simplified.json",  id:"15"},
+    { name: "Czech", url: "./polygons/czech_simplified.json",  id:"13"},
+    { name: "Aland", url: "./polygons/aland_simplified.json",  id:"14"},
+    { name: "Russia", url: "./polygons/russia_simplified.json",  id:"12"},
+    { name: "Spain", url: "./polygons/spain_simplified.json",  id:"3"},
   ];
 
   try {
@@ -225,7 +255,7 @@ onMounted(async () => {
       geojsonFiles.map(async (file) => {
         const response = await fetch(file.url);
         const data = await response.json();
-        return { name: file.name, data };
+        return { name: file.name, data, id: file.id };
       })
     );
     
@@ -258,7 +288,7 @@ onMounted(async () => {
   fetchData(urlWithBBox, {})
     .then(() => {
       console.log('bbox fetch completed. Now fetching the full dataset.');
-      return fetchData("https://maritime-encounters.dh.gu.se/api/resources/site_coordinates", {});
+      return fetchData("https://maritime-encounters.dh.gu.se/api/resources/site_coordinates?page_size=1000", {});
     })
     .then(() => {
       console.log('Full dataset fetch completed.');
