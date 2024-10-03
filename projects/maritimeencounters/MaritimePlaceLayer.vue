@@ -37,7 +37,7 @@ const props = defineProps({
   },
 });
 
-//coordinates to draw lines to
+//coordinates to draw lines to for testing
 const targetCoordinates = [
   L.latLng(4.1129, 2.5911),
   L.latLng(70.81392, 27.96125),
@@ -45,6 +45,7 @@ const targetCoordinates = [
   L.latLng(48.8427, 8.0221)
 ];
 
+//draw polygons for each country
 const renderGeoJSON = (geojsonArray: { name: string, data: any, id: string }[]) => {
   geojsonArray.forEach((geojsonItem) => {
     const { name, data, id } = geojsonItem;
@@ -80,7 +81,7 @@ const renderGeoJSON = (geojsonArray: { name: string, data: any, id: string }[]) 
         const bounds = polygon.getBounds();
         toRaw(map.value)?.fitBounds(bounds, {
           padding: [20, 20],
-          maxZoom: 10,
+          maxZoom: 8,
         });
 
         //clear markers
@@ -116,6 +117,7 @@ const drawConnections = (startLatLng: L.LatLng) => {
   lines.forEach(line => polylineLayer.value?.addLayer(line));
 };
 
+//draw the markers on the map
 const fetchData = async (initialUrl: string, params: Record<string, any>) => {
   if (abortController) {
     abortController.abort();
