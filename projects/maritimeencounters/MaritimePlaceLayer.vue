@@ -8,14 +8,15 @@ import "leaflet/dist/leaflet.css";
 import "leaflet.markercluster/dist/MarkerCluster.css"; 
 import "leaflet.markercluster/dist/MarkerCluster.Default.css"; 
 import markerIcon from "@/assets/marker-white.svg";
-import countryMinified from "./country_1_minified.json"; 
 
 const map = ref<L.Map | null>(null);
 const markerClusterGroup = ref<L.MarkerClusterGroup | null>(null);
-let hoverPopup = ref<L.Popup | null>(null);  //active hover popup
-let polylineLayer = ref<L.LayerGroup | null>(null);
+const layerGroupMap = ref<Record<string, L.LayerGroup>>({});
 const fetchedIds = new Set<number>();
 const { selectedFeature } = storeToRefs(mapStore());
+
+let hoverPopup = ref<L.Popup | null>(null);  //active hover popup
+let polylineLayer = ref<L.LayerGroup | null>(null);
 
 const props = defineProps({
   mapOptions: {
@@ -43,18 +44,44 @@ const targetCoordinates = [
   L.latLng(48.8427, 8.0221)
 ];
 
-const renderGeoJSON = (geojson: any) => {
-  if (countryMinified.value) {
-    countryMinified.value.remove();
-  }
+const renderGeoJSON = (geojsonArray: { name: string, data: any }[]) => {
+  Object.values(toRaw(layerGroupMap.value)).forEach(layerGroup => {
+    layerGroup.remove();
+  });
 
-  countryMinified.value = L.geoJSON(geojson, {
-    style: {
-      color: "#ff7800",
-      weight: 2,
-      opacity: 0.65,
-    },
-  }).addTo(toRaw(map.value)!);
+  geojsonArray.forEach((geojsonItem) => {
+    const { name, data } = geojsonItem;
+
+    const geoJSONLayer = L.geoJSON(data, {
+      style: {
+        color: "#ff7800",
+        weight: 2,
+        opacity: 0.0, //initially hidden
+      },
+    });
+
+    const layerGroup = L.layerGroup([geoJSONLayer]);
+
+    //add hover event listeners to each marker
+    geoJSONLayer.eachLayer((layer) => {
+      const polygon = layer as L.Polygon;
+
+      polygon.on('mouseover', () => {
+        polygon.setStyle({
+          opacity: 0.65, //show polygon on hover
+        });
+      });
+
+      polygon.on('mouseout', () => {
+        polygon.setStyle({
+          opacity: 0, //hide polygon when not hovering
+        });
+      });
+    });
+
+    layerGroup.addTo(toRaw(map.value)!);
+    layerGroupMap.value[name] = layerGroup;
+  });
 };
 
 //draw lines to the specified coordinates for testing
@@ -162,7 +189,7 @@ watch(() => props.showConnections, (newVal) => {  //clear lines when showConnect
   }
 });
 
-onMounted(() => {
+onMounted(async () => {
   map.value = L.map("map", {
     zoomAnimation: true,
     fadeAnimation: true,
@@ -171,10 +198,43 @@ onMounted(() => {
 
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     maxZoom: 19, //11
+    minZoom: 3
   }).addTo(toRaw(map.value));
 
-  renderGeoJSON(countryMinified);
+  const geojsonFiles = [
+    { name: "Denmark", url: "./polygons/denmark_simplified.json" },
+    { name: "Sweden", url: "./polygons/sweden_simplified.json" },
+    { name: "Germany", url: "./polygons/germany_simplified.json" },
+    { name: "Norway", url: "./polygons/norway_simplified.json" },
+    { name: "Finland", url: "./polygons/finland_simplified.json" },
+    { name: "UK", url: "./polygons/uk_simplified.json" },
+    { name: "Portugal", url: "./polygons/portugal_simplified.json" },
+    { name: "Poland", url: "./polygons/poland_simplified.json" },
+    { name: "Ireland", url: "./polygons/ireland_simplified.json" },
+    { name: "France", url: "./polygons/france_simplified.json" },
+    { name: "Netherlands", url: "./polygons/netherlands_simplified.json" },
+    { name: "Belgium", url: "./polygons/belgium_simplified.json" },
+    { name: "Czech", url: "./polygons/czech_simplified.json" },
+    { name: "Aland", url: "./polygons/aland_simplified.json" },
+    { name: "Russia", url: "./polygons/russia_simplified.json" },
+    { name: "Spain", url: "./polygons/spain_simplified.json" },
+  ];
 
+  try {
+    const geojsonArray = await Promise.all(
+      geojsonFiles.map(async (file) => {
+        const response = await fetch(file.url);
+        const data = await response.json();
+        return { name: file.name, data };
+      })
+    );
+    
+    //render the countries
+    renderGeoJSON(geojsonArray);
+  } catch (error) {
+    console.error("Error fetching GeoJSON files:", error);
+  }
+  
   markerClusterGroup.value = L.markerClusterGroup({
     spiderfyOnMaxZoom: true, 
     showCoverageOnHover: true,
