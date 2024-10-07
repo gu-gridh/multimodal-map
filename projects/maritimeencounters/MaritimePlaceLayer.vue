@@ -85,17 +85,16 @@ const renderGeoJSON = (geojsonArray: { name: string, data: any, id: string }[]) 
         });
 
         //clear markers
-        toRaw(markerClusterGroup.value)?.clearLayers();
-        fetchedIds.clear();
-
+        //toRaw(markerClusterGroup.value)?.clearLayers();
+        //fetchedIds.clear();
         //fetch new data based on the clicked country's ID
-        const url = `https://maritime-encounters.dh.gu.se/api/resources/site_coordinates/?ADM0=${id}&page_size=1000`;
+        //const url = `https://maritime-encounters.dh.gu.se/api/resources/site_coordinates/?ADM0=${id}&page_size=1000`;
 
-        try {
-          await fetchData(url, {});
-        } catch (error) {
-          console.error("Error fetching data for country ID:", id, error);
-        }
+        //try {
+        //  await fetchData(url, {});
+        //} catch (error) {
+        //  console.error("Error fetching data for country ID:", id, error);
+        //}
       });
     });
 
