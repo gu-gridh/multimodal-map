@@ -161,11 +161,13 @@ const fetchData = async (initialUrl: string, params: Record<string, any>) => {
               });
 
               marker.on("click", () => {
-                selectedFeature.value = featureId;
+                  selectedFeature.value = featureId;
 
-                if (props.showConnections && coords[1] === 55.99446 && coords[0] === 55.99446) {
-                  drawConnections(latLng);
-                }
+                  toRaw(map.value)?.setView(latLng, 12, { animate: true });
+
+                  if (props.showConnections && coords[1] === 55.99446 && coords[0] === 55.99446) {
+                    drawConnections(latLng);
+                  }
               });
 
               marker.on("mouseover", () => {
