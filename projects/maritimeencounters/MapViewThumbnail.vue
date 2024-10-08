@@ -1,8 +1,10 @@
 <script lang="ts" setup>
-import { watchEffect, ref, inject } from "vue";
+import { watchEffect, ref } from "vue";
 import { storeToRefs } from "pinia";
+import { useRouter } from "vue-router";
 import { mapStore } from "@/stores/store";
 
+const router = useRouter();
 const { selectedFeature } = storeToRefs(mapStore());
 const place = ref(null);
 const previewData = ref<{[key: string]: any[]}>({});
@@ -22,19 +24,15 @@ const expandedCard = ref<string | null>(null); //the currently expanded card
 //fetch data when selectedFeature changes
 watchEffect(async () => {
   if (selectedFeature.value) {
-    console.log(`Selected feature ID: ${selectedFeature.value}`);
-
     //reset the expanded card
     expandedCard.value = null;
     
     try {
       const response = await fetch(`https://maritime-encounters.dh.gu.se/api/resources/site_resources/?site_id=${selectedFeature.value}`);
-      console.log(`https://maritime-encounters.dh.gu.se/api/resources/site_resources/?site_id=${selectedFeature.value}`)
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
       const responseData = await response.json();
-      console.log("Response data:", responseData);
       
       previewData.value = {};
       for (const category of Object.keys(categoryTitles)) {
@@ -45,7 +43,6 @@ watchEffect(async () => {
       console.error("Failed to fetch data:", error);
     }
   } else {
-    console.log("No feature selected");
     place.value = null;
     previewData.value = {};
   }
@@ -59,6 +56,10 @@ function toggleCard(key: string) {
 function deselectPlace() {
   selectedFeature.value = undefined;
   expandedCard.value = null; //reset the expanded card
+}
+
+function navigateToDetail(type: string, id: number) {
+  router.push(`/${type}-${id}`);
 }
 </script>
 
@@ -133,7 +134,12 @@ function deselectPlace() {
               <div v-if="previewData['metal_analysis'] && previewData['metal_analysis'].length > 0">
                 <ul class="sample-id-list">
                 <li v-for="(metal, index) in previewData['metal_analysis']" :key="index">
-                  <p><span class="label-box">Metal ID: {{ metal.id }}</span></p>
+                  <span 
+                    class="label-box" 
+                    @click="navigateToDetail('metal_analysis', metal.id)"
+                  >
+                    Metal Analysis {{ metal.id }}
+                  </span>
                 </li>
               </ul>
               </div>
@@ -165,7 +171,12 @@ function deselectPlace() {
             <div v-if="previewData['new_samples'] && previewData['new_samples'].length > 0">
               <ul class="sample-id-list">
                 <li v-for="(sample, index) in previewData['new_samples']" :key="index">
-                  <p><span class="label-box">Sample ID: {{ sample.id }}</span></p>
+                  <span 
+                    class="label-box" 
+                    @click="navigateToDetail('new_sample', sample.id)"
+                  >
+                    New Sample {{ sample.id }}
+                  </span>
                 </li>
               </ul>
             </div>
@@ -193,7 +204,6 @@ function deselectPlace() {
 <style>
 .placecard-title {
   padding: 0px 0px 0px 5px; 
-
 }
 
 .placecard-content {
@@ -203,13 +213,20 @@ function deselectPlace() {
 .label-box {
   display: inline-block;
   padding: 2px 6px;
-  border: 1px solid #ccc;
+  background-color: rgba(180, 100, 100, 1);
+  color: white;
   border-radius: 4px;
-  background-color: #f1f1f1;
   margin-right: 5px;
+  cursor: pointer;
+  font-weight: 300;
+  transition: all 0.2s ease-in-out;
 }
 
-.placecard-content p {
+.label-box:hover {
+  transform:scale(1.05);
+}
+
+.placecard-content span {
  margin-bottom: 5px !important;
 }
 

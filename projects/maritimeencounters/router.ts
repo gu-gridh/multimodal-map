@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import MapView from "./MapView.vue";
 import PlaceView from "./PlaceView.vue";
-import ObjectView from "./ObjectView.vue"
 
 const router = createRouter({
   history: createWebHistory(),
@@ -12,21 +11,10 @@ const router = createRouter({
       component: MapView,
     },
     {
-      path: "/place/:name",
-      name: "place",
+      path: "/:type-:id",
+      name: "type-id",
       component: PlaceView,
-      props: route => {
-        const name = Array.isArray(route.params.name) ? route.params.name[0] : route.params.name;
-        // Replace underscores with spaces
-        return { name: name.replace(/_/g, ' ') };
-      }
-    },
-    {
-      path: "/detail/:type/:id",
-      name: "detail",
-      component: ObjectView,
-      props: true,
-    },
+    }    
   ],
 });
 

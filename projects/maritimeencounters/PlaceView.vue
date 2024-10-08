@@ -1,31 +1,16 @@
 <script setup lang="ts">
-import MapComponent from "@/components/MapComponent.vue";
-// function toggleLanguage() {
-//     if (i18n.global.locale === 'en') {
-//         i18n.global.locale = 'it';
-//     } else {
-//         i18n.global.locale = 'en';
-//     }
-// }
-
-// onMounted(async () => {
-// });
 </script>
     
 <template>
     <div class="main-container">
+        hi
     </div>
-    <MapComponent />
 </template>
     
 <style scoped>
 .main-container {
     background-color: rgba(232, 228, 217, 0.5) !important;
     backdrop-filter: blur(10px) saturate(50%) brightness(100%);
-}
-
-.sort{
-margin-left:130px;
 }
 .show-button {
     color: white;
@@ -85,7 +70,6 @@ a:active {}
     margin-bottom: 10px;
 }
 
-
 @media screen and (max-width: 900px) {
 
     #app .maijn-container{
@@ -101,11 +85,6 @@ a:active {}
     margin-left:0px!important;
     padding-bottom:100px;
 }
-
-.sort{
-margin-left:20px;
-}
-
 .square
 {
   width:120px;  
@@ -118,7 +97,7 @@ margin-left:20px;
 }
 .document-placeholder
 {
-max-width:90%;
+    max-width:90%;
 }
 .documentlabel{
     display:none;
