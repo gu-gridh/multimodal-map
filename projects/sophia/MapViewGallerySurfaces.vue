@@ -26,7 +26,7 @@
             <h1>{{ $t('panel') }} {{ item.name }}</h1>
           </div>
         </div>
-        <img :src="`${item.attached_orthophoto}/full/300,/0/default.jpg`" loading="lazy" @load="imageLoaded" />
+        <img :src="`${item.attached_orthophoto}/full/250,/0/default.jpg`" loading="lazy" @load="imageLoaded" />
       </a>
       <div class="cut-off"></div>
         <!-- </router-link> -->
@@ -286,6 +286,7 @@ export default {
 .gallery__col-sizer {
   width: calc(16.6%);
   max-height:700px;
+  min-height:250px;
 }
 
 .gallery__gutter-sizer {
