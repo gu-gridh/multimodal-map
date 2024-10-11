@@ -18,10 +18,10 @@
       />
     </div>
     <!-- <div class="start-end-box" style="margin-right: 5px">{{ formatBCYear(max) }}</div> -->
-    <div class="checkbox-container" style="">
+    <!-- <div class="checkbox-container" style="">
       <input type="checkbox" id="showUnknownRange" v-model="showUnknownRange">
       <label style="margin-left:5px; margin-top:-3px; " for="showUnknownRange">Include unknown</label>
-    </div> 
+    </div>  -->
   </div>
 
 </template>
@@ -31,7 +31,7 @@ import Slider from "@vueform/slider";
 import { storeToRefs } from "pinia";
 import { maritimeencountersStore } from "./store";
 import { ref, watch, computed } from "vue";
-const { showUnknownRange } = storeToRefs(maritimeencountersStore());
+// const { showUnknownRange } = storeToRefs(maritimeencountersStore());
 const props = withDefaults(defineProps<{
   modelValue: [number, number];
   min: number;
@@ -53,13 +53,20 @@ function formatBCYear(year: any): string {
 watch(selection, () => {
   emit("update:modelValue", selection.value);
 });
+
+watch(
+  () => props.modelValue,
+  (newValue) => {
+    selection.value = newValue;
+  },
+);
 </script>
 
 <style src="@vueform/slider/themes/default.css"></style>
 
 <style>
 .range-slider-container {
-  height: auto;
+  height: 80px;
   width: 100%;
   align-items: center;
   background-color:rgba(255,255,255,0.5);

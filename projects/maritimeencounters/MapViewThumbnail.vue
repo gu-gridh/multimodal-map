@@ -59,7 +59,7 @@ function deselectPlace() {
 }
 
 function navigateToDetail(type: string, id: number) {
-  router.push(`/${type}-${id}`);
+  //router.push(`/${type}-${id}`);
 }
 </script>
 
@@ -136,7 +136,7 @@ function navigateToDetail(type: string, id: number) {
                 <li v-for="(metal, index) in previewData['metal_analysis']" :key="index">
                   <span 
                     class="label-box" 
-                    @click="navigateToDetail('metal_analysis', metal.id)"
+                    @click.stop="navigateToDetail('metal_analysis', metal.id)"
                   >
                     Metal Analysis {{ metal.id }}
                   </span>
@@ -173,7 +173,7 @@ function navigateToDetail(type: string, id: number) {
                 <li v-for="(sample, index) in previewData['new_samples']" :key="index">
                   <span 
                     class="label-box" 
-                    @click="navigateToDetail('new_sample', sample.id)"
+                    @click.stop="navigateToDetail('new_sample', sample.id)"
                   >
                     New Sample {{ sample.id }}
                   </span>
