@@ -41,7 +41,7 @@
             </div>
 
             <div class="control-group"
-              style="width:1px; height:110px; margin-top:5px; border-width:0 1px 0 0; border-style:dotted; border-color:var(--theme-3);">
+              style="width:1px; height:110px; margin-top:7px; border-width:0 1px 0 0; border-style:dotted; border-color:var(--theme-3);">
             </div>
 
 
@@ -550,9 +550,10 @@
   }
 
   #app .control-organisation {
-    width: 96%;
+    width: 100%;
     display: flex;
     flex-direction: row;
+    justify-content:space-between;
     margin-top: 10px;
     pointer-events: auto;
     padding-bottom: 10px;
