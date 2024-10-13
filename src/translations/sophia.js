@@ -83,6 +83,7 @@ const messages = {
       monograms:"Monograms",
       writingsystem:"Writing system",
       textualgenre:"Textual genre",
+      namedentity:"Named entity",
       pictorialdescription:"Pictorial description",
       "categories": {
         "all": "All types",
@@ -172,6 +173,7 @@ const messages = {
       monograms:"Вензелі",
       writingsystem:"Writing system",
       textualgenre:"Текстовий жанр",
+      namedentity:"Іменована сутність",
       pictorialdescription:"Картинний опис",
       "categories": {
         "all": "Всі види",

@@ -1,139 +1,158 @@
 <template>
   <!-- Checks if all points are loaded and only then show the controls -->
-  <div class="filtercontrolwidgets" >
-  <div :class="{ 'non-interactive': !areMapPointsLoaded }">
-    <div v-if="areMapPointsLoaded">
-      <div class="filtercontrolwidgets" >
-      <!-- This organises the three top dropdown columns -->
-      <div class="control-organisation" style="pointer-events:auto; padding-bottom:10px; padding-top:10px; display:flex; flex-direction:row;">
-        <div class="control-group">
-          <div class="tag-section">
-            <div class="section-title">{{ $t('typeofinscription') }}</div>
-            <div class="broad-controls">
-              <Dropdown v-model="categories" :categories="{
+  <div class="filtercontrolwidgets">
+    <div :class="{ 'non-interactive': !areMapPointsLoaded }">
+      <div v-if="areMapPointsLoaded">
+        <div class="filtercontrolwidgets">
+          <!-- This organises the three top dropdown columns -->
+          <div class="control-organisation">
+            <div class="control-group">
+              <div class="tag-section">
+                <div class="section-title">{{ $t('typeofinscription') }}</div>
+                <div class="broad-controls">
+                  <Dropdown v-model="categories" :categories="{
               textualgraffiti: $t('textualgraffiti'),
               pictorialgraffiti: $t('pictorialgraffiti'),
-              composite: $t('composite'),
-            }" :limit="1" class="my-2" title="Pick an inscription type" @click="handleCategoryClick"
-                style="padding-right:30px;" />
+              composite: $t('composite'),}" :limit="1" class="my-2" title="Pick an inscription type"
+                    @click="handleCategoryClick" style="padding-right:30px;" />
+                </div>
+              </div>
+              <div class="tag-section">
+              </div>
             </div>
+
+            <div class="control-group">
+              <div class="tag-section">
+                <div class="section-title">{{ $t('textualgenre') }}</div>
+                <div title="Narrow the result to a certain language group" class="broad-controls">
+                  <Dropdown v-model="language" :categories="LANGUAGE" :limit="1" styleType="dropdown" class="my-2"
+                    type="language" style="padding-right:30px;" />
+                </div>
+              </div>
+
+              <div class="tag-section">
+                <div class="section-title">{{ $t('pictorialdescription') }}</div>
+                <div title="Narrow the result to a certain language group" class="broad-controls">
+                  <Dropdown v-model="language" :categories="LANGUAGE" :limit="1" styleType="dropdown" class="my-2"
+                    type="language" style="padding-right:30px;" />
+                </div>
+              </div>
+
+            </div>
+
+            <div class="control-group"
+              style="width:1px; height:110px; margin-top:5px; border-width:0 1px 0 0; border-style:dotted; border-color:var(--theme-3);">
+            </div>
+
+
+            <div class="control-group">
+
+
+              <div class="tag-section">
+                <div class="section-title">{{ $t('writingsystem') }}</div>
+                <div title="Narrow the result to a certain language group" class="broad-controls">
+                  <Dropdown v-model="language" :categories="LANGUAGE" :limit="1" styleType="dropdown" class="my-2"
+                    type="language" style="padding-right:30px;" />
+                </div>
+              </div>
+              <div class="tag-section">
+                <div class="section-title">{{ $t('language') }}</div>
+                <div title="Narrow the result to a certain language group" class="broad-controls">
+                  <Dropdown v-model="language" :categories="LANGUAGE" :limit="1" styleType="dropdown" class="my-2"
+                    type="language" style="padding-right:30px;" />
+                </div>
+              </div>
+
+
+
+            </div>
+
+
+
+
+
           </div>
 
-          <div class="tag-section">
-            <div class="section-title">{{ $t('textualgenre') }}</div>
-            <div title="Narrow the result to a certain language group" class="broad-controls">
-              <Dropdown v-model="language" :categories="LANGUAGE" :limit="1" styleType="dropdown" class="my-2"
-                type="language" style="padding-right:30px;" />
+          <!-- <div class="section-title">{{ $t('searchtitle') }}</div> -->
+          <div class="search-section">
+            <div class="toggle-buttons" style="margin-top: 10px">
+              <button style="" :class="{ active: searchType === 'inscriptionobjects' }"
+                @click="setSearchType('inscriptionobjects')">{{ $t('inscriptions') }}</button>
+              <button style="" :class="{ active: searchType === 'surfaces' }" @click="setSearchType('surfaces')">{{
+                $t('panels') }}</button>
+            </div>
+
+            <input ref="searchInput" type="text" v-model="searchQuery" @input="handleSearch"
+              @focus="handleSearchBoxFocus"
+              :placeholder="searchType === 'surfaces' ? $t('searchsurfacesplaceholder') : $t('searchinscriptionsplaceholder')"
+              class="search-box" />
+            <div class="search-results">
+              <!-- Rendering for surfaces -->
+              <template v-if="searchType === 'surfaces'">
+                <div v-for="(surface, index) in objectToArray(searchResults)" :key="index"
+                  :class="['search-result-item']">
+                  {{ surface?.title }}
+                </div>
+              </template>
+              <!-- Rendering for inscriptions -->
+              <template v-else-if="searchType === 'inscriptionobjects'">
+                <div v-for="feature in filteredInscription"
+                  :key="feature.properties ? feature.properties.Nr : 'no-place'" class="search-result-item">
+                  {{ feature.displayText }}
+                </div>
+              </template>
             </div>
           </div>
         </div>
-
-        <div class="control-group">
-          <div class="tag-section">
-            <div class="section-title">{{ $t('writingsystem') }}</div>
-            <div title="Narrow the result to a certain language group" class="broad-controls">
-              <Dropdown v-model="language" :categories="LANGUAGE" :limit="1" styleType="dropdown" class="my-2"
-                type="language" style="padding-right:30px;" />
-            </div>
-          </div>
-
-          <div class="tag-section">
-            <div class="section-title">{{ $t('pictorialdescription') }}</div>
-            <div title="Narrow the result to a certain language group" class="broad-controls">
-              <Dropdown v-model="language" :categories="LANGUAGE" :limit="1" styleType="dropdown" class="my-2"
-                type="language" style="padding-right:30px;" />
-            </div>
-          </div>
-        </div>
-
-        <div class="tag-section">
-          <div class="section-title">{{ $t('language') }}</div>
-          <div title="Narrow the result to a certain language group" class="broad-controls">
-            <Dropdown v-model="language" :categories="LANGUAGE" :limit="1" styleType="dropdown" class="my-2"
-              type="language" style="padding-right:30px;" />
-          </div>
-        </div>
-
       </div>
 
-      <!-- <div class="section-title">{{ $t('searchtitle') }}</div> -->
-      <div class="search-section">
-        <div class="toggle-buttons" style="margin-top: 10px">
-          <button style="" :class="{ active: searchType === 'inscriptionobjects' }"
-            @click="setSearchType('inscriptionobjects')">{{ $t('inscriptions') }}</button>
-          <button style="" :class="{ active: searchType === 'surfaces' }" @click="setSearchType('surfaces')">{{
-            $t('panels') }}</button>
+      <!-- if the markers are not loaded show the loader -->
+      <div v-else>
+        <div alt="Loading..." class="loading-svg" />
+      </div>
+    </div>
+
+    <!-- Data Section -->
+    <div class="data-widget">
+      <div class="data-widget-section">
+        <div class="data-widget-item">
+          <h3>{{ $t('annotationsshown') }}:</h3>
+          <p>{{ currentPanelCount }}</p>
+        </div>
+        <div class="data-widget-item">|</div>
+        <div class="data-widget-item">
+          <h3>{{ $t('annotationshidden') }}:</h3>
+          <p>{{ hiddenPanels }}</p>
+        </div>
+      </div>
+
+      <div class="data-widget-divider"></div>
+
+
+      <div class="data-widget-section">
+        <div class="data-widget-item">
+          <h3>{{ $t('texts') }}:</h3>
+          <p>{{ totalPhotographs }}</p>
         </div>
 
-        <input ref="searchInput" type="text" v-model="searchQuery" @input="handleSearch" @focus="handleSearchBoxFocus"
-          :placeholder="searchType === 'surfaces' ? $t('searchsurfacesplaceholder') : $t('searchinscriptionsplaceholder')"
-          class="search-box" />
-        <div class="search-results">
-          <!-- Rendering for surfaces -->
-          <template v-if="searchType === 'surfaces'">
-            <div v-for="(surface, index) in objectToArray(searchResults)" :key="index" :class="['search-result-item']">
-              {{ surface?.title }}
-            </div>
-          </template>
-          <!-- Rendering for inscriptions -->
-          <template v-else-if="searchType === 'inscriptionobjects'">
-            <div v-for="feature in filteredInscription" :key="feature.properties ? feature.properties.Nr : 'no-place'"
-              class="search-result-item">
-              {{ feature.displayText }}
-            </div>
-          </template>
+        <div class="data-widget-item">
+          <h3>{{ $t('figures') }}:</h3>
+          <p>{{ totalPlans }}</p>
+        </div>
+
+        <div class="data-widget-item">
+          <h3>{{ $t('composites') }}:</h3>
+          <p>{{ totalThreed }}</p>
         </div>
       </div>
     </div>
-    </div>
 
-    <!-- if the markers are not loaded show the loader -->
-    <div v-else>
-      <div alt="Loading..." class="loading-svg" />
+    <div style="display:flex; flex-direction: row; justify-content:center; width:100%;">
+      <div id="resetfilters" class="broad-controls theme-button category-button"
+        style="display:none; margin-top:15px; width:auto; cursor:pointer;  transition: all 0.2s ease-in-out; background-color:var(--theme-4); color:white;"
+        @click="clearAll()">{{ $t('reset') }}</div>
     </div>
   </div>
-
-  <!-- Data Section -->
-  <div class="data-widget">
-    <div class="data-widget-section">
-      <div class="data-widget-item">
-        <h3>{{ $t('annotationsshown') }}:</h3>
-        <p>{{ currentPanelCount }}</p>
-      </div>
-      <div class="data-widget-item">|</div>
-      <div class="data-widget-item">
-        <h3>{{ $t('annotationshidden') }}:</h3>
-        <p>{{ hiddenPanels }}</p>
-      </div>
-    </div>
-
-    <div class="data-widget-divider"></div>
-
-
-    <div class="data-widget-section">
-      <div class="data-widget-item">
-        <h3>{{ $t('texts') }}:</h3>
-        <p>{{ totalPhotographs }}</p>
-      </div>
-
-      <div class="data-widget-item">
-        <h3>{{ $t('figures') }}:</h3>
-        <p>{{ totalPlans }}</p>
-      </div>
-
-      <div class="data-widget-item">
-        <h3>{{ $t('composites') }}:</h3>
-        <p>{{ totalThreed }}</p>
-      </div>
-    </div>
-  </div>
-
-  <div style="display:flex; flex-direction: row; justify-content:center; width:100%;">
-    <div id="resetfilters" class="broad-controls theme-button category-button"
-      style="display:none; margin-top:15px; width:auto; cursor:pointer;  transition: all 0.2s ease-in-out; background-color:var(--theme-4); color:white;"
-      @click="clearAll()">{{ $t('reset') }}</div>
-  </div>
-</div>
 </template>
 
 <script setup lang="ts">
@@ -357,9 +376,11 @@
     font-size: 95%;
   }
 
-  .filtercontrolwidgets{
-display:flex;
-flex-direction: column;
+  .filtercontrolwidgets {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width:100%;
   }
 
   .loading-svg {
@@ -387,7 +408,12 @@ flex-direction: column;
   }
 
   .control-group {
-    margin-right: 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width:auto;
+    margin-right:20px;
   }
 
   #app .section-title {
@@ -401,6 +427,8 @@ flex-direction: column;
   #app .tag-section {
     margin-top: -5px;
     margin-bottom: 0px;
+    margin-right: 0px;
+
   }
 
   #app .tag-section .broad-controls {
@@ -416,7 +444,7 @@ flex-direction: column;
 
 
   .search-section {
-    width: 98%;
+    width: 96%;
     height: auto;
     padding: 0px 8px 12px 12px;
     margin-top: 0px;
@@ -450,16 +478,16 @@ flex-direction: column;
     font-weight: 400;
     cursor: pointer;
     margin-bottom: 5px;
-    margin-right:15px;
+    margin-right: 15px;
     color: rgb(80, 80, 80);
   }
 
   .toggle-buttons button.active {
-   color:rgb(180,100,100);
-   text-decoration:dashed;
-   text-decoration-style: dashed;
-   text-decoration-thickness: 2px;
-   text-decoration-line: underline;
+    color: rgb(180, 100, 100);
+    text-decoration: dashed;
+    text-decoration-style: dashed;
+    text-decoration-thickness: 2px;
+    text-decoration-line: underline;
   }
 
 
@@ -522,11 +550,13 @@ flex-direction: column;
   }
 
   #app .control-organisation {
-    width: 98%;
-    float: left;
+    width: 96%;
     display: flex;
     flex-direction: row;
     margin-top: 10px;
+    pointer-events: auto;
+    padding-bottom: 10px;
+    padding-top: 10px;
   }
 
   .justify-left {
@@ -549,7 +579,7 @@ flex-direction: column;
     font-size: 110%;
     float: left;
     pointer-events: none;
-    width: 98%;
+    width: 96%;
     margin-top: 30px;
     padding: 15px 25px;
     border-radius: 10px;

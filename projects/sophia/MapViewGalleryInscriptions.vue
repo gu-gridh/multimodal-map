@@ -8,6 +8,7 @@
             <div class="gallery-tag">Fragment</div>
             <div class="gallery-tag">Damaged</div>
             <div class="gallery-tag">Preserved</div>
+            <div class="gallery-tag">Damnatio</div>
           </div>
         </div>
 
