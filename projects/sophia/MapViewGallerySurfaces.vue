@@ -1,20 +1,21 @@
 <template>
   <div id="gallery-container">
-  
-    <div class="gallery">
-      
-      <div class="gallery-filters" style="padding-left:10px; float:left; margin-bottom:20px; margin-top:-70px;">
-        <div class="gallery-filter-container">
-          <h1>Description</h1>
-          <div class="tag-container">
-            <div class="gallery-tag">Show all</div>
-            <div class="gallery-tag">Cross</div>
-            <div class="gallery-tag">Saint</div>
-            <div class="gallery-tag">Skull</div>
-          </div>
+
+    <div class="gallery-filters">
+      <div class="gallery-filters-padding" style="padding-left:30px;">
+      <div class="gallery-filter-container">
+        <h1>Description</h1>
+        <div class="tag-container">
+          <div class="gallery-tag">Cross</div>
+          <div class="gallery-tag">Saint</div>
+          <div class="gallery-tag">Skull</div>
         </div>
       </div>
+    </div>
+    </div>
 
+    <div class="gallery">
+      
       <div class="gallery__col-sizer"></div>
       <div class="gallery__gutter-sizer"></div>
       <div v-for="item in images" :key="item.uuid" class="gallery__item">
@@ -32,6 +33,7 @@
         <!-- </router-link> -->
       </div>
     </div>
+
     <div class="page-load-status">
       <div class="loader-ellips infinite-scroll-request">
         <span class="loader-ellips__dot"></span>
@@ -221,45 +223,6 @@ export default {
 
 
 <style scoped>
-#gallery-container {
-    position: absolute;
-    margin-left: 510px;
-    width: calc(100% - 510px);
-    height: calc(100% - 80px);
-    padding-left: 30px;
-    padding-right: 30px;
-    padding-top: 0px;
-    z-index: 100 !important;
-    background-color: black;
-    opacity: 0.9;
-  }
-
-  @media screen and (min-width: 1900px) {
-    #gallery-container {
-      margin-left: 510px;
-      width: calc(100% - 510px);
-    }
-  }
-
-  @media screen and (max-width: 1600px) {
-    #gallery-container {
-      margin-left: 510px;
-      width: calc(100% - 510px);
-      padding-left: 30px;
-      padding-right: 30px;
-    }
-  }
-
-
-@media screen and (max-width: 900px) {
-  #gallery-container {
-    margin-left: 0px;
-    width: 100%;
-    height:100vh;
-    padding-top:0px;
-  }
-}
-
 .gallery {
   float:left;
   width:100%;
@@ -268,8 +231,8 @@ export default {
   max-width: 100%;
   /* Maximum width of the gallery */
   margin: 0 auto;
-  padding-top:150px;
-
+  padding:10px 0px 0px 0px;
+  pointer-events: auto;
   /* Top and bottom margin 0, left and right margin auto */
 }
 

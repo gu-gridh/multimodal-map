@@ -1,39 +1,37 @@
 <template>
   <div id="gallery-container">
     <div class="gallery-filters">
-      
+      <div class="gallery-filters-padding" style="padding-left:20px;">
+        <div class="gallery-filter-container">
+          <h1>Condition</h1>
+          <div class="tag-container">
+            <div class="gallery-tag">Fragment</div>
+            <div class="gallery-tag">Damaged</div>
+            <div class="gallery-tag">Preserved</div>
+          </div>
+        </div>
 
-      <div class="gallery-filter-container">
-        <h1>Condition</h1>
-        <div class="tag-container">
-          <div class="gallery-tag">Show all</div>
-          <div class="gallery-tag">Fragment</div>
-          <div class="gallery-tag">Damaged</div>
-          <div class="gallery-tag">Preserved</div>
+        <div class="gallery-filter-container">
+          <h1>Alignment</h1>
+          <div class="tag-container">
+            <div class="gallery-tag">Aligned</div>
+            <div class="gallery-tag">Insclinating</div>
+            <div class="gallery-tag">Declinating</div>
+          </div>
+        </div>
+
+        <div class="gallery-filter-container">
+          <h1>Extra-alpabetical signs</h1>
+          <div class="tag-container">
+            <div class="gallery-tag">Cross </div>
+            <div class="gallery-tag">Counting</div>
+          </div>
         </div>
       </div>
-
-      <div class="gallery-filter-container">
-        <h1>Alignment</h1>
-        <div class="tag-container">
-          <div class="gallery-tag">Show all</div>
-          <div class="gallery-tag">Aligned</div>
-          <div class="gallery-tag">Insclinating</div>
-          <div class="gallery-tag">Declinating</div>
-        </div>
-      </div>
-
-      <div class="gallery-filter-container">
-        <h1>Extra-alpabetical signs</h1>
-        <div class="tag-container">
-          <div class="gallery-tag">Show all</div>
-          <div class="gallery-tag">Cross </div>
-          <div class="gallery-tag">Counting</div>
-        </div>
-      </div>
-
     </div>
+
     <div class="gallery">
+
       <div class="gallery__col-sizer"></div>
       <div class="gallery__gutter-sizer"></div>
       <div v-for="item in images" :key="item.id" class="gallery__item">
@@ -259,51 +257,17 @@
 
 
 <style scoped>
-  #gallery-container {
-    position: absolute;
-    margin-left: 510px;
-    width: calc(100% - 510px);
-    height: calc(100% - 80px);
-    padding-left: 30px;
-    padding-right: 30px;
-    padding-top: 80px;
-    z-index: 100 !important;
-    background-color: black;
-    opacity: 0.9;
-  }
-
-  @media screen and (min-width: 1900px) {
-    #gallery-container {
-      margin-left: 510px;
-      width: calc(100% - 510px);
-    }
-  }
-
-  @media screen and (max-width: 1600px) {
-    #gallery-container {
-      margin-left: 510px;
-      width: calc(100% - 510px);
-      padding-left: 30px;
-      padding-right: 30px;
-    }
-  }
-
-  @media screen and (max-width: 900px) {
-    #gallery-container {
-      margin-left: 0px;
-      width: 100%;
-      height: 100vh;
-      padding-top: 0px;
-    }
-  }
-
   .gallery {
-    max-height: 100%;
-    overflow-y: auto;
-    max-width: 100%;
-    /* Maximum width of the gallery */
-    margin: 0 auto;
-    /* Top and bottom margin 0, left and right margin auto */
+  float:left;
+  width:100%;
+  max-height: 100%;
+  overflow-y: auto;
+  max-width: 100%;
+  /* Maximum width of the gallery */
+  margin: 0 auto;
+  padding:10px 0px 0px 0px;
+  pointer-events: auto;
+  /* Top and bottom margin 0, left and right margin auto */
   }
 
   .gallery::-webkit-scrollbar {
