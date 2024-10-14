@@ -11,6 +11,22 @@
           <div class="gallery-tag">Skull</div>
         </div>
       </div>
+      <div class="gallery-filter-container">
+        <h1>Media</h1>
+        <div class="tag-container">
+          <div class="gallery-tag">Wall</div>
+          <div class="gallery-tag">Railing</div>
+          <div class="gallery-tag">Sarcofaghus</div>
+        </div>
+      </div>
+      <div class="gallery-filter-container">
+        <h1>Material</h1>
+        <div class="tag-container">
+          <div class="gallery-tag">Marble</div>
+          <div class="gallery-tag">Plaster</div>
+          <div class="gallery-tag">Wood</div>
+        </div>
+      </div>
     </div>
     </div>
 
@@ -249,7 +265,7 @@ export default {
 .gallery__col-sizer {
   width: calc(16.6%);
   max-height:700px;
-  min-height:250px;
+  min-height:200px;
 }
 
 .gallery__gutter-sizer {
