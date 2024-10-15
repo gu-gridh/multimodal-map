@@ -405,7 +405,7 @@ onMounted(async () => {
 .download-spinner {
   position: absolute;
   top: 10px;
-  right: 10px;
+  right: 0px;
   width: 50px;
   height: 50px;
   z-index: 9999;
