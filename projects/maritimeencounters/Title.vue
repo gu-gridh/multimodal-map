@@ -5,18 +5,14 @@
       <div class="p-1 px-2 clickable category-button about-button">
         {{ "About the portal" }}</div>
     </button>
-    <button class="item" style="margin-left: 20px;">
+    <button class="item" style="margin-left: 20px;" @click="startRectangleDrawFunction">
       <div class="p-1 px-2 clickable category-button about-button">Download the data</div>
     </button>
-    <!-- <button @click="toggleLanguage">
-        <div class="p-1 px-2 clickable category-button about-button" style="
-                margin-left: 10px;
-              ">{{ $t('languagebutton') }}</div>
-    </button> -->
 </template>
 
 <script>
 import i18n from '../../src/translations/etruscan';
+import { maritimeencountersStore } from "./store";
 
 export default {
   name: "Title",
@@ -28,6 +24,17 @@ export default {
         i18n.global.locale = 'en';
       }
     },
+  },
+  setup() {
+    const store = maritimeencountersStore();
+
+    const startRectangleDrawFunction = () => {
+      store.startRectangleDraw = true;
+    };
+
+    return {
+      startRectangleDrawFunction,
+    };
   },
   emits: ['toggle-about'],
 };

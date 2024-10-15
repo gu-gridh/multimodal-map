@@ -2,46 +2,6 @@
   <!-- Checks if all points are loaded and only then show the controls -->
   <!-- <div :class="{ 'non-interactive': !areMapPointsLoaded }"> -->
   <!-- <div v-if="areMapPointsLoaded"> -->
-
-  <!-- This creates a 2-column section with for the controls -->
-  <div class="control-organisation justify-left" style="margin-bottom:8px;">
-    <!-- <div class="tag-section margin-3">
-        <div class="section-title">Subproject</div>
-        <div title="Narrow the result to a certain dataset" class="broad-controls">
-          <CategoryButtonDropdown v-model="dataSetValue" :categories="{ '1': '1', '2': '2', '3': '3', '4': '4' }" :limit="1" styleType="dropdown" class="my-2"
-          type="datasets"/>
-        </div>
-      </div> -->
-    <!--     
-      <div class="tag-section margin-20">
-        <div class="section-title">Type of Data</div>
-        <div class="broad-controls">
-          <CategoryButtonList v-model="categories" 
-              :categories="{
-                all: 'All', 
-                Isotopes: 'Isotopes', 
-                Boats: 'Boats',
-                aDna: 'aDNA',
-              }" 
-              :limit="1" 
-              class="my-2"
-              title="Pick a data type" 
-              @click="handleCategoryClick" />
-        </div>
-      </div> -->
-
-  </div>
-
-  <div class="tag-section margin-3">
-    <!-- <div class="section-title">{{ $t('timeperiod') }}</div> -->
-    <div class="slider-widget">
-      <div class="slider-section">
-        <RangeSlider ref="rangeSliderRef" v-model="selectedRange" :min="-1500" :max="-500" :step="1" class="my-2"
-          :isSliderVisible="true" />
-      </div>
-    </div>
-  </div>
-
   <!-- This creates a 2-column section width for the controls -->
   <div class="control-organisation justify-space">
     <div class="tag-section ">
@@ -52,14 +12,16 @@
           :limit="1" styleType="dropdown" class="my-2" type="site" style="width:100%" />
       </div>
     </div>
+  </div>
 
-    <!-- <div class="tag-section margin-5">
-        <div class="section-title">Sites</div>
-        <div title="Narrow the result to a certain site" class="broad-controls" style="width:170px">
-          <CategoryButtonDropdown v-model="necropoli" :categories="{ '1': 'Knocknagur', '2': 'Carrickshedoge', '3': 'Ballyvalley Mountain, Clonallan Glebe', '4': 'Scrabo Hill' }" :limit="1" styleType="dropdown" class="my-2"
-            type="necropolis" @click="handleSelectionClick($event, currentTombType)" style="width:100%"/>
-        </div>
-      </div> -->
+  <div class="tag-section margin-3">
+    <!-- <div class="section-title">{{ $t('timeperiod') }}</div> -->
+    <div class="slider-widget">
+      <div class="slider-section">
+        <RangeSlider ref="rangeSliderRef" v-model="selectedRange" :min="-1500" :max="-500" :step="1" class="my-2"
+          :isSliderVisible="true" />
+      </div>
+    </div>
   </div>
   <!-- </div> -->
 

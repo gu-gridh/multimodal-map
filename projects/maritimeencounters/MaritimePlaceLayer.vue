@@ -3,21 +3,29 @@ import { ref, onMounted, defineProps, toRaw, watch } from "vue";
 import L from "leaflet";
 import "leaflet.markercluster";
 import { mapStore } from "@/stores/store";
+import { maritimeencountersStore } from "./store";
 import { storeToRefs } from "pinia";
 import "leaflet/dist/leaflet.css";
 import "leaflet.markercluster/dist/MarkerCluster.css"; 
 import "leaflet.markercluster/dist/MarkerCluster.Default.css"; 
+import "leaflet-draw";
+import "leaflet-draw/dist/leaflet.draw.css";
 import markerIcon from "@/assets/marker-white.svg";
+
+(window as any).type = true;
 
 const map = ref<L.Map | null>(null);
 const markerClusterGroup = ref<L.MarkerClusterGroup | null>(null);
 const layerGroupMap = ref<Record<string, L.LayerGroup>>({});
 const fetchedIds = new Set<number>();
 const { selectedFeature } = storeToRefs(mapStore());
+const store = maritimeencountersStore();
+const { startRectangleDraw } = storeToRefs(store);
 
 let hoverPopup = ref<L.Popup | null>(null);  //active hover popup
 let polylineLayer = ref<L.LayerGroup | null>(null);
 let abortController: AbortController | null = null;
+let rectangleDrawer: L.Draw.Rectangle | null = null;
 
 const props = defineProps({
   mapOptions: {
@@ -83,18 +91,6 @@ const renderGeoJSON = (geojsonArray: { name: string, data: any, id: string }[]) 
           padding: [20, 20],
           maxZoom: 8,
         });
-
-        //clear markers
-        //toRaw(markerClusterGroup.value)?.clearLayers();
-        //fetchedIds.clear();
-        //fetch new data based on the clicked country's ID
-        //const url = `https://maritime-encounters.dh.gu.se/api/resources/site_coordinates/?ADM0=${id}&page_size=1000`;
-
-        //try {
-        //  await fetchData(url, {});
-        //} catch (error) {
-        //  console.error("Error fetching data for country ID:", id, error);
-        //}
       });
     });
 
@@ -113,7 +109,7 @@ const drawConnections = (startLatLng: L.LatLng) => {
     polylineLayer.value = L.layerGroup().addTo(toRaw(map.value)!);
   }
   polylineLayer.value.clearLayers();
-  lines.forEach(line => polylineLayer.value?.addLayer(line));
+  lines.forEach(line => toRaw(polylineLayer.value)?.addLayer(line));
 };
 
 //draw the markers on the map
@@ -218,9 +214,20 @@ const fetchData = async (initialUrl: string, params: Record<string, any>) => {
 
 watch(() => props.showConnections, (newVal) => {  //clear lines when showConnections is off
   if (!newVal && polylineLayer.value) {
-    polylineLayer.value.clearLayers(); 
+    toRaw(polylineLayer.value)?.clearLayers(); 
   }
 });
+
+watch( //Download the data
+  () => startRectangleDraw.value,
+  (newVal) => {
+    if (newVal && rectangleDrawer) {
+      rectangleDrawer.enable();
+
+      store.startRectangleDraw = false;
+    }
+  }
+);
 
 onMounted(async () => {
   map.value = L.map("map", {
@@ -233,6 +240,31 @@ onMounted(async () => {
     maxZoom: 19,
     minZoom: 3
   }).addTo(toRaw(map.value));
+
+  const drawnItems = L.featureGroup().addTo(toRaw(map.value)!);
+  const drawControl = new L.Control.Draw({
+    draw: {
+      marker: false,
+      circle: false,
+      circlemarker: false,
+      polygon: false,
+      polyline: false,
+      rectangle: false,
+    }
+  });
+
+  toRaw(map.value)?.addControl(drawControl);
+  rectangleDrawer = new L.Draw.Rectangle(toRaw(map.value)!, drawControl.options.draw.rectangle);
+  toRaw(map.value)?.on(L.Draw.Event.CREATED, function (e: any) {
+    const type = e.layerType;
+    const layer = e.layer;
+
+    if (type === "rectangle") {
+      const bounds = layer.getBounds();
+    }
+
+    drawnItems.addLayer(layer);
+  });
 
   const geojsonFiles = [
     { name: "Denmark", url: "./polygons/denmark_simplified.json",  id:"2"}, 
@@ -278,7 +310,8 @@ onMounted(async () => {
 
   // Override _getExpandedVisibleBounds to limit to current map bounds
   markerClusterGroup.value._getExpandedVisibleBounds = function () {
-    return toRaw(markerClusterGroup.value)?._map?.getBounds();
+    const rawThis = toRaw(this);
+    return rawThis._map.getBounds();
   };
 
   toRaw(map.value)?.addLayer(toRaw(markerClusterGroup.value));
