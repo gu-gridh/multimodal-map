@@ -6,8 +6,8 @@ import { mapStore } from "@/stores/store";
 import { maritimeencountersStore } from "./store";
 import { storeToRefs } from "pinia";
 import "leaflet/dist/leaflet.css";
-import "leaflet.markercluster/dist/MarkerCluster.css"; 
-import "leaflet.markercluster/dist/MarkerCluster.Default.css"; 
+import "leaflet.markercluster/dist/MarkerCluster.css";
+import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 import "leaflet-draw";
 import "leaflet-draw/dist/leaflet.draw.css";
 import markerIcon from "@/assets/marker-white.svg";
@@ -21,6 +21,7 @@ const fetchedIds = new Set<number>();
 const { selectedFeature } = storeToRefs(mapStore());
 const store = maritimeencountersStore();
 const { startRectangleDraw } = storeToRefs(store);
+const isDownloading = ref(false); //spinner visibility
 
 let hoverPopup = ref<L.Popup | null>(null);  //active hover popup
 let polylineLayer = ref<L.LayerGroup | null>(null);
@@ -45,7 +46,7 @@ const props = defineProps({
   },
 });
 
-//coordinates to draw lines to for testing
+//coordinates to draw lines to FOR TESTING
 const targetCoordinates = [
   L.latLng(4.1129, 2.5911),
   L.latLng(70.81392, 27.96125),
@@ -99,9 +100,9 @@ const renderGeoJSON = (geojsonArray: { name: string, data: any, id: string }[]) 
   });
 };
 
-//draw lines to the specified coordinates for testing
+//draw lines to the specified coordinates FOR TESTING
 const drawConnections = (startLatLng: L.LatLng) => {
-  const lines = targetCoordinates.map(targetLatLng => 
+  const lines = targetCoordinates.map(targetLatLng =>
     L.polyline([startLatLng, targetLatLng], { color: 'red' })
   );
 
@@ -157,13 +158,13 @@ const fetchData = async (initialUrl: string, params: Record<string, any>) => {
               });
 
               marker.on("click", () => {
-                  selectedFeature.value = featureId;
+                selectedFeature.value = featureId;
 
-                  // toRaw(map.value)?.setView(latLng, 12, { animate: true });
+                // toRaw(map.value)?.setView(latLng, 12, { animate: true });
 
-                  if (props.showConnections && coords[1] === 55.99446 && coords[0] === 55.99446) {
-                    drawConnections(latLng);
-                  }
+                if (props.showConnections && coords[1] === 55.99446 && coords[0] === 55.99446) {
+                  drawConnections(latLng);
+                }
               });
 
               marker.on("mouseover", () => {
@@ -212,9 +213,49 @@ const fetchData = async (initialUrl: string, params: Record<string, any>) => {
   });
 };
 
+//for downloading site data
+const fetchAllSites = async (initialUrl: string): Promise<any[]> => {
+  let allData: any[] = [];
+  let nextUrl: string | null = initialUrl;
+
+  isDownloading.value = true; //show the spinner
+
+  while (nextUrl) {
+    try {
+      const res = await fetch(nextUrl.replace(/^http:/, "https:"));
+      if (!res.ok) throw new Error("Failed to fetch data");
+
+      const data = await res.json();
+      allData = allData.concat(data.features);
+
+      nextUrl = data.next ? data.next.replace(/^http:/, "https:") : null;
+    } catch (err) {
+      console.error("Error fetching data:", err);
+      throw err;
+    }
+  }
+
+  isDownloading.value = false; //hide the spinner
+  return allData;
+};
+
+//download the data as a JSON file
+const downloadJSON = (data: any, filename: string) => {
+  const jsonStr = JSON.stringify(data, null, 2);
+  const blob = new Blob([jsonStr], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  a.click();
+
+  URL.revokeObjectURL(url);
+};
+
 watch(() => props.showConnections, (newVal) => {  //clear lines when showConnections is off
   if (!newVal && polylineLayer.value) {
-    toRaw(polylineLayer.value)?.clearLayers(); 
+    toRaw(polylineLayer.value)?.clearLayers();
   }
 });
 
@@ -254,35 +295,52 @@ onMounted(async () => {
   });
 
   toRaw(map.value)?.addControl(drawControl);
+
   rectangleDrawer = new L.Draw.Rectangle(toRaw(map.value)!, drawControl.options.draw.rectangle);
-  toRaw(map.value)?.on(L.Draw.Event.CREATED, function (e: any) {
-    const type = e.layerType;
+
+  toRaw(map.value)?.on(L.Draw.Event.CREATED, async function (e: any) {
+    const layerType = e.layerType;
     const layer = e.layer;
 
-    if (type === "rectangle") {
-      const bounds = layer.getBounds();
-    }
+    if (layerType === "rectangle") {
+      const bounds: L.LatLngBounds = layer.getBounds();
 
-    drawnItems.addLayer(layer);
+      //convert bounds to bbox string
+      const southWest = bounds.getSouthWest();
+      const northEast = bounds.getNorthEast();
+      const bboxString = `${southWest.lng},${southWest.lat},${northEast.lng},${northEast.lat}`;
+      const apiUrl = `https://maritime-encounters.dh.gu.se/api/resources/site_coordinates/?in_bbox=${bboxString}&page_size=100`;
+
+      try {
+        const jsonData = await fetchAllSites(apiUrl);
+
+        downloadJSON(jsonData, 'data.json');
+
+        //remove the rectangle from the map
+        drawnItems.removeLayer(layer);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
   });
 
   const geojsonFiles = [
-    { name: "Denmark", url: "./polygons/denmark_simplified.json",  id:"2"}, 
-    { name: "Sweden", url: "./polygons/sweden_simplified.json",  id:"10" }, 
-    { name: "Germany", url: "./polygons/germany_simplified.json",  id:"1"},
-    { name: "Norway", url: "./polygons/norway_simplified.json",  id:"7" },
-    { name: "Finland", url: "./polygons/finland_simplified.json",  id:"4"},
-    { name: "UK", url: "./polygons/uk_simplified.json",  id:"6"},
-    { name: "Portugal", url: "./polygons/portugal_simplified.json",  id:"9"},
-    { name: "Poland", url: "./polygons/poland_simplified.json",  id:"8" },
-    { name: "Ireland", url: "./polygons/ireland_simplified.json",  id:"11" },
-    { name: "France", url: "./polygons/france_simplified.json",  id:"5" },
-    { name: "Netherlands", url: "./polygons/netherlands_simplified.json",  id:"16"},
-    { name: "Belgium", url: "./polygons/belgium_simplified.json",  id:"15"},
-    { name: "Czech", url: "./polygons/czech_simplified.json",  id:"13"},
-    { name: "Aland", url: "./polygons/aland_simplified.json",  id:"14"},
-    { name: "Russia", url: "./polygons/russia_simplified.json",  id:"12"},
-    { name: "Spain", url: "./polygons/spain_simplified.json",  id:"3"},
+    { name: "Denmark", url: "./polygons/denmark_simplified.json", id: "2" },
+    { name: "Sweden", url: "./polygons/sweden_simplified.json", id: "10" },
+    { name: "Germany", url: "./polygons/germany_simplified.json", id: "1" },
+    { name: "Norway", url: "./polygons/norway_simplified.json", id: "7" },
+    { name: "Finland", url: "./polygons/finland_simplified.json", id: "4" },
+    { name: "UK", url: "./polygons/uk_simplified.json", id: "6" },
+    { name: "Portugal", url: "./polygons/portugal_simplified.json", id: "9" },
+    { name: "Poland", url: "./polygons/poland_simplified.json", id: "8" },
+    { name: "Ireland", url: "./polygons/ireland_simplified.json", id: "11" },
+    { name: "France", url: "./polygons/france_simplified.json", id: "5" },
+    { name: "Netherlands", url: "./polygons/netherlands_simplified.json", id: "16" },
+    { name: "Belgium", url: "./polygons/belgium_simplified.json", id: "15" },
+    { name: "Czech", url: "./polygons/czech_simplified.json", id: "13" },
+    { name: "Aland", url: "./polygons/aland_simplified.json", id: "14" },
+    { name: "Russia", url: "./polygons/russia_simplified.json", id: "12" },
+    { name: "Spain", url: "./polygons/spain_simplified.json", id: "3" },
   ];
 
   try {
@@ -293,15 +351,15 @@ onMounted(async () => {
         return { name: file.name, data, id: file.id };
       })
     );
-    
+
     //render the countries
     renderGeoJSON(geojsonArray);
   } catch (error) {
     console.error("Error fetching GeoJSON files:", error);
   }
-  
+
   markerClusterGroup.value = L.markerClusterGroup({
-    spiderfyOnMaxZoom: true, 
+    spiderfyOnMaxZoom: true,
     showCoverageOnHover: true,
     zoomToBoundsOnClick: true,
     maxClusterRadius: 100,
@@ -341,8 +399,22 @@ onMounted(async () => {
     }
   });
 });
-</script> 
+</script>
+
+<style scoped>
+.download-spinner {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 50px;
+  height: 50px;
+  z-index: 9999;
+}
+</style>
 
 <template>
   <div id="map" style="width: 100%; height: 100vh;"></div>
+  <div v-if="isDownloading" class="download-spinner">
+    <img src="@/assets/interface/bars-rotate-fade.svg" alt="Loading..." />
+  </div>
 </template>
