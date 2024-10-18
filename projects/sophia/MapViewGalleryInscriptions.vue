@@ -280,7 +280,7 @@ export default {
 }
 
 .gallery__gutter-sizer {
-  width: 2px;
+  width: 0px;
 }
 
 
@@ -288,7 +288,7 @@ export default {
 
   .gallery__item,
   .gallery__col-sizer {
-    width: calc(16.6 - 2px%);
+    width: calc(16.6 - 0px);
   }
 }
 
@@ -297,7 +297,7 @@ export default {
 
   .gallery__item,
   .gallery__col-sizer {
-    width: calc(20% - 2px);
+    width: calc(20% - 0px);
   }
 }
 
@@ -305,7 +305,7 @@ export default {
 
   .gallery__item,
   .gallery__col-sizer {
-    width: calc(25% - 2px);
+    width: calc(25% - 0px);
   }
 }
 
@@ -313,7 +313,7 @@ export default {
 
   .gallery__item,
   .gallery__col-sizer {
-    width: calc(33% - 2px);
+    width: calc(33% - 0px);
   }
 }
 
@@ -321,7 +321,7 @@ export default {
 
   .gallery__item,
   .gallery__col-sizer {
-    width: calc(50% - 2px);
+    width: calc(50% - 0px);
   }
 }
 
@@ -329,7 +329,7 @@ export default {
 
   .gallery__item,
   .gallery__col-sizer {
-    width: calc(50% - 2px);
+    width: calc(50% - 0px);
   }
 
   .gallery {
@@ -345,7 +345,7 @@ export default {
 }
 
 .gallery__item {
-  margin-bottom:2px;
+  margin-bottom:0px;
   float: left;
   overflow: hidden !important;
   -webkit-transition-property: none !important;
@@ -403,6 +403,7 @@ export default {
 .gallery__item img:hover {
   display: block;
   transform: scale(1.03);
+  border-radius:4px;
 }
 
 .gallery__item:hover .item-info {
