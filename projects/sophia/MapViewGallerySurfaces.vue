@@ -4,14 +4,6 @@
     <div class="gallery-filters">
       <div class="gallery-filters-padding" style="padding-left:30px;">
       <div class="gallery-filter-container">
-        <h1>Description</h1>
-        <div class="tag-container">
-          <div class="gallery-tag">Cross</div>
-          <div class="gallery-tag">Saint</div>
-          <div class="gallery-tag">Skull</div>
-        </div>
-      </div>
-      <div class="gallery-filter-container">
         <h1>Media</h1>
         <div class="tag-container">
           <div class="gallery-tag">Wall</div>
@@ -43,7 +35,7 @@
             <h1>{{ $t('panel') }} {{ item.name }}</h1>
           </div>
         </div>
-        <img :src="`${item.attached_orthophoto}/full/250,/0/default.jpg`" loading="lazy" @load="imageLoaded" />
+        <img :src="`${item.attached_orthophoto}/pct:0,0,100,70/250,/0/default.jpg`" loading="lazy" @load="imageLoaded" />
       </a>
       <div class="cut-off"></div>
         <!-- </router-link> -->
@@ -264,7 +256,7 @@ export default {
 .gallery__item,
 .gallery__col-sizer {
   width: calc(16.6%);
-  max-height:700px;
+  max-height:550px;
   min-height:200px;
 }
 
@@ -357,13 +349,12 @@ export default {
 .item-info {
   pointer-events: none;
   position: absolute !important;
-  height: 100% !important;
+  height: calc(100%) !important;
   width: 100% !important;
   z-index: 1000 !important;
   bottom: 0px;
-
   transition: all 0.5s ease-in-out;
-  background: linear-gradient(0deg, rgba(0, 0, 0, 0.0) 0px, rgba(0, 0, 0, 0)50%) !important;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.0) 15px, rgba(0, 0, 0, 0)20px) !important;
 }
 
 .item-info-meta {

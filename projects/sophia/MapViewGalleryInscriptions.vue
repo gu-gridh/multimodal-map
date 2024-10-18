@@ -43,7 +43,7 @@
               <h2 v-if="item.subtitle" style="font-size: 12px;">{{ item.subtitle }}</h2>
             </div>
           </div>
-          <img :src="`${item.inscription_iiif_url}/!300,700/0/default.jpg`" loading="lazy" @load="imageLoaded" />
+          <img :src="`${item.inscription_iiif_url}/!300,/0/default.jpg`" loading="lazy" @load="imageLoaded" />
         </a>
         <div class="cut-off"></div>
       </div>
@@ -276,11 +276,20 @@ export default {
 
 .gallery__item,
 .gallery__col-sizer {
-  width: calc(14.28%);
+  width: calc(14.28% - 2px);
 }
 
 .gallery__gutter-sizer {
-  width: 0px;
+  width: 2px;
+}
+
+
+@media screen and (max-width: 2000px) {
+
+  .gallery__item,
+  .gallery__col-sizer {
+    width: calc(16.6 - 2px%);
+  }
 }
 
 
@@ -288,24 +297,23 @@ export default {
 
   .gallery__item,
   .gallery__col-sizer {
-    width: calc(16.6%);
+    width: calc(20% - 2px);
   }
 }
 
-
-@media screen and (max-width: 1500px) {
+@media screen and (max-width: 1600px) {
 
   .gallery__item,
   .gallery__col-sizer {
-    width: calc(20%);
+    width: calc(25% - 2px);
   }
 }
 
-@media screen and (max-width: 1300px) {
+@media screen and (max-width: 1400px) {
 
   .gallery__item,
   .gallery__col-sizer {
-    width: calc(25%);
+    width: calc(33% - 2px);
   }
 }
 
@@ -313,15 +321,7 @@ export default {
 
   .gallery__item,
   .gallery__col-sizer {
-    width: calc(33%);
-  }
-}
-
-@media screen and (max-width: 1100px) {
-
-  .gallery__item,
-  .gallery__col-sizer {
-    width: calc(50%);
+    width: calc(50% - 2px);
   }
 }
 
@@ -329,7 +329,7 @@ export default {
 
   .gallery__item,
   .gallery__col-sizer {
-    width: calc(50%);
+    width: calc(50% - 2px);
   }
 
   .gallery {
@@ -345,7 +345,7 @@ export default {
 }
 
 .gallery__item {
-  margin-bottom: 2px;
+  margin-bottom:2px;
   float: left;
   overflow: hidden !important;
   -webkit-transition-property: none !important;
@@ -396,15 +396,13 @@ export default {
 
 .gallery__item img {
   display: block;
-  max-width: 100%;
   transition: all 0.2s ease-in-out;
-  transform: scale(0.98);
 }
 
 
 .gallery__item img:hover {
   display: block;
-  transform: scale(1.00);
+  transform: scale(1.03);
 }
 
 .gallery__item:hover .item-info {
