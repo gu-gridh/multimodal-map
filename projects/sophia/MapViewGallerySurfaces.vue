@@ -19,6 +19,15 @@
           <div class="gallery-tag">Wood</div>
         </div>
       </div>
+
+
+      <div class="filter-gradient-blur">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+
     </div>
     </div>
 
@@ -231,6 +240,27 @@ export default {
 
 
 <style scoped>
+.gallery-filters{
+margin-left: -20px;
+width: calc(100%);
+background: linear-gradient(0deg, rgba(0, 0, 0, 0.8)0%, rgba(0, 0, 0, 0)100%) !important;
+color:white
+}
+
+
+.gallery-filters h1{
+font-weight:400;
+}
+
+.gallery-filters .tag-container .gallery-tag{
+
+}
+
+.gallery-filters .tag-container .gallery-tag:hover{
+color:white;
+}
+
+
 .gallery {
   float:left;
   width:100%;
@@ -239,7 +269,7 @@ export default {
   max-width: 100%;
   /* Maximum width of the gallery */
   margin: 0 auto;
-  padding:10px 0px 0px 0px;
+  padding:0px 0px 0px 0px;
   pointer-events: auto;
   /* Top and bottom margin 0, left and right margin auto */
 }

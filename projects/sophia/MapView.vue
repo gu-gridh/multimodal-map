@@ -280,6 +280,18 @@ const toggleInstructionsVisibility = async () => {
   opacity:1.0;
 }
 
+.filter-gradient-blur {
+  position: fixed;
+  z-index: 1;
+  inset: auto 0 0 0;
+  height: 150px;
+  pointer-events: none;
+  width:100%;
+  bottom:80px;
+  opacity:1.0;
+  margin-left:510px;
+}
+
 .floor-plans{
   opacity:0.7;
 
@@ -377,6 +389,75 @@ display:none;
       rgba(0, 0, 0, 1) 100%);
 }
 
+/* filter gradient blur */
+
+.filter-gradient-blur>div,
+.filter-gradient-blur::before,
+.filter-gradient-blur::after {
+  position: absolute;
+  inset: 0;
+}
+
+.filter-gradient-blur>div:nth-of-type(1) {
+  z-index: 1;
+  backdrop-filter: blur(1px);
+  mask: linear-gradient(to bottom,
+      rgba(0, 0, 0, 0) 25%,
+      rgba(0, 0, 0, 1) 37.5%,
+      rgba(0, 0, 0, 1) 50%,
+      rgba(0, 0, 0, 0) 62.5%);
+}
+
+.filter-gradient-blur>div:nth-of-type(2) {
+  z-index: 2;
+  backdrop-filter: blur(2px);
+  mask: linear-gradient(to bottom,
+      rgba(0, 0, 0, 0) 37.5%,
+      rgba(0, 0, 0, 1) 50%,
+      rgba(0, 0, 0, 1) 62.5%,
+      rgba(0, 0, 0, 0) 75%);
+}
+
+.filter-gradient-blur>div:nth-of-type(3) {
+  z-index: 3;
+  backdrop-filter: blur(3px);
+  mask: linear-gradient(to bottom,
+      rgba(0, 0, 0, 0) 50%,
+      rgba(0, 0, 0, 1) 62.5%,
+      rgba(0, 0, 0, 1) 75%,
+      rgba(0, 0, 0, 0) 87.5%);
+}
+
+.filter-gradient-blur>div:nth-of-type(4) {
+  z-index: 4;
+  backdrop-filter: blur(3px);
+  mask: linear-gradient(to bottom,
+      rgba(0, 0, 0, 0) 62.5%,
+      rgba(0, 0, 0, 1) 75%,
+      rgba(0, 0, 0, 1) 87.5%,
+      rgba(0, 0, 0, 0) 100%);
+}
+
+.filter-gradient-blur>div:nth-of-type(5) {
+  z-index: 5;
+  backdrop-filter: blur(3px);
+  mask: linear-gradient(to bottom,
+      rgba(0, 0, 0, 0) 75%,
+      rgba(0, 0, 0, 1) 87.5%,
+      rgba(0, 0, 0, 1) 100%);
+}
+
+.filter-gradient-blur::after {
+  content: "";
+  z-index: 1;
+  backdrop-filter: blur(5px);
+  mask: linear-gradient(to bottom,
+      rgba(0, 0, 0, 0) 87.5%,
+      rgba(0, 0, 0, 1) 100%);
+}
+
+
+
 #app .tile-layer {
   filter: grayscale(0%);
   filter: opacity(0.0);
@@ -424,7 +505,7 @@ display:none;
     margin-left: 510px;
     width: calc(100% - 510px);
     height: calc(100% - 80px);
-    padding:20px 10px 78px 20px;
+    padding:0px 10px 0px 20px;
     z-index: 100 !important;
     background-color: black;
     opacity: 0.9;
@@ -458,20 +539,20 @@ display:none;
 /* Gallery filters */
 
 .gallery-filters{
-  width:100%;
   height:auto;
   margin-bottom:0px;
   display:flex;
 flex-direction: row;
-justify-content:left;
+justify-content:center;
 flex-wrap:wrap;
 z-index:100000;
 margin-top: 50px;
-border-width: 0 0 1px 0;
-border-style: dotted;
-border-color: grey;
-margin-left: -20px;
-width: calc(100% + 40px);
+color:white;
+position:absolute;
+bottom:0px;
+padding-top:100px;
+padding-right:20%;
+pointer-events: none;
 }
 
 .gallery-filters-padding{
@@ -486,6 +567,19 @@ flex-wrap:wrap;
 .gallery-filter-container{
   padding-left:0px;
   padding-bottom:10px;
+  z-index:1000;
+}
+
+@media screen and (max-width: 1500px) {
+  .gallery-filters{
+padding-right:10%;
+}
+}
+
+@media screen and (max-width: 1300px) {
+  .gallery-filters{
+padding-right:0%;
+}
 }
 
 
@@ -506,9 +600,8 @@ max-width:400px;
 
 .gallery-filters h1{
 font-size:0.95em;
-color:white;
 font-weight:200;
-margin-bottom:10px;
+margin-bottom:5px;
 }
 
 .gallery-filters .tag-container{
@@ -520,9 +613,9 @@ flex-wrap:wrap;
 }
 
 .gallery-filters .tag-container .gallery-tag{
+  pointer-events: auto;
 font-size:0.75em;
 letter-spacing: 0.5px;
-color:white;
 border-radius:4px;
 padding:3px 8px;
 background-color:rgba(255,255,255,0.1);

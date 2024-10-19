@@ -1,6 +1,7 @@
 <template>
   <div id="gallery-container">
     <div class="gallery-filters">
+     
       <div class="gallery-filters-padding" style="padding-left:20px;">
         <div class="gallery-filter-container">
           <h1>Condition</h1>
@@ -16,7 +17,7 @@
           <h1>Alignment</h1>
           <div class="tag-container">
             <div class="gallery-tag">Aligned</div>
-            <div class="gallery-tag">Insclinating</div>
+            <div class="gallery-tag">Inclinating</div>
             <div class="gallery-tag">Declinating</div>
           </div>
         </div>
@@ -29,6 +30,14 @@
           </div>
         </div>
       </div>
+
+      <div class="filter-gradient-blur">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+
     </div>
 
     <div class="gallery">
@@ -252,6 +261,36 @@ export default {
 
 
 <style scoped>
+  #gallery-container {
+    padding:0px 0px 0px 0px;
+    background-color: transparent;
+    opacity: 1.0;
+  }
+
+  .gallery-filters{
+margin-left: 0px;
+width: calc(100%);
+position:absolute;
+bottom:0px;
+background: linear-gradient(0deg, rgba(220, 215, 210, 0.5)10%, rgba(220, 215, 210, 0)100%) !important;
+color:black;
+}
+
+
+.gallery-filters h1{
+font-weight:400;
+}
+
+.gallery-filters .tag-container .gallery-tag{
+background-color:rgba(0,0,0,0.3);
+color:white;
+}
+
+.gallery-filters .tag-container .gallery-tag:hover{
+background-color:rgba(120,60,60,1.0);
+color:white;
+}
+
 .gallery {
   float: left;
   width: 100%;
@@ -260,7 +299,7 @@ export default {
   max-width: 100%;
   /* Maximum width of the gallery */
   margin: 0 auto;
-  padding: 10px 0px 0px 0px;
+  padding: 0px 0px 0px 0px;
   pointer-events: auto;
   /* Top and bottom margin 0, left and right margin auto */
 }
