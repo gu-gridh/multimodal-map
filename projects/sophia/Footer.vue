@@ -106,7 +106,7 @@ a {
   font-style: normal;
   font-size: 30px;
   line-height: 0.8;
-  padding: 0px 60px 5px 30px;
+  padding: 0px 40px 5px 30px;
   vertical-align: middle;
 }
 

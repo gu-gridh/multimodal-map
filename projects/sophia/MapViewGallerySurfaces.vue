@@ -240,27 +240,6 @@ export default {
 
 
 <style scoped>
-.gallery-filters{
-margin-left: -20px;
-width: calc(100%);
-background: linear-gradient(0deg, rgba(0, 0, 0, 0.8)0%, rgba(0, 0, 0, 0)100%) !important;
-color:white
-}
-
-
-.gallery-filters h1{
-font-weight:400;
-}
-
-.gallery-filters .tag-container .gallery-tag{
-
-}
-
-.gallery-filters .tag-container .gallery-tag:hover{
-color:white;
-}
-
-
 .gallery {
   float:left;
   width:100%;
@@ -281,6 +260,10 @@ color:white;
 /* reveal gallery after images loaded */
 .gallery.are-images-unloaded {
   opacity: 0;
+}
+
+.gallery-filters{
+margin-left:-20px;
 }
 
 .gallery__item,

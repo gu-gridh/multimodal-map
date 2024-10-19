@@ -2,17 +2,7 @@
   <div id="gallery-container">
     <div class="gallery-filters">
      
-      <div class="gallery-filters-padding" style="padding-left:20px;">
-        <div class="gallery-filter-container">
-          <h1>Condition</h1>
-          <div class="tag-container">
-            <div class="gallery-tag">Fragment</div>
-            <div class="gallery-tag">Damaged</div>
-            <div class="gallery-tag">Preserved</div>
-            <div class="gallery-tag">Damnatio</div>
-          </div>
-        </div>
-
+      <div class="gallery-filters-padding">
         <div class="gallery-filter-container">
           <h1>Alignment</h1>
           <div class="tag-container">
@@ -21,14 +11,26 @@
             <div class="gallery-tag">Declinating</div>
           </div>
         </div>
-
+        
         <div class="gallery-filter-container">
+          <h1>Condition</h1>
+          <div class="tag-container">
+            <div class="gallery-tag">Preserved</div>
+            <div class="gallery-tag">Fragment</div>
+            <div class="gallery-tag">Damaged</div>
+            <div class="gallery-tag">Damnatio</div>
+          </div>
+        </div>
+
+       
+
+        <!-- <div class="gallery-filter-container">
           <h1>Extra-alpabetical signs</h1>
           <div class="tag-container">
             <div class="gallery-tag">Cross </div>
             <div class="gallery-tag">Counting</div>
           </div>
-        </div>
+        </div> -->
       </div>
 
       <div class="filter-gradient-blur">
@@ -263,33 +265,9 @@ export default {
 <style scoped>
   #gallery-container {
     padding:0px 0px 0px 0px;
-    background-color: transparent;
     opacity: 1.0;
   }
 
-  .gallery-filters{
-margin-left: 0px;
-width: calc(100%);
-position:absolute;
-bottom:0px;
-background: linear-gradient(0deg, rgba(220, 215, 210, 0.5)10%, rgba(220, 215, 210, 0)100%) !important;
-color:black;
-}
-
-
-.gallery-filters h1{
-font-weight:400;
-}
-
-.gallery-filters .tag-container .gallery-tag{
-background-color:rgba(0,0,0,0.3);
-color:white;
-}
-
-.gallery-filters .tag-container .gallery-tag:hover{
-background-color:rgba(120,60,60,1.0);
-color:white;
-}
 
 .gallery {
   float: left;
@@ -315,11 +293,11 @@ color:white;
 
 .gallery__item,
 .gallery__col-sizer {
-  width: calc(14.28% - 2px);
+  width: calc(14.28% - 1px);
 }
 
 .gallery__gutter-sizer {
-  width: 0px;
+  width: 0.5px;
 }
 
 
@@ -327,7 +305,7 @@ color:white;
 
   .gallery__item,
   .gallery__col-sizer {
-    width: calc(16.6 - 0px);
+    width: calc(16.6 - 1px);
   }
 }
 
@@ -336,7 +314,7 @@ color:white;
 
   .gallery__item,
   .gallery__col-sizer {
-    width: calc(20% - 0px);
+    width: calc(20% - 1px);
   }
 }
 
@@ -344,7 +322,7 @@ color:white;
 
   .gallery__item,
   .gallery__col-sizer {
-    width: calc(25% - 0px);
+    width: calc(25% - 1px);
   }
 }
 
@@ -352,7 +330,7 @@ color:white;
 
   .gallery__item,
   .gallery__col-sizer {
-    width: calc(33% - 0px);
+    width: calc(33% - 1px);
   }
 }
 
@@ -360,7 +338,7 @@ color:white;
 
   .gallery__item,
   .gallery__col-sizer {
-    width: calc(50% - 0px);
+    width: calc(50% - 1px);
   }
 }
 
@@ -368,7 +346,7 @@ color:white;
 
   .gallery__item,
   .gallery__col-sizer {
-    width: calc(50% - 0px);
+    width: calc(50% - 1px);
   }
 
   .gallery {
@@ -384,7 +362,7 @@ color:white;
 }
 
 .gallery__item {
-  margin-bottom:0px;
+  margin-bottom:0.5px;
   float: left;
   overflow: hidden !important;
   -webkit-transition-property: none !important;
@@ -419,7 +397,7 @@ color:white;
   width: 100% !important;
   z-index: 1000 !important;
   bottom: 0px;
-  transition: all 0.5s ease-in-out;
+  transition: all 0.2s ease-in-out;
   background: linear-gradient(0deg, rgba(0, 0, 0, 0.0) 0px, rgba(0, 0, 0, 0)50%) !important;
 }
 
@@ -430,6 +408,7 @@ color:white;
   bottom: 0px;
   padding: 20px 25px;
   padding-bottom: 10px !important;
+  font-weight:200;
   display: none;
 }
 
