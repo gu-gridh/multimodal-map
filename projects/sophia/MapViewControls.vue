@@ -431,6 +431,7 @@
     font-family: "Oswald", sans-serif;
     appearance: none !important;
     padding: 3px 10px 3px 10px;
+    max-width:130px;
   }
 
 
