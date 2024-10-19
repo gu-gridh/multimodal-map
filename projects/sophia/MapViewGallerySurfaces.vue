@@ -21,12 +21,12 @@
       </div>
 
 
-      <div class="filter-gradient-blur">
+   <!--    <div class="filter-gradient-blur">
         <div></div>
         <div></div>
         <div></div>
         <div></div>
-      </div>
+      </div> -->
 
     </div>
     </div>

@@ -1,75 +1,67 @@
 <template>
   <!-- Checks if all points are loaded and only then show the controls -->
   <div class="filtercontrolwidgets">
+
     <div :class="{ 'non-interactive': !areMapPointsLoaded }">
       <div v-if="areMapPointsLoaded">
+
         <div class="filtercontrolwidgets">
           <!-- This organises the three top dropdown columns -->
           <div class="control-organisation">
-            <div class="control-group">
+            <div class="column-1" style="width:auto;">
               <div class="tag-section">
                 <div class="section-title">{{ $t('typeofinscription') }}</div>
                 <div class="broad-controls">
-                  <Dropdown v-model="categories" :categories="{
+                  <CategoryButton v-model="categories" :categories="{
               textualgraffiti: $t('textualgraffiti'),
               pictorialgraffiti: $t('pictorialgraffiti'),
-              composite: $t('composite'),}" :limit="1" class="my-2" title="Pick an inscription type"
-                    @click="handleCategoryClick" style="padding-right:30px;" />
+              composite: $t('composite')}" :limit="1" class="my-2" title="Pick an inscription type"
+                    @click="handleCategoryClick" style="padding-right:0px;" />
                 </div>
               </div>
-              <div class="tag-section">
+              <div class="row-1" style="display:flex; flex-direction: row;">
+                <div class="tag-section" style="margin-right:10px;">
+                  <div class="section-title">{{ $t('textualgenre') }}</div>
+                  <div title="Narrow the result to a certain language group" class="broad-controls">
+                    <Dropdown v-model="language" :categories="LANGUAGE" :limit="1" styleType="dropdown" class="my-2"
+                      type="language" style="padding-right:30px;" />
+                  </div>
+                </div>
+
+                <div class="tag-section">
+                  <div class="section-title">{{ $t('pictorialdescription') }}</div>
+                  <div title="Narrow the result to a certain language group" class="broad-controls">
+                    <Dropdown v-model="language" :categories="LANGUAGE" :limit="1" styleType="dropdown" class="my-2"
+                      type="language" style="padding-right:30px;" />
+                  </div>
+                </div>
               </div>
             </div>
 
-            <div class="control-group">
-              <div class="tag-section">
-                <div class="section-title">{{ $t('textualgenre') }}</div>
-                <div title="Narrow the result to a certain language group" class="broad-controls">
-                  <Dropdown v-model="language" :categories="LANGUAGE" :limit="1" styleType="dropdown" class="my-2"
-                    type="language" style="padding-right:30px;" />
-                </div>
-              </div>
-
-              <div class="tag-section">
-                <div class="section-title">{{ $t('pictorialdescription') }}</div>
-                <div title="Narrow the result to a certain language group" class="broad-controls">
-                  <Dropdown v-model="language" :categories="LANGUAGE" :limit="1" styleType="dropdown" class="my-2"
-                    type="language" style="padding-right:30px;" />
-                </div>
-              </div>
-
-            </div>
-
-            <div class="control-group"
+            <div class="column-2 vertical-divider"
               style="width:1px; height:110px; margin-top:7px; border-width:0 1px 0 0; border-style:dotted; border-color:var(--theme-3);">
             </div>
 
-
-            <div class="control-group">
-
-
-              <div class="tag-section">
-                <div class="section-title">{{ $t('writingsystem') }}</div>
-                <div title="Narrow the result to a certain language group" class="broad-controls">
-                  <Dropdown v-model="language" :categories="LANGUAGE" :limit="1" styleType="dropdown" class="my-2"
-                    type="language" style="padding-right:30px;" />
+            <div class="column-3">
+              <div class="control-group">
+                <div class="tag-section">
+                  <div class="section-title">{{ $t('writingsystem') }}</div>
+                  <div title="Narrow the result to a certain language group" class="broad-controls">
+                    <Dropdown v-model="language" :categories="LANGUAGE" :limit="1" styleType="dropdown" class="my-2"
+                      type="language" style="padding-right:30px;" />
+                  </div>
+                </div>
+                <div class="tag-section">
+                  <div class="section-title">{{ $t('language') }}</div>
+                  <div title="Narrow the result to a certain language group" class="broad-controls">
+                    <Dropdown v-model="language" :categories="LANGUAGE" :limit="1" styleType="dropdown" class="my-2"
+                      type="language" style="padding-right:30px;" />
+                  </div>
                 </div>
               </div>
-              <div class="tag-section">
-                <div class="section-title">{{ $t('language') }}</div>
-                <div title="Narrow the result to a certain language group" class="broad-controls">
-                  <Dropdown v-model="language" :categories="LANGUAGE" :limit="1" styleType="dropdown" class="my-2"
-                    type="language" style="padding-right:30px;" />
-                </div>
-              </div>
-
 
 
             </div>
-
-
-
-
 
           </div>
 
@@ -259,8 +251,7 @@
     const categoryMapping = {
       textualgraffiti: 1,
       pictorialgraffiti: 2,
-      composite: 3,
-      monograms: 4
+      composite: 3
     };
 
     if (lastClickedCategory.value === category) {
@@ -380,7 +371,7 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    width:100%;
+    width: 100%;
   }
 
   .loading-svg {
@@ -408,12 +399,11 @@
   }
 
   .control-group {
-    width: 100%;
+    width: auto;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    width:auto;
-    margin-right:20px;
+    margin-right: 0px;
   }
 
   #app .section-title {
@@ -421,13 +411,15 @@
     margin-bottom: -5px;
     font-weight: 300;
     color: black;
-    font-size: 1.0em;
+    font-size: 0.95em;
+    width:100px;
   }
 
   #app .tag-section {
     margin-top: -5px;
     margin-bottom: 0px;
     margin-right: 0px;
+    width:auto;
 
   }
 
@@ -550,10 +542,10 @@
   }
 
   #app .control-organisation {
-    width: 100%;
+    width: 96%;
     display: flex;
     flex-direction: row;
-    justify-content:space-between;
+    justify-content: space-between;
     margin-top: 10px;
     pointer-events: auto;
     padding-bottom: 10px;
@@ -622,10 +614,27 @@
   }
 
   @media screen and (max-width: 900px) {
+
+    #app .left-pane {
+    background: url("images/gradient.png");
+    background-size: contain;
+    min-width: 100%;
+    max-width: 100%;
+    font-size: 95%;
+  }
+
     #app .broad-controls {
       width: 100%;
 
     }
+
+    #app .section-title {
+    width:150px;
+  }
+
+  .vertical-divider{
+    display:none;
+  }
 
     .data-widget {
       width: 100%;
@@ -637,6 +646,18 @@
       display: flex;
       flex-direction: column;
       margin-top: 10px;
+    }
+
+
+ .search-section {
+    width: 100%;
+
+  }
+
+    #app .control-group {
+  
+      display: flex;
+      flex-direction: row;
     }
 
     .justify-space {

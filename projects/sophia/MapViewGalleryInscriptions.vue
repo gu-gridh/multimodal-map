@@ -11,7 +11,7 @@
             <div class="gallery-tag">Declinating</div>
           </div>
         </div>
-        
+
         <div class="gallery-filter-container">
           <h1>Condition</h1>
           <div class="tag-container">
@@ -33,12 +33,12 @@
         </div> -->
       </div>
 
-      <div class="filter-gradient-blur">
+   <!--    <div class="filter-gradient-blur">
         <div></div>
         <div></div>
         <div></div>
         <div></div>
-      </div>
+      </div> -->
 
     </div>
 

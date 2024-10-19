@@ -593,7 +593,6 @@ display:none;
   display:flex;
   flex-direction:row;
   justify-content:flex-end;
-  margin-bottom:10px;
 }
 
 .gallery-filters h1{
