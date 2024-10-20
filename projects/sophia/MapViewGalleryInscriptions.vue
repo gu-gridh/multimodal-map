@@ -15,7 +15,7 @@
         <div class="gallery-filter-container">
           <h1>Condition</h1>
           <div class="tag-container">
-            <div class="gallery-tag">Preserved</div>
+            <div class="gallery-tag">Complete</div>
             <div class="gallery-tag">Fragment</div>
             <div class="gallery-tag">Damaged</div>
             <div class="gallery-tag">Damnatio</div>
@@ -305,7 +305,7 @@ export default {
 
   .gallery__item,
   .gallery__col-sizer {
-    width: calc(16.6 - 1px);
+    width: calc(16.6 - 0.5px);
   }
 }
 
@@ -314,7 +314,7 @@ export default {
 
   .gallery__item,
   .gallery__col-sizer {
-    width: calc(20% - 1px);
+    width: calc(20% - 0.5px);
   }
 }
 
@@ -322,7 +322,7 @@ export default {
 
   .gallery__item,
   .gallery__col-sizer {
-    width: calc(25% - 1px);
+    width: calc(25% - 0.5px);
   }
 }
 
@@ -330,7 +330,7 @@ export default {
 
   .gallery__item,
   .gallery__col-sizer {
-    width: calc(33% - 1px);
+    width: calc(33% - 0.5px);
   }
 }
 
@@ -338,7 +338,7 @@ export default {
 
   .gallery__item,
   .gallery__col-sizer {
-    width: calc(50% - 1px);
+    width: calc(50% - 0.5px);
   }
 }
 
@@ -346,7 +346,7 @@ export default {
 
   .gallery__item,
   .gallery__col-sizer {
-    width: calc(50% - 1px);
+    width: calc(50% - 0.5px);
   }
 
   .gallery {
