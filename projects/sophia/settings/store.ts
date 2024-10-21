@@ -4,7 +4,10 @@ import { defineStore } from "pinia";
 export const inscriptionsStore = defineStore("inscriptions", () => {
   const categories = ref<Array<string>>(["all"]);
   const tags = ref<Array<string>>(["all"]);
-  const language = ref<Array<string>>(["all"]);
+  const languageModel = ref<Array<string>>(["all"]);
+  const pictorialModel = ref<Array<string>>(["all"]);
+  const textualModel = ref<Array<string>>(["all"]);
+  const writingModel = ref<Array<string>>(["all"]);
   const panelType = ref<Array<string>>(["all"]);
   const tagsLayerVisible = ref(false); // Default visibility state for tags layer
   const dataParams = ref<Record<string, string | number | null>>({});
@@ -17,5 +20,5 @@ export const inscriptionsStore = defineStore("inscriptions", () => {
     selectedCategory.value = categoryNumber;
   };  
 
-  return { categories, tags, language, panelType, tagsLayerVisible, dataParams, areMapPointsLoaded, imgParams, panelId, setSelectedCategory, selectedCategory };
+  return { categories, tags, languageModel, writingModel, pictorialModel, textualModel, panelType, tagsLayerVisible, dataParams, areMapPointsLoaded, imgParams, panelId, setSelectedCategory, selectedCategory };
 });

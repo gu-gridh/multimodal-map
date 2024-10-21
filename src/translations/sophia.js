@@ -171,7 +171,7 @@ const messages = {
       textualgraffiti:"Текстове",
       pictorialgraffiti:"Живописні",
       monograms:"Вензелі",
-      writingsystem:"Writing system",
+      writingsystem:"система письма",
       textualgenre:"Текстовий жанр",
       namedentity:"Іменована сутність",
       pictorialdescription:"Картинний опис",

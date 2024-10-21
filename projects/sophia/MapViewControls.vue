@@ -13,9 +13,9 @@
                 <div class="section-title">{{ $t('typeofinscription') }}</div>
                 <div class="broad-controls">
                   <CategoryButton v-model="categories" :categories="{
-              textualgraffiti: $t('textualgraffiti'),
-              pictorialgraffiti: $t('pictorialgraffiti'),
-              composite: $t('composite')}" :limit="1" class="my-2" title="Pick an inscription type"
+                    textualgraffiti: $t('textualgraffiti'),
+                    pictorialgraffiti: $t('pictorialgraffiti'),
+                    composite: $t('composite')}" :limit="1" class="my-2" title="Pick an inscription type"
                     @click="handleCategoryClick" style="padding-right:0px;" />
                 </div>
               </div>
@@ -23,7 +23,7 @@
                 <div class="tag-section" style="margin-right:10px;">
                   <div class="section-title">{{ $t('textualgenre') }}</div>
                   <div title="Narrow the result to a certain language group" class="broad-controls">
-                    <Dropdown v-model="language" :categories="LANGUAGE" :limit="1" styleType="dropdown" class="my-2"
+                    <Dropdown v-model="textualModel" :categories="TEXTUAL" :limit="1" styleType="dropdown" class="my-2"
                       type="language" style="padding-right:30px;" />
                   </div>
                 </div>
@@ -31,8 +31,8 @@
                 <div class="tag-section">
                   <div class="section-title">{{ $t('pictorialdescription') }}</div>
                   <div title="Narrow the result to a certain language group" class="broad-controls">
-                    <Dropdown v-model="language" :categories="LANGUAGE" :limit="1" styleType="dropdown" class="my-2"
-                      type="language" style="padding-right:30px;" />
+                    <Dropdown v-model="pictorialModel" :categories="PICTORIAL" :limit="1" styleType="dropdown" class="my-2"
+                      style="padding-right:30px;" />
                   </div>
                 </div>
               </div>
@@ -47,22 +47,19 @@
                 <div class="tag-section">
                   <div class="section-title">{{ $t('writingsystem') }}</div>
                   <div title="Narrow the result to a certain language group" class="broad-controls">
-                    <Dropdown v-model="language" :categories="LANGUAGE" :limit="1" styleType="dropdown" class="my-2"
-                      type="language" style="padding-right:30px;" />
+                    <Dropdown v-model="writingModel" :categories="WRITING" :limit="1" styleType="dropdown" class="my-2"
+                     style="padding-right:30px;" />
                   </div>
                 </div>
                 <div class="tag-section">
                   <div class="section-title">{{ $t('language') }}</div>
                   <div title="Narrow the result to a certain language group" class="broad-controls">
-                    <Dropdown v-model="language" :categories="LANGUAGE" :limit="1" styleType="dropdown" class="my-2"
+                    <Dropdown v-model="languageModel" :categories="LANGUAGE" :limit="1" styleType="dropdown" class="my-2"
                       type="language" style="padding-right:30px;" />
                   </div>
                 </div>
               </div>
-
-
             </div>
-
           </div>
 
           <!-- <div class="section-title">{{ $t('searchtitle') }}</div> -->
@@ -73,7 +70,6 @@
               <button style="" :class="{ active: searchType === 'surfaces' }" @click="setSearchType('surfaces')">{{
                 $t('panels') }}</button>
             </div>
-
             <input ref="searchInput" type="text" v-model="searchQuery" @input="handleSearch"
               @focus="handleSearchBoxFocus"
               :placeholder="searchType === 'surfaces' ? $t('searchsurfacesplaceholder') : $t('searchinscriptionsplaceholder')"
@@ -120,7 +116,6 @@
 
       <div class="data-widget-divider"></div>
 
-
       <div class="data-widget-section">
         <div class="data-widget-item">
           <h3>{{ $t('texts') }}:</h3>
@@ -148,23 +143,21 @@
 </template>
 
 <script setup lang="ts">
-  import { inject, ref, onMounted, computed, defineProps, watch } from "vue";
+  import { inject, ref, onMounted, computed, watch } from "vue";
   import Dropdown from "./components/DropdownComponent.vue";
   import CategoryButton from "@/components/input/CategoryButtonList.vue";
   import { storeToRefs } from "pinia";
   import { inscriptionsStore } from "./settings/store";
-  import { mapStore } from "@/stores/store";
+  // import { mapStore } from "@/stores/store";
   import type { InscriptionsProject } from "./types";
   import { SophiaClient } from "@/assets/saintsophia";
-  import { transform } from 'ol/proj';
   import apiConfig from "./settings/apiConfig"
-  import { nextTick } from 'vue';
   import i18n from '../../src/translations/sophia';
 
   const config = inject < InscriptionsProject > ("config");
   const sophiaClient = new SophiaClient("inscriptions"); // Initialize SophiaClient
   const store = inscriptionsStore();
-  const { categories, tags, language, dataParams, areMapPointsLoaded } = storeToRefs(inscriptionsStore());
+  const { categories, tags, languageModel, pictorialModel, textualModel, dataParams, areMapPointsLoaded, writingModel } = storeToRefs(inscriptionsStore());
   // Create a ref for last clicked category
   const lastClickedCategory = ref('');
 
@@ -174,20 +167,21 @@
   const totalThreed = ref(0);
   const hiddenPanels = ref(0);
   const currentPanelCount = ref(0);
-  const visibleAbout = ref(false);
-  const { selectedFeature } = storeToRefs(mapStore());
+  // const visibleAbout = ref(false);
+  // const { selectedFeature } = storeToRefs(mapStore());
   const searchType = ref('inscriptionobjects'); // Default to 'surfaces' 
   const firstSearchBoxClick = ref(true);
   const searchQuery = ref('');
   const searchResults = ref([]);
-  const TAGS = ref < Record < string, string>> ({});
+  // const TAGS = ref < Record < string, string>> ({});
   const LANGUAGE = ref < Record < string, string>> ({});
+  const WRITING = ref < Record < string, string>> ({});
+  const PICTORIAL = ref < Record < string, string>> ({});
+  const TEXTUAL = ref < Record < string, string>> ({});
   //const INSCRIPTIONTYPE = ref<Record<string, string>>({});
-  const currentTag = ref(null);
+  // const currentTag = ref(null);
   import _debounce from 'lodash/debounce';
   const searchInput = ref(null);
-  //const currentNecropolis = ref(null);
-  //const currentInscriptionType = ref(null);
 
   const baseURL = `${apiConfig.PANEL}?page_size=500`;
 
@@ -226,9 +220,12 @@
 
   onMounted(async () => {
     await fetchDataAndPopulateRef("language", LANGUAGE);
+    await fetchDataAndPopulateRef("writingsystem", WRITING);
+    await fetchDataAndPopulateRef("tag", PICTORIAL);
+    await fetchDataAndPopulateRef("genre", TEXTUAL);
 
-    const response = await fetch(baseURL);
-    const data = await response.json();
+    // const response = await fetch(baseURL);
+    // const data = await response.json();
   });
 
   async function fetchDataAndPopulateRef<T>(type: string, refToPopulate: any) {
@@ -355,7 +352,6 @@
     const resetbutton = document.getElementById('resetfilters');
     resetbutton.style.display = "block";
   }
-
 </script>
 
 <style>
@@ -384,7 +380,6 @@
     display: block;
     margin: auto;
     transition: all 0.4s;
-
   }
 
   .loading-svg:hover {
@@ -434,8 +429,6 @@
     max-width:125px;
   }
 
-
-
   .search-section {
     width: 96%;
     height: auto;
@@ -447,7 +440,6 @@
     background-color: rgba(255, 255, 255, 0.6);
     backdrop-filter: blur(5px);
     z-index: 200000;
-
   }
 
   .search-result-item {
@@ -483,7 +475,6 @@
     text-decoration-line: underline;
   }
 
-
   .search-box {
     font-size: 1.2em;
     background-color: transparent;
@@ -509,21 +500,6 @@
     position: absolute;
     box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.1);
   }
-
-  /* #app .range-slider-container {
-  display: flex;
-  width: 100%;
-  height: 90px;
-  align-items: bottom;
-  padding: 25px 0 0 0;
-  background-color: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(3px);
-} */
-
-  /* #app .range-slider-wrapper {
-  padding-left: 5px;
-  padding-right: 5px;
-} */
 
   #app .start-end-box {
     width: 15%;
@@ -600,9 +576,6 @@
     height: 1px;
   }
 
-
-  .data-widget-item {}
-
   .data-widget-item h3 {
     display: inline;
   }
@@ -676,8 +649,6 @@
     .margin-5 {
       margin-left: 0px;
     }
-
-
   }
 
   .slide-leave-active {
