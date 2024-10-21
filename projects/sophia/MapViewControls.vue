@@ -24,7 +24,7 @@
                   <div class="section-title">{{ $t('textualgenre') }}</div>
                   <div title="Narrow the result to a certain language group" class="broad-controls">
                     <Dropdown v-model="textualModel" :categories="TEXTUAL" :limit="1" styleType="dropdown" class="my-2"
-                      type="language" style="padding-right:30px;" />
+                      type="language" @change="resetAllExcept('textualModel')" style="padding-right:30px;" />
                   </div>
                 </div>
 
@@ -32,7 +32,7 @@
                   <div class="section-title">{{ $t('pictorialdescription') }}</div>
                   <div title="Narrow the result to a certain language group" class="broad-controls">
                     <Dropdown v-model="pictorialModel" :categories="PICTORIAL" :limit="1" styleType="dropdown" class="my-2"
-                      style="padding-right:30px;" />
+                    @change="resetAllExcept('pictorialModel')" style="padding-right:30px;" />
                   </div>
                 </div>
               </div>
@@ -48,14 +48,14 @@
                   <div class="section-title">{{ $t('writingsystem') }}</div>
                   <div title="Narrow the result to a certain language group" class="broad-controls">
                     <Dropdown v-model="writingModel" :categories="WRITING" :limit="1" styleType="dropdown" class="my-2"
-                     style="padding-right:30px;" />
+                    @change="resetAllExcept('writingModel')" style="padding-right:30px;" />
                   </div>
                 </div>
                 <div class="tag-section">
                   <div class="section-title">{{ $t('language') }}</div>
                   <div title="Narrow the result to a certain language group" class="broad-controls">
                     <Dropdown v-model="languageModel" :categories="LANGUAGE" :limit="1" styleType="dropdown" class="my-2"
-                      type="language" style="padding-right:30px;" />
+                      type="language" @change="resetAllExcept('languageModel')" style="padding-right:30px;" />
                   </div>
                 </div>
               </div>
@@ -197,6 +197,13 @@
     }
   };
 
+  function resetAllExcept(exceptModel) { //reset the other dropdowns to all when a selection is made
+    if (exceptModel !== "languageModel") languageModel.value = ["all"];
+    if (exceptModel !== "pictorialModel") pictorialModel.value = ["all"];
+    if (exceptModel !== "textualModel") textualModel.value = ["all"];
+    if (exceptModel !== "writingModel") writingModel.value = ["all"];
+  }
+
   const filteredInscription = computed(() => {
     if (searchResults.value && Array.isArray(searchResults.value.results)) {
       return searchResults.value.results.map(result => {
@@ -336,6 +343,10 @@
 
   watch(() => i18n.global.locale, (newLocale) => {
     fetchDataAndPopulateRef('language', LANGUAGE);
+    fetchDataAndPopulateRef("language", LANGUAGE);
+    fetchDataAndPopulateRef("writingsystem", WRITING);
+    fetchDataAndPopulateRef("tag", PICTORIAL);
+    fetchDataAndPopulateRef("genre", TEXTUAL);
   });
 
 
