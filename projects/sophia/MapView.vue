@@ -4,13 +4,13 @@ import MainLayout from "@/MainLayout.vue";
 import MapViewControls from "./MapViewControls.vue";
 import MapComponent from "./components/MapComponent.vue";
 import MapViewMarkers from "./MapViewMarkers.vue";
-import GeoJsonWebGLRenderer from "@/components/GeoJsonWebGLRenderer.vue";
+// import GeoJsonWebGLRenderer from "@/components/GeoJsonWebGLRenderer.vue";
 import MapViewPreview from "./MapViewPreview.vue";
 import { storeToRefs } from "pinia";
 import { inscriptionsStore } from "./settings/store";
 import { mapStore } from "@/stores/store";
 import { clean } from "@/assets/utils";
-import markerIcon from "@/assets/marker-white.svg";
+// import markerIcon from "@/assets/marker-white.svg";
 import MapViewGallery from "./MapViewGallerySurfaces.vue";
 import MapViewGalleryInscriptions from "./MapViewGalleryInscriptions.vue";
 import { ref } from "vue";
@@ -18,11 +18,11 @@ import About from "./About.vue";
 import Instructions from "./Instructions.vue";
 import { onMounted, watch } from "vue";
 import { nextTick } from "vue";
-import GeoJSON from "ol/format/GeoJSON";
+// import GeoJSON from "ol/format/GeoJSON";
 import Title from "./MapViewTitle.vue";
 import apiConfig from "./settings/apiConfig"
 
-const { categories, tags, tagsLayerVisible, dataParams, imgParams, selectedCategory } = storeToRefs(inscriptionsStore());
+const { dataParams, selectedCategory, writingModel, languageModel, pictorialModel, textualModel } = storeToRefs(inscriptionsStore());
 
 const store = mapStore();
 const inscriptions = inscriptionsStore();  // Get the instance of inscriptionsStore
@@ -55,6 +55,22 @@ watch(
     }
   },
   { immediate: true }
+);
+
+watch( // if a dropdown has been selected, toggle to the inscriptions view
+  [writingModel, languageModel, pictorialModel, textualModel],
+  ([newWriting, newLanguage, newPictorial, newTextual]) => {
+    if (
+      newWriting[0] !== "all" ||
+      newLanguage[0] !== "all" ||
+      newPictorial[0] !== "all" ||
+      newTextual[0] !== "all"
+    ) {
+      showPlan.value = false;
+      showGalleryInscriptions.value = true;
+      showGallery.value = false;
+    }
+  }
 );
 
 // if selectedCategory is not null, toggle to the inscriptions view
@@ -245,10 +261,7 @@ const toggleInstructionsVisibility = async () => {
             <ol-tile-layer className="floor-plans" v-if="showSecondFloor">
               <ol-source-xyz  url="https://data.dh.gu.se/tiles/saint_sophia_second_floor/{z}/{x}/{y}.png" />
             </ol-tile-layer>
-          </div>
-          
-       
-          
+          </div>   
         </template>
         </MapComponent>
         

@@ -157,7 +157,7 @@
   const config = inject < InscriptionsProject > ("config");
   const sophiaClient = new SophiaClient("inscriptions"); // Initialize SophiaClient
   const store = inscriptionsStore();
-  const { categories, tags, languageModel, pictorialModel, textualModel, dataParams, areMapPointsLoaded, writingModel } = storeToRefs(inscriptionsStore());
+  const { categories, languageModel, writingModel, pictorialModel, textualModel, dataParams, areMapPointsLoaded } = storeToRefs(inscriptionsStore());
   // Create a ref for last clicked category
   const lastClickedCategory = ref('');
 
@@ -356,7 +356,7 @@
     categories.value = ["all"];
     language.value = ["all"];
     lastClickedCategory.value = '';
-    tags.value = [];
+    // tags.value = [];
   }
 
   function showReset() {
