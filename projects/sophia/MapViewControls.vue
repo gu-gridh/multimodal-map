@@ -3,7 +3,7 @@
   <div class="filtercontrolwidgets">
 
     <div :class="{ 'non-interactive': !areMapPointsLoaded }">
-      <div v-if="areMapPointsLoaded">
+      <!-- <div v-if="areMapPointsLoaded"> -->
 
         <div class="filtercontrolwidgets">
           <!-- This organises the three top dropdown columns -->
@@ -93,12 +93,12 @@
             </div>
           </div>
         </div>
-      </div>
+      <!-- </div> -->
 
       <!-- if the markers are not loaded show the loader -->
-      <div v-else>
+      <!-- <div v-else>
         <div alt="Loading..." class="loading-svg" />
-      </div>
+      </div> -->
     </div>
 
     <!-- Data Section -->
@@ -391,7 +391,7 @@ function clearAll() {
   width: 100%;
 }
 
-.loading-svg {
+/* .loading-svg {
   width: 100%;
   height: 200px;
   background: url("/90-ring-with-bg.svg");
@@ -406,7 +406,7 @@ function clearAll() {
 .loading-svg:hover {
   height: 240px;
   transform: scale(1.5);
-}
+} */
 
 .justify {
   display: flex;
