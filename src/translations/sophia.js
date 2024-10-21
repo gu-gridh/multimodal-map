@@ -102,6 +102,8 @@ const messages = {
       panel: "Поверхня",
       panels: "Поверхні",
       searchtitle: "Пошук поверхні або напису",
+      searchsurfacesplaceholder: "Пошук поверхні",
+      searchinscriptionsplaceholder: "Пошук напису",
       panelsshown: "Показ поверхні",
       panelshidden: "Приховані поверхні",
       annotationsshown: "Показані анотації",
