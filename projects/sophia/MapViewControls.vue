@@ -447,6 +447,7 @@ function clearAll() {
   font-family: "Oswald", sans-serif;
   appearance: none !important;
   padding: 3px 10px 3px 10px;
+  min-width: 125px;
   max-width: 125px;
 }
 
