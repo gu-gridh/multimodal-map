@@ -5,12 +5,13 @@ import "leaflet.markercluster";
 import { mapStore } from "@/stores/store";
 import { maritimeencountersStore } from "./store";
 import { storeToRefs } from "pinia";
+import markerIcon from "@/assets/marker-white.svg";
 import "leaflet/dist/leaflet.css";
 import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 import "leaflet-draw";
 import "leaflet-draw/dist/leaflet.draw.css";
-import markerIcon from "@/assets/marker-white.svg";
+import "leaflet.heat";
 
 (window as any).type = true;
 
@@ -20,10 +21,14 @@ const layerGroupMap = ref<Record<string, L.LayerGroup>>({});
 const fetchedIds = new Set<number>();
 const { selectedFeature } = storeToRefs(mapStore());
 const store = maritimeencountersStore();
-const { startRectangleDraw } = storeToRefs(store);
+const { startRectangleDraw, showHeatMap, doneFetching } = storeToRefs(store);
 const isDownloading = ref(false); //spinner visibility
 
-let hoverPopup = ref<L.Popup | null>(null);  //active hover popup
+// Heatmap
+const heatmapLayer = ref<L.HeatLayer | null>(null);
+const heatmapPoints = ref<Array<[number, number, number]>>([]);
+
+let hoverPopup = ref<L.Popup | null>(null); //active hover popup
 let polylineLayer = ref<L.LayerGroup | null>(null);
 let abortController: AbortController | null = null;
 let rectangleDrawer: L.Draw.Rectangle | null = null;
@@ -47,12 +52,12 @@ const props = defineProps({
 });
 
 //coordinates to draw lines to FOR TESTING
-const targetCoordinates = [
-  L.latLng(4.1129, 2.5911),
-  L.latLng(70.81392, 27.96125),
-  L.latLng(53.1258, -9.7681),
-  L.latLng(48.8427, 8.0221)
-];
+// const targetCoordinates = [
+//   L.latLng(4.1129, 2.5911),
+//   L.latLng(70.81392, 27.96125),
+//   L.latLng(53.1258, -9.7681),
+//   L.latLng(48.8427, 8.0221),
+// ];
 
 //draw polygons for each country
 const renderGeoJSON = (geojsonArray: { name: string, data: any, id: string }[]) => {
@@ -101,17 +106,17 @@ const renderGeoJSON = (geojsonArray: { name: string, data: any, id: string }[]) 
 };
 
 //draw lines to the specified coordinates FOR TESTING
-const drawConnections = (startLatLng: L.LatLng) => {
-  const lines = targetCoordinates.map(targetLatLng =>
-    L.polyline([startLatLng, targetLatLng], { color: 'red' })
-  );
+// const drawConnections = (startLatLng: L.LatLng) => {
+//   const lines = targetCoordinates.map(targetLatLng =>
+//     L.polyline([startLatLng, targetLatLng], { color: 'red' })
+//   );
 
-  if (!polylineLayer.value) {
-    polylineLayer.value = L.layerGroup().addTo(toRaw(map.value)!);
-  }
-  polylineLayer.value.clearLayers();
-  lines.forEach(line => toRaw(polylineLayer.value)?.addLayer(line));
-};
+//   if (!polylineLayer.value) {
+//     polylineLayer.value = L.layerGroup().addTo(toRaw(map.value)!);
+//   }
+//   polylineLayer.value.clearLayers();
+//   lines.forEach(line => toRaw(polylineLayer.value)?.addLayer(line));
+// };
 
 //draw the markers on the map
 const fetchData = async (initialUrl: string, params: Record<string, any>) => {
@@ -145,10 +150,13 @@ const fetchData = async (initialUrl: string, params: Record<string, any>) => {
 
           fetchedIds.add(featureId); // add id to set to prevent duplicates
 
-          if (feature.geometry && feature.geometry.coordinates && feature.geometry.coordinates.length === 2) {
+          if ( feature.geometry && feature.geometry.coordinates && feature.geometry.coordinates.length === 2) {
             const coords = feature.geometry.coordinates;
             if (!isNaN(coords[0]) && !isNaN(coords[1])) {
               const latLng = L.latLng(coords[1], coords[0]);
+
+              const intensity = 1.5; //intensity
+              heatmapPoints.value.push([coords[1], coords[0], intensity]);
 
               const marker = L.marker(latLng, {
                 icon: L.icon({
@@ -160,16 +168,14 @@ const fetchData = async (initialUrl: string, params: Record<string, any>) => {
               marker.on("click", () => {
                 selectedFeature.value = featureId;
 
-                // toRaw(map.value)?.setView(latLng, 12, { animate: true });
-
-                if (props.showConnections && coords[1] === 55.99446 && coords[0] === 55.99446) {
-                  drawConnections(latLng);
-                }
+                // if ( props.showConnections && coords[1] === 55.99446 && coords[0] === 55.99446) {
+                //   drawConnections(latLng);
+                // }
               });
 
               marker.on("mouseover", () => {
                 if (hoverPopup.value) {
-                  toRaw(map.value)?.closePopup(hoverPopup.value);
+                  toRaw(map.value)?.closePopup(toRaw(hoverPopup.value));
                 }
 
                 hoverPopup.value = L.popup({
@@ -193,11 +199,13 @@ const fetchData = async (initialUrl: string, params: Record<string, any>) => {
           }
         });
 
-        toRaw(markerClusterGroup.value)?.addLayers(markersToAdd);
+        //only add markers if markerClusterGroup is attached to the map
+        // if (toRaw(markerClusterGroup.value)?._map) {
+          toRaw(markerClusterGroup.value)?.addLayers(markersToAdd);
+        //}
 
         nextUrl = data.next ? data.next.replace(/^http:/, "https:") : null;
-
-      } catch (err) {
+      } catch (err: any) {
         if (err.name === "AbortError") {
           console.log("Fetch request was aborted");
           return; //if fetch is aborted
@@ -232,8 +240,8 @@ const fetchAllSites = async (initialUrl: string): Promise<any[]> => {
     } catch (err) {
       console.error("Error fetching data:", err);
       throw err;
-    }
-  }
+        }
+      }
 
   isDownloading.value = false; //hide the spinner
   return allData;
@@ -256,16 +264,48 @@ const downloadJSON = (data: any, filename: string) => {
 watch(() => props.showConnections, (newVal) => {  //clear lines when showConnections is off
   if (!newVal && polylineLayer.value) {
     toRaw(polylineLayer.value)?.clearLayers();
-  }
+        }
 });
 
 watch( //Download the data
   () => startRectangleDraw.value,
+
   (newVal) => {
     if (newVal && rectangleDrawer) {
       rectangleDrawer.enable();
 
       store.startRectangleDraw = false;
+
+        }
+      },
+    );
+
+//toggle visibility between heatmap and marker clusters
+watch(
+  () => showHeatMap.value,
+  (newVal) => {
+    if (newVal) {
+      //show heatmap layer
+      if (heatmapLayer.value) {
+        if (map.value && !map.value.hasLayer(heatmapLayer.value)) {
+          toRaw(map.value)?.addLayer(toRaw(heatmapLayer.value));
+        }
+      }
+      //hide marker clusters
+      if (map.value && markerClusterGroup.value && map.value.hasLayer(toRaw(markerClusterGroup.value))) {
+        toRaw(map.value)?.removeLayer(toRaw(markerClusterGroup.value));
+      }
+    } else {
+      //hide heatmap layer
+      if (heatmapLayer.value) {
+        if (map.value && map.value.hasLayer(toRaw(heatmapLayer.value))) {
+          toRaw(map.value)?.removeLayer(toRaw(heatmapLayer.value));
+        }
+      }
+      //show marker clusters
+      if (map.value && markerClusterGroup.value && !map.value.hasLayer(toRaw(markerClusterGroup.value))) {
+        toRaw(map.value)?.addLayer(toRaw(markerClusterGroup.value));
+      }
     }
   }
 );
@@ -274,13 +314,13 @@ onMounted(async () => {
   map.value = L.map("map", {
     zoomAnimation: true,
     fadeAnimation: true,
-    markerZoomAnimation: true
+    markerZoomAnimation: true,
   }).setView([58.0, 12.0], 9); //gothenburg
 
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     maxZoom: 19,
-    minZoom: 3
-  }).addTo(toRaw(map.value));
+    minZoom: 3,
+  }).addTo(toRaw(map.value)!);
 
   const drawnItems = L.featureGroup().addTo(toRaw(map.value)!);
   const drawControl = new L.Control.Draw({
@@ -372,10 +412,13 @@ onMounted(async () => {
     return rawThis._map.getBounds();
   };
 
+  //initialize heatmap layer
+  heatmapLayer.value = L.heatLayer(heatmapPoints.value, { radius: 25 });
+
   toRaw(map.value)?.addLayer(toRaw(markerClusterGroup.value));
 
   //fetch bounding box
-  const bbox = map.value?.getBounds().toBBoxString();
+  const bbox = toRaw(map.value)?.getBounds().toBBoxString();
   const urlWithBBox = `https://maritime-encounters.dh.gu.se/api/resources/site_coordinates/?in_bbox=${bbox}&page_size=100`;
 
   //fetch the full dataset after bounding box
@@ -386,8 +429,9 @@ onMounted(async () => {
     })
     .then(() => {
       console.log('Full dataset fetch completed.');
+      doneFetching.value = true;
     })
-    .catch(err => {
+    .catch((err) => {
       console.error("Error during fetching:", err);
     });
 
@@ -401,6 +445,13 @@ onMounted(async () => {
 });
 </script>
 
+<template>
+  <div id="map" style="width: 100%; height: 100vh;"></div>
+  <div v-if="isDownloading" class="download-spinner">
+    <img src="@/assets/interface/bars-rotate-fade.svg" alt="Loading..." />
+  </div>
+</template>
+
 <style scoped>
 .download-spinner {
   position: absolute;
@@ -411,10 +462,3 @@ onMounted(async () => {
   z-index: 9999;
 }
 </style>
-
-<template>
-  <div id="map" style="width: 100%; height: 100vh;"></div>
-  <div v-if="isDownloading" class="download-spinner">
-    <img src="@/assets/interface/bars-rotate-fade.svg" alt="Loading..." />
-  </div>
-</template>

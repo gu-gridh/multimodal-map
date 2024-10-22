@@ -19,6 +19,8 @@ export const maritimeencountersStore = defineStore("resources", () => {
   const areMapPointsLoaded = ref<boolean>(false);
   const placeId = ref<string | null>(null);
   const startRectangleDraw = ref<boolean>(false);
+  const showHeatMap = ref<boolean>(false);
+  const doneFetching = ref<boolean>(false);
 
-  return { categories, tags, dataSetValue, showUnknownRange, tagsLayerVisible, necropoli, selectedRange, tombType,  dataParams, selectedNecropolisCoordinates, enable3D, enablePlan, areMapPointsLoaded, imgParams, placeId, selectedSite, startRectangleDraw };
+  return { categories, tags, dataSetValue, showUnknownRange, tagsLayerVisible, necropoli, selectedRange, tombType,  dataParams, selectedNecropolisCoordinates, enable3D, enablePlan, areMapPointsLoaded, imgParams, placeId, selectedSite, startRectangleDraw, showHeatMap, doneFetching };
 });
