@@ -12,9 +12,9 @@
         </div>
 
         <div class="about-article-sub" v-bind:class="{ fullopacityui: visibleAbout }">
-          The portal was realised by the Gothenburg Research Infrastructure in Digital Humanities (GRIDH) at the University of Gothenburg in collaboration with InfraVis. The frontend is currently developed by M.A.Tristan
-          Bridge and Dr.Matteo Tomasini, while the backend is developed by M.A.Aram Karimi.The database is curated
-          and maintained by Dr.Michael McGuire, Dr.Ashely Green and Prof.Marc Vander Linden. Please contact
+          The portal was realised by the Gothenburg Research Infrastructure in Digital Humanities (GRIDH) at the University of Gothenburg in collaboration with InfraVis. The frontend is currently developed by M.A. Tristan
+          Bridge and Dr. Matteo Tomasini, while the backend is developed by M.A. Aram Karimi. The database is curated
+          and maintained by Dr. Michael McGuire, Dr. Ashely Green and Prof. Marc Vander Linden. Please contact
           matteo.tomasini(at)lir.gu.se if you have any questions about the portal. 
         </div>
 

@@ -16,7 +16,7 @@ import { onMounted, watch } from "vue";
 import { nextTick } from "vue";
 import Title from "./Title.vue"
 
-const { selectedRange, showUnknownRange, dataSetValue, dataParams } = storeToRefs(maritimeencountersStore());
+const { selectedRange, showUnknownRange, dataSetValue, dataParams, doneFetching } = storeToRefs(maritimeencountersStore());
 const store = mapStore();
 const maritimeencounters = maritimeencountersStore();  // Get the instance of maritimeencountersStore
 const { selectedFeature } = storeToRefs(store);
@@ -27,9 +27,9 @@ const visibleAbout = ref(false);
 const showConnections = ref(false);
 let visited = true; // Store the visited status outside of the hook
 
-const toggleConnections = () => {
-  showConnections.value = !showConnections.value;
-};
+// const toggleConnections = () => {
+//   showConnections.value = !showConnections.value;
+// };
 
 // Watcher for selectedFeature changes
 watch(
@@ -49,6 +49,14 @@ watch(
   },
   { immediate: true }
 );
+
+const startRectangleDraw = () => {
+  maritimeencounters.startRectangleDraw = true;
+};
+
+const toggleHeatMap = () => {
+  maritimeencounters.showHeatMap = !maritimeencounters.showHeatMap;
+};
 
 /* Response for generating the URL for filtering map points down */
 const tagParams = computed(() => {
@@ -126,6 +134,14 @@ const toggleAboutVisibility = async () => {
 
     <template #background>
       <div class="map-container">
+        <div class="map-buttons">
+          <button  @click="startRectangleDraw" class="map-button" >
+            <img src="/images/download.svg" alt="Download" />
+          </button>
+          <button v-if="maritimeencounters.doneFetching"  @click="toggleHeatMap" class="map-button">
+            <img src="/images/heat.svg" alt="Heatmap" />
+          </button>
+        </div>
         <MapComponent 
           :shouldAutoMove="true" 
           :min-zoom=minZoom
@@ -220,5 +236,33 @@ const toggleAboutVisibility = async () => {
 
 #app .ol-popup:before {
   left: 30px;
+}
+
+.map-buttons {
+  position: absolute;
+  top: 20px;
+  left: calc(50% + 100px);
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 1000;
+}
+
+.map-button {
+  background-color: var(--theme-3);
+  border: none;
+  border-radius: 10px 10px 10px 10px;
+  padding: 10px;
+  cursor: pointer;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.map-button img {
+  width: 24px;
+  height: 24px;
+}
+
+.map-button:hover {
+  background-color: var(--theme-4);
 }
 </style>
