@@ -315,6 +315,7 @@ onMounted(async () => {
     zoomAnimation: true,
     fadeAnimation: true,
     markerZoomAnimation: true,
+    // zoomControl: false,
   }).setView([58.0, 12.0], 9); //gothenburg
 
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {

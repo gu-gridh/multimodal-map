@@ -9,7 +9,7 @@
       <div class="p-1 px-2 clickable category-button about-button">Download the data</div>
     </button>
     <button class="item" style="margin-left: 20px;" @click="toggleHeatMap" v-if="doneFetching">      
-      <div class="p-1 px-2 clickable category-button about-button">Heatmap</div>
+      <div class="p-1 px-2 clickable category-button about-button">Heat map</div>
     </button>
 </template>
 

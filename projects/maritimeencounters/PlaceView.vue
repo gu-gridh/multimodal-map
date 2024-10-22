@@ -52,13 +52,13 @@ a:active {}
 }
 
 /* hides the zoom controls for the background map*/
-#app .ol-zoom-in {
+/* #app .ol-zoom-in {
     display: none !important;
 }
 
 #app .ol-zoom-out {
     display: none !important;
-}
+} */
 
 .gallery__item {
     width: 200px;

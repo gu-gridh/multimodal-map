@@ -316,6 +316,7 @@ function navigateToDetail(url: string, id: number) {
 
 .close-card-button {
   right: 50px !important;
+  background-color: var(--theme-3) !important;
 }
 
 .placecard-title {
@@ -329,7 +330,7 @@ function navigateToDetail(url: string, id: number) {
 .label-box {
   display: inline-block;
   padding: 2px 6px;
-  background-color: rgba(180, 100, 100, 1);
+  background-color: var(--theme-3);
   color: white;
   border-radius: 4px;
   margin-right: 5px;

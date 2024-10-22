@@ -106,7 +106,7 @@ const toggleAboutVisibility = async () => {
 </script>
 
 <template>
-  <div style="display:flex; align-items: center; justify-content: center; pointer-events: none;">
+  <!-- <div style="display:flex; align-items: center; justify-content: center; pointer-events: none;">
     <div class="ui-mode ui-overlay" style="z-index: 1000;">
       <button 
         class="item" 
@@ -116,7 +116,7 @@ const toggleAboutVisibility = async () => {
         Show Connections 
       </button>
     </div>
-  </div>
+  </div> -->
   <About :visibleAbout="visibleAbout" @close="visibleAbout = false" />
   <MainLayout>
     <template #search>
@@ -162,6 +162,60 @@ const toggleAboutVisibility = async () => {
   width: 110px;
   min-width: 90px;
   bottom:55px;
+}
+
+/* Overides the settings in ui_modules.css */
+#app .ol-zoom-in {
+    display: none !important;
+}
+
+#app .ol-zoom-out {
+    display: none !important;
+}
+
+#map .leaflet-control-zoom-in {
+  left: calc(50% + 50px) !important;
+  top: calc(100vh - 140px) !important;
+  position: fixed;
+  border-radius: 10px 0px 0px 10px !important;
+  height: 35px;
+  border-bottom: none;
+  background-color: var(--theme-3);
+  color: white;
+  width: 50px;
+}
+
+#map .leaflet-control-zoom-in:hover {
+  background-color: var(--theme-4);
+}
+
+#map .leaflet-control-zoom-out {
+  left: calc(50% + 100px);
+  top: calc(100vh - 140px) !important;
+  position: fixed;
+  border-radius: 0px 10px 10px 0px !important;
+  height: 35px;
+  border-bottom: none;
+  background-color: var(--theme-3);
+  color: white;
+  width: 50px;
+}
+
+#map .leaflet-control-zoom-out:hover {
+  background-color: var(--theme-4);
+}
+
+@media screen and (max-width: 900px) {
+  #map .leaflet-control-zoom-in {
+    display:none!important;
+    left: calc(50% - 50px) !important;
+    top: calc(100vh - 320px) !important;
+  }
+  #map .leaflet-control-zoom-out {
+    display:none!important;
+    left: calc(50% + 0px) !important;
+    top: calc(100vh - 320px) !important;
+  }
 }
 
 #app .ol-popup:before {
