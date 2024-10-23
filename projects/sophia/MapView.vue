@@ -105,11 +105,13 @@ watch(showSecondFloor, (newValue) => {
 
 /* Response for generating the URL for filtering map points down */
 const tagParams = computed(() => {
-  // const epoch = tags.value[0];
-  //const necropolis = necropoli.value[0];
-  // const type = panelType.value[0];
+  const genre = textualModel.value[0];
+  const tags = pictorialModel.value[0];
+  const writing_system = writingModel.value[0];
+  const language = languageModel.value[0];
+  const selectedCategoryValue = selectedCategory.value;
 
-  const initialParams = { }; // no initialParams at the moment!
+  const initialParams = { genre, tags, writing_system, language };
 
   // Remove parameters that are set to "all"
   const cleanedParams = Object.keys(initialParams)
@@ -122,26 +124,9 @@ const tagParams = computed(() => {
   // Further clean to remove null or undefined values
   const params = clean(cleanedParams);
 
-  //filter for just 3D points
-/*   if (enable3D.value) {
-    (params as any)['with_3D'] = 'true';
-  } else {
-    delete (params as any)['with_3D'];
+  if (selectedCategoryValue) {
+    (params as any)['type_of_inscription'] = selectedCategoryValue;
   }
-
-  if (enablePlan.value) {
-    (params as any)['with_plan'] = 'true';
-  } else {
-    delete (params as any)['with_plan'];
-  } */
-
-  // Convert the params object to a URL search string
-  const queryString = new URLSearchParams(params).toString();
-
-  // Concatenate the base URL with the search string to form the full URL
-  const fullUrl = queryString
-    ? `${apiConfig.PANEL}?page_size=500&${queryString}`
-    : `${apiConfig.PANEL}?page_size=500`;
 
   inscriptions.imgParams = params;
   return params;

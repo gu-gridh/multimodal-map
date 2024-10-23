@@ -88,7 +88,7 @@ export default {
     let lastFetchedPageIndex = 0;
 
     watch(
-      () => store.selectedCategory,
+      () => store.imgParams,
       async (newCategory, oldCategory) => {
         pageIndex = 1;
         lastFetchedPageIndex = 0;
@@ -113,15 +113,8 @@ export default {
     const fetchData = async (requestedPageIndex) => {
       if (requestedPageIndex > lastFetchedPageIndex) {
         try {
-          const baseUrl = `https://saintsophia.dh.gu.se/api/inscriptions/inscription/?depth=1`;
-
-          //add the selectedCategory as a query parameter
-          const categoryParam = store.selectedCategory ? `&type_of_inscription=${store.selectedCategory}` : '';
-
-          //final URL
-          const urlToFetch = `${baseUrl}${categoryParam}`;
-
-          const res = await fetch(urlToFetch);
+          const baseUrl = `https://saintsophia.dh.gu.se/api/inscriptions/inscription/?depth=1&${new URLSearchParams(store.imgParams).toString()}`;
+          const res = await fetch(baseUrl);
           const data = await res.json();
 
           const newImages = data.results.map(item => ({
@@ -174,11 +167,7 @@ export default {
           }
           canIncrement = false; // Disable further increments
           const offset = (pageIndex - 1) * 25;
-          const baseUrl = `https://saintsophia.dh.gu.se/api/inscriptions/inscription/?depth=1&offset=${offset}`;
-
-          //add the selectedCategory as a query parameter
-          const categoryParam = store.selectedCategory ? `&type_of_inscription=${store.selectedCategory}` : '';
-          const url = `${baseUrl}${categoryParam}`;
+          const url = `https://saintsophia.dh.gu.se/api/inscriptions/inscription/?depth=1&offset=${offset}&${new URLSearchParams(store.imgParams).toString()}`;
 
           // Use Promise syntax to handle the asynchronous 404 check
           checkFor404(url).then(async (is404) => {
