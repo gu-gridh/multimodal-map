@@ -236,7 +236,7 @@ const toggleInstructionsVisibility = async () => {
        
         <MapComponent :shouldAutoMove="true" :min-zoom=minZoom :max-zoom=maxZoom v-if="showPlan">
           <template #layers>
-            <MapViewMarkers :params="tagParams" :zIndex=3 :showSecondFloor="showSecondFloor" />
+            <MapViewMarkers :zIndex=3 :showSecondFloor="showSecondFloor" />
           <div >
             <ol-tile-layer className="floor-plans" v-if="!showSecondFloor">
               <ol-source-xyz url="https://data.dh.gu.se/tiles/saint_sophia_ground_floor/{z}/{x}/{y}.png" />

@@ -36,10 +36,10 @@ const vectorSource = ref(
 
 const props = defineProps({
   map: Object,
-  params: {
-    type: Object,
-    default: () => ({}),
-  },
+  // params: {
+  //   type: Object,
+  //   default: () => ({}),
+  // },
   zIndex: {
     type: Number,
     default: 2,
@@ -59,9 +59,9 @@ const updateFeatures = (features: Feature[]) => {
   vectorSource.value.addFeatures(transformedFeatures);
 };
 
-const fetchData = async (initialUrl: string, params: Record<string, any>, isSecondFloor: Boolean) => {
+const fetchData = async (initialUrl: string, isSecondFloor: Boolean) => {
   let nextUrl = initialUrl;
-  let initialParams = new URLSearchParams({ page_size: '500', ...params }).toString();
+  let initialParams = new URLSearchParams({ page_size: '500'}).toString();
 
   if (nextUrl && initialParams) {
     if (!isSecondFloor) {
@@ -70,10 +70,7 @@ const fetchData = async (initialUrl: string, params: Record<string, any>, isSeco
     else if (isSecondFloor) {
       nextUrl = `${nextUrl}?${initialParams}&floor=2&published=true`;
     }
-
-
   }
-
   while (nextUrl) {
     const res = await fetch(nextUrl.replace(/^http:/, "https:")).catch((err) => {
       throw err;
@@ -220,19 +217,19 @@ onMounted(() => {
 }
 });
 
-watch(
-  () => props.params,
-  async (newParams) => {
-    areMapPointsLoaded.value = false; // Reset before fetching new data
-    const initialUrl =
-      "https://saintsophia.dh.gu.se/api/inscriptions/coordinates/";
+// watch(
+//   () => props.params,
+//   async (newParams) => {
+//     areMapPointsLoaded.value = false; // Reset before fetching new data
+//     const initialUrl =
+//       "https://saintsophia.dh.gu.se/api/inscriptions/coordinates/";
 
-    vectorSource.value.clear();
-    clearPopups(); // Clear the popups
-    await fetchData(initialUrl, newParams, props.showSecondFloor);
-  },
-  { immediate: true }
-);
+//     vectorSource.value.clear();
+//     clearPopups(); // Clear the popups
+//     await fetchData(initialUrl, newParams, props.showSecondFloor);
+//   },
+//   { immediate: true }
+// );
 
 watch(
   () => props.showSecondFloor,
@@ -243,8 +240,13 @@ watch(
 
     vectorSource.value.clear();
     clearPopups(); // Clear the popups
-    await fetchData(initialUrl, props.params, newFloor);
-  }
+    if (newFloor) {
+      await fetchData(initialUrl, true);
+    }
+    else {
+      await fetchData(initialUrl, false);
+    }
+  },  { immediate: true }
 )
 
 </script>

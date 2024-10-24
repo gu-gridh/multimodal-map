@@ -212,6 +212,9 @@ const handleSearchBoxFocus = () => {
 };
 
 function resetAllExcept(exceptModel) { //reset the other dropdowns to all when a selection is made
+  categories.value = ["all"];
+  lastClickedCategory.value = '';
+  selectedCategory.value = null;
   if (exceptModel !== "languageModel") languageModel.value = ["all"];
   if (exceptModel !== "pictorialModel") pictorialModel.value = ["all"];
   if (exceptModel !== "textualModel") textualModel.value = ["all"];
