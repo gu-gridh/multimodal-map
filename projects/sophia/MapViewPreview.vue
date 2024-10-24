@@ -1,23 +1,21 @@
 <script lang="ts" setup>
-import { watchEffect, ref, inject, toRaw, isProxy } from "vue";
+import { watchEffect, ref, inject } from "vue";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
 import { inscriptionsStore } from "./settings/store";
 import type {
-  Image, PanelMetadata, Inscription, Language,
+  Image, PanelMetadata, Language,
 } from "./types";
 import type { SophiaClient } from "@/assets/saintsophia";
 import OpenSeadragon from "./MapViewPreviewImage.vue";
 import apiConfig from "./settings/apiConfig"
 
 const { selectedFeature } = storeToRefs(mapStore());
-// const { panelId } = storeToRefs(inscriptionsStore());
 const inscriptions = inscriptionsStore();
 const sophia = inject("sophia") as SophiaClient;
 const images = ref<Image[]>();
 const imageUrls = ref<string[]>([]);
-let text = ref(false)
-let panel = ref<PanelMetadata>(); // ref<Panel[]>();
+let panel = ref<PanelMetadata>();
 const room = ref<string | null>(null);
 const documentation = ref<string | null>(null);
 const hasImages = ref<boolean>(false);
@@ -29,13 +27,13 @@ const tags = ref<string[]>();
 watchEffect(async () => {
   documentation.value = null;
   if (selectedFeature.value) {
-    const panelTitle = selectedFeature.value.get("title");
     const panelId = selectedFeature.value.getId();
     inscriptions.panelId = panelId as string | null;
     panel.value = await sophia.list<PanelMetadata>("panel", {id: panelId});
-    number_of_inscriptions.value = panel.value?.number_of_inscriptions
-    languages.value = panel.value?.list_of_languages
-
+    number_of_inscriptions.value = panel.value.results[0].number_of_inscriptions
+    languages.value = panel.value.results[0].list_of_languages.length
+    tags.value = panel.value.results[0].tags.length;
+    
     images.value = await sophia.listAll<Image>("image", { panel: panelId, depth: 2});
     // If images are available
     if (images.value.length > 0) {
@@ -43,7 +41,6 @@ watchEffect(async () => {
       const filteredImages = images.value.filter(image => {
         return (image.type_of_image.text === 'Orthophoto' | image.type_of_image.text === 'Topography') //Only display images that are orthophoto
       });
-      console.log(filteredImages)
       imageUrls.value = filteredImages.map(image => `${image.iiif_file}/info.json`);
 
       // Populate place details
@@ -93,8 +90,6 @@ function deselectPlace() {
       <div class="placecard-bottom">
         <div class="placecard-text">
           <div class="placecard-title theme-color-text theme-title-typography">{{ $t('panel') }} {{ selectedFeature.get("title") }}</div>
-          <!-- <div class="placecard-subtitle theme-color-text theme-title-typography">{{ room }}</div> -->
-          <!-- <button class="theme-button theme-color-background">{{ $t('threedmodel') }}</button> -->
         </div>
         <div class="placecard-content">
           <div class="placecard-metadata-content" >
@@ -104,7 +99,7 @@ function deselectPlace() {
             </div>
 
             <div class="metadata-item">
-              <div class="short-label">{{ $t('languages') }}:</div>
+              <div class="label">{{ $t('languages') }}:</div>
               <div class="tag theme-color-text">{{ languages }}</div>
             </div>
           
@@ -115,9 +110,8 @@ function deselectPlace() {
 
             <div class="metadata-item">
               <div class="short-label">{{ $t('tags') }}: </div>
-              <div class="tag theme-color-text"></div>
+              <div class="tag theme-color-text">{{ tags }}</div>
             </div>
-
           </div>
 
         </div>
@@ -137,9 +131,17 @@ function deselectPlace() {
 </template>
 
 <style>
-   .close-card-button{
-    left: calc(45px);
-  }
+/* override */
+.metadata-item {
+  margin-bottom: 5px;
+  display: flex; 
+  align-items: center;
+  gap: 10px;
+}
+
+.close-card-button{
+  left: calc(45px);
+}
 
 .osd{
   background-color:black!important;
