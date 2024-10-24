@@ -364,7 +364,6 @@ watch(() => i18n.global.locale, (newLocale) => {
   fetchDataAndPopulateRef("genre", TEXTUAL);
 });
 
-
 function clearAll() {
   const resetbutton = document.getElementById('resetfilters');
   resetbutton.style.display = "none";

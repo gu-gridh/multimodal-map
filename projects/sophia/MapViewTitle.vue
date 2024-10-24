@@ -25,8 +25,10 @@ export default {
     toggleLanguage() {
       if (i18n.global.locale === 'en') {
         i18n.global.locale = 'uk';
+        localStorage.setItem('i18nextLang', 'uk');
       } else {
         i18n.global.locale = 'en';
+        localStorage.setItem('i18nextLang', 'en');
       }
     },
   },

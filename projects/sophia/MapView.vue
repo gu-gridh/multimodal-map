@@ -20,7 +20,7 @@ import { onMounted, watch } from "vue";
 import { nextTick } from "vue";
 // import GeoJSON from "ol/format/GeoJSON";
 import Title from "./MapViewTitle.vue";
-import apiConfig from "./settings/apiConfig"
+// import apiConfig from "./settings/apiConfig"
 
 const { dataParams, selectedCategory, writingModel, languageModel, pictorialModel, textualModel } = storeToRefs(inscriptionsStore());
 

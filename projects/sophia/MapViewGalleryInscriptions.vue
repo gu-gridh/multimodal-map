@@ -1,49 +1,27 @@
 <template>
   <div id="gallery-container">
     <div class="gallery-filters">
-     
       <div class="gallery-filters-padding">
         <div class="gallery-filter-container">
-          <h1>Alignment</h1>
+          <h1>{{ $t('alignment') }}</h1>
           <div class="tag-container">
-            <div class="gallery-tag">Aligned</div>
-            <div class="gallery-tag">Inclinating</div>
-            <div class="gallery-tag">Declinating</div>
+            <div v-for="alignment in alignments" :key="alignment.id" class="gallery-tag">
+              {{ alignment.text }}
+            </div>
           </div>
         </div>
 
         <div class="gallery-filter-container">
-          <h1>Condition</h1>
+          <h1>{{ $t('condition') }}</h1>
           <div class="tag-container">
-            <div class="gallery-tag">Complete</div>
-            <div class="gallery-tag">Fragment</div>
-            <div class="gallery-tag">Damaged</div>
-            <div class="gallery-tag">Damnatio</div>
+            <div v-for="condition in conditions" :key="condition.id" class="gallery-tag">
+              {{ condition.text }}
+            </div>
           </div>
         </div>
-
-       
-
-        <!-- <div class="gallery-filter-container">
-          <h1>Extra-alpabetical signs</h1>
-          <div class="tag-container">
-            <div class="gallery-tag">Cross </div>
-            <div class="gallery-tag">Counting</div>
-          </div>
-        </div> -->
       </div>
-
-   <!--    <div class="filter-gradient-blur">
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-      </div> -->
-
     </div>
-
     <div class="gallery">
-
       <div class="gallery__col-sizer"></div>
       <div class="gallery__gutter-sizer"></div>
       <div v-for="item in images" :key="item.id" class="gallery__item">
@@ -76,16 +54,33 @@ import Masonry from 'masonry-layout';
 import imagesLoaded from 'imagesloaded';
 import InfiniteScroll from 'infinite-scroll';
 import { inscriptionsStore } from "./settings/store";
+import i18n from '../../src/translations/sophia';
 
 export default {
   setup() {
     const images = ref([]);
-    let msnry;
     const store = inscriptionsStore();
+    const alignments = ref([]);
+    const conditions = ref([]);
+    let msnry;
     let pageIndex = 1;  // Initialize pageIndex to 1
     let canIncrement = true;  // Flag to control the increment
     let infScroll;
     let lastFetchedPageIndex = 0;
+
+    const fetchDataAndPopulateRef = async (url, refToPopulate) => {
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
+        const textKey = i18n.global.locale === 'uk' ? 'text_ukr' : 'text';
+        refToPopulate.value = data.results.map(item => ({
+          id: item.id,
+          text: item[textKey] || item.text,
+        }));
+      } catch (error) {
+        console.error(`Error fetching data from ${url}:`, error);
+      }
+    };
 
     watch(
       () => store.imgParams,
@@ -105,6 +100,17 @@ export default {
         });
       }
     );
+
+    watch(() => i18n.global.locale, (newLocale) => {
+      fetchDataAndPopulateRef(
+        'https://saintsophia.dh.gu.se/api/inscriptions/graffitialignment/',
+        alignments
+      );
+      fetchDataAndPopulateRef(
+        'https://saintsophia.dh.gu.se/api/inscriptions/graffiticondition/',
+        conditions
+      );
+    });
 
     const updatePanelId = (item) => {
       store.panelId = item.featureId;
@@ -229,6 +235,15 @@ export default {
     };
 
     onMounted(() => {
+      fetchDataAndPopulateRef(
+        'https://saintsophia.dh.gu.se/api/inscriptions/graffitialignment/',
+        alignments
+      );
+      fetchDataAndPopulateRef(
+        'https://saintsophia.dh.gu.se/api/inscriptions/graffiticondition/',
+        conditions
+      );
+
       fetchData(1).then(() => {
 
         imagesLoaded(document.querySelector('.gallery'), () => {
@@ -244,7 +259,9 @@ export default {
 
     return {
       images,
-      updatePanelId
+      updatePanelId,
+      alignments,
+      conditions
     };
   },
 };
@@ -252,10 +269,10 @@ export default {
 
 
 <style scoped>
-  #gallery-container {
-    padding:0px 0px 0px 0px;
-    opacity: 1.0;
-  }
+#gallery-container {
+  padding: 0px 0px 0px 0px;
+  opacity: 1.0;
+}
 
 
 .gallery {
@@ -351,7 +368,7 @@ export default {
 }
 
 .gallery__item {
-  margin-bottom:0.5px;
+  margin-bottom: 0.5px;
   float: left;
   overflow: hidden !important;
   -webkit-transition-property: none !important;
@@ -397,7 +414,7 @@ export default {
   bottom: 0px;
   padding: 20px 25px;
   padding-bottom: 10px !important;
-  font-weight:200;
+  font-weight: 200;
   display: none;
 }
 
@@ -410,7 +427,7 @@ export default {
 .gallery__item img:hover {
   display: block;
   transform: scale(1.03);
-  border-radius:4px;
+  border-radius: 4px;
 }
 
 .gallery__item:hover .item-info {
