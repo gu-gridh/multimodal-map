@@ -22,7 +22,7 @@ import { nextTick } from "vue";
 import Title from "./MapViewTitle.vue";
 // import apiConfig from "./settings/apiConfig"
 
-const { dataParams, selectedCategory, writingModel, languageModel, pictorialModel, textualModel } = storeToRefs(inscriptionsStore());
+const { dataParams, selectedCategory, writingModel, languageModel, pictorialModel, textualModel, alignmentModel, conditionModel } = storeToRefs(inscriptionsStore());
 
 const store = mapStore();
 const inscriptions = inscriptionsStore();  // Get the instance of inscriptionsStore
@@ -102,13 +102,14 @@ watch(showSecondFloor, (newValue) => {
   localStorage.setItem("showSecondFloor", JSON.stringify(newValue));
 });
 
-
 /* Response for generating the URL for filtering map points down */
 const tagParams = computed(() => {
   const genre = textualModel.value[0];
   const tags = pictorialModel.value[0];
   const writing_system = writingModel.value[0];
   const language = languageModel.value[0];
+  const alignment = alignmentModel.value;
+  const condition = conditionModel.value;
   const selectedCategoryValue = selectedCategory.value;
 
   const initialParams = { genre, tags, writing_system, language };
@@ -126,6 +127,18 @@ const tagParams = computed(() => {
 
   if (selectedCategoryValue) {
     (params as any)['type_of_inscription'] = selectedCategoryValue;
+  }
+
+  if (alignment !== null) {
+    (params as any)['alignment'] = alignment; 
+  } else {
+    delete (params as any)['alignment']; 
+  }
+
+  if (condition !== null) {
+    (params as any)['condition'] = condition; 
+  } else {
+    delete (params as any)['condition']; 
   }
 
   inscriptions.imgParams = params;

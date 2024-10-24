@@ -5,7 +5,7 @@
         <div class="gallery-filter-container">
           <h1>{{ $t('alignment') }}</h1>
           <div class="tag-container">
-            <div v-for="alignment in alignments" :key="alignment.id" class="gallery-tag">
+            <div v-for="alignment in alignments" :key="alignment.id" class="gallery-tag" :class="{ active: store.alignmentModel === alignment.id }" @click="updateFilter('alignment', alignment.id)">
               {{ alignment.text }}
             </div>
           </div>
@@ -14,7 +14,7 @@
         <div class="gallery-filter-container">
           <h1>{{ $t('condition') }}</h1>
           <div class="tag-container">
-            <div v-for="condition in conditions" :key="condition.id" class="gallery-tag">
+            <div v-for="condition in conditions" :key="condition.id" class="gallery-tag" :class="{ active: store.conditionModel === condition.id }" @click="updateFilter('condition', condition.id)">
               {{ condition.text }}
             </div>
           </div>
@@ -79,6 +79,22 @@ export default {
         }));
       } catch (error) {
         console.error(`Error fetching data from ${url}:`, error);
+      }
+    };
+
+    const updateFilter = (filterType, selectedId) => {
+      if (filterType === 'alignment') {
+        if (store.alignmentModel === selectedId) {
+          store.alignmentModel = null;  //deselect
+        } else {
+          store.alignmentModel = selectedId;
+        }
+      } else if (filterType === 'condition') {
+        if (store.conditionModel === selectedId) {
+          store.conditionModel = null;  //deselect
+        } else {
+          store.conditionModel = selectedId; 
+        }      
       }
     };
 
@@ -174,7 +190,7 @@ export default {
           canIncrement = false; // Disable further increments
           const offset = (pageIndex - 1) * 25;
           const url = `https://saintsophia.dh.gu.se/api/inscriptions/inscription/?depth=1&offset=${offset}&${new URLSearchParams(store.imgParams).toString()}`;
-
+          
           // Use Promise syntax to handle the asynchronous 404 check
           checkFor404(url).then(async (is404) => {
             if (is404) {
@@ -261,7 +277,9 @@ export default {
       images,
       updatePanelId,
       alignments,
-      conditions
+      conditions,
+      updateFilter,
+      store
     };
   },
 };
@@ -454,4 +472,8 @@ export default {
   text-align: center;
   color: #777;
 } */
+
+.gallery-tag.active {
+  background-color:rgba(100,40,40,1.0) !important;
+}
 </style>
