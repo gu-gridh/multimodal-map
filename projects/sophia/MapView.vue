@@ -142,17 +142,17 @@ watch(
 
 onMounted(() => {
   // Check if the "visited" key exists in session storage
-  visited = sessionStorage.getItem("visited") === "true"; // Retrieve the visited status from session storage
+  visited = localStorage.getItem("visited") === "true"; // Retrieve the visited status from session storage
   const storedShowPlan = localStorage.getItem("showPlan");
   const storedShowGallery = localStorage.getItem("showGallery");
   const storedShowGalleryInscriptions = localStorage.getItem("showGalleryInscriptions");
-  const storedShowFirstFloor = localStorage.getItem("showFirstFloor");
-  const storedShowSecondFloor = localStorage.getItem("showSecondFloor");
+  // const storedShowFirstFloor = localStorage.getItem("showFirstFloor");
+  // const storedShowSecondFloor = localStorage.getItem("showSecondFloor");
 
   if (!visited) {
     // Hide the about component
     visibleAbout.value = true;
-    sessionStorage.setItem("visited", "true");
+    localStorage.setItem("visited", "true");
   }
 
   if (storedShowPlan) {
