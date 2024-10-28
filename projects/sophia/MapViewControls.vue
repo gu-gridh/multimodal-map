@@ -159,7 +159,7 @@ import i18n from '../../src/translations/sophia';
 const config = inject<InscriptionsProject>("config");
 const sophiaClient = new SophiaClient("inscriptions"); // Initialize SophiaClient
 const store = inscriptionsStore();
-const { categories, languageModel, writingModel, pictorialModel, selectedCategory, textualModel, dataParams, areMapPointsLoaded } = storeToRefs(inscriptionsStore());
+const { categories, languageModel, writingModel, pictorialModel, selectedCategory, textualModel, dataParams, areMapPointsLoaded, alignmentModel, conditionModel } = storeToRefs(inscriptionsStore());
 // Create a ref for last clicked category
 const lastClickedCategory = ref('');
 
@@ -190,12 +190,13 @@ const searchInput = ref(null);
 const shouldShowReset = computed(() => {
   //check if any of the model values have changed
   const categoryCondition = selectedCategory.value !== null;
+  const alignmentCondition= alignmentModel.value !== null;
+  const conditionCondition = conditionModel.value !== null;
   const languageCondition = JSON.stringify(languageModel.value) !== JSON.stringify(["all"]);
   const pictorialCondition = JSON.stringify(pictorialModel.value) !== JSON.stringify(["all"]);
   const textualCondition = JSON.stringify(textualModel.value) !== JSON.stringify(["all"]);
   const writingCondition = JSON.stringify(writingModel.value) !== JSON.stringify(["all"]);
-
-  return categoryCondition || languageCondition || pictorialCondition || textualCondition || writingCondition;
+  return categoryCondition || languageCondition || pictorialCondition || textualCondition || writingCondition || alignmentCondition || conditionCondition;
 });
 
 
@@ -215,6 +216,8 @@ function resetAllExcept(exceptModel) { //reset the other dropdowns to all when a
   categories.value = ["all"];
   lastClickedCategory.value = '';
   selectedCategory.value = null;
+  alignmentModel.value = null;
+  conditionModel.value = null;
   if (exceptModel !== "languageModel") languageModel.value = ["all"];
   if (exceptModel !== "pictorialModel") pictorialModel.value = ["all"];
   if (exceptModel !== "textualModel") textualModel.value = ["all"];
@@ -267,6 +270,8 @@ async function fetchDataAndPopulateRef<T>(type: string, refToPopulate: any) {
 }
 
 const handleCategoryClick = (category: string) => {
+  alignmentModel.value = null;
+  conditionModel.value = null;
   //mapping categories to their respective numbers
   const categoryMapping = {
     textualgraffiti: 1,
@@ -374,6 +379,8 @@ function clearAll() {
   languageModel.value = ["all"];
   lastClickedCategory.value = '';
   selectedCategory.value = null;
+  alignmentModel.value = null;
+  conditionModel.value = null;
 }
 </script>
 
