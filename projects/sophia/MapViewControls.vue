@@ -64,7 +64,7 @@
           </div>
 
           <!-- <div class="section-title">{{ $t('searchtitle') }}</div> -->
-          <div class="search-section">
+          <div class="search-section" ref="searchSection">
             <div class="toggle-buttons" style="margin-top: 10px">
               <button style="" :class="{ active: searchType === 'inscriptionobjects' }"
                 @click="setSearchType('inscriptionobjects')">{{ $t('inscriptions') }}</button>
@@ -75,8 +75,8 @@
               @focus="handleSearchBoxFocus"
               :placeholder="searchType === 'surfaces' ? $t('searchsurfacesplaceholder') : $t('searchinscriptionsplaceholder')"
               class="search-box" />
-            <div class="search-results">
-              <!-- Rendering for surfaces -->
+            <div class="search-results" v-if="showSuggestions">
+                <!-- Rendering for surfaces -->
               <template v-if="searchType === 'surfaces'">
                 <div v-for="(surface, index) in objectToArray(searchResults)" :key="index"
                   :class="['search-result-item']">
@@ -145,7 +145,7 @@
 </template>
 
 <script setup lang="ts">
-import { inject, ref, onMounted, computed, watch } from "vue";
+import { inject, ref, onMounted, onUnmounted, computed, watch } from "vue";
 import Dropdown from "./components/DropdownComponent.vue";
 import CategoryButton from "@/components/input/CategoryButtonList.vue";
 import { storeToRefs } from "pinia";
@@ -175,6 +175,8 @@ const searchType = ref('inscriptionobjects'); // Default to 'surfaces'
 const firstSearchBoxClick = ref(true);
 const searchQuery = ref('');
 const searchResults = ref([]);
+const showSuggestions = ref(false);
+const searchSection = ref<HTMLElement | null>(null);
 // const TAGS = ref < Record < string, string>> ({});
 const LANGUAGE = ref<Record<string, string>>({});
 const WRITING = ref<Record<string, string>>({});
@@ -210,6 +212,7 @@ const handleSearchBoxFocus = () => {
     fetchSurfaces();
     firstSearchBoxClick.value = false; // Set to false after first fetch
   }
+  showSuggestions.value = true; 
 };
 
 function resetAllExcept(exceptModel) { //reset the other dropdowns to all when a selection is made
@@ -250,9 +253,7 @@ onMounted(async () => {
   await fetchDataAndPopulateRef("writingsystem", WRITING);
   await fetchDataAndPopulateRef("tag", PICTORIAL);
   await fetchDataAndPopulateRef("genre", TEXTUAL);
-
-  // const response = await fetch(baseURL);
-  // const data = await response.json();
+  document.addEventListener('click', handleClickOutside);
 });
 
 async function fetchDataAndPopulateRef<T>(type: string, refToPopulate: any) {
@@ -344,6 +345,7 @@ async function fetchSurfaces() {
 }
 
 const handleSearch = () => {
+  showSuggestions.value = true;
   if (searchType.value === 'surfaces') {
     fetchSurfaces();
   } else if (searchType.value === 'inscriptionobjects') {
@@ -382,6 +384,16 @@ function clearAll() {
   alignmentModel.value = null;
   conditionModel.value = null;
 }
+
+onUnmounted(() => {
+  document.removeEventListener('click', handleClickOutside);
+});
+
+const handleClickOutside = (event: MouseEvent) => { //hide suggestions when clicking outside
+  if (searchSection.value && !searchSection.value.contains(event.target as Node)) {
+    showSuggestions.value = false;
+  }
+};
 </script>
 
 <style>
