@@ -4,13 +4,11 @@ import MainLayout from "@/MainLayout.vue";
 import MapViewControls from "./MapViewControls.vue";
 import MapComponent from "./components/MapComponent.vue";
 import MapViewMarkers from "./MapViewMarkers.vue";
-// import GeoJsonWebGLRenderer from "@/components/GeoJsonWebGLRenderer.vue";
 import MapViewPreview from "./MapViewPreview.vue";
 import { storeToRefs } from "pinia";
 import { inscriptionsStore } from "./settings/store";
 import { mapStore } from "@/stores/store";
 import { clean } from "@/assets/utils";
-// import markerIcon from "@/assets/marker-white.svg";
 import MapViewGallery from "./MapViewGallerySurfaces.vue";
 import MapViewGalleryInscriptions from "./MapViewGalleryInscriptions.vue";
 import { ref } from "vue";
@@ -18,14 +16,12 @@ import About from "./About.vue";
 import Instructions from "./Instructions.vue";
 import { onMounted, watch } from "vue";
 import { nextTick } from "vue";
-// import GeoJSON from "ol/format/GeoJSON";
 import Title from "./MapViewTitle.vue";
-// import apiConfig from "./settings/apiConfig"
 
-const { dataParams, selectedCategory, writingModel, languageModel, pictorialModel, textualModel, alignmentModel, conditionModel } = storeToRefs(inscriptionsStore());
+const { selectedCategory, writingModel, languageModel, pictorialModel, textualModel, alignmentModel, conditionModel, panelId } = storeToRefs(inscriptionsStore());
 
 const store = mapStore();
-const inscriptions = inscriptionsStore();  // Get the instance of inscriptionsStore
+const inscriptions = inscriptionsStore();  //get the instance of inscriptionsStore
 const { selectedFeature } = storeToRefs(store);
 const minZoom = 20;
 const maxZoom = 24;
@@ -37,7 +33,7 @@ const showGallery = ref(false);
 const showGalleryInscriptions = ref(false);
 const showFirstFloor = ref(true);
 const showSecondFloor = ref(false);
-let visited = true; // Store the visited status outside of the hook
+let visited = true; //store the visited status outside of the hook
 
 // Watcher for selectedFeature changes
 watch(
@@ -82,6 +78,14 @@ watch(selectedCategory, (newValue, oldValue) => {
   }
 });
 
+watch(panelId, (newValue, oldValue) => {
+  if (newValue !== null && newValue !== undefined) {
+    showPlan.value = false;
+    showGalleryInscriptions.value = false;
+    showGallery.value = true;
+  }
+});
+
 watch(showPlan, (newValue) => {
   localStorage.setItem("showPlan", JSON.stringify(newValue));
 });
@@ -101,6 +105,19 @@ watch(showFirstFloor, (newValue) => {
 watch(showSecondFloor, (newValue) => {
   localStorage.setItem("showSecondFloor", JSON.stringify(newValue));
 });
+
+const panelParams = computed(() => {
+  const panelIdValue = panelId.value;
+
+  const params = {};
+
+  if (panelIdValue !== null && panelIdValue !== undefined) {
+    params['panel'] = panelIdValue;
+  }
+
+  return params;
+});
+
 
 /* Response for generating the URL for filtering map points down */
 const tagParams = computed(() => {
@@ -141,14 +158,21 @@ const tagParams = computed(() => {
     delete (params as any)['condition']; 
   }
 
-  inscriptions.imgParams = params;
   return params;
 });
 
 watch(
   tagParams,
   (newParams) => {
-    dataParams.value = newParams;
+    inscriptions.imgParams = newParams;
+  },
+  { immediate: true }
+);
+
+watch(
+  panelParams,
+  (newParams) => {
+    inscriptions.surfaceParams = newParams;
   },
   { immediate: true }
 );

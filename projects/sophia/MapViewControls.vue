@@ -79,14 +79,17 @@
                 <!-- Rendering for surfaces -->
               <template v-if="searchType === 'surfaces'">
                 <div v-for="(surface, index) in objectToArray(searchResults)" :key="index"
-                  :class="['search-result-item']">
+                :class="['search-result-item', { selected: searchId === surface.id }]" 
+                @click="handleSurfaceClick(surface)">
                   {{ surface?.title }}
                 </div>
               </template>
               <!-- Rendering for inscriptions -->
               <template v-else-if="searchType === 'inscriptionobjects'">
                 <div v-for="feature in filteredInscription"
-                  :key="feature.properties ? feature.properties.Nr : 'no-place'" class="search-result-item">
+                  :key="feature.properties ? feature.properties.Nr : 'no-place'" 
+                  :class="['search-result-item', { selected: searchId === feature.id }]" 
+                  @click="handleInscriptionClick(feature)">
                   {{ feature.displayText }}
                 </div>
               </template>
@@ -157,9 +160,10 @@ import { SophiaClient } from "@/assets/saintsophia";
 import i18n from '../../src/translations/sophia';
 
 const config = inject<InscriptionsProject>("config");
+const searchId = ref(null); //id of the selected item in the search
 const sophiaClient = new SophiaClient("inscriptions"); // Initialize SophiaClient
 const store = inscriptionsStore();
-const { categories, languageModel, writingModel, pictorialModel, selectedCategory, textualModel, dataParams, areMapPointsLoaded, alignmentModel, conditionModel } = storeToRefs(inscriptionsStore());
+const { categories, languageModel, writingModel, pictorialModel, selectedCategory, textualModel, areMapPointsLoaded, alignmentModel, conditionModel, panelId } = storeToRefs(inscriptionsStore());
 // Create a ref for last clicked category
 const lastClickedCategory = ref('');
 
@@ -169,21 +173,16 @@ const totalPlans = ref(0);
 const totalThreed = ref(0);
 const hiddenPanels = ref(0);
 const currentPanelCount = ref(0);
-// const visibleAbout = ref(false);
-// const { selectedFeature } = storeToRefs(mapStore());
 const searchType = ref('inscriptionobjects'); // Default to 'surfaces' 
 const firstSearchBoxClick = ref(true);
 const searchQuery = ref('');
 const searchResults = ref([]);
 const showSuggestions = ref(false);
 const searchSection = ref<HTMLElement | null>(null);
-// const TAGS = ref < Record < string, string>> ({});
 const LANGUAGE = ref<Record<string, string>>({});
 const WRITING = ref<Record<string, string>>({});
 const PICTORIAL = ref<Record<string, string>>({});
 const TEXTUAL = ref<Record<string, string>>({});
-//const INSCRIPTIONTYPE = ref<Record<string, string>>({});
-// const currentTag = ref(null);
 import _debounce from 'lodash/debounce';
 const searchInput = ref(null);
 
@@ -297,6 +296,15 @@ const handleCategoryClick = (category: string) => {
   }
 };
 
+function handleSurfaceClick(surface) {
+  searchId.value = searchId.value === surface.id ? null : surface.id;
+  panelId.value = searchId.value;
+}
+  
+function handleInscriptionClick(feature) {
+  searchId.value = searchId.value === feature.id ? null : feature.id;
+}
+
 //Fetch to return count of each type based on the tagParams
 const fetchData = async (url: string) => {
   const response = await fetch(url);
@@ -352,16 +360,6 @@ const handleSearch = () => {
     fetchInscriptions(searchQuery.value);
   }
 };
-
-watch(
-  () => dataParams.value,
-  async (newTagParams, oldTagParams) => {
-    const queryParams = new URLSearchParams(Object.fromEntries(Object.entries(newTagParams).map(([k, v]) => [k, String(v)])));
-    const urlWithParams = `https://saintsophia.dh.gu.se/api/inscriptions/info/panels/?${queryParams.toString()}`;
-    await fetchData(urlWithParams);
-  },
-  { immediate: true }
-);
 
 watch(() => i18n.global.locale, (newLocale) => {
   fetchDataAndPopulateRef('language', LANGUAGE);
@@ -498,9 +496,9 @@ const handleClickOutside = (event: MouseEvent) => { //hide suggestions when clic
   cursor: pointer;
 }
 
-.search-result-item:hover {
+/* .search-result-item:hover {
   background-color: rgba(240, 240, 240, 1.0) !important;
-}
+} */
 
 .toggle-buttons button {
   font-weight: 400;
@@ -715,9 +713,12 @@ const handleClickOutside = (event: MouseEvent) => { //hide suggestions when clic
 }
 
 @media screen and (max-width: 600px) {
-
   .data-widget {
     font-size: 80%;
   }
+}
+
+.search-result-item.selected {
+  background-color: rgba(240, 240, 240, 1.0) !important;
 }
 </style>

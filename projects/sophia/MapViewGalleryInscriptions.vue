@@ -128,10 +128,6 @@ export default {
       );
     });
 
-    const updatePanelId = (item) => {
-      store.panelId = item.featureId;
-    };
-
     const fetchData = async (requestedPageIndex) => {
       if (requestedPageIndex > lastFetchedPageIndex) {
         try {
@@ -275,7 +271,6 @@ export default {
 
     return {
       images,
-      updatePanelId,
       alignments,
       conditions,
       updateFilter,

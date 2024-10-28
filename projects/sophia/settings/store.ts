@@ -14,6 +14,7 @@ export const inscriptionsStore = defineStore("inscriptions", () => {
   const tagsLayerVisible = ref(false); // Default visibility state for tags layer
   const dataParams = ref<Record<string, string | number | null>>({});
   const imgParams = ref<Record<string, string | number | null>>({});
+  const surfaceParams = ref<Record<string, string | number | null>>({});
   const areMapPointsLoaded = ref<boolean>(false);
   const panelId = ref<string | null>(null);
   const selectedCategory = ref<number | null>(null); //the selected category number from mapviewcontrols
@@ -37,6 +38,7 @@ export const inscriptionsStore = defineStore("inscriptions", () => {
     setSelectedCategory,
     selectedCategory,
     alignmentModel,
-    conditionModel
+    conditionModel,
+    surfaceParams
   };
 });

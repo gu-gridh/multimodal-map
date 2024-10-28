@@ -11,7 +11,7 @@ import OpenSeadragon from "./MapViewPreviewImage.vue";
 import apiConfig from "./settings/apiConfig"
 
 const { selectedFeature } = storeToRefs(mapStore());
-const inscriptions = inscriptionsStore();
+// const inscriptions = inscriptionsStore();
 const sophia = inject("sophia") as SophiaClient;
 const images = ref<Image[]>();
 const imageUrls = ref<string[]>([]);
@@ -28,7 +28,7 @@ watchEffect(async () => {
   documentation.value = null;
   if (selectedFeature.value) {
     const panelId = selectedFeature.value.getId();
-    inscriptions.panelId = panelId as string | null;
+    // inscriptions.panelId = panelId as string | null;
     panel.value = await sophia.list<PanelMetadata>("panel", {id: panelId});
     number_of_inscriptions.value = panel.value.results[0].number_of_inscriptions
     languages.value = panel.value.results[0].list_of_languages.length

@@ -19,15 +19,6 @@
           <div class="gallery-tag">Wood</div>
         </div>
       </div>
-
-
-   <!--    <div class="filter-gradient-blur">
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-      </div> -->
-
     </div>
     </div>
 
@@ -81,7 +72,7 @@ export default {
     let lastFetchedPageIndex = 0;
 
     watch(
-      () => store.imgParams,
+      () => store.surfaceParams,
       async (newParams, oldParams) => {
         pageIndex = 1;
         lastFetchedPageIndex = 0;
@@ -99,14 +90,10 @@ export default {
       }
     );
 
-    const updatePanelId = (item) => {
-      store.panelId = item.featureId;
-    };
-
     const fetchData = async (requestedPageIndex) => {
       if (requestedPageIndex > lastFetchedPageIndex) {
         try {
-          const urlToFetch = `${apiConfig.IMAGE}?type_of_image=1&depth=2&${new URLSearchParams(store.imgParams).toString()}`; // type_of_image=1 only fetches Ortophotos
+          const urlToFetch = `${apiConfig.IMAGE}?type_of_image=1&depth=2&${new URLSearchParams(store.surfaceParams).toString()}`; // type_of_image=1 only fetches Ortophotos
           const res = await fetch(urlToFetch);
           const data = await res.json();
           const newImages = data.results.map(item => ({
@@ -157,7 +144,7 @@ export default {
       }
       canIncrement = false; // Disable further increments
       const offset = (pageIndex - 1) * 25;
-      const url = `${apiConfig.IMAGE}?offset=${offset}&type_of_image=1&depth=2&${new URLSearchParams(store.imgParams).toString()}`;
+      const url = `${apiConfig.IMAGE}?offset=${offset}&type_of_image=1&depth=2&${new URLSearchParams(store.surfaceParams).toString()}`;
 
       // Use Promise syntax to handle the asynchronous 404 check
       checkFor404(url).then(async (is404) => {
@@ -231,8 +218,7 @@ export default {
     });
 
     return {
-      images,
-      updatePanelId
+      images
     };
   },
 };
