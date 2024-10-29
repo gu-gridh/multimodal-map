@@ -22,7 +22,7 @@ const fetchedIds = new Set<number>();
 const { selectedFeature } = storeToRefs(mapStore());
 const store = maritimeencountersStore();
 const { startRectangleDraw, showHeatMap, doneFetching } = storeToRefs(store);
-const isDownloading = ref(false); //spinner visibility
+const isLoading = ref(false); //spinner visibility
 
 // Heatmap
 const heatmapLayer = ref<L.HeatLayer | null>(null);
@@ -123,6 +123,7 @@ const fetchData = async (initialUrl: string, params: Record<string, any>) => {
     console.log("Previous fetch aborted");
   }
 
+  isLoading.value = true; //show spinner 
   abortController = new AbortController();
   const signal = abortController.signal;
 
@@ -210,6 +211,7 @@ const fetchData = async (initialUrl: string, params: Record<string, any>) => {
     if (heatmapLayer.value && heatmapLayer.value._map) {
       heatmapLayer.value.setLatLngs(heatmapPoints.value);
     }
+    isLoading.value = false; //hide spinner
     resolve(); //when all pages are processed
     abortController = null;
   });
@@ -220,7 +222,7 @@ const fetchAllSites = async (initialUrl: string): Promise<any[]> => {
   let allData: any[] = [];
   let nextUrl: string | null = initialUrl;
 
-  isDownloading.value = true; //show the spinner
+  isLoading.value = true; //show the spinner
 
   while (nextUrl) {
     try {
@@ -234,10 +236,10 @@ const fetchAllSites = async (initialUrl: string): Promise<any[]> => {
     } catch (err) {
       console.error("Error fetching data:", err);
       throw err;
-        }
-      }
+    }
+  }
 
-  isDownloading.value = false; //hide the spinner
+  isLoading.value = false; //hide the spinner
   return allData;
 };
 
@@ -292,7 +294,7 @@ watch(
 watch(() => props.showConnections, (newVal) => {  //clear lines when showConnections is off
   if (!newVal && polylineLayer.value) {
     toRaw(polylineLayer.value)?.clearLayers();
-        }
+  }
 });
 
 watch( //Download the data
@@ -304,9 +306,9 @@ watch( //Download the data
 
       store.startRectangleDraw = false;
 
-        }
-      },
-    );
+    }
+  },
+);
 
 watch( //toggle visibility between heatmap and marker clusters
   () => showHeatMap.value,
@@ -459,7 +461,7 @@ onMounted(async () => {
   toRaw(map.value)?.addLayer(toRaw(markerClusterGroup.value));
 
   //fetch bounding box
-  const bbox = toRaw(map.value)?.getBounds().toBBoxString(); 
+  const bbox = toRaw(map.value)?.getBounds().toBBoxString();
   const urlWithBBox = `https://maritime-encounters.dh.gu.se/api/resources/search/?in_bbox=${bbox}&page_size=100`;
 
   //fetch the full dataset after bounding box
@@ -488,7 +490,7 @@ onMounted(async () => {
 
 <template>
   <div id="map" style="width: 100%; height: 100vh;"></div>
-  <div v-if="isDownloading" class="download-spinner">
+  <div v-if="isLoading" class="download-spinner">
     <img src="@/assets/interface/bars-rotate-fade.svg" alt="Loading..." />
   </div>
 </template>

@@ -130,10 +130,10 @@ const toggleAboutVisibility = async () => {
     <template #background>
       <div class="map-container">
         <div class="map-buttons">
-          <button  @click="startRectangleDraw" class="map-button" >
+          <button  v-if="maritimeencounters.doneFetching" @click="startRectangleDraw" class="map-button" >
             <img src="/images/download.svg" alt="Download" />
           </button>
-          <button v-if="maritimeencounters.doneFetching"  @click="toggleHeatMap" class="map-button">
+          <button v-if="maritimeencounters.doneFetching" @click="toggleHeatMap" class="map-button">
             <img src="/images/heat.svg" alt="Heatmap" />
           </button>
         </div>
