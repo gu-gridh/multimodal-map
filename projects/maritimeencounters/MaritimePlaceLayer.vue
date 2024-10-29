@@ -51,13 +51,24 @@ const props = defineProps({
   },
 });
 
-//coordinates to draw lines to FOR TESTING
-// const targetCoordinates = [
-//   L.latLng(4.1129, 2.5911),
-//   L.latLng(70.81392, 27.96125),
-//   L.latLng(53.1258, -9.7681),
-//   L.latLng(48.8427, 8.0221),
-// ];
+function clearMarkerClusterLayersInBatches() {
+  const layers = toRaw(markerClusterGroup.value)?.getLayers();
+  if (layers && layers.length > 0) {
+    const batchSize = 1000;
+    let index = 0;
+
+    function removeNextBatch() {
+      const batch = layers.slice(index, index + batchSize);
+      toRaw(markerClusterGroup.value)?.removeLayers(batch);
+      index += batchSize;
+      if (index < layers.length) {
+        setTimeout(removeNextBatch, 0);
+      }
+    }
+
+    removeNextBatch();
+  }
+}
 
 //draw polygons for each country
 const renderGeoJSON = (geojsonArray: { name: string, data: any, id: string }[]) => {
@@ -104,19 +115,6 @@ const renderGeoJSON = (geojsonArray: { name: string, data: any, id: string }[]) 
     layerGroupMap.value[name] = layerGroup;
   });
 };
-
-//draw lines to the specified coordinates FOR TESTING
-// const drawConnections = (startLatLng: L.LatLng) => {
-//   const lines = targetCoordinates.map(targetLatLng =>
-//     L.polyline([startLatLng, targetLatLng], { color: 'red' })
-//   );
-
-//   if (!polylineLayer.value) {
-//     polylineLayer.value = L.layerGroup().addTo(toRaw(map.value)!);
-//   }
-//   polylineLayer.value.clearLayers();
-//   lines.forEach(line => toRaw(polylineLayer.value)?.addLayer(line));
-// };
 
 //draw the markers on the map
 const fetchData = async (initialUrl: string, params: Record<string, any>) => {
@@ -272,7 +270,7 @@ watch(
 
     //clear existing data
     fetchedIds.clear();
-    markerClusterGroup.value?.clearLayers();
+    clearMarkerClusterLayersInBatches();
     heatmapPoints.value = [];
     if (heatmapLayer.value && heatmapLayer.value._map) {
       heatmapLayer.value.setLatLngs([]);
@@ -310,8 +308,7 @@ watch( //Download the data
       },
     );
 
-//toggle visibility between heatmap and marker clusters
-watch(
+watch( //toggle visibility between heatmap and marker clusters
   () => showHeatMap.value,
   (newVal) => {
     if (newVal) {
