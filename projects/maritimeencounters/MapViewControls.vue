@@ -3,8 +3,8 @@
     <div class="tag-section ">
       <div class="section-title">Type of Data</div>
       <div class="broad-controls" style="width:120px">
-        <CategoryButtonDropdown v-model="selectedSite"
-          :categories="{ '1': 'Plank Boats', '2': 'Log Boats', '3': 'Radiocarbon Dates', '4': 'Individual Samples', '5': 'DNA Samples', '6': 'Metal Analysis', '7': 'Landing Points', '8': 'New Samples', '9': 'Metalwork' }"
+        <CategoryButtonDropdown v-model="dataType"
+          :categories="{ 'plank_boats': 'Plank Boats', 'log_boats': 'Log Boats', 'radiocarbon_dates': 'Radiocarbon Dates', 'individual_samples': 'Individual Samples', 'dna_samples': 'DNA Samples', 'metal_analysis': 'Metal Analysis', 'landing_points': 'Landing Points', 'new_samples': 'New Samples', 'metalwork': 'Metalwork' }"
           :limit="1" styleType="dropdown" class="my-2" type="site" style="width:100%" />
       </div>
     </div>
@@ -44,7 +44,7 @@
 </template>
 
 <script setup lang="ts">
-import { inject, ref, computed, onMounted, watch } from "vue";
+import { inject, ref, computed, onMounted } from "vue";
 import CategoryButtonDropdown from "./CategoryButtonDropdown.vue";
 import RangeSlider from "./RangeSliderMaritime.vue";
 import { storeToRefs } from "pinia";
@@ -52,11 +52,11 @@ import { maritimeencountersStore } from "./store";
 import type { MaritimeEncountersProject } from "./types";
 
 const config = inject<MaritimeEncountersProject>("config");
-const { selectedRange, selectedSite } = storeToRefs(maritimeencountersStore());
+const { selectedRange, dataType } = storeToRefs(maritimeencountersStore());
 
 const isFilterModified = computed(() => {
   return (
-    selectedSite.value[0] !== "all" ||
+    dataType.value[0] !== "all" ||
     selectedRange.value[0] !== -2450 || selectedRange.value[1] !== 50
   );
 });
@@ -67,23 +67,10 @@ const currentTombCount = ref(0);
 
 onMounted(async () => {
   // await fetchDataAndPopulateRef("epoch", TAGS);
-});
-
-// async function fetchDataAndPopulateRef<T>(type: string, refToPopulate: any, params: Record<string, any> = {}) {
-//   try {
-//     const data = await dianaClient.listAll<T>(type, params);
-//     refToPopulate.value = {};
-
-//     data.forEach((result: any) => {
-//       //fetch here
-//     });
-//   } catch (error) {
-//     console.error(`Error fetching data for type ${type}:`, error);
-//   }
-// }
+}); 
 
 function clearAll() {
-  selectedSite.value = ["all"];
+  dataType.value = ["all"];
   selectedRange.value = [-2450, 50];
 }
 </script>

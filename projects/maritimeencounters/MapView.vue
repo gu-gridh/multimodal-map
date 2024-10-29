@@ -16,7 +16,7 @@ import { onMounted, watch } from "vue";
 import { nextTick } from "vue";
 import Title from "./Title.vue"
 
-const { selectedRange, showUnknownRange, dataSetValue, dataParams, doneFetching } = storeToRefs(maritimeencountersStore());
+const { selectedRange, dataParams, dataType } = storeToRefs(maritimeencountersStore());
 const store = mapStore();
 const maritimeencounters = maritimeencountersStore();  // Get the instance of maritimeencountersStore
 const { selectedFeature } = storeToRefs(store);
@@ -26,10 +26,6 @@ const featureZoom = 10; //value between minZoom and maxZoom when you select a po
 const visibleAbout = ref(false);
 const showConnections = ref(false);
 let visited = true; // Store the visited status outside of the hook
-
-// const toggleConnections = () => {
-//   showConnections.value = !showConnections.value;
-// };
 
 // Watcher for selectedFeature changes
 watch(
@@ -61,16 +57,14 @@ const toggleHeatMap = () => {
 /* Response for generating the URL for filtering map points down */
 const tagParams = computed(() => {
   // const necropolis = necropoli.value[0];
-  // const type = tombType.value[0];
-  const dataset = dataSetValue.value[0];
+  const type = dataType.value[0];
   const selectedRangeValue = selectedRange.value;
-  const show_unknown = showUnknownRange.value;
 
-  const initialParams: any  = { dataset, show_unknown: show_unknown.toString() };
+  const initialParams: any  = { type };
 
    if (selectedRangeValue.length === 2) {
-    initialParams.minyear = Math.round(Math.abs(selectedRangeValue[0]));
-    initialParams.maxyear = Math.round(Math.abs(selectedRangeValue[1]));
+    initialParams.minyear = Math.round(selectedRangeValue[0]);
+    initialParams.maxyear = Math.round(selectedRangeValue[1]);
   }
   
   // Remove parameters that are set to "all"
@@ -85,6 +79,7 @@ const tagParams = computed(() => {
   const params = clean(cleanedParams);
 
   maritimeencounters.imgParams = params;
+  console.log("params", params);
   return params;
 });
 

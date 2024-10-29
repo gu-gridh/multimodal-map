@@ -6,10 +6,9 @@ export const maritimeencountersStore = defineStore("resources", () => {
   const tags = ref<Array<string>>(["all"]);
   const dataSetValue = ref<Array<string>>(["all"]);
   const necropoli = ref<Array<string>>(["all"]);
-  const selectedSite = ref<Array<string>>(["all"]);
+  const dataType = ref<Array<string>>(["all"]);
   const selectedRange = ref([-2450, 50]);
   const showUnknownRange = ref(true);
-  const tombType = ref<Array<string>>(["all"]);
   const tagsLayerVisible = ref(false); // Default visibility state for tags layer
   const dataParams = ref<Record<string, string | number | null>>({});
   const imgParams = ref<Record<string, string | number | null>>({});
@@ -22,5 +21,5 @@ export const maritimeencountersStore = defineStore("resources", () => {
   const showHeatMap = ref<boolean>(false);
   const doneFetching = ref<boolean>(false);
 
-  return { categories, tags, dataSetValue, showUnknownRange, tagsLayerVisible, necropoli, selectedRange, tombType,  dataParams, selectedNecropolisCoordinates, enable3D, enablePlan, areMapPointsLoaded, imgParams, placeId, selectedSite, startRectangleDraw, showHeatMap, doneFetching };
+  return { categories, tags, dataSetValue, showUnknownRange, tagsLayerVisible, necropoli, selectedRange, dataParams, selectedNecropolisCoordinates, enable3D, enablePlan, areMapPointsLoaded, imgParams, placeId, dataType, startRectangleDraw, showHeatMap, doneFetching };
 });

@@ -11,16 +11,19 @@
         :step="step"
         showTooltip="always"
         class="slider-blue"
-        :format="v => `${Math.round(Math.abs(v))} BC`"
+        :format="v => {
+          const roundedValue = Math.round(v);
+          return roundedValue < 0 ? `${Math.abs(roundedValue)} BC` : `${roundedValue} AD`;
+        }"
       />
     </div>
   </div>
-
 </template>
 
 <script setup lang="ts">
 import Slider from "@vueform/slider";
 import { ref, watch, computed } from "vue";
+
 const props = withDefaults(defineProps<{
   modelValue: [number, number];
   min: number;
@@ -32,7 +35,7 @@ const props = withDefaults(defineProps<{
 });
 
 const emit = defineEmits(["update:modelValue"]);
-const isSliderVisible = computed(() => props.isSliderVisible !== false); 
+const isSliderVisible = computed(() => props.isSliderVisible !== false);
 const selection = ref<[number, number]>(props.modelValue);
 
 watch(selection, () => {
