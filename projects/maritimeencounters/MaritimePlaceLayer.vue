@@ -280,7 +280,7 @@ watch(
 
     const baseUrl = `https://maritime-encounters.dh.gu.se/api/resources/search/`;
 
-    await fetchData(baseUrl, { page_size: 1000, ...newParams })
+    await fetchData(baseUrl, { page_size: 500, ...newParams })
       .then(() => {
         console.log("full dataset fetch completed with new params.");
         doneFetching.value = true;
@@ -317,24 +317,24 @@ watch(
     if (newVal) {
       //show heatmap layer
       if (heatmapLayer.value) {
-        if (map.value && !map.value.hasLayer(heatmapLayer.value)) {
-          map.value.addLayer(heatmapLayer.value);
+        if (map.value && !toRaw(map.value).hasLayer(toRaw(heatmapLayer.value))) {
+          toRaw(map.value).addLayer(toRaw(heatmapLayer.value));
         }
-        heatmapLayer.value.setLatLngs(heatmapPoints.value);
+        toRaw(heatmapLayer.value).setLatLngs(heatmapPoints.value);
       }
       //hide marker clusters
       if (
         map.value &&
         markerClusterGroup.value &&
-        map.value.hasLayer(markerClusterGroup.value)
+        toRaw(map.value).hasLayer(toRaw(markerClusterGroup.value))
       ) {
-        map.value.removeLayer(markerClusterGroup.value);
+        toRaw(map.value).removeLayer(toRaw(markerClusterGroup.value));
       }
     } else {
       //hide heatmap layer
       if (heatmapLayer.value) {
-        if (map.value && map.value.hasLayer(heatmapLayer.value)) {
-          map.value.removeLayer(heatmapLayer.value);
+        if (map.value && toRaw(map.value).hasLayer(toRaw(heatmapLayer.value))) {
+          toRaw(map.value).removeLayer(toRaw(heatmapLayer.value));
         }
       }
 
@@ -342,9 +342,9 @@ watch(
       if (
         map.value &&
         markerClusterGroup.value &&
-        !map.value.hasLayer(markerClusterGroup.value)
+        !toRaw(map.value).hasLayer(toRaw(markerClusterGroup.value))
       ) {
-        map.value.addLayer(markerClusterGroup.value);
+        toRaw(map.value).addLayer(toRaw(markerClusterGroup.value));
       }
     }
   }
@@ -390,7 +390,10 @@ onMounted(async () => {
       const southWest = bounds.getSouthWest();
       const northEast = bounds.getNorthEast();
       const bboxString = `${southWest.lng},${southWest.lat},${northEast.lng},${northEast.lat}`;
-      const apiUrl = `https://maritime-encounters.dh.gu.se/api/resources/site_coordinates/?in_bbox=${bboxString}&page_size=100`;
+      const baseUrl = `https://maritime-encounters.dh.gu.se/api/resources/search/`;
+      const params = { in_bbox: bboxString, page_size: 100, ...props.params };
+      const queryString = new URLSearchParams(params).toString();
+      const apiUrl = `${baseUrl}?${queryString}`;
 
       try {
         const jsonData = await fetchAllSites(apiUrl);
@@ -459,14 +462,14 @@ onMounted(async () => {
   toRaw(map.value)?.addLayer(toRaw(markerClusterGroup.value));
 
   //fetch bounding box
-  const bbox = toRaw(map.value)?.getBounds().toBBoxString();
-  const urlWithBBox = `https://maritime-encounters.dh.gu.se/api/resources/site_coordinates/?in_bbox=${bbox}&page_size=100`;
+  const bbox = toRaw(map.value)?.getBounds().toBBoxString(); 
+  const urlWithBBox = `https://maritime-encounters.dh.gu.se/api/resources/search/?in_bbox=${bbox}&page_size=100`;
 
   //fetch the full dataset after bounding box
   fetchData(urlWithBBox, {})
     .then(() => {
       console.log('bbox fetch completed. Now fetching the full dataset.');
-      return fetchData("https://maritime-encounters.dh.gu.se/api/resources/site_coordinates?page_size=1000", {});
+      return fetchData("https://maritime-encounters.dh.gu.se/api/resources/search/?page_size=1000", {});
     })
     .then(() => {
       console.log('Full dataset fetch completed.');
