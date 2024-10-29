@@ -1,8 +1,5 @@
 <template>
-  
   <div class="range-slider-container">
-  
-    <!-- <div class="start-end-box">{{ formatBCYear(min) }}</div> -->
     <div
       style="width: 100%"
       :class="['clickable', 'range-slider-wrapper', { 'no-pointer-events': isSliderVisible === false }]"
@@ -17,21 +14,13 @@
         :format="v => `${Math.round(Math.abs(v))} BC`"
       />
     </div>
-    <!-- <div class="start-end-box" style="margin-right: 5px">{{ formatBCYear(max) }}</div> -->
-    <!-- <div class="checkbox-container" style="">
-      <input type="checkbox" id="showUnknownRange" v-model="showUnknownRange">
-      <label style="margin-left:5px; margin-top:-3px; " for="showUnknownRange">Include unknown</label>
-    </div>  -->
   </div>
 
 </template>
 
 <script setup lang="ts">
 import Slider from "@vueform/slider";
-import { storeToRefs } from "pinia";
-import { maritimeencountersStore } from "./store";
 import { ref, watch, computed } from "vue";
-// const { showUnknownRange } = storeToRefs(maritimeencountersStore());
 const props = withDefaults(defineProps<{
   modelValue: [number, number];
   min: number;
@@ -45,10 +34,6 @@ const props = withDefaults(defineProps<{
 const emit = defineEmits(["update:modelValue"]);
 const isSliderVisible = computed(() => props.isSliderVisible !== false); 
 const selection = ref<[number, number]>(props.modelValue);
-
-function formatBCYear(year: any): string {
-  return `${Math.abs(year)} BC`;
-}
 
 watch(selection, () => {
   emit("update:modelValue", selection.value);
@@ -111,9 +96,6 @@ watch(
 .checkbox-container input[type="checkbox"]:hover {
   color: black;
 }
-
-
-
 
 .slider-blue{
   padding:0px;

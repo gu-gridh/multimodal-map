@@ -7,7 +7,7 @@ export const maritimeencountersStore = defineStore("resources", () => {
   const dataSetValue = ref<Array<string>>(["all"]);
   const necropoli = ref<Array<string>>(["all"]);
   const selectedSite = ref<Array<string>>(["all"]);
-  const selectedRange = ref([-1500, -500]);
+  const selectedRange = ref([-2450, 50]);
   const showUnknownRange = ref(true);
   const tombType = ref<Array<string>>(["all"]);
   const tagsLayerVisible = ref(false); // Default visibility state for tags layer
