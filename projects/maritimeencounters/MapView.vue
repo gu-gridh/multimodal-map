@@ -79,7 +79,7 @@ const tagParams = computed(() => {
   const params = clean(cleanedParams);
 
   maritimeencounters.imgParams = params;
-  console.log("params", params);
+  
   return params;
 });
 

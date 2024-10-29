@@ -150,12 +150,12 @@ const fetchData = async (initialUrl: string, params: Record<string, any>) => {
 
           fetchedIds.add(featureId); // add id to set to prevent duplicates
 
-          if ( feature.geometry && feature.geometry.coordinates && feature.geometry.coordinates.length === 2) {
+          if (feature.geometry && feature.geometry.coordinates && feature.geometry.coordinates.length === 2) {
             const coords = feature.geometry.coordinates;
             if (!isNaN(coords[0]) && !isNaN(coords[1])) {
               const latLng = L.latLng(coords[1], coords[0]);
 
-              const intensity = 1.5; //intensity
+              const intensity = 1.5; //default intensity
               heatmapPoints.value.push([coords[1], coords[0], intensity]);
 
               const marker = L.marker(latLng, {
@@ -167,10 +167,6 @@ const fetchData = async (initialUrl: string, params: Record<string, any>) => {
 
               marker.on("click", () => {
                 selectedFeature.value = featureId;
-
-                // if ( props.showConnections && coords[1] === 55.99446 && coords[0] === 55.99446) {
-                //   drawConnections(latLng);
-                // }
               });
 
               marker.on("mouseover", () => {
@@ -199,16 +195,13 @@ const fetchData = async (initialUrl: string, params: Record<string, any>) => {
           }
         });
 
-        //only add markers if markerClusterGroup is attached to the map
-        // if (toRaw(markerClusterGroup.value)?._map) {
-          toRaw(markerClusterGroup.value)?.addLayers(markersToAdd);
-        //}
+        toRaw(markerClusterGroup.value)?.addLayers(markersToAdd);
 
         nextUrl = data.next ? data.next.replace(/^http:/, "https:") : null;
       } catch (err: any) {
         if (err.name === "AbortError") {
           console.log("Fetch request was aborted");
-          return; //if fetch is aborted
+          return;  //if fetch is aborted
         } else {
           console.error("Error fetching data:", err);
           reject(err);
@@ -216,6 +209,9 @@ const fetchData = async (initialUrl: string, params: Record<string, any>) => {
       }
     }
 
+    if (heatmapLayer.value && heatmapLayer.value._map) {
+      heatmapLayer.value.setLatLngs(heatmapPoints.value);
+    }
     resolve(); //when all pages are processed
     abortController = null;
   });
@@ -261,6 +257,40 @@ const downloadJSON = (data: any, filename: string) => {
   URL.revokeObjectURL(url);
 };
 
+watch(
+  () => props.params,
+  async (newParams) => {
+    doneFetching.value = false;
+
+    if (!map.value) {
+      await nextTick();
+    }
+    if (!map.value) {
+      console.error("Map is not initialized yet.");
+      return;
+    }
+
+    //clear existing data
+    fetchedIds.clear();
+    markerClusterGroup.value?.clearLayers();
+    heatmapPoints.value = [];
+    if (heatmapLayer.value && heatmapLayer.value._map) {
+      heatmapLayer.value.setLatLngs([]);
+    }
+
+    const baseUrl = `https://maritime-encounters.dh.gu.se/api/resources/search/`;
+
+    await fetchData(baseUrl, { page_size: 1000, ...newParams })
+      .then(() => {
+        console.log("full dataset fetch completed with new params.");
+        doneFetching.value = true;
+      })
+      .catch((err) => {
+        console.error("Error during fetching:", err);
+      });
+  }
+);
+
 watch(() => props.showConnections, (newVal) => {  //clear lines when showConnections is off
   if (!newVal && polylineLayer.value) {
     toRaw(polylineLayer.value)?.clearLayers();
@@ -288,23 +318,33 @@ watch(
       //show heatmap layer
       if (heatmapLayer.value) {
         if (map.value && !map.value.hasLayer(heatmapLayer.value)) {
-          toRaw(map.value)?.addLayer(toRaw(heatmapLayer.value));
+          map.value.addLayer(heatmapLayer.value);
         }
+        heatmapLayer.value.setLatLngs(heatmapPoints.value);
       }
       //hide marker clusters
-      if (map.value && markerClusterGroup.value && map.value.hasLayer(toRaw(markerClusterGroup.value))) {
-        toRaw(map.value)?.removeLayer(toRaw(markerClusterGroup.value));
+      if (
+        map.value &&
+        markerClusterGroup.value &&
+        map.value.hasLayer(markerClusterGroup.value)
+      ) {
+        map.value.removeLayer(markerClusterGroup.value);
       }
     } else {
       //hide heatmap layer
       if (heatmapLayer.value) {
-        if (map.value && map.value.hasLayer(toRaw(heatmapLayer.value))) {
-          toRaw(map.value)?.removeLayer(toRaw(heatmapLayer.value));
+        if (map.value && map.value.hasLayer(heatmapLayer.value)) {
+          map.value.removeLayer(heatmapLayer.value);
         }
       }
+
       //show marker clusters
-      if (map.value && markerClusterGroup.value && !map.value.hasLayer(toRaw(markerClusterGroup.value))) {
-        toRaw(map.value)?.addLayer(toRaw(markerClusterGroup.value));
+      if (
+        map.value &&
+        markerClusterGroup.value &&
+        !map.value.hasLayer(markerClusterGroup.value)
+      ) {
+        map.value.addLayer(markerClusterGroup.value);
       }
     }
   }
