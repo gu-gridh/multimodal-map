@@ -2,7 +2,7 @@
 import { watchEffect, ref, inject } from "vue";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
-import { inscriptionsStore } from "./settings/store";
+// import { inscriptionsStore } from "./settings/store";
 import type {
   Image, PanelMetadata, Language,
 } from "./types";

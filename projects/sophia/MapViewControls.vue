@@ -77,17 +77,16 @@
               class="search-box" />
             <div class="search-results" v-if="showSuggestions">
                 <!-- Rendering for surfaces -->
-              <template v-if="searchType === 'surfaces'">
-                <div v-for="(surface, index) in objectToArray(searchResults)" :key="index"
-                :class="['search-result-item', { selected: searchId === surface.id }]" 
-                @click="handleSurfaceClick(surface)">
-                  {{ surface?.title }}
-                </div>
-              </template>
+                <template v-if="searchType === 'surfaces'">
+                  <div v-for="(surface, index) in searchResults" :key="surface.id || index"
+                    :class="['search-result-item', { selected: searchId === surface?.id }]" 
+                    @click="handleSurfaceClick(surface)">
+                    {{ surface?.title }}
+                  </div>
+                </template>
               <!-- Rendering for inscriptions -->
               <template v-else-if="searchType === 'inscriptionobjects'">
-                <div v-for="feature in filteredInscription"
-                  :key="feature.properties ? feature.properties.Nr : 'no-place'" 
+                <div v-for="feature in filteredInscription" :key="feature.id || index"
                   :class="['search-result-item', { selected: searchId === feature.id }]" 
                   @click="handleInscriptionClick(feature)">
                   {{ feature.displayText }}
@@ -97,7 +96,6 @@
           </div>
         </div>
       <!-- </div> -->
-
       <!-- if the markers are not loaded show the loader -->
       <!-- <div v-else>
         <div alt="Loading..." class="loading-svg" />
@@ -201,8 +199,10 @@ const shouldShowReset = computed(() => {
 });
 
 
-const setSearchType = (type: string) => {
+const setSearchType = (type: string) => { //change search type
   searchType.value = type;
+  searchResults.value = []; //reset search results
+  searchQuery.value = ''; //reset the search query
   handleSearch();
 };
 
@@ -227,8 +227,8 @@ function resetAllExcept(exceptModel) { //reset the other dropdowns to all when a
 }
 
 const filteredInscription = computed(() => {
-  if (searchResults.value && Array.isArray(searchResults.value.results)) {
-    return searchResults.value.results.map(result => {
+  if (Array.isArray(searchResults.value)) {
+    return searchResults.value.map(result => {
       if (result && typeof result === 'object') {
         const formattedTitle = result.title ? ` (${result.title})` : '';
         return {
@@ -242,10 +242,6 @@ const filteredInscription = computed(() => {
   }
   return [];
 });
-
-const objectToArray = (obj) => {
-  return obj ? Object.keys(obj).map(key => obj[key]) : [];
-};
 
 onMounted(async () => {
   await fetchDataAndPopulateRef("language", LANGUAGE);
@@ -322,17 +318,18 @@ const fetchData = async (url: string) => {
 
 //fetch inscriptions
 const fetchInscriptions = _debounce(async (query) => {
-  let apiUrl;
   if (searchType.value === 'inscriptionobjects') {
-    apiUrl = `https://saintsophia.dh.gu.se/api/inscriptions/inscription-string/?str=${encodeURIComponent(query)}`
-  }
-  try {
-    const response = await fetch(apiUrl);
-    const data = await response.json();
-    searchResults.value = data ? data : [];
-  } catch (error) {
-    console.error('Error fetching search results:', error);
-    searchResults.value = [];
+    const apiUrl = `https://saintsophia.dh.gu.se/api/inscriptions/inscription-string/?str=${encodeURIComponent(query)}`;
+    try {
+      const response = await fetch(apiUrl);
+      const data = await response.json();
+      if (searchType.value === 'inscriptionobjects') {
+        searchResults.value = data && data.results ? data.results : [];
+      }
+      } catch (error) {
+      console.error('Error fetching search results:', error);
+      searchResults.value = [];
+    }
   }
 }, 500);
 
@@ -341,12 +338,11 @@ async function fetchSurfaces() {
   const apiUrl = `https://saintsophia.dh.gu.se/api/inscriptions/panel-string/?str=${encodeURIComponent(searchQuery.value)}`;
   try {
     const response = await fetch(apiUrl);
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
     const data = await response.json();
-    searchResults.value = data.results;
-  } catch (error) {
+    if (searchType.value === 'surfaces') {
+      searchResults.value = data && data.results ? data.results : [];
+    }
+    } catch (error) {
     console.error('Error fetching:', error);
     searchResults.value = [];
   }
@@ -496,9 +492,9 @@ const handleClickOutside = (event: MouseEvent) => { //hide suggestions when clic
   cursor: pointer;
 }
 
-/* .search-result-item:hover {
+.search-result-item:hover {
   background-color: rgba(240, 240, 240, 1.0) !important;
-} */
+}
 
 .toggle-buttons button {
   font-weight: 400;
@@ -719,6 +715,7 @@ const handleClickOutside = (event: MouseEvent) => { //hide suggestions when clic
 }
 
 .search-result-item.selected {
-  background-color: rgba(240, 240, 240, 1.0) !important;
+  background-color: rgb(180, 100, 100) !important;
+  color: white;
 }
 </style>
