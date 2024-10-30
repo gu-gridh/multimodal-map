@@ -409,7 +409,7 @@ function handleSurfaceClick(surface) {
   selectedSurface.value = surface;
   selectedInscription.value = null;
   searchId.value = surface.id;
-  panelId.value = surface.id;
+  panelId.value = surface.id; //set the store value
   inscriptionId.value = null;
   showSuggestions.value = false;
   searchQuery.value = '';
@@ -419,7 +419,7 @@ function handleInscriptionClick(feature) {
   selectedInscription.value = feature;
   selectedSurface.value = null;
   searchId.value = feature.id;
-  inscriptionId.value = feature.id;
+  inscriptionId.value = feature.id; //set the store value
   panelId.value = null;
   showSuggestions.value = false;
   searchQuery.value = '';
