@@ -607,7 +607,7 @@ pointer-events: none;
 border-style:dotted;
 border-color:rgb(220, 215, 210); */
 width:100%;
-background: linear-gradient(0deg, rgba(0, 0, 0, 0.8)0%, rgba(0, 0, 0, 0.2)50%, rgba(0, 0, 0, 0)100%) !important;
+background: linear-gradient(0deg, rgba(0, 0, 0, 0.8)0%, rgba(0, 0, 0, 0.2)30%, rgba(0, 0, 0, 0)50%) !important;
 }
 
 .gallery-filters-padding{

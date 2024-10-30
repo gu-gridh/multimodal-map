@@ -433,7 +433,7 @@ export default {
 
 .gallery__item img {
   display: block;
-  transition: all 0.2s ease-in-out;
+  transition: all 0.1s ease-in-out;
 }
 
 
@@ -444,7 +444,7 @@ export default {
 }
 
 .gallery__item:hover .item-info {
-  background: linear-gradient(0deg, rgba(0, 0, 0, 0.7) 0px, rgba(0, 0, 0, 0)30%) !important;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.3) 0px, rgba(0, 0, 0, 0)30%) !important;
 }
 
 .gallery__item .cut-off {
