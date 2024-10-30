@@ -237,7 +237,7 @@ overflow:hidden;
   #app .main-title {
     font-size: 6.5em!important;
     font-weight: 400!important;
-    margin-top: -30px!important;
+    margin-top: -20px!important;
   }
 
   .placecard {
@@ -249,6 +249,14 @@ overflow:hidden;
 
   .close-card-button{
     margin-top:60px;
+  }
+
+  .placecard-top {
+    height: 65% !important;
+  }
+  
+  .placecard-bottom {
+    height: 35% !important;
   }
 
 

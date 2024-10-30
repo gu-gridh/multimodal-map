@@ -19,7 +19,7 @@
               </div>
             </div>
             <div class="row-1" style="display:flex; flex-direction: row;">
-              <div class="tag-section" style="margin-right:10px;">
+              <div class="tag-section tag-section-left" style="">
                 <div class="section-title">{{ $t('textualgenre') }}</div>
                 <div title="Narrow the result to a certain language group" class="broad-controls">
                   <Dropdown v-model="textualModel" :categories="TEXTUAL" :limit="1" styleType="dropdown" class="my-2"
@@ -507,6 +507,10 @@ onUnmounted(() => {
 
 }
 
+#app .tag-section-left{
+    margin-right:10px;
+  }
+
 #app .tag-section .broad-controls {
   font-size: 0.9em;
 }
@@ -726,6 +730,10 @@ onUnmounted(() => {
 
   .margin-5 {
     margin-left: 0px;
+  }
+
+  #app .tag-section-left{
+    margin-right:0px;
   }
 }
 

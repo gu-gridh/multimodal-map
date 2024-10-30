@@ -1,11 +1,11 @@
 <template>
   <div class="map-container h-full">
     <div class="left-pane">
+      <div class="mobile-ui-drag"></div>
       <div class="left-pane-layer">
+      
         <div class="left-pane-content">
-          <div class="mobile-ui-drag">
-          
-          </div>
+         
           <slot name="title">
             <!--<div v-if="config" class="px-8 py-6 bg-white rounded-t-lg shadow-lg">-->
             <div v-if="config" class="py-1">
@@ -331,7 +331,8 @@ border-width:0.5px 0.5px 0px 0.5px;
 border-style:solid;
 margin-left:auto;
 margin-right:auto;
-margin-bottom:25px;
+margin-bottom:5px;
+margin-top:3px;
 box-shadow: inset 0px 2px 2px 0 rgba(0, 0, 0, 0.2),
     0 0px 0px 0 rgba(0, 0, 0, 0.19);
 }
