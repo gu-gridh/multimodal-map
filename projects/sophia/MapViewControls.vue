@@ -188,61 +188,6 @@ const PICTORIAL = ref<Record<string, string>>({});
 const TEXTUAL = ref<Record<string, string>>({});
 const searchInput = ref(null);
 
-const handleScroll = () => { //infinite scroll for search results
-  if (!hasMoreResults.value || isLoadingMore.value) return;
-  const container = searchResultsContainer.value;
-  if (container) {
-    const scrollThreshold = 50; //pixels from the bottom
-    const { scrollTop, scrollHeight, clientHeight } = container;
-    if (scrollHeight - scrollTop - clientHeight <= scrollThreshold) {
-      isLoadingMore.value = true;
-      if (searchType.value === 'surfaces') {
-        fetchSurfaces(currentOffset.value);
-      } else if (searchType.value === 'inscriptionobjects') {
-        fetchInscriptions(searchQuery.value, currentOffset.value);
-      }
-    }
-  }
-};
-
-const shouldShowReset = computed(() => {  //check if any of the model values have changed
-  const categoryCondition = selectedCategory.value !== null;
-  const alignmentCondition= alignmentModel.value !== null;
-  const conditionCondition = conditionModel.value !== null;
-  const languageCondition = JSON.stringify(languageModel.value) !== JSON.stringify(["all"]);
-  const pictorialCondition = JSON.stringify(pictorialModel.value) !== JSON.stringify(["all"]);
-  const textualCondition = JSON.stringify(textualModel.value) !== JSON.stringify(["all"]);
-  const writingCondition = JSON.stringify(writingModel.value) !== JSON.stringify(["all"]);
-  return categoryCondition || languageCondition || pictorialCondition || textualCondition || writingCondition || alignmentCondition || conditionCondition;
-});
-
-const setSearchType = (type: string) => { //change search type
-  searchType.value = type;
-  searchResults.value = []; //reset search results
-  searchQuery.value = ''; //reset the search query
-  handleSearch();
-};
-
-const handleSearchBoxFocus = () => {
-  if (firstSearchBoxClick.value && searchType.value === 'surfaces') {
-    fetchSurfaces();
-    firstSearchBoxClick.value = false; // Set to false after first fetch
-  }
-  showSuggestions.value = true; 
-};
-
-function resetAllExcept(exceptModel) { //reset the other dropdowns to all when a selection is made
-  categories.value = ["all"];
-  lastClickedCategory.value = '';
-  selectedCategory.value = null;
-  alignmentModel.value = null;
-  conditionModel.value = null;
-  if (exceptModel !== "languageModel") languageModel.value = ["all"];
-  if (exceptModel !== "pictorialModel") pictorialModel.value = ["all"];
-  if (exceptModel !== "textualModel") textualModel.value = ["all"];
-  if (exceptModel !== "writingModel") writingModel.value = ["all"];
-}
-
 const filteredInscription = computed(() => {
   if (Array.isArray(searchResults.value)) {
     return searchResults.value.map(result => {
@@ -260,27 +205,60 @@ const filteredInscription = computed(() => {
   return [];
 });
 
-onMounted(async () => {
-  await fetchDataAndPopulateRef("language", LANGUAGE);
-  await fetchDataAndPopulateRef("writingsystem", WRITING);
-  await fetchDataAndPopulateRef("tag", PICTORIAL);
-  await fetchDataAndPopulateRef("genre", TEXTUAL);
-  document.addEventListener('click', handleClickOutside);
+const shouldShowReset = computed(() => {  //check if any of the model values have changed
+  const categoryCondition = selectedCategory.value !== null;
+  const alignmentCondition= alignmentModel.value !== null;
+  const conditionCondition = conditionModel.value !== null;
+  const languageCondition = JSON.stringify(languageModel.value) !== JSON.stringify(["all"]);
+  const pictorialCondition = JSON.stringify(pictorialModel.value) !== JSON.stringify(["all"]);
+  const textualCondition = JSON.stringify(textualModel.value) !== JSON.stringify(["all"]);
+  const writingCondition = JSON.stringify(writingModel.value) !== JSON.stringify(["all"]);
+  return categoryCondition || languageCondition || pictorialCondition || textualCondition || writingCondition || alignmentCondition || conditionCondition;
 });
 
-async function fetchDataAndPopulateRef<T>(type: string, refToPopulate: any) {
-  try {
-    const data = await sophiaClient.listAll<T>(type);
-    data.forEach((result: any) => {
-      if (result.published) {
-        const textKey = i18n.global.locale === 'uk' ? 'text_ukr' : 'text';
-        refToPopulate.value[result.id] = result[textKey];
+const handleScroll = () => { //infinite scroll for search results
+  if (!hasMoreResults.value || isLoadingMore.value) return;
+  const container = searchResultsContainer.value;
+  if (container) {
+    const scrollThreshold = 50; //pixels from the bottom
+    const { scrollTop, scrollHeight, clientHeight } = container;
+    if (scrollHeight - scrollTop - clientHeight <= scrollThreshold) {
+      isLoadingMore.value = true;
+      if (searchType.value === 'surfaces') {
+        fetchSurfaces(currentOffset.value);
+      } else if (searchType.value === 'inscriptionobjects') {
+        fetchInscriptions(searchQuery.value, currentOffset.value);
       }
-    });
-  } catch (error) {
-    console.error(`Error fetching data for type ${type}:`, error);
+    }
   }
-}
+};
+
+const setSearchType = (type: string) => { //change search type
+  searchType.value = type;
+  searchResults.value = []; //reset search results
+  searchQuery.value = ''; //reset the search query
+  handleSearch();
+};
+
+const handleSearchBoxFocus = () => {
+  if (firstSearchBoxClick.value && searchType.value === 'surfaces') {
+    fetchSurfaces();
+    firstSearchBoxClick.value = false; // Set to false after first fetch
+  }
+  showSuggestions.value = true; 
+};
+
+const handleSearch = () => {
+  showSuggestions.value = true;
+  currentOffset.value = 0;
+  hasMoreResults.value = true;
+  isLoadingMore.value = false;
+  if (searchType.value === 'surfaces') {
+    fetchSurfaces();
+  } else if (searchType.value === 'inscriptionobjects') {
+    fetchInscriptions(searchQuery.value);
+  }
+};
 
 const handleCategoryClick = (category: string) => {
   alignmentModel.value = null;
@@ -309,17 +287,11 @@ const handleCategoryClick = (category: string) => {
   }
 };
 
-function handleSurfaceClick(surface) {
-  searchId.value = searchId.value === surface.id ? null : surface.id;
-  panelId.value = searchId.value;
-  inscriptionId.value = null;
-}
-  
-function handleInscriptionClick(feature) {
-  searchId.value = searchId.value === feature.id ? null : feature.id;
-  inscriptionId.value = searchId.value;
-  panelId.value = null;
-}
+const handleClickOutside = (event: MouseEvent) => { //hide suggestions when clicking outside
+  if (searchSection.value && !searchSection.value.contains(event.target as Node)) {
+    showSuggestions.value = false;
+  }
+};
 
 //fetch inscriptions
 const fetchInscriptions = async (query, offset = 0) => {
@@ -373,25 +345,43 @@ async function fetchSurfaces(offset = 0) {
   }
 }
 
-const handleSearch = () => {
-  showSuggestions.value = true;
-  currentOffset.value = 0;
-  hasMoreResults.value = true;
-  isLoadingMore.value = false;
-  if (searchType.value === 'surfaces') {
-    fetchSurfaces();
-  } else if (searchType.value === 'inscriptionobjects') {
-    fetchInscriptions(searchQuery.value);
-  }
-};
+function resetAllExcept(exceptModel) { //reset the other dropdowns to all when a selection is made
+  categories.value = ["all"];
+  lastClickedCategory.value = '';
+  selectedCategory.value = null;
+  alignmentModel.value = null;
+  conditionModel.value = null;
+  if (exceptModel !== "languageModel") languageModel.value = ["all"];
+  if (exceptModel !== "pictorialModel") pictorialModel.value = ["all"];
+  if (exceptModel !== "textualModel") textualModel.value = ["all"];
+  if (exceptModel !== "writingModel") writingModel.value = ["all"];
+}
 
-watch(() => i18n.global.locale, (newLocale) => {
-  fetchDataAndPopulateRef('language', LANGUAGE);
-  fetchDataAndPopulateRef("language", LANGUAGE);
-  fetchDataAndPopulateRef("writingsystem", WRITING);
-  fetchDataAndPopulateRef("tag", PICTORIAL);
-  fetchDataAndPopulateRef("genre", TEXTUAL);
-});
+async function fetchDataAndPopulateRef<T>(type: string, refToPopulate: any) {
+  try {
+    const data = await sophiaClient.listAll<T>(type);
+    data.forEach((result: any) => {
+      if (result.published) {
+        const textKey = i18n.global.locale === 'uk' ? 'text_ukr' : 'text';
+        refToPopulate.value[result.id] = result[textKey];
+      }
+    });
+  } catch (error) {
+    console.error(`Error fetching data for type ${type}:`, error);
+  }
+}
+
+function handleSurfaceClick(surface) {
+  searchId.value = searchId.value === surface.id ? null : surface.id;
+  panelId.value = searchId.value;
+  inscriptionId.value = null;
+}
+  
+function handleInscriptionClick(feature) {
+  searchId.value = searchId.value === feature.id ? null : feature.id;
+  inscriptionId.value = searchId.value;
+  panelId.value = null;
+}
 
 function clearAll() {
   const resetbutton = document.getElementById('resetfilters');
@@ -407,15 +397,25 @@ function clearAll() {
   conditionModel.value = null;
 }
 
+watch(() => i18n.global.locale, (newLocale) => {
+  fetchDataAndPopulateRef('language', LANGUAGE);
+  fetchDataAndPopulateRef("language", LANGUAGE);
+  fetchDataAndPopulateRef("writingsystem", WRITING);
+  fetchDataAndPopulateRef("tag", PICTORIAL);
+  fetchDataAndPopulateRef("genre", TEXTUAL);
+});
+
+onMounted(async () => {
+  await fetchDataAndPopulateRef("language", LANGUAGE);
+  await fetchDataAndPopulateRef("writingsystem", WRITING);
+  await fetchDataAndPopulateRef("tag", PICTORIAL);
+  await fetchDataAndPopulateRef("genre", TEXTUAL);
+  document.addEventListener('click', handleClickOutside);
+});
+
 onUnmounted(() => {
   document.removeEventListener('click', handleClickOutside);
 });
-
-const handleClickOutside = (event: MouseEvent) => { //hide suggestions when clicking outside
-  if (searchSection.value && !searchSection.value.contains(event.target as Node)) {
-    showSuggestions.value = false;
-  }
-};
 </script>
 
 <style>
@@ -433,23 +433,6 @@ const handleClickOutside = (event: MouseEvent) => { //hide suggestions when clic
   justify-content: flex-start;
   width: 100%;
 }
-
-/* .loading-svg {
-  width: 100%;
-  height: 200px;
-  background: url("/90-ring-with-bg.svg");
-  background-size: 60px;
-  background-repeat: no-repeat;
-  background-position: 50% 50%;
-  display: block;
-  margin: auto;
-  transition: all 0.4s;
-}
-
-.loading-svg:hover {
-  height: 240px;
-  transform: scale(1.5);
-} */
 
 .justify {
   display: flex;
@@ -653,7 +636,6 @@ const handleClickOutside = (event: MouseEvent) => { //hide suggestions when clic
 }
 
 @media screen and (max-width: 900px) {
-
   #app .left-pane {
     background: url("images/gradient.png");
     background-size: contain;
@@ -664,7 +646,6 @@ const handleClickOutside = (event: MouseEvent) => { //hide suggestions when clic
 
   #app .broad-controls {
     width: 100%;
-
   }
 
   #app .section-title {
@@ -687,14 +668,11 @@ const handleClickOutside = (event: MouseEvent) => { //hide suggestions when clic
     margin-top: 10px;
   }
 
-
   .search-section {
     width: 100%;
-
   }
 
   #app .control-group {
-
     display: flex;
     flex-direction: row;
   }
