@@ -75,7 +75,7 @@
               @focus="handleSearchBoxFocus"
               :placeholder="searchType === 'surfaces' ? $t('searchsurfacesplaceholder') : $t('searchinscriptionsplaceholder')"
               class="search-box" />
-            <div class="search-results" v-if="showSuggestions">
+            <div class="search-results" v-if="showSuggestions" ref="searchResultsContainer"  @scroll="handleScroll">
                 <!-- Rendering for surfaces -->
                 <template v-if="searchType === 'surfaces'">
                   <div v-for="(surface, index) in searchResults" :key="surface.id || index"
@@ -151,18 +151,18 @@ import Dropdown from "./components/DropdownComponent.vue";
 import CategoryButton from "@/components/input/CategoryButtonList.vue";
 import { storeToRefs } from "pinia";
 import { inscriptionsStore } from "./settings/store";
-// import { mapStore } from "@/stores/store";
 import type { InscriptionsProject } from "./types";
 import { SophiaClient } from "@/assets/saintsophia";
-// import apiConfig from "./settings/apiConfig"
 import i18n from '../../src/translations/sophia';
+// import { mapStore } from "@/stores/store";
+// import apiConfig from "./settings/apiConfig"
+// import _debounce from 'lodash/debounce';
 
 const config = inject<InscriptionsProject>("config");
 const searchId = ref(null); //id of the selected item in the search
 const sophiaClient = new SophiaClient("inscriptions"); // Initialize SophiaClient
 const store = inscriptionsStore();
 const { categories, languageModel, writingModel, pictorialModel, selectedCategory, textualModel, areMapPointsLoaded, alignmentModel, conditionModel, panelId, inscriptionId} = storeToRefs(inscriptionsStore());
-// Create a ref for last clicked category
 const lastClickedCategory = ref('');
 
 //initialize variables for data section
@@ -171,23 +171,41 @@ const totalPlans = ref(0);
 const totalThreed = ref(0);
 const hiddenPanels = ref(0);
 const currentPanelCount = ref(0);
-const searchType = ref('inscriptionobjects'); // Default to 'surfaces' 
+const searchType = ref('inscriptionobjects'); //default to 'surfaces' 
 const firstSearchBoxClick = ref(true);
 const searchQuery = ref('');
 const searchResults = ref([]);
+const currentOffset = ref(0);
+const limit = 25;
+const hasMoreResults = ref(true);
+const isLoadingMore = ref(false);
+const searchResultsContainer = ref(null);
 const showSuggestions = ref(false);
 const searchSection = ref<HTMLElement | null>(null);
 const LANGUAGE = ref<Record<string, string>>({});
 const WRITING = ref<Record<string, string>>({});
 const PICTORIAL = ref<Record<string, string>>({});
 const TEXTUAL = ref<Record<string, string>>({});
-import _debounce from 'lodash/debounce';
 const searchInput = ref(null);
 
-// const baseURL = `${apiConfig.PANEL}?page_size=500`;
+const handleScroll = () => { //infinite scroll for search results
+  if (!hasMoreResults.value || isLoadingMore.value) return;
+  const container = searchResultsContainer.value;
+  if (container) {
+    const scrollThreshold = 50; //pixels from the bottom
+    const { scrollTop, scrollHeight, clientHeight } = container;
+    if (scrollHeight - scrollTop - clientHeight <= scrollThreshold) {
+      isLoadingMore.value = true;
+      if (searchType.value === 'surfaces') {
+        fetchSurfaces(currentOffset.value);
+      } else if (searchType.value === 'inscriptionobjects') {
+        fetchInscriptions(searchQuery.value, currentOffset.value);
+      }
+    }
+  }
+};
 
-const shouldShowReset = computed(() => {
-  //check if any of the model values have changed
+const shouldShowReset = computed(() => {  //check if any of the model values have changed
   const categoryCondition = selectedCategory.value !== null;
   const alignmentCondition= alignmentModel.value !== null;
   const conditionCondition = conditionModel.value !== null;
@@ -197,7 +215,6 @@ const shouldShowReset = computed(() => {
   const writingCondition = JSON.stringify(writingModel.value) !== JSON.stringify(["all"]);
   return categoryCondition || languageCondition || pictorialCondition || textualCondition || writingCondition || alignmentCondition || conditionCondition;
 });
-
 
 const setSearchType = (type: string) => { //change search type
   searchType.value = type;
@@ -304,55 +321,63 @@ function handleInscriptionClick(feature) {
   panelId.value = null;
 }
 
-//Fetch to return count of each type based on the tagParams
-const fetchData = async (url: string) => {
-  const response = await fetch(url);
-  if (!response.ok) {
-    console.error(`Failed to fetch data: ${response.status}`);
-    return;
-  }
-  const data = await response.json();
-  currentPanelCount.value = data.shown_panels;
-  // totalPhotographs.value = data.photographs;
-  // totalPlans.value = data.drawing;
-  hiddenPanels.value = data.hidden_panels;
-  // totalThreed.value = data.objects_3d;
-};
-
 //fetch inscriptions
-const fetchInscriptions = _debounce(async (query) => {
+const fetchInscriptions = async (query, offset = 0) => {
   if (searchType.value === 'inscriptionobjects') {
-    const apiUrl = `https://saintsophia.dh.gu.se/api/inscriptions/inscription-string/?str=${encodeURIComponent(query)}`;
+    const apiUrl = `https://saintsophia.dh.gu.se/api/inscriptions/inscription-string/?str=${encodeURIComponent(query)}&offset=${offset}`;
     try {
       const response = await fetch(apiUrl);
       const data = await response.json();
+
       if (searchType.value === 'inscriptionobjects') {
-        searchResults.value = data && data.results ? data.results : [];
+        if (offset === 0) {
+          searchResults.value = data.results || [];
+        } else {
+          searchResults.value = [...searchResults.value, ...(data.results || [])];
+        }
+
+        currentOffset.value = offset + limit;
+        hasMoreResults.value = !!data.next; //check if there's a next page
       }
-      } catch (error) {
+    } catch (error) {
       console.error('Error fetching search results:', error);
       searchResults.value = [];
+    } finally {
+      isLoadingMore.value = false;
     }
   }
-}, 500);
+};
 
 //fetch surfaces
-async function fetchSurfaces() {
-  const apiUrl = `https://saintsophia.dh.gu.se/api/inscriptions/panel-string/?str=${encodeURIComponent(searchQuery.value)}`;
+async function fetchSurfaces(offset = 0) {
+  const apiUrl = `https://saintsophia.dh.gu.se/api/inscriptions/panel-string/?str=${encodeURIComponent(searchQuery.value)}&offset=${offset}`;
   try {
     const response = await fetch(apiUrl);
     const data = await response.json();
+
     if (searchType.value === 'surfaces') {
-      searchResults.value = data && data.results ? data.results : [];
+      if (offset === 0) {
+        searchResults.value = data.results || [];
+      } else {
+        searchResults.value = [...searchResults.value, ...(data.results || [])];
+      }
+
+      currentOffset.value = offset + limit;
+      hasMoreResults.value = !!data.next; //check if there's a next page
     }
-    } catch (error) {
+  } catch (error) {
     console.error('Error fetching:', error);
     searchResults.value = [];
+  } finally {
+    isLoadingMore.value = false;
   }
 }
 
 const handleSearch = () => {
   showSuggestions.value = true;
+  currentOffset.value = 0;
+  hasMoreResults.value = true;
+  isLoadingMore.value = false;
   if (searchType.value === 'surfaces') {
     fetchSurfaces();
   } else if (searchType.value === 'inscriptionobjects') {
@@ -534,7 +559,7 @@ const handleClickOutside = (event: MouseEvent) => { //hide suggestions when clic
   border-radius: 0px 0px 8px 8px;
   margin-top: 6px;
   margin-left: -12px;
-  max-height: 140px;
+  max-height: 200px;
   overflow-y: auto;
   transition: all 0.4s;
   position: absolute;
