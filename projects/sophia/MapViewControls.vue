@@ -161,7 +161,7 @@ const config = inject<InscriptionsProject>("config");
 const searchId = ref(null); //id of the selected item in the search
 const sophiaClient = new SophiaClient("inscriptions"); // Initialize SophiaClient
 const store = inscriptionsStore();
-const { categories, languageModel, writingModel, pictorialModel, selectedCategory, textualModel, areMapPointsLoaded, alignmentModel, conditionModel, panelId } = storeToRefs(inscriptionsStore());
+const { categories, languageModel, writingModel, pictorialModel, selectedCategory, textualModel, areMapPointsLoaded, alignmentModel, conditionModel, panelId, inscriptionId} = storeToRefs(inscriptionsStore());
 // Create a ref for last clicked category
 const lastClickedCategory = ref('');
 
@@ -295,10 +295,13 @@ const handleCategoryClick = (category: string) => {
 function handleSurfaceClick(surface) {
   searchId.value = searchId.value === surface.id ? null : surface.id;
   panelId.value = searchId.value;
+  inscriptionId.value = null;
 }
   
 function handleInscriptionClick(feature) {
   searchId.value = searchId.value === feature.id ? null : feature.id;
+  inscriptionId.value = searchId.value;
+  panelId.value = null;
 }
 
 //Fetch to return count of each type based on the tagParams

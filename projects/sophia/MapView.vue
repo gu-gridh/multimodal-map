@@ -18,7 +18,7 @@ import { onMounted, watch } from "vue";
 import { nextTick } from "vue";
 import Title from "./MapViewTitle.vue";
 
-const { selectedCategory, writingModel, languageModel, pictorialModel, textualModel, alignmentModel, conditionModel, panelId } = storeToRefs(inscriptionsStore());
+const { selectedCategory, writingModel, languageModel, pictorialModel, textualModel, alignmentModel, conditionModel, panelId, inscriptionId } = storeToRefs(inscriptionsStore());
 
 const store = mapStore();
 const inscriptions = inscriptionsStore();  //get the instance of inscriptionsStore
@@ -78,6 +78,15 @@ watch(selectedCategory, (newValue, oldValue) => {
   }
 });
 
+// if inscriptionId is not null, toggle to the inscriptions view
+watch(inscriptionId, (newValue, oldValue) => {
+  if (newValue !== null && newValue !== undefined) {
+    showPlan.value = false;
+    showGalleryInscriptions.value = true;
+    showGallery.value = false;
+  }
+});
+
 watch(panelId, (newValue, oldValue) => {
   if (newValue !== null && newValue !== undefined) {
     showPlan.value = false;
@@ -128,8 +137,9 @@ const tagParams = computed(() => {
   const alignment = alignmentModel.value;
   const condition = conditionModel.value;
   const selectedCategoryValue = selectedCategory.value;
+  const id = inscriptionId.value;
 
-  const initialParams = { genre, tags, writing_system, language };
+  const initialParams = { genre, tags, writing_system, language};
 
   // Remove parameters that are set to "all"
   const cleanedParams = Object.keys(initialParams)
@@ -156,6 +166,12 @@ const tagParams = computed(() => {
     (params as any)['condition'] = condition; 
   } else {
     delete (params as any)['condition']; 
+  }
+
+  if (id !== null) {
+    (params as any)['id'] = id; 
+  } else {
+    delete (params as any)['id']; 
   }
 
   return params;
