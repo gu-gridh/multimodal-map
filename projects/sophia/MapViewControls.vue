@@ -3,103 +3,115 @@
   <div class="filtercontrolwidgets">
 
     <div :class="{ 'non-interactive': !areMapPointsLoaded }">
-      <!-- <div v-if="areMapPointsLoaded"> -->
+      <div class="filtercontrolwidgets">
+        <!-- This organises the three top dropdown columns -->
+        <div class="control-organisation">
+          <div class="column-1" style="width:auto;">
+            <div class="tag-section">
+              <div class="section-title">{{ $t('typeofinscription') }}</div>
+              <div class="broad-controls">
+                <CategoryButton v-model="categories" :categories="{
+                  textualgraffiti: $t('textualgraffiti'),
+                  pictorialgraffiti: $t('pictorialgraffiti'),
+                  composite: $t('composite')
+                }" :limit="1" class="my-2" title="Pick an inscription type"
+                  @click="handleCategoryClick" style="padding-right:0px;" />
+              </div>
+            </div>
+            <div class="row-1" style="display:flex; flex-direction: row;">
+              <div class="tag-section" style="margin-right:10px;">
+                <div class="section-title">{{ $t('textualgenre') }}</div>
+                <div title="Narrow the result to a certain language group" class="broad-controls">
+                  <Dropdown v-model="textualModel" :categories="TEXTUAL" :limit="1" styleType="dropdown" class="my-2"
+                    type="language" @change="resetAllExcept('textualModel')" style="padding-right:30px;" />
+                </div>
+              </div>
 
-        <div class="filtercontrolwidgets">
-          <!-- This organises the three top dropdown columns -->
-          <div class="control-organisation">
-            <div class="column-1" style="width:auto;">
               <div class="tag-section">
-                <div class="section-title">{{ $t('typeofinscription') }}</div>
-                <div class="broad-controls">
-                  <CategoryButton v-model="categories" :categories="{
-                    textualgraffiti: $t('textualgraffiti'),
-                    pictorialgraffiti: $t('pictorialgraffiti'),
-                    composite: $t('composite')}" :limit="1" class="my-2" title="Pick an inscription type"
-                    @click="handleCategoryClick" style="padding-right:0px;" />
-                </div>
-              </div>
-              <div class="row-1" style="display:flex; flex-direction: row;">
-                <div class="tag-section" style="margin-right:10px;">
-                  <div class="section-title">{{ $t('textualgenre') }}</div>
-                  <div title="Narrow the result to a certain language group" class="broad-controls">
-                    <Dropdown v-model="textualModel" :categories="TEXTUAL" :limit="1" styleType="dropdown" class="my-2"
-                      type="language" @change="resetAllExcept('textualModel')" style="padding-right:30px;" />
-                  </div>
-                </div>
-
-                <div class="tag-section">
-                  <div class="section-title">{{ $t('pictorialdescription') }}</div>
-                  <div title="Narrow the result to a certain language group" class="broad-controls">
-                    <Dropdown v-model="pictorialModel" :categories="PICTORIAL" :limit="1" styleType="dropdown"
-                      class="my-2" @change="resetAllExcept('pictorialModel')" style="padding-right:30px;" />
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="column-2 vertical-divider"
-              style="width:1px; height:110px; margin-top:7px; border-width:0 1px 0 0; border-style:dotted; border-color:var(--theme-3);">
-            </div>
-
-            <div class="column-3">
-              <div class="control-group">
-                <div class="tag-section">
-                  <div class="section-title">{{ $t('writingsystem') }}</div>
-                  <div title="Narrow the result to a certain language group" class="broad-controls">
-                    <Dropdown v-model="writingModel" :categories="WRITING" :limit="1" styleType="dropdown" class="my-2"
-                      @change="resetAllExcept('writingModel')" style="padding-right:30px;" />
-                  </div>
-                </div>
-                <div class="tag-section">
-                  <div class="section-title">{{ $t('language') }}</div>
-                  <div title="Narrow the result to a certain language group" class="broad-controls">
-                    <Dropdown v-model="languageModel" :categories="LANGUAGE" :limit="1" styleType="dropdown"
-                      class="my-2" type="language" @change="resetAllExcept('languageModel')"
-                      style="padding-right:30px;" />
-                  </div>
+                <div class="section-title">{{ $t('pictorialdescription') }}</div>
+                <div title="Narrow the result to a certain language group" class="broad-controls">
+                  <Dropdown v-model="pictorialModel" :categories="PICTORIAL" :limit="1" styleType="dropdown"
+                    class="my-2" @change="resetAllExcept('pictorialModel')" style="padding-right:30px;" />
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- <div class="section-title">{{ $t('searchtitle') }}</div> -->
-          <div class="search-section" ref="searchSection">
-            <div class="toggle-buttons" style="margin-top: 10px">
-              <button style="" :class="{ active: searchType === 'inscriptionobjects' }"
-                @click="setSearchType('inscriptionobjects')">{{ $t('inscriptions') }}</button>
-              <button style="" :class="{ active: searchType === 'surfaces' }" @click="setSearchType('surfaces')">{{
-                $t('panels') }}</button>
-            </div>
-            <input ref="searchInput" type="text" v-model="searchQuery" @input="handleSearch"
-              @focus="handleSearchBoxFocus"
-              :placeholder="searchType === 'surfaces' ? $t('searchsurfacesplaceholder') : $t('searchinscriptionsplaceholder')"
-              class="search-box" />
-            <div class="search-results" v-if="showSuggestions" ref="searchResultsContainer"  @scroll="handleScroll">
-                <!-- Rendering for surfaces -->
-                <template v-if="searchType === 'surfaces'">
-                  <div v-for="(surface, index) in searchResults" :key="surface.id || index"
-                    :class="['search-result-item', { selected: searchId === surface?.id }]" 
-                    @click="handleSurfaceClick(surface)">
-                    {{ surface?.title }}
-                  </div>
-                </template>
-              <!-- Rendering for inscriptions -->
-              <template v-else-if="searchType === 'inscriptionobjects'">
-                <div v-for="feature in filteredInscription" :key="feature.id || index"
-                  :class="['search-result-item', { selected: searchId === feature.id }]" 
-                  @click="handleInscriptionClick(feature)">
-                  {{ feature.displayText }}
+          <div class="column-2 vertical-divider"
+            style="width:1px; height:110px; margin-top:7px; border-width:0 1px 0 0; border-style:dotted; border-color:var(--theme-3);">
+          </div>
+
+          <div class="column-3">
+            <div class="control-group">
+              <div class="tag-section">
+                <div class="section-title">{{ $t('writingsystem') }}</div>
+                <div title="Narrow the result to a certain language group" class="broad-controls">
+                  <Dropdown v-model="writingModel" :categories="WRITING" :limit="1" styleType="dropdown" class="my-2"
+                    @change="resetAllExcept('writingModel')" style="padding-right:30px;" />
                 </div>
-              </template>
+              </div>
+              <div class="tag-section">
+                <div class="section-title">{{ $t('language') }}</div>
+                <div title="Narrow the result to a certain language group" class="broad-controls">
+                  <Dropdown v-model="languageModel" :categories="LANGUAGE" :limit="1" styleType="dropdown" class="my-2"
+                    type="language" @change="resetAllExcept('languageModel')" style="padding-right:30px;" />
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      <!-- </div> -->
-      <!-- if the markers are not loaded show the loader -->
-      <!-- <div v-else>
-        <div alt="Loading..." class="loading-svg" />
-      </div> -->
+
+        <div class="search-section" ref="searchSection">
+          <div class="toggle-buttons" style="margin-top: 10px">
+            <button :class="{ active: searchType === 'inscriptionobjects' }"
+              @click="setSearchType('inscriptionobjects')">
+              {{ $t('inscriptions') }}
+            </button>
+            <button :class="{ active: searchType === 'surfaces' }" @click="setSearchType('surfaces')">
+              {{ $t('panels') }}
+            </button>
+          </div>
+
+          <div class="search-box-wrapper">
+            <!-- Selected item bubble -->
+            <div class="selected-item-bubble" v-if="selectedInscription || selectedSurface" ref="bubbleElement">
+              <span @click="clearSelection">
+                {{ selectedInscription ? selectedInscription.displayText : selectedSurface.title }}
+                <span class="remove-icon">&times;</span>
+              </span>
+            </div>
+
+            <!-- Input field -->
+            <input ref="searchInput" type="text" v-model="searchQuery" @input="handleSearch"
+              @focus="handleSearchBoxFocus"
+              :placeholder="searchType === 'surfaces' ? $t('searchsurfacesplaceholder') : $t('searchinscriptionsplaceholder')"
+              class="search-box"  
+              :style="{ paddingLeft: bubbleWidth + 'px' }"
+          </div>
+
+          <!-- Search results -->
+          <div class="search-results" v-if="showSuggestions" ref="searchResultsContainer" @scroll="handleScroll">
+            <!-- Rendering for surfaces -->
+            <template v-if="searchType === 'surfaces'">
+              <div v-for="(surface, index) in searchResults" :key="surface.id || index"
+                :class="['search-result-item', { selected: searchId === surface?.id }]"
+                @click="handleSurfaceClick(surface)">
+                {{ surface?.title }}
+              </div>
+            </template>
+
+            <!-- Rendering for inscriptions -->
+            <template v-else-if="searchType === 'inscriptionobjects'">
+              <div v-for="feature in filteredInscription" :key="feature.id || index"
+                :class="['search-result-item', { selected: searchId === feature.id }]"
+                @click="handleInscriptionClick(feature)">
+                {{ feature.displayText }}
+              </div>
+            </template>
+          </div>
+        </div>
+
+      </div>
     </div>
 
     <!-- Data Section -->
@@ -146,7 +158,7 @@
 </template>
 
 <script setup lang="ts">
-import { inject, ref, onMounted, onUnmounted, computed, watch } from "vue";
+import { inject, ref, onMounted, onUnmounted, computed, watch, nextTick, watchEffect} from "vue";
 import Dropdown from "./components/DropdownComponent.vue";
 import CategoryButton from "@/components/input/CategoryButtonList.vue";
 import { storeToRefs } from "pinia";
@@ -154,15 +166,12 @@ import { inscriptionsStore } from "./settings/store";
 import type { InscriptionsProject } from "./types";
 import { SophiaClient } from "@/assets/saintsophia";
 import i18n from '../../src/translations/sophia';
-// import { mapStore } from "@/stores/store";
-// import apiConfig from "./settings/apiConfig"
-// import _debounce from 'lodash/debounce';
 
 const config = inject<InscriptionsProject>("config");
 const searchId = ref(null); //id of the selected item in the search
 const sophiaClient = new SophiaClient("inscriptions"); // Initialize SophiaClient
 const store = inscriptionsStore();
-const { categories, languageModel, writingModel, pictorialModel, selectedCategory, textualModel, areMapPointsLoaded, alignmentModel, conditionModel, panelId, inscriptionId} = storeToRefs(inscriptionsStore());
+const { categories, languageModel, writingModel, pictorialModel, selectedCategory, textualModel, areMapPointsLoaded, alignmentModel, conditionModel, panelId, inscriptionId } = storeToRefs(inscriptionsStore());
 const lastClickedCategory = ref('');
 
 //initialize variables for data section
@@ -172,6 +181,10 @@ const totalThreed = ref(0);
 const hiddenPanels = ref(0);
 const currentPanelCount = ref(0);
 const searchType = ref('inscriptionobjects'); //default to 'surfaces' 
+const selectedInscription = ref(null); //from search results
+const selectedSurface = ref(null); //from search results
+const bubbleElement = ref(null);
+const bubbleWidth = ref(0);
 const firstSearchBoxClick = ref(true);
 const searchQuery = ref('');
 const searchResults = ref([]);
@@ -205,9 +218,22 @@ const filteredInscription = computed(() => {
   return [];
 });
 
+watchEffect(() => { //dynamically change the width of search input based on the bubble width
+  const hasSelectedItem = selectedInscription.value || selectedSurface.value;
+
+  nextTick(() => {
+    const bubbleEl = bubbleElement.value;
+    if (bubbleEl) {
+      bubbleWidth.value = bubbleEl.offsetWidth + 10; //extra space 
+    } else {
+      bubbleWidth.value = 0;
+    }
+  });
+});
+
 const shouldShowReset = computed(() => {  //check if any of the model values have changed
   const categoryCondition = selectedCategory.value !== null;
-  const alignmentCondition= alignmentModel.value !== null;
+  const alignmentCondition = alignmentModel.value !== null;
   const conditionCondition = conditionModel.value !== null;
   const languageCondition = JSON.stringify(languageModel.value) !== JSON.stringify(["all"]);
   const pictorialCondition = JSON.stringify(pictorialModel.value) !== JSON.stringify(["all"]);
@@ -245,7 +271,7 @@ const handleSearchBoxFocus = () => {
     fetchSurfaces();
     firstSearchBoxClick.value = false; // Set to false after first fetch
   }
-  showSuggestions.value = true; 
+  showSuggestions.value = true;
 };
 
 const handleSearch = () => {
@@ -345,6 +371,14 @@ async function fetchSurfaces(offset = 0) {
   }
 }
 
+function clearSelection() {
+  panelId.value = null;
+  inscriptionId.value = null;
+  searchId.value = null;
+  selectedInscription.value = null;
+  selectedSurface.value = null;
+}
+
 function resetAllExcept(exceptModel) { //reset the other dropdowns to all when a selection is made
   categories.value = ["all"];
   lastClickedCategory.value = '';
@@ -372,15 +406,23 @@ async function fetchDataAndPopulateRef<T>(type: string, refToPopulate: any) {
 }
 
 function handleSurfaceClick(surface) {
-  searchId.value = searchId.value === surface.id ? null : surface.id;
-  panelId.value = searchId.value;
+  selectedSurface.value = surface;
+  selectedInscription.value = null;
+  searchId.value = surface.id;
+  panelId.value = surface.id;
   inscriptionId.value = null;
+  showSuggestions.value = false;
+  searchQuery.value = '';
 }
-  
+
 function handleInscriptionClick(feature) {
-  searchId.value = searchId.value === feature.id ? null : feature.id;
-  inscriptionId.value = searchId.value;
+  selectedInscription.value = feature;
+  selectedSurface.value = null;
+  searchId.value = feature.id;
+  inscriptionId.value = feature.id;
   panelId.value = null;
+  showSuggestions.value = false;
+  searchQuery.value = '';
 }
 
 function clearAll() {
@@ -523,12 +565,6 @@ onUnmounted(() => {
   text-decoration-line: underline;
 }
 
-.search-box {
-  font-size: 1.2em;
-  background-color: transparent;
-  /* focus:none; */
-}
-
 .search-box:focus {
   outline: none;
 }
@@ -563,7 +599,6 @@ onUnmounted(() => {
 
 #app .broad-controls {
   width: 100%;
-
 }
 
 #app .control-organisation {
@@ -720,8 +755,34 @@ onUnmounted(() => {
   }
 }
 
-.search-result-item.selected {
-  background-color: rgb(180, 100, 100) !important;
-  color: white;
+.selected-item-bubble {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-45%);
+  background-color: #e0e0e0;
+  border-radius: 12px;
+  padding: 5px 10px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.search-box-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.search-box {
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 1;
+  background-color: rgba(0, 0, 0, 0);
+  font-size: 1.2em;
+}
+
+.selected-item-bubble .remove-icon {
+  margin-left: 5px;
+  font-weight: bold;
 }
 </style>
