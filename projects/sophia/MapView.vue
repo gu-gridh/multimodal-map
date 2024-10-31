@@ -591,7 +591,6 @@ display:none;
 
 .gallery-filters{
   height:auto;
-  margin-bottom:0px;
   display:flex;
 flex-direction: row;
 justify-content:right;
