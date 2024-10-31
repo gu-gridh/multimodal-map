@@ -169,11 +169,12 @@ overflow:hidden;
 }
 
 .metadata-item{
-  font-size:18px;
+  font-size:16px;
 }
 
 .tag{
   margin-left:10px;
+  font-weight: 400!important;
 }
 
 #app .right-pane {
