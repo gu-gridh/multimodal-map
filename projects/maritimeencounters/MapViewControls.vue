@@ -36,7 +36,7 @@
   </div>
   <div style="display:flex; flex-direction: row; justify-content:center; width:100%;">
     <div id="resetfilters" class="broad-controls theme-button category-button"
-      style="margin-top:15px; width:auto; cursor:pointer; transition: all 0.2s ease-in-out; background-color:var(--theme-4); color:white;"
+      style="margin-top:15px; width:auto; cursor:pointer; transition: all 0.2s ease-in-out; background-color:var(--theme-3); color:white;"
       v-if="isFilterModified" @click="clearAll">
       Reset
     </div>
@@ -266,5 +266,10 @@ function clearAll() {
 
 #app .slider-section {
   width: 100%;
+}
+
+.slider-handle:focus  {
+  --slider-handle-ring-color: var(--theme-4);
+  --slider-handle-shadow: 0.5px 0.5px 2px 1px var(--theme-4);
 }
 </style>

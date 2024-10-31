@@ -2,11 +2,11 @@
 
 /* Color palette */
 :root{
-  --theme-1: 			rgb(232, 228, 217); /* This is the background color */
-  --theme-2: 			rgb(250, 150, 150); /* This is for lighter text on dark backgrounds */
-	--theme-3: 	    #de6f23; /* This is the main accent colour */
-  --theme-4: 		  #e3884b; /* This is for accent hover */
-  --theme-5: 			rgb(140, 60, 60); /* This is for accent lines */
+  --theme-1: 			#a6bddb; /* This is the background color */
+  --theme-2: 			#a6bddb; /* This is for lighter text on dark backgrounds */
+	--theme-3: 	    #2b8cbe; /* This is the main accent colour */
+  --theme-4: 		  #a6bddb; /* This is for accent hover */
+  --theme-5: 		  #a6bddb; /* This is for accent lines */
 }
 
 /* Main */

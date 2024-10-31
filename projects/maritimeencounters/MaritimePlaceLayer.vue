@@ -447,6 +447,24 @@ onMounted(async () => {
     zoomToBoundsOnClick: true,
     maxClusterRadius: 100,
     chunkedLoading: true,
+    iconCreateFunction: function (cluster) {
+      const childCount = cluster.getChildCount();
+      let c = ' marker-cluster-';
+
+      if (childCount < 10) {
+        c += 'small';
+      } else if (childCount < 100) {
+        c += 'medium';
+      } else {
+        c += 'large';
+      }
+
+      return L.divIcon({
+        html: '<div><span>' + childCount + '</span></div>',
+        className: 'marker-cluster' + c,
+        iconSize: new L.Point(40, 40),
+      });
+    },
   });
 
   // Override _getExpandedVisibleBounds to limit to current map bounds
@@ -503,5 +521,32 @@ onMounted(async () => {
   width: 50px;
   height: 50px;
   z-index: 9999;
+}
+
+/* Small Clusters */
+:deep(.marker-cluster-small) {
+  background-color: #dddddd !important; /* outer circle color */
+}
+
+:deep(.marker-cluster-small div) {
+  background-color: #d0d0d0 !important; /* inner circle color */
+}
+
+/* Medium Clusters */
+:deep(.marker-cluster-medium) {
+  background-color: rgba(166, 189, 219, 0.6) !important; /* outer circle color */
+}
+
+:deep(.marker-cluster-medium div) {
+  background-color: rgba(140, 165, 200, 0.6) !important; /* inner circle color */
+}
+
+/* Large Clusters */
+:deep(.marker-cluster-large) {
+  background-color: #6aa7c5 !important; /* outer circle color */
+}
+
+:deep(.marker-cluster-large div) {
+  background-color: #2b8cbe !important; /* inner circle color */
 }
 </style>
