@@ -158,6 +158,7 @@ body {
 
 .placecard-bottom {
   height: 25% !important;
+  min-height:140px;
 }
 
 
@@ -252,11 +253,11 @@ overflow:hidden;
   }
 
   .placecard-top {
-    height: 65% !important;
+    height: 70% !important;
   }
   
   .placecard-bottom {
-    height: 35% !important;
+    height: 30% !important;
   }
 
 

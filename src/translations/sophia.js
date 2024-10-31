@@ -87,6 +87,8 @@ const messages = {
       writingsystem:"Writing system",
       textualgenre:"Textual genre",
       namedentity:"Named entity",
+      material:"Material",
+      medium:"Medium",
       pictorialdescription:"Pictorial description",
       "categories": {
         "all": "All types",
@@ -182,6 +184,8 @@ const messages = {
       writingsystem:"система письма",
       textualgenre:"Текстовий жанр",
       namedentity:"Іменована сутність",
+      material:"Матеріал",
+      medium:"Середній",
       pictorialdescription:"Картинний опис",
       "categories": {
         "all": "Всі види",
