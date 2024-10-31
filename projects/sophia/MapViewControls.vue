@@ -62,14 +62,16 @@
         </div>
 
         <div class="search-section" ref="searchSection">
-          <div class="toggle-buttons" style="margin-top: 10px">
+          <div class="toggle-buttons" style="margin-top: 5px">
+            <button :class="{ active: searchType === 'surfaces' }" @click="setSearchType('surfaces')">
+              {{ $t('panels') }}
+            </button>
+
             <button :class="{ active: searchType === 'inscriptionobjects' }"
               @click="setSearchType('inscriptionobjects')">
               {{ $t('inscriptions') }}
             </button>
-            <button :class="{ active: searchType === 'surfaces' }" @click="setSearchType('surfaces')">
-              {{ $t('panels') }}
-            </button>
+          
           </div>
 
           <div class="search-box-wrapper">
@@ -541,9 +543,6 @@ onUnmounted(() => {
   display: block;
   color: inherit;
   text-decoration: none;
-}
-
-.search-result-item {
   padding: 8px;
   border-bottom: 1px solid #eee;
   cursor: pointer;
@@ -787,6 +786,7 @@ onUnmounted(() => {
   z-index: 1;
   background-color: rgba(0, 0, 0, 0);
   font-size: 1.2em;
+  min-height:35px;
 }
 
 .selected-item-bubble .remove-icon {
