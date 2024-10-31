@@ -768,7 +768,7 @@ onUnmounted(() => {
   top: 50%;
   transform: translateY(-45%);
   background-color: #e0e0e0;
-  border-radius: 12px;
+  border-radius: 8px;
   padding: 5px 10px;
   display: flex;
   align-items: center;
