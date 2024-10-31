@@ -176,7 +176,7 @@ watch(showGallery, (newValue) => {
 
 <template>
   <div style="display:flex; align-items: center; justify-content: center; pointer-events: none;">
-    <div class="ui-mode ui-overlay">
+    <div class="ui-mode ui-overlay ui-overlay-top">
       <button class="item" v-bind:class="{ selected: !showGallery }" v-on:click="showGallery = false;">
         {{ $t('map') }}
       </button>

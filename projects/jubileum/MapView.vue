@@ -71,9 +71,8 @@
 </script>
 
 <template>
-
   <div style="display:flex; align-items: center; justify-content: center;">
-    <div class="ui-mode ui-overlay">
+    <div class="ui-mode ui-overlay ui-overlay-top">
       <button class="item" v-bind:class="{ selected: !showGrid}" v-on:click="showGrid = false;">
         Karta
       </button>

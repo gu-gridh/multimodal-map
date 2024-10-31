@@ -212,10 +212,6 @@ overflow:hidden;
     background: linear-gradient(180deg, rgba(232, 228, 217, 0) 0px, var(--theme-1) 300px) !important;
   }
 
-  .ui-overlay {
-    top: 0px !important;
-    position:fixed!important;
-  }
 
   #app .right-pane {
     min-width: 100%;
@@ -263,16 +259,6 @@ overflow:hidden;
 
   #app .placecard-title{
     font-size:8em!important;
-  }
-
-  .ui-overlay-top{
-margin-top:calc(30px)!important;
-z-index:101!important;
-  }
-
-  .ui-overlay-bottom{
-    margin-top:100%!important;
-    z-index:1!important;
   }
 
   .close-card-button{

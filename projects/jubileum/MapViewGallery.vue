@@ -3,7 +3,7 @@
     :key="layoutKey"
     class="masonry-wall"
     :items="images"
-    :column-width="300" 
+    :column-width="250" 
     :gap="0"
   >
     <template v-slot:default="{ item }">
@@ -12,7 +12,7 @@
         :to="`/detail/image/${item.id}`"
         class="grid-item"
       >
-        <img :src="`${item.iiif_file}/full/450,/0/default.jpg`" @load="imageLoaded" />
+        <img :src="`${item.iiif_file}/full/400,/0/default.jpg`" @load="imageLoaded" />
          <div class="grid-item-info">
           <div class="grid-item-info-meta">
             <h1>{{item.title}}</h1>
@@ -67,7 +67,7 @@ defineComponent({
   width: 100%; 
   height: 100%; 
   z-index: 99;
-    padding: 0px 0px 0px 0px; 
+  padding: 0px 0px 0px 0px; 
   overflow-y: scroll;
   transition: all 0.5s ease-in-out;
   z-index:249;

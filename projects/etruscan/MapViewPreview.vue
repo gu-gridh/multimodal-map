@@ -166,12 +166,31 @@ function deselectPlace() {
 <style>
 .metadata-item {
   font-size:90%!important;
+  display:flex!important;
+  flex-direction: row!important;
+  flex-wrap: nowrap!important;
+}
+
+.placecard-metadata-content .tag {
+  float: left;
+  padding-left: 10px;
+  padding-right: 10px;
+  width: 65%;
+  /* text-transform: capitalize; */
+  font-weight: 600;
 }
 
 @media screen and (max-width: 900px) {
   .placecard-title{
   font-size:9.0em;
 
+}
+
+.metadata-item {
+  font-size:80%!important;
+  display:flex!important;
+  flex-direction: row!important;
+  flex-wrap: nowrap!important;
 }
 }
 

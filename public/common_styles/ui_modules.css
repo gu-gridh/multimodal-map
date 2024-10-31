@@ -124,10 +124,23 @@
 @media screen and (max-width: 900px) {
 
   .ui-overlay {
-    margin-top: 25px !important;
+    margin-top: 225px !important;
     margin-left: 0px !important;
     font-size: 120% !important;
+    top: 0px !important;
+    position:fixed!important;
   }
+
+  .ui-overlay-top{
+    margin-top:calc(30px)!important;
+    z-index:101!important;
+      }
+
+      .ui-overlay-bottom{
+        margin-top:100%!important;
+        z-index:1!important;
+      }
+
 
   #app .ol-control{
     display:none!important;

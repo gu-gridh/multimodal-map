@@ -128,11 +128,6 @@ body {
   z-index:1000!important;
 }
 
-.ui-overlay{
-  margin-top:calc(5%)!important;
-  z-index:101!important;
-  }
-
   #gallery-container{
     height:calc(100% - 0px)!important;
   }
