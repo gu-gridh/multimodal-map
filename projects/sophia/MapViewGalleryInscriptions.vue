@@ -22,7 +22,6 @@
       </div>
     </div>
     <div class="gallery">
-      <div class="gallery-corner-blur">   </div>
       <div class="gallery__col-sizer"></div>
       <div class="gallery__gutter-sizer"></div>
       <div v-for="item in images" :key="item.id" class="gallery__item">
@@ -34,9 +33,10 @@
           </div>
           <img :src="`${item.inscription_iiif_url}/!300,/0/default.jpg`" loading="lazy" @load="imageLoaded" />
         </a>
-        <div class="cut-off"></div>
       </div>
+      <div class="gallery-corner-blur"></div>
     </div>
+
     <div class="page-load-status">
       <div class="loader-ellips infinite-scroll-request">
         <span class="loader-ellips__dot"></span>
@@ -283,14 +283,13 @@ export default {
 
 <style scoped>
 #gallery-container {
-  padding: 0px 20px 0px 0px;
+  padding: 0px 10px 0px 0px;
   opacity: 1.0;
   background-color:var(--theme-1);
 }
 
 
 .gallery {
-
   float: left;
   width: 100%;
   max-height: 100%;
@@ -298,14 +297,12 @@ export default {
   max-width: 100%;
   /* Maximum width of the gallery */
   margin: 0 auto;
-  padding: 100px 0px 0px 0px;
+  padding: 100px 0px 80px 0px!important;
   pointer-events: auto;
   /* Top and bottom margin 0, left and right margin auto */
-  display:flex!important;
-  flex-direction: row!important;
-  justify-content: center!important;
 
 }
+
 
 .gallery::-webkit-scrollbar {
   display: none;
@@ -317,7 +314,7 @@ color:white!important;
 }
 
 .gallery-filters .tag-container .gallery-tag{
-background-color:rgba(100,100,100,0.4);
+background-color:rgba(40,40,40,0.4);
 border-color:white;
 font-weight:300;
 backdrop-filter: blur(5px);
@@ -338,7 +335,7 @@ right:-250px;
 bottom:-350px;
 width:100px;
 height:50px;
-box-shadow: 0px 0px 100px 600px rgba(235,230,225,0.3);
+box-shadow: 0px 0px 100px 600px rgba(235,230,225,0.4);
 border-radius:50%;
 z-index:100;
 }
@@ -366,15 +363,17 @@ display:none;
 }
 
 .gallery__gutter-sizer {
-  width: 0px;
+  width: 10px;
 }
+
+
 
 
 @media screen and (max-width: 2000px) {
 
   .gallery__item,
   .gallery__col-sizer {
-    width: calc(16.6 - 0.0px);
+    width: calc(16.6 - 10.0px);
   }
 }
 
@@ -383,7 +382,7 @@ display:none;
 
   .gallery__item,
   .gallery__col-sizer {
-    width: calc(20% - 0.0px);
+    width: calc(20% - 10.0px);
   }
 }
 
@@ -391,7 +390,7 @@ display:none;
 
   .gallery__item,
   .gallery__col-sizer {
-    width: calc(25% - 0.0px);
+    width: calc(25% - 10.0px);
   }
 }
 
@@ -399,7 +398,7 @@ display:none;
 
   .gallery__item,
   .gallery__col-sizer {
-    width: calc(33% - 0.0px);
+    width: calc(33% - 10.0px);
   }
 }
 
@@ -407,21 +406,11 @@ display:none;
 
   .gallery__item,
   .gallery__col-sizer {
-    width: calc(50% - 0.0px);
+    width: calc(50% - 10.0px);
   }
 }
 
-@media screen and (max-width: 900px) {
 
-  .gallery__item,
-  .gallery__col-sizer {
-    width: calc(50% - 0.0px);
-  }
-
-  .gallery {
-    padding-top: 80px;
-  }
-}
 
 
 
@@ -431,13 +420,34 @@ display:none;
 }
 
 .gallery__item {
-  margin-bottom: 0px;
+  min-height:30px;
+  margin-bottom: 10px;
   float: left;
   overflow: hidden !important;
   -webkit-transition-property: none !important;
   -moz-transition-property: none !important;
   -o-transition-property: none !important;
   transition-property: none !important;
+}
+
+@media screen and (max-width: 900px) {
+
+.gallery__item,
+.gallery__col-sizer {
+  width: calc(50% - 0.0px);
+}
+
+.gallery {
+  padding-top: 80px;
+}
+
+.gallery__gutter-sizer {
+width: 0px;
+}
+
+.gallery__item {
+  margin-bottom: 0px;
+}
 }
 
 .gallery__item--height1 {
@@ -468,7 +478,7 @@ display:none;
   bottom: 0px;
   transition: all 0.2s ease-in-out;
   background: linear-gradient(0deg, rgba(0, 0, 0, 0.2) 0px, rgba(0, 0, 0, 0)30%) !important;
-  box-shadow: inset 0rem 0rem 5rem rgba(0, 0, 0, 0.3) !important;
+/*   box-shadow: inset 0rem 0rem 5rem rgba(0, 0, 0, 0.3) !important; */
 }
 
 .item-info-meta {
