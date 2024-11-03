@@ -22,14 +22,14 @@
       </div>
     </div>
     <div class="gallery">
+      <div class="gallery-corner-blur">   </div>
       <div class="gallery__col-sizer"></div>
       <div class="gallery__gutter-sizer"></div>
       <div v-for="item in images" :key="item.id" class="gallery__item">
         <a :href="`https://71807.dh.gu.se/viewer/?q=${item.panelTitle}/${item.id}`" target="_blank">
           <div class="item-info">
             <div class="item-info-meta">
-              <h1>{{ item.panelTitle }}:{{ item.id }}</h1>
-              <h2 v-if="item.subtitle" style="font-size: 12px;">{{ item.subtitle }}</h2>
+              <h1>{{ item.panelTitle }}:{{ item.id }}<span v-if="item.subtitle">|</span><span v-if="item.subtitle">{{ item.subtitle }}</span></h1> 
             </div>
           </div>
           <img :src="`${item.inscription_iiif_url}/!300,/0/default.jpg`" loading="lazy" @load="imageLoaded" />
@@ -283,12 +283,14 @@ export default {
 
 <style scoped>
 #gallery-container {
-  padding: 0px 0px 0px 0px;
+  padding: 0px 20px 0px 0px;
   opacity: 1.0;
+  background-color:var(--theme-1);
 }
 
 
 .gallery {
+
   float: left;
   width: 100%;
   max-height: 100%;
@@ -296,13 +298,56 @@ export default {
   max-width: 100%;
   /* Maximum width of the gallery */
   margin: 0 auto;
-  padding: 0px 0px 0px 0px;
+  padding: 100px 0px 0px 0px;
   pointer-events: auto;
   /* Top and bottom margin 0, left and right margin auto */
+  display:flex!important;
+  flex-direction: row!important;
+  justify-content: center!important;
+
 }
 
 .gallery::-webkit-scrollbar {
   display: none;
+}
+
+.gallery-filters{
+background: transparent !important;
+color:white!important;
+}
+
+.gallery-filters .tag-container .gallery-tag{
+background-color:rgba(100,100,100,0.4);
+border-color:white;
+font-weight:300;
+backdrop-filter: blur(5px);
+}
+
+.gallery-filters .tag-container .gallery-tag:hover{
+background-color:rgba(140,60,60,1.0);
+}
+
+.gallery-filters h1{
+color:black;
+}
+
+
+.gallery-corner-blur{
+position:fixed;
+right:-250px;
+bottom:-350px;
+width:100px;
+height:50px;
+box-shadow: 0px 0px 100px 600px rgba(235,230,225,0.3);
+border-radius:50%;
+z-index:100;
+}
+
+
+@media screen and (max-width: 900px) {
+.gallery-corner-blur{
+display:none;
+}
 }
 
 /* reveal gallery after images loaded */
@@ -316,7 +361,7 @@ export default {
 }
 
 .gallery__gutter-sizer {
-  width: 0.5px;
+  width: 0px;
 }
 
 
@@ -324,7 +369,7 @@ export default {
 
   .gallery__item,
   .gallery__col-sizer {
-    width: calc(16.6 - 0.5px);
+    width: calc(16.6 - 0.0px);
   }
 }
 
@@ -333,7 +378,7 @@ export default {
 
   .gallery__item,
   .gallery__col-sizer {
-    width: calc(20% - 0.5px);
+    width: calc(20% - 0.0px);
   }
 }
 
@@ -341,7 +386,7 @@ export default {
 
   .gallery__item,
   .gallery__col-sizer {
-    width: calc(25% - 0.5px);
+    width: calc(25% - 0.0px);
   }
 }
 
@@ -349,7 +394,7 @@ export default {
 
   .gallery__item,
   .gallery__col-sizer {
-    width: calc(33% - 0.5px);
+    width: calc(33% - 0.0px);
   }
 }
 
@@ -357,7 +402,7 @@ export default {
 
   .gallery__item,
   .gallery__col-sizer {
-    width: calc(50% - 0.5px);
+    width: calc(50% - 0.0px);
   }
 }
 
@@ -365,7 +410,7 @@ export default {
 
   .gallery__item,
   .gallery__col-sizer {
-    width: calc(50% - 0.5px);
+    width: calc(50% - 0.0px);
   }
 
   .gallery {
@@ -381,7 +426,7 @@ export default {
 }
 
 .gallery__item {
-  margin-bottom: 0.5px;
+  margin-bottom: 0px;
   float: left;
   overflow: hidden !important;
   -webkit-transition-property: none !important;
@@ -417,18 +462,33 @@ export default {
   z-index: 1000 !important;
   bottom: 0px;
   transition: all 0.2s ease-in-out;
-  background: linear-gradient(0deg, rgba(0, 0, 0, 0.0) 0px, rgba(0, 0, 0, 0)50%) !important;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.2) 0px, rgba(0, 0, 0, 0)30%) !important;
+  box-shadow: inset 0rem 0rem 5rem rgba(0, 0, 0, 0.3) !important;
 }
 
 .item-info-meta {
   /* text-transform: capitalize; */
   position: absolute;
+  width:100%;
   color: white;
   bottom: 0px;
-  padding: 20px 25px;
-  padding-bottom: 10px !important;
+  padding: 10px 15px;
   font-weight: 200;
-  display: none;
+  display: block;
+  border-width: 0px 0 0px 0;
+  border-color:white;
+  border-style:dotted;
+}
+
+h1 {
+ font-weight:400!important;
+ font-size:14px!important;
+}
+
+h1 span {
+ display:inline!important;
+ margin-left:5px;
+ font-weight:200;
 }
 
 .gallery__item img {

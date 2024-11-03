@@ -440,73 +440,6 @@ display:none;
       rgba(0, 0, 0, 1) 100%);
 }
 
-/* filter gradient blur */
-
-.filter-gradient-blur>div,
-.filter-gradient-blur::before,
-.filter-gradient-blur::after {
-  position: absolute;
-  inset: 0;
-}
-
-.filter-gradient-blur>div:nth-of-type(1) {
-  z-index: 1;
-  backdrop-filter: blur(1px);
-  mask: linear-gradient(to bottom,
-      rgba(0, 0, 0, 0) 25%,
-      rgba(0, 0, 0, 1) 37.5%,
-      rgba(0, 0, 0, 1) 50%,
-      rgba(0, 0, 0, 0) 62.5%);
-}
-
-.filter-gradient-blur>div:nth-of-type(2) {
-  z-index: 2;
-  backdrop-filter: blur(2px);
-  mask: linear-gradient(to bottom,
-      rgba(0, 0, 0, 0) 37.5%,
-      rgba(0, 0, 0, 1) 50%,
-      rgba(0, 0, 0, 1) 62.5%,
-      rgba(0, 0, 0, 0) 75%);
-}
-
-.filter-gradient-blur>div:nth-of-type(3) {
-  z-index: 3;
-  backdrop-filter: blur(2px);
-  mask: linear-gradient(to bottom,
-      rgba(0, 0, 0, 0) 50%,
-      rgba(0, 0, 0, 1) 62.5%,
-      rgba(0, 0, 0, 1) 75%,
-      rgba(0, 0, 0, 0) 87.5%);
-}
-
-.filter-gradient-blur>div:nth-of-type(4) {
-  z-index: 4;
-  backdrop-filter: blur(2px);
-  mask: linear-gradient(to bottom,
-      rgba(0, 0, 0, 0) 62.5%,
-      rgba(0, 0, 0, 1) 75%,
-      rgba(0, 0, 0, 1) 87.5%,
-      rgba(0, 0, 0, 0) 100%);
-}
-
-.filter-gradient-blur>div:nth-of-type(5) {
-  z-index: 5;
-  backdrop-filter: blur(2px);
-  mask: linear-gradient(to bottom,
-      rgba(0, 0, 0, 0) 75%,
-      rgba(0, 0, 0, 1) 87.5%,
-      rgba(0, 0, 0, 1) 100%);
-}
-
-.filter-gradient-blur::after {
-  content: "";
-  z-index: 1;
-  backdrop-filter: blur(2px);
-  mask: linear-gradient(to bottom,
-      rgba(0, 0, 0, 0) 87.5%,
-      rgba(0, 0, 0, 1) 100%);
-}
-
 
 
 #app .tile-layer {
@@ -649,7 +582,6 @@ display:none;
 font-size:0.9em;
 font-weight:200;
 margin-right:10px;
-color:white;
 }
 
 .gallery-filters .tag-container{
@@ -657,7 +589,6 @@ width:100%;
 display:flex;
 flex-direction: row;
 align-items: flex-end;
-color:white;
 width:auto;
 }
 

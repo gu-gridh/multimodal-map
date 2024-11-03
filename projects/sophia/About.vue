@@ -13,10 +13,10 @@
     </div>
     <div class="main-about-content">
       <div class="logo-area">
-        <div class="logo" style="background-image:url(/sophia_about/logo-sophia.png);"></div>
-        <div class="logo" style="background-image:url(/sophia_about/logo-gu.png);"></div>
+        <div class="logo" style="background-image:url(images/logo-sophia.png);"></div>
+        <div class="logo" style="background-image:url(images/logo-gu.png);"></div>
         <div class="logo"
-          style="background-image:url(/sophia_about/logo-mist.png); width:220px; margin-top:25px; margin-left:10px;">
+          style="background-image:url(images/logo-mist_en.png); width:280px; margin-top:25px; margin-left:15px;">
         </div>
       </div>
       <div class="left-content">
@@ -221,7 +221,7 @@ export default {
 .right-content {
   height: calc(100vh - 80px);
   width: 40%;
-  background: url(/sophia_about/saintsophia.jpg);
+  background: url(images/saintsophia.jpg);
   background-size: cover;
   float: right;
 }
