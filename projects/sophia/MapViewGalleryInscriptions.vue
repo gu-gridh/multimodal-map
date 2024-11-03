@@ -204,7 +204,7 @@ export default {
         outlayer: msnry,
         status: '.page-load-status',
         history: false,
-        scrollThreshold: 1200,
+        scrollThreshold: 200,
         elementScroll: true,
       });
 
@@ -293,11 +293,12 @@ export default {
   float: left;
   width: 100%;
   max-height: 100%;
+  min-height: 100%;
   overflow-y: auto;
   max-width: 100%;
   /* Maximum width of the gallery */
   margin: 0 auto;
-  padding: 100px 0px 80px 0px!important;
+  padding: 100px 0px 0px 0px!important;
   pointer-events: auto;
   /* Top and bottom margin 0, left and right margin auto */
 
