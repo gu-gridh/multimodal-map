@@ -348,6 +348,11 @@ z-index:100;
 .gallery-corner-blur{
 display:none;
 }
+
+#gallery-container {
+  padding: 0px 00px 0px 0px;
+
+}
 }
 
 /* reveal gallery after images loaded */
