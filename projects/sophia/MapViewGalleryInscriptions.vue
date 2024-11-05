@@ -327,6 +327,7 @@ background-color:rgba(140,60,60,1.0);
 
 .gallery-filters h1{
 color:black;
+text-shadow: rgb(235,230,225) 1px 0 4px;
 }
 
 
