@@ -189,11 +189,11 @@ overflow:hidden;
 
 
 .placecard-title {
-  line-height: 1.0;
-  font-family: "Alumni Sans Pinstripe", sans-serif;
-  font-weight: 700;
+  line-height: 1.5;
+  font-family: "Oswald", sans-serif;
+  font-weight: 300;
   margin-bottom: 0px !important;
-  font-size:40px;  
+  font-size:30px;  
 }
 
 
