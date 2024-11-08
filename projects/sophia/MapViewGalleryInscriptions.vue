@@ -5,7 +5,9 @@
         <div class="gallery-filter-container">
           <h1>{{ $t('alignment') }}</h1>
           <div class="tag-container">
-            <div v-for="alignment in alignments" :key="alignment.id" class="gallery-tag" :class="{ active: store.alignmentModel === alignment.id }" @click="updateFilter('alignment', alignment.id)">
+            <div v-for="alignment in alignments" :key="alignment.id" class="gallery-tag"
+              :class="{ active: store.alignmentModel === alignment.id }"
+              @click="updateFilter('alignment', alignment.id)">
               {{ alignment.text }}
             </div>
           </div>
@@ -14,7 +16,9 @@
         <div class="gallery-filter-container">
           <h1>{{ $t('condition') }}</h1>
           <div class="tag-container">
-            <div v-for="condition in conditions" :key="condition.id" class="gallery-tag" :class="{ active: store.conditionModel === condition.id }" @click="updateFilter('condition', condition.id)">
+            <div v-for="condition in conditions" :key="condition.id" class="gallery-tag"
+              :class="{ active: store.conditionModel === condition.id }"
+              @click="updateFilter('condition', condition.id)">
               {{ condition.text }}
             </div>
           </div>
@@ -28,7 +32,8 @@
         <a :href="`https://71807.dh.gu.se/viewer/?q=${item.panelTitle}/${item.id}`" target="_blank">
           <div class="item-info">
             <div class="item-info-meta">
-              <h1>{{ item.panelTitle }}:{{ item.id }}<span v-if="item.subtitle">|</span><span v-if="item.subtitle">{{ item.subtitle }}</span></h1> 
+              <h1>{{ item.panelTitle }}:{{ item.id }}<span v-if="item.subtitle">|</span><span v-if="item.subtitle">{{
+                  item.subtitle }}</span></h1>
             </div>
           </div>
           <img :src="`${item.inscription_iiif_url}/!300,/0/default.jpg`" loading="lazy" @load="imageLoaded" />
@@ -62,6 +67,7 @@ export default {
     const store = inscriptionsStore();
     const alignments = ref([]);
     const conditions = ref([]);
+    const storedApiData = ref([]);
     let msnry;
     let pageIndex = 1;  // Initialize pageIndex to 1
     let canIncrement = true;  // Flag to control the increment
@@ -93,8 +99,8 @@ export default {
         if (store.conditionModel === selectedId) {
           store.conditionModel = null;  //deselect
         } else {
-          store.conditionModel = selectedId; 
-        }      
+          store.conditionModel = selectedId;
+        }
       }
     };
 
@@ -103,6 +109,7 @@ export default {
       async (newCategory, oldCategory) => {
         pageIndex = 1;
         lastFetchedPageIndex = 0;
+        canIncrement = true;
 
         images.value = [];
 
@@ -131,20 +138,27 @@ export default {
     const fetchData = async (requestedPageIndex) => {
       if (requestedPageIndex > lastFetchedPageIndex) {
         try {
-          const baseUrl = `https://saintsophia.dh.gu.se/api/inscriptions/inscription/?depth=1&${new URLSearchParams(store.imgParams).toString()}`;
+          const offset = (requestedPageIndex - 1) * 25;
+          const baseUrl = `https://saintsophia.dh.gu.se/api/inscriptions/inscription/?depth=1&offset=${offset}&${new URLSearchParams(store.imgParams).toString()}`;
           const res = await fetch(baseUrl);
           const data = await res.json();
 
-          const newImages = data.results.map(item => ({
-            inscription_iiif_url: item.inscription_iiif_url,
-            panelTitle: item.panel ? item.panel.title : 'Unknown',
-            subtitle: item.title,
-            id: item.id,
-          })).filter(img => img && img.inscription_iiif_url);
+          if (data.results && data.results.length > 0) {
+            const newImages = data.results.map(item => ({
+              inscription_iiif_url: item.inscription_iiif_url,
+              panelTitle: item.panel ? item.panel.title : 'Unknown',
+              subtitle: item.title,
+              id: item.id,
+            })).filter(img => img && img.inscription_iiif_url);
 
-          images.value = [...images.value, ...newImages];
+            images.value = [...images.value, ...newImages];
+            storedApiData.value = [...storedApiData.value, ...data.results];
 
-          lastFetchedPageIndex = requestedPageIndex;  // Update the lastFetchedPageIndex
+            lastFetchedPageIndex = requestedPageIndex; 
+          } else {
+            console.log("No more data available.");
+            infScroll && infScroll.off('load');
+          }
         } catch (error) {
           console.error("Error fetching additional images:", error);
         }
@@ -165,19 +179,6 @@ export default {
         percentPosition: true,
       });
 
-      const checkFor404 = async (url) => {
-        try {
-          const res = await fetch(url);
-          if (res.status === 404) {
-            msnry.layout();
-            return true; // Indicates that a 404 was found
-          }
-        } catch (error) {
-          console.error("Error in 404 fetch:", error);
-        }
-        return false; // Indicates that a 404 was not found
-      };
-
       infScroll = new InfiniteScroll(gallery, {
         path: () => {
           if (canIncrement) {
@@ -186,19 +187,6 @@ export default {
           canIncrement = false; // Disable further increments
           const offset = (pageIndex - 1) * 25;
           const url = `https://saintsophia.dh.gu.se/api/inscriptions/inscription/?depth=1&offset=${offset}&${new URLSearchParams(store.imgParams).toString()}`;
-          
-          // Use Promise syntax to handle the asynchronous 404 check
-          checkFor404(url).then(async (is404) => {
-            if (is404) {
-              // Here, first ensure all images are fully loaded
-              await new Promise((resolve) => {
-                imagesLoaded(document.querySelector('.gallery'), resolve);
-              });
-              msnry.reloadItems();
-              msnry.layout();
-            }
-          });
-
           return url;
         },
         outlayer: msnry,
@@ -207,35 +195,20 @@ export default {
         scrollThreshold: 200,
         elementScroll: true,
       });
-
-      infScroll.on('load', async function (response) {
-        if (pageIndex > lastFetchedPageIndex) {
+      infScroll.on('load', async function () {
+        if (pageIndex >= lastFetchedPageIndex) {
           try {
-            // Extract the body content from the HTML response
-            let bodyContent = response.querySelector("body").textContent;
-
-            // Convert the body content to JSON
-            const data = JSON.parse(bodyContent);
-
-            const newImages = data.results.map(item => ({
-              inscription_iiif_url: item.inscription_iiif_url,
-              panelTitle: item.panel ? item.panel.title : 'Unknown',
-              title: item.title,
-              id: item.id,
-            })).filter(img => img !== null);
-
-            images.value = [...images.value, ...newImages];
-
+            await fetchData(pageIndex);
             imagesLoaded(document.querySelector('.gallery'), () => {
               msnry.reloadItems();
               msnry.layout();
             });
-          }
-          catch (e) {
-            console.error("JSON Parsing failed or other error: ", e);
+            canIncrement = true; 
+          } catch (e) {
+            console.error("error in the load event of infinitescroll:", e);
+            canIncrement = true; 
           }
         }
-        canIncrement = true;
       });
     };
 
@@ -285,7 +258,7 @@ export default {
 #gallery-container {
   padding: 0px 10px 0px 0px;
   opacity: 1.0;
-  background-color:var(--theme-1);
+  background-color: var(--theme-1);
 }
 
 
@@ -298,7 +271,7 @@ export default {
   max-width: 100%;
   /* Maximum width of the gallery */
   margin: 0 auto;
-  padding: 100px 0px 0px 0px!important;
+  padding: 100px 0px 0px 0px !important;
   pointer-events: auto;
   /* Top and bottom margin 0, left and right margin auto */
 
@@ -309,49 +282,49 @@ export default {
   display: none;
 }
 
-.gallery-filters{
-background: transparent !important;
-color:white!important;
+.gallery-filters {
+  background: transparent !important;
+  color: white !important;
 }
 
-.gallery-filters .tag-container .gallery-tag{
-background-color:rgba(40,40,40,0.4);
-border-color:white;
-font-weight:300;
-backdrop-filter: blur(5px);
+.gallery-filters .tag-container .gallery-tag {
+  background-color: rgba(40, 40, 40, 0.4);
+  border-color: white;
+  font-weight: 300;
+  backdrop-filter: blur(5px);
 }
 
-.gallery-filters .tag-container .gallery-tag:hover{
-background-color:rgba(140,60,60,1.0);
+.gallery-filters .tag-container .gallery-tag:hover {
+  background-color: rgba(140, 60, 60, 1.0);
 }
 
-.gallery-filters h1{
-color:black;
-text-shadow: rgb(235,230,225) 1px 0 4px;
+.gallery-filters h1 {
+  color: black;
+  text-shadow: rgb(235, 230, 225) 1px 0 4px;
 }
 
 
-.gallery-corner-blur{
-position:fixed;
-right:-250px;
-bottom:-350px;
-width:100px;
-height:50px;
-box-shadow: 0px 0px 100px 600px rgba(235,230,225,0.4);
-border-radius:50%;
-z-index:100;
+.gallery-corner-blur {
+  position: fixed;
+  right: -250px;
+  bottom: -350px;
+  width: 100px;
+  height: 50px;
+  box-shadow: 0px 0px 100px 600px rgba(235, 230, 225, 0.4);
+  border-radius: 50%;
+  z-index: 100;
 }
 
 
 @media screen and (max-width: 900px) {
-.gallery-corner-blur{
-display:none;
-}
+  .gallery-corner-blur {
+    display: none;
+  }
 
-#gallery-container {
-  padding: 0px 00px 0px 0px;
+  #gallery-container {
+    padding: 0px 00px 0px 0px;
 
-}
+  }
 }
 
 /* reveal gallery after images loaded */
@@ -422,7 +395,7 @@ display:none;
 }
 
 .gallery__item {
-  min-height:30px;
+  min-height: 30px;
   margin-bottom: 10px;
   float: left;
   overflow: hidden !important;
@@ -434,22 +407,22 @@ display:none;
 
 @media screen and (max-width: 900px) {
 
-.gallery__item,
-.gallery__col-sizer {
-  width: calc(50% - 0.0px);
-}
+  .gallery__item,
+  .gallery__col-sizer {
+    width: calc(50% - 0.0px);
+  }
 
-.gallery {
-  padding-top: 80px;
-}
+  .gallery {
+    padding-top: 80px;
+  }
 
-.gallery__gutter-sizer {
-width: 0px;
-}
+  .gallery__gutter-sizer {
+    width: 0px;
+  }
 
-.gallery__item {
-  margin-bottom: 0px;
-}
+  .gallery__item {
+    margin-bottom: 0px;
+  }
 }
 
 .gallery__item--height1 {
@@ -480,32 +453,32 @@ width: 0px;
   bottom: 0px;
   transition: all 0.2s ease-in-out;
   background: linear-gradient(0deg, rgba(0, 0, 0, 0.2) 0px, rgba(0, 0, 0, 0)30%) !important;
-/*   box-shadow: inset 0rem 0rem 5rem rgba(0, 0, 0, 0.3) !important; */
+  /*   box-shadow: inset 0rem 0rem 5rem rgba(0, 0, 0, 0.3) !important; */
 }
 
 .item-info-meta {
   /* text-transform: capitalize; */
   position: absolute;
-  width:100%;
+  width: 100%;
   color: white;
   bottom: 0px;
   padding: 10px 15px;
   font-weight: 200;
   display: block;
   border-width: 0px 0 0px 0;
-  border-color:white;
-  border-style:dotted;
+  border-color: white;
+  border-style: dotted;
 }
 
 h1 {
- font-weight:400!important;
- font-size:14px!important;
+  font-weight: 400 !important;
+  font-size: 14px !important;
 }
 
 h1 span {
- display:inline!important;
- margin-left:5px;
- font-weight:200;
+  display: inline !important;
+  margin-left: 5px;
+  font-weight: 200;
 }
 
 .gallery__item img {
@@ -546,6 +519,6 @@ h1 span {
 } */
 
 .gallery-tag.active {
-  background-color:rgba(100,40,40,1.0) !important;
+  background-color: rgba(100, 40, 40, 1.0) !important;
 }
 </style>
