@@ -79,7 +79,7 @@
 
           <div class="instructions-item">
             <div class="instructions-item-icon"
-              style="background-image:url(https://data.dh.gu.se/ui-icons/search_white.png)"></div>
+              style="background-image:url(https://data.dh.gu.se/ui-icons/inspect_white.png)"></div>
             <div class="instructions-item-description">
               <div class="instructions-item-title">{{ $t('f2title') }}</div>
               <p>{{ $t('f2description') }}</p>
@@ -101,7 +101,7 @@
 
           <div class="instructions-item">
             <div class="instructions-item-icon"
-              style="background-image:url(https://data.dh.gu.se/ui-icons/inspect_white.png)"></div>
+              style="background-image:url(https://data.dh.gu.se/ui-icons/search_white.png)"></div>
             <div class="instructions-item-description">
               <div class="instructions-item-title">{{ $t('f4title') }}</div>
               <p>{{ $t('f4description') }}</p>
@@ -308,7 +308,7 @@
     background-repeat: no-repeat;
     background-position-y: 50%;
     margin-left: 0px;
-    margin-top:-15px;
+    margin-top:0px;
   }
 
   .instructions-item-title {

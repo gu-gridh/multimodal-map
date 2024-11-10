@@ -263,6 +263,9 @@ const toggleInstructionsVisibility = async () => {
       </button>
     </div>
 
+    <div class="guide-button compact" title="User Guide" @click="toggleInstructionsVisibility">
+            ?</div>
+
   </div>
   <MapViewGallery v-if="showGallery" />
   <MapViewGalleryInscriptions v-if="showGalleryInscriptions" />
@@ -608,6 +611,34 @@ border-color:grey;
 
 .gallery-filters .tag-container .gallery-tag:hover{
 background-color:rgba(100,40,40,1.0);
+}
+
+.guide-button {
+    pointer-events: auto;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    overflow: hidden;
+    position: absolute;
+    bottom: 100px;
+    right: 30px;
+    background-color: rgb(0, 0, 0, 0.8) !important;
+    border-radius: 50%;
+    color: white;
+    text-align: center;
+    line-height: 1.9;
+    font-size: 1.4em;
+    font-weight: 100;
+    font-family: "Oswald", sans-serif !important;
+    user-select: none;
+    -webkit-user-select: none;
+    z-index: 1000;
+}
+
+.guide-button:hover {
+    background-color: rgb(0, 0, 0, 1.0) !important;
+    cursor: pointer;
+    transform: scale(1.07);
 }
 
 </style>
