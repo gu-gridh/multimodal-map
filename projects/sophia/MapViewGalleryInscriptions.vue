@@ -114,6 +114,7 @@ export default {
         images.value = [];
 
         await fetchData(pageIndex);
+        pageIndex = 2;
 
         // Make sure to wait until all images have loaded
         imagesLoaded(document.querySelector('.gallery'), () => {
@@ -136,7 +137,7 @@ export default {
     });
 
     const fetchData = async (requestedPageIndex) => {
-      if (requestedPageIndex >= lastFetchedPageIndex && !isFetching) {
+      if (requestedPageIndex > lastFetchedPageIndex && !isFetching) {
         try {
           isFetching = true;
           const offset = (requestedPageIndex - 1) * 25;
@@ -230,7 +231,7 @@ export default {
       );
 
       fetchData(1).then(() => {
-
+        pageIndex = 2;
         imagesLoaded(document.querySelector('.gallery'), () => {
           initMasonry();
 
