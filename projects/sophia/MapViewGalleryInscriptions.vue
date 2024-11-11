@@ -33,7 +33,7 @@
           <div class="item-info">
             <div class="item-info-meta">
               <h1>{{ item.panelTitle }}:{{ item.id }}<span v-if="item.subtitle">|</span><span v-if="item.subtitle">{{
-                  item.subtitle }}</span></h1>
+                item.subtitle }}</span></h1>
             </div>
           </div>
           <img :src="`${item.inscription_iiif_url}/!300,/0/default.jpg`" loading="lazy" @load="imageLoaded" />
@@ -73,6 +73,7 @@ export default {
     let canIncrement = true;  // Flag to control the increment
     let infScroll;
     let lastFetchedPageIndex = 0;
+    let isFetching = false;
 
     const fetchDataAndPopulateRef = async (url, refToPopulate) => {
       try {
@@ -110,10 +111,9 @@ export default {
         pageIndex = 1;
         lastFetchedPageIndex = 0;
         canIncrement = true;
-
         images.value = [];
 
-        await fetchData(1);
+        await fetchData(pageIndex);
 
         // Make sure to wait until all images have loaded
         imagesLoaded(document.querySelector('.gallery'), () => {
@@ -136,8 +136,9 @@ export default {
     });
 
     const fetchData = async (requestedPageIndex) => {
-      if (requestedPageIndex > lastFetchedPageIndex) {
+      if (requestedPageIndex >= lastFetchedPageIndex && !isFetching) {
         try {
+          isFetching = true;
           const offset = (requestedPageIndex - 1) * 25;
           const baseUrl = `https://saintsophia.dh.gu.se/api/inscriptions/inscription/?depth=1&offset=${offset}&${new URLSearchParams(store.imgParams).toString()}`;
           const res = await fetch(baseUrl);
@@ -154,13 +155,15 @@ export default {
             images.value = [...images.value, ...newImages];
             storedApiData.value = [...storedApiData.value, ...data.results];
 
-            lastFetchedPageIndex = requestedPageIndex; 
+            lastFetchedPageIndex = requestedPageIndex;
           } else {
             console.log("No more data available.");
             infScroll && infScroll.off('load');
           }
         } catch (error) {
           console.error("Error fetching additional images:", error);
+        } finally {
+          isFetching = false;
         }
       }
     };
@@ -181,9 +184,6 @@ export default {
 
       infScroll = new InfiniteScroll(gallery, {
         path: () => {
-          if (canIncrement) {
-            pageIndex++;  // Increment pageIndex for the next set of data
-          }
           canIncrement = false; // Disable further increments
           const offset = (pageIndex - 1) * 25;
           const url = `https://saintsophia.dh.gu.se/api/inscriptions/inscription/?depth=1&offset=${offset}&${new URLSearchParams(store.imgParams).toString()}`;
@@ -199,16 +199,16 @@ export default {
         if (pageIndex >= lastFetchedPageIndex) {
           try {
             await fetchData(pageIndex);
+            pageIndex++;
             imagesLoaded(document.querySelector('.gallery'), () => {
               msnry.reloadItems();
               msnry.layout();
             });
-            canIncrement = true; 
           } catch (e) {
             console.error("error in the load event of infinitescroll:", e);
-            canIncrement = true; 
           }
         }
+        canIncrement = true;
       });
     };
 
@@ -252,7 +252,6 @@ export default {
   },
 };
 </script>
-
 
 <style scoped>
 #gallery-container {
