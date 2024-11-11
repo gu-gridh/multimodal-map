@@ -197,10 +197,10 @@ const isLoadingMore = ref(false);
 const searchResultsContainer = ref(null);
 const showSuggestions = ref(false);
 const searchSection = ref<HTMLElement | null>(null);
-const LANGUAGE = ref<Record<string, string>>({});
-const WRITING = ref<Record<string, string>>({});
-const PICTORIAL = ref<Record<string, string>>({});
-const TEXTUAL = ref<Record<string, string>>({});
+const TEXTUAL = ref<Array<{ id: string | number; text: string }>>([]);
+const WRITING = ref<Array<{ id: string | number; text: string }>>([]);
+const PICTORIAL = ref<Array<{ id: string | number; text: string }>>([]);
+const LANGUAGE = ref<Array<{ id: string | number; text: string }>>([]);
 const searchInput = ref(null);
 
 const filteredInscription = computed(() => {
@@ -396,12 +396,12 @@ function resetAllExcept(exceptModel) { //reset the other dropdowns to all when a
 async function fetchDataAndPopulateRef<T>(type: string, refToPopulate: any) {
   try {
     const data = await sophiaClient.listAll<T>(type);
-    data.forEach((result: any) => {
-      if (result.published) {
-        const textKey = i18n.global.locale === 'uk' ? 'text_ukr' : 'text';
-        refToPopulate.value[result.id] = result[textKey];
-      }
-    });
+    refToPopulate.value = data
+      .filter((result: any) => result.published)
+      .map((result: any) => ({
+        id: result.id,
+        text: i18n.global.locale === 'uk' ? result.text_ukr : result.text
+      }));
   } catch (error) {
     console.error(`Error fetching data for type ${type}:`, error);
   }
@@ -442,18 +442,17 @@ function clearAll() {
 }
 
 watch(() => i18n.global.locale, (newLocale) => {
-  fetchDataAndPopulateRef('language', LANGUAGE);
-  fetchDataAndPopulateRef("language", LANGUAGE);
-  fetchDataAndPopulateRef("writingsystem", WRITING);
-  fetchDataAndPopulateRef("tag", PICTORIAL);
-  fetchDataAndPopulateRef("genre", TEXTUAL);
+  fetchDataAndPopulateRef("language-with-data", LANGUAGE);
+  fetchDataAndPopulateRef("writing-system-with-data", WRITING);
+  fetchDataAndPopulateRef("tags-with-data", PICTORIAL);
+  fetchDataAndPopulateRef("genre-with-data", TEXTUAL);
 });
 
 onMounted(async () => {
-  await fetchDataAndPopulateRef("language", LANGUAGE);
-  await fetchDataAndPopulateRef("writingsystem", WRITING);
-  await fetchDataAndPopulateRef("tag", PICTORIAL);
-  await fetchDataAndPopulateRef("genre", TEXTUAL);
+  await fetchDataAndPopulateRef("language-with-data", LANGUAGE);
+  await fetchDataAndPopulateRef("writing-system-with-data", WRITING);
+  await fetchDataAndPopulateRef("tags-with-data", PICTORIAL);
+  await fetchDataAndPopulateRef("genre-with-data", TEXTUAL);
   document.addEventListener('click', handleClickOutside);
 });
 
