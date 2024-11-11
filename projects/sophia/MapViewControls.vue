@@ -207,10 +207,12 @@ const filteredInscription = computed(() => {
   if (Array.isArray(searchResults.value)) {
     return searchResults.value.map(result => {
       if (result && typeof result === 'object') {
-        const formattedTitle = result.title ? ` (${result.title})` : '';
+        const panelTitle = result.panel?.title || '';
+        const inscriptionId = result.id || '';
+        const inscriptionTitle = result.title ? ` | ${result.title}` : '';
         return {
           ...result,
-          displayText: `${result.panel}:${result.id}${formattedTitle}`
+          displayText: `${panelTitle}:${inscriptionId} ${inscriptionTitle}`
         };
       } else {
         return { displayText: 'No data available' };
@@ -324,7 +326,7 @@ const handleClickOutside = (event: MouseEvent) => { //hide suggestions when clic
 //fetch inscriptions
 const fetchInscriptions = async (query, offset = 0) => {
   if (searchType.value === 'inscriptionobjects') {
-    const apiUrl = `https://saintsophia.dh.gu.se/api/inscriptions/inscription-string/?str=${encodeURIComponent(query)}&offset=${offset}`;
+    const apiUrl = `https://saintsophia.dh.gu.se/api/inscriptions/inscription-string/?str=${encodeURIComponent(query)}&offset=${offset}&depth=1`;
     try {
       const response = await fetch(apiUrl);
       const data = await response.json();
