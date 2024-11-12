@@ -24,13 +24,13 @@
   <div class="data-widget">
     <div class="data-widget-section">
       <div class="data-widget-item">
-        <h3>Points Shown:</h3>
-        <p>{{ currentTombCount }}</p>
+        <h3>Sites Available:</h3>
+        <p>{{ count }}</p>
       </div>
       <div class="data-widget-item">|</div>
       <div class="data-widget-item">
         <h3>Points Hidden:</h3>
-        <p>{{ hiddenTombs }}</p>
+        <p>{{ pointsHidden }}</p>
       </div>
     </div>
   </div>
@@ -44,7 +44,7 @@
 </template>
 
 <script setup lang="ts">
-import { inject, ref, computed, onMounted } from "vue";
+import { inject, ref, computed, watch } from "vue";
 import CategoryButtonDropdown from "./CategoryButtonDropdown.vue";
 import RangeSlider from "./RangeSliderMaritime.vue";
 import { storeToRefs } from "pinia";
@@ -52,7 +52,9 @@ import { maritimeencountersStore } from "./store";
 import type { MaritimeEncountersProject } from "./types";
 
 const config = inject<MaritimeEncountersProject>("config");
-const { selectedRange, dataType } = storeToRefs(maritimeencountersStore());
+const { selectedRange, dataType, imgParams } = storeToRefs(maritimeencountersStore());
+const count = ref(0);
+const initialCount = ref(0);
 
 const isFilterModified = computed(() => {
   return (
@@ -61,13 +63,26 @@ const isFilterModified = computed(() => {
   );
 });
 
-//initialize variables for data section
-const hiddenTombs = ref(0);
-const currentTombCount = ref(0);
+watch(
+  imgParams,
+  async (newParams) => {
+    try {
+      const response = await fetch(
+        `https://maritime-encounters.dh.gu.se/api/resources/search/?page_size=500&${new URLSearchParams(newParams)}`
+      );
+      const data = await response.json();
+      if (initialCount.value === 0) {
+        initialCount.value = data.count;
+      }
+      count.value = data.count;
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  },
+  { immediate: true }
+);
 
-onMounted(async () => {
-  // await fetchDataAndPopulateRef("epoch", TAGS);
-}); 
+const pointsHidden = computed(() => initialCount.value - count.value);
 
 function clearAll() {
   dataType.value = ["all"];
