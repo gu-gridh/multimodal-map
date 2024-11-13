@@ -68,11 +68,13 @@ export default {
     const store = inscriptionsStore();
     const medias = ref([]);
     const materials = ref([]);
+    // const storedApiData = ref([]);
     let msnry;
     let pageIndex = 1;  //initialize pageIndex to 1
     let canIncrement = true;  //flag to control the increment
     let infScroll;
     let lastFetchedPageIndex = 0;
+    let isFetching = false;
 
     const fetchDataAndPopulateRef = async (url, refToPopulate) => {
       try {
@@ -124,7 +126,7 @@ export default {
         images.value = [];
 
         await fetchData(1);
-
+        pageIndex = 2;
         // Make sure to wait until all images have loaded
         imagesLoaded(document.querySelector('.gallery'), () => {
           reinitInfiniteScroll();
@@ -133,22 +135,32 @@ export default {
     );
 
     const fetchData = async (requestedPageIndex) => {
-      if (requestedPageIndex > lastFetchedPageIndex) {
+      if (requestedPageIndex > lastFetchedPageIndex && !isFetching) {
         try {
-          const urlToFetch = `https://saintsophia.dh.gu.se/api/inscriptions/image/?type_of_image=1&depth=2&${new URLSearchParams(store.surfaceParams).toString()}`; // type_of_image=1 only fetches Ortophotos
-          console.log("Fetching additional images from:", urlToFetch);
+          isFetching = true;
+          const offset = (requestedPageIndex - 1) * 25;
+          const urlToFetch = `https://saintsophia.dh.gu.se/api/inscriptions/image/?type_of_image=1&depth=2&offset=${offset}&${new URLSearchParams(store.surfaceParams).toString()}`; //type_of_image=1 only fetches Ortophotos
           const res = await fetch(urlToFetch);
           const data = await res.json();
-          const newImages = data.results.map(item => ({
-            attached_orthophoto: item.iiif_file,
-            name: item.panel.title,
-          })).filter(img => img && img.attached_orthophoto);
 
-          images.value = [...images.value, ...newImages];
+          if (data.results && data.results.length > 0) {
+            const newImages = data.results.map(item => ({
+              attached_orthophoto: item.iiif_file,
+              name: item.panel.title,
+            })).filter(img => img && img.attached_orthophoto);
 
-          lastFetchedPageIndex = requestedPageIndex;  //update the lastFetchedPageIndex
+            images.value = [...images.value, ...newImages];
+            // storedApiData.value = [...storedApiData.value, ...data.results];
+
+            lastFetchedPageIndex = requestedPageIndex;
+          } else {
+            console.log("No more data available.");
+            infScroll && infScroll.off('load');
+          }
         } catch (error) {
           console.error("Error fetching additional images:", error);
+        } finally {
+          isFetching = false;
         }
       }
     };
@@ -167,40 +179,11 @@ export default {
         percentPosition: true,
       });
 
-      const checkFor404 = async (url) => {
-        try {
-          const res = await fetch(url);
-          if (res.status === 404) {
-            msnry.layout();
-            return true; // Indicates that a 404 was found
-          }
-        } catch (error) {
-          console.error("Error in 404 fetch:", error);
-        }
-        return false; // Indicates that a 404 was not found
-      };
-
       infScroll = new InfiniteScroll(gallery, {
         path: () => {
-          if (canIncrement) {
-            pageIndex++;  // Increment pageIndex for the next set of data
-          }
           canIncrement = false; // Disable further increments
           const offset = (pageIndex - 1) * 25;
-          const url = `${apiConfig.IMAGE}?offset=${offset}&type_of_image=1&depth=2&${new URLSearchParams(store.surfaceParams).toString()}`;
-
-          // Use Promise syntax to handle the asynchronous 404 check
-          checkFor404(url).then(async (is404) => {
-            if (is404) {
-              // Here, first ensure all images are fully loaded
-              await new Promise((resolve) => {
-                imagesLoaded(document.querySelector('.gallery'), resolve);
-              });
-              msnry.reloadItems();
-              msnry.layout();
-            }
-          });
-
+          const url = `https://saintsophia.dh.gu.se/api/inscriptions/image/?type_of_image=1&depth=2&offset=${offset}&${new URLSearchParams(store.surfaceParams).toString()}`;
           return url;
         },
         outlayer: msnry,
@@ -210,29 +193,17 @@ export default {
         elementScroll: true,
       });
 
-      infScroll.on('load', async function (response) {
-        if (pageIndex > lastFetchedPageIndex) {
+      infScroll.on('load', async function () {
+        if (pageIndex >= lastFetchedPageIndex) {
           try {
-            // Extract the body content from the HTML response
-            let bodyContent = response.querySelector("body").textContent;
-
-            // Convert the body content to JSON
-            const data = JSON.parse(bodyContent);
-
-            const newImages = data.results.map(item => ({
-              attached_orthophoto: item.iiif_file,
-              name: item.panel.title,
-            })).filter(img => img !== null);
-
-            images.value = [...images.value, ...newImages];
-
+            await fetchData(pageIndex);
+            pageIndex++;
             imagesLoaded(document.querySelector('.gallery'), () => {
               msnry.reloadItems();
               msnry.layout();
             });
-          }
-          catch (e) {
-            console.error("JSON Parsing failed or other error: ", e);
+          } catch (e) {
+            console.error("error in the load event of infinitescroll:", e);
           }
         }
         canIncrement = true;
@@ -257,7 +228,7 @@ export default {
       );
 
       fetchData(1).then(() => {
-
+        pageIndex = 2;
         imagesLoaded(document.querySelector('.gallery'), () => {
           initMasonry();
 

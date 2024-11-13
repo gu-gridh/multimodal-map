@@ -67,7 +67,7 @@ export default {
     const store = inscriptionsStore();
     const alignments = ref([]);
     const conditions = ref([]);
-    const storedApiData = ref([]);
+    // const storedApiData = ref([]);
     let msnry;
     let pageIndex = 1;  // Initialize pageIndex to 1
     let canIncrement = true;  // Flag to control the increment
@@ -154,7 +154,7 @@ export default {
             })).filter(img => img && img.inscription_iiif_url);
 
             images.value = [...images.value, ...newImages];
-            storedApiData.value = [...storedApiData.value, ...data.results];
+            // storedApiData.value = [...storedApiData.value, ...data.results];
 
             lastFetchedPageIndex = requestedPageIndex;
           } else {
@@ -185,7 +185,7 @@ export default {
 
       infScroll = new InfiniteScroll(gallery, {
         path: () => {
-          canIncrement = false; // Disable further increments
+          canIncrement = false; //disable further increments
           const offset = (pageIndex - 1) * 25;
           const url = `https://saintsophia.dh.gu.se/api/inscriptions/inscription/?depth=1&offset=${offset}&${new URLSearchParams(store.imgParams).toString()}`;
           return url;
