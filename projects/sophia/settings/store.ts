@@ -3,7 +3,6 @@ import { defineStore } from "pinia";
 
 export const inscriptionsStore = defineStore("inscriptions", () => {
   const categories = ref<Array<string>>(["all"]);
-  // const tags = ref<Array<string>>(["all"]);
   const languageModel = ref<Array<string>>(["all"]);
   const pictorialModel = ref<Array<string>>(["all"]);
   const textualModel = ref<Array<string>>(["all"]);
@@ -11,7 +10,9 @@ export const inscriptionsStore = defineStore("inscriptions", () => {
   const panelType = ref<Array<string>>(["all"]);
   const alignmentModel = ref<number | null>(null);
   const conditionModel = ref<number | null>(null);
-  const tagsLayerVisible = ref(false); // Default visibility state for tags layer
+  const mediaModel = ref<number | null>(null);
+  const materialModel = ref<number | null>(null);
+  const tagsLayerVisible = ref(false); //default visibility state for tags layer
   const dataParams = ref<Record<string, string | number | null>>({});
   const imgParams = ref<Record<string, string | number | null>>({});
   const surfaceParams = ref<Record<string, string | number | null>>({});
@@ -41,6 +42,8 @@ export const inscriptionsStore = defineStore("inscriptions", () => {
     selectedCategory,
     alignmentModel,
     conditionModel,
-    surfaceParams
+    surfaceParams,
+    mediaModel,
+    materialModel
   };
 });

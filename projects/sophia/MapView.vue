@@ -18,7 +18,7 @@ import { onMounted, watch } from "vue";
 import { nextTick } from "vue";
 import Title from "./MapViewTitle.vue";
 
-const { selectedCategory, writingModel, languageModel, pictorialModel, textualModel, alignmentModel, conditionModel, panelId, inscriptionId } = storeToRefs(inscriptionsStore());
+const { selectedCategory, writingModel, languageModel, pictorialModel, textualModel, alignmentModel, conditionModel, panelId, inscriptionId, mediaModel, materialModel} = storeToRefs(inscriptionsStore());
 
 const store = mapStore();
 const inscriptions = inscriptionsStore();  //get the instance of inscriptionsStore
@@ -35,8 +35,7 @@ const showFirstFloor = ref(true);
 const showSecondFloor = ref(false);
 let visited = true; //store the visited status outside of the hook
 
-// Watcher for selectedFeature changes
-watch(
+watch( //watcher for selectedFeature changes
   selectedFeature,
   (newFeature, oldFeature) => {
     if (newFeature && newFeature.getGeometry) {
@@ -53,7 +52,7 @@ watch(
   { immediate: true }
 );
 
-watch( // if a dropdown has been selected, toggle to the inscriptions view
+watch( //if a dropdown has been selected, toggle to the inscriptions view
   [writingModel, languageModel, pictorialModel, textualModel],
   ([newWriting, newLanguage, newPictorial, newTextual]) => {
     if (
@@ -117,11 +116,24 @@ watch(showSecondFloor, (newValue) => {
 
 const panelParams = computed(() => {
   const panelIdValue = panelId.value;
-
-  const params = {};
+  const medium = mediaModel.value;
+  const material = materialModel.value;
+  const params = { medium, material };
 
   if (panelIdValue !== null && panelIdValue !== undefined) {
     params['panel'] = panelIdValue;
+  }
+
+  if (medium !== null) {
+    (params as any)['medium'] = medium; 
+  } else {
+    delete (params as any)['medium']; 
+  }
+
+  if (material !== null) {
+    (params as any)['material'] = material; 
+  } else {
+    delete (params as any)['material']; 
   }
 
   return params;
@@ -199,11 +211,9 @@ onMounted(() => {
   const storedShowPlan = localStorage.getItem("showPlan");
   const storedShowGallery = localStorage.getItem("showGallery");
   const storedShowGalleryInscriptions = localStorage.getItem("showGalleryInscriptions");
-  // const storedShowFirstFloor = localStorage.getItem("showFirstFloor");
-  // const storedShowSecondFloor = localStorage.getItem("showSecondFloor");
 
   if (!visited) {
-    // Hide the about component
+    //hide the about component
     visibleAbout.value = true;
     localStorage.setItem("visited", "true");
   }
@@ -219,15 +229,6 @@ onMounted(() => {
   if (storedShowGalleryInscriptions) {
     showGalleryInscriptions.value = JSON.parse(storedShowGalleryInscriptions);
   }
-
-/*   if (storedShowFirstFloor) {
-    showFirstFloor.value = JSON.parse(storedShowFirstFloor);
-  }
-
-  if (storedShowSecondFloor) {
-    showSecondFloor.value = JSON.parse(storedShowSecondFloor);
-  } */
-
 })
 
 const toggleAboutVisibility = async () => {
@@ -263,8 +264,7 @@ const toggleInstructionsVisibility = async () => {
       </button>
     </div>
 
-    <div class="guide-button compact" title="User Guide" @click="toggleInstructionsVisibility">
-            ?</div>
+    <div class="guide-button compact" title="User Guide" @click="toggleInstructionsVisibility">?</div>
 
   </div>
   <MapViewGallery v-if="showGallery" />
@@ -348,12 +348,11 @@ const toggleInstructionsVisibility = async () => {
 
 .floor-plans{
   opacity:0.7;
-
 }
 
 @media screen and (max-width: 900px) {
   .gradient-blur {
-display:none;
+    display:none;
   }
 }
 
@@ -443,8 +442,6 @@ display:none;
       rgba(0, 0, 0, 1) 100%);
 }
 
-
-
 #app .tile-layer {
   filter: grayscale(0%);
   filter: opacity(0.0);
@@ -484,9 +481,7 @@ display:none;
 }
 }
 
-
 /* Gallery */
-
 #gallery-container {
     position: absolute;
     margin-left: 510px;
@@ -512,7 +507,6 @@ display:none;
     }
   }
 
-
 @media screen and (max-width: 900px) {
   #gallery-container {
     margin-left: 0px;
@@ -522,9 +516,7 @@ display:none;
   }
 }
 
-
 /* Gallery filters */
-
 .gallery-filters{
   height:auto;
   display:flex;
@@ -546,7 +538,6 @@ background: linear-gradient(0deg, rgba(0, 0, 0, 0.8)0%, rgba(0, 0, 0, 0.2)30%, r
 }
 
 .gallery-filters-padding{
-
   display:flex;
   flex-direction: column;
 justify-content:right;
@@ -566,7 +557,6 @@ padding-right:0%;
 padding-right:0%;
 }
 }
-
 
 @media screen and (max-width: 900px) {
   .gallery-filters{
@@ -640,5 +630,4 @@ background-color:rgba(100,40,40,1.0);
     cursor: pointer;
     transform: scale(1.07);
 }
-
 </style>
