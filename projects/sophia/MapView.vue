@@ -31,6 +31,7 @@ const visibleInstructions = ref(false);
 const showPlan = ref(true);
 const showGallery = ref(false);
 const showGalleryInscriptions = ref(false);
+const showGuideButton = ref(true);
 const showFirstFloor = ref(true);
 const showSecondFloor = ref(false);
 let visited = true; //store the visited status outside of the hook
@@ -64,6 +65,7 @@ watch( //if a dropdown has been selected, toggle to the inscriptions view
       showPlan.value = false;
       showGalleryInscriptions.value = true;
       showGallery.value = false;
+      showGuideButton.value = false;
     }
   }
 );
@@ -74,6 +76,7 @@ watch(selectedCategory, (newValue, oldValue) => {
     showPlan.value = false;
     showGalleryInscriptions.value = true;
     showGallery.value = false;
+    showGuideButton.value = false;
   }
 });
 
@@ -83,6 +86,7 @@ watch(inscriptionId, (newValue, oldValue) => {
     showPlan.value = false;
     showGalleryInscriptions.value = true;
     showGallery.value = false;
+    showGuideButton.value = false;
   }
 });
 
@@ -91,6 +95,7 @@ watch(panelId, (newValue, oldValue) => {
     showPlan.value = false;
     showGalleryInscriptions.value = false;
     showGallery.value = true;
+    showGuideButton.value = false;
   }
 });
 
@@ -112,6 +117,10 @@ watch(showFirstFloor, (newValue) => {
 
 watch(showSecondFloor, (newValue) => {
   localStorage.setItem("showSecondFloor", JSON.stringify(newValue));
+});
+
+watch(showGuideButton, (newValue) => {
+  localStorage.setItem("showGuideButton", JSON.stringify(newValue));
 });
 
 const panelParams = computed(() => {
@@ -211,6 +220,7 @@ onMounted(() => {
   const storedShowPlan = localStorage.getItem("showPlan");
   const storedShowGallery = localStorage.getItem("showGallery");
   const storedShowGalleryInscriptions = localStorage.getItem("showGalleryInscriptions");
+  const storedShowGuideButton = localStorage.getItem("showGuideButton");
 
   if (!visited) {
     //hide the about component
@@ -228,6 +238,9 @@ onMounted(() => {
 
   if (storedShowGalleryInscriptions) {
     showGalleryInscriptions.value = JSON.parse(storedShowGalleryInscriptions);
+  }
+  if (storedShowGuideButton) {
+    showGuideButton.value = JSON.parse(storedShowGuideButton);
   }
 })
 
