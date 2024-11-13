@@ -135,17 +135,17 @@
       <div class="data-widget-section">
         <div class="data-widget-item">
           <h3>{{ $t('texts') }}:</h3>
-          <p>{{ totalPhotographs }}</p>
+          <p>{{ totalTextual }}</p>
         </div>
 
         <div class="data-widget-item">
           <h3>{{ $t('figures') }}:</h3>
-          <p>{{ totalPlans }}</p>
+          <p>{{ totalPictorial }}</p>
         </div>
 
         <div class="data-widget-item">
           <h3>{{ $t('composites') }}:</h3>
-          <p>{{ totalThreed }}</p>
+          <p>{{ totalComposite }}</p>
         </div>
       </div>
     </div>
@@ -173,15 +173,10 @@ const config = inject<InscriptionsProject>("config");
 const searchId = ref(null); //id of the selected item in the search
 const sophiaClient = new SophiaClient("inscriptions"); // Initialize SophiaClient
 const store = inscriptionsStore();
-const { categories, languageModel, writingModel, pictorialModel, selectedCategory, textualModel, areMapPointsLoaded, alignmentModel, conditionModel, panelId, inscriptionId } = storeToRefs(inscriptionsStore());
+const { categories, languageModel, writingModel, pictorialModel, selectedCategory, textualModel, areMapPointsLoaded, alignmentModel, conditionModel, panelId, inscriptionId, surfaceParams, imgParams } = storeToRefs(inscriptionsStore());
 const lastClickedCategory = ref('');
 
 //initialize variables for data section
-const totalPhotographs = ref(0);
-const totalPlans = ref(0);
-const totalThreed = ref(0);
-const hiddenPanels = ref(0);
-const currentPanelCount = ref(0);
 const searchType = ref('inscriptionobjects'); //default to 'surfaces' 
 const selectedInscription = ref(null); //from search results
 const selectedSurface = ref(null); //from search results
@@ -202,6 +197,13 @@ const WRITING = ref<Array<{ id: string | number; text: string }>>([]);
 const PICTORIAL = ref<Array<{ id: string | number; text: string }>>([]);
 const LANGUAGE = ref<Array<{ id: string | number; text: string }>>([]);
 const searchInput = ref(null);
+
+//data section
+const currentPanelCount = ref(0);
+const hiddenPanels = ref(0);
+const totalTextual = ref(0);
+const totalPictorial = ref(0);
+const totalComposite = ref(0);
 
 const filteredInscription = computed(() => {
   if (Array.isArray(searchResults.value)) {
@@ -322,6 +324,35 @@ const handleClickOutside = (event: MouseEvent) => { //hide suggestions when clic
     showSuggestions.value = false;
   }
 };
+
+//fetch data section when parameters change
+async function fetchDataSection() {
+  //combine the parameters
+  const params = {
+    ...surfaceParams.value,
+    ...imgParams.value,
+  };
+
+  const queryString = new URLSearchParams(params).toString();
+
+  const url = `https://saintsophia.dh.gu.se/api/inscriptions/inscriptions-info/?${queryString}`;
+
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+
+    currentPanelCount.value = data.shown_inscriptions;
+    hiddenPanels.value = data.hidden_inscriptions;
+    totalTextual.value = data.textual_inscriptions;
+    totalPictorial.value = data.pictorial_inscriptions;
+    totalComposite.value = data.composites_inscriptions;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+}
 
 //fetch inscriptions
 const fetchInscriptions = async (query, offset = 0) => {
@@ -449,6 +480,22 @@ watch(() => i18n.global.locale, (newLocale) => {
   fetchDataAndPopulateRef("tags-with-data", PICTORIAL);
   fetchDataAndPopulateRef("genre-with-data", TEXTUAL);
 });
+
+watch(
+  () => surfaceParams.value,
+  async (newParams, oldParams) => {
+    await fetchDataSection();
+  },
+  { immediate: true }
+);
+
+watch(
+  () => imgParams.value,
+  async (newParams, oldParams) => {
+    await fetchDataSection();
+  },
+  { immediate: true }
+);
 
 onMounted(async () => {
   await fetchDataAndPopulateRef("language-with-data", LANGUAGE);
