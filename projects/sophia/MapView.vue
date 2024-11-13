@@ -244,13 +244,13 @@ const toggleInstructionsVisibility = async () => {
 <template>
   <div style="display:flex; align-items: center; justify-content: center; pointer-events: none;">
     <div class="ui-mode ui-overlay ui-overlay-top">
-      <button class="item" v-bind:class="{ selected: showPlan }" v-on:click="showPlan = true; showGallery = false; showGalleryInscriptions = false;">
+      <button class="item" v-bind:class="{ selected: showPlan }" v-on:click="showPlan = true; showGallery = false; showGalleryInscriptions = false; showGuideButton = true;">
         {{ $t('plans') }}
       </button>
-      <button class="item" v-bind:class="{ selected: showGallery }" v-on:click="showPlan = false; showGallery = true; showGalleryInscriptions = false;">
+      <button class="item" v-bind:class="{ selected: showGallery }" v-on:click="showPlan = false; showGallery = true; showGalleryInscriptions = false; showGuideButton = false;">
         {{ $t('panels') }}
       </button>
-      <button class="item" v-bind:class="{ selected: showGalleryInscriptions }" v-on:click="showPlan = false; showGalleryInscriptions = true, showGallery = false;">
+      <button class="item" v-bind:class="{ selected: showGalleryInscriptions }" v-on:click="showPlan = false; showGalleryInscriptions = true, showGallery = false; showGuideButton = false;">
         {{ $t('inscriptions') }}
       </button>
     </div>
@@ -264,7 +264,7 @@ const toggleInstructionsVisibility = async () => {
       </button>
     </div>
 
-    <div class="guide-button compact" title="User Guide" @click="toggleInstructionsVisibility">?</div>
+    <div class="guide-button compact" title="User Guide" @click="toggleInstructionsVisibility" v-if="showGuideButton">?</div>
 
   </div>
   <MapViewGallery v-if="showGallery" />
