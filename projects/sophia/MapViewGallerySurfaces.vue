@@ -54,12 +54,11 @@
 </template>
 
 <script>
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, ref, watch, computed } from 'vue';
 import Masonry from 'masonry-layout';
 import imagesLoaded from 'imagesloaded';
 import InfiniteScroll from 'infinite-scroll';
 import { inscriptionsStore } from "./settings/store";
-import apiConfig from "./settings/apiConfig";
 import i18n from '../../src/translations/sophia';
 
 export default {
@@ -68,13 +67,25 @@ export default {
     const store = inscriptionsStore();
     const medias = ref([]);
     const materials = ref([]);
-    // const storedApiData = ref([]);
     let msnry;
     let pageIndex = 1;  //initialize pageIndex to 1
     let canIncrement = true;  //flag to control the increment
     let infScroll;
     let lastFetchedPageIndex = 0;
     let isFetching = false;
+
+    const transformedParams = computed(() => { //change the naming of the params to get the deeper level from the api
+      const params = { ...store.surfaceParams };
+      if (params.medium) {
+        params.panel__medium = params.medium;
+        delete params.medium;
+      }
+      if (params.material) {
+        params.panel__material = params.material;
+        delete params.material;
+      }
+      return new URLSearchParams(params).toString();
+    });
 
     const fetchDataAndPopulateRef = async (url, refToPopulate) => {
       try {
@@ -127,7 +138,7 @@ export default {
 
         await fetchData(1);
         pageIndex = 2;
-        // Make sure to wait until all images have loaded
+        //make sure to wait until all images have loaded
         imagesLoaded(document.querySelector('.gallery'), () => {
           reinitInfiniteScroll();
         });
@@ -139,7 +150,7 @@ export default {
         try {
           isFetching = true;
           const offset = (requestedPageIndex - 1) * 25;
-          const urlToFetch = `https://saintsophia.dh.gu.se/api/inscriptions/image/?type_of_image=1&depth=2&offset=${offset}&${new URLSearchParams(store.surfaceParams).toString()}`; //type_of_image=1 only fetches Ortophotos
+          const urlToFetch = `https://saintsophia.dh.gu.se/api/inscriptions/image/?type_of_image=1&depth=2&offset=${offset}&${transformedParams.value}`; //type_of_image=1 only fetches orthophotos
           const res = await fetch(urlToFetch);
           const data = await res.json();
 
@@ -183,8 +194,7 @@ export default {
         path: () => {
           canIncrement = false; // Disable further increments
           const offset = (pageIndex - 1) * 25;
-          const url = `https://saintsophia.dh.gu.se/api/inscriptions/image/?type_of_image=1&depth=2&offset=${offset}&${new URLSearchParams(store.surfaceParams).toString()}`;
-          return url;
+          return `https://saintsophia.dh.gu.se/api/inscriptions/image/?type_of_image=1&depth=2&offset=${offset}&${transformedParams.value}`;
         },
         outlayer: msnry,
         status: '.page-load-status',
