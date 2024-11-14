@@ -31,10 +31,28 @@ const visibleInstructions = ref(false);
 const showPlan = ref(true);
 const showGallery = ref(false);
 const showGalleryInscriptions = ref(false);
-const showGuideButton = ref(true);
+const showGuideButton = computed(() => showPlan.value);
 const showFirstFloor = ref(true);
 const showSecondFloor = ref(false);
 let visited = true; //store the visited status outside of the hook
+
+const switchToPlan = () => {
+  showPlan.value = true;
+  showGallery.value = false;
+  showGalleryInscriptions.value = false;
+};
+
+const switchToGallery = () => {
+  showPlan.value = false;
+  showGallery.value = true;
+  showGalleryInscriptions.value = false;
+};
+
+const switchToInscriptions = () => {
+  showPlan.value = false;
+  showGallery.value = false;
+  showGalleryInscriptions.value = true;
+};
 
 watch( //watcher for selectedFeature changes
   selectedFeature,
@@ -65,7 +83,6 @@ watch( //if a dropdown has been selected, toggle to the inscriptions view
       showPlan.value = false;
       showGalleryInscriptions.value = true;
       showGallery.value = false;
-      showGuideButton.value = false;
     }
   }
 );
@@ -76,7 +93,6 @@ watch(selectedCategory, (newValue, oldValue) => {
     showPlan.value = false;
     showGalleryInscriptions.value = true;
     showGallery.value = false;
-    showGuideButton.value = false;
   }
 });
 
@@ -86,7 +102,6 @@ watch(inscriptionId, (newValue, oldValue) => {
     showPlan.value = false;
     showGalleryInscriptions.value = true;
     showGallery.value = false;
-    showGuideButton.value = false;
   }
 });
 
@@ -95,7 +110,6 @@ watch(panelId, (newValue, oldValue) => {
     showPlan.value = false;
     showGalleryInscriptions.value = false;
     showGallery.value = true;
-    showGuideButton.value = false;
   }
 });
 
@@ -117,10 +131,6 @@ watch(showFirstFloor, (newValue) => {
 
 watch(showSecondFloor, (newValue) => {
   localStorage.setItem("showSecondFloor", JSON.stringify(newValue));
-});
-
-watch(showGuideButton, (newValue) => {
-  localStorage.setItem("showGuideButton", JSON.stringify(newValue));
 });
 
 const panelParams = computed(() => {
@@ -147,7 +157,6 @@ const panelParams = computed(() => {
 
   return params;
 });
-
 
 /* Response for generating the URL for filtering map points down */
 const tagParams = computed(() => {
@@ -220,7 +229,6 @@ onMounted(() => {
   const storedShowPlan = localStorage.getItem("showPlan");
   const storedShowGallery = localStorage.getItem("showGallery");
   const storedShowGalleryInscriptions = localStorage.getItem("showGalleryInscriptions");
-  const storedShowGuideButton = localStorage.getItem("showGuideButton");
 
   if (!visited) {
     //hide the about component
@@ -239,9 +247,6 @@ onMounted(() => {
   if (storedShowGalleryInscriptions) {
     showGalleryInscriptions.value = JSON.parse(storedShowGalleryInscriptions);
   }
-  if (storedShowGuideButton) {
-    showGuideButton.value = JSON.parse(storedShowGuideButton);
-  }
 })
 
 const toggleAboutVisibility = async () => {
@@ -257,13 +262,13 @@ const toggleInstructionsVisibility = async () => {
 <template>
   <div style="display:flex; align-items: center; justify-content: center; pointer-events: none;">
     <div class="ui-mode ui-overlay ui-overlay-top">
-      <button class="item" v-bind:class="{ selected: showPlan }" v-on:click="showPlan = true; showGallery = false; showGalleryInscriptions = false; showGuideButton = true;">
+      <button class="item" :class="{ selected: showPlan }" @click="switchToPlan">
         {{ $t('plans') }}
       </button>
-      <button class="item" v-bind:class="{ selected: showGallery }" v-on:click="showPlan = false; showGallery = true; showGalleryInscriptions = false; showGuideButton = false;">
+      <button class="item" :class="{ selected: showGallery }" @click="switchToGallery">
         {{ $t('panels') }}
       </button>
-      <button class="item" v-bind:class="{ selected: showGalleryInscriptions }" v-on:click="showPlan = false; showGalleryInscriptions = true, showGallery = false; showGuideButton = false;">
+      <button class="item" :class="{ selected: showGalleryInscriptions }" @click="switchToInscriptions">
         {{ $t('inscriptions') }}
       </button>
     </div>
@@ -617,25 +622,25 @@ background-color:rgba(100,40,40,1.0);
 }
 
 .guide-button {
-    pointer-events: auto;
-    width: 40px;
-    height: 40px;
-    cursor: pointer;
-    overflow: hidden;
-    position: absolute;
-    bottom: 100px;
-    right: 30px;
-    background-color: rgb(0, 0, 0, 0.8) !important;
-    border-radius: 50%;
-    color: white;
-    text-align: center;
-    line-height: 1.9;
-    font-size: 1.4em;
-    font-weight: 100;
-    font-family: "Oswald", sans-serif !important;
-    user-select: none;
-    -webkit-user-select: none;
-    z-index: 1000;
+  pointer-events: auto;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  overflow: hidden;
+  position: absolute;
+  bottom: 100px;
+  right: 30px;
+  background-color: rgb(0, 0, 0, 0.8) !important;
+  border-radius: 50%;
+  color: white;
+  text-align: center;
+  line-height: 1.9;
+  font-size: 1.4em;
+  font-weight: 100;
+  font-family: "Oswald", sans-serif !important;
+  user-select: none;
+  -webkit-user-select: none;
+  z-index: 1000;
 }
 
 .guide-button:hover {
