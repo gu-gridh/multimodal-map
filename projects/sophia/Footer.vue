@@ -10,7 +10,7 @@
       <div class="links-stack">
         <a class="site-link link" href="https://github.com/gu-gridh/Saint_Sophia?tab=readme-ov-file#datasets" target="_blank">Dataset
           documentation</a>
-        <a href="#" class="download-link link" @click="downloadData">Download the structured data</a>
+        <a href="#" class="download-link link" @click="downloadData">Download all inscription data</a>
       </div>
     </div>
     <div class="partners">
