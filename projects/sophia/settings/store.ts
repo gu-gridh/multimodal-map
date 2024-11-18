@@ -18,6 +18,7 @@ export const inscriptionsStore = defineStore("inscriptions", () => {
   const surfaceParams = ref<Record<string, string | number | null>>({});
   const areMapPointsLoaded = ref<boolean>(false);
   const panelId = ref<string | null>(null);
+  const panelStr = ref<string | null>(null);
   const inscriptionId = ref<string | null>(null);
   const selectedCategory = ref<number | null>(null); //the selected category number from mapviewcontrols
 
@@ -44,6 +45,7 @@ export const inscriptionsStore = defineStore("inscriptions", () => {
     conditionModel,
     surfaceParams,
     mediaModel,
-    materialModel
+    materialModel,
+    panelStr
   };
 });

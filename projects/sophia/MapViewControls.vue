@@ -84,7 +84,7 @@
             </div>
 
             <!-- Input field -->
-            <input ref="searchInput" type="text" v-model="searchQuery" @input="handleSearch"
+            <input ref="searchInput" type="text" v-model="searchQuery" @input="handleSearch" @keydown.enter="handleEnter"
               @focus="handleSearchBoxFocus" :placeholder="searchType === 'surfaces' ? $t('searchsurfacesplaceholder') : $t('searchinscriptionsplaceholder')"
               class="search-box" :style="{ paddingLeft: bubbleWidth + 'px' }" </div>
 
@@ -170,10 +170,11 @@
   const searchId = ref(null); //id of the selected item in the search
   const sophiaClient = new SophiaClient("inscriptions"); // Initialize SophiaClient
   const store = inscriptionsStore();
-  const { categories, languageModel, writingModel, pictorialModel, selectedCategory, textualModel, areMapPointsLoaded, alignmentModel, conditionModel, panelId, inscriptionId, surfaceParams, imgParams } = storeToRefs(inscriptionsStore());
+  const { categories, languageModel, writingModel, pictorialModel, selectedCategory, textualModel, areMapPointsLoaded, alignmentModel, conditionModel, panelId, inscriptionId, surfaceParams, imgParams, panelStr } = storeToRefs(inscriptionsStore());
   const lastClickedCategory = ref('');
 
   //initialize variables for data section
+  const emit = defineEmits(["update:searchType"]);
   const searchType = ref('inscriptionobjects'); //default to 'surfaces' 
   const selectedInscription = ref(null); //from search results
   const selectedSurface = ref(null); //from search results
@@ -266,6 +267,7 @@
     searchType.value = type;
     searchResults.value = []; //reset search results
     searchQuery.value = ''; //reset the search query
+    emit('update:searchType', searchType.value);
     handleSearch();
   };
 
@@ -288,6 +290,22 @@
       fetchInscriptions(searchQuery.value);
     }
   };
+
+  function handleEnter() {
+  const enteredValue = searchQuery.value.trim();
+  if (enteredValue) {
+    if (searchType.value === 'surfaces') {
+      panelStr.value = enteredValue;
+      selectedInscription.value = { displayText: enteredValue };
+    } else if (searchType.value === 'inscriptionobjects') {
+      panelStr.value = enteredValue;
+      selectedInscription.value = { displayText: enteredValue };
+    }
+    searchQuery.value = '';
+    showSuggestions.value = false;
+    emit('update:searchType', searchType.value);
+  }
+}
 
   const handleCategoryClick = (category: string) => {
     alignmentModel.value = null;
@@ -406,6 +424,7 @@
   function clearSelection() {
     panelId.value = null;
     inscriptionId.value = null;
+    panelStr.value = null;
     searchId.value = null;
     selectedInscription.value = null;
     selectedSurface.value = null;
@@ -445,6 +464,7 @@
     inscriptionId.value = null;
     showSuggestions.value = false;
     searchQuery.value = '';
+    emit('update:searchType', searchType.value);
   }
 
   function handleInscriptionClick(feature) {
@@ -455,6 +475,7 @@
     panelId.value = null;
     showSuggestions.value = false;
     searchQuery.value = '';
+    emit('update:searchType', searchType.value);
   }
 
   function clearAll() {

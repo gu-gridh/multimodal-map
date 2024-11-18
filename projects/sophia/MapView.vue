@@ -18,7 +18,7 @@ import { onMounted, watch } from "vue";
 import { nextTick } from "vue";
 import Title from "./MapViewTitle.vue";
 
-const { selectedCategory, writingModel, languageModel, pictorialModel, textualModel, alignmentModel, conditionModel, panelId, inscriptionId, mediaModel, materialModel} = storeToRefs(inscriptionsStore());
+const { selectedCategory, writingModel, languageModel, pictorialModel, textualModel, alignmentModel, conditionModel, panelId, inscriptionId, mediaModel, materialModel, panelStr } = storeToRefs(inscriptionsStore());
 
 const store = mapStore();
 const inscriptions = inscriptionsStore();  //get the instance of inscriptionsStore
@@ -34,6 +34,7 @@ const showGalleryInscriptions = ref(false);
 const showGuideButton = computed(() => showPlan.value);
 const showFirstFloor = ref(true);
 const showSecondFloor = ref(false);
+const searchType = ref("inscriptionobjects");
 let visited = true; //store the visited status outside of the hook
 
 const switchToPlan = () => {
@@ -96,22 +97,18 @@ watch(selectedCategory, (newValue, oldValue) => {
   }
 });
 
-// if inscriptionId is not null, toggle to the inscriptions view
-watch(inscriptionId, (newValue, oldValue) => {
-  if (newValue !== null && newValue !== undefined) {
+const handleSearchTypeChange = (type: string) => {
+  searchType.value = type;
+  if (type === "surfaces") {
     showPlan.value = false;
-    showGalleryInscriptions.value = true;
-    showGallery.value = false;
-  }
-});
-
-watch(panelId, (newValue, oldValue) => {
-  if (newValue !== null && newValue !== undefined) {
-    showPlan.value = false;
-    showGalleryInscriptions.value = false;
     showGallery.value = true;
+    showGalleryInscriptions.value = false;
+  } else if (type === "inscriptionobjects") {
+    showPlan.value = false;
+    showGallery.value = false;
+    showGalleryInscriptions.value = true;
   }
-});
+};
 
 watch(showPlan, (newValue) => {
   localStorage.setItem("showPlan", JSON.stringify(newValue));
@@ -137,6 +134,7 @@ const panelParams = computed(() => {
   const panelIdValue = panelId.value;
   const medium = mediaModel.value;
   const material = materialModel.value;
+  const panelString = panelStr.value;
   const params = { medium, material };
 
   if (panelIdValue !== null && panelIdValue !== undefined) {
@@ -155,6 +153,10 @@ const panelParams = computed(() => {
     delete (params as any)['material']; 
   }
 
+  if (panelString !== null && panelString !== undefined) {
+    (params as any)['panel__title__startswith'] = panelString;
+  }
+
   return params;
 });
 
@@ -168,6 +170,7 @@ const tagParams = computed(() => {
   const condition = conditionModel.value;
   const selectedCategoryValue = selectedCategory.value;
   const id = inscriptionId.value;
+  const panelString = panelStr.value;
 
   const initialParams = { genre, tags, writing_system, language};
 
@@ -202,6 +205,10 @@ const tagParams = computed(() => {
     (params as any)['id'] = id; 
   } else {
     delete (params as any)['id']; 
+  }
+
+  if (panelString !== null && panelString !== undefined) {
+    (params as any)['panel__title__startswith'] = panelString;
   }
 
   return params;
@@ -302,7 +309,7 @@ const toggleInstructionsVisibility = async () => {
     <template #search>
       <Title @toggle-about="toggleAboutVisibility" @toggle-instructions="toggleInstructionsVisibility"/>
 
-      <MapViewControls />
+      <MapViewControls @update:searchType="handleSearchTypeChange" />
     </template>
 
     <template #background>

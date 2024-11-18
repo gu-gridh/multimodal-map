@@ -201,10 +201,8 @@ export default {
           try {
             await fetchData(pageIndex);
             pageIndex++;
-            imagesLoaded(document.querySelector('.gallery'), () => {
-              msnry.reloadItems();
-              msnry.layout();
-            });
+            msnry.reloadItems();
+            msnry.layout();
           } catch (e) {
             console.error("error in the load event of infinitescroll:", e);
           }
