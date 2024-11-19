@@ -63,8 +63,8 @@ const tagParams = computed(() => {
   const initialParams: any  = { type };
 
    if (selectedRangeValue.length === 2) {
-    initialParams.minyear = Math.round(selectedRangeValue[0]);
-    initialParams.maxyear = Math.round(selectedRangeValue[1]);
+    initialParams.min_year = Math.round(selectedRangeValue[0]);
+    initialParams.max_year = Math.round(selectedRangeValue[1]);
   }
   
   // Remove parameters that are set to "all"
