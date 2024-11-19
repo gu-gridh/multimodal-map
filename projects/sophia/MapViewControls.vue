@@ -112,7 +112,6 @@
               </template>
             </div>
           </div>
-
         </div>
       </div>
 
@@ -239,7 +238,7 @@ watchEffect(() => { //dynamically change the width of search input based on the 
   });
 });
 
-const shouldShowReset = computed(() => {  //check if any of the model values have changed
+const shouldShowReset = computed(() => { //check if any of the model values have changed
   const categoryCondition = selectedCategory.value !== null;
   const alignmentCondition = alignmentModel.value !== null;
   const conditionCondition = conditionModel.value !== null;
@@ -247,7 +246,20 @@ const shouldShowReset = computed(() => {  //check if any of the model values hav
   const pictorialCondition = JSON.stringify(pictorialModel.value) !== JSON.stringify(["all"]);
   const textualCondition = JSON.stringify(textualModel.value) !== JSON.stringify(["all"]);
   const writingCondition = JSON.stringify(writingModel.value) !== JSON.stringify(["all"]);
-  return categoryCondition || languageCondition || pictorialCondition || textualCondition || writingCondition || alignmentCondition || conditionCondition;
+
+  //condition for the bubble
+  const bubbleCondition = selectedInscription.value !== null || selectedSurface.value !== null || panelStr.value !== null;
+
+  return (
+    categoryCondition ||
+    languageCondition ||
+    pictorialCondition ||
+    textualCondition ||
+    writingCondition ||
+    alignmentCondition ||
+    conditionCondition ||
+    bubbleCondition
+  );
 });
 
 const handleScroll = () => { //infinite scroll for search results
@@ -490,8 +502,6 @@ function handleInscriptionClick(feature) {
 }
 
 function clearAll() {
-  const resetbutton = document.getElementById('resetfilters');
-  resetbutton.style.display = "none";
   categories.value = ["all"];
   writingModel.value = ["all"];
   textualModel.value = ["all"];
@@ -501,6 +511,9 @@ function clearAll() {
   selectedCategory.value = null;
   alignmentModel.value = null;
   conditionModel.value = null;
+
+  //clear the bubble selection
+  clearSelection();
 }
 
 watch(() => i18n.global.locale, (newLocale) => {
@@ -583,7 +596,6 @@ onUnmounted(() => {
   margin-bottom: 0px;
   margin-right: 0px;
   width: auto;
-
 }
 
 #app .tag-section-left {
