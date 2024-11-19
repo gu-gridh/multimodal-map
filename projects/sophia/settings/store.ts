@@ -21,6 +21,8 @@ export const inscriptionsStore = defineStore("inscriptions", () => {
   const panelStr = ref<string | null>(null);
   const inscriptionId = ref<string | null>(null);
   const selectedCategory = ref<number | null>(null); //the selected category number from mapviewcontrols
+  const selectedInscription = ref(null);
+  const searchType = ref('inscriptionobjects');
 
   const setSelectedCategory = (categoryNumber: number | null) => {
     selectedCategory.value = categoryNumber;
@@ -46,6 +48,8 @@ export const inscriptionsStore = defineStore("inscriptions", () => {
     surfaceParams,
     mediaModel,
     materialModel,
-    panelStr
+    panelStr,
+    selectedInscription,
+    searchType
   };
 });

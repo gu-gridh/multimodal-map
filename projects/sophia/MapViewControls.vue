@@ -76,16 +76,19 @@
 
           <div class="search-box-wrapper">
             <!-- Selected item bubble -->
-            <div class="selected-item-bubble" v-if="selectedInscription || selectedSurface" ref="bubbleElement">
+            <div class="selected-item-bubble" v-if="selectedInscription || selectedSurface || panelStr"
+              ref="bubbleElement">
               <span @click="clearSelection">
-                {{ selectedInscription ? selectedInscription.displayText : selectedSurface.title }}
+                {{ selectedInscription ? selectedInscription.displayText : selectedSurface ? selectedSurface.title :
+                panelStr }}
                 <span class="remove-icon">&times;</span>
               </span>
             </div>
 
             <!-- Input field -->
-            <input ref="searchInput" type="text" v-model="searchQuery" @input="handleSearch" @keydown.enter="handleEnter"
-              @focus="handleSearchBoxFocus" :placeholder="searchType === 'surfaces' ? $t('searchsurfacesplaceholder') : $t('searchinscriptionsplaceholder')"
+            <input ref="searchInput" type="text" v-model="searchQuery" @input="handleSearch"
+              @keydown.enter="handleEnter" @focus="handleSearchBoxFocus"
+              :placeholder="searchType === 'surfaces' ? $t('searchsurfacesplaceholder') : $t('searchinscriptionsplaceholder')"
               class="search-box" :style="{ paddingLeft: bubbleWidth + 'px' }" </div>
 
             <!-- Search results -->
@@ -157,141 +160,142 @@
 </template>
 
 <script setup lang="ts">
-  import { inject, ref, onMounted, onUnmounted, computed, watch, nextTick, watchEffect } from "vue";
-  import Dropdown from "./components/DropdownComponent.vue";
-  import CategoryButton from "@/components/input/CategoryButtonList.vue";
-  import { storeToRefs } from "pinia";
-  import { inscriptionsStore } from "./settings/store";
-  import type { InscriptionsProject } from "./types";
-  import { SophiaClient } from "@/assets/saintsophia";
-  import i18n from '../../src/translations/sophia';
+import { inject, ref, onMounted, onUnmounted, computed, watch, nextTick, watchEffect } from "vue";
+import Dropdown from "./components/DropdownComponent.vue";
+import CategoryButton from "@/components/input/CategoryButtonList.vue";
+import { storeToRefs } from "pinia";
+import { inscriptionsStore } from "./settings/store";
+import type { InscriptionsProject } from "./types";
+import { SophiaClient } from "@/assets/saintsophia";
+import i18n from '../../src/translations/sophia';
+import { mapStore } from "@/stores/store";
 
-  const config = inject < InscriptionsProject > ("config");
-  const searchId = ref(null); //id of the selected item in the search
-  const sophiaClient = new SophiaClient("inscriptions"); // Initialize SophiaClient
-  const store = inscriptionsStore();
-  const { categories, languageModel, writingModel, pictorialModel, selectedCategory, textualModel, areMapPointsLoaded, alignmentModel, conditionModel, panelId, inscriptionId, surfaceParams, imgParams, panelStr } = storeToRefs(inscriptionsStore());
-  const lastClickedCategory = ref('');
+const config = inject<InscriptionsProject>("config");
+const { selectedFeature } = storeToRefs(mapStore());
+const searchId = ref(null); //id of the selected item in the search
+const sophiaClient = new SophiaClient("inscriptions"); // Initialize SophiaClient
+const store = inscriptionsStore();
+const { categories, languageModel, writingModel, pictorialModel, selectedCategory, textualModel, areMapPointsLoaded, alignmentModel, conditionModel, panelId,
+  inscriptionId, surfaceParams, imgParams, panelStr, selectedInscription, searchType } = storeToRefs(inscriptionsStore());
+const lastClickedCategory = ref('');
 
-  //initialize variables for data section
-  const emit = defineEmits(["update:searchType"]);
-  const searchType = ref('inscriptionobjects'); //default to 'surfaces' 
-  const selectedInscription = ref(null); //from search results
-  const selectedSurface = ref(null); //from search results
-  const bubbleElement = ref(null);
-  const bubbleWidth = ref(0);
-  const firstSearchBoxClick = ref(true);
-  const searchQuery = ref('');
-  const searchResults = ref([]);
-  const currentOffset = ref(0);
-  const limit = 25;
-  const hasMoreResults = ref(true);
-  const isLoadingMore = ref(false);
-  const searchResultsContainer = ref(null);
-  const showSuggestions = ref(false);
-  const searchSection = ref < HTMLElement | null > (null);
-  const TEXTUAL = ref < Array < { id: string | number; text: string } >> ([]);
-  const WRITING = ref < Array < { id: string | number; text: string } >> ([]);
-  const PICTORIAL = ref < Array < { id: string | number; text: string } >> ([]);
-  const LANGUAGE = ref < Array < { id: string | number; text: string } >> ([]);
-  const searchInput = ref(null);
+//initialize variables for data section
+const emit = defineEmits(["update:searchType"]);
+const selectedSurface = ref(null); //from search results
+const bubbleElement = ref(null);
+const bubbleWidth = ref(0);
+const firstSearchBoxClick = ref(true);
+const searchQuery = ref('');
+const searchResults = ref([]);
+const currentOffset = ref(0);
+const limit = 25;
+const hasMoreResults = ref(true);
+const isLoadingMore = ref(false);
+const searchResultsContainer = ref(null);
+const showSuggestions = ref(false);
+const searchSection = ref<HTMLElement | null>(null);
+const TEXTUAL = ref<Array<{ id: string | number; text: string }>>([]);
+const WRITING = ref<Array<{ id: string | number; text: string }>>([]);
+const PICTORIAL = ref<Array<{ id: string | number; text: string }>>([]);
+const LANGUAGE = ref<Array<{ id: string | number; text: string }>>([]);
+const searchInput = ref(null);
 
-  //data section
-  const currentPanelCount = ref(0);
-  const hiddenPanels = ref(0);
-  const totalTextual = ref(0);
-  const totalPictorial = ref(0);
-  const totalComposite = ref(0);
+//data section
+const currentPanelCount = ref(0);
+const hiddenPanels = ref(0);
+const totalTextual = ref(0);
+const totalPictorial = ref(0);
+const totalComposite = ref(0);
 
-  const filteredInscription = computed(() => {
-    if (Array.isArray(searchResults.value)) {
-      return searchResults.value.map(result => {
-        if (result && typeof result === 'object') {
-          const panelTitle = result.panel?.title || '';
-          const inscriptionId = result.id || '';
-          const inscriptionTitle = result.title ? ` | ${result.title}` : '';
-          return {
-            ...result,
-            displayText: `${panelTitle}:${inscriptionId} ${inscriptionTitle}`
-          };
-        } else {
-          return { displayText: 'No data available' };
-        }
-      });
-    }
-    return [];
-  });
-
-  watchEffect(() => { //dynamically change the width of search input based on the bubble width
-    const hasSelectedItem = selectedInscription.value || selectedSurface.value;
-
-    nextTick(() => {
-      const bubbleEl = bubbleElement.value;
-      if (bubbleEl) {
-        bubbleWidth.value = bubbleEl.offsetWidth + 10; //extra space 
+const filteredInscription = computed(() => {
+  if (Array.isArray(searchResults.value)) {
+    return searchResults.value.map(result => {
+      if (result && typeof result === 'object') {
+        const panelTitle = result.panel?.title || '';
+        const inscriptionId = result.id || '';
+        const inscriptionTitle = result.title ? ` | ${result.title}` : '';
+        return {
+          ...result,
+          displayText: `${panelTitle}:${inscriptionId} ${inscriptionTitle}`
+        };
       } else {
-        bubbleWidth.value = 0;
+        return { displayText: 'No data available' };
       }
     });
-  });
+  }
+  return [];
+});
 
-  const shouldShowReset = computed(() => {  //check if any of the model values have changed
-    const categoryCondition = selectedCategory.value !== null;
-    const alignmentCondition = alignmentModel.value !== null;
-    const conditionCondition = conditionModel.value !== null;
-    const languageCondition = JSON.stringify(languageModel.value) !== JSON.stringify(["all"]);
-    const pictorialCondition = JSON.stringify(pictorialModel.value) !== JSON.stringify(["all"]);
-    const textualCondition = JSON.stringify(textualModel.value) !== JSON.stringify(["all"]);
-    const writingCondition = JSON.stringify(writingModel.value) !== JSON.stringify(["all"]);
-    return categoryCondition || languageCondition || pictorialCondition || textualCondition || writingCondition || alignmentCondition || conditionCondition;
-  });
+watchEffect(() => { //dynamically change the width of search input based on the bubble width
+  const hasSelectedItem = selectedInscription.value || selectedSurface.value;
 
-  const handleScroll = () => { //infinite scroll for search results
-    if (!hasMoreResults.value || isLoadingMore.value) return;
-    const container = searchResultsContainer.value;
-    if (container) {
-      const scrollThreshold = 50; //pixels from the bottom
-      const { scrollTop, scrollHeight, clientHeight } = container;
-      if (scrollHeight - scrollTop - clientHeight <= scrollThreshold) {
-        isLoadingMore.value = true;
-        if (searchType.value === 'surfaces') {
-          fetchSurfaces(currentOffset.value);
-        } else if (searchType.value === 'inscriptionobjects') {
-          fetchInscriptions(searchQuery.value, currentOffset.value);
-        }
+  nextTick(() => {
+    const bubbleEl = bubbleElement.value;
+    if (bubbleEl) {
+      bubbleWidth.value = bubbleEl.offsetWidth + 10; //extra space 
+    } else {
+      bubbleWidth.value = 0;
+    }
+  });
+});
+
+const shouldShowReset = computed(() => {  //check if any of the model values have changed
+  const categoryCondition = selectedCategory.value !== null;
+  const alignmentCondition = alignmentModel.value !== null;
+  const conditionCondition = conditionModel.value !== null;
+  const languageCondition = JSON.stringify(languageModel.value) !== JSON.stringify(["all"]);
+  const pictorialCondition = JSON.stringify(pictorialModel.value) !== JSON.stringify(["all"]);
+  const textualCondition = JSON.stringify(textualModel.value) !== JSON.stringify(["all"]);
+  const writingCondition = JSON.stringify(writingModel.value) !== JSON.stringify(["all"]);
+  return categoryCondition || languageCondition || pictorialCondition || textualCondition || writingCondition || alignmentCondition || conditionCondition;
+});
+
+const handleScroll = () => { //infinite scroll for search results
+  if (!hasMoreResults.value || isLoadingMore.value) return;
+  const container = searchResultsContainer.value;
+  if (container) {
+    const scrollThreshold = 50; //pixels from the bottom
+    const { scrollTop, scrollHeight, clientHeight } = container;
+    if (scrollHeight - scrollTop - clientHeight <= scrollThreshold) {
+      isLoadingMore.value = true;
+      if (searchType.value === 'surfaces') {
+        fetchSurfaces(currentOffset.value);
+      } else if (searchType.value === 'inscriptionobjects') {
+        fetchInscriptions(searchQuery.value, currentOffset.value);
       }
     }
-  };
+  }
+};
 
-  const setSearchType = (type: string) => { //change search type
-    searchType.value = type;
-    searchResults.value = []; //reset search results
-    searchQuery.value = ''; //reset the search query
-    emit('update:searchType', searchType.value);
-    handleSearch();
-  };
+const setSearchType = (type: string) => { //change search type
+  searchType.value = type;
+  searchResults.value = []; //reset search results
+  searchQuery.value = ''; //reset the search query
+  emit('update:searchType', searchType.value);
+  handleSearch();
+};
 
-  const handleSearchBoxFocus = () => {
-    if (firstSearchBoxClick.value && searchType.value === 'surfaces') {
-      fetchSurfaces();
-      firstSearchBoxClick.value = false; // Set to false after first fetch
-    }
-    showSuggestions.value = true;
-  };
+const handleSearchBoxFocus = () => {
+  if (firstSearchBoxClick.value && searchType.value === 'surfaces') {
+    fetchSurfaces();
+    firstSearchBoxClick.value = false; // Set to false after first fetch
+  }
+  showSuggestions.value = true;
+};
 
-  const handleSearch = () => {
-    showSuggestions.value = true;
-    currentOffset.value = 0;
-    hasMoreResults.value = true;
-    isLoadingMore.value = false;
-    if (searchType.value === 'surfaces') {
-      fetchSurfaces();
-    } else if (searchType.value === 'inscriptionobjects') {
-      fetchInscriptions(searchQuery.value);
-    }
-  };
+const handleSearch = () => {
+  showSuggestions.value = true;
+  currentOffset.value = 0;
+  hasMoreResults.value = true;
+  isLoadingMore.value = false;
+  if (searchType.value === 'surfaces') {
+    fetchSurfaces();
+  } else if (searchType.value === 'inscriptionobjects') {
+    fetchInscriptions(searchQuery.value);
+  }
+};
 
-  function handleEnter() {
+function handleEnter() {
   const enteredValue = searchQuery.value.trim();
   if (enteredValue) {
     if (searchType.value === 'surfaces') {
@@ -307,41 +311,41 @@
   }
 }
 
-  const handleCategoryClick = (category: string) => {
-    alignmentModel.value = null;
-    conditionModel.value = null;
-    //mapping categories to their respective numbers
-    const categoryMapping = {
-      textualgraffiti: 1,
-      pictorialgraffiti: 2,
-      composite: 3
-    };
-
-    if (lastClickedCategory.value === category) {
-      categories.value = ["all"];
-
-      // Clear the lastClickedCategory since it was unselected
-      lastClickedCategory.value = '';
-
-      // Reset selected category in the store
-      store.setSelectedCategory(null);
-    } else {
-      categories.value = [category];
-
-      lastClickedCategory.value = category;
-      //store the corresponding category number in the store
-      store.setSelectedCategory(categoryMapping[category]);
-    }
+const handleCategoryClick = (category: string) => {
+  alignmentModel.value = null;
+  conditionModel.value = null;
+  //mapping categories to their respective numbers
+  const categoryMapping = {
+    textualgraffiti: 1,
+    pictorialgraffiti: 2,
+    composite: 3
   };
 
-  const handleClickOutside = (event: MouseEvent) => { //hide suggestions when clicking outside
-    if (searchSection.value && !searchSection.value.contains(event.target as Node)) {
-      showSuggestions.value = false;
-    }
-  };
+  if (lastClickedCategory.value === category) {
+    categories.value = ["all"];
 
-  //fetch data section when parameters change
-  async function fetchDataSection() {
+    // Clear the lastClickedCategory since it was unselected
+    lastClickedCategory.value = '';
+
+    // Reset selected category in the store
+    store.setSelectedCategory(null);
+  } else {
+    categories.value = [category];
+
+    lastClickedCategory.value = category;
+    //store the corresponding category number in the store
+    store.setSelectedCategory(categoryMapping[category]);
+  }
+};
+
+const handleClickOutside = (event: MouseEvent) => { //hide suggestions when clicking outside
+  if (searchSection.value && !searchSection.value.contains(event.target as Node)) {
+    showSuggestions.value = false;
+  }
+};
+
+//fetch data section when parameters change
+async function fetchDataSection() {
   let params = {
     ...surfaceParams.value,
     ...imgParams.value,
@@ -375,41 +379,15 @@
   }
 }
 
-  //fetch inscriptions
-  const fetchInscriptions = async (query, offset = 0) => {
-    if (searchType.value === 'inscriptionobjects') {
-      const apiUrl = `https://saintsophia.dh.gu.se/api/inscriptions/inscription-string/?str=${encodeURIComponent(query)}&offset=${offset}&depth=1`;
-      try {
-        const response = await fetch(apiUrl);
-        const data = await response.json();
-
-        if (searchType.value === 'inscriptionobjects') {
-          if (offset === 0) {
-            searchResults.value = data.results || [];
-          } else {
-            searchResults.value = [...searchResults.value, ...(data.results || [])];
-          }
-
-          currentOffset.value = offset + limit;
-          hasMoreResults.value = !!data.next; //check if there's a next page
-        }
-      } catch (error) {
-        console.error('Error fetching search results:', error);
-        searchResults.value = [];
-      } finally {
-        isLoadingMore.value = false;
-      }
-    }
-  };
-
-  //fetch surfaces
-  async function fetchSurfaces(offset = 0) {
-    const apiUrl = `https://saintsophia.dh.gu.se/api/inscriptions/panel-string/?str=${encodeURIComponent(searchQuery.value)}&offset=${offset}`;
+//fetch inscriptions
+const fetchInscriptions = async (query, offset = 0) => {
+  if (searchType.value === 'inscriptionobjects') {
+    const apiUrl = `https://saintsophia.dh.gu.se/api/inscriptions/inscription-string/?str=${encodeURIComponent(query)}&offset=${offset}&depth=1`;
     try {
       const response = await fetch(apiUrl);
       const data = await response.json();
 
-      if (searchType.value === 'surfaces') {
+      if (searchType.value === 'inscriptionobjects') {
         if (offset === 0) {
           searchResults.value = data.results || [];
         } else {
@@ -420,449 +398,476 @@
         hasMoreResults.value = !!data.next; //check if there's a next page
       }
     } catch (error) {
-      console.error('Error fetching:', error);
+      console.error('Error fetching search results:', error);
       searchResults.value = [];
     } finally {
       isLoadingMore.value = false;
     }
   }
+};
 
-  function clearSelection() {
-    panelId.value = null;
-    inscriptionId.value = null;
-    panelStr.value = null;
-    searchId.value = null;
-    selectedInscription.value = null;
-    selectedSurface.value = null;
-  }
+//fetch surfaces
+async function fetchSurfaces(offset = 0) {
+  const apiUrl = `https://saintsophia.dh.gu.se/api/inscriptions/panel-string/?str=${encodeURIComponent(searchQuery.value)}&offset=${offset}`;
+  try {
+    const response = await fetch(apiUrl);
+    const data = await response.json();
 
-  function resetAllExcept(exceptModel) { //reset the other dropdowns to all when a selection is made
-    categories.value = ["all"];
-    lastClickedCategory.value = '';
-    selectedCategory.value = null;
-    alignmentModel.value = null;
-    conditionModel.value = null;
-    if (exceptModel !== "languageModel") languageModel.value = ["all"];
-    if (exceptModel !== "pictorialModel") pictorialModel.value = ["all"];
-    if (exceptModel !== "textualModel") textualModel.value = ["all"];
-    if (exceptModel !== "writingModel") writingModel.value = ["all"];
-  }
+    if (searchType.value === 'surfaces') {
+      if (offset === 0) {
+        searchResults.value = data.results || [];
+      } else {
+        searchResults.value = [...searchResults.value, ...(data.results || [])];
+      }
 
-  async function fetchDataAndPopulateRef<T>(type: string, refToPopulate: any) {
-    try {
-      const data = await sophiaClient.listAll < T > (type);
-      refToPopulate.value = data
-        .filter((result: any) => result.published)
-        .map((result: any) => ({
-          id: result.id,
-          text: i18n.global.locale === 'uk' ? result.text_ukr : result.text
-        }));
-    } catch (error) {
-      console.error(`Error fetching data for type ${type}:`, error);
+      currentOffset.value = offset + limit;
+      hasMoreResults.value = !!data.next; //check if there's a next page
     }
+  } catch (error) {
+    console.error('Error fetching:', error);
+    searchResults.value = [];
+  } finally {
+    isLoadingMore.value = false;
   }
+}
 
-  function handleSurfaceClick(surface) {
-    selectedSurface.value = surface;
-    selectedInscription.value = null;
-    searchId.value = surface.id;
-    panelId.value = surface.id; //set the store value
-    inscriptionId.value = null;
-    showSuggestions.value = false;
-    searchQuery.value = '';
-    emit('update:searchType', searchType.value);
+function clearSelection() {
+  panelId.value = null;
+  inscriptionId.value = null;
+  panelStr.value = null;
+  searchId.value = null;
+  selectedInscription.value = null;
+  selectedFeature.value = null;
+  selectedSurface.value = null;
+}
+
+function resetAllExcept(exceptModel) { //reset the other dropdowns to all when a selection is made
+  categories.value = ["all"];
+  lastClickedCategory.value = '';
+  selectedCategory.value = null;
+  alignmentModel.value = null;
+  conditionModel.value = null;
+  if (exceptModel !== "languageModel") languageModel.value = ["all"];
+  if (exceptModel !== "pictorialModel") pictorialModel.value = ["all"];
+  if (exceptModel !== "textualModel") textualModel.value = ["all"];
+  if (exceptModel !== "writingModel") writingModel.value = ["all"];
+}
+
+async function fetchDataAndPopulateRef<T>(type: string, refToPopulate: any) {
+  try {
+    const data = await sophiaClient.listAll<T>(type);
+    refToPopulate.value = data
+      .filter((result: any) => result.published)
+      .map((result: any) => ({
+        id: result.id,
+        text: i18n.global.locale === 'uk' ? result.text_ukr : result.text
+      }));
+  } catch (error) {
+    console.error(`Error fetching data for type ${type}:`, error);
   }
+}
 
-  function handleInscriptionClick(feature) {
-    selectedInscription.value = feature;
-    selectedSurface.value = null;
-    searchId.value = feature.id;
-    inscriptionId.value = feature.id; //set the store value
-    panelId.value = null;
-    showSuggestions.value = false;
-    searchQuery.value = '';
-    emit('update:searchType', searchType.value);
-  }
+function handleSurfaceClick(surface) {
+  selectedSurface.value = surface;
+  selectedInscription.value = null;
+  searchId.value = surface.id;
+  panelId.value = surface.id; //set the store value
+  inscriptionId.value = null;
+  showSuggestions.value = false;
+  searchQuery.value = '';
+  emit('update:searchType', searchType.value);
+}
 
-  function clearAll() {
-    const resetbutton = document.getElementById('resetfilters');
-    resetbutton.style.display = "none";
-    categories.value = ["all"];
-    writingModel.value = ["all"];
-    textualModel.value = ["all"];
-    pictorialModel.value = ["all"];
-    languageModel.value = ["all"];
-    lastClickedCategory.value = '';
-    selectedCategory.value = null;
-    alignmentModel.value = null;
-    conditionModel.value = null;
-  }
+function handleInscriptionClick(feature) {
+  selectedInscription.value = feature;
+  selectedSurface.value = null;
+  searchId.value = feature.id;
+  inscriptionId.value = feature.id; //set the store value
+  panelId.value = null;
+  showSuggestions.value = false;
+  searchQuery.value = '';
+  emit('update:searchType', searchType.value);
+}
 
-  watch(() => i18n.global.locale, (newLocale) => {
-    fetchDataAndPopulateRef("language-with-data", LANGUAGE);
-    fetchDataAndPopulateRef("writing-system-with-data", WRITING);
-    fetchDataAndPopulateRef("tags-with-data", PICTORIAL);
-    fetchDataAndPopulateRef("genre-with-data", TEXTUAL);
-  });
+function clearAll() {
+  const resetbutton = document.getElementById('resetfilters');
+  resetbutton.style.display = "none";
+  categories.value = ["all"];
+  writingModel.value = ["all"];
+  textualModel.value = ["all"];
+  pictorialModel.value = ["all"];
+  languageModel.value = ["all"];
+  lastClickedCategory.value = '';
+  selectedCategory.value = null;
+  alignmentModel.value = null;
+  conditionModel.value = null;
+}
 
-  watch(
-    () => surfaceParams.value,
-    async (newParams, oldParams) => {
-      await fetchDataSection();
-    },
-    { immediate: true }
-  );
+watch(() => i18n.global.locale, (newLocale) => {
+  fetchDataAndPopulateRef("language-with-data", LANGUAGE);
+  fetchDataAndPopulateRef("writing-system-with-data", WRITING);
+  fetchDataAndPopulateRef("tags-with-data", PICTORIAL);
+  fetchDataAndPopulateRef("genre-with-data", TEXTUAL);
+});
 
-  watch(
-    () => imgParams.value,
-    async (newParams, oldParams) => {
-      await fetchDataSection();
-    },
-    { immediate: true }
-  );
+watch(
+  () => surfaceParams.value,
+  async (newParams, oldParams) => {
+    await fetchDataSection();
+  },
+  { immediate: true }
+);
 
-  onMounted(async () => {
-    await fetchDataAndPopulateRef("language-with-data", LANGUAGE);
-    await fetchDataAndPopulateRef("writing-system-with-data", WRITING);
-    await fetchDataAndPopulateRef("tags-with-data", PICTORIAL);
-    await fetchDataAndPopulateRef("genre-with-data", TEXTUAL);
-    document.addEventListener('click', handleClickOutside);
-  });
+watch(
+  () => imgParams.value,
+  async (newParams, oldParams) => {
+    await fetchDataSection();
+  },
+  { immediate: true }
+);
 
-  onUnmounted(() => {
-    document.removeEventListener('click', handleClickOutside);
-  });
+onMounted(async () => {
+  await fetchDataAndPopulateRef("language-with-data", LANGUAGE);
+  await fetchDataAndPopulateRef("writing-system-with-data", WRITING);
+  await fetchDataAndPopulateRef("tags-with-data", PICTORIAL);
+  await fetchDataAndPopulateRef("genre-with-data", TEXTUAL);
+  document.addEventListener('click', handleClickOutside);
+});
+
+onUnmounted(() => {
+  document.removeEventListener('click', handleClickOutside);
+});
 </script>
 
 <style>
+#app .left-pane {
+  background: url("images/gradient.png");
+  background-size: contain;
+  min-width: 960px;
+  max-width: 960px;
+  font-size: 95%;
+}
+
+.filtercontrolwidgets {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.justify {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+}
+
+.control-group {
+  width: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin-right: 0px;
+}
+
+#app .section-title {
+  margin-top: 6px;
+  margin-bottom: -5px;
+  font-weight: 300;
+  color: black;
+  font-size: 0.95em;
+  width: 100px;
+}
+
+#app .tag-section {
+  margin-top: -5px;
+  margin-bottom: 0px;
+  margin-right: 0px;
+  width: auto;
+
+}
+
+#app .tag-section-left {
+  margin-right: 10px;
+}
+
+#app .tag-section .broad-controls {
+  font-size: 0.9em;
+}
+
+.dropdown {
+  font-family: "Oswald", sans-serif;
+  appearance: none !important;
+  padding: 3px 10px 3px 10px;
+  min-width: 125px;
+  max-width: 125px;
+}
+
+.search-section {
+  width: 96%;
+  height: auto;
+  padding: 0px 8px 12px 12px;
+  margin-top: 0px;
+  border: 0px solid #ccc;
+  border-radius: 8px;
+  overflow: none;
+  background-color: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(5px);
+  z-index: 200000;
+}
+
+.search-result-item {
+  /* Remove styling from anchor links */
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  padding: 8px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+}
+
+.search-result-item:hover {
+  background-color: rgba(240, 240, 240, 1.0) !important;
+}
+
+.toggle-buttons button {
+  font-weight: 400;
+  cursor: pointer;
+  margin-bottom: 5px;
+  margin-right: 15px;
+  color: rgb(80, 80, 80);
+}
+
+.toggle-buttons button.active {
+  color: rgb(180, 100, 100);
+  text-decoration: dashed;
+  text-decoration-style: dashed;
+  text-decoration-thickness: 2px;
+  text-decoration-line: underline;
+}
+
+.search-box:focus {
+  outline: none;
+}
+
+.search-results {
+  z-index: 200000;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 1.0);
+  border: 0px solid #ccc;
+  border-top: none;
+  border-radius: 0px 0px 8px 8px;
+  margin-top: 6px;
+  margin-left: -12px;
+  max-height: 200px;
+  overflow-y: auto;
+  transition: all 0.4s;
+  position: absolute;
+  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.1);
+}
+
+#app .start-end-box {
+  width: 15%;
+  font-size: 20px;
+  text-align: center;
+  padding-top: 0rem;
+  padding-bottom: 0.5rem;
+}
+
+#app .rounded {
+  border-radius: 10px;
+}
+
+#app .broad-controls {
+  width: 100%;
+}
+
+#app .control-organisation {
+  width: 96%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 10px;
+  pointer-events: auto;
+  padding-bottom: 10px;
+  padding-top: 10px;
+}
+
+.justify-left {
+  justify-content: left;
+}
+
+.justify-space {
+  justify-content: space-between;
+}
+
+.margin-20 {
+  margin-left: 20px;
+}
+
+.margin-5 {
+  margin-left: 5px;
+}
+
+.data-widget {
+  font-size: 110%;
+  float: left;
+  pointer-events: none;
+  width: 96%;
+  margin-top: 30px;
+  padding: 15px 25px;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.5);
+  min-height: 50px;
+  backdrop-filter: blur(5px);
+}
+
+.data-widget-section {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.data-widget-divider {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: -25px;
+  width: calc(100% + 50px);
+  border-style: dotted;
+  border-color: var(--theme-3);
+  border-width: 1px 0px 0px 0px;
+  height: 1px;
+}
+
+.data-widget-item h3 {
+  display: inline;
+}
+
+.data-widget-item p {
+  display: inline;
+  color: var(--theme-3);
+  margin-left: 3px;
+  font-weight: 500;
+}
+
+@media screen and (max-width: 900px) {
   #app .left-pane {
     background: url("images/gradient.png");
     background-size: contain;
-    min-width: 960px;
-    max-width: 960px;
+    min-width: 100%;
+    max-width: 100%;
     font-size: 95%;
-  }
-
-  .filtercontrolwidgets {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    width: 100%;
-  }
-
-  .justify {
-    display: flex;
-    flex-direction: row;
-    justify-content: left;
-  }
-
-  .control-group {
-    width: auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    margin-right: 0px;
-  }
-
-  #app .section-title {
-    margin-top: 6px;
-    margin-bottom: -5px;
-    font-weight: 300;
-    color: black;
-    font-size: 0.95em;
-    width: 100px;
-  }
-
-  #app .tag-section {
-    margin-top: -5px;
-    margin-bottom: 0px;
-    margin-right: 0px;
-    width: auto;
-
-  }
-
-  #app .tag-section-left {
-    margin-right: 10px;
-  }
-
-  #app .tag-section .broad-controls {
-    font-size: 0.9em;
-  }
-
-  .dropdown {
-    font-family: "Oswald", sans-serif;
-    appearance: none !important;
-    padding: 3px 10px 3px 10px;
-    min-width: 125px;
-    max-width: 125px;
-  }
-
-  .search-section {
-    width: 96%;
-    height: auto;
-    padding: 0px 8px 12px 12px;
-    margin-top: 0px;
-    border: 0px solid #ccc;
-    border-radius: 8px;
-    overflow: none;
-    background-color: rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(5px);
-    z-index: 200000;
-  }
-
-  .search-result-item {
-    /* Remove styling from anchor links */
-    display: block;
-    color: inherit;
-    text-decoration: none;
-    padding: 8px;
-    border-bottom: 1px solid #eee;
-    cursor: pointer;
-  }
-
-  .search-result-item:hover {
-    background-color: rgba(240, 240, 240, 1.0) !important;
-  }
-
-  .toggle-buttons button {
-    font-weight: 400;
-    cursor: pointer;
-    margin-bottom: 5px;
-    margin-right: 15px;
-    color: rgb(80, 80, 80);
-  }
-
-  .toggle-buttons button.active {
-    color: rgb(180, 100, 100);
-    text-decoration: dashed;
-    text-decoration-style: dashed;
-    text-decoration-thickness: 2px;
-    text-decoration-line: underline;
-  }
-
-  .search-box:focus {
-    outline: none;
-  }
-
-  .search-results {
-    z-index: 200000;
-    width: 100%;
-    background-color: rgba(255, 255, 255, 1.0);
-    border: 0px solid #ccc;
-    border-top: none;
-    border-radius: 0px 0px 8px 8px;
-    margin-top: 6px;
-    margin-left: -12px;
-    max-height: 200px;
-    overflow-y: auto;
-    transition: all 0.4s;
-    position: absolute;
-    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.1);
-  }
-
-  #app .start-end-box {
-    width: 15%;
-    font-size: 20px;
-    text-align: center;
-    padding-top: 0rem;
-    padding-bottom: 0.5rem;
-  }
-
-  #app .rounded {
-    border-radius: 10px;
   }
 
   #app .broad-controls {
     width: 100%;
   }
 
-  #app .control-organisation {
-    width: 96%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin-top: 10px;
-    pointer-events: auto;
-    padding-bottom: 10px;
-    padding-top: 10px;
+  #app .section-title {
+    width: 150px;
   }
 
-  .justify-left {
-    justify-content: left;
-  }
-
-  .justify-space {
-    justify-content: space-between;
-  }
-
-  .margin-20 {
-    margin-left: 20px;
-  }
-
-  .margin-5 {
-    margin-left: 5px;
+  .vertical-divider {
+    display: none;
   }
 
   .data-widget {
-    font-size: 110%;
-    float: left;
-    pointer-events: none;
-    width: 96%;
-    margin-top: 30px;
-    padding: 15px 25px;
-    border-radius: 10px;
-    background-color: rgba(255, 255, 255, 0.5);
-    min-height: 50px;
-    backdrop-filter: blur(5px);
+    width: 100%;
   }
 
-  .data-widget-section {
+  #app .control-organisation {
     width: 100%;
+    float: none;
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+  }
+
+  .search-section {
+    width: 100%;
+  }
+
+  #app .control-group {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
   }
 
-  .data-widget-divider {
-    margin-top: 10px;
-    margin-bottom: 10px;
-    margin-left: -25px;
-    width: calc(100% + 50px);
-    border-style: dotted;
-    border-color: var(--theme-3);
-    border-width: 1px 0px 0px 0px;
-    height: 1px;
+  .justify-space {
+    justify-content: left;
   }
 
-  .data-widget-item h3 {
-    display: inline;
+  #app .tag-section {
+    font-size: 100%;
   }
 
-  .data-widget-item p {
-    display: inline;
-    color: var(--theme-3);
-    margin-left: 3px;
-    font-weight: 500;
+  .margin-20 {
+    margin-left: 0px;
   }
 
-  @media screen and (max-width: 900px) {
-    #app .left-pane {
-      background: url("images/gradient.png");
-      background-size: contain;
-      min-width: 100%;
-      max-width: 100%;
-      font-size: 95%;
-    }
-
-    #app .broad-controls {
-      width: 100%;
-    }
-
-    #app .section-title {
-      width: 150px;
-    }
-
-    .vertical-divider {
-      display: none;
-    }
-
-    .data-widget {
-      width: 100%;
-    }
-
-    #app .control-organisation {
-      width: 100%;
-      float: none;
-      display: flex;
-      flex-direction: column;
-      margin-top: 10px;
-    }
-
-    .search-section {
-      width: 100%;
-    }
-
-    #app .control-group {
-      display: flex;
-      flex-direction: row;
-    }
-
-    .justify-space {
-      justify-content: left;
-    }
-
-    #app .tag-section {
-      font-size: 100%;
-    }
-
-    .margin-20 {
-      margin-left: 0px;
-    }
-
-    .margin-5 {
-      margin-left: 0px;
-    }
-
-    #app .tag-section-left {
-      margin-right: 0px;
-    }
+  .margin-5 {
+    margin-left: 0px;
   }
 
-  .slide-leave-active {
-    transition: all 0.4s;
-    opacity: 1.0;
+  #app .tag-section-left {
+    margin-right: 0px;
   }
+}
 
-  .slide-leave-to {
-    opacity: 0.5;
-  }
+.slide-leave-active {
+  transition: all 0.4s;
+  opacity: 1.0;
+}
 
-  .slideinactive {
-    opacity: 0.4;
-    pointer-events: none !important;
-    transition: all 0.4s;
-  }
+.slide-leave-to {
+  opacity: 0.5;
+}
 
-  .slideactive {
-    transition: all 0.4s;
-    opacity: 1.0;
-  }
+.slideinactive {
+  opacity: 0.4;
+  pointer-events: none !important;
+  transition: all 0.4s;
+}
 
-  @media screen and (max-width: 600px) {
-    .data-widget {
-      font-size: 80%;
-    }
-  }
+.slideactive {
+  transition: all 0.4s;
+  opacity: 1.0;
+}
 
-  .selected-item-bubble {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-45%);
-    background-color: #e0e0e0;
-    border-radius: 8px;
-    padding: 5px 10px;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    z-index: 2;
+@media screen and (max-width: 600px) {
+  .data-widget {
+    font-size: 80%;
   }
+}
 
-  .search-box-wrapper {
-    position: relative;
-    width: 100%;
-  }
+.selected-item-bubble {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-45%);
+  background-color: #e0e0e0;
+  border-radius: 8px;
+  padding: 5px 10px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  z-index: 2;
+}
 
-  .search-box {
-    width: 100%;
-    box-sizing: border-box;
-    z-index: 1;
-    background-color: rgba(0, 0, 0, 0);
-    font-size: 1.2em;
-    min-height: 35px;
-  }
+.search-box-wrapper {
+  position: relative;
+  width: 100%;
+}
 
-  .selected-item-bubble .remove-icon {
-    margin-left: 5px;
-    font-weight: bold;
-  }
+.search-box {
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 1;
+  background-color: rgba(0, 0, 0, 0);
+  font-size: 1.2em;
+  min-height: 35px;
+}
+
+.selected-item-bubble .remove-icon {
+  margin-left: 5px;
+  font-weight: bold;
+}
 </style>
