@@ -342,32 +342,38 @@
 
   //fetch data section when parameters change
   async function fetchDataSection() {
-    //combine the parameters
-    const params = {
-      ...surfaceParams.value,
-      ...imgParams.value,
-    };
+  let params = {
+    ...surfaceParams.value,
+    ...imgParams.value,
+  };
 
-    const queryString = new URLSearchParams(params).toString();
+  //replace the key 'panel__title__startswith' with 'panel_title_str'
+  params = Object.fromEntries(
+    Object.entries(params).map(([key, value]) =>
+      key === 'panel__title__startswith' ? ['panel_title_str', value] : [key, value]
+    )
+  );
 
-    const url = `https://saintsophia.dh.gu.se/api/inscriptions/inscriptions-info/?${queryString}`;
+  const queryString = new URLSearchParams(params).toString();
 
-    try {
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
+  const url = `https://saintsophia.dh.gu.se/api/inscriptions/inscriptions-info/?${queryString}`;
 
-      currentPanelCount.value = data.shown_inscriptions;
-      hiddenPanels.value = data.hidden_inscriptions;
-      totalTextual.value = data.textual_inscriptions;
-      totalPictorial.value = data.pictorial_inscriptions;
-      totalComposite.value = data.composites_inscriptions;
-    } catch (error) {
-      console.error('Error fetching data:', error);
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
+    const data = await response.json();
+
+    currentPanelCount.value = data.shown_inscriptions;
+    hiddenPanels.value = data.hidden_inscriptions;
+    totalTextual.value = data.textual_inscriptions;
+    totalPictorial.value = data.pictorial_inscriptions;
+    totalComposite.value = data.composites_inscriptions;
+  } catch (error) {
+    console.error('Error fetching data:', error);
   }
+}
 
   //fetch inscriptions
   const fetchInscriptions = async (query, offset = 0) => {

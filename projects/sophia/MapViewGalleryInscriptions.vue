@@ -118,8 +118,6 @@ export default {
 
         // Make sure to wait until all images have loaded
         imagesLoaded(document.querySelector('.gallery'), () => {
-          // msnry.reloadItems();
-          // msnry.layout();
           reinitInfiniteScroll();
         });
       }
@@ -169,6 +167,15 @@ export default {
       }
     };
 
+    const reloadAndLayout = () => {
+      return new Promise((resolve) => {
+        msnry.reloadItems();
+        resolve(); 
+      }).then(() => {
+        msnry.layout(); 
+      });
+    };
+
     const initMasonry = () => {
       const gallery = document.querySelector('.gallery');
       if (!gallery) {
@@ -201,8 +208,7 @@ export default {
           try {
             await fetchData(pageIndex);
             pageIndex++;
-            msnry.reloadItems();
-            msnry.layout();
+            reloadAndLayout();
           } catch (e) {
             console.error("error in the load event of infinitescroll:", e);
           }
@@ -213,9 +219,12 @@ export default {
 
     const reinitInfiniteScroll = () => {
       if (infScroll) {
-        infScroll.destroy(); // Destroy the existing InfiniteScroll instance
+        infScroll.destroy();
       }
-      initMasonry(); // Reinitialize Masonry and InfiniteScroll
+      if (msnry) {
+        msnry.destroy();
+      }
+      initMasonry(); //reinitialize Masonry and InfiniteScroll
     };
 
     onMounted(() => {
@@ -235,8 +244,7 @@ export default {
 
           // After the initial Masonry initialization, reload and layout again
           // to make sure the first batch of images obeys the Masonry layout.
-          msnry.reloadItems();
-          msnry.layout();
+          reloadAndLayout();
         });
       });
     });
