@@ -71,7 +71,6 @@
               @click="setSearchType('inscriptionobjects')">
               {{ $t('inscriptions') }}
             </button>
-
           </div>
 
           <div class="search-box-wrapper">
@@ -159,7 +158,7 @@
 </template>
 
 <script setup lang="ts">
-import { inject, ref, onMounted, onUnmounted, computed, watch, nextTick, watchEffect } from "vue";
+import { inject, ref, onMounted, onUnmounted, computed, watch, nextTick } from "vue";
 import Dropdown from "./components/DropdownComponent.vue";
 import CategoryButton from "@/components/input/CategoryButtonList.vue";
 import { storeToRefs } from "pinia";
@@ -175,11 +174,13 @@ const searchId = ref(null); //id of the selected item in the search
 const sophiaClient = new SophiaClient("inscriptions"); // Initialize SophiaClient
 const store = inscriptionsStore();
 const { categories, languageModel, writingModel, pictorialModel, selectedCategory, textualModel, areMapPointsLoaded, alignmentModel, conditionModel, panelId,
-  inscriptionId, surfaceParams, imgParams, panelStr, selectedInscription, searchType } = storeToRefs(inscriptionsStore());
+  inscriptionId, surfaceParams, imgParams, panelStr} = storeToRefs(inscriptionsStore());
 const lastClickedCategory = ref('');
 
 //initialize variables for data section
 const emit = defineEmits(["update:searchType"]);
+const searchType = ref('inscriptionobjects'); //default to 'surfaces' 
+const selectedInscription = ref(null); //from search results
 const selectedSurface = ref(null); //from search results
 const bubbleElement = ref(null);
 const bubbleWidth = ref(0);
@@ -225,18 +226,20 @@ const filteredInscription = computed(() => {
   return [];
 });
 
-watchEffect(() => { //dynamically change the width of search input based on the bubble width
-  const hasSelectedItem = selectedInscription.value || selectedSurface.value;
+watch(
+  () => [selectedInscription.value, selectedSurface.value, panelStr.value],
+  () => {
+    nextTick(() => {
+      const bubbleEl = bubbleElement.value;
+      if (bubbleEl) {
+        bubbleWidth.value = bubbleEl.offsetWidth + 10;
+      } else {
+        bubbleWidth.value = 0;
+      }
+    });
+  }
+);
 
-  nextTick(() => {
-    const bubbleEl = bubbleElement.value;
-    if (bubbleEl) {
-      bubbleWidth.value = bubbleEl.offsetWidth + 10; //extra space 
-    } else {
-      bubbleWidth.value = 0;
-    }
-  });
-});
 
 const shouldShowReset = computed(() => { //check if any of the model values have changed
   const categoryCondition = selectedCategory.value !== null;
@@ -317,8 +320,9 @@ function handleEnter() {
       panelStr.value = enteredValue;
       selectedInscription.value = { displayText: enteredValue };
     }
-    searchQuery.value = '';
-    showSuggestions.value = false;
+    // searchQuery.value = '';
+    // showSuggestions.value = false;
+    // clickedPanel.value = null;
     emit('update:searchType', searchType.value);
   }
 }
@@ -449,7 +453,7 @@ function clearSelection() {
   panelStr.value = null;
   searchId.value = null;
   selectedInscription.value = null;
-  selectedFeature.value = null;
+  selectedFeature.value = undefined;
   selectedSurface.value = null;
 }
 
@@ -487,6 +491,7 @@ function handleSurfaceClick(surface) {
   inscriptionId.value = null;
   showSuggestions.value = false;
   searchQuery.value = '';
+  // clickedPanel.value = null;
   emit('update:searchType', searchType.value);
 }
 
@@ -498,6 +503,7 @@ function handleInscriptionClick(feature) {
   panelId.value = null;
   showSuggestions.value = false;
   searchQuery.value = '';
+  // clickedPanel.value = null;
   emit('update:searchType', searchType.value);
 }
 
@@ -515,6 +521,25 @@ function clearAll() {
   //clear the bubble selection
   clearSelection();
 }
+
+watch( //watch for changes in the panelStr
+  () => panelStr.value,
+  (newPanelStr, oldPanelStr) => {
+      searchResults.value = [];
+      searchQuery.value = '';
+      searchType.value = 'surfaces';
+      panelId.value = null;
+      inscriptionId.value = null;
+      currentOffset.value = 0;
+      hasMoreResults.value = true;
+      showSuggestions.value = false;
+      // panelStr.value = null;
+      // selectedFeature.value = undefined;
+
+      //only set if newPanelStr is not null or empty
+      selectedInscription.value = newPanelStr ? { displayText: newPanelStr } : null;
+  }
+);
 
 watch(() => i18n.global.locale, (newLocale) => {
   fetchDataAndPopulateRef("language-with-data", LANGUAGE);

@@ -19,7 +19,7 @@ let selectHover; // Select interaction for hover
 const hoveredFeature = ref<Feature<Geometry> | null>(null);
 const hoverCoordinates = ref(null);
 const selectedCoordinates = ref(null);
-const { areMapPointsLoaded } = storeToRefs(inscriptionsStore());
+const { areMapPointsLoaded, panelStr } = storeToRefs(inscriptionsStore());
 const map = inject("map") as Map;
 const vectorSource = ref(
   new VectorSource({
@@ -200,6 +200,9 @@ onMounted(() => {
       selectedFeature.value = clickedFeatures[0];
       const geometry = clickedFeatures[0].getGeometry() as any;
       selectedCoordinates.value = geometry.getFirstCoordinate();
+
+      //set store value
+      panelStr.value = selectedFeature.value.values_?.title || '';
     } else {
       selectedCoordinates.value = undefined as any;
       selectedFeature.value = undefined;

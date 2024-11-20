@@ -11,7 +11,6 @@
   import apiConfig from "./settings/apiConfig"
   import { inscriptionsStore } from "./settings/store";
 
-  const { panelStr, selectedInscription, searchType, panelId, inscriptionId } = storeToRefs(inscriptionsStore());
   const { selectedFeature } = storeToRefs(mapStore());
   const sophia = inject("sophia") as SophiaClient;
   const images = ref < Image[] > ();
@@ -29,13 +28,6 @@
     documentation.value = null;
     if (selectedFeature.value) {
       const featureId = selectedFeature.value.getId();
-      panelStr.value = selectedFeature.value.values_?.title || ''; 
-      selectedInscription.value = { displayText: panelStr.value }; 
-      searchType.value = 'surfaces'; //for the search bar
-
-      panelId.value = null; 
-      inscriptionId.value = null;
-
       panel.value = await sophia.list < PanelMetadata > ("panel", { id: featureId });
       number_of_inscriptions.value = panel.value.results[0].number_of_inscriptions
       languages.value = panel.value.results[0].list_of_languages.length
