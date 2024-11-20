@@ -11,7 +11,7 @@
   import apiConfig from "./settings/apiConfig"
   import { inscriptionsStore } from "./settings/store";
 
-  const { panelStr, selectedInscription, searchType } = storeToRefs(inscriptionsStore());
+  const { panelStr, selectedInscription, searchType, panelId, inscriptionId } = storeToRefs(inscriptionsStore());
   const { selectedFeature } = storeToRefs(mapStore());
   const sophia = inject("sophia") as SophiaClient;
   const images = ref < Image[] > ();
@@ -28,16 +28,20 @@
   watchEffect(async () => {
     documentation.value = null;
     if (selectedFeature.value) {
-      const panelId = selectedFeature.value.getId();
+      const featureId = selectedFeature.value.getId();
       panelStr.value = selectedFeature.value.values_?.title || ''; 
       selectedInscription.value = { displayText: panelStr.value }; 
       searchType.value = 'surfaces'; //for the search bar
-      panel.value = await sophia.list < PanelMetadata > ("panel", { id: panelId });
+
+      panelId.value = null; 
+      inscriptionId.value = null;
+
+      panel.value = await sophia.list < PanelMetadata > ("panel", { id: featureId });
       number_of_inscriptions.value = panel.value.results[0].number_of_inscriptions
       languages.value = panel.value.results[0].list_of_languages.length
       tags.value = panel.value.results[0].tags.length;
 
-      images.value = await sophia.listAll < Image > ("image", { panel: panelId, depth: 2 });
+      images.value = await sophia.listAll < Image > ("image", { panel: featureId, depth: 2 });
       // If images are available
       if (images.value.length > 0) {
         hasImages.value = true;
@@ -56,7 +60,7 @@
         hasImages.value = false;
         imageUrls.value = [];
         // If no images are available, fetch details from `geojson/place` endpoint
-        const response = await fetch(`${apiConfig.PANEL}?id=${panelId}`);
+        const response = await fetch(`${apiConfig.PANEL}?id=${featureId}`);
         const geojsonData = await response.json();
         if (geojsonData.features.length > 0) {
           const feature = geojsonData.features[0];
