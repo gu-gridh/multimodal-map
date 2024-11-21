@@ -86,7 +86,7 @@
 
             <!-- Input field -->
             <input ref="searchInput" type="text" v-model="searchQuery" @input="handleSearch"
-              @keydown.enter="handleEnter" @focus="handleSearchBoxFocus"
+              @keydown.enter="handleEnter" @focus="handleSearchBoxFocus" @keydown="handleKeydown"
               :placeholder="searchType === 'surfaces' ? $t('searchsurfacesplaceholder') : $t('searchinscriptionsplaceholder')"
               class="search-box" :style="{ paddingLeft: bubbleWidth + 'px' }" </div>
 
@@ -307,6 +307,13 @@ const handleSearch = () => {
     fetchSurfaces();
   } else if (searchType.value === 'inscriptionobjects') {
     fetchInscriptions(searchQuery.value);
+  }
+};
+
+const handleKeydown = (event: KeyboardEvent) => {
+  if (event.key === 'Backspace' && (selectedInscription.value || selectedSurface.value || panelStr.value)) {
+    clearSelection(); 
+    event.preventDefault(); 
   }
 };
 
