@@ -9,7 +9,6 @@
   import type { SophiaClient } from "@/assets/saintsophia";
   import OpenSeadragon from "./MapViewPreviewImage.vue";
   import apiConfig from "./settings/apiConfig"
-  import { inscriptionsStore } from "./settings/store";
 
   const { selectedFeature } = storeToRefs(mapStore());
   const sophia = inject("sophia") as SophiaClient;

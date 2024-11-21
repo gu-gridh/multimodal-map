@@ -491,7 +491,7 @@ function handleSurfaceClick(surface) {
   inscriptionId.value = null;
   showSuggestions.value = false;
   searchQuery.value = '';
-  // clickedPanel.value = null;
+  panelStr.value = null;
   emit('update:searchType', searchType.value);
 }
 
@@ -503,7 +503,7 @@ function handleInscriptionClick(feature) {
   panelId.value = null;
   showSuggestions.value = false;
   searchQuery.value = '';
-  // clickedPanel.value = null;
+  panelStr.value = null;
   emit('update:searchType', searchType.value);
 }
 
@@ -525,6 +525,7 @@ function clearAll() {
 watch( //watch for changes in the panelStr
   () => panelStr.value,
   (newPanelStr, oldPanelStr) => {
+    if (newPanelStr) { //if newPanelStr is not null or empty
       searchResults.value = [];
       searchQuery.value = '';
       searchType.value = 'surfaces';
@@ -533,11 +534,10 @@ watch( //watch for changes in the panelStr
       currentOffset.value = 0;
       hasMoreResults.value = true;
       showSuggestions.value = false;
-      // panelStr.value = null;
-      // selectedFeature.value = undefined;
 
       //only set if newPanelStr is not null or empty
-      selectedInscription.value = newPanelStr ? { displayText: newPanelStr } : null;
+      selectedInscription.value = { displayText: newPanelStr };
+    }
   }
 );
 
