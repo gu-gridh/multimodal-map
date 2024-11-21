@@ -63,12 +63,15 @@
 
         <div class="search-section" ref="searchSection">
           <div class="toggle-buttons" style="margin-top: 5px">
-            <button :class="{ active: searchType === 'surfaces' }" @click="setSearchType('surfaces')">
+            <button 
+              :class="{ active: searchType === 'surfaces' }" 
+              @click="() => $emit('update:searchType', 'surfaces')">
               {{ $t('panels') }}
             </button>
 
-            <button :class="{ active: searchType === 'inscriptionobjects' }"
-              @click="setSearchType('inscriptionobjects')">
+            <button 
+              :class="{ active: searchType === 'inscriptionobjects' }" 
+              @click="() => $emit('update:searchType', 'inscriptionobjects')">
               {{ $t('inscriptions') }}
             </button>
           </div>
@@ -208,6 +211,9 @@ const totalPictorial = ref(0);
 const totalComposite = ref(0);
 
 const filteredInscription = computed(() => {
+  if (searchType.value !== 'inscriptionobjects') {
+    return [];
+  }
   if (Array.isArray(searchResults.value)) {
     return searchResults.value.map(result => {
       if (result && typeof result === 'object') {
@@ -286,7 +292,6 @@ const setSearchType = (type: string) => { //change search type
   searchType.value = type;
   searchResults.value = []; //reset search results
   searchQuery.value = ''; //reset the search query
-  emit('update:searchType', searchType.value);
   handleSearch();
 };
 
@@ -552,7 +557,7 @@ watch(
   showGallery,
   (newValue) => {
     if (newValue) {
-      searchType.value = 'surfaces';
+      setSearchType('surfaces');
     }
   },
   { immediate: true }
@@ -562,7 +567,7 @@ watch(
   showGalleryInscriptions,
   (newValue) => {
     if (newValue) {
-      searchType.value = 'inscriptionobjects';
+      setSearchType('inscriptionobjects');
     }
   },
   { immediate: true }
@@ -572,7 +577,7 @@ watch(
   showPlan,
   (newValue) => {
     if (newValue) {
-      searchType.value = 'surfaces';
+      setSearchType('surfaces');
     }
   },
   { immediate: true }
