@@ -25,7 +25,7 @@
 
 <script lang="ts" setup>
 import { ref, inject, onMounted, defineComponent } from "vue";
-import type { Image } from "./types";
+import type { Image } from "./settings/types";
 import type { DianaClient } from "@/assets/diana";
 import VueMasonryWall from "@yeger/vue-masonry-wall";
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import ObjectViewComponent from "@/components/ObjectViewComponent.vue";
-import type { VideoDeep } from "./types";
+import type { VideoDeep } from "./settings/types";
 import GuplayViewer from "@/components/GuplayViewer.vue";
 
 const props = defineProps<{

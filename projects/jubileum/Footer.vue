@@ -15,13 +15,6 @@
 
     <div class="partners">
      
-
-      <div class="partner">
-        <a href="https://www.gu.se/">
-          <div class="link PartnerLogo" id="">GU</div>
-        </a>
-      </div>
-
       <div class="partner">
         <a href="https://ub.gu.se">
           <div class="link PartnerLogo" id="">UB</div>
@@ -30,7 +23,7 @@
 
       <div class="partner">
         <a href="https://dh.gu.se/">
-          <div class="link GRIDHLogo" id="">GRIDH
+          <div class="link GRIDHLogo" id="">GU / GRIDH
           </div>
         </a>
       </div>
@@ -126,7 +119,7 @@
     font-style: normal;
     font-size: 30px;
     line-height: 0.8;
-    padding: 0px 60px 5px 30px;
+    padding: 0px 50px 5px 30px;
     vertical-align: middle;
   }
 

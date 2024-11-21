@@ -73,8 +73,8 @@ import { inject, ref, onMounted, computed } from "vue";
 import CategoryButtonList from "@/components/input/CategoryButtonList.vue";
 import RangeSlider from "@/components/input/RangeSlider.vue";
 import { storeToRefs } from "pinia";
-import { rephotographyStore } from "./store";
-import type { RephotographyProject } from "./types";
+import { rephotographyStore } from "./settings//store";
+import type { RephotographyProject } from "./settings//types";
 
 const config = inject<RephotographyProject>("config");
 const { categories, years, tags, tagsLayerVisible, placesLayerVisible, mapLayerVisibility, mapLayerVisibilityTwo, mapLayerVisibilityThree } = storeToRefs(rephotographyStore());

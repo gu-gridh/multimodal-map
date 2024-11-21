@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Observation } from "./types";
+import type { Observation } from "./settings/types";
 
 defineProps<{
   observation: Observation;

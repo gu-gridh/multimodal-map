@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import ObjectViewComponent from "@/components/ObjectViewComponent.vue";
-import type { RephotographyDeep } from "./types";
+import type { RephotographyDeep } from "./settings/types";
 import ComparisonSlider from "@/components/ComparisonSlider.vue";
 
 const props = defineProps<{

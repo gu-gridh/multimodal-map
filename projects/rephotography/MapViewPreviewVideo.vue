@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import type { Video } from "./types";
+import type { Video } from "./settings/types";
 import GuplayPreview from "@/components/GuplayPreview.vue";
 
 const props = defineProps<{

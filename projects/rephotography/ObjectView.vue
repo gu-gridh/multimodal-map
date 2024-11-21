@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { inject, ref, watchEffect } from "vue";
-import type { Documentation } from "./types";
+import type { Documentation } from "./settings/types";
 import type { DianaClient } from "@/assets/diana";
 import ObjectViewImage from "./ObjectViewImage.vue";
 import ObjectViewVideo from "./ObjectViewVideo.vue";

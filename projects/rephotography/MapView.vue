@@ -10,7 +10,7 @@ import FeatureSelection from "./FeatureSelectionRephoto.vue";
 import MapViewPreview from "./MapViewPreview.vue";
 import MapViewGallery from "./MapViewGallery.vue";
 import { storeToRefs } from "pinia";
-import { rephotographyStore } from "./store";
+import { rephotographyStore } from "./settings/store";
 import { mapStore } from "@/stores/store";
 import { clean } from "@/assets/utils";
 import markerIcon from "@/assets/marker-gold.svg";
@@ -221,8 +221,8 @@ watch(showGrid, (newValue) => {
           :date= false
         >
         </DianaPlaceLayerRephoto>
-
-        <!-- <DianaPlaceLayerRephoto
+<!-- 
+        <DianaPlaceLayerRephoto
           :geojsonUrl="'https://data.dh.gu.se/geography/CryoClim_GAO_SJ_2001-2010.geojson'"
           :zIndex=1
           :isVisible="mapLayerVisibilityThree"

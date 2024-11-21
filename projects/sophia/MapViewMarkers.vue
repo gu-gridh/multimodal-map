@@ -93,7 +93,7 @@ const styles = {
 // hover style
 const hoverStyle = new Style({
   stroke: new Stroke({
-    color: 'rgba(91, 201, 98, 1.0)', 
+    color: 'rgba(220, 0, 0, 1.0)', 
     width: 13, 
   }),
 });

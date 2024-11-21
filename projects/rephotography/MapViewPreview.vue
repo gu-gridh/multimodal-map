@@ -15,7 +15,7 @@ import PreviewRephotography from "./MapViewPreviewRephotography.vue";
 import PreviewImage from "./MapViewPreviewImage.vue";
 import PreviewVideo from "./MapViewPreviewVideo.vue";
 import PreviewObservation from "./MapViewPreviewObservation.vue";
-import { rephotographyStore } from "./store";
+import { rephotographyStore } from "./settings/store";
 
 
 const { selectedFeature } = storeToRefs(mapStore());
