@@ -174,7 +174,7 @@ const searchId = ref(null); //id of the selected item in the search
 const sophiaClient = new SophiaClient("inscriptions"); // Initialize SophiaClient
 const store = inscriptionsStore();
 const { categories, languageModel, writingModel, pictorialModel, selectedCategory, textualModel, areMapPointsLoaded, alignmentModel, conditionModel, panelId,
-  inscriptionId, surfaceParams, imgParams, panelStr} = storeToRefs(inscriptionsStore());
+  inscriptionId, surfaceParams, imgParams, panelStr, showGallery, showGalleryInscriptions, showPlan } = storeToRefs(inscriptionsStore());
 const lastClickedCategory = ref('');
 
 //initialize variables for data section
@@ -528,7 +528,7 @@ watch( //watch for changes in the panelStr
     if (newPanelStr) { //if newPanelStr is not null or empty
       searchResults.value = [];
       searchQuery.value = '';
-      searchType.value = 'surfaces';
+      // searchType.value = 'surfaces';
       panelId.value = null;
       inscriptionId.value = null;
       currentOffset.value = 0;
@@ -539,6 +539,36 @@ watch( //watch for changes in the panelStr
       selectedInscription.value = { displayText: newPanelStr };
     }
   }
+);
+
+watch(
+  showGallery,
+  (newValue) => {
+    if (newValue) {
+      searchType.value = 'surfaces';
+    }
+  },
+  { immediate: true }
+);
+
+watch(
+  showGalleryInscriptions,
+  (newValue) => {
+    if (newValue) {
+      searchType.value = 'inscriptionobjects';
+    }
+  },
+  { immediate: true }
+);
+
+watch(
+  showPlan,
+  (newValue) => {
+    if (newValue) {
+      searchType.value = 'surfaces';
+    }
+  },
+  { immediate: true }
 );
 
 watch(() => i18n.global.locale, (newLocale) => {

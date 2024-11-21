@@ -18,7 +18,7 @@ import { onMounted, watch } from "vue";
 import { nextTick } from "vue";
 import Title from "./MapViewTitle.vue";
 
-const { selectedCategory, writingModel, languageModel, pictorialModel, textualModel, alignmentModel, conditionModel, panelId, inscriptionId, mediaModel, materialModel, panelStr } = storeToRefs(inscriptionsStore());
+const { selectedCategory, writingModel, languageModel, pictorialModel, textualModel, alignmentModel, conditionModel, panelId, inscriptionId, mediaModel, materialModel, panelStr, showGallery, showGalleryInscriptions, showPlan } = storeToRefs(inscriptionsStore());
 
 const store = mapStore();
 const inscriptions = inscriptionsStore();  //get the instance of inscriptionsStore
@@ -28,9 +28,6 @@ const maxZoom = 24;
 const featureZoom = 15; //value between minZoom and maxZoom when you select a point 
 const visibleAbout = ref(false);
 const visibleInstructions = ref(false);
-const showPlan = ref(true);
-const showGallery = ref(false);
-const showGalleryInscriptions = ref(false);
 const showGuideButton = computed(() => showPlan.value);
 const showFirstFloor = ref(true);
 const showSecondFloor = ref(false);
