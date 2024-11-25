@@ -231,6 +231,11 @@ export default {
     const reinitInfiniteScroll = () => {
       if (infScroll) {
         infScroll.destroy();
+        //hide the loader
+        const loader = document.querySelector('.infinite-scroll-request');
+        if (loader) {
+          loader.style.display = 'none';
+        }
       }
       if (msnry) {
         msnry.destroy();
