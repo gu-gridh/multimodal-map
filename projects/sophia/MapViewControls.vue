@@ -177,7 +177,7 @@ const searchId = ref(null); //id of the selected item in the search
 const sophiaClient = new SophiaClient("inscriptions"); // Initialize SophiaClient
 const store = inscriptionsStore();
 const { categories, languageModel, writingModel, pictorialModel, selectedCategory, textualModel, areMapPointsLoaded, alignmentModel, conditionModel, panelId,
-  inscriptionId, surfaceParams, imgParams, panelStr, showGallery, showGalleryInscriptions, showPlan } = storeToRefs(inscriptionsStore());
+  inscriptionId, surfaceParams, imgParams, panelStr, showGallery, showGalleryInscriptions, showPlan, mediaModel, materialModel } = storeToRefs(inscriptionsStore());
 const lastClickedCategory = ref('');
 
 //initialize variables for data section
@@ -251,6 +251,8 @@ const shouldShowReset = computed(() => { //check if any of the model values have
   const categoryCondition = selectedCategory.value !== null;
   const alignmentCondition = alignmentModel.value !== null;
   const conditionCondition = conditionModel.value !== null;
+  const mediaCondition = mediaModel.value !== null;
+  const materialCondition = materialModel.value !== null;
   const languageCondition = JSON.stringify(languageModel.value) !== JSON.stringify(["all"]);
   const pictorialCondition = JSON.stringify(pictorialModel.value) !== JSON.stringify(["all"]);
   const textualCondition = JSON.stringify(textualModel.value) !== JSON.stringify(["all"]);
@@ -265,9 +267,11 @@ const shouldShowReset = computed(() => { //check if any of the model values have
     pictorialCondition ||
     textualCondition ||
     writingCondition ||
+    mediaCondition ||
+    materialCondition ||
     alignmentCondition ||
     conditionCondition ||
-    bubbleCondition
+    bubbleCondition 
   );
 });
 
@@ -528,6 +532,8 @@ function clearAll() {
   selectedCategory.value = null;
   alignmentModel.value = null;
   conditionModel.value = null;
+  materialModel.value = null;
+  mediaModel.value = null;
 
   //clear the bubble selection
   clearSelection();
