@@ -13,11 +13,17 @@
     </div>
     <div class="main-about-content">
       <div class="logo-area">
-        <div class="logo" style="background-image:url(/images/logo-sophia.png);"></div>
-        <div class="logo" style="background-image:url(/images/logo-gu.png);"></div>
-        <div class="logo"
-          style="background-image:url(/images/logo-mist_en.png); width:280px; margin-top:25px; margin-left:15px;">
-        </div>
+        <div class="logo" :style="{ 'background-image': `url(${logoSophia})` }"></div>
+        <div class="logo" :style="{ 'background-image': `url(${logoGu})` }"></div>
+        <div
+          class="logo"
+          :style="{
+            'background-image': `url(${logoMist})`,
+            width: '280px',
+            'margin-top': '25px',
+            'margin-left': '15px',
+          }"
+        ></div>
       </div>
       <div class="left-content">
         <div class="left-content-columns">
@@ -70,6 +76,9 @@
 
 <script lang="ts">
 import i18n from '../../src/translations/sophia';
+import logoSophia from './images/logo-sophia.png';
+import logoGu from './images/logo-gu.png';
+import logoMist from './images/logo-mist_en.png';
 
 export default {
   name: "aboutview",
@@ -78,6 +87,13 @@ export default {
       type: Boolean,
       required: true,
     },
+  },
+  data() {
+    return {
+      logoSophia,
+      logoGu,
+      logoMist,
+    };
   },
   methods: {
     toggleLanguage() {
