@@ -292,7 +292,6 @@ const setSearchType = (type: string) => { //change search type
   searchType.value = type;
   searchResults.value = []; //reset search results
   searchQuery.value = ''; //reset the search query
-  handleSearch();
 };
 
 const handleSearchBoxFocus = () => {

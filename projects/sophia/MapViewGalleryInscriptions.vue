@@ -28,7 +28,7 @@
     <div class="gallery">
       <div class="gallery__col-sizer"></div>
       <div class="gallery__gutter-sizer"></div>
-      <div v-for="item in images" :key="item.id" class="gallery__item">
+      <div v-for="item in images" :key="item.id" class="gallery__item image-unloaded">
         <a :href="`https://71807.dh.gu.se/viewer/?q=${item.panelTitle}/${item.id}`" target="_blank">
           <div class="item-info">
             <div class="item-info-meta">
@@ -67,10 +67,9 @@ export default {
     const store = inscriptionsStore();
     const alignments = ref([]);
     const conditions = ref([]);
-    // const storedApiData = ref([]);
     let msnry;
-    let pageIndex = 1;  // Initialize pageIndex to 1
-    let canIncrement = true;  // Flag to control the increment
+    let pageIndex = 1;  //initialize pageIndex to 1
+    let canIncrement = true;  //flag to control the increment
     let infScroll;
     let lastFetchedPageIndex = 0;
     let isFetching = false;
@@ -116,9 +115,14 @@ export default {
         await fetchData(pageIndex);
         pageIndex = 2;
 
-        // Make sure to wait until all images have loaded
-        imagesLoaded(document.querySelector('.gallery'), () => {
+        imagesLoaded('.gallery', () => {
+          const newItems = document.querySelectorAll('.gallery__item.image-unloaded');
+          newItems.forEach(item => {
+            item.classList.remove('image-unloaded');
+          });
+
           reinitInfiniteScroll();
+          reloadAndLayout();
         });
       }
     );
@@ -170,9 +174,9 @@ export default {
     const reloadAndLayout = () => {
       return new Promise((resolve) => {
         msnry.reloadItems();
-        resolve(); 
+        resolve();
       }).then(() => {
-        msnry.layout(); 
+        msnry.layout();
       });
     };
 
@@ -203,17 +207,29 @@ export default {
         scrollThreshold: 200,
         elementScroll: true,
       });
+
       infScroll.on('load', async function () {
         if (pageIndex >= lastFetchedPageIndex) {
           try {
             await fetchData(pageIndex);
             pageIndex++;
-            reloadAndLayout();
+
+            imagesLoaded('.gallery', () => {
+              const newItems = document.querySelectorAll('.gallery__item.image-unloaded');
+              newItems.forEach(item => {
+                item.classList.remove('image-unloaded');
+              });
+
+              reloadAndLayout();
+            });
           } catch (e) {
-            console.error("error in the load event of infinitescroll:", e);
+            console.error("error in the load event of infinite scroll:", e);
+          } finally {
+            canIncrement = true;
           }
+        } else {
+          canIncrement = true;
         }
-        canIncrement = true;
       });
     };
 
@@ -239,11 +255,13 @@ export default {
 
       fetchData(1).then(() => {
         pageIndex = 2;
-        imagesLoaded(document.querySelector('.gallery'), () => {
-          initMasonry();
+        imagesLoaded('.gallery', () => {
+          const newItems = document.querySelectorAll('.gallery__item.image-unloaded');
+          newItems.forEach(item => {
+            item.classList.remove('image-unloaded');
+          });
 
-          // After the initial Masonry initialization, reload and layout again
-          // to make sure the first batch of images obeys the Masonry layout.
+          initMasonry();
           reloadAndLayout();
         });
       });
@@ -388,7 +406,12 @@ export default {
   opacity: 0;
 }
 
+.gallery__item.image-unloaded {
+  opacity: 0;
+}
+
 .gallery__item {
+  opacity: 1;
   min-height: 30px;
   margin-bottom: 10px;
   float: left;
