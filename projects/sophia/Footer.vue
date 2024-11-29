@@ -1,16 +1,20 @@
 <template>
   <footer id="footer">
     <div id="developer-info">
-      <div class="links-stack border-style">
+      <div class="links-stack">
         <a class="site-link link" href="https://github.com/gu-gridh/Saint_Sophia" target="_blank">GitHub
           repository and development</a>
         <a class="site-link link" href="https://github.com/gu-gridh/Saint_Sophia?tab=readme-ov-file#database-and-api-documentation"
           target="_blank">Database and API documentation</a>
       </div>
-      <div class="links-stack">
+      <div class="links-stack border-style">
         <a class="site-link link" href="https://github.com/gu-gridh/Saint_Sophia?tab=readme-ov-file#datasets" target="_blank">Dataset
           documentation</a>
         <a href="#" class="download-link link" @click="downloadData">Download all inscription data</a>
+      </div>
+      <div class="links-stack border-style extra">
+        <a class="site-link link" href="https://forms.office.com/e/3CaZQqAK16"
+          target="_blank">Feedback form</a>
       </div>
     </div>
     <div class="partners">
@@ -139,13 +143,12 @@ a {
 }
 
 .border-style {
-  border-width: 0 0.5px 0 0px;
-  border-color: white;
-  border-style: dashed;
-  padding-left: 10px;
-  padding-right: 20px;
-
-}
+    border-width: 0 0 0 0.5px;
+    border-color: white;
+    border-style: dashed;
+    padding-left: 20px;
+    padding-right: 10px;
+  }
 
 .link {
   color: white;
@@ -194,4 +197,11 @@ a {
   display:none;
 }
 }
+
+@media screen and (max-width: 1210px) {
+   .extra{
+    display:none;
+   }
+}
+
 </style>
