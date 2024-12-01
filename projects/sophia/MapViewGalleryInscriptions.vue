@@ -412,7 +412,7 @@ export default {
 
 .gallery__item {
   opacity: 1;
-  min-height: 30px;
+  min-height: 30px; 
   margin-bottom: 10px;
   float: left;
   overflow: hidden !important;
@@ -527,39 +527,6 @@ h1 span {
   display: block;
 }
 
-.page-load-status {
-  text-align: center;
-  color: #777;
-  z-index: 1000;
-  position: absolute;
-  bottom: 30px;
-  height: auto;
-  display: none;
-  width: 100%;
-  left: 45%;
-}
-
-.infinite-scroll-request {
-  margin-top: 10px;
-  border-radius: 4px;
-  padding: 4px 10px 4px 10px;
-  font-family: "Barlow Condensed", sans-serif !important;
-  font-size: 0.9em;
-  border: none;
-  background-color: rgba(255, 255, 255, 0.8);
-  background-image: url('@/assets/interface/6-dots-rotate.svg');
-  background-position: 50% 50%;
-  background-repeat: no-repeat;
-  width: 50px;
-  height: 50px;
-  margin-top: 0px;
-  border-radius: 50%;
-  padding: 0px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
 
 .gallery-tag.active {
   background-color: rgba(100, 40, 40, 1.0) !important;
