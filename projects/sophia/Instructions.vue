@@ -123,7 +123,7 @@
 
           <div class="instructions-item">
             <div class="instructions-item-icon"
-              style="background-image:url(https://data.dh.gu.se/ui-icons/zoomin_big_white.png)"></div>
+              style="background-image:url(https://data.dh.gu.se/ui-icons/idea_white.png)"></div>
             <div class="instructions-item-description">
               <div class="instructions-item-title">{{ $t('f6title') }}</div>
               <p>{{ $t('f6description') }}</p>

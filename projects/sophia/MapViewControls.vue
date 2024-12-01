@@ -91,7 +91,7 @@
             <input ref="searchInput" type="text" v-model="searchQuery" @input="handleSearch"
               @keydown.enter="handleEnter" @focus="handleSearchBoxFocus" @keydown="handleKeydown"
               :placeholder="searchType === 'surfaces' ? $t('searchsurfacesplaceholder') : $t('searchinscriptionsplaceholder')"
-              class="search-box" :style="{ paddingLeft: bubbleWidth + 'px' }" </div>
+              class="search-box" :style="{ paddingLeft: bubbleWidth + 'px' }"> <div id="search-button"  @click="handleEnter"></div> </div>
 
             <!-- Search results -->
             <div class="search-results" v-if="showSuggestions" ref="searchResultsContainer" @scroll="handleScroll">
@@ -942,7 +942,7 @@ onUnmounted(() => {
 }
 
 .search-box {
-  width: 100%;
+  width: calc(100% - 50px);
   box-sizing: border-box;
   z-index: 1;
   background-color: rgba(0, 0, 0, 0);
@@ -953,5 +953,21 @@ onUnmounted(() => {
 .selected-item-bubble .remove-icon {
   margin-left: 5px;
   font-weight: bold;
+}
+
+#search-button{
+  cursor:pointer;
+  width:30px;
+  height:30px;
+  background-color:var(--theme-3);
+  background-color:rgb(180,180,180);
+  background-image:url(https://data.dh.gu.se/ui-icons/search_white.png);
+  background-size:contain;
+  border-radius:50%;
+  float:right;
+}
+
+#search-button:hover{
+  background-color:rgb(130,130,130);
 }
 </style>
