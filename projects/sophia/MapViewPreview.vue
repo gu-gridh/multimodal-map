@@ -130,7 +130,7 @@
       </div>
 
       <div class="placecard-center-button">
-        <a :href="`https://71807.dh.gu.se/viewer/?q=${selectedFeature.get('title')}/orthophoto`">
+        <a :href="`https://saintsophia.dh.gu.se/viewer/?q=${selectedFeature.get('title')}/orthophoto`">
           <button class="theme-button theme-color-background" style="margin-top:0px;">{{ $t('exploreData') }}</button>
         </a>
       </div>

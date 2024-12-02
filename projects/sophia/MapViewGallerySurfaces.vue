@@ -36,7 +36,7 @@
       <div class="gallery__col-sizer"></div>
       <div class="gallery__gutter-sizer"></div>
       <div v-for="item in images" :key="item.uuid" class="gallery__item image-unloaded">
-        <a :href="`https://71807.dh.gu.se/viewer/?q=${item.name}`">
+        <a :href="`https://saintsophia.dh.gu.se/viewer/?q=${item.name}`">
           <div class="item-info">
             <div class="item-info-meta">
               <h1>{{ $t('panel') }} {{ item.name }}</h1>
