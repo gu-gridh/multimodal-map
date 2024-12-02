@@ -29,7 +29,7 @@
       <div class="gallery__col-sizer"></div>
       <div class="gallery__gutter-sizer"></div>
       <div v-for="item in images" :key="item.id" class="gallery__item image-unloaded">
-        <a :href="`https://71807.dh.gu.se/viewer/?q=${item.panelTitle}/${item.id}`" target="_blank">
+        <a :href="`https://71807.dh.gu.se/viewer/?q=${item.panelTitle}/${item.id}`">
           <div class="item-info">
             <div class="item-info-meta">
               <h1>{{ item.panelTitle }}:{{ item.id }}<span v-if="item.subtitle">|</span><span v-if="item.subtitle">{{
