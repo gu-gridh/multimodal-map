@@ -38,8 +38,8 @@
 import { ref } from 'vue';
 
 const downloadData = async () => {
-  let url = 'https://diana.dh.gu.se/api/etruscantombs/geojson/place/?page_size=100';
-  let pageNumber = 0;
+  let url = 'https://saintsophia.dh.gu.se/api/inscriptions/inscription/?depth=2';
+  const allData = [];
 
   try {
     while (url) {
@@ -47,13 +47,14 @@ const downloadData = async () => {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      const pageData = await response.json();
-      pageNumber++;
 
-      triggerDownload(pageData.features, `EtruscanTombsData_${pageNumber}.json`);
+      const pageData = await response.json();
+      allData.push(...pageData.results);
 
       url = pageData.next ? pageData.next.replace(/^http:/, 'https:') : null;
     }
+
+    triggerDownload(allData, 'inscriptionData.json');
   } catch (error) {
     console.error('Error fetching data:', error);
   }
