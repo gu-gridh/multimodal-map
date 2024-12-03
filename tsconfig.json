@@ -4,15 +4,18 @@
     "env.d.ts",
     "src/**/*",
     "src/**/*.vue",
-    "src/**/*.json",
-    "projects/**/*"
+    "src/**/*.json"
+  ],
+  "exclude": [
+    "projects/etruscan/**/*"
   ],
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     },
-    // "target": "es5",
+    "noImplicitAny": false,
+    "allowJs": true,
     "lib": ["es2019", "dom"]
   },
   "references": [
