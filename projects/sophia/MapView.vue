@@ -277,7 +277,7 @@ const toggleInstructionsVisibility = async () => {
       </button>
     </div>
 
-    <div class="ui-mode ui-overlay tile-switcher ui-overlay-bottom" style="" v-if="showPlan">
+    <div class="ui-mode ui-overlay tile-switcher" style="" v-if="showPlan">
       <button class="item" v-bind:class="{ selected: !showSecondFloor }" v-on:click="showSecondFloor = false;">
         {{ $t('groundfloor') }}
       </button>
@@ -493,14 +493,61 @@ const toggleInstructionsVisibility = async () => {
   border-radius:0px 8px 8px 0px!important;
 }
 
-.tile-switcher{
-  top:calc(100vh - 210px)!important;
+.tile-switcher {
+    position: absolute; 
+    top: 80% !important; 
+    transform: translateY(-100%); 
+    z-index:1 !important;
 }
 
-@media screen and (max-width: 900px) {
-  .tile-switcher{
-  top:calc(60px)!important;
+@media screen and (max-height: 1200px) and (max-width: 900px) {
+    .tile-switcher {
+        top: 45% !important;
+    }
+    .guide-button
+    {
+      display: none;
+    }
 }
+
+@media screen and (max-height: 1000px) and (max-width: 900px) {
+    .tile-switcher {
+        top: 43% !important;
+    }
+    .guide-button
+    {
+      display: none;
+    }
+}
+
+@media screen and (max-height: 900px) and (max-width: 900px) {
+    .tile-switcher {
+        top: 40% !important;
+    }
+    .guide-button
+    {
+      display: none;
+    }
+}
+
+@media screen and (max-height: 800px) and (max-width: 900px) {
+    .tile-switcher {
+        top: 35% !important;
+    }
+    .guide-button
+    {
+      display: none;
+    }
+}
+
+@media screen and (max-height: 700px) and (max-width: 900px) {
+    .tile-switcher {
+        top: 30% !important;
+    }
+    .guide-button
+    {
+      display: none;
+    }
 }
 
 /* Gallery */
