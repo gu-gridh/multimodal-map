@@ -72,7 +72,7 @@ const messages = {
       f1title: "Multimodal exploration",
       f1description: "Use the centrally placed widget at the top of the screen to switch between an interactive plan of the cathedral, a gallery of the documented Surfaces or a gallery of the individual inscriptions.",
       f2title: "Interactive Plan",
-      f2description:"The interactive plan shows the position of all the documented surfaces rendered on top of a plan of the cathedral. The colours indicate the amount of annotated inscriptions for each surface, ranging from yellow to bright red. Switch between Ground Floor and Second Floor with the widget at the bottom of the page. Zoom in by scrolling or double-clicking, and click-and-drag to pan the view.",
+      f2description:"The interactive plan shows the position of all the documented surfaces rendered on top of a plan of the cathedral. The colours indicate the amount of available data for each surface, ranging from yellow to bright red. Switch between Ground Floor and Second Floor with the widget at the bottom of the page. Zoom in by scrolling or double-clicking, and click-and-drag to pan the view.",
       f3title: "Filter by metadata",
       f3description:"To the left you have controls to filter down the result to inscriptions of a particular type (textual, pictorial or composite), by genre and description or by writing system and language.",
       f4title: "Search interface",
