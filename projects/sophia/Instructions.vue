@@ -35,14 +35,16 @@
           </div>
 
           <div class="buttons">
-
+         
             <!--  Button to go to video tutorial on GU-Play -->
+            <a href="https://play.gu.se/media/Saint+Sophia%27s+Inscriptions+Guide/0_0qw24ols" target="_blank">
             <div class="explore-button">
-              <button @click="$emit('close')">
+              <button>
                 <div class="p-1 px-2 category-button"
                   style="width:auto; padding:5px 15px; text-align: center; cursor: pointer;">{{ $t('video') }}</div>
               </button>
             </div>
+          </a>
 
 
             <!--  Button to close the instructions -->
