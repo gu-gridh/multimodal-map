@@ -495,14 +495,14 @@ const toggleInstructionsVisibility = async () => {
 
 .tile-switcher {
     position: absolute; 
-    top: 80% !important; 
+    top: calc(100% - 170px) !important; 
     transform: translateY(-100%); 
     z-index:1 !important;
 }
 
 @media screen and (max-height: 1200px) and (max-width: 900px) {
     .tile-switcher {
-        top: 45% !important;
+        top: 48% !important;
     }
     .guide-button
     {
@@ -512,7 +512,7 @@ const toggleInstructionsVisibility = async () => {
 
 @media screen and (max-height: 1000px) and (max-width: 900px) {
     .tile-switcher {
-        top: 43% !important;
+        top: 47% !important;
     }
     .guide-button
     {
@@ -522,7 +522,7 @@ const toggleInstructionsVisibility = async () => {
 
 @media screen and (max-height: 900px) and (max-width: 900px) {
     .tile-switcher {
-        top: 40% !important;
+        top: 45% !important;
     }
     .guide-button
     {
@@ -532,7 +532,7 @@ const toggleInstructionsVisibility = async () => {
 
 @media screen and (max-height: 800px) and (max-width: 900px) {
     .tile-switcher {
-        top: 35% !important;
+        top: 43% !important;
     }
     .guide-button
     {
@@ -542,13 +542,26 @@ const toggleInstructionsVisibility = async () => {
 
 @media screen and (max-height: 700px) and (max-width: 900px) {
     .tile-switcher {
-        top: 30% !important;
+        top: 40% !important;
     }
     .guide-button
     {
       display: none;
     }
 }
+
+
+@media screen and (max-height: 600px) and (max-width: 900px) {
+    .tile-switcher {
+        top: 35% !important;
+    }
+    .guide-button
+    {
+      display: none;
+    }
+}
+
+
 
 /* Gallery */
 #gallery-container {
