@@ -99,7 +99,7 @@ function navigateToDetail(url: string, id: number) {
             <div class="placecard-metadata-content">
               <ul class="sample-id-list">
                 <li v-for="(boat, index) in previewData['plank_boats']" :key="index">
-                  <span class="label-box" @click.stop="navigateToDetail('plank_boat', boat.id)">
+                  <span class="label-box" @click.stop="navigateToDetail('https://maritime-encounters.dh.gu.se/api/resources/plankboats/', boat.id)">
                     Plank Boat {{ boat.id }}
                   </span>
                 </li>
@@ -123,7 +123,7 @@ function navigateToDetail(url: string, id: number) {
             <div class="placecard-metadata-content">
               <ul class="sample-id-list">
                 <li v-for="(boat, index) in previewData['log_boats']" :key="index">
-                  <span class="label-box" @click.stop="navigateToDetail('log_boat', boat.id)">
+                  <span class="label-box" @click.stop="navigateToDetail('https://maritime-encounters.dh.gu.se/api/resources/logboats/', boat.id)">
                     Log Boat {{ boat.id }}
                   </span>
                 </li>
@@ -172,7 +172,7 @@ function navigateToDetail(url: string, id: number) {
             <div class="placecard-metadata-content">
               <ul class="sample-id-list">
                 <li v-for="(sample, index) in previewData['individual_samples']" :key="index">
-                  <span class="label-box" @click.stop="navigateToDetail('individual_sample', sample.id)">
+                  <span class="label-box" @click.stop="navigateToDetail('https://maritime-encounters.dh.gu.se/api/resources/individualobjects/', sample.id)">
                     Individual Sample {{ sample.id }}
                   </span>
                 </li>
@@ -196,7 +196,7 @@ function navigateToDetail(url: string, id: number) {
             <div class="placecard-metadata-content">
               <ul class="sample-id-list">
                 <li v-for="(sample, index) in previewData['dna_samples']" :key="index">
-                  <span class="label-box" @click.stop="navigateToDetail('dna_sample', sample.id)">
+                  <span class="label-box" @click.stop="navigateToDetail('https://maritime-encounters.dh.gu.se/api/resources/adna/', sample.id)">
                     DNA Sample {{ sample.id }}
                   </span>
                 </li>
@@ -245,7 +245,7 @@ function navigateToDetail(url: string, id: number) {
             <div class="placecard-metadata-content">
               <ul class="sample-id-list">
                 <li v-for="(point, index) in previewData['landing_points']" :key="index">
-                  <span class="label-box" @click.stop="navigateToDetail('landing_point', point.id)">
+                  <span class="label-box" @click.stop="navigateToDetail('https://maritime-encounters.dh.gu.se/api/resources/landingpoints/', point.id)">
                     Landing Point {{ point.id }}
                   </span>
                 </li>
