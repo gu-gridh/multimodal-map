@@ -252,11 +252,12 @@ overflow:hidden;
   }
 
   #app .left-pane {
-    margin-top: calc(100vh - 30vh)!important;
+    margin-top:0px!important;
+    top: calc(75%)!important;
     z-index:1000!important;
-      position:absolute!important;
-      width:100%!important;
-      padding: 30px 10px 100px 10px!important;
+    position:absolute!important;
+    width:100%!important;
+    padding: 30px 10px 100px 10px!important;
   }
 
   #app .left-pane-content {
@@ -270,7 +271,7 @@ overflow:hidden;
   }
 
   .placecard {
-    height: calc(100vh - 36vh);
+    height: calc(100vh - 30vh);
     width:calc(100% - 50px);
     margin-top: 0px;
     position:fixed!important;

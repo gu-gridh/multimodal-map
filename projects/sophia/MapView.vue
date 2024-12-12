@@ -502,14 +502,18 @@ const toggleInstructionsVisibility = async () => {
 
 @media screen and (max-height: 1200px) and (max-width: 900px) {
     .tile-switcher {
-        top: 48% !important;
+         margin-top: calc(0%)!important;
+        top: calc(70%)!important;
+        bottom:auto;
+        height:auto!important; 
+        transform: translateY(0%); 
     }
     .guide-button
     {
       display: none;
     }
 }
-
+/* 
 @media screen and (max-height: 1000px) and (max-width: 900px) {
     .tile-switcher {
         top: 47% !important;
@@ -522,7 +526,7 @@ const toggleInstructionsVisibility = async () => {
 
 @media screen and (max-height: 900px) and (max-width: 900px) {
     .tile-switcher {
-        top: 45% !important;
+        top: 4% !important;
     }
     .guide-button
     {
@@ -548,8 +552,7 @@ const toggleInstructionsVisibility = async () => {
     {
       display: none;
     }
-}
-
+} 
 
 @media screen and (max-height: 600px) and (max-width: 900px) {
     .tile-switcher {
@@ -560,6 +563,8 @@ const toggleInstructionsVisibility = async () => {
       display: none;
     }
 }
+
+*/
 
 
 
