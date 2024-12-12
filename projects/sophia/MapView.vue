@@ -495,18 +495,17 @@ const toggleInstructionsVisibility = async () => {
 
 .tile-switcher {
     position: absolute; 
-    top: calc(100% - 170px) !important; 
-    transform: translateY(-100%); 
+    margin-top: calc(0%)!important;
+    top: calc(100% - 190px) !important; 
     z-index:1 !important;
 }
 
-@media screen and (max-height: 1200px) and (max-width: 900px) {
+@media screen and (max-width: 900px) {
     .tile-switcher {
-         margin-top: calc(0%)!important;
-        top: calc(70%)!important;
+        margin-top: calc(0%)!important;
+        top: calc(72%)!important;
         bottom:auto;
         height:auto!important; 
-        transform: translateY(0%); 
     }
     .guide-button
     {
