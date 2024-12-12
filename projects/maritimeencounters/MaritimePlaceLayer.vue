@@ -12,6 +12,22 @@ import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 import "leaflet-draw";
 import "leaflet-draw/dist/leaflet.draw.css";
 import "leaflet.heat";
+import alandData from './polygons/aland_simplified.json';
+import belgiumData from './polygons/belgium_simplified.json';
+import czechData from './polygons/czech_simplified.json';
+import denmarkData from './polygons/denmark_simplified.json';
+import finlandData from './polygons/finland_simplified.json';
+import franceData from './polygons/france_simplified.json';
+import germanyData from './polygons/germany_simplified.json';
+import irelandData from './polygons/ireland_simplified.json';
+import netherlandsData from './polygons/netherlands_simplified.json';
+import norwayData from './polygons/norway_simplified.json';
+import polandData from './polygons/poland_simplified.json';
+import portugalData from './polygons/portugal_simplified.json';
+import russiaData from './polygons/russia_simplified.json';
+import spainData from './polygons/spain_simplified.json';
+import swedenData from './polygons/sweden_simplified.json';
+import ukData from './polygons/uk_simplified.json';
 
 (window as any).type = true;
 
@@ -408,38 +424,25 @@ onMounted(async () => {
   });
 
   const geojsonFiles = [
-    { name: "Denmark", url: "./polygons/denmark_simplified.json", id: "2" },
-    { name: "Sweden", url: "./polygons/sweden_simplified.json", id: "10" },
-    { name: "Germany", url: "./polygons/germany_simplified.json", id: "1" },
-    { name: "Norway", url: "./polygons/norway_simplified.json", id: "7" },
-    { name: "Finland", url: "./polygons/finland_simplified.json", id: "4" },
-    { name: "UK", url: "./polygons/uk_simplified.json", id: "6" },
-    { name: "Portugal", url: "./polygons/portugal_simplified.json", id: "9" },
-    { name: "Poland", url: "./polygons/poland_simplified.json", id: "8" },
-    { name: "Ireland", url: "./polygons/ireland_simplified.json", id: "11" },
-    { name: "France", url: "./polygons/france_simplified.json", id: "5" },
-    { name: "Netherlands", url: "./polygons/netherlands_simplified.json", id: "16" },
-    { name: "Belgium", url: "./polygons/belgium_simplified.json", id: "15" },
-    { name: "Czech", url: "./polygons/czech_simplified.json", id: "13" },
-    { name: "Aland", url: "./polygons/aland_simplified.json", id: "14" },
-    { name: "Russia", url: "./polygons/russia_simplified.json", id: "12" },
-    { name: "Spain", url: "./polygons/spain_simplified.json", id: "3" },
+    { name: "Denmark", data: denmarkData, id: "2" },
+    { name: "Sweden", data: swedenData, id: "10" },
+    { name: "Germany", data: germanyData, id: "1" },
+    { name: "Norway", data: norwayData, id: "7" },
+    { name: "Finland", data: finlandData, id: "4" },
+    { name: "UK", data: ukData, id: "6" },
+    { name: "Portugal", data: portugalData, id: "9" },
+    { name: "Poland", data: polandData, id: "8" },
+    { name: "Ireland", data: irelandData, id: "11" },
+    { name: "France", data: franceData, id: "5" },
+    { name: "Netherlands", data: netherlandsData, id: "16" },
+    { name: "Belgium", data: belgiumData, id: "15" },
+    { name: "Czech", data: czechData, id: "13" },
+    { name: "Aland", data: alandData, id: "14" },
+    { name: "Russia", data: russiaData, id: "12" },
+    { name: "Spain", data: spainData, id: "3" },
   ];
 
-  try {
-    const geojsonArray = await Promise.all(
-      geojsonFiles.map(async (file) => {
-        const response = await fetch(file.url);
-        const data = await response.json();
-        return { name: file.name, data, id: file.id };
-      })
-    );
-
-    //render the countries
-    renderGeoJSON(geojsonArray);
-  } catch (error) {
-    console.error("Error fetching GeoJSON files:", error);
-  }
+  renderGeoJSON(geojsonFiles);
 
   markerClusterGroup.value = L.markerClusterGroup({
     spiderfyOnMaxZoom: true,
