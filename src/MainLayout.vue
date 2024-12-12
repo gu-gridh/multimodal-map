@@ -195,7 +195,8 @@ body {
   z-index: 500;
   width:100%;
   pointer-events: auto;
-  margin-top:70vh;
+  margin-top:0px!important;
+  top: calc(75%)!important;
   border-radius:30px 30px 0 0;
   padding: 10px 30px 100px 30px !important;
   background-color:rgba(255,255,255,0.6);
