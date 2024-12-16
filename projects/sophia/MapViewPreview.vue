@@ -17,7 +17,6 @@
   let panel = ref < PanelMetadata > ();
   const room = ref < string | null > (null);
   const documentation = ref < string | null > (null);
-  const hasImages = ref < boolean > (false);
   const number_of_inscriptions = ref < number | null > (null)
   const languages = ref < Language[] > ();
   const tags = ref < string[] > ();
@@ -35,7 +34,6 @@
       images.value = await sophia.listAll < Image > ("image", { panel: featureId, depth: 2 });
       // If images are available
       if (images.value.length > 0) {
-        hasImages.value = true;
         const filteredImages = images.value.filter(image => {
           return (image.type_of_image.text === 'Orthophoto' | image.type_of_image.text === 'Topography') //Only display images that are orthophoto
         });
@@ -48,7 +46,6 @@
           // documentation.value = images.value[0].panel.documentation[0].observation || null;
         }
       } else {
-        hasImages.value = false;
         imageUrls.value = [];
         // If no images are available, fetch details from `geojson/place` endpoint
         const response = await fetch(`${apiConfig.PANEL}?id=${featureId}`);
@@ -72,18 +69,12 @@
 </script>
 
 <template>
-  <div v-if="selectedFeature" class="mapview-preview">
+  <div v-if="selectedFeature && imageUrls.length > 0" class="mapview-preview">
     <div class="placecard">
       <div class="close-card-button" @click="deselectPlace"
         style="font-family: Barlow Condensed, sans-serif !important;">+</div>
       <div class="placecard-top">
-        <!-- Render OpenSeadragon viewer only if hasImages is true -->
-        <OpenSeadragon v-if="hasImages" :src="imageUrls" :key="imageUrls.join(',')" class="flex-1" />
-
-        <!-- Render "No images available" div if hasImages is false -->
-        <div v-else class="no-images">
-          {{ $t('nophoto') }}
-        </div>
+        <OpenSeadragon :src="imageUrls" :key="imageUrls.join(',')" class="flex-1" />
       </div>
 
       <div class="placecard-bottom">
