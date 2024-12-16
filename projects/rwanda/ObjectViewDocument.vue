@@ -14,9 +14,12 @@
                 </div>
             </div>
         </div>
-        <div class="pdf-container">
-            <embed :src="filename" type="application/pdf" class="pdf-viewer" />
+        <div class="pdf-container" v-if="fileType== 'pdf'">
+            <iframe :src="filename" type="application/pdf" class="pdf-viewer"/>
         </div>
+        <div class="image-container" v-if="fileType== 'image'">
+            <img :src="filename"/>
+            </div>
 
 
     </div>
@@ -36,6 +39,7 @@
     const document = ref < Document > ();
     const place = ref < any > ();
     const filename = ref < string > ();
+    const fileType = ref ('')
 
     const goBack = () => {
         router.go(-1);
@@ -49,7 +53,16 @@
 
     onMounted(async () => {
         document.value = await diana.get("document", props.id)
-        filename.value = document.value?.filename + "#toolbar=1"
+        //check type of file
+        if (document.value?.filename.includes(".pdf")) {
+            filename.value = document.value?.filename + "#toolbar=1"
+            fileType.value = "pdf"
+        } else {
+            //if not pdf, show image
+            fileType.value = "image"
+            filename.value = document.value?.filename 
+        }
+        console.log(fileType.value)
         fetchPlace();
     });
 
@@ -100,7 +113,6 @@
 
     .pdf-viewer {
         width: 100%;
-        height: 100%;
     }
 
     .meta-content{
@@ -124,6 +136,10 @@
         line-height: 1.0;
         position: relative !important;
 
+    }
+
+    .image-container {
+        width: calc(100% - 350px);
     }
 
     @media screen and (max-width: 900px) {
