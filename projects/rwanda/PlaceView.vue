@@ -193,9 +193,9 @@ function deselectPlace() {
         <div v-if="documents.length" class="document">
           Documents
           <div v-for="doc in documents"> 
-            <router-link :to="`/document/${doc.id}`" :doc="{doc}">
+            <a :href="doc.filename" target="_blank">
               <div style="font-style: italic;">{{doc.title}}</div>
-            </router-link>
+            </a>
           </div>
         </div>
         <!-- Images -->
