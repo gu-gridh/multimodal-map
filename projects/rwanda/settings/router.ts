@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Grid from "../Grid.vue";
 import ObjectViewImage from "../ObjectViewImage.vue";
-import Document from "../ObjectViewDocument.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -23,12 +22,6 @@ const router = createRouter({
       component: ObjectViewImage,
       props: true
     },
-    {
-      path: "/document/:id",
-      name: "document",
-      component: Document,
-      props: true
-    }
   ],
 });
 
