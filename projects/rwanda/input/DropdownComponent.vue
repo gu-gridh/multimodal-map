@@ -4,16 +4,16 @@
     <option 
       v-for="(label, key) in categories"
       :key="key"
-      :value="key">
+      :value="key"
+      :title="key"
+      >
       {{ label }}
     </option>
   </select>
 </template>
 
 <script setup lang="ts">
-import { storeToRefs } from "pinia";
-import { computed } from 'vue';
-import i18n from '../../../src/translations/rwanda';
+
 
 const props = defineProps<{
   modelValue: string[];
@@ -43,11 +43,6 @@ function dropdownToggle(event: Event) {
 function handleToggle(key: string) {
   if (key === 'all') {
     emit("update:modelValue", ['all']); // Set modelValue to ['all']
-    
-    // If this dropdown is for "Necropolis", then move the map
-    // if (props.type === 'necropolis') {
-    //   selectedNecropolisCoordinates.value = [1335733.925763396, 5194636.579769473];
-    // }
 
     emit('click', 'all'); // Emit the special 'all' value
     return;
