@@ -28,6 +28,7 @@ const placeNames: any = ref([])
 const placeGeoJson = ref()
 const coordinates: any = ref([])
 const documents = ref<Array<Document>>([])
+const comment = ref('')
 
 //Capitalize first letter since some are lowercase in database
 const capitalize = (word: String) => {
@@ -107,7 +108,6 @@ const fetchDocuments = async (id: number) => {
   else return
 }
 
-//fetch place data
 const fetchPlaceData =async () => {  
     //if place is selected on map
     if(selectedFeature.value !== undefined || null) {
@@ -115,6 +115,7 @@ const fetchPlaceData =async () => {
         placeType.value = capitalize(place.value.values_.type.text)
         placeDescription.value = capitalize(place.value.values_.description)
         placeNames.value = place.value.values_.names
+        comment.value = place.value.values_.comment
         const placeId = selectedFeature.value?.getId()
         fetchInterviews(placeId)
         fetchImages(Number(placeId))
@@ -133,6 +134,7 @@ onMounted(async ()  => {
             placeDescription.value = capitalize(place.value.description)
             placeNames.value = place.value.names
             placeGeoJson.value = data.geometry
+            comment.value = place.value.comment
         })
         const placeId = Number(route.params.placeId)
         fetchInterviews(placeId)
@@ -194,7 +196,7 @@ function deselectPlace() {
           Documents
           <div v-for="doc in documents"> 
             <a :href="doc.filename" target="_blank">
-              <div style="font-style: italic;">{{doc.title}}</div>
+              <li style="font-style: italic;">{{doc.title}}</li>
             </a>
           </div>
         </div>
@@ -216,6 +218,10 @@ function deselectPlace() {
           </VueMasonryWall>
         </div>
       </div>
+      <div v-if="comment" class="comment">
+        Comment:
+        <p>{{ comment }}</p>
+        </div>
     </div>
 </template>
 <style>
@@ -342,5 +348,10 @@ function deselectPlace() {
 .document {
   padding-top: 20px;
   padding-bottom: 20px;
+}
+
+.comment {
+  padding-top: 30px;
+  font-size: 14px;
 }
 </style>
