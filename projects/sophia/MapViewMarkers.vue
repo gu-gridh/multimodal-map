@@ -94,8 +94,8 @@ const hoverStyle = new Style({
 });
 
 const colorMappingByInscriptions = [
-  { min: 1, max: 5, color: 'rgba(255, 255, 128, 0.6)' },   //few inscriptions
-  { min: 6, max: 10, color: 'rgba(255, 200, 100, 0.6)' },
+  { min: 1, max: 5, color: 'rgba(255, 255, 128, 0.7)' },   //few inscriptions
+  { min: 6, max: 10, color: 'rgba(255, 200, 100, 0.7)' },
   { min: 11, max: 19, color: 'rgba(255, 150, 80, 0.7)' },
   { min: 20, max: 39, color: 'rgba(255, 100, 60, 0.8)' },
   { min: 40, max: 59, color: 'rgba(255, 60, 40, 0.9)' },
