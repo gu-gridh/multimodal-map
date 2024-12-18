@@ -50,7 +50,7 @@ const updateFeatures = (features: Feature[]) => {
 
 const fetchData = async (initialUrl: string, isSecondFloor: Boolean) => {
   let nextUrl = initialUrl;
-  let initialParams = new URLSearchParams({ page_size: '500'}).toString();
+  let initialParams = new URLSearchParams({ page_size: '500' }).toString();
 
   if (nextUrl && initialParams) {
     if (!isSecondFloor) {
@@ -78,28 +78,28 @@ const fetchData = async (initialUrl: string, isSecondFloor: Boolean) => {
 
 const styles = {
   'MultiLineString': new Style({
-      stroke: new Stroke({
+    stroke: new Stroke({
       color: 'rgba(180,80,80, 0.7)',
       width: 10,
     }),
-  }),  
+  }),
 };
 
 // hover style
 const hoverStyle = new Style({
   stroke: new Stroke({
-    color: 'rgba(220, 0, 0, 1.0)', 
-    width: 13, 
+    color: 'rgba(220, 0, 0, 1.0)',
+    width: 13,
   }),
 });
 
 const colorMappingByInscriptions = [
   { min: 1, max: 5, color: 'rgba(255, 255, 128, 0.6)' },   //few inscriptions
-  { min: 6, max: 10, color: 'rgba(255, 200, 100, 0.6)' }, 
-  { min: 11, max: 19, color: 'rgba(255, 150, 80, 0.7)' }, 
-  { min: 20, max: 39, color: 'rgba(255, 100, 60, 0.8)' },  
-  { min: 40, max: 59, color: 'rgba(255, 60, 40, 0.9)' },   
-  { min: 60, max: 79, color: 'rgba(200, 40, 30, 0.9)' },   
+  { min: 6, max: 10, color: 'rgba(255, 200, 100, 0.6)' },
+  { min: 11, max: 19, color: 'rgba(255, 150, 80, 0.7)' },
+  { min: 20, max: 39, color: 'rgba(255, 100, 60, 0.8)' },
+  { min: 40, max: 59, color: 'rgba(255, 60, 40, 0.9)' },
+  { min: 60, max: 79, color: 'rgba(200, 40, 30, 0.9)' },
   { min: 80, max: Infinity, color: 'rgba(180, 0, 0, 1.0)' }, //many inscriptions
 ];
 
@@ -117,12 +117,11 @@ const styleFunction = function (feature: Feature<Geometry>) {
   let color;
 
   if (typeof numInscriptions !== 'number' || numInscriptions === 0) {
-    color = 'rgba(50, 0, 0, 0.1)'; //default gray for no inscriptions
-    if (dataAvailable > 1){
-      color = 'rgba(155, 55, 0, 0.3)'; //if there is visible data but no registered inscriptions
-  }
-}
-    else {
+    color = 'rgba(50, 0, 0, 0.1)'; // default gray for no inscriptions
+    if (dataAvailable > 1) {
+      color = 'rgba(155, 55, 0, 0.3)'; // if there is visible data but no registered inscriptions
+    }
+  } else {
     color = getColorByInscriptions(numInscriptions);
   }
 
@@ -186,33 +185,33 @@ onMounted(() => {
     }
 
 
-  let clickedFeatures: Feature[] = [];
-  map.on("click", function (evt) {
-    clickedFeatures = []; // Clear the array before each click
-    map.forEachFeatureAtPixel(evt.pixel, function (feature) {
-      clickedFeatures.push(feature as Feature<Geometry>);
+    let clickedFeatures: Feature[] = [];
+    map.on("click", function (evt) {
+      clickedFeatures = []; // Clear the array before each click
+      map.forEachFeatureAtPixel(evt.pixel, function (feature) {
+        clickedFeatures.push(feature as Feature<Geometry>);
+      });
+
+      if (clickedFeatures.length >= 1) {
+        //unselect the hovered feature
+        hoverCoordinates.value = null;
+        hoveredFeature.value = null;
+
+        //select the clicked feature
+        selectedFeature.value = clickedFeatures[0];
+        const geometry = clickedFeatures[0].getGeometry() as any;
+        selectedCoordinates.value = geometry.getFirstCoordinate();
+
+        //set store value
+        panelStr.value = selectedFeature.value.values_?.title || '';
+      } else {
+        selectedCoordinates.value = undefined as any;
+        selectedFeature.value = undefined;
+      }
     });
-
-    if (clickedFeatures.length >= 1) {
-      //unselect the hovered feature
-      hoverCoordinates.value = null;
-      hoveredFeature.value = null;
-
-      //select the clicked feature
-      selectedFeature.value = clickedFeatures[0];
-      const geometry = clickedFeatures[0].getGeometry() as any;
-      selectedCoordinates.value = geometry.getFirstCoordinate();
-
-      //set store value
-      panelStr.value = selectedFeature.value.values_?.title || '';
-    } else {
-      selectedCoordinates.value = undefined as any;
-      selectedFeature.value = undefined;
-    }
-  });
-} else {
-  console.error("Map object is not initialized.");
-}
+  } else {
+    console.error("Map object is not initialized.");
+  }
 });
 
 watch(
@@ -230,7 +229,7 @@ watch(
     else {
       await fetchData(initialUrl, false);
     }
-  },  { immediate: true }
+  }, { immediate: true }
 )
 
 </script>
@@ -244,5 +243,4 @@ watch(
   </ol-overlay>
 </template>
 
-<style>
-</style>
+<style></style>
