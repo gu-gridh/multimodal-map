@@ -149,6 +149,16 @@ body {
 
 @media (max-width: 900px) {
 
+  #app .left-pane {
+  margin-top:0px!important;
+  top: 75%!important;
+  z-index:1000!important;
+  position:absolute!important;
+  width:100%!important;
+  padding: 30px 10px 100px 10px!important;
+}
+
+
 #app .main-title {
   font-weight: 600 !important;
   font-size: 60px !important;

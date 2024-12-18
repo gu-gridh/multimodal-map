@@ -253,7 +253,7 @@ overflow:hidden;
 
   #app .left-pane {
     margin-top:0px!important;
-    top: calc(75%)!important;
+    top: 76%!important;
     z-index:1000!important;
     position:absolute!important;
     width:100%!important;

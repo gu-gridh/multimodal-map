@@ -106,7 +106,12 @@ body {
 
 @media screen and (max-width: 900px) {
   #app .left-pane {
-    width: 100% !important;
+    margin-top:0px!important;
+    top: 76%!important;
+    z-index:1000!important;
+    position:absolute!important;
+    width:100%!important;
+    padding: 30px 10px 100px 10px!important;
     min-width: 300px !important;
   }
 
