@@ -112,12 +112,17 @@ const getColorByInscriptions = (numberOfInscriptions: number) => {
 
 const styleFunction = function (feature: Feature<Geometry>) {
   const numInscriptions = feature.get('number_of_inscriptions');
+  const dataAvailable = feature.get('data_available');
 
   let color;
 
   if (typeof numInscriptions !== 'number' || numInscriptions === 0) {
     color = 'rgba(50, 0, 0, 0.1)'; //default gray for no inscriptions
-  } else {
+    if (dataAvailable > 1){
+      color = 'rgba(155, 55, 0, 0.3)'; //if there is visible data but no registered inscriptions
+  }
+}
+    else {
     color = getColorByInscriptions(numInscriptions);
   }
 
