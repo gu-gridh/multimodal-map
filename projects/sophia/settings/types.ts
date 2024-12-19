@@ -25,6 +25,7 @@ export type Panel = {
   };
   documentation: string;
   tags: any[];
+  room?: string;
 };
 
 export type PanelMetadata = {
@@ -128,49 +129,16 @@ export type ImageDeep = Omit<Image, "creator" | "place" | "focus" | "tag"> & {
   author?: Author;
 };
 
-// export type Person = {
-//   id: number;
-//   name: string;
-// };
-
-// export type Focus = {
-//   place: Geometry;
-//   text: string;
-// };
-
 export type Tag = {
   text: string;
 };
 
-// export interface Name {
-//   id?: number;
-//   created_at: string;
-//   updated_at: string;
-//   published: boolean;
-//   referent: number;
-//   text: string;
-//   note: string;
-// }
+export type Person = {
+  id: number;
+  name: string;
+};
 
-// export interface PlaceType {
-//   id?: number;
-//   created_at: string;
-//   updated_at: string;
-//   published: boolean;
-//   text: string;
-// }
-
-// export interface Panel {
-//   id?: number;
-//   comment: string | null;
-//   corrected: boolean;
-//   description: string;
-//   published: boolean;
-//   is_existing: boolean;
-//   is_iconic: boolean;
-//   is_private: boolean;
-//   names: Array<Name>;
-//   type: PlaceType;
-//   properties: any;
-//   geometry: any
-// }
+export type Focus = {
+  place: Geometry;
+  text: string;
+};

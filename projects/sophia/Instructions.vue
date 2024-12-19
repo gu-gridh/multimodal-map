@@ -140,37 +140,37 @@
 
 
 <script lang="ts">
+import { defineComponent } from 'vue';
+import i18n from '../../src/translations/sophia';
 
-  import i18n from '../../src/translations/sophia';
-
-  export default {
-    name: "aboutinstructionsview",
-    props: {
-      visibleInstructions: {
-        type: Boolean,
-        required: true,
-      },
+export default defineComponent({
+  name: "aboutinstructionsview",
+  props: {
+    visibleInstructions: {
+      type: Boolean,
+      required: true,
     },
-    data() {
-      return {
-        displayInstructions: this.visibleInstructions,
-      };
+  },
+  data() {
+    return {
+      displayInstructions: this.visibleInstructions,
+    };
+  },
+  watch: {
+    visibleInstructions(newVal: boolean) {
+      if (newVal) {
+        // If visibleInstructions is true, immediately show the container
+        this.displayInstructions = true;
+      } else {
+         // if visibleInstructions is false, wait for the transition to finish before hiding
+        setTimeout(() => {
+          this.displayInstructions = false;
+        }, 1000); // transition duration
+      }
     },
-    watch: {
-      visibleInstructions(newVal) {
-        if (newVal) {
-          // If visibleInstructions is true, immediately show the container
-          this.displayInstructions = true;
-        } else {
-          // if visibleInstructions is false, wait for the transition to finish before hiding
-          setTimeout(() => {
-            this.displayInstructions = false;
-          }, 1000); // transition duration
-        }
-      },
-    },
-    methods: {
-      toggleLanguage() {
+  },
+  methods: {
+    toggleLanguage() {
         if (i18n.global.locale === 'en') {
           i18n.global.locale = 'uk';
         } else {
@@ -182,12 +182,9 @@
       },
       toggleLanguageEN() {
         i18n.global.locale = 'en';
-      }
-    },
-  };
-
-
-
+    }
+  },
+});
 </script>
 
 <style scoped>

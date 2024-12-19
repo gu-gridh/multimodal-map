@@ -13,6 +13,7 @@ import { inscriptionsStore } from "./settings/store";
 import { pointerMove } from "ol/events/condition";
 import type Map from "ol/Map";
 import { Vector as VectorLayer } from "ol/layer.js"
+import type { FeatureLike } from 'ol/Feature';
 
 let selectHover;
 const emit = defineEmits(["deselect-surface"]);
@@ -111,7 +112,7 @@ const getColorByInscriptions = (numberOfInscriptions: number) => {
   return mapping ? mapping.color : 'rgba(0, 0, 0, 0.0)';
 };
 
-const styleFunction = function (feature: Feature<Geometry>) {
+const styleFunction = (feature: FeatureLike) => {
   const numInscriptions = feature.get('number_of_inscriptions');
   const dataAvailable = feature.get('data_available');
 
@@ -135,7 +136,7 @@ const styleFunction = function (feature: Feature<Geometry>) {
 };
 
 const vectorLayer = new VectorLayer({
-  source: vectorSource.value,
+  source: vectorSource.value as VectorSource<Geometry>,
   style: styleFunction,
 });
 
@@ -203,7 +204,7 @@ onMounted(() => {
         selectedCoordinates.value = geometry.getFirstCoordinate();
 
         //set store value
-        panelStr.value = selectedFeature.value.values_?.title || '';
+        panelStr.value = selectedFeature.value?.get('title') || '';
       } else {
         selectedCoordinates.value = undefined as any;
         selectedFeature.value = undefined;

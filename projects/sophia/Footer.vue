@@ -46,7 +46,7 @@ const isLoading = ref(false);
 const downloadData = async () => {
   isLoading.value = true;
   let url = 'https://saintsophia.dh.gu.se/api/inscriptions/inscription/?depth=2';
-  const allData = [];
+  const allData = ref<any[]>([]);
 
   try {
     while (url) {
@@ -56,12 +56,12 @@ const downloadData = async () => {
       }
 
       const pageData = await response.json();
-      allData.push(...pageData.results);
+      allData.value.push(...pageData.results);
 
       url = pageData.next ? pageData.next.replace(/^http:/, 'https:') : null;
     }
 
-    triggerDownload(allData, 'inscriptionData.json');
+    triggerDownload(allData.value, 'inscriptionData.json');
   } catch (error) {
     console.error('Error fetching data:', error);
   } finally {

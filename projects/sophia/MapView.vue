@@ -31,7 +31,7 @@ const showGuideButton = computed(() => showPlan.value);
 const showFirstFloor = ref(true);
 const showSecondFloor = ref(false);
 const searchType = ref("inscriptionobjects");
-const mapviewControlsRef = ref(null);
+const mapviewControlsRef = ref<InstanceType<typeof MapViewControls> | null>(null);
 let visited = true; //store the visited status outside of the hook
 
 const switchToPlan = () => {
@@ -264,7 +264,7 @@ const toggleInstructionsVisibility = async () => {
 
 function handleDeselectSurface() {
   if (mapviewControlsRef.value) {
-    mapviewControlsRef.value.clearSelection();
+    mapviewControlsRef.value?.clearSelection();
   }
 }
 </script>

@@ -4,7 +4,7 @@ import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
 import type {
   Image, PanelMetadata, Language,
-} from "./types";
+} from "./settings/types";
 import type { SophiaClient } from "@/assets/saintsophia";
 import OpenSeadragon from "./MapViewPreviewImage.vue";
 import apiConfig from "./settings/apiConfig"
@@ -17,24 +17,26 @@ const imageUrls = ref<string[]>([]);
 const room = ref<string | null>(null);
 const documentation = ref<string | null>(null);
 const number_of_inscriptions = ref<number | null>(null)
-const languages = ref<Language[]>();
-const tags = ref<string[]>();
+const languages = ref<number | null>(null);
+const tags = ref<number | null>(null);
 
 //When a place is selected, fetch image and info
 watchEffect(async () => {
   documentation.value = null;
   if (selectedFeature.value) {
     const featureId = selectedFeature.value.getId();
-    panel.value = await sophia.list<PanelMetadata>("panel", { id: featureId });
-    number_of_inscriptions.value = panel.value.results[0].number_of_inscriptions
-    languages.value = panel.value.results[0].list_of_languages.length
-    tags.value = panel.value.results[0].tags.length;
-
+    const panelResponse = await sophia.list<PanelMetadata>("panel", { id: featureId });
+    
+    panel.value = panelResponse.results[0];
+    number_of_inscriptions.value = panel.value.number_of_inscriptions;
+    languages.value = panel.value.list_of_languages.length;
+    tags.value = panel.value.tags.length;
     images.value = await sophia.listAll<Image>("image", { panel: featureId, depth: 2 });
+
     // If images are available
     if (images.value.length > 0) {
       const filteredImages = images.value.filter(image => {
-        return (image.type_of_image.text === 'Orthophoto' | image.type_of_image.text === 'Topography') //Only display images that are orthophoto
+        return (image.type_of_image.text === 'Orthophoto' || image.type_of_image.text === 'Topography') //Only display images that are orthophoto
       });
       imageUrls.value = filteredImages.map(image => `${image.iiif_file}/info.json`);
 
@@ -119,40 +121,40 @@ function deselectPlace() {
 </template>
 
 <style> /* override */
-.placecard-metadata-content {
-  display: flex;
-  flex-direction: row;
-}
+ .placecard-metadata-content {
+   display: flex;
+   flex-direction: row;
+ }
 
-.metadata-group {
-  display: flex;
-  flex-direction: column;
-}
+ .metadata-group {
+   display: flex;
+   flex-direction: column;
+ }
 
-.metadata-item {
-  margin-bottom: 5px;
-  display: flex;
-  gap: 10px;
-  width: auto;
-  margin-right: 30px;
-}
+ .metadata-item {
+   margin-bottom: 5px;
+   display: flex;
+   gap: 10px;
+   width: auto;
+   margin-right: 30px;
+ }
 
-.label {
-  width: auto !important;
-  margin-right: 0px !important;
-}
+ .label {
+   width: auto !important;
+   margin-right: 0px !important;
+ }
 
-.tag {
-  margin-left: 0px;
-  padding: 0px !important;
-  width: auto !important;
-}
+ .tag {
+   margin-left: 0px;
+   padding: 0px !important;
+   width: auto !important;
+ }
 
-.close-card-button {
-  left: calc(45px);
-}
+ .close-card-button {
+   left: calc(45px);
+ }
 
-.osd {
-  background-color: black !important;
-}
+ .osd {
+   background-color: black !important;
+ }
 </style>

@@ -106,7 +106,7 @@
 
               <!-- Rendering for inscriptions -->
               <template v-else-if="searchType === 'inscriptionobjects'">
-                <div v-for="feature in filteredInscription" :key="feature.id || index"
+                <div v-for="(feature, index) in filteredInscription" :key="feature.id || index"
                   :class="['search-result-item', { selected: searchId === feature.id }]"
                   @click="handleInscriptionClick(feature)">
                   {{ feature.displayText }}
@@ -167,7 +167,7 @@ import Dropdown from "./components/DropdownComponent.vue";
 import CategoryButton from "@/components/input/CategoryButtonList.vue";
 import { storeToRefs } from "pinia";
 import { inscriptionsStore } from "./settings/store";
-import type { InscriptionsProject } from "./types";
+import type { InscriptionsProject } from "./settings/types";
 import { SophiaClient } from "@/assets/saintsophia";
 import i18n from '../../src/translations/sophia';
 import { mapStore } from "@/stores/store";
@@ -184,13 +184,13 @@ const lastClickedCategory = ref('');
 //initialize variables for data section
 const emit = defineEmits(["update:searchType"]);
 const searchType = ref('inscriptionobjects'); //default to 'surfaces' 
-const selectedInscription = ref(null); //from search results
-const selectedSurface = ref(null); //from search results
-const bubbleElement = ref(null);
+const selectedInscription = ref<{ displayText: string } | null>(null);
+const selectedSurface = ref<{ title?: string; id?: number } | null>(null);
+const bubbleElement = ref<HTMLElement | null>(null);
 const bubbleWidth = ref(0);
 const firstSearchBoxClick = ref(true);
 const searchQuery = ref('');
-const searchResults = ref([]);
+const searchResults = ref<Array<{ id?: number; title?: string; displayText?: string }>>([]);
 const currentOffset = ref(0);
 const limit = 25;
 const hasMoreResults = ref(true);
@@ -218,7 +218,7 @@ const filteredInscription = computed(() => {
   if (Array.isArray(searchResults.value)) {
     return searchResults.value.map(result => {
       if (result && typeof result === 'object') {
-        const panelTitle = result.panel?.title || '';
+        const panelTitle = (result as { panel?: { title?: string } }).panel?.title || '';
         const inscriptionId = result.id || '';
         const inscriptionTitle = result.title ? ` | ${result.title}` : '';
         return {

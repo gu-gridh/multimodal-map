@@ -4,7 +4,7 @@
       v-for="item in categories"
       :key="item.id"
       :text="item.text"
-      :value="!!modelValue.includes(item.id)"
+      :value="!!modelValue.includes(String(item.id))"
       @toggle="toggle(item.id)"
     />
   </div>
@@ -59,16 +59,18 @@ function handleToggle(key: string | number) {
   }
   
   let newValue = [...props.modelValue];
-  if (newValue.includes(key)) {
-    newValue = newValue.filter(item => item !== key);
+  const strKey = String(key);
+  
+  if (newValue.includes(strKey)) {
+    newValue = newValue.filter(item => item !== strKey);
   } else if (props.limit === 1) {
-    newValue = [key];
+    newValue = [strKey];
   } else {
-    newValue.push(key);
+    newValue.push(strKey);
   }
   
   emit("update:modelValue", newValue);
-  emit('click', key); 
+  emit('click', strKey);
 }
 </script>
 
