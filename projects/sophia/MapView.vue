@@ -264,6 +264,7 @@ const toggleInstructionsVisibility = async () => {
 </script>
 
 <template>
+  <div id="version"> {{ $t('versionnumb') }}</div>
   <div style="display:flex; align-items: center; justify-content: center; pointer-events: none;">
     <div class="ui-mode ui-overlay ui-overlay-top">
       <button class="item" :class="{ selected: showPlan }" @click="switchToPlan">
@@ -339,6 +340,22 @@ const toggleInstructionsVisibility = async () => {
 </template>
 
 <style>
+#version{
+  position:absolute;
+  text-align:right;
+  font-size:0.7em;
+  right:30px;
+  top:15px;
+  z-index:1000;
+  opacity:0.7;
+}
+@media screen and (max-width: 900px) {
+  #version{
+  display:none;
+}
+}
+
+
 .map-container {
   height: calc(100% - 80px) !important;
   position: relative;
