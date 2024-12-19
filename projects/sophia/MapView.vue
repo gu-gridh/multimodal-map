@@ -19,7 +19,6 @@ import { nextTick } from "vue";
 import Title from "./MapViewTitle.vue";
 
 const { selectedCategory, writingModel, languageModel, pictorialModel, textualModel, alignmentModel, conditionModel, panelId, inscriptionId, mediaModel, materialModel, panelStr, showGallery, showGalleryInscriptions, showPlan } = storeToRefs(inscriptionsStore());
-
 const store = mapStore();
 const inscriptions = inscriptionsStore();  //get the instance of inscriptionsStore
 const { selectedFeature } = storeToRefs(store);
@@ -32,6 +31,7 @@ const showGuideButton = computed(() => showPlan.value);
 const showFirstFloor = ref(true);
 const showSecondFloor = ref(false);
 const searchType = ref("inscriptionobjects");
+const mapviewControlsRef = ref(null);
 let visited = true; //store the visited status outside of the hook
 
 const switchToPlan = () => {
@@ -261,6 +261,12 @@ const toggleInstructionsVisibility = async () => {
   await nextTick();
   visibleInstructions.value = !visibleInstructions.value;
 };
+
+function handleDeselectSurface() {
+  if (mapviewControlsRef.value) {
+    mapviewControlsRef.value.clearSelection();
+  }
+}
 </script>
 
 <template>
@@ -307,7 +313,7 @@ const toggleInstructionsVisibility = async () => {
     <template #search>
       <Title @toggle-about="toggleAboutVisibility" @toggle-instructions="toggleInstructionsVisibility"/>
 
-      <MapViewControls @update:searchType="handleSearchTypeChange" />
+      <MapViewControls @update:searchType="handleSearchTypeChange" ref="mapviewControlsRef"/>
     </template>
 
     <template #background>
@@ -315,7 +321,7 @@ const toggleInstructionsVisibility = async () => {
        
         <MapComponent :shouldAutoMove="true" :min-zoom=minZoom :max-zoom=maxZoom v-if="showPlan">
           <template #layers>
-            <MapViewMarkers :zIndex=3 :showSecondFloor="showSecondFloor" />
+            <MapViewMarkers :zIndex=3 :showSecondFloor="showSecondFloor" @deselect-surface="handleDeselectSurface"/>
           <div >
             <ol-tile-layer className="floor-plans" v-if="!showSecondFloor">
               <ol-source-xyz url="https://data.dh.gu.se/tiles/saint_sophia_ground_floor/{z}/{x}/{y}.png" />

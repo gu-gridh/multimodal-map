@@ -623,6 +623,8 @@ onMounted(async () => {
 onUnmounted(() => {
   document.removeEventListener('click', handleClickOutside);
 });
+
+defineExpose({ clearSelection });
 </script>
 
 <style>

@@ -15,6 +15,7 @@ import type Map from "ol/Map";
 import { Vector as VectorLayer } from "ol/layer.js"
 
 let selectHover;
+const emit = defineEmits(["deselect-surface"]);
 const { selectedFeature } = storeToRefs(mapStore());
 const hoveredFeature = ref<Feature<Geometry> | null>(null);
 const hoverCoordinates = ref(null);
@@ -184,7 +185,6 @@ onMounted(() => {
       }
     }
 
-
     let clickedFeatures: Feature[] = [];
     map.on("click", function (evt) {
       clickedFeatures = []; // Clear the array before each click
@@ -207,6 +207,7 @@ onMounted(() => {
       } else {
         selectedCoordinates.value = undefined as any;
         selectedFeature.value = undefined;
+        emit("deselect-surface");
       }
     });
   } else {
