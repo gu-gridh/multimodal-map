@@ -339,7 +339,7 @@ function handleDeselectSurface() {
     </template>
 
     <template #details>
-      <MapViewPreview v-if="showPlan" />
+      <MapViewPreview v-if="showPlan" @deselect-surface="handleDeselectSurface"/>
     </template>
 
   </MainLayout>

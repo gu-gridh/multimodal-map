@@ -19,6 +19,7 @@ const documentation = ref<string | null>(null);
 const number_of_inscriptions = ref<number | null>(null)
 const languages = ref<Language[]>();
 const tags = ref<string[]>();
+const emit = defineEmits(["deselect-surface"]);
 
 //When a place is selected, fetch image and info
 watchEffect(async () => {
@@ -62,6 +63,7 @@ watchEffect(async () => {
 //Deselecting place will close the preview
 function deselectPlace() {
   selectedFeature.value = undefined;
+  emit("deselect-surface");
 }
 </script>
 
