@@ -12,6 +12,7 @@ import Select from "ol/interaction/Select";
 import { inscriptionsStore } from "./settings/store";
 import { pointerMove } from "ol/events/condition";
 import type Map from "ol/Map";
+import { getCenter } from 'ol/extent';
 import { Vector as VectorLayer } from "ol/layer.js"
 
 let selectHover;
@@ -200,7 +201,10 @@ onMounted(() => {
         //select the clicked feature
         selectedFeature.value = clickedFeatures[0];
         const geometry = clickedFeatures[0].getGeometry() as any;
-        selectedCoordinates.value = geometry.getFirstCoordinate();
+
+        const extent = geometry.getExtent();
+        const center = getCenter(extent);
+        selectedCoordinates.value = center;
 
         //set store value
         panelStr.value = selectedFeature.value.values_?.title || '';
