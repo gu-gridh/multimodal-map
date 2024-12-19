@@ -178,7 +178,7 @@ onMounted(() => {
         hoveredFeature.value = feature as any;
         feature.setStyle(hoverStyle); //apply the hover style
         const geometry = feature.getGeometry() as any;
-        hoverCoordinates.value = geometry.getFirstCoordinate();
+        hoverCoordinates.value = geometry.getLineString(0).getCoordinateAt(0.5);
       } else { //clear hover information when no feature is hovered
         hoveredFeature.value = null;
         hoverCoordinates.value = null;
@@ -200,7 +200,7 @@ onMounted(() => {
         //select the clicked feature
         selectedFeature.value = clickedFeatures[0];
         const geometry = clickedFeatures[0].getGeometry() as any;
-        selectedCoordinates.value = geometry.getFirstCoordinate();
+        selectedCoordinates.value = geometry.getLineString(0).getCoordinateAt(0.5);
 
         //set store value
         panelStr.value = selectedFeature.value.values_?.title || '';
