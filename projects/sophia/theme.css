@@ -106,6 +106,18 @@ body {
   pointer-events:none;
 }
 
+@media screen and (max-width: 900px) {
+  .page-load-status {
+    display:none!important;
+    height:0px!important;
+  }
+  
+  .infinite-scroll-request {
+    display:none!important;
+    height:0px!important;
+  }
+}
+
 
 .about {
   display: none;
@@ -253,15 +265,6 @@ overflow:hidden;
     max-width: 100%;
     z-index:102!important;
   }
-
-  #app .atlas{
-    
-  }
-
-  #app .atlas-gradient{
-    display:block!important;
-  }
-
 
   #app .left-pane {
     margin-top:0px!important;
