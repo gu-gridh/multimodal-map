@@ -1,6 +1,4 @@
-import type { InscriptionsProject } from "./types";
-
-export default <InscriptionsProject>{
+export default {
   title: "",
   subtitle: "",
   moreinfo: "Learn more...",

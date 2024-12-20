@@ -1,24 +1,20 @@
-<script lang="ts" setup>
+<script setup>
 import { watchEffect, ref, inject } from "vue";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
-import type {
-  Image, PanelMetadata, Language,
-} from "./types";
-import type { SophiaClient } from "@/assets/saintsophia";
 import OpenSeadragon from "./MapViewPreviewImage.vue";
 import apiConfig from "./settings/apiConfig"
 
-let panel = ref<PanelMetadata>();
+let panel = ref();
 const { selectedFeature } = storeToRefs(mapStore());
-const sophia = inject("sophia") as SophiaClient;
-const images = ref<Image[]>();
-const imageUrls = ref<string[]>([]);
-const room = ref<string | null>(null);
-const documentation = ref<string | null>(null);
-const number_of_inscriptions = ref<number | null>(null)
-const languages = ref<Language[]>();
-const tags = ref<string[]>();
+const sophia = inject("sophia");
+const images = ref();
+const imageUrls = ref([]);
+const room = ref(null);
+const documentation = ref(null);
+const number_of_inscriptions = ref(null);
+const languages = ref();
+const tags = ref();
 const emit = defineEmits(["deselect-surface"]);
 
 //When a place is selected, fetch image and info
@@ -26,12 +22,12 @@ watchEffect(async () => {
   documentation.value = null;
   if (selectedFeature.value) {
     const featureId = selectedFeature.value.getId();
-    panel.value = await sophia.list<PanelMetadata>("panel", { id: featureId });
+    panel.value = await sophia.list("panel", { id: featureId });
     number_of_inscriptions.value = panel.value.results[0].number_of_inscriptions
     languages.value = panel.value.results[0].list_of_languages.length
     tags.value = panel.value.results[0].tags.length;
 
-    images.value = await sophia.listAll<Image>("image", { panel: featureId, depth: 2 });
+    images.value = await sophia.listAll("image", { panel: featureId, depth: 2 });
     // If images are available
     if (images.value.length > 0) {
       const filteredImages = images.value.filter(image => {

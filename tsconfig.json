@@ -7,13 +7,17 @@
     "src/**/*.json",
     "projects/**/*"
   ],
+  "exclude": [
+    "projects/sophia/**/*" //exclude sophia from type-checking
+  ],
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     },
-    // "target": "es5",
-    "lib": ["es2019", "dom"]
+    "lib": ["es2019", "dom"],
+    "allowJs": true, //allow javaScript files
+    "noImplicitAny": false
   },
   "references": [
     {

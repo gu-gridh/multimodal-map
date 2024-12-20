@@ -36,15 +36,13 @@
   </ol-map>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref, inject, computed, onMounted, watch, nextTick} from "vue";
 import { fromLonLat, transformExtent } from "ol/proj";
 import { mapStore } from "@/stores/store";
 import { storeToRefs } from "pinia";
-import type { Project } from "@/types/project";
 
-const config = inject("config") as Project;
-
+const config = inject("config");
 const store = mapStore();
 const { extent, center, zoom } = storeToRefs(store);
 
@@ -91,7 +89,7 @@ const shouldAutoMove = ref(props.shouldAutoMove);
 const transformedRestrictExtent = computed(() => {
   if (props.restrictExtent.length > 0) {
     return transformExtent(
-      props.restrictExtent as [number, number, number, number],
+      props.restrictExtent,
       "EPSG:4326",
       projection.value
     );

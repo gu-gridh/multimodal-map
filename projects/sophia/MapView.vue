@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup>
 import { computed } from "vue";
 import MainLayout from "@/MainLayout.vue";
 import MapViewControls from "./MapViewControls.vue";
@@ -58,7 +58,7 @@ watch( //watcher for selectedFeature changes
     if (newFeature && newFeature.getGeometry) {
       const geometry = newFeature.getGeometry();
       if (geometry) {
-        const coordinates = (geometry as any).getFirstCoordinate();
+        const coordinates = (geometry).getFirstCoordinate();
         store.updateCenter(coordinates);
         if (store.zoom < featureZoom) {
           store.updateZoom(featureZoom);
@@ -94,7 +94,7 @@ watch(selectedCategory, (newValue, oldValue) => {
   }
 });
 
-const handleSearchTypeChange = (type: string) => {
+const handleSearchTypeChange = (type) => {
   searchType.value = type;
   if (type === "surfaces") {
     showPlan.value = false;
@@ -139,19 +139,19 @@ const panelParams = computed(() => {
   }
 
   if (medium !== null) {
-    (params as any)['medium'] = medium; 
+    (params)['medium'] = medium; 
   } else {
-    delete (params as any)['medium']; 
+    delete (params)['medium']; 
   }
 
   if (material !== null) {
-    (params as any)['material'] = material; 
+    (params)['material'] = material; 
   } else {
-    delete (params as any)['material']; 
+    delete (params)['material']; 
   }
 
   if (panelString !== null && panelString !== undefined) {
-    (params as any)['panel__title__startswith'] = panelString;
+    (params)['panel__title__startswith'] = panelString;
   }
 
   return params;
@@ -173,39 +173,39 @@ const tagParams = computed(() => {
 
   // Remove parameters that are set to "all"
   const cleanedParams = Object.keys(initialParams)
-    .filter((key) => initialParams[key as keyof typeof initialParams] !== "all")
+    .filter((key) => initialParams[key] !== "all")
     .reduce((obj, key) => {
-      obj[key as keyof typeof initialParams] = initialParams[key as keyof typeof initialParams];
+      obj[key] = initialParams[key];
       return obj;
-    }, {} as typeof initialParams);
+    }, {});
 
   // Further clean to remove null or undefined values
   const params = clean(cleanedParams);
 
   if (selectedCategoryValue) {
-    (params as any)['type_of_inscription'] = selectedCategoryValue;
+    (params)['type_of_inscription'] = selectedCategoryValue;
   }
 
   if (alignment !== null) {
-    (params as any)['alignment'] = alignment; 
+    (params)['alignment'] = alignment; 
   } else {
-    delete (params as any)['alignment']; 
+    delete (params)['alignment']; 
   }
 
   if (condition !== null) {
-    (params as any)['condition'] = condition; 
+    (params)['condition'] = condition; 
   } else {
-    delete (params as any)['condition']; 
+    delete (params)['condition']; 
   }
 
   if (id !== null) {
-    (params as any)['id'] = id; 
+    (params)['id'] = id; 
   } else {
-    delete (params as any)['id']; 
+    delete (params)['id']; 
   }
 
   if (panelString !== null && panelString !== undefined) {
-    (params as any)['panel__title__startswith'] = panelString;
+    (params)['panel__title__startswith'] = panelString;
   }
 
   return params;
