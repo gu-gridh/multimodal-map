@@ -620,9 +620,16 @@ function handleDeselectSurface() {
   #gallery-container {
     margin-left: 0px;
     width: 100%;
-    height:100vh;
+    height:100%;
     padding-top:0px;
   }
+}
+
+.gallery-filter-container{
+  z-index:1000;
+  display:flex;
+  flex-direction:row;
+  justify-content:flex-end;
 }
 
 /* Gallery filters */
@@ -671,13 +678,6 @@ padding-right:0%;
   .gallery-filters{
 display:none;
 }
-}
-
-.gallery-filter-container{
-  z-index:1000;
-  display:flex;
-  flex-direction:row;
-  justify-content:flex-end;
 }
 
 .gallery-filters h1{

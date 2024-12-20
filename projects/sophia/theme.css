@@ -106,17 +106,6 @@ body {
   pointer-events:none;
 }
 
-@media screen and (max-width: 900px) {
-  .page-load-status {
-    display:none!important;
-    height:0px!important;
-  }
-  
-  .infinite-scroll-request {
-    display:none!important;
-    height:0px!important;
-  }
-}
 
 
 .about {

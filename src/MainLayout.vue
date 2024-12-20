@@ -191,7 +191,7 @@ body {
  #app .left-pane {
   position: relative;
   float:left;
-  height:auto;
+  min-height:100%;
   z-index: 500;
   width:100%;
   pointer-events: auto;
@@ -207,7 +207,7 @@ body {
 
 #app .left-pane-layer {
 width:100%;
-height:auto;
+height:100%;
 padding: 20px 20px 0px 20px;
 font-size:120%;
 }
