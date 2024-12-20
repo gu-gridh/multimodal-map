@@ -1,6 +1,6 @@
 <template>
   <!-- Checks if all points are loaded and only then show the controls -->
-  <div class="filtercontrolwidgets">
+  <div class="controls">
 
     <div :class="{ 'non-interactive': !areMapPointsLoaded }">
       <div class="filtercontrolwidgets">
@@ -623,17 +623,14 @@ onMounted(async () => {
 onUnmounted(() => {
   document.removeEventListener('click', handleClickOutside);
 });
-
-defineExpose({ clearSelection });
 </script>
 
 <style>
-#app .left-pane {
-  background: url("images/gradient.png");
-  background-size: contain;
-  min-width: 960px;
-  max-width: 960px;
-  font-size: 95%;
+.controls {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 100%;
 }
 
 .filtercontrolwidgets {
@@ -641,6 +638,8 @@ defineExpose({ clearSelection });
   flex-direction: column;
   justify-content: flex-start;
   width: 100%;
+  float:left;
+
 }
 
 .justify {
@@ -696,7 +695,6 @@ defineExpose({ clearSelection });
   margin-top: 0px;
   border: 0px solid #ccc;
   border-radius: 8px;
-  overflow: none;
   background-color: rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(5px);
   z-index: 200000;
@@ -750,6 +748,12 @@ defineExpose({ clearSelection });
   transition: all 0.4s;
   position: absolute;
   box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.1);
+}
+
+@media screen and (max-width: 900px) {
+.search-results {
+  max-height: 180px;
+}
 }
 
 #app .start-end-box {
@@ -838,14 +842,6 @@ defineExpose({ clearSelection });
 }
 
 @media screen and (max-width: 900px) {
-  #app .left-pane {
-    background: url("images/gradient.png");
-    background-size: contain;
-    min-width: 100%;
-    max-width: 100%;
-    font-size: 95%;
-  }
-
   #app .broad-controls {
     width: 100%;
   }

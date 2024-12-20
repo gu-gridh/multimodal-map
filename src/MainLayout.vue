@@ -197,7 +197,7 @@ body {
   pointer-events: auto;
   margin-top:0px!important;
   border-radius:30px 30px 0 0;
-  padding: 10px 30px 100px 30px !important;
+  padding: 10px 30px 30px 30px !important;
   background-color:rgba(255,255,255,0.6);
   backdrop-filter:blur(5px);
   box-shadow: 0px -10px 20px 0 rgba(0, 0, 0, 0.3),
@@ -457,7 +457,7 @@ overflow-y:auto;
 
 @media screen and (max-width: 400px) {
   #app  .left-pane{
-    padding: 30px 10px 100px 10px;
+    padding: 30px 10px 30px 10px;
   }
   #app  .main-title {
   font-size: 70px !important;
