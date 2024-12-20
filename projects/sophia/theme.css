@@ -254,6 +254,15 @@ overflow:hidden;
     z-index:102!important;
   }
 
+  #app .atlas{
+    
+  }
+
+  #app .atlas-gradient{
+    display:block!important;
+  }
+
+
   #app .left-pane {
     margin-top:0px!important;
     top: 76%!important;
@@ -292,6 +301,7 @@ overflow:hidden;
   .placecard {
     height: calc(100vh - 30vh);
     width:calc(100% - 50px);
+    left:25px;
     margin-top: 0px;
     position:fixed!important;
   }
