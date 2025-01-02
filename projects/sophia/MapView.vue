@@ -286,10 +286,10 @@ function handleDeselectSurface() {
 
     <div id="dimension" class="ui-mode ui-overlay ui-overlay-top" v-if="showPlan">
       <button class="item" :class="{ selected: showPlan }" @click="switchToPlan">
-        {{ $t('Top view') }}
+        {{ $t('Overview') }}
       </button>
       <button class="item" onclick="location.href='http://localhost:8095/viewer/?q=immersive/pointcloud'">
-        {{ $t('Immersive view') }}
+        {{ $t('Immersive') }}
       </button>
     </div>
 
