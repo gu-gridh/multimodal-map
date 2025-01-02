@@ -284,6 +284,15 @@ function handleDeselectSurface() {
       </button>
     </div>
 
+    <div id="dimension" class="ui-mode ui-overlay ui-overlay-top" v-if="showPlan">
+      <button class="item" :class="{ selected: showPlan }" @click="switchToPlan">
+        {{ $t('Plan view') }}
+      </button>
+      <button class="item" onclick="location.href='http://localhost:8095/viewer/?q=immersive/pointcloud'">
+        {{ $t('Immersive view') }}
+      </button>
+    </div>
+
     <div class="ui-mode ui-overlay tile-switcher" style="" v-if="showPlan">
       <button class="item" v-bind:class="{ selected: !showSecondFloor }" v-on:click="showSecondFloor = false;">
         {{ $t('groundfloor') }}
@@ -346,6 +355,12 @@ function handleDeselectSurface() {
 </template>
 
 <style>
+
+#dimension{
+top:50px!important;
+font-size:90%;
+background-color:var(--theme-4)!important;
+}
 #version{
   position:absolute;
   text-align:right;

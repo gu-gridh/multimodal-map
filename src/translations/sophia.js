@@ -89,7 +89,7 @@ const messages = {
       namedentity:"Named entity",
       material:"Material",
       medium:"Medium",
-      versionnumb:"Version 1.1",
+      versionnumb:"Version 1.1.5",
       pictorialdescription:"Pictorial description",
       "categories": {
         "all": "All types",
@@ -187,7 +187,7 @@ const messages = {
       namedentity:"Іменована сутність",
       material:"Матеріал",
       medium:"Середній",
-      versionnumb:"Версія 1.1",
+      versionnumb:"Версія 1.1.5",
       pictorialdescription:"Картинний опис",
       "categories": {
         "all": "Всі види",
