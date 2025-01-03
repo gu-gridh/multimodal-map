@@ -391,7 +391,7 @@
     background-position: 8px 2px !important;
     padding-left: 31px !important;
     padding-right: 8px !important;
-    padding-top: 3px !important;
+    padding-top: 4px !important;
     opacity: 0.6;
     float: right;
     display: none !important;
