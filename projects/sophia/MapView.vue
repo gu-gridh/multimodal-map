@@ -272,6 +272,8 @@
 <template>
   <div id="version"> {{ $t('versionnumb') }}</div>
   <div style="display:flex; align-items: center; justify-content: center; pointer-events: none;">
+
+    <!--   Top widget for the main modes  -->
     <div class="ui-mode ui-overlay ui-overlay-top">
       <button class="item" :class="{ selected: showPlan }" @click="switchToPlan" title="Plans">
         {{ $t('plans') }}
@@ -285,20 +287,24 @@
       </button>
     </div>
 
+    <!--   Widget for Overview or Immersive  -->
     <div id="dimension" class="ui-mode ui-overlay ui-overlay-top" v-if="showPlan">
       <div class="item overview selected" @click="switchToPlan" title="Overview map">
         {{ $t('overview') }}
       </div>
+
+      <!--   links to the immersve view switches on what floor plan is shown  -->
       <div class="item immersive selected" v-bind:class="{immersivevisible: !showSecondFloor }"
-        onclick="location.href='/viewer/?q=immersiveground/pointcloud'" title="Immersive view">
+        onclick="location.href='/viewer/?q=immersive1/pointcloud'" title="Immersive view">
         {{ $t('immersive') }}
       </div>
       <div class="item immersive selected" v-bind:class="{immersivevisible: showSecondFloor }"
-        onclick="location.href='/viewer/?q=immersivesecond/pointcloud'" title="Immersive view">
+        onclick="location.href='/viewer/?q=immersive2/pointcloud'" title="Immersive view">
         {{ $t('immersive') }}
       </div>
     </div>
 
+    <!--   Widget for switching floor plan / tiles  -->
     <div class="ui-mode ui-overlay tile-switcher" style="" v-if="showPlan">
       <button class="item" v-bind:class="{ selected: !showSecondFloor }" v-on:click="showSecondFloor = false;">
         {{ $t('groundfloor') }}
