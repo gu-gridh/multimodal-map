@@ -90,6 +90,8 @@ const messages = {
       material:"Material",
       medium:"Medium",
       versionnumb:"Version 1.1.5",
+      overview:"Overview",
+      immersive:"Immersive",
       pictorialdescription:"Pictorial description",
       "categories": {
         "all": "All types",
@@ -188,6 +190,8 @@ const messages = {
       material:"Матеріал",
       medium:"Середній",
       versionnumb:"Версія 1.1.5",
+      overview:"Оглядова",
+      immersive:"Занурювальний",
       pictorialdescription:"Картинний опис",
       "categories": {
         "all": "Всі види",

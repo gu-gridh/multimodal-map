@@ -273,24 +273,24 @@ function handleDeselectSurface() {
   <div id="version"> {{ $t('versionnumb') }}</div>
   <div style="display:flex; align-items: center; justify-content: center; pointer-events: none;">
     <div class="ui-mode ui-overlay ui-overlay-top">
-      <button class="item" :class="{ selected: showPlan }" @click="switchToPlan">
+      <button class="item" :class="{ selected: showPlan }" @click="switchToPlan" title="Plans">
         {{ $t('plans') }}
       </button>
-      <button class="item" :class="{ selected: showGallery }" @click="switchToGallery">
+      <button class="item" :class="{ selected: showGallery }" @click="switchToGallery" title="Surfaces">
         {{ $t('panels') }}
       </button>
-      <button class="item" :class="{ selected: showGalleryInscriptions }" @click="switchToInscriptions">
+      <button class="item" :class="{ selected: showGalleryInscriptions }" @click="switchToInscriptions" title="Inscriptions">
         {{ $t('inscriptions') }}
       </button>
     </div>
 
     <div id="dimension" class="ui-mode ui-overlay ui-overlay-top" v-if="showPlan">
-      <button class="item" :class="{ selected: showPlan }" @click="switchToPlan">
-        {{ $t('Overview') }}
-      </button>
-      <button class="item" onclick="location.href='http://localhost:8095/viewer/?q=immersive/pointcloud'">
-        {{ $t('Immersive') }}
-      </button>
+      <div class="item overview" :class="{ selected: showPlan }" @click="switchToPlan" title="Overview map">
+        {{ $t('overview') }}
+      </div>
+      <div class="item immersive" :class="{ selected: showPlan }" onclick="location.href='http://localhost:8095/viewer/?q=immersive/pointcloud'" title="Immersive view">
+        {{ $t('immersive') }}
+      </div>
     </div>
 
     <div class="ui-mode ui-overlay tile-switcher" style="" v-if="showPlan">
@@ -361,6 +361,31 @@ top:50px!important;
 font-size:90%;
 background-color:var(--theme-4)!important;
 }
+
+.overview{
+  background: url(https://data.dh.gu.se/ui-icons/overview_white.svg)!important;
+    background-size: 16px!important;
+    background-repeat: no-repeat!important;
+    background-position: 8px 3px!important;
+    padding-left:32px!important;
+    padding-right:8px!important;
+}
+
+.immersive{
+  background: url(https://data.dh.gu.se/ui-icons/immersive_white.svg)!important;
+  background-size: 16px!important;
+    background-repeat: no-repeat!important;
+    background-position: 8px 2px!important;
+    padding-left:31px!important;
+    padding-right:8px!important;
+    opacity:0.6;
+    
+}
+
+.immersive:hover {
+  opacity: 1.0;
+}
+
 #version{
   position:absolute;
   text-align:right;
