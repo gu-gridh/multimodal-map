@@ -421,6 +421,25 @@
     display: block !important;
   }
 
+  @media screen and (max-width: 900px) {
+    .immersive {
+    background-size: 20px !important;
+    height: 28px;
+    background-position: 0px 3px !important;
+    padding-left: 28px !important;  
+  }
+
+  .overview {
+    background-size: 20px !important;
+    height: 28px;
+    background-position: 8px 5px !important;
+    padding-left: 38px !important; 
+
+  }
+  }
+
+
+
   #version {
     position: absolute;
     text-align: right;
