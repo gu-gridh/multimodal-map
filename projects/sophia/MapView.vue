@@ -293,6 +293,8 @@
         {{ $t('overview') }}
       </div>
 
+      <div class="item divider"></div>
+
       <!--   links to the immersve view switches on what floor plan is shown  -->
       <div class="item immersive selected" v-bind:class="{immersivevisible: !showSecondFloor }"
         onclick="location.href='/viewer/?q=immersive1/pointcloud'" title="Immersive view">
@@ -380,7 +382,18 @@
     background-repeat: no-repeat !important;
     background-position: 8px 3px !important;
     padding-left: 32px !important;
-    padding-right: 8px !important;
+    padding-right: 14px !important;
+  }
+
+  .divider {
+    border-width:0px 0px 0px 0.5px;
+    border-color:white;
+    border-style:solid;
+    padding-right:0px!important;
+    margin-right:0px!important;
+    padding-top:4px!important;
+    padding-bottom:6px!important;
+    opacity:0.3;
   }
 
   .immersive {
@@ -388,13 +401,16 @@
     background-size: 16px !important;
     height: 21px;
     background-repeat: no-repeat !important;
-    background-position: 8px 2px !important;
-    padding-left: 31px !important;
+    background-position: 0px 2px !important;
+    padding-left: 23px !important;
     padding-right: 8px !important;
     padding-top: 4px !important;
+    margin-left: -2px !important;
     opacity: 0.6;
     float: right;
     display: none !important;
+ 
+  
   }
 
   .immersive:hover {
