@@ -405,7 +405,7 @@
     padding-left: 23px !important;
     padding-right: 8px !important;
     padding-top: 4px !important;
-    margin-left: -2px !important;
+    margin-left: -4px !important;
     opacity: 0.6;
     float: right;
     display: none !important;
