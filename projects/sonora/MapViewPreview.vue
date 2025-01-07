@@ -1,26 +1,20 @@
-<script lang="ts" setup>
-import { watchEffect, ref, inject, computed, watch } from "vue";
+<script setup>
+import { ref, inject, computed, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { sonoraStore } from "./settings/store";
 import { mapStore } from "@/stores/store";
-import type {
-  Image
-} from "./settings/types";
-import type { DianaClient } from "@/assets/diana";
 import OpenSeadragon from "@/components/OpenSeadragonNonPyramid.vue";
 import placeholderImage from './images/placeholder.png';
 import i18n from '../../src/translations/sonora';
 
 const { selectedFeature } = storeToRefs(mapStore());
-const diana = inject("diana") as DianaClient;
-const imageUrls = ref<string[]>([]);
+const imageUrls = ref([]);
 const organNumbers = ref({}); //all the organ numbers returned 
 const computedRoute = computed(() => `/place/${currentOrganNumber.value}`); //route for placeview
-
 const { selectedBuilderId, builderLayerVisible, placeClicked } = storeToRefs(sonoraStore());
 const builderData = ref(null);
 const lastInteraction = ref('none'); //'none', 'place', or 'builder'
-const responseData = ref<null | Record<string, any>>(null);
+const responseData = ref(null);
 
 let currentOrganNumber = ref(0); //organ number corresponding to page in openseadragonviewer
 let text = ref(false)
@@ -31,7 +25,7 @@ const builderNameAndDate = computed(() => {
   if (builderData.value && builderData.value.Verksgrundare) {
     let parts = builderData.value.Verksgrundare.split("(");
     let namePart = parts[0].trim();
-    // Remove the comma if present
+    //remove the comma if present
     if (namePart.endsWith(',')) {
       namePart = namePart.slice(0, -1);
     }
@@ -44,7 +38,7 @@ const builderNameAndDate = computed(() => {
 const handlePageChange = (newPage) => {
   currentOrganNumber.value = organNumbers.value[newPage];
   if (responseData.value) {
-    responseData.value.Loc = responseData.value[`loc${newPage}`] || ''; // update loc based on page
+    responseData.value.Loc = responseData.value[`loc${newPage}`] || ''; //update loc based on page
   }
 };
 

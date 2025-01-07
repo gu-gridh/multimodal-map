@@ -1,16 +1,13 @@
-<script lang="ts" setup>
+<script setup>
 import { computed } from "vue";
 import MainLayout from "@/MainLayout.vue";
 import MapViewControls from "./MapViewControls.vue";
 import MapComponent from "./components/MapComponent.vue";
 import DianaPlaceLayer from "./MapViewMarkers.vue";
-import GeoJsonWebGLRenderer from "@/components/GeoJsonWebGLRenderer.vue";
 import MapViewPreview from "./MapViewPreview.vue";
 import { storeToRefs } from "pinia";
 import { sonoraStore } from "./settings/store";
 import { mapStore } from "@/stores/store";
-import { clean } from "@/assets/utils";
-import markerIcon from "@/assets/marker-white.svg";
 import MapViewGallery from "./MapViewGallery.vue";
 import MapViewArchive from "./MapViewArchive.vue";
 import { ref } from "vue";
@@ -18,15 +15,14 @@ import About from "./About.vue";
 import Instructions from "./Instructions.vue";
 import { onMounted, watch } from "vue";
 import { nextTick } from "vue";
-import GeoJSON from "ol/format/GeoJSON";
 import Title from "./MapViewTitle.vue"
 
-const { categories, tags, necropoli, tombType, placesLayerVisible, tagsLayerVisible, dataParams, enable3D, selectedBuilderId } = storeToRefs(sonoraStore());
+const { placesLayerVisible, dataParams, selectedBuilderId } = storeToRefs(sonoraStore());
 const store = mapStore();
 const { selectedFeature } = storeToRefs(store);
-const storeZ = sonoraStore();
-const minZoom = 9;
-const maxZoom = 20;
+// const storeZ = sonoraStore();
+// const minZoom = 9;
+// const maxZoom = 20;
 const featureZoom = 16; //value between minZoom and maxZoom when you select a point 
 const visibleAbout = ref(false);
 const visibleInstructions = ref(false);
@@ -35,14 +31,13 @@ const showGrid = ref(false);
 const showArchive = ref(false);
 let visited = true; // Store the visited status outside of the hook
 
-// Watcher for selectedFeature changes
 watch(
   selectedFeature,
   (newFeature, oldFeature) => {
     if (newFeature && newFeature.getGeometry) {
       const geometry = newFeature.getGeometry();
       if (geometry) {
-        const coordinates = (geometry as any).getCoordinates();
+        const coordinates = (geometry).getCoordinates();
         store.updateCenter(coordinates);
         if (store.zoom < featureZoom)
           {          
@@ -119,7 +114,6 @@ watch(visibleAbout, async (newVal) => {
     }
   }
 });
-
 
 </script>
 

@@ -70,7 +70,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import i18n from '../../src/translations/sonora';
 import 'vue3-carousel/dist/carousel.css';
 import { Carousel, Slide, Navigation } from 'vue3-carousel'

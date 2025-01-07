@@ -1,6 +1,4 @@
-import type { SonoraProject } from "./types";
-
-export default <SonoraProject>{
+export default{
   title: "",
   subtitle: "",
   moreinfo: "Learn more...",
