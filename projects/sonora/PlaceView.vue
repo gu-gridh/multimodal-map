@@ -455,15 +455,23 @@ table td {
   box-sizing: border-box;
 }
 
+.content-table {
+  color: #fff;
+  text-align: left;
+}
+
 .organ-historic-overview{
   margin-left:-60px;
   margin-top:-28px;
   color:white;
 }
 
-.content-table td {
-  color: white;
-  text-align: left;
+.organ-historic-overview :deep(td) {
+  padding-right: 15px;
+  padding-top: 2px;
+  width: 130px;
+  vertical-align: top;
+  text-align: right;
 }
 
 .document-link:hover {
