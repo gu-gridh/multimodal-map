@@ -10,18 +10,27 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import CategoryButton from "./CategoryButton.vue";
 
-const props = defineProps<{
-  modelValue: string[];
-  categories: Record<string, string>;
-  limit?: 1;
-}>();
+const props = defineProps({
+  modelValue: {
+    type: Array,
+    required: true,
+  },
+  categories: {
+    type: Object,
+    required: true,
+  },
+  limit: {
+    type: Number,
+    default: 1,
+  },
+});
 
 const emit = defineEmits(["update:modelValue", "click"]);
 
-function toggle(key: string) {
+function toggle(key) {
   let newValue = [...props.modelValue];
   if (newValue.includes(key)) {
     // If the toggled category was selected before, unselect it.

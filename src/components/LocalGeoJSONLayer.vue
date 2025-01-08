@@ -5,13 +5,10 @@
   </ol-vector-layer>
 </template>
 
-<script lang="ts" setup>
+<script setup>
 // Used for testing local GeoJSON layers
 import { ref, onMounted } from "vue";
 import { GeoJSON } from "ol/format";
-import VectorLayer from "ol/layer/Vector";
-import VectorSource from "ol/source/Vector";
-import type { Feature } from "ol";
 
 const props = defineProps({
   zIndex: {
@@ -24,7 +21,7 @@ const props = defineProps({
   },
 });
 
-const features = ref<Feature[]>([]);
+const features = ref([]);
 const geoJsonFormat = new GeoJSON();
 
 async function loadLocalGeoJson() {

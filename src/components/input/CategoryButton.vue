@@ -7,11 +7,17 @@
   ></button>
 </template>
 
-<script setup lang="ts">
-defineProps<{
-  text: string;
-  value: boolean;
-}>();
+<script setup>
+defineProps({
+  text: {
+    type: String,
+    required: true,
+  },
+  value: {
+    type: Boolean,
+    required: true,
+  },
+});
 
 const emit = defineEmits(["toggle"]);
 
