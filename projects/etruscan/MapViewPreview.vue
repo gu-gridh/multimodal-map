@@ -1,28 +1,27 @@
-<script lang="ts" setup>
+<script setup>
 import { watchEffect, ref, inject } from "vue";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
 import { etruscanStore } from "./settings/store";
-import type {Image,} from "./settings/types";
-import type { DianaClient } from "@/assets/diana";
 import OpenSeadragon from "./MapViewPreviewImage.vue";
 import apiConfig from "./settings/apiConfig"
+import { DianaClient } from "./settings/diana.js";
 
+const dianaClient = new DianaClient("etruscantombs");
 const { selectedFeature } = storeToRefs(mapStore());
 const etruscan = etruscanStore();
-const diana = inject("diana") as DianaClient;
-const images = ref<Image[]>();
-const imageUrls = ref<string[]>([]);
+const images = ref();
+const imageUrls = ref([]);
+const necropolisName = ref(null);
+const chambers = ref(null);
+const type = ref(null);
+const dataset = ref(null);
+const period = ref(null);
+const subtitle = ref(null);
+const description = ref(null);
+const siteName = ref(null);
+const hasImages = ref(false);
 let place = ref()
-const necropolisName = ref<string | null>(null);
-const chambers = ref<number | null>(null);
-const type = ref<string | null>(null);
-const dataset = ref<string | null>(null);
-const period = ref<string | null>(null);
-const subtitle = ref<string | null>(null);
-const description = ref<string | null>(null);
-const siteName = ref<string | null>(null);
-const hasImages = ref<boolean>(false);
 
 //when a place is selected, fetch image and info
 watchEffect(async () => {
@@ -37,9 +36,9 @@ watchEffect(async () => {
   if (selectedFeature.value) {
     const placeName = selectedFeature.value.get("name");
     const placeId = selectedFeature.value.getId();
-    etruscan.placeId = placeId as string | null;
+    etruscan.placeId = placeId;
     place.value = { id_: placeName };
-    images.value = await diana.listAll<Image>("image", { tomb: placeId, depth: 3, type_of_image: 2 });
+    images.value = await dianaClient.listAll("image", { tomb: placeId, depth: 3, type_of_image: 2 });
     // If images are available
     if (images.value.length > 0) {
       hasImages.value = true;

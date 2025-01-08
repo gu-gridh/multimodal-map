@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup>
 import { computed } from "vue";
 import MainLayout from "@/MainLayout.vue";
 import MapViewControls from "./MapViewControls.vue";
@@ -38,7 +38,7 @@ watch(
     if (newFeature && newFeature.getGeometry) {
       const geometry = newFeature.getGeometry();
       if (geometry) {
-        const coordinates = (geometry as any).getCoordinates();
+        const coordinates = (geometry).getCoordinates();
         store.updateCenter(coordinates);
         if (store.zoom < featureZoom)
           {          
@@ -59,7 +59,7 @@ const tagParams = computed(() => {
   const show_unknown = showUnknownRange.value;
   const site = selectedSite.value[0];
 
-  const initialParams: any  = { necropolis, type, dataset, site, show_unknown: show_unknown.toString() };
+  const initialParams  = { necropolis, type, dataset, site, show_unknown: show_unknown.toString() };
 
    if (selectedRangeValue.length === 2) {
     initialParams.minyear = Math.round(Math.abs(selectedRangeValue[0]));
@@ -68,26 +68,26 @@ const tagParams = computed(() => {
   
   // Remove parameters that are set to "all"
   const cleanedParams = Object.keys(initialParams)
-  .filter((key) => initialParams[key as keyof typeof initialParams] !== "all")
+  .filter((key) => initialParams[key] !== "all")
   .reduce((obj, key) => {
-    obj[key as keyof typeof initialParams] = initialParams[key as keyof typeof initialParams];
+    obj[key] = initialParams[key];
     return obj;
-  }, {} as typeof initialParams);
+  }, {});
   
   // Further clean to remove null or undefined values
   const params = clean(cleanedParams);
 
   //filter for just 3D points
   if (enable3D.value) {
-    (params as any)['with_3D'] = 'true';
+    (params)['with_3D'] = 'true';
   } else {
-    delete (params as any)['with_3D'];
+    delete (params)['with_3D'];
   }
 
   if (enablePlan.value) {
-    (params as any)['with_plan'] = 'true';
+    (params)['with_plan'] = 'true';
   } else {
-    delete (params as any)['with_plan'];
+    delete (params)['with_plan'];
   }
 
   etruscan.imgParams = params;

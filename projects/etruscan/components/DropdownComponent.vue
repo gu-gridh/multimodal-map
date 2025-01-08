@@ -29,16 +29,16 @@
   </select>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { computed } from 'vue';
 
-const props = defineProps<{
-  modelValue: string[];
-  categories: Record<string, string> | Array<{ id: string, text: string, coordinates?: [number, number] }>;
-  limit?: 1;
-  styleType?: "button" | "dropdown";
-  type?: "necropolis" | "tombType" | "datasets" | "site";
-}>();
+const props = defineProps({
+  modelValue: Array,
+  categories: [Object, Array],
+  limit: Number,
+  styleType: String,
+  type: String,
+});
 
 const emit = defineEmits(["update:modelValue", "click"]);
 
@@ -51,12 +51,12 @@ const displayCategories = computed(() => {
   }
 });
 
-function toggle(key: string) {
+function toggle(key) {
   handleToggle(key);
 }
 
-function dropdownToggle(event: Event) {
-  const selectElement = event.target as HTMLSelectElement | null;
+function dropdownToggle(event) {
+  const selectElement = event.target;
   
   if (selectElement) {
     const selectedKey = selectElement.value;
@@ -64,7 +64,7 @@ function dropdownToggle(event: Event) {
   }
 }
 
-function handleToggle(key: string) {
+function handleToggle(key) {
   if (key === 'all') {
     emit("update:modelValue", ['all']); // Set modelValue to ['all']
     emit('click', 'all'); // Emit the special 'all' value
@@ -83,9 +83,7 @@ function handleToggle(key: string) {
   emit("update:modelValue", newValue);
   emit('click', key); 
 }
-
 </script>
 
 <style scoped>
-
 </style>

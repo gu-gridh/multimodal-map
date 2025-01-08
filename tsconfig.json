@@ -9,7 +9,8 @@
   ],
   "exclude": [
     "projects/sophia/**/*", //exclude sophia from type-checking
-    "projects/sonora/**/*" //exclude sonora from type-checking
+    "projects/sonora/**/*", //exclude sonora from type-checking
+    "projects/etruscan/**/*" //exclude etruscan from type-checking
   ],
   "compilerOptions": {
     "baseUrl": ".",
