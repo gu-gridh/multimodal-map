@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 //component for splitting view
 import Split from 'split.js'
 import MapView from './MapView.vue'

@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import { storeToRefs } from "pinia";
 import { rwandaStore } from "./settings/rwandaStore";
 import CategoryButtonList from "@/components/input/CategoryButtonList.vue";
@@ -41,13 +41,12 @@ const LANGUAGES = {
   "Kinyarwanda": "KIN",
   "Kinyarwanda-English": "KIN-ENG",
   "Kiswahili": "SW",
-  
-  
 }
+
 const { sources, placeTypes, periods, informants, allLayer, languages, showAdvancedLayer } = storeToRefs(rwandaStore());
 
 //handle category button click
-const handleSourcesClick = (key: string) => {
+const handleSourcesClick = (key) => {
   if(key == "all"){
     showAdvancedLayer.value = false
     allLayer.value = true
