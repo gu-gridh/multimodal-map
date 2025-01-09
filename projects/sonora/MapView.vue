@@ -20,16 +20,13 @@ import Title from "./MapViewTitle.vue"
 const { placesLayerVisible, dataParams, selectedBuilderId } = storeToRefs(sonoraStore());
 const store = mapStore();
 const { selectedFeature } = storeToRefs(store);
-// const storeZ = sonoraStore();
-// const minZoom = 9;
-// const maxZoom = 20;
 const featureZoom = 16; //value between minZoom and maxZoom when you select a point 
 const visibleAbout = ref(false);
 const visibleInstructions = ref(false);
 const mapViewControls = ref(null);
 const showGrid = ref(false);
 const showArchive = ref(false);
-let visited = true; // Store the visited status outside of the hook
+let visited = true; //store the visited status outside of the hook
 
 watch(
   selectedFeature,
