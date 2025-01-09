@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup>
 import { provide } from "vue";
 import config from "./settings/config";
 import Footer from "./Footer.vue";
@@ -34,7 +34,6 @@ body {
   width:auto!important;
 }
 
-
 @media screen and (max-width: 1500px) {
   .main-title {
     font-size: 80px !important;
@@ -45,7 +44,6 @@ body {
 .about {
   display: none;
 }
-
 
 #app .left-pane {
   background: url("@/assets/gradient-rephotography.png");
@@ -58,19 +56,13 @@ body {
 
 .left-pane-content {
   overflow-y: scroll  !important; /* Add vertical scrollbar */
-
 }
 
-
 .theme-button {
-
   border-radius: 5px;
   padding: 5px 10px;
   color: white;
 }
-
-
-
 
 #app .mapview-preview {
   height: 100vh !important;
@@ -103,7 +95,6 @@ body {
   background-color: rgb(140, 140, 140);
 }
 
-
 @media screen and (max-width: 900px) {
   #app .left-pane {
     margin-top:0px!important;
@@ -125,14 +116,12 @@ body {
     z-index: 400 !important;
     height: calc(100% + 50px) !important;
     padding-bottom: 0px !important;
-
   }
 
   #app .mapview-preview {
     width: 100% !important;
     height: 100% !important;
     padding: 20px !important;
-
     padding-top: 5px;
     margin-left: 0px !important;
     margin-right: 0px !important;
