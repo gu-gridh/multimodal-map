@@ -55,7 +55,7 @@ Utveckling av datamodellen och backend: Johan Åhlfeldt och Aram Karimi, GRIDH.<
 
 </template>
 
-<script lang="ts">
+<script lang>
 export default {
   name: "aboutview",
   props: {
