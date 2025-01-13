@@ -171,12 +171,12 @@ const tagParams = computed(() => {
   const initialParams = { genre, tags, writing_system, language };
 
   // Remove parameters that are set to "all"
-  const cleanedParams = Object.keys(initialParams)
+  const cleanedParams = Object.keys(initialParams || {})
     .filter((key) => initialParams[key] !== "all")
     .reduce((obj, key) => {
       obj[key] = initialParams[key];
       return obj;
-    });
+    }, {});
 
   // Further clean to remove null or undefined values
   const params = clean(cleanedParams);
