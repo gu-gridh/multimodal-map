@@ -23,25 +23,40 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import Slider from "@vueform/slider";
 import { ref, watch, computed } from "vue";
 
-const props = withDefaults(defineProps<{
-  modelValue: [number, number];
-  min: number;
-  max: number;
-  step: number;
-  isSliderVisible: boolean;
-  disabled: boolean;
-}>(), {
-  isSliderVisible: true,
-  disabled: false
+const props = defineProps({
+  modelValue: {
+    type: Array,
+    required: true,
+  },
+  min: {
+    type: Number,
+    required: true,
+  },
+  max: {
+    type: Number,
+    required: true,
+  },
+  step: {
+    type: Number,
+    required: true,
+  },
+  isSliderVisible: {
+    type: Boolean,
+    default: true,
+  },
+  disabled: {
+    type: Boolean,
+    default: false, 
+  },
 });
 
 const emit = defineEmits(["update:modelValue"]);
 
-const selection = ref<[number, number]>(props.modelValue);
+const selection = ref(props.modelValue);
 
 watch(selection, () => {
   emit("update:modelValue", selection.value);

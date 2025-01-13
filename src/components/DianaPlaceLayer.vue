@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup>
 import { DIANA_BASE } from "@/assets/diana";
 import { computed, inject } from "vue";
 

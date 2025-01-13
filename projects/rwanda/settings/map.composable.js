@@ -1,21 +1,19 @@
 import { inject, watch } from "vue";
-import type { MapResponse } from "@/types/diana";
 import axios from "axios";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
-import type { RwandaProject, Place } from "./types";
 
 export function useRwandaMap() {
-  const config = inject("config") as RwandaProject;
+  const config = inject("config");
   const store = mapStore();
   const { params, results, mapUrls } = storeToRefs(store);
 
-  function searchText(query: string): Promise<Array<Place>> {
+  function searchText(query) {
     if (!query || query.length === 0) {
-      return new Promise<Array<Place>>(() => [] as Array<Place>);
+      return new Promise(() => []);
     } else {
       return axios
-        .get<MapResponse<Place>>(
+        .get(
           `${config.urls.baseURL}/${config.urls.place}`,
           { params: { search: query, corrected: true } }
         )
@@ -24,7 +22,7 @@ export function useRwandaMap() {
             return {
               id: p.id,
               ...p.properties,
-            } as Place;
+            };
           });
         });
     }

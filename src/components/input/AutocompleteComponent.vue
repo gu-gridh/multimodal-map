@@ -83,10 +83,8 @@
   </Combobox>
 </template>
 
-<script setup lang="ts">
-// @ts-nocheck
+<script setup>
 import { ref, watch } from "vue";
-import type { TextSearchFunction } from "../../types/diana";
 import { mapStore } from "@/stores/store";
 import {
   Combobox,
@@ -103,15 +101,27 @@ import {
 } from "@heroicons/vue/20/solid";
 import router from "@/router";
 
-const props = defineProps<{
-  searchItems: TextSearchFunction;
-  displayFunction: (item: any) => string;
-  placeholderText: string;
-  noResultsText: string;
-}>();
+const props = defineProps({
+  searchItems: {
+    type: Function,
+    required: true,
+  },
+  displayFunction: {
+    type: Function,
+    required: true,
+  },
+  placeholderText: {
+    type: String,
+    required: true,
+  },
+  noResultsText: {
+    type: String,
+    required: true,
+  },
+});
 
-const searchResults = ref<Array<any>>([]);
-const searchTerm = ref<string>("");
+const searchResults = ref([]);
+const searchTerm = ref("");
 
 watch(searchTerm, () => {
   props.searchItems(searchTerm.value).then((d) => {
@@ -119,12 +129,11 @@ watch(searchTerm, () => {
   });
 });
 
-let selectedItem = ref<any>();
+let selectedItem = ref();
 
-function clickUnselect() {
-  selectedItem.value = undefined;
-}
-
+// function clickUnselect() {
+//   selectedItem.value = undefined;
+// }
 
 const store = mapStore();
 

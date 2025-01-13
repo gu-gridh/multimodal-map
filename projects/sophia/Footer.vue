@@ -37,7 +37,7 @@
   </footer>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref } from 'vue';
 import Spinner from '@/assets/interface/6-dots-rotate_white.svg';
 
@@ -69,7 +69,7 @@ const downloadData = async () => {
   }
 };
 
-const triggerDownload = (data: any[], filename: string) => {
+const triggerDownload = (data, filename) => {
   const jsonBlob = new Blob([JSON.stringify(data)], { type: 'application/json' });
   const downloadUrl = window.URL.createObjectURL(jsonBlob);
   const link = document.createElement('a');

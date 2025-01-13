@@ -74,7 +74,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import i18n from '../../src/translations/sophia';
 import logoSophia from './images/logo-sophia.png';
 import logoGu from './images/logo-gu.png';

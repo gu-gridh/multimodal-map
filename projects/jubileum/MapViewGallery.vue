@@ -1,21 +1,11 @@
 <template>
-  <VueMasonryWall
-    :key="layoutKey"
-    class="masonry-wall"
-    :items="images"
-    :column-width="250" 
-    :gap="0"
-  >
+  <VueMasonryWall :key="layoutKey" class="masonry-wall" :items="images" :column-width="250" :gap="0">
     <template v-slot:default="{ item }">
-      <router-link
-        :key="item.uuid"
-        :to="`/detail/image/${item.id}`"
-        class="grid-item"
-      >
+      <router-link :key="item.uuid" :to="`/detail/image/${item.id}`" class="grid-item">
         <img :src="`${item.iiif_file}/full/400,/0/default.jpg`" @load="imageLoaded" />
-         <div class="grid-item-info">
+        <div class="grid-item-info">
           <div class="grid-item-info-meta">
-            <h1>{{item.title}}</h1>
+            <h1>{{ item.title }}</h1>
           </div>
         </div>
       </router-link>
@@ -23,15 +13,13 @@
   </VueMasonryWall>
 </template>
 
-<script lang="ts" setup>
+<script setup>
 import { ref, inject, onMounted, defineComponent } from "vue";
-import type { Image } from "./settings/types";
-import type { DianaClient } from "@/assets/diana";
 import VueMasonryWall from "@yeger/vue-masonry-wall";
+import { DianaClient } from "./settings/diana.js";
 
-const diana = inject("diana") as DianaClient;
-
-const images = ref<Array<Image>>([]);
+const diana = new DianaClient("jubileum");
+const images = ref([]);
 
 let layoutKey = ref(0);
 let loadedImagesCount = ref(0);
@@ -48,7 +36,7 @@ const refreshMasonry = () => {
 }
 
 onMounted(async () => {
-  images.value = await diana.listAll<Image>("image");
+  images.value = await diana.listAll("image");
 });
 
 defineComponent({
@@ -64,31 +52,31 @@ defineComponent({
 .masonry-wall {
   position: absolute;
   top: 0px;
-  width: 100%; 
-  height: 100%; 
+  width: 100%;
+  height: 100%;
   z-index: 99;
-  padding: 0px 0px 0px 0px; 
+  padding: 0px 0px 0px 0px;
   overflow-y: scroll;
   transition: all 0.5s ease-in-out;
-  z-index:249;
+  z-index: 249;
   pointer-events: none;
 }
 
 @media (max-width: 900px) {
   #app .masonry-wall {
-pointer-events: auto;
+    pointer-events: auto;
   }
 }
 
 @media (min-width: 900px) {
   #app .masonry-wall {
-    padding: 0px 0px 0px 450px; 
+    padding: 0px 0px 0px 450px;
   }
 }
 
 @media (min-width: 1500px) {
   #app .masonry-wall {
-    padding: 0px 0px 0px 500px; 
+    padding: 0px 0px 0px 500px;
   }
 }
 
@@ -97,26 +85,26 @@ pointer-events: auto;
 }
 
 .grid-item {
-  width:100%;
+  width: 100%;
   display: flex;
   position: relative;
   overflow: hidden;
   width: auto;
   pointer-events: auto;
-  border-width:5px;
-  border-color:rgb(234, 228, 219);
-  border-style:solid;
+  border-width: 5px;
+  border-color: rgb(234, 228, 219);
+  border-style: solid;
 }
 
 .grid-item img {
-  width:100%;
+  width: 100%;
   transform: scale(1.1);
   transition: all 0.2s ease-in-out;
 }
 
 .grid-item:hover img {
   transform: scale(1.15);
-  z-index: 300; 
+  z-index: 300;
 }
 
 
@@ -133,10 +121,10 @@ pointer-events: auto;
   left: 0;
   opacity: 0;
   transition: all 0.5s ease-in-out;
-  cursor:pointer;
-  z-index: 400; 
+  cursor: pointer;
+  z-index: 400;
   overflow-wrap: break-word;
-  line-height:1.0;
+  line-height: 1.0;
 }
 
 .grid-item:hover .grid-item-info {
@@ -146,7 +134,4 @@ pointer-events: auto;
 .grid-item-info-meta {
   padding: 10px;
 }
-
-
-
 </style>

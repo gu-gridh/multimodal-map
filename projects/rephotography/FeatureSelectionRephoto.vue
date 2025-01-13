@@ -1,23 +1,18 @@
-<script lang="ts" setup>
+<script setup>
 import { ref, inject, watch} from "vue";
-import type Feature from "ol/Feature";
-import type { SelectEvent } from "ol/interaction/Select";
-import type { DisplayFunction } from "@/types/diana";
-import type { Project } from "@/types/project";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
-import markerIcon from "@/assets/marker-gold.svg";
 import markerIconRed from "@/assets/marker-red-2.svg";
 import Collection from "ol/Collection";
 
 const { selectedFeature } = storeToRefs(mapStore());
 
-const config = inject("config") as Project;
+const config = inject("config");
 
 const selectedCoordinates = ref();
 const hoverCoordinates = ref();
 
-const hoveredFeature = ref<Feature>();
+const hoveredFeature = ref();
 
 /* const props = defineProps({
   clickable: {
@@ -33,7 +28,7 @@ const selectedFeaturesCollection = new Collection(
   selectedFeature.value ? [selectedFeature.value] : []
 );
 
-const onHover = (event: SelectEvent) => {
+const onHover = (event) => {
   const features = event.selected;
 
   if (features.length === 1) {
@@ -45,7 +40,7 @@ const onHover = (event: SelectEvent) => {
   }
 };
 
-const onClick = (event: SelectEvent) => {
+const onClick = (event) => {
   const featureLayerName = event.selected[0]?.get('name'); 
   if (!featureLayerName) {
     selectedFeaturesCollection.clear();
@@ -54,10 +49,8 @@ const onClick = (event: SelectEvent) => {
 
   const features = event.selected;
   if (features.length === 1) {
-    // Unselect the hovered feature
     hoverCoordinates.value = undefined;
     hoveredFeature.value = undefined;
-    // Select the clicked feature
     selectedCoordinates.value = event.mapBrowserEvent.coordinate;
     selectedFeature.value = features[0];
   } else {
@@ -74,13 +67,12 @@ watch(selectedFeature, () => {
   );
 });
 
-const getFeatureDisplayName: DisplayFunction =
+const getFeatureDisplayName =
   config.getFeatureDisplayName ||
 ((feature) => {
   let name = feature.get("Name") || feature.get("name") || feature.get("NAME") || '';
   let rawDate = feature.get("Date");
   let rawYear = feature.get("YEAR_")
-  // Check if rawDate is available
   if (rawDate) {
     let date = rawDate.toString(); 
 
@@ -159,7 +151,7 @@ const getFeatureDisplayName: DisplayFunction =
   >
     <div
       class="ol-popup-content"
-      v-html="getFeatureDisplayName(selectedFeature as Feature)"
+      v-html="getFeatureDisplayName(selectedFeature)"
     ></div>
   </ol-overlay>
 </template>

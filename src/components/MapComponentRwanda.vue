@@ -2,14 +2,14 @@
   <ol-map
     :loadTilesWhileAnimating="true"
     :loadTilesWhileInteracting="true"
-    style="height: 100%; width: calc(100% + 180px); z-index: !important"
+    style="height: 100%; width: calc(100% + 180px); z-index: auto !important"
     ref="map"
     id="map-component"
   >
 
   <ol-view
     ref="view"
-    style="z-index=0"
+    style="z-index:0"
     :min-zoom="minZoom"
     :max-zoom="maxZoom"
     :extent="transformedRestrictExtent"
@@ -36,34 +36,33 @@
   </ol-map>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref, inject, computed, onMounted, watch, nextTick} from "vue";
 import { fromLonLat, transformExtent } from "ol/proj";
 import { mapStore } from "@/stores/store";
-import { storeToRefs } from "pinia";
-import type { Project } from "@/types/project";
+// import { storeToRefs } from "pinia";
 
-const config = inject("config") as Project;
+const config = inject("config");
 
 const store = mapStore();
-const { extent, center, zoom } = storeToRefs(store);
+// const { extent, center, zoom } = storeToRefs(store);
 
 let isInitialSettingDone = false; //don't fire the watchers before setting the map location
 const isAnimating = ref(false);
 
 const projection = ref(config.projection);
-const rotation = ref(0);
+// const rotation = ref(0);
 const view = ref();
 const map = ref();
-const projectedCenter = fromLonLat(config.center, projection.value);
+// const projectedCenter = fromLonLat(config.center, projection.value);
 
 // Controls
-const fullscreencontrol = ref(true);
-const attributioncontrol = ref(true);
+// const fullscreencontrol = ref(true);
+// const attributioncontrol = ref(true);
 const zoomcontrol = ref(true);
-const zoomslidercontrol = ref(true);
-const scalelinecontrol = ref(true);
-const overviewmapcontrol = ref(true);
+// const zoomslidercontrol = ref(true);
+// const scalelinecontrol = ref(true);
+// const overviewmapcontrol = ref(true);
 
 const props = defineProps({
    shouldAutoMove: {
@@ -91,15 +90,13 @@ const shouldAutoMove = ref(props.shouldAutoMove);
 const transformedRestrictExtent = computed(() => {
   if (props.restrictExtent.length > 0) {
     return transformExtent(
-      props.restrictExtent as [number, number, number, number],
+      props.restrictExtent,
       "EPSG:4326",
       projection.value
     );
   }
   return undefined;
 });
-
-
 
 onMounted(() => {
   let storeCenter = store.center;

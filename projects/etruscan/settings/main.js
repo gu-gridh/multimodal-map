@@ -8,7 +8,7 @@ import "@/assets/main.css";
 import i18n from '../../../src/translations/etruscan';
 import VueMatomo from 'vue-matomo';
 
-createApp(App) //
+createApp(App)
   .use(VueMatomo, {
     host: import.meta.env.VITE_MATOMO_URL,
     siteId: import.meta.env.VITE_MATOMO_ID,

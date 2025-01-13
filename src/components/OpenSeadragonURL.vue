@@ -1,5 +1,4 @@
-<script setup lang="ts">
-// @ts-nocheck
+<script setup>
 import { ref, onMounted } from "vue";
 import OpenSeadragon from '@/external/bookmark-url.js';
 
@@ -10,10 +9,8 @@ const props = defineProps({
 const viewerEl = ref();
 let viewer = ref();
 
-const toggleFullScreenPageMode = (bool: boolean) => {
-  // @ts-ignore 
+const toggleFullScreenPageMode = (bool) => {
   OpenSeadragon.supportsFullScreen = bool;
-  // @ts-ignore 
   OpenSeadragon.supportsFullPage = !bool;
 };
 
