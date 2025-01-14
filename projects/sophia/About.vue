@@ -200,6 +200,7 @@ export default {
   margin-top: 20px;
 }
 
+
 .main-about-content {
   display: flex;
   flex-direction: row;
@@ -280,6 +281,27 @@ export default {
   right: 0px;
   color: white !important;
   background-color: rgb(50, 50, 50) !important;
+}
+
+/*   large screen adaption */
+@media screen and (min-width: 1550px) {
+
+.sophia-article-main {
+font-size: 1.1vw;
+}
+
+.sophia-article-sub {
+font-size: 0.9vw;
+}
+.left-content-column2 {
+
+  max-width: 800px;
+}
+.category-button {
+  font-size: 0.9vw !important;
+
+
+}
 }
 
 /*   Mid screen adaption */
