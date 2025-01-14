@@ -21,8 +21,6 @@ const PLACE_TYPES = {
 const INFORMANTS = {
   "Young": "Young 	person",
   "Old": "Old person",
-/*   "Young female": "Young &#9792;",
-  "Old female": "Old &#9792;" */
 }
 const PERIODS = {
   "Before 1899": "Pre-colonial",
