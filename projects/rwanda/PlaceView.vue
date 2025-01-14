@@ -1,5 +1,5 @@
 <script setup>
-import { ref, inject, watch, onMounted } from "vue";
+import { ref, watch, onMounted } from "vue";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
 import VueMasonryWall from "@yeger/vue-masonry-wall";
@@ -23,8 +23,8 @@ const placeType = ref()
 const placeDescription = ref()
 const placeNames = ref([])
 const placeGeoJson = ref()
-const coordinates = ref<number[]>([])
-const documents = ref<Array<Document>>([])
+const coordinates = ref([])
+const documents = ref<Array<Document>([])
 const comment = ref('')
 
 //Capitalize first letter since some are lowercase in database
