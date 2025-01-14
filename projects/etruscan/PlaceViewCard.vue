@@ -1,14 +1,14 @@
-<script setup lang="ts">
+<script setup>
 import router from './settings/router'
 import { ref, inject, onMounted } from "vue"
 import markerIcon from "@/assets/marker-red-etruscan.svg";
 import apiConfig from "./settings/apiConfig"
 
-const props = defineProps<{
-  id: string | number;
-}>();
+const props = defineProps({
+  id: [String, Number],
+});
 
-const capitalize = (word: String) => {
+const capitalize = (word) => {
   if (word !== '') {
     const first = word[0].toUpperCase()
     const rest = word.slice(1)
@@ -17,15 +17,15 @@ const capitalize = (word: String) => {
   else return word
 }
 
-const title = ref<string | null>(null);
-const necropolisName = ref<string | null>(null);
-const siteName = ref<string | null>(null);
-const chambers = ref<number | null>(null);
-const type = ref<string | null>(null);
-const dataset = ref<string | null>(null);
-const period = ref<string | null>(null);
-const subtitle = ref<string | null>(null);
-const description = ref<string | null>(null);
+const title = ref(null);
+const necropolisName = ref(null);
+const siteName = ref(null);
+const chambers = ref(null);
+const type = ref(null);
+const dataset = ref(null);
+const period = ref(null);
+const subtitle = ref(null);
+const description = ref(null);
 const projection = ref("EPSG:4326");
 const zoom = ref(16);
 const rotation = ref(0);
@@ -88,14 +88,14 @@ onMounted(() => {
   <div class="place-meta-container">
 
     <div class="placecard-full">
-  
- 
+
+
       <div class="placecard-full-content">
-      
+
         <div class="placecard-text-overlay"></div>
         <!-- mini map -->
         <div class="mini-map">
-       
+
           <ol-map :loadTilesWhileAnimating="true" :loadTilesWhileInteracting="true" style="height:300px">
             <ol-view ref="view" :center="center" :rotation="rotation" :zoom="zoom" :projection="projection"
               :minZoom="minZoom" />
@@ -114,9 +114,9 @@ onMounted(() => {
           </ol-map>
           <div class="placeview-main-title theme-title-typography theme-color-text">{{ $t('title') }}</div>
         </div>
-   
+
         <div class="placecard-text">
-      
+
           <div class="placecard-title theme-color-text theme-title-typography">{{ dataset }} - {{ title }}</div>
           <div class="placecard-subtitle theme-color-text theme-title-typography">{{ subtitle }}</div>
 
@@ -130,7 +130,7 @@ onMounted(() => {
               <div class="label">Necropolis:</div>
               <div class="tag theme-color-text">{{ necropolisName }}</div>
             </div>
-      
+
             <div class="metadata-item">
               <div class="short-label">{{ $t('type') }}:</div>
               <div class="tag theme-color-text">{{ type }} </div>
@@ -164,15 +164,14 @@ onMounted(() => {
 </template>
 
 <style scoped>
-
-.placeview-main-title{
-  pointer-events:none;
-  position:relative;
-  z-index:1000;
-  font-size:60px;
-  padding:25px 25px;
-  margin-top:-300px;
-  text-shadow: 0px 0px 50px rgba(255,255,255,0.8);
+.placeview-main-title {
+  pointer-events: none;
+  position: relative;
+  z-index: 1000;
+  font-size: 60px;
+  padding: 25px 25px;
+  margin-top: -300px;
+  text-shadow: 0px 0px 50px rgba(255, 255, 255, 0.8);
   white-space: pre-line;
   line-height: 0.7;
   width: auto;
@@ -180,6 +179,7 @@ onMounted(() => {
   letter-spacing: 0.05rem;
   transition: all 0.5s ease-in-out;
 }
+
 .place-back-button {
   left: 40px;
   top: 80px;
@@ -187,7 +187,6 @@ onMounted(() => {
   background-size: 100%;
   background-repeat: no-repeat;
   background-position: center;
-
   border-radius: 50%;
   width: 35px;
   height: 35px;
@@ -203,8 +202,6 @@ onMounted(() => {
   padding-left: 45px;
   padding-right: 20px;
 }
-
-#app .place-meta-container {}
 
 .placecard-full {
   margin-top: 80px;
@@ -233,17 +230,15 @@ onMounted(() => {
   padding: 0px 0px 10px 0px;
 }
 
-
 .placecard-full .category-button {
   width: 110px !important;
   padding: 4px 18px !important;
   margin-top: 15px;
   margin-bottom: 20px;
-
 }
 
-.placecard-full .placecard-text{
-  padding:10px 30px 0px 30px;
+.placecard-full .placecard-text {
+  padding: 10px 30px 0px 30px;
 }
 
 .mini-map {
@@ -255,27 +250,22 @@ onMounted(() => {
   margin-bottom: 0px;
 }
 
-.placecard-metadata-description{
-  font-size:0.9em;
+.placecard-metadata-description {
+  font-size: 0.9em;
 }
-
-
-
 
 /* For small screens */
 @media screen and (max-width: 900px) {
-  .main-title{
-  font-size:60px !important;
-}
+  .main-title {
+    font-size: 60px !important;
+  }
 
-.placeview-main-title{
+  .placeview-main-title {
+    font-size: 45px;
+  }
 
-  font-size:45px;
-
-}
-
-.placecard-full {
-    margin-top:60px!important;
+  .placecard-full {
+    margin-top: 60px !important;
   }
 
   #app .place-meta-container {

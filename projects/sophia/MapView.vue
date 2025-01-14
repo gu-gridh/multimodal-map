@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup>
 import { computed } from "vue";
 import MainLayout from "@/MainLayout.vue";
 import MapViewControls from "./MapViewControls.vue";
@@ -19,7 +19,6 @@ import { nextTick } from "vue";
 import Title from "./MapViewTitle.vue";
 
 const { selectedCategory, writingModel, languageModel, pictorialModel, textualModel, alignmentModel, conditionModel, panelId, inscriptionId, mediaModel, materialModel, panelStr, showGallery, showGalleryInscriptions, showPlan } = storeToRefs(inscriptionsStore());
-
 const store = mapStore();
 const inscriptions = inscriptionsStore();  //get the instance of inscriptionsStore
 const { selectedFeature } = storeToRefs(store);
@@ -32,6 +31,7 @@ const showGuideButton = computed(() => showPlan.value);
 const showFirstFloor = ref(true);
 const showSecondFloor = ref(false);
 const searchType = ref("inscriptionobjects");
+const mapviewControlsRef = ref(null);
 let visited = true; //store the visited status outside of the hook
 
 const switchToPlan = () => {
@@ -58,7 +58,7 @@ watch( //watcher for selectedFeature changes
     if (newFeature && newFeature.getGeometry) {
       const geometry = newFeature.getGeometry();
       if (geometry) {
-        const coordinates = (geometry as any).getFirstCoordinate();
+        const coordinates = (geometry).getFirstCoordinate();
         store.updateCenter(coordinates);
         if (store.zoom < featureZoom) {
           store.updateZoom(featureZoom);
@@ -94,7 +94,7 @@ watch(selectedCategory, (newValue, oldValue) => {
   }
 });
 
-const handleSearchTypeChange = (type: string) => {
+const handleSearchTypeChange = (type) => {
   searchType.value = type;
   if (type === "surfaces") {
     showPlan.value = false;
@@ -139,19 +139,19 @@ const panelParams = computed(() => {
   }
 
   if (medium !== null) {
-    (params as any)['medium'] = medium; 
+    (params)['medium'] = medium;
   } else {
-    delete (params as any)['medium']; 
+    delete (params)['medium'];
   }
 
   if (material !== null) {
-    (params as any)['material'] = material; 
+    (params)['material'] = material;
   } else {
-    delete (params as any)['material']; 
+    delete (params)['material'];
   }
 
   if (panelString !== null && panelString !== undefined) {
-    (params as any)['panel__title__startswith'] = panelString;
+    (params)['panel__title__startswith'] = panelString;
   }
 
   return params;
@@ -168,44 +168,43 @@ const tagParams = computed(() => {
   const selectedCategoryValue = selectedCategory.value;
   const id = inscriptionId.value;
   const panelString = panelStr.value;
-
-  const initialParams = { genre, tags, writing_system, language};
+  const initialParams = { genre, tags, writing_system, language };
 
   // Remove parameters that are set to "all"
-  const cleanedParams = Object.keys(initialParams)
-    .filter((key) => initialParams[key as keyof typeof initialParams] !== "all")
+  const cleanedParams = Object.keys(initialParams || {})
+    .filter((key) => initialParams[key] !== "all")
     .reduce((obj, key) => {
-      obj[key as keyof typeof initialParams] = initialParams[key as keyof typeof initialParams];
+      obj[key] = initialParams[key];
       return obj;
-    }, {} as typeof initialParams);
+    }, {});
 
   // Further clean to remove null or undefined values
   const params = clean(cleanedParams);
 
   if (selectedCategoryValue) {
-    (params as any)['type_of_inscription'] = selectedCategoryValue;
+    (params)['type_of_inscription'] = selectedCategoryValue;
   }
 
   if (alignment !== null) {
-    (params as any)['alignment'] = alignment; 
+    (params)['alignment'] = alignment;
   } else {
-    delete (params as any)['alignment']; 
+    delete (params)['alignment'];
   }
 
   if (condition !== null) {
-    (params as any)['condition'] = condition; 
+    (params)['condition'] = condition;
   } else {
-    delete (params as any)['condition']; 
+    delete (params)['condition'];
   }
 
   if (id !== null) {
-    (params as any)['id'] = id; 
+    (params)['id'] = id;
   } else {
-    delete (params as any)['id']; 
+    delete (params)['id'];
   }
 
   if (panelString !== null && panelString !== undefined) {
-    (params as any)['panel__title__startswith'] = panelString;
+    (params)['panel__title__startswith'] = panelString;
   }
 
   return params;
@@ -261,22 +260,52 @@ const toggleInstructionsVisibility = async () => {
   await nextTick();
   visibleInstructions.value = !visibleInstructions.value;
 };
+
+function handleDeselectSurface() {
+  if (mapviewControlsRef.value) {
+    mapviewControlsRef.value.clearSelection();
+  }
+}
 </script>
 
 <template>
+  <div id="version"> {{ $t('versionnumb') }}</div>
   <div style="display:flex; align-items: center; justify-content: center; pointer-events: none;">
+
+    <!--   Top widget for the main modes  -->
     <div class="ui-mode ui-overlay ui-overlay-top">
-      <button class="item" :class="{ selected: showPlan }" @click="switchToPlan">
+      <button class="item" :class="{ selected: showPlan }" @click="switchToPlan" title="Plans">
         {{ $t('plans') }}
       </button>
-      <button class="item" :class="{ selected: showGallery }" @click="switchToGallery">
+      <button class="item" :class="{ selected: showGallery }" @click="switchToGallery" title="Surfaces">
         {{ $t('panels') }}
       </button>
-      <button class="item" :class="{ selected: showGalleryInscriptions }" @click="switchToInscriptions">
+      <button class="item" :class="{ selected: showGalleryInscriptions }" @click="switchToInscriptions"
+        title="Inscriptions">
         {{ $t('inscriptions') }}
       </button>
     </div>
 
+    <!--   Widget for Overview or Immersive  -->
+    <div id="dimension" class="ui-mode ui-overlay ui-overlay-top" v-if="showPlan">
+      <div class="item overview selected" @click="switchToPlan" title="Overview map">
+        {{ $t('overview') }}
+      </div>
+
+      <div class="item divider"></div>
+
+      <!--   links to the immersve view switches on what floor plan is shown  -->
+      <div class="item immersive selected" v-bind:class="{ immersivevisible: !showSecondFloor }"
+        onclick="location.href='/viewer/?q=immersive1/pointcloud'" title="Immersive view">
+        {{ $t('immersive') }}
+      </div>
+      <div class="item immersive selected" v-bind:class="{ immersivevisible: showSecondFloor }"
+        onclick="location.href='/viewer/?q=immersive2/pointcloud'" title="Immersive view">
+        {{ $t('immersive') }}
+      </div>
+    </div>
+
+    <!--   Widget for switching floor plan / tiles  -->
     <div class="ui-mode ui-overlay tile-switcher" style="" v-if="showPlan">
       <button class="item" v-bind:class="{ selected: !showSecondFloor }" v-on:click="showSecondFloor = false;">
         {{ $t('groundfloor') }}
@@ -286,7 +315,8 @@ const toggleInstructionsVisibility = async () => {
       </button>
     </div>
 
-    <div class="guide-button compact" title="User Guide" @click="toggleInstructionsVisibility" v-if="showGuideButton">?</div>
+    <div class="guide-button compact" title="User Guide" @click="toggleInstructionsVisibility" v-if="showGuideButton">?
+    </div>
 
   </div>
   <MapViewGallery v-if="showGallery" />
@@ -294,51 +324,131 @@ const toggleInstructionsVisibility = async () => {
   <About :visibleAbout="visibleAbout" @close="visibleAbout = false" />
   <Instructions :visibleInstructions="visibleInstructions" @close="visibleInstructions = false" />
   <div class="gradient-blur">
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-    </div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
   <MainLayout>
-   
-    <template #search>
-      <Title @toggle-about="toggleAboutVisibility" @toggle-instructions="toggleInstructionsVisibility"/>
 
-      <MapViewControls @update:searchType="handleSearchTypeChange" />
+    <template #search>
+      <Title @toggle-about="toggleAboutVisibility" @toggle-instructions="toggleInstructionsVisibility" />
+      <MapViewControls @update:searchType="handleSearchTypeChange" ref="mapviewControlsRef" />
     </template>
 
     <template #background>
       <div class="map-container">
-       
+
         <MapComponent :shouldAutoMove="true" :min-zoom=minZoom :max-zoom=maxZoom v-if="showPlan">
           <template #layers>
-            <MapViewMarkers :zIndex=3 :showSecondFloor="showSecondFloor" />
-          <div >
-            <ol-tile-layer className="floor-plans" v-if="!showSecondFloor">
-              <ol-source-xyz url="https://data.dh.gu.se/tiles/saint_sophia_ground_floor/{z}/{x}/{y}.png" />
-              
-            </ol-tile-layer>
+            <MapViewMarkers :zIndex=3 :showSecondFloor="showSecondFloor" @deselect-surface="handleDeselectSurface" />
+            <div>
+              <ol-tile-layer className="floor-plans" v-if="!showSecondFloor">
+                <ol-source-xyz url="https://data.dh.gu.se/tiles/saint_sophia_ground_floor/{z}/{x}/{y}.png" />
+              </ol-tile-layer>
 
-            <ol-tile-layer className="floor-plans" v-if="showSecondFloor">
-              <ol-source-xyz  url="https://data.dh.gu.se/tiles/saint_sophia_second_floor/{z}/{x}/{y}.png" />
-            </ol-tile-layer>
-          </div>   
-        </template>
+              <ol-tile-layer className="floor-plans" v-if="showSecondFloor">
+                <ol-source-xyz url="https://data.dh.gu.se/tiles/saint_sophia_second_floor/{z}/{x}/{y}.png" />
+              </ol-tile-layer>
+            </div>
+          </template>
         </MapComponent>
-        
+
       </div>
     </template>
 
     <template #details>
-      <MapViewPreview v-if="showPlan" />
+      <MapViewPreview v-if="showPlan" @deselect-surface="handleDeselectSurface" />
     </template>
 
   </MainLayout>
 </template>
 
 <style>
+#dimension {
+  top: 50px !important;
+  font-size: 90%;
+  background-color: var(--theme-4) !important;
+}
+
+.overview {
+  background: url(https://data.dh.gu.se/ui-icons/overview_white.svg) !important;
+  background-size: 16px !important;
+  background-repeat: no-repeat !important;
+  background-position: 8px 3px !important;
+  padding-left: 32px !important;
+  padding-right: 10px !important;
+}
+
+.divider {
+  border-width: 0px 0px 0px 0.5px;
+  border-color: white;
+  border-style: solid;
+  padding-right: 0px !important;
+  margin-right: 0px !important;
+  padding-top: 4px !important;
+  padding-bottom: 6px !important;
+  opacity: 0.3;
+}
+
+.immersive {
+  background: url(https://data.dh.gu.se/ui-icons/immersive_white.svg) !important;
+  background-size: 16px !important;
+  height: 21px;
+  background-repeat: no-repeat !important;
+  background-position: 0px 2px !important;
+  padding-left: 23px !important;
+  padding-right: 8px !important;
+  padding-top: 4px !important;
+  margin-left: -6px !important;
+  opacity: 0.6;
+  float: right;
+  display: none !important;
+}
+
+.immersive:hover {
+  opacity: 1.0;
+}
+
+.immersivevisible {
+  display: block !important;
+}
+
+@media screen and (max-width: 900px) {
+  .immersive {
+    background-size: 20px !important;
+    height: 28px;
+    background-position: 0px 3px !important;
+    padding-left: 28px !important;
+  }
+
+  .overview {
+    background-size: 20px !important;
+    height: 28px;
+    background-position: 8px 5px !important;
+    padding-left: 38px !important;
+
+  }
+}
+
+#version {
+  position: absolute;
+  text-align: right;
+  font-size: 0.7em;
+  right: 30px;
+  top: 15px;
+  z-index: 1000;
+  opacity: 0.7;
+}
+
+@media screen and (max-width: 900px) {
+  #version {
+    display: none;
+  }
+}
+
 .map-container {
   height: calc(100% - 80px) !important;
   position: relative;
@@ -352,8 +462,8 @@ const toggleInstructionsVisibility = async () => {
   height: calc(100% - 80px);
   pointer-events: none;
   width: 750px;
-  top:0px;
-  opacity:1.0;
+  top: 0px;
+  opacity: 1.0;
 }
 
 .filter-gradient-blur {
@@ -362,19 +472,19 @@ const toggleInstructionsVisibility = async () => {
   inset: auto 0 0 0;
   height: 140px;
   pointer-events: none;
-  width:100%;
-  bottom:80px;
-  opacity:1.0;
-  margin-left:510px;
+  width: 100%;
+  bottom: 80px;
+  opacity: 1.0;
+  margin-left: 510px;
 }
 
-.floor-plans{
-  opacity:0.7;
+.floor-plans {
+  opacity: 0.7;
 }
 
 @media screen and (max-width: 900px) {
   .gradient-blur {
-    display:none;
+    display: none;
   }
 }
 
@@ -482,36 +592,37 @@ const toggleInstructionsVisibility = async () => {
 }
 
 #app .ol-zoom-in {
-  top: calc(100vh - 190px) ;
-  background-color:rgba(0,0,0,0.9)!important;
-  border-radius:8px 0px 0px 8px!important;
+  top: calc(100vh - 190px);
+  background-color: rgba(0, 0, 0, 0.9) !important;
+  border-radius: 8px 0px 0px 8px !important;
 }
 
 #app .ol-zoom-out {
-  top: calc(100vh - 190px) ;
-  background-color:rgba(0,0,0,0.9)!important;
-  border-radius:0px 8px 8px 0px!important;
+  top: calc(100vh - 190px);
+  background-color: rgba(0, 0, 0, 0.9) !important;
+  border-radius: 0px 8px 8px 0px !important;
 }
 
 .tile-switcher {
-    position: absolute; 
-    margin-top: calc(0%)!important;
-    top: calc(100% - 190px) !important; 
-    z-index:1 !important;
+  position: absolute;
+  margin-top: calc(0%) !important;
+  top: calc(100% - 190px) !important;
+  z-index: 1 !important;
 }
 
 @media screen and (max-width: 900px) {
-    .tile-switcher {
-        margin-top: calc(0%)!important;
-        top: calc(72%)!important;
-        bottom:auto;
-        height:auto!important; 
-    }
-    .guide-button
-    {
-      display: none;
-    }
+  .tile-switcher {
+    margin-top: calc(0%) !important;
+    top: calc(72%) !important;
+    bottom: auto;
+    height: auto !important;
+  }
+
+  .guide-button {
+    display: none;
+  }
 }
+
 /* 
 @media screen and (max-height: 1000px) and (max-width: 900px) {
     .tile-switcher {
@@ -565,128 +676,126 @@ const toggleInstructionsVisibility = async () => {
 
 */
 
-
-
 /* Gallery */
 #gallery-container {
-    position: absolute;
+  position: absolute;
+  margin-left: 510px;
+  width: calc(100% - 510px);
+  height: calc(100% - 80px);
+  padding: 0px 10px 0px 20px;
+  z-index: 100 !important;
+  background-color: black;
+  opacity: 0.9;
+}
+
+@media screen and (min-width: 1900px) {
+  #gallery-container {
     margin-left: 510px;
     width: calc(100% - 510px);
-    height: calc(100% - 80px);
-    padding:0px 10px 0px 20px;
-    z-index: 100 !important;
-    background-color: black;
-    opacity: 0.9;
   }
+}
 
-  @media screen and (min-width: 1900px) {
-    #gallery-container {
-      margin-left: 510px;
-      width: calc(100% - 510px);
-    }
+@media screen and (max-width: 1600px) {
+  #gallery-container {
+    margin-left: 510px;
+    width: calc(100% - 510px);
   }
-
-  @media screen and (max-width: 1600px) {
-    #gallery-container {
-      margin-left: 510px;
-      width: calc(100% - 510px);
-    }
-  }
+}
 
 @media screen and (max-width: 900px) {
   #gallery-container {
     margin-left: 0px;
     width: 100%;
-    height:100vh;
-    padding-top:0px;
+    height: 100%;
+    padding-top: 0px;
   }
 }
 
-/* Gallery filters */
-.gallery-filters{
-  height:auto;
-  display:flex;
-flex-direction: row;
-justify-content:right;
-flex-wrap:wrap;
-z-index:10000;
-color:white;
-position:absolute;
-bottom:0px;
-padding-top:300px;
-pointer-events: none;
-/* padding-right:22%; */
-/* border-width:1px 0px 0px 0px;
-border-style:dotted;
-border-color:rgb(220, 215, 210); */
-width:100%;
-background: linear-gradient(0deg, rgba(0, 0, 0, 0.8)0%, rgba(0, 0, 0, 0.2)30%, rgba(0, 0, 0, 0)50%) !important;
+.gallery-filter-container {
+  z-index: 1000;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
 }
 
-.gallery-filters-padding{
-  display:flex;
+/* Gallery filters */
+.gallery-filters {
+  height: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: right;
+  flex-wrap: wrap;
+  z-index: 10000;
+  color: white;
+  position: absolute;
+  bottom: 0px;
+  padding-top: 300px;
+  pointer-events: none;
+  /* padding-right:22%; */
+  /* border-width:1px 0px 0px 0px;
+  border-style:dotted;
+  border-color:rgb(220, 215, 210); */
+  width: 100%;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.8)0%, rgba(0, 0, 0, 0.2)30%, rgba(0, 0, 0, 0)50%) !important;
+}
+
+.gallery-filters-padding {
+  display: flex;
   flex-direction: column;
-justify-content:right;
-flex-wrap:wrap;
-padding-bottom:10px;
-padding-right:40px;
+  justify-content: right;
+  flex-wrap: wrap;
+  padding-bottom: 10px;
+  padding-right: 40px;
 }
 
 @media screen and (max-width: 1500px) {
-  .gallery-filters{
-padding-right:0%;
-}
+  .gallery-filters {
+    padding-right: 0%;
+  }
 }
 
 @media screen and (max-width: 1300px) {
-  .gallery-filters{
-padding-right:0%;
-}
+  .gallery-filters {
+    padding-right: 0%;
+  }
 }
 
 @media screen and (max-width: 900px) {
-  .gallery-filters{
-display:none;
-}
-}
-
-.gallery-filter-container{
-  z-index:1000;
-  display:flex;
-  flex-direction:row;
-  justify-content:flex-end;
+  .gallery-filters {
+    display: none;
+  }
 }
 
-.gallery-filters h1{
-font-size:0.9em;
-font-weight:200;
-margin-right:10px;
+.gallery-filters h1 {
+  font-size: 0.9em;
+  font-weight: 200;
+  margin-right: 10px;
 }
 
-.gallery-filters .tag-container{
-width:100%;
-display:flex;
-flex-direction: row;
-align-items: flex-end;
-width:auto;
+.gallery-filters .tag-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  width: auto;
 }
 
-.gallery-filters .tag-container .gallery-tag{
+.gallery-filters .tag-container .gallery-tag {
   pointer-events: auto;
-font-size:0.75em;
-letter-spacing: 0.5px;
-border-radius:4px;
-padding:3px 8px;
-background-color:rgba(255,255,255,0.1);
-margin-left:5px;
-margin-bottom:10px;
-cursor:pointer;
-border-width:0.5px 0 0 0;
-border-color:grey;
+  font-size: 0.75em;
+  letter-spacing: 0.5px;
+  border-radius: 4px;
+  padding: 3px 8px;
+  background-color: rgba(255, 255, 255, 0.1);
+  margin-left: 5px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  border-width: 0.5px 0 0 0;
+  border-color: grey;
 }
 
-.gallery-filters .tag-container .gallery-tag:hover{
-background-color:rgba(100,40,40,1.0);
+.gallery-filters .tag-container .gallery-tag:hover {
+  background-color: rgba(100, 40, 40, 1.0);
 }
 
 .guide-button {
@@ -712,8 +821,8 @@ background-color:rgba(100,40,40,1.0);
 }
 
 .guide-button:hover {
-    background-color: rgb(0, 0, 0, 1.0) !important;
-    cursor: pointer;
-    transform: scale(1.07);
+  background-color: rgb(0, 0, 0, 1.0) !important;
+  cursor: pointer;
+  transform: scale(1.07);
 }
 </style>

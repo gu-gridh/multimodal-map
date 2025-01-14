@@ -191,14 +191,13 @@ body {
  #app .left-pane {
   position: relative;
   float:left;
-  height:auto;
+  min-height:100%;
   z-index: 500;
   width:100%;
   pointer-events: auto;
   margin-top:0px!important;
-  top: calc(75%)!important;
   border-radius:30px 30px 0 0;
-  padding: 10px 30px 100px 30px !important;
+  padding: 10px 30px 30px 30px !important;
   background-color:rgba(255,255,255,0.6);
   backdrop-filter:blur(5px);
   box-shadow: 0px -10px 20px 0 rgba(0, 0, 0, 0.3),
@@ -208,7 +207,7 @@ body {
 
 #app .left-pane-layer {
 width:100%;
-height:auto;
+height:100%;
 padding: 20px 20px 0px 20px;
 font-size:120%;
 }
@@ -318,7 +317,7 @@ border-radius: 8px;
 
 #app .place-title {
   width: calc(100% -25px);
-  margin-bottom: -25px;
+  margin-bottom: - 25px;
   padding-right:10px;
 }
 
@@ -458,7 +457,7 @@ overflow-y:auto;
 
 @media screen and (max-width: 400px) {
   #app  .left-pane{
-    padding: 30px 10px 100px 10px;
+    padding: 30px 10px 30px 10px;
   }
   #app  .main-title {
   font-size: 70px !important;

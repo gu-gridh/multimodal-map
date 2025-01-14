@@ -1,26 +1,23 @@
-<script lang="ts" setup>
+<script setup>
 import { ref, defineProps, onMounted, inject, watch } from "vue";
 import GeoJSON from "ol/format/GeoJSON.js";
 import VectorSource from "ol/source/Vector";
 import WebGLPointsLayer from "ol/layer/WebGLPoints.js";
 import markerIcon from "@/assets/marker-white.svg";
-import type Feature from "ol/Feature";
-import type Geometry from "ol/geom/Geometry";
 import { mapStore } from "@/stores/store";
 import { storeToRefs } from "pinia";
 import Select from "ol/interaction/Select";
 import { etruscanStore } from "./settings/store";
 import { pointerMove } from "ol/events/condition";
-import type Map from "ol/Map";
 
 const { selectedFeature } = storeToRefs(mapStore());
 
 let selectHover; // Select interaction for hover
-const hoveredFeature = ref<Feature<Geometry> | null>(null);
+const hoveredFeature = ref(null);
 const hoverCoordinates = ref(null);
 const selectedCoordinates = ref(null);
 const { areMapPointsLoaded } = storeToRefs(etruscanStore());
-const map = inject("map") as Map;
+const map = inject("map");
 const vectorSource = ref(
   new VectorSource({
     format: new GeoJSON(),
@@ -39,7 +36,7 @@ const props = defineProps({
   },
 });
 
-const updateFeatures = (features: Feature[]) => {
+const updateFeatures = (features) => {
   const geoJSONFormat = new GeoJSON({ featureProjection: "EPSG:3857" });
   const transformedFeatures = geoJSONFormat.readFeatures({
     type: "FeatureCollection",
@@ -49,7 +46,7 @@ const updateFeatures = (features: Feature[]) => {
   vectorSource.value.addFeatures(transformedFeatures);
 };
 
-const fetchData = async (initialUrl: string, params: Record<string, any>) => {
+const fetchData = async (initialUrl, params) => {
   let nextUrl = initialUrl;
   let initialParams = new URLSearchParams({ page_size: '1000', ...params }).toString();
 
@@ -78,7 +75,7 @@ const fetchData = async (initialUrl: string, params: Record<string, any>) => {
 // Create a WebGLPointsLayer
 const webGLPointsLayer = ref(
   new WebGLPointsLayer({
-    source: vectorSource.value as any,
+    source: vectorSource.value,
     style: {
       symbol: {
         symbolType: "image",
@@ -99,12 +96,12 @@ const clearPopups = () => {
 
 onMounted(() => {
   if (map) {
-    map.addLayer(webGLPointsLayer.value as any);
+    map.addLayer(webGLPointsLayer.value);
 
     // Initialize the select interaction for hover
     selectHover = new Select({
       condition: pointerMove,
-      layers: [webGLPointsLayer.value as any],
+      layers: [webGLPointsLayer.value],
     });
 
     // Add select interaction to the map for hover
@@ -114,9 +111,9 @@ onMounted(() => {
     selectHover.on("select", (event) => {
       if (event.selected.length > 0) {
         const feature = event.selected[0];
-        hoveredFeature.value = feature as any;
+        hoveredFeature.value = feature;
 
-        const geometry = feature.getGeometry() as any;
+        const geometry = feature.getGeometry();
         hoverCoordinates.value = geometry.getCoordinates();
     } else {
         //clear hover information when no feature is hovered
@@ -125,11 +122,11 @@ onMounted(() => {
       }
     });
 
-    let clickedFeatures: Feature[] = [];
+    let clickedFeatures = [];
     map.on("click", function (evt) {
       clickedFeatures = []; // Clear the array before each click
       map.forEachFeatureAtPixel(evt.pixel, function (feature) {
-        clickedFeatures.push(feature as Feature<Geometry>);
+        clickedFeatures.push(feature);
       });
 
       if (clickedFeatures.length === 1) {
@@ -139,10 +136,10 @@ onMounted(() => {
 
         // Select the clicked feature
         selectedFeature.value = clickedFeatures[0];
-        const geometry = clickedFeatures[0].getGeometry() as any;
+        const geometry = clickedFeatures[0].getGeometry();
         selectedCoordinates.value = geometry.getCoordinates();
       } else {
-        selectedCoordinates.value = undefined as any;
+        selectedCoordinates.value = undefined;
         selectedFeature.value = undefined;
       }
     });

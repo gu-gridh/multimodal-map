@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import CategoryButtonList from "@/components/input/CategoryButtonList.vue";
 import { storeToRefs } from "pinia";
 import { jubileumStore } from "./settings/store";

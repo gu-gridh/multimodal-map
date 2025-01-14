@@ -1,5 +1,4 @@
-<script lang="ts" setup>
-// @ts-nocheck
+<script setup>
 import { ref, computed, inject, onMounted } from "vue";
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';

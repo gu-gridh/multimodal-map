@@ -40,8 +40,7 @@
   </div>
 </template>
 
-<script lang="ts" setup>
-
+<script setup>
 import { ref, onMounted, watch, computed } from 'vue';
 import _debounce from 'lodash/debounce';
 

@@ -1,12 +1,11 @@
-<script setup lang="ts">
+<script setup>
 import ObjectViewComponent from "@/components/ObjectViewComponent.vue";
 import OpenSeadragon from "@/components/OpenSeadragonURL.vue";
-import type { ImageDeep } from "./settings/types";
 
-defineProps<{
-  object: ImageDeep;
-  id: Number;
-}>();
+const props = defineProps({
+  object: Object,
+  id: Number,
+});
 </script>
 
 <template>
@@ -28,22 +27,10 @@ defineProps<{
 
     <OpenSeadragon :src="`${object.iiif_file}/info.json`" class="flex-1" />
 
-  <!-- <div id="ToolbarVertical">
-      <a id="full-page" href="#full-page">
-        <div id="FullPage" class="NavButton"></div>
-      </a>
-      <a id="zoom-in" href="#zoom-in">
-        <div id="ZoomIn" class="NavButton"></div>
-      </a>
-      <a id="zoom-out" href="#zoom-out">
-        <div id="ZoomOut" class="NavButton"></div>
-      </a>
-    </div> -->
   </section>
 </template>
 
 <style scoped>
-
 .back-button {
   width: 20px!important;
   height: 20px!important;
@@ -63,7 +50,6 @@ defineProps<{
 
 .metadata{
   font-weight:100;
-
 }
 
 .metadata-post{
@@ -83,5 +69,4 @@ defineProps<{
   font-weight:400;
 width:auto;
 }
-
 </style>

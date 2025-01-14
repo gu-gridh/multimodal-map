@@ -1,9 +1,10 @@
-<script setup lang="ts">
-import type { Image } from "./settings/types";
-
-defineProps<{
-  image: Image;
-}>();
+<script setup>
+const props = defineProps({
+  image: {
+    type: Object,
+    required: true,
+  },
+});
 </script>
 
 <template>
@@ -22,4 +23,5 @@ defineProps<{
   </router-link>
 </template>
 
-<style></style>
+<style>
+</style>

@@ -2,26 +2,23 @@
   <div v-if="hoveredFeatureInfo" :style="{position: 'absolute', left: `${hoverPosition.x}px`, top: `${hoverPosition.y}px`}" class="hover-info">{{ hoveredFeatureInfo }}</div>
 </template>
 
-<script lang="ts" setup>
-import { defineComponent, onMounted, ref, inject, watch, nextTick, reactive } from 'vue';
+<script setup>
+import { onMounted, ref, inject, watch, nextTick, reactive } from 'vue';
 import GeoJSON from 'ol/format/GeoJSON.js';
 import VectorSource from 'ol/source/Vector';
 import VectorLayer from 'ol/layer/Vector';
 import { Fill, Stroke, Style } from 'ol/style';
-import Overlay from 'ol/Overlay';
-import type Feature from "ol/Feature";
-import type Map from 'ol/Map';
 
-const map = inject("map") as Map | undefined;
+const map = inject("map");
 const props = defineProps({
   geojsonUrl: { type: String, required: true },
   zIndex: { type: Number, default: 2 },
   isVisible: { type: Boolean, required: true },
-  date: { type: Boolean }
+  date: { type: Boolean },
 });
 
 const vectorSource = new VectorSource({ format: new GeoJSON(), url: props.geojsonUrl });
-const hoveredFeatureInfo = ref<string | null>(null);
+const hoveredFeatureInfo = ref(null);
 const hoverPosition = reactive({ x: 0, y: 0 });
 
 const vectorLayer = new VectorLayer({
@@ -94,7 +91,6 @@ function formatDate(dateStr) {
   if (!dateStr || dateStr.length !== 8) return 'Invalid date';
   return `${dateStr.substring(0, 4)}-${dateStr.substring(4, 6)}-${dateStr.substring(6, 8)}`;
 }
-
 
 onMounted(() => {
   nextTick(() => {

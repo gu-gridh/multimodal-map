@@ -86,17 +86,13 @@
    </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { inject, ref, onMounted, computed, defineProps, nextTick, watch } from "vue";
-import Dropdown from "./components/DropdownComponent.vue";
-import CategoryButton from "@/components/input/CategoryButtonList.vue";
 import { storeToRefs } from "pinia";
 import { fromLonLat } from "ol/proj";
 import { mapStore } from "@/stores/store";
 import { sonoraStore } from "./settings/store";
-import type { SonoraProject } from "./types";
 import { DianaClient } from "@/assets/diana";
-import { transform } from 'ol/proj';
 import RangeSlider from "@/components/input/RangeSlider.vue";
 import _debounce from 'lodash/debounce';
 import i18n from '../../src/translations/sonora';
@@ -110,8 +106,6 @@ const searchType = ref('places'); // Default to 'places'
 const searchQuery = ref('');
 const { selectedFeature } = storeToRefs(mapStore());
 const searchResults = ref([]);
-const config = inject<SonoraProject>("config");
-const dianaClient = new DianaClient("sonora"); // Initialize DianaClient
 const sonora = sonoraStore();
 const { selectedBuilderId, noPlaceCount, builderLayerVisible, placeClicked, selectedRange, selectedBuildingTypeIndex } = storeToRefs(sonora);
 const featureZoom = 16; //value between minZoom and maxZoom when you select a point 
@@ -119,7 +113,7 @@ const allZoom = 5.3; //value to see all of sweden
 const rangeSliderRef = ref(null);
 const searchInput = ref(null);
 
-const setSearchType = (type: string) => {
+const setSearchType = (type) => {
  searchType.value = type;
  handleSearch();
 };

@@ -1,13 +1,11 @@
-import type { InscriptionsProject } from "./types";
-
-export default <InscriptionsProject>{
+export default{
   title: "",
   subtitle: "",
   moreinfo: "Learn more...",
   about:
     "",
   projection: "EPSG:3857",
-  center: [30.5142, 50.45288],
-  zoom: 20.5,
+  center: [16, 59.3],
+  zoom: 7,
   timeRange: [1600, new Date().getFullYear()],
 };

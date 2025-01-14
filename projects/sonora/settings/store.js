@@ -1,20 +1,19 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
-import config from "./config";
 
 export const sonoraStore = defineStore("sonora", () => {
-  const categories = ref<Array<string>>(["all"]);
+  const categories = ref(["all"]);
   const selectedRange = ref([1300, 1899]);
-  const tags = ref<Array<string>>(["all"]);
-  const necropoli = ref<Array<string>>(["all"]);
-  const tombType = ref<Array<string>>(["all"]);
-  const tagsLayerVisible = ref(false); // Default visibility state for tags layer
-  const placesLayerVisible = ref(true); // Default visibility state for places layer
+  const tags = ref(["all"]);
+  const necropoli = ref(["all"]);
+  const tombType = ref(["all"]);
+  const tagsLayerVisible = ref(false); //default visibility state for tags layer
+  const placesLayerVisible = ref(true); //default visibility state for places layer
   const builderLayerVisible = ref(false);
-  const dataParams = ref<Record<string, string | number | null>>({});
+  const dataParams = ref({});
   const placeClicked = ref(false);
   const noPlaceCount = ref(0);
-  const enable3D = ref<boolean>(false);
+  const enable3D = ref(false);
   const selectedBuilderId = ref(0);
   const selectedBuildingTypeIndex = ref(0);
   const updateMapParams = (buildingTypeId, yearRange) => {

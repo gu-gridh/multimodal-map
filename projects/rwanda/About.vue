@@ -39,7 +39,7 @@
 
 </template>
 
-<script lang="ts">
+<script>
   export default {
     name: "aboutview",
     props: {
@@ -81,7 +81,7 @@
     position: fixed;
     color: white;
     line-height: 1;
-    height: calc(100% -80px);
+    height: calc(100% - 80px);
     width: 100%;
     font-size: 12px;
     z-index: 2000;

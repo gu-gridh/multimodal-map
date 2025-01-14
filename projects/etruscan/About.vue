@@ -47,7 +47,7 @@
 
 
 
-<script lang="ts">
+<script>
 
   import i18n from '../../src/translations/etruscan';
 

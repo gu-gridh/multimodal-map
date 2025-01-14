@@ -1,9 +1,7 @@
-<script setup lang="ts">
-import type { Image } from "./settings/types";
-
-defineProps<{
-  image: Image;
-}>();
+<script setup>
+defineProps({
+  image: Object,
+});
 </script>
 
 <template>

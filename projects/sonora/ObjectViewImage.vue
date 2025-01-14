@@ -1,14 +1,13 @@
-<script setup lang="ts">
+<script setup>
 import { ref, computed, onMounted, onUnmounted } from "vue";
 import ObjectViewComponent from "./ObjectViewComponent.vue";
 import OpenSeadragon from "./MapViewPreviewImage.vue";
-import type { ImageDeep } from "./settings/types";
 import i18n from '../../src/translations/sonora';
 
-const props = defineProps<{
-  object: ImageDeep;
-  id: Number;
-}>();
+const props = defineProps({
+  object: Object,
+  id: Number
+});
 
 const metadataFields = computed(() => {
   return Object.entries(props.object).reduce((acc, [key, value]) => {

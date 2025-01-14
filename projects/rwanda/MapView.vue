@@ -1,17 +1,14 @@
-<script lang="ts" setup>
+<script setup>
 import { provide, ref, watch } from "vue";
 import configRaw from "./settings/config";
 import MainLayout from "@/MainLayout.vue";
 import MapViewControls from "./MapViewControls.vue";
-import type { Project } from "@/types/project";
 import { formatNames } from "./settings/names";
-import type Feature from "ol/Feature";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
 import MapComponent from "@/components/MapComponentRwanda.vue";
 import DianaPlaceLayer from "@/components/DianaPlaceLayer.vue";
 import FeatureSelection from "@/components/FeatureSelection.vue";
-import type { Place } from "./types";
 import About from "./About.vue";
 import Instructions from "./Instructions.vue";
 import AutocompleteComponent from "@/components/input/AutocompleteComponent.vue";
@@ -19,12 +16,12 @@ import { useRwandaMap } from "./settings/map.composable";
 import { rwandaStore } from "./settings/rwandaStore";
 import { useRoute } from "vue-router";
 
-function getName(f: Feature): string {
-  const place = f.getProperties() as Place;
+function getName(f) {
+  const place = f.getProperties();
   return formatNames(f.getId(), place.names);
 }
 
-const config: Project = { ...configRaw };
+const config = { ...configRaw };
 config.getFeatureDisplayName = getName;
 provide("config", config);
 
@@ -43,7 +40,7 @@ const showMarker = ref(false);
 
 //MapViewControls
 const { searchText } = useRwandaMap();
-function displayName(p: Place): string {
+function displayName(p) {
   return formatNames(p.id, p.names);
 }
 
@@ -56,7 +53,7 @@ watch(
     if (newFeature && newFeature.getGeometry) {
       const geometry = newFeature.getGeometry();
       if (geometry) {
-        const coordinates = (geometry as any).getFirstCoordinate(); //Since polygon - only get first coordinates
+        const coordinates = (geometry).getFirstCoordinate(); //Since polygon - only get first coordinates
         store.updateCenter(coordinates);
         if (store.zoom < featureZoom)
         {
@@ -77,7 +74,6 @@ watch(route, () => {
     showMarker.value = false;
   }
 }, {immediate: true});
-
 </script>
 
 <template>
@@ -346,6 +342,4 @@ bottom:100px;
   left: -50px;
   min-width: 200px;
 }
-
-
 </style>

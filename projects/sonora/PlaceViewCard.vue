@@ -1,16 +1,17 @@
-<script setup lang="ts">
+<script setup>
 import router from './settings/router'
-import { ref, inject, onMounted, nextTick } from "vue"
-import markerIcon from "@/assets/marker-red.svg";
+import { ref, onMounted } from "vue"
 import { watch } from 'vue';
 import placeholderImage from './images/placeholder.png';
 import i18n from '../../src/translations/sonora';
 
 const emit = defineEmits(['link-clicked']);
 
-const props = defineProps<{
-  id: string;
-}>();
+const props = defineProps({
+  id: {
+    type: String,
+  }
+});
 
 const organData = ref(null);
 const loading = ref(true);
@@ -27,7 +28,6 @@ const processOrganData = (data) => {
       data.Plats = parts[1].trim();
     }
   }
-
   processedOrganData.value = filteredData;
 };
 

@@ -22,8 +22,7 @@
   </footer>
 </template>
 
-<script setup lang="ts">
-import { ref } from 'vue';
+<script setup>
 
 const downloadData = async () => {
   let url = 'https://diana.dh.gu.se/api/etruscantombs/geojson/place/?page_size=100';
@@ -47,7 +46,7 @@ const downloadData = async () => {
   }
 };
 
-const triggerDownload = (data: any[], filename: string) => {
+const triggerDownload = (data, filename) => {
   const jsonBlob = new Blob([JSON.stringify(data)], { type: 'application/json' });
   const downloadUrl = window.URL.createObjectURL(jsonBlob);
   const link = document.createElement('a');

@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup>
 import { provide } from "vue";
 import config from "./settings/config";
 import Footer from "./Footer.vue";
@@ -107,7 +107,7 @@ body {
   border-radius: 0px 10px 10px 0px !important;
   height: 35px;
   padding-bottom: 3px !important;
-  widtH: 50px;
+  width: 50px;
   background-color: rgba(160, 80, 80, 1.0) !important;
 }
 
@@ -120,6 +120,15 @@ body {
 
 
 @media screen and (max-width: 900px) {
+  #app .left-pane {
+  margin-top:0px!important;
+  top: 75%!important;
+  z-index:1000!important;
+  position:absolute!important;
+  width:100%!important;
+  padding: 30px 10px 100px 10px!important;
+}
+
   #app .right-pane {
     width: 100% !important;
     padding:0px;

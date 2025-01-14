@@ -23,25 +23,39 @@
 
 </template>
 
-<script setup lang="ts">
+<script setup>
 import Slider from "@vueform/slider";
 import { storeToRefs } from "pinia";
 import { etruscanStore } from "../settings/store";
 import { ref, watch, computed } from "vue";
 const { showUnknownRange } = storeToRefs(etruscanStore());
-const props = withDefaults(defineProps<{
-  modelValue: [number, number];
-  min: number;
-  max: number;
-  step: number;
-  isSliderVisible: boolean;
-}>(), {
-  isSliderVisible: true
+
+const props = defineProps({
+  modelValue: {
+    type: Array,
+    required: true,
+  },
+  min: {
+    type: Number,
+    required: true,
+  },
+  max: {
+    type: Number,
+    required: true,
+  },
+  step: {
+    type: Number,
+    required: true,
+  },
+  isSliderVisible: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 const emit = defineEmits(["update:modelValue"]);
 const isSliderVisible = computed(() => props.isSliderVisible !== false); 
-const selection = ref<[number, number]>(props.modelValue);
+const selection = ref(props.modelValue);
 
 watch(selection, () => {
   emit("update:modelValue", selection.value);

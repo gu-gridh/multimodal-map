@@ -12,27 +12,37 @@
   </select>
 </template>
 
-<script setup lang="ts">
+<script setup>
 
-
-const props = defineProps<{
-  modelValue: string[];
-  categories: Record<string, string>;
-  limit?: 1;
-  styleType?: "button" | "dropdown";
-  type?: "language" | "timeperiod";
-}>();
+const props = defineProps({
+  modelValue: {
+    type: Array,
+    required: true,
+  },
+  categories: {
+    type: Object,
+    required: true,
+  },
+  limit: {
+    type: Number, 
+    default: 1,
+  },
+  styleType: {
+    type: String, 
+  },
+  type: {
+    type: String, 
+  },
+});
 
 const emit = defineEmits(["update:modelValue", "click"]);
 
-
-
-function toggle(key: string) {
+function toggle(key) {
   handleToggle(key);
 }
 
-function dropdownToggle(event: Event) {
-  const selectElement = event.target as HTMLSelectElement | null;
+function dropdownToggle(event) {
+  const selectElement = event.target;
   
   if (selectElement) {
     const selectedKey = selectElement.value;
@@ -40,7 +50,7 @@ function dropdownToggle(event: Event) {
   }
 }
 
-function handleToggle(key: string) {
+function handleToggle(key) {
   if (key === 'all') {
     emit("update:modelValue", ['all']); // Set modelValue to ['all']
 
@@ -60,7 +70,6 @@ function handleToggle(key: string) {
   emit("update:modelValue", newValue);
   emit('click', key); 
 }
-
 </script>
 
 <style scoped>

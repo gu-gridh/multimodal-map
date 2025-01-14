@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup>
 import { provide } from "vue";
 import config from "./settings/config";
 import Footer from './Footer.vue';
@@ -40,7 +40,6 @@ body {
   display:none;
 }
 
-
 #app .left-pane {
   background: url("images/gradient.png");
   background-size: contain;
@@ -57,7 +56,5 @@ body {
   .atlas-gradient {
     background: linear-gradient(180deg, rgba(232, 228, 217, 0) 0px, rgba(232, 228, 217, 1) 300px) !important;
 }
-
 }
-
 </style>

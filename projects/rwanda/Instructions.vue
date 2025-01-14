@@ -109,7 +109,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
  import i18n from '../../src/translations/rwanda.js';
 
 export default {

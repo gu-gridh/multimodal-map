@@ -1,7 +1,5 @@
-<script setup lang="ts">
+<script setup>
 import { ref, onMounted, inject, computed, nextTick, watch } from 'vue';
-import type { Image, Observation, Document, Pointcloud, Mesh } from './settings/types';
-import type { DianaClient } from "@/assets/diana";
 import PlaceViewCard from "./PlaceViewCard.vue";
 import MapComponent from "@/components/MapComponent.vue";
 import i18n from '../../src/translations/etruscan';
@@ -10,31 +8,33 @@ import { useRoute } from 'vue-router';
 import apiConfig from "./settings/apiConfig";
 import Masonry from 'masonry-layout';
 import imagesLoaded from 'imagesloaded';
+import { DianaClient } from "./settings/diana.js";
 
-const msnry = ref<Masonry | null>(null);
-const plansMsnry = ref<Masonry | null>(null);
+
+const msnry = ref(null);
+const plansMsnry = ref(null);
 const sort = ref('type');
 const etruscan = etruscanStore();
-const groupedByYear = ref<{ [year: string]: (Image | Observation | Document | Pointcloud | Mesh)[] }>({});
+const groupedByYear = ref({});
 const id = computed(() => etruscan.placeId);
-const diana = inject("diana") as DianaClient;
-const images = ref<Image[]>([]);
-const plans = ref<Image[]>([]);
+const dianaClient = new DianaClient("etruscantombs");
+const images = ref([]);
+const plans = ref([]);
 const route = useRoute();
-const nextPageUrl = ref<string | null>(null);
+const nextPageUrl = ref(null);
 const hasMoreImages = ref(true);
 const isLoading = ref(false);
-const selectedDataset = ref<string | null>(null); 
-const cloneTombOptions = ref<{ id: number, datasetId: number, datasetName: string }[]>([]);
+const selectedDataset = ref(null); 
+const cloneTombOptions = ref([]);
 
-const props = defineProps<{
-  name: string;
-}>();
+const props = defineProps({
+  name: String,
+});
 
-let observations = ref<Observation[]>([]);
-let documents = ref<Document[]>([]);
-let pointcloud = ref<Pointcloud[]>([]);
-let mesh = ref<Mesh[]>([]);
+let observations = ref([]);
+let documents = ref([]);
+let pointcloud = ref([]);
+let mesh = ref([]);
 
 const datasetsMap = {
     1: "CTSG",
@@ -73,23 +73,23 @@ watch(() => sort.value, async () => {
     initMasonry();
 });
 
-function isImage(item: any): item is Image {
+function isImage(item) {
     return 'iiif_file' in item;
 }
 
-function isObservation(item: any): item is Observation {
+function isObservation(item) {
     return 'observation' in item;
 }
 
-function isPointcloud(item: any): item is Pointcloud {
+function isPointcloud(item) {
     return 'camera_position' in item;
 }
 
-function isMesh(item: any): item is Mesh {
+function isMesh(item) {
     return 'triangles_optimized' in item;
 }
 
-function isDocument(item: any): item is Mesh {
+function isDocument(item)  {
     return 'upload' in item;
 }
 
@@ -110,11 +110,11 @@ async function fetchMoreImages() {
     try {
         const newImages = [];
         while (nextPageUrl.value) {
-            const response = await fetch(nextPageUrl.value) as Response;
+            const response = await fetch(nextPageUrl.value);
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-            const data: Record<string, any> = await response.json();
+            const data = await response.json();
 
             nextPageUrl.value = data.next && data.next.startsWith('http://')
                 ? data.next.replace('http://', 'https://')
@@ -122,7 +122,7 @@ async function fetchMoreImages() {
 
             hasMoreImages.value = !!data.next;
 
-            newImages.push(...data.results.filter((image: Image) => image.published));
+            newImages.push(...data.results.filter((image) => image.published));
         }
         images.value = [...images.value, ...newImages];
 
@@ -182,14 +182,14 @@ onMounted(async () => {
         const [fetchedImages, fetchedObservations, fetchedDocuments, fetchedPointclouds, fetchedMeshes, fetchedPlans] = await Promise.all
             ([
                 fetch(`${apiConfig.IMAGE}?tomb=${id.value}&limit=8&type_of_image=2&depth=2`).then(res => res.json()),
-                diana.listAll<Observation>("observation", { place: id.value }),
-                diana.listAll<Document>("document", { place: id.value }),
-                diana.listAll<Pointcloud>("objectpointcloud", { tomb: id.value, depth: 2 }),
-                diana.listAll<Mesh>("object3dhop", { tomb: id.value, depth: 2 }),
+                dianaClient.listAll("observation", { place: id.value }),
+                dianaClient.listAll("document", { place: id.value }),
+                dianaClient.listAll("objectpointcloud", { tomb: id.value, depth: 2 }),
+                dianaClient.listAll("object3dhop", { tomb: id.value, depth: 2 }),
                 fetch(`${apiConfig.IMAGE}?tomb=${id.value}&type_of_image=1&type_of_image=5&depth=2`).then(res => res.json())
             ]);
 
-        images.value = fetchedImages.results.filter((image: Image) => image.published);
+        images.value = fetchedImages.results.filter((image) => image.published);
         nextPageUrl.value = fetchedImages.next && fetchedImages.next.startsWith('http://')
             ? fetchedImages.next.replace('http://', 'https://')
             : fetchedImages.next;
@@ -209,12 +209,12 @@ onMounted(async () => {
     });
 });
 
-function groupAndSortByYear(allItems: (Image | Observation | Document | Pointcloud | Mesh)[]) {
+function groupAndSortByYear(allItems) {
     // Reset groupedByYear
     groupedByYear.value = {};
 
     // Group items by year
-    allItems.forEach((item: Image | Observation | Document | Pointcloud | Mesh) => {
+    allItems.forEach((item) => {
         const fullDate = new Date(item.date);
         const year = fullDate.getFullYear().toString();
 
@@ -230,8 +230,8 @@ function createPlaceURL() {
     window.open(url, "_blank");
 }
 
-function handleCloneTombChange(event: Event) {
-    const selectedValue = (event.target as HTMLSelectElement).value;
+function handleCloneTombChange(event) {
+    const selectedValue = (event.target).value;
     const selectedOption = cloneTombOptions.value.find(option => option.id.toString() === selectedValue);
     if (selectedOption) {
         selectedDataset.value = selectedOption.datasetName;        

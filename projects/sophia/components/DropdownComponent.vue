@@ -19,31 +19,49 @@
   </select>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { computed } from 'vue';
 import i18n from '../../../src/translations/sophia';
 import CategoryButton from "../../../src/components/input/CategoryButton.vue";
 
-const props = defineProps<{
-  modelValue: string[];
-  categories: { id: string | number; text: string }[];
-  limit?: number;
-  styleType?: "button" | "dropdown";
-  type?: "language" | "tombType";
-}>();
+const props = defineProps({
+  modelValue: {
+    type: Array,
+    required: true,
+    default: () => [],
+  },
+  categories: {
+    type: Array,
+    required: true,
+    default: () => [],
+  },
+  limit: {
+    type: Number,
+    default: undefined,
+  },
+  styleType: {
+    type: String,
+    default: "dropdown",
+    // validator: (value) => ["button", "dropdown"].includes(value),
+  },
+  type: {
+    type: String,
+    default: undefined,
+    // validator: (value) => ["language", "tombType"].includes(value),
+  },
+});
 
 const emit = defineEmits(["update:modelValue", "click"]);
-
 const defaultOptionLabel = computed(() => {
   return i18n.global.locale === 'en' ? 'Show all' : 'Показати все';
 });
 
-function toggle(key: string | number) {
+function toggle(key) {
   handleToggle(key);
 }
 
-function dropdownToggle(event: Event) {
-  const selectElement = event.target as HTMLSelectElement | null;
+function dropdownToggle(event) {
+  const selectElement = event.target || null;
   
   if (selectElement) {
     const selectedKey = selectElement.value;
@@ -51,7 +69,7 @@ function dropdownToggle(event: Event) {
   }
 }
 
-function handleToggle(key: string | number) {
+function handleToggle(key) {
   if (key === 'all') {
     emit("update:modelValue", ['all']);
     emit('click', 'all');
@@ -73,5 +91,4 @@ function handleToggle(key: string | number) {
 </script>
 
 <style scoped>
-
 </style>
