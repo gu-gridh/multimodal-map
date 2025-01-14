@@ -2,9 +2,10 @@
 import { storeToRefs } from "pinia";
 import { rwandaStore } from "./settings/rwandaStore";
 import CategoryButtonList from "@/components/input/CategoryButtonList.vue";
-import ButtonList from "./input/ButtonList.vue";
+// import ButtonList from "./input/ButtonList.vue";
 import Dropdown from "./input/DropdownComponent.vue";
 import CategoryButton from "@/components/input/CategoryButton.vue";
+import { onMounted } from "vue";
 
 //Filtering map controls
 const SOURCES = {
@@ -18,10 +19,8 @@ const PLACE_TYPES = {
   building: "Buildings",
 }
 const INFORMANTS = {
-  "Young male": "Young 	person",
-  "Old male": "Old person",
-/*   "Young female": "Young &#9792;",
-  "Old female": "Old &#9792;" */
+  "Young": "Young 	person",
+  "Old": "Old person",
 }
 const PERIODS = {
   "Before 1899": "Pre-colonial",
@@ -45,9 +44,18 @@ const LANGUAGES = {
 
 const { sources, placeTypes, periods, informants, allLayer, languages, showAdvancedLayer } = storeToRefs(rwandaStore());
 
+//onMounted - set all filters to empty arrays
+onMounted(() => {
+  sources.value = []
+  placeTypes.value = []
+  periods.value = []
+  informants.value = []
+  languages.value = []
+})
+
 //handle category button click
 const handleSourcesClick = (key) => {
-  if(key == "all"){
+  if(key == "all" || (sources.value.length == 0 && placeTypes.value.length == 0 && periods.value.length == 0 && informants.value.length == 0 && languages.value.length == 0)){
     showAdvancedLayer.value = false
     allLayer.value = true
     sources.value = []

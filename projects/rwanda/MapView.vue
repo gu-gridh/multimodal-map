@@ -126,11 +126,7 @@ watch(route, () => {
           <!-- marker layer for zooming in -->
           <DianaPlaceLayer
             v-if="showMarker"
-            path="rwanda/geojson/place/"
-            :params="{
-              id__in: route.params.placeId,
-              corrected: true,
-            }">
+            path="rwanda/geojson/place/" >
             <ol-style>
               <ol-style-stroke color="#dc6464" :width="4"></ol-style-stroke>
             </ol-style>
@@ -158,12 +154,10 @@ watch(route, () => {
             v-if="allLayer && !showMarker"
             path="rwanda/geojson/place/"
             :params="{
-              has_no_name: false,
               id__in: params.searchIds ? params.searchIds : '',
               in_bbox:
                 params.bbox && !params.searchIds ? params.bbox.toString() : '',
               page_size: 500,
-              corrected: true,
             }"
           >
             <ol-style>
