@@ -23,8 +23,7 @@ const placeType = ref()
 const placeDescription = ref()
 const placeNames = ref([])
 const placeGeoJson = ref()
-
-const coordinates: any = ref([])
+const coordinates = ref<number[]>([])
 const documents = ref<Array<Document>>([])
 const comment = ref('')
 
