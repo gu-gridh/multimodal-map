@@ -1,6 +1,6 @@
 <template>
   <!-- Checks if all points are loaded and only then show the controls -->
-  <div class="filtercontrolwidgets">
+  <div class="controls">
 
     <div :class="{ 'non-interactive': !areMapPointsLoaded }">
       <div class="filtercontrolwidgets">
@@ -161,18 +161,16 @@
     </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { inject, ref, onMounted, onUnmounted, computed, watch, nextTick } from "vue";
 import Dropdown from "./components/DropdownComponent.vue";
 import CategoryButton from "@/components/input/CategoryButtonList.vue";
 import { storeToRefs } from "pinia";
 import { inscriptionsStore } from "./settings/store";
-import type { InscriptionsProject } from "./types";
 import { SophiaClient } from "@/assets/saintsophia";
 import i18n from '../../src/translations/sophia';
 import { mapStore } from "@/stores/store";
 
-const config = inject<InscriptionsProject>("config");
 const { selectedFeature } = storeToRefs(mapStore());
 const searchId = ref(null); //id of the selected item in the search
 const sophiaClient = new SophiaClient("inscriptions"); // Initialize SophiaClient
@@ -197,11 +195,11 @@ const hasMoreResults = ref(true);
 const isLoadingMore = ref(false);
 const searchResultsContainer = ref(null);
 const showSuggestions = ref(false);
-const searchSection = ref<HTMLElement | null>(null);
-const TEXTUAL = ref<Array<{ id: string | number; text: string }>>([]);
-const WRITING = ref<Array<{ id: string | number; text: string }>>([]);
-const PICTORIAL = ref<Array<{ id: string | number; text: string }>>([]);
-const LANGUAGE = ref<Array<{ id: string | number; text: string }>>([]);
+const searchSection = ref(null);
+const TEXTUAL = ref([]);
+const WRITING = ref([]);
+const PICTORIAL = ref([]);
+const LANGUAGE = ref([]);
 const searchInput = ref(null);
 
 //data section
@@ -246,7 +244,6 @@ watch(
     });
   }
 );
-
 
 const shouldShowReset = computed(() => { //check if any of the model values have changed
   const categoryCondition = selectedCategory.value !== null;
@@ -293,7 +290,7 @@ const handleScroll = () => { //infinite scroll for search results
   }
 };
 
-const setSearchType = (type: string) => { //change search type
+const setSearchType = (type) => { //change search type
   searchType.value = type;
   searchResults.value = []; //reset search results
   searchQuery.value = ''; //reset the search query
@@ -302,7 +299,7 @@ const setSearchType = (type: string) => { //change search type
 const handleSearchBoxFocus = () => {
   if (firstSearchBoxClick.value && searchType.value === 'surfaces') {
     fetchSurfaces();
-    firstSearchBoxClick.value = false; // Set to false after first fetch
+    firstSearchBoxClick.value = false; //set to false after first fetch
   }
   showSuggestions.value = true;
 };
@@ -319,7 +316,7 @@ const handleSearch = () => {
   }
 };
 
-const handleKeydown = (event: KeyboardEvent) => {
+const handleKeydown = (event) => {
   if (event.key === 'Backspace' && (selectedInscription.value || selectedSurface.value || panelStr.value)) {
     clearSelection(); 
     event.preventDefault(); 
@@ -343,7 +340,7 @@ function handleEnter() {
   }
 }
 
-const handleCategoryClick = (category: string) => {
+const handleCategoryClick = (category) => {
   alignmentModel.value = null;
   conditionModel.value = null;
   //mapping categories to their respective numbers
@@ -370,8 +367,8 @@ const handleCategoryClick = (category: string) => {
   }
 };
 
-const handleClickOutside = (event: MouseEvent) => { //hide suggestions when clicking outside
-  if (searchSection.value && !searchSection.value.contains(event.target as Node)) {
+const handleClickOutside = (event) => { //hide suggestions when clicking outside
+  if (searchSection.value && !searchSection.value.contains(event.target)) {
     showSuggestions.value = false;
   }
 };
@@ -485,12 +482,12 @@ function resetAllExcept(exceptModel) { //reset the other dropdowns to all when a
   if (exceptModel !== "writingModel") writingModel.value = ["all"];
 }
 
-async function fetchDataAndPopulateRef<T>(type: string, refToPopulate: any) {
+async function fetchDataAndPopulateRef(type, refToPopulate) {
   try {
-    const data = await sophiaClient.listAll<T>(type);
+    const data = await sophiaClient.listAll(type);
     refToPopulate.value = data
-      .filter((result: any) => result.published)
-      .map((result: any) => ({
+      .filter((result) => result.published)
+      .map((result) => ({
         id: result.id,
         text: i18n.global.locale === 'uk' ? result.text_ukr : result.text
       }));
@@ -546,7 +543,6 @@ watch( //watch for changes in the panelStr
     if (newPanelStr) { //if newPanelStr is not null or empty
       searchResults.value = [];
       searchQuery.value = '';
-      // searchType.value = 'surfaces';
       panelId.value = null;
       inscriptionId.value = null;
       currentOffset.value = 0;
@@ -623,15 +619,16 @@ onMounted(async () => {
 onUnmounted(() => {
   document.removeEventListener('click', handleClickOutside);
 });
+
+defineExpose({ clearSelection });
 </script>
 
 <style>
-#app .left-pane {
-  background: url("images/gradient.png");
-  background-size: contain;
-  min-width: 960px;
-  max-width: 960px;
-  font-size: 95%;
+.controls {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 100%;
 }
 
 .filtercontrolwidgets {
@@ -639,6 +636,7 @@ onUnmounted(() => {
   flex-direction: column;
   justify-content: flex-start;
   width: 100%;
+  float:left;
 }
 
 .justify {
@@ -694,7 +692,6 @@ onUnmounted(() => {
   margin-top: 0px;
   border: 0px solid #ccc;
   border-radius: 8px;
-  overflow: none;
   background-color: rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(5px);
   z-index: 200000;
@@ -748,6 +745,12 @@ onUnmounted(() => {
   transition: all 0.4s;
   position: absolute;
   box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.1);
+}
+
+@media screen and (max-width: 900px) {
+.search-results {
+  max-height: 180px;
+}
 }
 
 #app .start-end-box {
@@ -836,14 +839,6 @@ onUnmounted(() => {
 }
 
 @media screen and (max-width: 900px) {
-  #app .left-pane {
-    background: url("images/gradient.png");
-    background-size: contain;
-    min-width: 100%;
-    max-width: 100%;
-    font-size: 95%;
-  }
-
   #app .broad-controls {
     width: 100%;
   }

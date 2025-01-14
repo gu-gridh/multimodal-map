@@ -1,17 +1,20 @@
-<script setup lang="ts">
+<script setup>
   import { ref, onMounted, defineProps } from "vue";
   import OpenSeadragon from "openseadragon";
 
   const props = defineProps({
-    src: Array as () => string[],
-    showReferenceStrip: {
-      type: Boolean,
-      default: false
-    }
-  });
+  src: {
+    type: Array,
+    default: () => [],
+  },
+  showReferenceStrip: {
+    type: Boolean,
+    default: false,
+  },
+});
 
   const viewerEl = ref();
-  const currentPage = ref(1);  // Define currentPage
+  const currentPage = ref(1);  //define currentPage
 
   onMounted(() => {
     const viewer = OpenSeadragon({
@@ -93,7 +96,6 @@
 </template>
 
 <style scoped>
-
 .interface-area-bottom {
     display: flex;
     flex-direction: column;

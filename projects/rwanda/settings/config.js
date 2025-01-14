@@ -1,6 +1,4 @@
-import type { RwandaProject } from "./types";
-
-export default <RwandaProject>{
+export default{
   title: "READING \nTHE SIGNS",
   urls: {
     baseURL: "https://diana.dh.gu.se/api/rwanda",

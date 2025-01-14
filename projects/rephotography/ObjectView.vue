@@ -1,10 +1,9 @@
-<script setup lang="ts">
-import { inject, ref, watchEffect } from "vue";
-import type { Documentation } from "./settings/types";
-import type { DianaClient } from "@/assets/diana";
+<script setup>
+import { ref, watchEffect } from "vue";
 import ObjectViewImage from "./ObjectViewImage.vue";
 import ObjectViewVideo from "./ObjectViewVideo.vue";
 import ObjectViewRephotography from "./ObjectViewRephotography.vue";
+import { DianaClient } from "./settings/diana.js";
 
 const props = defineProps({
   type: {
@@ -17,9 +16,8 @@ const props = defineProps({
   },
 });
 
-const diana = inject("diana") as DianaClient;
-const object = ref<Documentation>();
-
+const diana = new DianaClient("rephotography");
+const object = ref();
 
 watchEffect(async () => {
   object.value = await diana.get(props.type, props.id, { depth: 3 });
@@ -55,11 +53,11 @@ const objectComponent = {
   pointer-events:auto;
   color: white;
 }
+
 .illustration {
   float: left;
   width: calc(100% - 450px);
   background-color: black;
   height: 100vh;
-
 }
 </style>

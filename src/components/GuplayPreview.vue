@@ -1,7 +1,10 @@
-<script setup lang="ts">
-defineProps<{
-  guplayId: string;
-}>();
+<script setup>
+defineProps({
+  guplayId: {
+    type: String,
+    required: true,
+  },
+});
 </script>
 
 <template>

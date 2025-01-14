@@ -116,9 +116,8 @@
 
 
 
-<script lang="ts">
-
-  import i18n from '../../src/translations/etruscan.js';
+<script>
+  import i18n from '../../src/translations/sonora.js';
 
   export default {
     name: "aboutinstructionsview",

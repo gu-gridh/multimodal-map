@@ -1,6 +1,4 @@
-import type { RephotographyProject } from "./types";
-
-export default <RephotographyProject>{
+export default{
   title: "Extended Rephotography",
   moreinfo: "Learn more...",
   about:

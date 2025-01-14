@@ -126,22 +126,18 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { inject, ref, computed, onMounted, watch } from "vue";
+<script setup>
+import { ref, computed, onMounted, watch } from "vue";
 import Dropdown from "./components/DropdownComponent.vue";
 import RangeSlider from "./components/RangeSliderComponent.vue";
 import CategoryButtonList from "@/components/input/CategoryButtonList.vue";
 import { storeToRefs } from "pinia";
 import { etruscanStore } from "./settings/store";
-import type { EtruscanProject } from "./settings/types";
-import { DianaClient } from "@/assets/diana";
-import apiConfig from "./settings/apiConfig"
+import { DianaClient } from "./settings/diana.js";
 import { nextTick } from 'vue';
 
-const config = inject<EtruscanProject>("config");
-const dianaClient = new DianaClient("etruscantombs"); // Initialize DianaClient
-const { categories, selectedRange, tags, necropoli, tombType, dataSetValue, dataParams, enable3D, enablePlan, selectedSite, showUnknownRange } = storeToRefs(etruscanStore());
-// Create a ref for last clicked category
+const dianaClient = new DianaClient("etruscantombs"); //initialize DianaClient
+const { categories, selectedRange, necropoli, tombType, dataSetValue, dataParams, enable3D, enablePlan, selectedSite, showUnknownRange } = storeToRefs(etruscanStore());
 const lastClickedCategory = ref('');
 
 const isFilterModified = computed(() => {
@@ -166,11 +162,11 @@ const hiddenTombs = ref(0);
 const currentTombCount = ref(0);
 const visibleAbout = ref(false);
 
-const TAGS = ref<Record<string, string>>({});
-const NECROPOLI = ref<Record<string, string>>({});
-const TOMBTYPE = ref<Record<string, string>>({});
-const DATASET = ref<Record<string, string>>({});
-const SITES = ref<Record<string, string>>({});
+const TAGS = ref({});
+const NECROPOLI = ref({});
+const TOMBTYPE = ref({});
+const DATASET = ref({});
+const SITES = ref({});
 
 onMounted(async () => {
   await fetchDataAndPopulateRef("epoch", TAGS);
@@ -180,15 +176,15 @@ onMounted(async () => {
   await fetchDataAndPopulateRef("sites", SITES);
 });
 
-const NECROPOLICoordinates = ref<Record<string, [number, number]>>({});
+const NECROPOLICoordinates = ref({});
 
-async function fetchDataAndPopulateRef<T>(type: string, refToPopulate: any, params: Record<string, any> = {}) {
+async function fetchDataAndPopulateRef(type, refToPopulate, params = {}) {
   try {
-    const data = await dianaClient.listAll<T>(type, params);
+    const data = await dianaClient.listAll(type, params);
     
     if (type === "necropolis") {
       //necropolis type
-      refToPopulate.value = data.map((result: any) => {
+      refToPopulate.value = data.map((result) => {
         if (result.published) {
           if (result.geometry && result.geometry.coordinates) {
             NECROPOLICoordinates.value[result.id] = result.geometry.coordinates;
@@ -203,7 +199,7 @@ async function fetchDataAndPopulateRef<T>(type: string, refToPopulate: any, para
     } else {
       refToPopulate.value = {};
 
-      data.forEach((result: any) => {
+      data.forEach((result) => {
         if (result.published) {
           if (type === "dataset") {
             refToPopulate.value[result.id] = result.short_name;
@@ -228,7 +224,7 @@ watch(selectedSite, async (newValue) => { //fetch necropolis based on the select
   }
 });
 
-const handleCategoryClick = (category: string) => {
+const handleCategoryClick = (category) => {
   // If the clicked category is the same as the last clicked one, default to "all"
   if (lastClickedCategory.value === category) {
     categories.value = ["all"];
@@ -257,7 +253,7 @@ const handleCategoryClick = (category: string) => {
 };
 
 //Fetch to return count of each type based on the tagParams
-const fetchData = async (url: string) => {
+const fetchData = async (url) => {
   const response = await fetch(url);
   if (!response.ok) {
     console.error(`Failed to fetch data: ${response.status}`);
@@ -312,7 +308,6 @@ function clearAll() {
   display: block;
   margin: auto;
   transition: all 0.4s;
-
 }
 
 #app .tag-section .broad-controls {
@@ -354,7 +349,6 @@ font-size:0.9em;
 
 #app .broad-controls {
   width: 100%;
-
 }
 
 #app .control-organisation{
@@ -411,9 +405,6 @@ margin-left:5px;
   border-width: 1px 0px 0px 0px;
   height: 1px;
 }
-
-
-.data-widget-item {}
 
 .data-widget-item h3 {
   display: inline;

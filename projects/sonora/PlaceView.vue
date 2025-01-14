@@ -1,6 +1,6 @@
-<script setup lang="ts">
-import { ref, defineProps, onMounted, inject, computed, onUnmounted } from 'vue';
-import type { Image, Document, Media } from './types';
+<script setup>
+import { ref, defineProps, onMounted, computed, onUnmounted } from 'vue';
+// import type { Image, Document, Media } from './types';
 import PlaceViewCard from "./PlaceViewCard.vue";
 import MapComponent from "@/components/MapComponent.vue";
 import { watch } from 'vue';
@@ -9,18 +9,18 @@ import i18n from '../../src/translations/sonora';
 
 const organData = ref(null);
 
-// Popup data
+//popup data
 const popupData = ref(null);
 const isPopupVisible = ref(false);
 const mousePosition = ref({ x: 0, y: 0 });
 const popupRef = ref(null);
-const linkData = ref({ builder: '', date: '', work: '' }); // Selected builder, date, and work from placeviewcard 
+const linkData = ref({ builder: '', date: '', work: '' }); //selected builder, date, and work from placeviewcard 
 const route = useRoute();
-const sort = ref('type');
-const groupedByYear = ref<{ [year: string]: (Image | Document | Media)[] }>({});
-const { id } = defineProps<{ id: string; }>();
-let documents = ref<Document[]>([]); // Initialized as an empty array
-let media = ref<Media[]>([]); // Initialized as an empty array
+// const sort = ref('type');
+// const groupedByYear = ref<{ [year: string]: (Image | Document | Media)[] }>({});
+const { id } = defineProps();
+let documents = ref([]); 
+let media = ref([]);
 
 watch(() => route.params.id, async (newId) => {
   if (newId) {
@@ -55,8 +55,7 @@ onMounted(async () => {
 
   try {
     const currentLocale = i18n.global.locale;
-
-    const response = await fetch(`https://orgeldatabas.gu.se/webgoart/goart/organ1.php?id=${id}&lang=${currentLocale}`);    
+    const response = await fetch(`https://orgeldatabas.gu.se/webgoart/goart/organ1.php?id=${route.params.id}&lang=${currentLocale}`);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
@@ -247,7 +246,7 @@ const handleClickOutside = (event) => {
 <template>
   <div class="main-container">
     <div class="place-card-container">
-      <PlaceViewCard :id="id" @link-clicked="handleLinkClicked" />
+      <PlaceViewCard :id="route.params.id" @link-clicked="handleLinkClicked" />
     </div>
     <div class="place-view">
       <div class="overview-row">
@@ -429,13 +428,7 @@ font-size: 30px;
 }
 
 .document-link a {
-
   font-weight:300!important;
-
-}
-
-.content-table {
-
 }
 
 .table-section {
@@ -462,19 +455,23 @@ table td {
   box-sizing: border-box;
 }
 
+.content-table {
+  color: #fff;
+  text-align: left;
+}
+
 .organ-historic-overview{
   margin-left:-60px;
   margin-top:-28px;
   color:white;
 }
 
-
-
-
-
-.content-table td {
-  color: white;
-  text-align: left;
+.organ-historic-overview :deep(td) {
+  padding-right: 15px;
+  padding-top: 2px;
+  width: 130px;
+  vertical-align: top;
+  text-align: right;
 }
 
 .document-link:hover {
@@ -656,4 +653,3 @@ font-size:120%;
 }
 
 </style>
-    

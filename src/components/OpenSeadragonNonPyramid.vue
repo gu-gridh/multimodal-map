@@ -1,19 +1,22 @@
-<script setup lang="ts">
+<script setup>
 import { ref, onMounted } from "vue";
 import OpenSeadragon from "openseadragon";
 
-const props = defineProps<{
-  src: string[];  
-}>();
+const props = defineProps({
+  src: {
+    type: Array,
+    required: true,
+  },
+});
 
 const emit = defineEmits(['page-changed']);
 const viewerEl = ref();
-const currentPage = ref(1);  // Define currentPage
+const currentPage = ref(1);
 const isFullscreen = ref(false);
 
 onMounted(() => {  
 
-  const tileSources: any = props.src.map(url => ({
+  const tileSources = props.src.map(url => ({
     type: 'image',
     url: url,
     buildPyramid: false  

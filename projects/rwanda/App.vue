@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup>
 import { provide } from "vue";
 import config from "./settings/config";
 import Footer from './Footer.vue';
@@ -148,6 +148,16 @@ body {
 }
 
 @media (max-width: 900px) {
+
+  #app .left-pane {
+  margin-top:0px!important;
+  top: 75%!important;
+  z-index:1000!important;
+  position:absolute!important;
+  width:100%!important;
+  padding: 30px 10px 100px 10px!important;
+}
+
 
 #app .main-title {
   font-weight: 600 !important;

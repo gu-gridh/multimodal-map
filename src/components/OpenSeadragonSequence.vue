@@ -1,17 +1,20 @@
-<script setup lang="ts">
+<script setup>
 import { ref, onMounted, defineProps } from "vue";
 import OpenSeadragon from "openseadragon";
 
 const props = defineProps({
-  src: Array as () => string[],
+  src: {
+    type: Array,
+    required: true,
+  },
   showReferenceStrip: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 });
  
 const viewerEl = ref();
-const currentPage = ref(1);  // Define currentPage
+const currentPage = ref(1);
 const isFullscreen = ref(false);
 
 onMounted(() => {  

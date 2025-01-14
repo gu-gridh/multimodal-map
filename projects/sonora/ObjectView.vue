@@ -1,7 +1,5 @@
-<script setup lang="ts">
-import { inject, ref, watchEffect, onMounted } from "vue";
-import type { Image } from "./settings/types";
-import type { DianaClient } from "@/assets/diana";
+<script setup>
+import { ref, onMounted } from "vue";
 import ObjectViewImage from "./ObjectViewImage.vue";
 import i18n from '../../src/translations/sonora';
 
@@ -16,7 +14,6 @@ const props = defineProps({
   },
 });
 
-const diana = inject("diana") as DianaClient;
 const object = ref({});
 
 const fetchObjectData = async () => {

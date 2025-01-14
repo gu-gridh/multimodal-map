@@ -19,29 +19,35 @@
   </select>
 </template>
 
-<script setup lang="ts">
-import { storeToRefs } from "pinia";
+<script setup>
 import CategoryButton from "../../../src/components/input/CategoryButton.vue";
-import { sonoraStore } from "../settings/store";
-// const { selectedNecropolisCoordinates } = storeToRefs(sonoraStore());
 
+const props = defineProps({
+  modelValue: Array, 
+  categories: Object,
+  limit: {
+    type: Number, 
+    default: undefined 
+  },
+  styleType: {
+    type: String,
+    default: undefined
+  },
+  type: {
+    type: String,
+    default: undefined
+  }
+});
 
-const props = defineProps<{
-  modelValue: string[];
-  categories: Record<string, string>;
-  limit?: 1;
-  styleType?: "button" | "dropdown";
-  type?: "necropolis" | "tombType";
-}>();
 
 const emit = defineEmits(["update:modelValue", "click"]);
 
-function toggle(key: string) {
+function toggle(key) {
   handleToggle(key);
 }
 
-function dropdownToggle(event: Event) {
-  const selectElement = event.target as HTMLSelectElement | null;
+function dropdownToggle(event) {
+  const selectElement = event.target| null;
   
   if (selectElement) {
     const selectedKey = selectElement.value;
@@ -49,7 +55,7 @@ function dropdownToggle(event: Event) {
   }
 }
 
-function handleToggle(key: string) {
+function handleToggle(key) {
   if (key === 'all') {
     emit("update:modelValue", ['all']); // Set modelValue to ['all']
     

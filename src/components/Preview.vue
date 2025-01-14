@@ -1,9 +1,8 @@
 <!-- Component for previewing content -->
-<script setup lang="ts">
+<script setup>
 import { watchEffect, ref, inject } from "vue";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
-import type { DianaClient } from "@/assets/diana";
 
 //when a place on map is clicked
 const { selectedFeature } = storeToRefs(mapStore())

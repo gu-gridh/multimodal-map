@@ -1,37 +1,34 @@
-<script setup lang="ts">
-
+<script setup>
 import { ref, inject, watch, onMounted } from "vue";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
-import type { Image, Document } from "./settings/types";
-import type { DianaClient } from "@/assets/diana";
 import VueMasonryWall from "@yeger/vue-masonry-wall";
 import { useRouter, useRoute } from "vue-router";
 import {fromLonLat} from 'ol/proj.js';
 import * as turf from '@turf/turf'
 import { nextTick } from "vue";
-
+import { DianaClient } from "./settings/diana.js";
 
 const { selectedFeature } = storeToRefs(mapStore());
-const diana = inject("diana") as DianaClient;
+const diana = new DianaClient("rwanda");
 let layoutKey = ref(0);
 const router = useRouter();
 const store = mapStore();
 const route = useRoute();
 //values
-const images = ref<Array<Image>>([]);
+const images = ref([]);
 const place = ref()
-const interviews: any = ref([]);
+const interviews = ref([]);
 const placeType = ref()
 const placeDescription = ref()
-const placeNames: any = ref([])
+const placeNames = ref([])
 const placeGeoJson = ref()
 const coordinates = ref<number[]>([])
 const documents = ref<Array<Document>>([])
 const comment = ref('')
 
 //Capitalize first letter since some are lowercase in database
-const capitalize = (word: String) => {
+const capitalize = (word) => {
   if (word[0]) {
     const first = word[0].toUpperCase()
     const rest = word.slice(1)
@@ -40,22 +37,22 @@ const capitalize = (word: String) => {
   else return
 }
 //fetch interviews
-const fetchInterviews = async (id: any) => {
+const fetchInterviews = async (id) => {
   interviews.value = []
-  const data = await diana.listAll("text/");
+  const data = await diana.listAll("text", {});
   //fetch all interviews and find the ones that matches the place id
-  interviews.value = data.filter((interview: any) => interview.place_of_interest === id);
+  interviews.value = data.filter((interview) => interview.place_of_interest === id);
   //fetch the informants of the interviews
   for (let i = 0; i < interviews.value.length; i++) {
-    const informant = await diana.get("informant/", interviews.value[i].informants[0]);
+    const informant = await diana.get("informant", interviews.value[i].informants[0]);
     //add the informant to the interview
     interviews.value[i].informant = informant;
   }
 }
-const fetchImages = async (id: any) => {
+const fetchImages = async (id) => {
   if(isNaN(id)) return
   else
-  images.value = await diana.listAll<Image>("image/", { place_of_interest: id });
+  images.value = await diana.listAll("image", { place_of_interest: id });
 }
 const featureZoom = 18;
 
@@ -101,9 +98,9 @@ const zoomMap = () => {
     }
 }
 
-const fetchDocuments = async (id: number) => {
+const fetchDocuments = async (id) => {
   if(id){
-    documents.value = await diana.listAll("document/", { place_of_interest: id});
+    documents.value = await diana.listAll("document", { place_of_interest: id });
   }
   else return
 }
@@ -149,7 +146,6 @@ watch(selectedFeature, () => {
   fetchPlaceData()
 })
 
-
 function deselectPlace() {
   router.push("/")
   selectedFeature.value = undefined;
@@ -160,7 +156,6 @@ function deselectPlace() {
     store.updateCenter([3346522.1909503858, -217337.69352852934])
     store.updateZoom(15)
   })
-  
 }
 
 </script>

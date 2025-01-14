@@ -1,10 +1,10 @@
-<script setup lang="ts">
+<script setup>
 import { ref, onMounted, defineProps } from "vue";
 import OpenSeadragon from "openseadragon";
 
 const props = defineProps({
-  src: Array as () => string[],
-  downloadUrls: Array as () => string[],
+  src: Array, 
+  downloadUrls: Array,
   showReferenceStrip: {
     type: Boolean,
     default: false
@@ -12,32 +12,8 @@ const props = defineProps({
 });
  
 const viewerEl = ref();
-const currentPage = ref(1);  // Define currentPage
+const currentPage = ref(1);  //define currentPage
 const isFullscreen = ref(false);
-
-// const downloadImage = () => {
-//   const pageIndex = currentPage.value - 1;
-//   const iiifFile = props.downloadUrls[pageIndex];
-//   const imgId = `image_${pageIndex + 1}`;
-
-//   fetch(iiifFile)
-//     .then(response => response.blob())
-//     .then(blob => {
-//       const url = window.URL.createObjectURL(blob);
-//       const filename = `${imgId}`;
-//       const a = document.createElement('a');
-//       a.style.display = 'none';
-//       a.href = url;
-//       a.download = filename;
-//       document.body.appendChild(a);
-//       a.click();
-//       window.URL.revokeObjectURL(url);
-//       document.body.removeChild(a);
-//     })
-//     .catch(error => {
-//       console.error("Could not download the image", error);
-//     });
-// };
 
 //open in new tab
 const downloadImage = () => {

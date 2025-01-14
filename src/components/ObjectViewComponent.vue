@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 defineProps({
   title: String,
   back: String,
@@ -29,10 +29,6 @@ defineProps({
 </template>
 
 <style>
-#app Body{
- 
-}
-
 .meta-top-gradient{
   margin-top:0vh;
  width:450px;

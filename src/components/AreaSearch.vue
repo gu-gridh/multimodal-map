@@ -5,7 +5,7 @@
     </button>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
 
