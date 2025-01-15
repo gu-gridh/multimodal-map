@@ -1,13 +1,13 @@
 <template>
   <footer id="footer">
     <div id="developer-info">
-      <div class="links-stack border-style">
-        <a class="site-link footer-link" href="https://github.com/gu-gridh/etruscantombs#etruscan-tombs" target="_blank">GitHub repository and development</a>
-        <a class="site-link footer-link" href="https://github.com/gu-gridh/etruscantombs#database-and-api-documentation" target="_blank">Database and API documentation</a>
+      <div class="links-stack">
+        <a class="site-link footer-link" href="https://github.com/gu-gridh/rwanda" target="_blank">GitHub repository and development</a>
+        <!-- <a class="site-link footer-link" href="https://github.com/gu-gridh/etruscantombs#database-and-api-documentation" target="_blank">Database and API documentation</a> -->
       </div>
       <div class="links-stack">
-      <a class="site-link footer-link" href="https://github.com/gu-gridh/etruscantombs#datasets" target="_blank">Dataset documentation</a>
-      <a href="#" class="download-link footer-link" @click="downloadData">Download the structured data</a>
+<!--       <a class="site-link footer-link" href="https://github.com/gu-gridh/etruscantombs#datasets" target="_blank">Dataset documentation</a>
+      <a href="#" class="download-link footer-link" @click="downloadData">Download the structured data</a> -->
     </div>
     </div>
     <div class="partners">
@@ -62,7 +62,6 @@ const triggerDownload = (data, filename) => {
 
 <style>
 #footer {
-  display:block;
   background-color: #222;
   color: white;
   line-height: 1;
@@ -73,6 +72,7 @@ const triggerDownload = (data, filename) => {
   z-index: 3000;
   bottom: -2px;;
   font-family: "Barlow Condensed", sans-serif;
+  align-items: center;
 }
 
 a {
@@ -82,7 +82,7 @@ a {
 .partners {
     float: right;
     position: fixed;
-
+    vertical-align: middle;
     bottom: 0px;
     right: 0px;
     height: 80px;
@@ -121,9 +121,9 @@ a {
 
 #developer-info {
   display: flex; 
-  align-items: flex-end; 
+  margin-top: 27px;
   margin-left: 30px;
-  margin-top: 15px;
+  align-items: center;
   font-size: 1.5em;
   line-height: 1.4;
   font-weight: 200;
@@ -174,10 +174,12 @@ opacity:0.8;
 
 .links-stack a {
   display: block;
+  
 }
 
 #developer-info a:link{
   font-weight:200;
+  align-items: center;
 }
 
 </style>
