@@ -121,7 +121,7 @@ watch(route, () => {
 
     <template #background>
     <div class="map-container">
-      <MapComponent :min-zoom="14" :max-zoom="19" :restrictExtent="[30.01, -1.98, 30.1, -1.92]" :shouldAutoMove="true" class="greyscale">
+      <MapComponent :min-zoom="14" :max-zoom="19" :restrictExtent="[30.01, -1.98, 30.1, -1.92]" :shouldAutoMove="true" >
         <template #layers>
           <!-- marker layer for zooming in -->
           <DianaPlaceLayer
@@ -147,7 +147,7 @@ watch(route, () => {
           <ol-style >
               <ol-style-stroke color="rgb(100,100,250)" :width="4"></ol-style-stroke>
             </ol-style>
-            <FeatureSelection/>
+            <FeatureSelection />
           </DianaPlaceLayer>
           <!--All layer-->
           <DianaPlaceLayer
@@ -193,7 +193,7 @@ watch(route, () => {
 }
 
 #app .tile-layer {
-  filter: grayscale(65%);
+  filter: grayscale(45%);
 }
 
 .gradient-blur {
