@@ -342,4 +342,8 @@ bottom:100px;
   left: -50px;
   min-width: 200px;
 }
+
+.ol-popup {
+  transform: translate(-15%, 0%);
+}
 </style>
