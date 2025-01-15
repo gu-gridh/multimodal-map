@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, onMounted, defineProps, toRaw, watch } from "vue";
+import { ref, onMounted, defineProps, toRaw, watch, nextTick } from "vue";
 import L from "leaflet";
 import "leaflet.markercluster";
 import { mapStore } from "@/stores/store";
@@ -39,6 +39,10 @@ const { selectedFeature } = storeToRefs(mapStore());
 const store = maritimeencountersStore();
 const { startRectangleDraw, showHeatMap, doneFetching } = storeToRefs(store);
 const isLoading = ref(false); //spinner visibility
+const showDownloadChoice = ref(false);
+const drawnRectangleBounds = ref<L.LatLngBounds | null>(null);
+const drawnRectangleLayer = ref<L.Layer | null>(null);
+const drawnItems = ref<L.FeatureGroup | null>(null); //drawn bbox rectangle
 
 // Heatmap
 const heatmapLayer = ref<L.HeatLayer | null>(null);
@@ -273,6 +277,38 @@ const downloadJSON = (data: any, filename: string) => {
   URL.revokeObjectURL(url);
 };
 
+const handleDownloadChoice = async (format: "csv" | "json") => {
+  console.log(`User selected ${format} format.`);
+  showDownloadChoice.value = false;
+
+  if (!drawnRectangleBounds.value) return;
+
+  const bounds = drawnRectangleBounds.value;
+  const southWest = bounds.getSouthWest();
+  const northEast = bounds.getNorthEast();
+  const bboxString = `${southWest.lng},${southWest.lat},${northEast.lng},${northEast.lat}`;
+
+  if (drawnRectangleLayer.value && drawnItems.value) {
+    drawnItems.value.removeLayer(drawnRectangleLayer.value);
+    drawnRectangleLayer.value = null;
+  }
+  drawnRectangleBounds.value = null;
+
+  if (format === "csv") return;
+
+  const baseUrl = `https://maritime-encounters.dh.gu.se/api/resources/search/`;
+  const params = { in_bbox: bboxString, page_size: 100, ...props.params };
+  const queryString = new URLSearchParams(params).toString();
+  const apiUrl = `${baseUrl}?${queryString}`;
+
+  try {
+    const jsonData = await fetchAllSites(apiUrl);
+    downloadJSON(jsonData, "data.json");
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+};
+
 watch(
   () => props.params,
   async (newParams) => {
@@ -307,7 +343,7 @@ watch(
   }
 );
 
-watch(() => props.showConnections, (newVal) => {  //clear lines when showConnections is off
+watch(() => props.showConnections, (newVal) => { //clear lines when showConnections is off
   if (!newVal && polylineLayer.value) {
     toRaw(polylineLayer.value)?.clearLayers();
   }
@@ -315,15 +351,12 @@ watch(() => props.showConnections, (newVal) => {  //clear lines when showConnect
 
 watch( //Download the data
   () => startRectangleDraw.value,
-
   (newVal) => {
     if (newVal && rectangleDrawer) {
       rectangleDrawer.enable();
-
       store.startRectangleDraw = false;
-
     }
-  },
+  }
 );
 
 watch( //toggle visibility between heatmap and marker clusters
@@ -370,7 +403,6 @@ onMounted(async () => {
     zoomAnimation: true,
     fadeAnimation: true,
     markerZoomAnimation: true,
-    // zoomControl: false,
   }).setView([58.0, 12.0], 9); //gothenburg
 
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -378,7 +410,7 @@ onMounted(async () => {
     minZoom: 3,
   }).addTo(toRaw(map.value)!);
 
-  const drawnItems = L.featureGroup().addTo(toRaw(map.value)!);
+  drawnItems.value = L.featureGroup().addTo(toRaw(map.value)!);
   const drawControl = new L.Control.Draw({
     draw: {
       marker: false,
@@ -394,32 +426,15 @@ onMounted(async () => {
 
   rectangleDrawer = new L.Draw.Rectangle(toRaw(map.value)!, drawControl.options.draw.rectangle);
 
-  toRaw(map.value)?.on(L.Draw.Event.CREATED, async function (e: any) {
+  toRaw(map.value)?.on(L.Draw.Event.CREATED, (e: any) => {
     const layerType = e.layerType;
     const layer = e.layer;
 
     if (layerType === "rectangle") {
-      const bounds: L.LatLngBounds = layer.getBounds();
-
-      //convert bounds to bbox string
-      const southWest = bounds.getSouthWest();
-      const northEast = bounds.getNorthEast();
-      const bboxString = `${southWest.lng},${southWest.lat},${northEast.lng},${northEast.lat}`;
-      const baseUrl = `https://maritime-encounters.dh.gu.se/api/resources/search/`;
-      const params = { in_bbox: bboxString, page_size: 100, ...props.params };
-      const queryString = new URLSearchParams(params).toString();
-      const apiUrl = `${baseUrl}?${queryString}`;
-
-      try {
-        const jsonData = await fetchAllSites(apiUrl);
-
-        downloadJSON(jsonData, 'data.json');
-
-        //remove the rectangle from the map
-        drawnItems.removeLayer(layer);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
+      drawnRectangleLayer.value = layer;
+      drawnRectangleBounds.value = layer.getBounds();
+      showDownloadChoice.value = true;
+      drawnItems.value?.addLayer(e.layer);
     }
   });
 
@@ -514,6 +529,15 @@ onMounted(async () => {
   <div v-if="isLoading" class="download-spinner">
     <img src="@/assets/interface/bars-rotate-fade.svg" alt="Loading..." />
   </div>
+
+  <!-- Download Choice -->
+  <div v-if="showDownloadChoice" class="download-choice-modal">
+    <div class="modal-content">
+      <h3>Select Download Format</h3>
+      <button @click="handleDownloadChoice('csv')">CSV</button>
+      <button @click="handleDownloadChoice('json')">JSON</button>
+    </div>
+  </div>
 </template>
 
 <style scoped>
@@ -551,5 +575,44 @@ onMounted(async () => {
 
 :deep(.marker-cluster-large div) {
   background-color: #2b8cbe !important; /* inner circle color */
+}
+
+.download-choice-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.modal-content h3 {
+  margin-bottom: 20px;
+}
+
+.modal-content button {
+  margin: 10px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background: var(--theme-3);
+  color: white;
+  font-size: 16px;
+}
+
+.modal-content button:hover {
+  background: var(--theme-4);
 }
 </style>
