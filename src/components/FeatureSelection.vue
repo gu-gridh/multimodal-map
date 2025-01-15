@@ -120,7 +120,7 @@ const getFeatureDisplayName =
         :displacement="[-9, 47]"
         :anchor="[0.0, 0.0]"
       ></ol-style-icon>
-      <ol-style-stroke color="rgb(220,100,100)" :width="6"></ol-style-stroke>
+      <ol-style-stroke color="#282828" :width="4" class="ol-hover"></ol-style-stroke>
       <ol-style-fill color="rgba(0,0,0,0)"></ol-style-fill> 
     </ol-style>
   </ol-interaction-select>
