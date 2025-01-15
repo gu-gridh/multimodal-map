@@ -93,7 +93,7 @@ watch(route, () => {
         </div>
       </button>
       
-      <button class="item"  @click="visibleInstructions = true;">
+<!--       <button class="item"  @click="visibleInstructions = true;">
         <div
           class="p-1 px-3 clickable category-button about-button"
           style="
@@ -104,7 +104,7 @@ watch(route, () => {
             margin-left:10px;"
             >User Guide
         </div>
-      </button>
+      </button> -->
 
     
       <!--filter map layers-->
