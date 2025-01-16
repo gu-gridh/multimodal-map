@@ -193,7 +193,7 @@ watch(route, () => {
 }
 
 #app .tile-layer {
-  filter: grayscale(45%);
+  filter: grayscale(80%) brightness(0.6);
 }
 
 .gradient-blur {
