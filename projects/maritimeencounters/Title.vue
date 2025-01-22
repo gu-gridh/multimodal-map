@@ -5,6 +5,9 @@
       <div class="p-1 px-2 clickable category-button about-button">
         {{ "About the portal" }}</div>
     </button>
+    <button class="item" @click="$emit('toggle-login')">
+      <div class="p-1 px-2 clickable category-button about-button" style="margin-left: 10px;">Login</div>
+    </button>
 </template>
 
 <script>
@@ -13,7 +16,7 @@ export default {
   methods: {
   },
   setup() {},
-  emits: ['toggle-about'],
+  emits: ['toggle-about', 'toggle-login'],
 };
 </script>
 

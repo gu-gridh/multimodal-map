@@ -12,6 +12,7 @@ import { mapStore } from "@/stores/store";
 import { clean } from "@/assets/utils";
 import { ref } from "vue";
 import About from "./About.vue";
+import Login from "./Login.vue";
 import { onMounted, watch } from "vue";
 import { nextTick } from "vue";
 import Title from "./Title.vue"
@@ -24,6 +25,7 @@ const minZoom = 1;
 const maxZoom = 25;
 const featureZoom = 10; //value between minZoom and maxZoom when you select a point;
 const visibleAbout = ref(false);
+const visibleLogin = ref(false);
 const showConnections = ref(false);
 let visited = true; // Store the visited status outside of the hook
 
@@ -106,6 +108,11 @@ const toggleAboutVisibility = async () => {
   await nextTick();
   visibleAbout.value = !visibleAbout.value;
 };
+
+const toggleLoginVisilibity = async () => {
+  await nextTick();
+  visibleLogin.value = !visibleLogin.value;
+};
 </script>
 
 <template>
@@ -121,9 +128,10 @@ const toggleAboutVisibility = async () => {
     </div>
   </div> -->
   <About :visibleAbout="visibleAbout" @close="visibleAbout = false" />
+  <Login :visibleLogin="visibleLogin" @close="visibleLogin = false" />
   <MainLayout>
     <template #search>
-      <Title @toggle-about="toggleAboutVisibility" />
+      <Title @toggle-about="toggleAboutVisibility" @toggle-login="toggleLoginVisilibity"/>
       <MapViewControls/>
     </template>
 
