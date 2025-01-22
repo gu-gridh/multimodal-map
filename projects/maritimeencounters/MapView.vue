@@ -4,7 +4,6 @@ import MainLayout from "@/MainLayout.vue";
 import MapViewControls from "./MapViewControls.vue";
 import MapComponent from "@/components/MapComponent.vue";
 import MaritimePlaceLayer from "./MaritimePlaceLayer.vue";
-// import MapViewPreview from "./MapViewPreview.vue";
 import MapViewThumbnail from "./MapViewThumbnail.vue";
 import { storeToRefs } from "pinia";
 import { maritimeencountersStore } from "./store";
@@ -27,9 +26,8 @@ const featureZoom = 10; //value between minZoom and maxZoom when you select a po
 const visibleAbout = ref(false);
 const visibleLogin = ref(false);
 const showConnections = ref(false);
-let visited = true; // Store the visited status outside of the hook
+// let visited = true; //store the visited status outside of the hook
 
-// Watcher for selectedFeature changes
 watch(
   selectedFeature,
   (newFeature, oldFeature) => {
@@ -56,9 +54,7 @@ const toggleHeatMap = () => {
   maritimeencounters.showHeatMap = !maritimeencounters.showHeatMap;
 };
 
-/* Response for generating the URL for filtering map points down */
 const tagParams = computed(() => {
-  // const necropolis = necropoli.value[0];
   const type = dataType.value[0];
   const selectedRangeValue = selectedRange.value;
 
@@ -77,9 +73,7 @@ const tagParams = computed(() => {
     return obj;
   }, {} as typeof initialParams);
   
-  // Further clean to remove null or undefined values
   const params = clean(cleanedParams);
-
   maritimeencounters.imgParams = params;
   
   return params;
@@ -94,14 +88,7 @@ watch(
 );
 
 onMounted(() => {
-  // Check if the "visited" key exists in session storage
-  visited = sessionStorage.getItem("visited") === "true"; // Retrieve the visited status from session storage
-
-  if (!visited) {
-    // Hide the about component
-    visibleAbout.value = true;
-    sessionStorage.setItem("visited", "true");
-  }
+  visibleLogin.value = true;
 })
 
 const toggleAboutVisibility = async () => {
@@ -116,17 +103,6 @@ const toggleLoginVisilibity = async () => {
 </script>
 
 <template>
-  <!-- <div style="display:flex; align-items: center; justify-content: center; pointer-events: none;">
-    <div class="ui-mode ui-overlay" style="z-index: 1000;">
-      <button 
-        class="item" 
-        @click="toggleConnections" 
-        :style="{ color: showConnections ? 'white' : 'grey' }"
-      >
-        Show Connections 
-      </button>
-    </div>
-  </div> -->
   <About :visibleAbout="visibleAbout" @close="visibleAbout = false" />
   <Login :visibleLogin="visibleLogin" @close="visibleLogin = false" />
   <MainLayout>
@@ -161,7 +137,6 @@ const toggleLoginVisilibity = async () => {
     </template>
 
     <template #details>
-      <!-- <MapViewPreview/> -->
       <MapViewThumbnail/>
     </template>
 
