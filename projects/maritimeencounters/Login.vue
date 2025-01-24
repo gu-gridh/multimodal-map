@@ -59,7 +59,7 @@ export default {
     methods: {
         async handleLogin() {
             try {
-                const response = await fetch('xxxxxxx', {
+                const response = await fetch('https://maritime-encounters.dh.gu.se/login/', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -70,20 +70,26 @@ export default {
                         password: this.password,
                     }),
                 });
+
                 if (!response.ok) {
                     const errorData = await response.json();
-                    console.error('login failed:', errorData);
-                    alert('Login failed.');
+                    console.error('Login failed:', errorData);
+                    alert('Login failed. Please check your credentials.');
                     return;
                 }
 
                 const responseData = await response.json();
-                console.log('login successful:', responseData);
-                //successful login
+                console.log('Login successful:', responseData);
+
+                const token = responseData.token;
+                console.log('Token:', token);
+
+                localStorage.setItem('authToken', token);
+
                 this.$emit('close');
             } catch (error) {
-                console.error('error during login:', error.message);
-                alert('An error occurred during login.');
+                console.error('Error during login:', error.message);
+                alert('An error occurred during login. Please try again.');
             }
         },
     },
@@ -168,7 +174,7 @@ button .category-button {
 
 .login-button {
     width: 100px;
-    padding: 8px; 
+    padding: 8px;
     font-size: 1em;
     background: var(--theme-4);
     color: white;
