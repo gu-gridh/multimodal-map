@@ -83,8 +83,14 @@ const updatePlaceId = (item) => {
 const fetchData = async (requestedPageIndex) => {
   if (requestedPageIndex > lastFetchedPageIndex) {
     try {
+      const token = localStorage.getItem("authToken");
       const urlToFetch = `${apiConfig.PLACE}?page=${requestedPageIndex}&${new URLSearchParams(store.imgParams).toString()}`;
-      const res = await fetch(urlToFetch);
+      const res = await fetch(urlToFetch, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
       const data = await res.json();
       const newImages = data.features.map(feature => ({
           ...feature.properties.first_photograph_id,
@@ -97,7 +103,7 @@ const fetchData = async (requestedPageIndex) => {
       
       images.value = [...images.value, ...newImages];
       
-      lastFetchedPageIndex = requestedPageIndex;  // Update the lastFetchedPageIndex
+      lastFetchedPageIndex = requestedPageIndex;
     } catch (error) {
       console.error("Error fetching additional images:", error);
     }
@@ -120,15 +126,21 @@ const fetchData = async (requestedPageIndex) => {
 
     const checkFor404 = async (url) => {
       try {
-        const res = await fetch(url);
-        if (res.status === 404) {
+        const token = localStorage.getItem("authToken");
+        const res = await fetch(url, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+      if (res.status === 404) {
           msnry.layout();
-          return true; // Indicates that a 404 was found
+          return true;
         }
       } catch (error) {
         console.error("Error in 404 fetch:", error);
       }
-      return false; // Indicates that a 404 was not found
+      return false;
     };
 
    infScroll = new InfiniteScroll(gallery, {

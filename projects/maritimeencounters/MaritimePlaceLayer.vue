@@ -44,7 +44,7 @@ const drawnRectangleBounds = ref<L.LatLngBounds | null>(null);
 const drawnRectangleLayer = ref<L.Layer | null>(null);
 const drawnItems = ref<L.FeatureGroup | null>(null); //drawn bbox rectangle
 
-// Heatmap
+//Heatmap
 const heatmapLayer = ref<L.HeatLayer | null>(null);
 const heatmapPoints = ref<Array<[number, number, number]>>([]);
 
@@ -136,6 +136,20 @@ const renderGeoJSON = (geojsonArray: { name: string, data: any, id: string }[]) 
   });
 };
 
+const waitForAuthToken = (): Promise<string> => {
+  return new Promise((resolve) => {
+    const checkToken = () => {
+      const token = localStorage.getItem("authToken");
+      if (token) {
+        resolve(token);
+      } else {
+        setTimeout(checkToken, 100);
+      }
+    };
+    checkToken();
+  });
+};
+
 //draw the markers on the map
 const fetchData = async (initialUrl: string, params: Record<string, any>) => {
   if (abortController) {
@@ -154,9 +168,16 @@ const fetchData = async (initialUrl: string, params: Record<string, any>) => {
       nextUrl = `${nextUrl}?${initialParams}`;
     }
 
+    const token = await waitForAuthToken();
+
     while (nextUrl) {
       try {
-        const res = await fetch(nextUrl.replace(/^http:/, "https:"), { signal });
+        const res = await fetch(nextUrl.replace(/^http:/, "https:"), {
+          signal, headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
         if (!res.ok) throw new Error("Failed to fetch data");
 
         const data = await res.json();
@@ -243,15 +264,19 @@ const fetchAllSites = async (initialUrl: string): Promise<any[]> => {
   let nextUrl: string | null = initialUrl;
 
   isLoading.value = true; //show the spinner
+  const token = localStorage.getItem("authToken");
 
   while (nextUrl) {
     try {
-      const res = await fetch(nextUrl.replace(/^http:/, "https:"));
+      const res = await fetch(nextUrl.replace(/^http:/, "https:"), {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
       if (!res.ok) throw new Error("Failed to fetch data");
-
       const data = await res.json();
       allData = allData.concat(data.features);
-
       nextUrl = data.next ? data.next.replace(/^http:/, "https:") : null;
     } catch (err) {
       console.error("Error fetching data:", err);
@@ -399,128 +424,132 @@ watch( //toggle visibility between heatmap and marker clusters
 );
 
 onMounted(async () => {
-  map.value = L.map("map", {
-    zoomAnimation: true,
-    fadeAnimation: true,
-    markerZoomAnimation: true,
-  }).setView([58.0, 12.0], 9); //gothenburg
+  const token = await waitForAuthToken();
 
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    maxZoom: 19,
-    minZoom: 3,
-  }).addTo(toRaw(map.value)!);
+  if (token) {
+    map.value = L.map("map", {
+      zoomAnimation: true,
+      fadeAnimation: true,
+      markerZoomAnimation: true,
+    }).setView([58.0, 12.0], 9); //gothenburg
 
-  drawnItems.value = L.featureGroup().addTo(toRaw(map.value)!);
-  const drawControl = new L.Control.Draw({
-    draw: {
-      marker: false,
-      circle: false,
-      circlemarker: false,
-      polygon: false,
-      polyline: false,
-      rectangle: false,
-    }
-  });
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 19,
+      minZoom: 3,
+    }).addTo(toRaw(map.value)!);
 
-  toRaw(map.value)?.addControl(drawControl);
-
-  rectangleDrawer = new L.Draw.Rectangle(toRaw(map.value)!, drawControl.options.draw.rectangle);
-
-  toRaw(map.value)?.on(L.Draw.Event.CREATED, (e: any) => {
-    const layerType = e.layerType;
-    const layer = e.layer;
-
-    if (layerType === "rectangle") {
-      drawnRectangleLayer.value = layer;
-      drawnRectangleBounds.value = layer.getBounds();
-      showDownloadChoice.value = true;
-      drawnItems.value?.addLayer(e.layer);
-    }
-  });
-
-  const geojsonFiles = [
-    { name: "Denmark", data: denmarkData, id: "2" },
-    { name: "Sweden", data: swedenData, id: "10" },
-    { name: "Germany", data: germanyData, id: "1" },
-    { name: "Norway", data: norwayData, id: "7" },
-    { name: "Finland", data: finlandData, id: "4" },
-    { name: "UK", data: ukData, id: "6" },
-    { name: "Portugal", data: portugalData, id: "9" },
-    { name: "Poland", data: polandData, id: "8" },
-    { name: "Ireland", data: irelandData, id: "11" },
-    { name: "France", data: franceData, id: "5" },
-    { name: "Netherlands", data: netherlandsData, id: "16" },
-    { name: "Belgium", data: belgiumData, id: "15" },
-    { name: "Czech", data: czechData, id: "13" },
-    { name: "Aland", data: alandData, id: "14" },
-    { name: "Russia", data: russiaData, id: "12" },
-    { name: "Spain", data: spainData, id: "3" },
-  ];
-
-  renderGeoJSON(geojsonFiles);
-
-  markerClusterGroup.value = L.markerClusterGroup({
-    spiderfyOnMaxZoom: true,
-    showCoverageOnHover: true,
-    zoomToBoundsOnClick: true,
-    maxClusterRadius: 100,
-    chunkedLoading: true,
-    iconCreateFunction: function (cluster) {
-      const childCount = cluster.getChildCount();
-      let c = ' marker-cluster-';
-
-      if (childCount < 10) {
-        c += 'small';
-      } else if (childCount < 100) {
-        c += 'medium';
-      } else {
-        c += 'large';
+    drawnItems.value = L.featureGroup().addTo(toRaw(map.value)!);
+    const drawControl = new L.Control.Draw({
+      draw: {
+        marker: false,
+        circle: false,
+        circlemarker: false,
+        polygon: false,
+        polyline: false,
+        rectangle: false,
       }
-
-      return L.divIcon({
-        html: '<div><span>' + childCount + '</span></div>',
-        className: 'marker-cluster' + c,
-        iconSize: new L.Point(40, 40),
-      });
-    },
-  });
-
-  // Override _getExpandedVisibleBounds to limit to current map bounds
-  markerClusterGroup.value._getExpandedVisibleBounds = function () {
-    const rawThis = toRaw(this);
-    return rawThis._map.getBounds();
-  };
-
-  //initialize heatmap layer
-  heatmapLayer.value = L.heatLayer(heatmapPoints.value, { radius: 25 });
-
-  toRaw(map.value)?.addLayer(toRaw(markerClusterGroup.value));
-
-  //fetch bounding box
-  const bbox = toRaw(map.value)?.getBounds().toBBoxString();
-  const urlWithBBox = `https://maritime-encounters.dh.gu.se/api/resources/search/?in_bbox=${bbox}&page_size=100`;
-
-  //fetch the full dataset after bounding box
-  fetchData(urlWithBBox, {})
-    .then(() => {
-      console.log('bbox fetch completed. Now fetching the full dataset.');
-      return fetchData("https://maritime-encounters.dh.gu.se/api/resources/search/?page_size=1000", {});
-    })
-    .then(() => {
-      console.log('Full dataset fetch completed.');
-      doneFetching.value = true;
-    })
-    .catch((err) => {
-      console.error("Error during fetching:", err);
     });
 
-  //close any active hover popup before zooming
-  toRaw(map.value)?.on('zoomstart', () => {
-    if (hoverPopup.value) {
-      toRaw(map.value)?.closePopup(toRaw(hoverPopup.value));
-      hoverPopup.value = null;
-    }
-  });
+    toRaw(map.value)?.addControl(drawControl);
+
+    rectangleDrawer = new L.Draw.Rectangle(toRaw(map.value)!, drawControl.options.draw.rectangle);
+
+    toRaw(map.value)?.on(L.Draw.Event.CREATED, (e: any) => {
+      const layerType = e.layerType;
+      const layer = e.layer;
+
+      if (layerType === "rectangle") {
+        drawnRectangleLayer.value = layer;
+        drawnRectangleBounds.value = layer.getBounds();
+        showDownloadChoice.value = true;
+        drawnItems.value?.addLayer(e.layer);
+      }
+    });
+
+    const geojsonFiles = [
+      { name: "Denmark", data: denmarkData, id: "2" },
+      { name: "Sweden", data: swedenData, id: "10" },
+      { name: "Germany", data: germanyData, id: "1" },
+      { name: "Norway", data: norwayData, id: "7" },
+      { name: "Finland", data: finlandData, id: "4" },
+      { name: "UK", data: ukData, id: "6" },
+      { name: "Portugal", data: portugalData, id: "9" },
+      { name: "Poland", data: polandData, id: "8" },
+      { name: "Ireland", data: irelandData, id: "11" },
+      { name: "France", data: franceData, id: "5" },
+      { name: "Netherlands", data: netherlandsData, id: "16" },
+      { name: "Belgium", data: belgiumData, id: "15" },
+      { name: "Czech", data: czechData, id: "13" },
+      { name: "Aland", data: alandData, id: "14" },
+      { name: "Russia", data: russiaData, id: "12" },
+      { name: "Spain", data: spainData, id: "3" },
+    ];
+
+    renderGeoJSON(geojsonFiles);
+
+    markerClusterGroup.value = L.markerClusterGroup({
+      spiderfyOnMaxZoom: true,
+      showCoverageOnHover: true,
+      zoomToBoundsOnClick: true,
+      maxClusterRadius: 100,
+      chunkedLoading: true,
+      iconCreateFunction: function (cluster) {
+        const childCount = cluster.getChildCount();
+        let c = ' marker-cluster-';
+
+        if (childCount < 10) {
+          c += 'small';
+        } else if (childCount < 100) {
+          c += 'medium';
+        } else {
+          c += 'large';
+        }
+
+        return L.divIcon({
+          html: '<div><span>' + childCount + '</span></div>',
+          className: 'marker-cluster' + c,
+          iconSize: new L.Point(40, 40),
+        });
+      },
+    });
+
+    // Override _getExpandedVisibleBounds to limit to current map bounds
+    markerClusterGroup.value._getExpandedVisibleBounds = function () {
+      const rawThis = toRaw(this);
+      return rawThis._map.getBounds();
+    };
+
+    //initialize heatmap layer
+    heatmapLayer.value = L.heatLayer(heatmapPoints.value, { radius: 25 });
+
+    toRaw(map.value)?.addLayer(toRaw(markerClusterGroup.value));
+
+    //fetch bounding box
+    const bbox = toRaw(map.value)?.getBounds().toBBoxString();
+    const urlWithBBox = `https://maritime-encounters.dh.gu.se/api/resources/search/?in_bbox=${bbox}&page_size=100`;
+
+    //fetch the full dataset after bounding box
+    fetchData(urlWithBBox, {})
+      .then(() => {
+        console.log('bbox fetch completed. Now fetching the full dataset.');
+        return fetchData("https://maritime-encounters.dh.gu.se/api/resources/search/?page_size=1000", {});
+      })
+      .then(() => {
+        console.log('Full dataset fetch completed.');
+        doneFetching.value = true;
+      })
+      .catch((err) => {
+        console.error("Error during fetching:", err);
+      });
+
+    //close any active hover popup before zooming
+    toRaw(map.value)?.on('zoomstart', () => {
+      if (hoverPopup.value) {
+        toRaw(map.value)?.closePopup(toRaw(hoverPopup.value));
+        hoverPopup.value = null;
+      }
+    });
+  }
 });
 </script>
 
