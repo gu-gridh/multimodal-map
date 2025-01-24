@@ -63,11 +63,26 @@ const isFilterModified = computed(() => {
   );
 });
 
+const waitForAuthToken = (): Promise<string> => {
+  return new Promise((resolve) => {
+    const checkToken = () => {
+      const token = sessionStorage.getItem("authToken");
+      if (token) {
+        resolve(token);
+      } else {
+        setTimeout(checkToken, 100);
+      }
+    };
+    checkToken();
+  });
+};
+
 watch(
   imgParams,
   async (newParams) => {
     try {
-      const token = sessionStorage.getItem("authToken");
+      const token = await waitForAuthToken();
+
       const response = await fetch(
         `https://maritime-encounters.dh.gu.se/api/resources/search/?page_size=500&${new URLSearchParams(newParams)}`,
         {
