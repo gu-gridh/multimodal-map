@@ -40,7 +40,7 @@ watchEffect(async () => {
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+            Authorization: `Token ${token}`,
           },
         }
       );

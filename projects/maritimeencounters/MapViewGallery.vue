@@ -88,7 +88,7 @@ const fetchData = async (requestedPageIndex) => {
       const res = await fetch(urlToFetch, {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          Authorization: `Token ${token}`,
         },
       });
       const data = await res.json();
@@ -130,7 +130,7 @@ const fetchData = async (requestedPageIndex) => {
         const res = await fetch(url, {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+            Authorization: `Token ${token}`,
           },
         });
       if (res.status === 404) {

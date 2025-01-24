@@ -175,7 +175,7 @@ const fetchData = async (initialUrl: string, params: Record<string, any>) => {
         const res = await fetch(nextUrl.replace(/^http:/, "https:"), {
           signal, headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+            Authorization: `Token ${token}`,
           },
         });
         if (!res.ok) throw new Error("Failed to fetch data");
@@ -271,7 +271,7 @@ const fetchAllSites = async (initialUrl: string): Promise<any[]> => {
       const res = await fetch(nextUrl.replace(/^http:/, "https:"), {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          Authorization: `Token ${token}`,
         },
       });
       if (!res.ok) throw new Error("Failed to fetch data");
