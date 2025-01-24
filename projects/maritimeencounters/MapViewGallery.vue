@@ -83,7 +83,7 @@ const updatePlaceId = (item) => {
 const fetchData = async (requestedPageIndex) => {
   if (requestedPageIndex > lastFetchedPageIndex) {
     try {
-      const token = localStorage.getItem("authToken");
+      const token = sessionStorage.getItem("authToken");
       const urlToFetch = `${apiConfig.PLACE}?page=${requestedPageIndex}&${new URLSearchParams(store.imgParams).toString()}`;
       const res = await fetch(urlToFetch, {
         headers: {
@@ -126,7 +126,7 @@ const fetchData = async (requestedPageIndex) => {
 
     const checkFor404 = async (url) => {
       try {
-        const token = localStorage.getItem("authToken");
+        const token = sessionStorage.getItem("authToken");
         const res = await fetch(url, {
           headers: {
             "Content-Type": "application/json",

@@ -139,7 +139,7 @@ const renderGeoJSON = (geojsonArray: { name: string, data: any, id: string }[]) 
 const waitForAuthToken = (): Promise<string> => {
   return new Promise((resolve) => {
     const checkToken = () => {
-      const token = localStorage.getItem("authToken");
+      const token = sessionStorage.getItem("authToken");
       if (token) {
         resolve(token);
       } else {
@@ -264,7 +264,7 @@ const fetchAllSites = async (initialUrl: string): Promise<any[]> => {
   let nextUrl: string | null = initialUrl;
 
   isLoading.value = true; //show the spinner
-  const token = localStorage.getItem("authToken");
+  const token = sessionStorage.getItem("authToken");
 
   while (nextUrl) {
     try {

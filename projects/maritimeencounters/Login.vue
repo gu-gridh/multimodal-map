@@ -84,7 +84,7 @@ export default {
                 const token = responseData.token;
                 console.log('Token:', token);
 
-                localStorage.setItem('authToken', token);
+                sessionStorage.setItem('authToken', token);
 
                 this.$emit('close');
             } catch (error) {

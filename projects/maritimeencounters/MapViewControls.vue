@@ -67,7 +67,7 @@ watch(
   imgParams,
   async (newParams) => {
     try {
-      const token = localStorage.getItem("authToken");
+      const token = sessionStorage.getItem("authToken");
       const response = await fetch(
         `https://maritime-encounters.dh.gu.se/api/resources/search/?page_size=500&${new URLSearchParams(newParams)}`,
         {

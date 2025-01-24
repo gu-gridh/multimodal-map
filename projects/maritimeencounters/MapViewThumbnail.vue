@@ -33,7 +33,7 @@ watchEffect(async () => {
     expandedCard.value = null;
 
     try {
-      const token = localStorage.getItem("authToken");
+      const token = sessionStorage.getItem("authToken");
 
       const response = await fetch(
         `https://maritime-encounters.dh.gu.se/api/resources/site_resources/?site_id=${selectedFeature.value}`,
@@ -48,7 +48,7 @@ watchEffect(async () => {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
       const responseData = await response.json();
-      
+
       previewData.value = {};
       for (const category of Object.keys(categoryTitles)) {
         previewData.value[category] = responseData[category] || [];
