@@ -5,13 +5,18 @@
     "src/**/*",
     "src/**/*.vue",
     "src/**/*.json",
-    "projects/**/*"
+    "projects/maritimeencounters/**/*"
+  ],
+  "exclude": [
+    "projects/maritimeencounters/**/*"
   ],
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     },
+    "noImplicitAny": false,
+    "allowJs": true,
     // "target": "es5",
     "lib": ["es2019", "dom"]
   },
