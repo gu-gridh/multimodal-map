@@ -134,9 +134,9 @@ import CategoryButtonList from "@/components/input/CategoryButtonList.vue";
 import { storeToRefs } from "pinia";
 import { etruscanStore } from "./settings/store";
 import { DianaClient } from "./settings/diana.js";
-import { nextTick } from 'vue';
+// import { nextTick } from 'vue';
 
-const dianaClient = new DianaClient("etruscantombs"); //initialize DianaClient
+const dianaClient = new DianaClient("etruscantombs");
 const { categories, selectedRange, necropoli, tombType, dataSetValue, dataParams, enable3D, enablePlan, selectedSite, showUnknownRange } = storeToRefs(etruscanStore());
 const lastClickedCategory = ref('');
 
@@ -160,8 +160,7 @@ const totalPlans = ref(0);
 const totalThreed = ref(0);
 const hiddenTombs = ref(0);
 const currentTombCount = ref(0);
-const visibleAbout = ref(false);
-
+//const visibleAbout = ref(false);
 const TAGS = ref({});
 const NECROPOLI = ref({});
 const TOMBTYPE = ref({});
@@ -172,7 +171,7 @@ onMounted(async () => {
   await fetchDataAndPopulateRef("epoch", TAGS);
   await fetchDataAndPopulateRef("necropolis", NECROPOLI);
   await fetchDataAndPopulateRef("typeoftomb", TOMBTYPE);
-  await fetchDataAndPopulateRef("dataset", DATASET); //use to populate the dataset
+  await fetchDataAndPopulateRef("dataset", DATASET);
   await fetchDataAndPopulateRef("sites", SITES);
 });
 
@@ -225,11 +224,11 @@ watch(selectedSite, async (newValue) => { //fetch necropolis based on the select
 });
 
 const handleCategoryClick = (category) => {
-  // If the clicked category is the same as the last clicked one, default to "all"
+  //if the clicked category is the same as the last clicked one, default to "all"
   if (lastClickedCategory.value === category) {
     categories.value = ["all"];
 
-    // Clear the lastClickedCategory since it was unselected
+    //clear the lastClickedCategory since it was unselected
     lastClickedCategory.value = '';
     if (category === 'models') {
       enable3D.value = !enable3D.value;  
@@ -242,17 +241,17 @@ const handleCategoryClick = (category) => {
       enablePlan.value = false;
     }
   } else {
-    // Add the clicked category only if it's not the same as the last clicked one
+    //add the clicked category only if it's not the same as the last clicked one
     categories.value = [category];
 
-    // Update last clicked category
+    //update last clicked category
     lastClickedCategory.value = category;
     enable3D.value = (category === 'models');
     enablePlan.value = (category === 'plans');
   }
 };
 
-//Fetch to return count of each type based on the tagParams
+//fetch to return count of each type based on the tagParams
 const fetchData = async (url) => {
   const response = await fetch(url);
   if (!response.ok) {
@@ -278,10 +277,10 @@ watch(
   { immediate: true }
 );
 
-const toggleAboutVisibility = async () => {
-  await nextTick();
-  visibleAbout.value = !visibleAbout.value;
-};
+// const toggleAboutVisibility = async () => {
+//   await nextTick();
+//   visibleAbout.value = !visibleAbout.value;
+// };
 
 function clearAll() {
   categories.value = ["all"];

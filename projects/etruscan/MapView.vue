@@ -21,7 +21,7 @@ import Title from "./MapViewTitle.vue"
 
 const { selectedRange, necropoli, showUnknownRange, tombType, dataSetValue, dataParams, enable3D, enablePlan, selectedSite } = storeToRefs(etruscanStore());
 const store = mapStore();
-const etruscan = etruscanStore();  // Get the instance of etruscanStore
+const etruscan = etruscanStore();
 const { selectedFeature } = storeToRefs(store);
 const minZoom = 10;
 const maxZoom = 22;
@@ -29,7 +29,7 @@ const featureZoom = 15; //value between minZoom and maxZoom when you select a po
 const visibleAbout = ref(false);
 const visibleInstructions = ref(false);
 const showGallery = ref(false);
-let visited = true; // Store the visited status outside of the hook
+let visited = true;
 
 // Watcher for selectedFeature changes
 watch(
@@ -40,10 +40,9 @@ watch(
       if (geometry) {
         const coordinates = (geometry).getCoordinates();
         store.updateCenter(coordinates);
-        if (store.zoom < featureZoom)
-          {          
-            store.updateZoom(featureZoom);
-          }
+        if (store.zoom < featureZoom) {
+          store.updateZoom(featureZoom);
+        }
       }
     }
   },
@@ -59,22 +58,22 @@ const tagParams = computed(() => {
   const show_unknown = showUnknownRange.value;
   const site = selectedSite.value[0];
 
-  const initialParams  = { necropolis, type, dataset, site, show_unknown: show_unknown.toString() };
+  const initialParams = { necropolis, type, dataset, site, show_unknown: show_unknown.toString() };
 
-   if (selectedRangeValue.length === 2) {
+  if (selectedRangeValue.length === 2) {
     initialParams.minyear = Math.round(Math.abs(selectedRangeValue[0]));
     initialParams.maxyear = Math.round(Math.abs(selectedRangeValue[1]));
   }
-  
-  // Remove parameters that are set to "all"
+
+  //remove parameters that are set to "all"
   const cleanedParams = Object.keys(initialParams)
-  .filter((key) => initialParams[key] !== "all")
-  .reduce((obj, key) => {
-    obj[key] = initialParams[key];
-    return obj;
-  }, {});
-  
-  // Further clean to remove null or undefined values
+    .filter((key) => initialParams[key] !== "all")
+    .reduce((obj, key) => {
+      obj[key] = initialParams[key];
+      return obj;
+    }, {});
+
+  //further clean to remove null or undefined values
   const params = clean(cleanedParams);
 
   //filter for just 3D points
@@ -95,7 +94,7 @@ const tagParams = computed(() => {
 });
 
 watch(
-  tagParams, 
+  tagParams,
   async (newParams, oldParams) => {
     //check if dataset, site, or necropolis have changed
     const hasRelevantChange = ['dataset', 'site', 'necropolis'].some(key => {
@@ -115,13 +114,14 @@ watch(
       const bbox = await response.json();
 
       if (bbox && bbox.min_latitude && bbox.max_latitude && bbox.min_longitude && bbox.max_longitude) {
-        //buffer
-        const bufferValue = 0.008;
+        const hasSite = !!newParams.site; // if "all" in site dropdown is selected
+        const bufferValue = hasSite ? 0.004 : 0.013; 
+        const longitudeShift = hasSite ? 0 : -0.017;
 
         //apply buffer to the bounding box
-        const bufferedMinLongitude = bbox.min_longitude - bufferValue;
+        const bufferedMinLongitude = bbox.min_longitude - bufferValue + longitudeShift;
         const bufferedMinLatitude = bbox.min_latitude - bufferValue;
-        const bufferedMaxLongitude = bbox.max_longitude + bufferValue;
+        const bufferedMaxLongitude = bbox.max_longitude + bufferValue + longitudeShift;
         const bufferedMaxLatitude = bbox.max_latitude + bufferValue;
 
         //transform the coordinates from EPSG:4326 to EPSG:3857
@@ -129,8 +129,7 @@ watch(
         const maxCoords = transform([bufferedMaxLongitude, bufferedMaxLatitude], 'EPSG:4326', 'EPSG:3857');
 
         if (Array.isArray(minCoords) && Array.isArray(maxCoords)) {
-          //update map bounds
-          store.updateBounds([minCoords, maxCoords]);
+          store.updateBounds([minCoords, maxCoords]); //update map bounds
         } else {
           console.error("Failed to transform bounding box coordinates.");
         }
@@ -142,12 +141,10 @@ watch(
 );
 
 onMounted(() => {
-  // Check if the "visited" key exists in session storage
-  visited = sessionStorage.getItem("visited") === "true"; // Retrieve the visited status from session storage
+  visited = sessionStorage.getItem("visited") === "true";
   const storedShowGallery = localStorage.getItem("showGallery");
 
   if (!visited) {
-    // Hide the about component
     visibleAbout.value = true;
     sessionStorage.setItem("visited", "true");
   }
@@ -159,7 +156,6 @@ onMounted(() => {
 })
 
 const toggleAboutVisibility = async () => {
-  console.log('fired')
   await nextTick();
   visibleAbout.value = !visibleAbout.value;
 };
@@ -190,49 +186,39 @@ watch(showGallery, (newValue) => {
   <Instructions :visibleInstructions="visibleInstructions" @close="visibleInstructions = false" />
   <MainLayout>
     <template #search>
-      <Title @toggle-about="toggleAboutVisibility" @toggle-instructions="toggleInstructionsVisibility"/>
-      <MapViewControls/>
+      <Title @toggle-about="toggleAboutVisibility" @toggle-instructions="toggleInstructionsVisibility" />
+      <MapViewControls />
     </template>
 
     <template #background>
       <div class="map-container">
-        <MapComponent 
-          :shouldAutoMove="true" 
-          :min-zoom=minZoom
-          :max-zoom=maxZoom 
-          :restrictExtent="[11.4, 42.15, 12.4, 42.4]"    
-        > 
+        <MapComponent :shouldAutoMove="true" :min-zoom=minZoom :max-zoom=maxZoom
+          :restrictExtent="[11.4, 42.15, 12.4, 42.4]">
           <template #layers>
-            <GeoJsonWebGLRenderer
-              :externalUrl="'https://data.dh.gu.se/geography/SGElevationMain.geojson'"
-              :zIndex=-0
+            <GeoJsonWebGLRenderer :externalUrl="'https://data.dh.gu.se/geography/SGElevationMain.geojson'" :zIndex=-0
               :style="{
                 'stroke-color': [0, 0, 0, 0.18],
                 'stroke-width': 1,
                 'fill-color': [255, 0, 0, 1]
-              }"
-            >
+              }">
             </GeoJsonWebGLRenderer>
-            <GeoJsonWebGLRenderer
-              :externalUrl="'https://data.dh.gu.se/geography/SGElevationEdge.geojson'"
-              :zIndex=0
+            <GeoJsonWebGLRenderer :externalUrl="'https://data.dh.gu.se/geography/SGElevationEdge.geojson'" :zIndex=0
               :style="{
                 'stroke-color': [0, 0, 0, 0.1],
                 'stroke-width': 1,
                 'fill-color': [0, 255, 0, 1]
-              }"
-            >
+              }">
             </GeoJsonWebGLRenderer>
             <MapViewMarkers :params="tagParams" :zIndex=20>
             </MapViewMarkers>
           </template>
-          
-        </MapComponent>  
-      </div> 
+
+        </MapComponent>
+      </div>
     </template>
 
     <template #details>
-      <MapViewPreview v-if="!showGallery"/>
+      <MapViewPreview v-if="!showGallery" />
     </template>
 
   </MainLayout>
@@ -250,7 +236,7 @@ watch(showGallery, (newValue) => {
   left: -55px;
   width: 110px;
   min-width: 90px;
-  bottom:55px;
+  bottom: 55px;
 }
 
 #app .ol-popup:before {
