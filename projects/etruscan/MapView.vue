@@ -114,9 +114,9 @@ watch(
       const bbox = await response.json();
 
       if (bbox && bbox.min_latitude && bbox.max_latitude && bbox.min_longitude && bbox.max_longitude) {
-        const hasSite = !!newParams.site; // if "all" in site dropdown is selected
-        const bufferValue = hasSite ? 0.004 : 0.013; 
-        const longitudeShift = hasSite ? 0 : -0.017;
+        const shouldShiftLongitude = !(newParams.site || newParams.necropolis || newParams.dataset);
+        const bufferValue = shouldShiftLongitude ? 0.013 : 0.004; 
+        const longitudeShift = shouldShiftLongitude ? -0.017 : 0;
 
         //apply buffer to the bounding box
         const bufferedMinLongitude = bbox.min_longitude - bufferValue + longitudeShift;
