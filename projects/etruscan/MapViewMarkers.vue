@@ -1,28 +1,21 @@
 <script setup>
 import { ref, defineProps, onMounted, inject, watch } from "vue";
 import GeoJSON from "ol/format/GeoJSON.js";
-import VectorSource from "ol/source/Vector";
-import WebGLPointsLayer from "ol/layer/WebGLPoints.js";
-import markerIcon from "@/assets/marker-white.svg";
+import VectorSource from "ol/source/Vector.js";
+import VectorLayer from "ol/layer/Vector.js";
+import { Style, Icon } from "ol/style";
 import { mapStore } from "@/stores/store";
 import { storeToRefs } from "pinia";
-import Select from "ol/interaction/Select";
 import { etruscanStore } from "./settings/store";
-import { pointerMove } from "ol/events/condition";
+import markerWhite from "@/assets/marker-white.svg";
+import markerGold from "@/assets/marker-gold-larger.svg";
+import markerRed from "@/assets/marker-red-etruscan.svg";
 
 const { selectedFeature } = storeToRefs(mapStore());
-
-let selectHover; // Select interaction for hover
+const { areMapPointsLoaded } = storeToRefs(etruscanStore());
 const hoveredFeature = ref(null);
 const hoverCoordinates = ref(null);
 const selectedCoordinates = ref(null);
-const { areMapPointsLoaded } = storeToRefs(etruscanStore());
-const map = inject("map");
-const vectorSource = ref(
-  new VectorSource({
-    format: new GeoJSON(),
-  })
-);
 
 const props = defineProps({
   map: Object,
@@ -36,20 +29,27 @@ const props = defineProps({
   },
 });
 
+const vectorSource = ref(
+  new VectorSource({
+    format: new GeoJSON(),
+  })
+);
+
 const updateFeatures = (features) => {
   const geoJSONFormat = new GeoJSON({ featureProjection: "EPSG:3857" });
   const transformedFeatures = geoJSONFormat.readFeatures({
     type: "FeatureCollection",
     features,
   });
-
   vectorSource.value.addFeatures(transformedFeatures);
 };
 
 const fetchData = async (initialUrl, params) => {
   let nextUrl = initialUrl;
-  let initialParams = new URLSearchParams({ page_size: '1000', ...params }).toString();
-
+  const initialParams = new URLSearchParams({
+    page_size: "1000",
+    ...params,
+  }).toString();
   if (nextUrl && initialParams) {
     nextUrl = `${nextUrl}?${initialParams}`;
   }
@@ -58,131 +58,121 @@ const fetchData = async (initialUrl, params) => {
     const res = await fetch(nextUrl.replace(/^http:/, "https:")).catch((err) => {
       throw err;
     });
-
-    if (!res) continue;
+    if (!res) break;
 
     const data = await res.json();
     const features = data.features || [];
-
-    // Update features immediately after fetching a batch
     updateFeatures(features);
 
     nextUrl = data.next ? data.next.replace(/^http:/, "https:") : null;
   }
-  areMapPointsLoaded.value = true; // Set to true once all points are loaded
+  areMapPointsLoaded.value = true;
 };
 
-// Create a WebGLPointsLayer
-const webGLPointsLayer = ref(
-  new WebGLPointsLayer({
+function styleFunction(feature) {
+  const has3D = feature.get("has_3D");
+  return new Style({
+    image: new Icon({
+      src: has3D ? markerGold : markerWhite, //gold for 3D
+      anchor: [0.5, 1],
+      scale: 1,
+    }),
+  });
+}
+
+const vectorLayer = ref(
+  new VectorLayer({
     source: vectorSource.value,
-    style: {
-      symbol: {
-        symbolType: "image",
-        color: "#ffffff",
-        offset: [0, 20],
-        size: [30, 45],
-        src: markerIcon, // Use white marker
-      },
-    },
+    style: styleFunction,
   })
 );
 
-const clearPopups = () => {
-  hoverCoordinates.value = null;
-  hoveredFeature.value = null;
-  selectedCoordinates.value = null;
-};
+//for hover...
+const markerRedStyle = new Style({
+  image: new Icon({
+    src: markerRed,
+    anchor: [0.5, 1],
+    scale: 1,
+  }),
+});
 
 onMounted(() => {
-  if (map) {
-    map.addLayer(webGLPointsLayer.value);
-
-    // Initialize the select interaction for hover
-    selectHover = new Select({
-      condition: pointerMove,
-      layers: [webGLPointsLayer.value],
-    });
-
-    // Add select interaction to the map for hover
-    map.addInteraction(selectHover);
-
-    // Add an event listener for when a feature is hovered over
-    selectHover.on("select", (event) => {
-      if (event.selected.length > 0) {
-        const feature = event.selected[0];
-        hoveredFeature.value = feature;
-
-        const geometry = feature.getGeometry();
-        hoverCoordinates.value = geometry.getCoordinates();
-    } else {
-        //clear hover information when no feature is hovered
-        hoveredFeature.value = null;
-        hoverCoordinates.value = null;
-      }
-    });
-
-    let clickedFeatures = [];
-    map.on("click", function (evt) {
-      clickedFeatures = []; // Clear the array before each click
-      map.forEachFeatureAtPixel(evt.pixel, function (feature) {
-        clickedFeatures.push(feature);
-      });
-
-      if (clickedFeatures.length === 1) {
-        // Unselect the hovered feature
-        hoverCoordinates.value = null;
-        hoveredFeature.value = null;
-
-        // Select the clicked feature
-        selectedFeature.value = clickedFeatures[0];
-        const geometry = clickedFeatures[0].getGeometry();
-        selectedCoordinates.value = geometry.getCoordinates();
-      } else {
-        selectedCoordinates.value = undefined;
-        selectedFeature.value = undefined;
-      }
-    });
-  } else {
-    console.error("Map object is not initialized.");
+  const map = inject("map");
+  if (!map) {
+    console.error("map is not available.");
+    return;
   }
+
+  map.addLayer(vectorLayer.value);
+
+  map.on("pointermove", (evt) => {
+    if (evt.dragging) return;
+
+    const featureAtPixel = map.forEachFeatureAtPixel(
+      evt.pixel,
+      (feat) => feat,
+      { hitTolerance: 5 }
+    );
+
+    if (hoveredFeature.value && hoveredFeature.value !== featureAtPixel) {
+      hoveredFeature.value.setStyle(null);
+      hoveredFeature.value = null;
+      hoverCoordinates.value = null;
+    }
+
+    if (featureAtPixel) {
+      featureAtPixel.setStyle(markerRedStyle);
+      hoveredFeature.value = featureAtPixel;
+      hoverCoordinates.value = featureAtPixel.getGeometry().getCoordinates();
+    }
+  });
+
+  map.on("click", (evt) => {
+    const feature = map.forEachFeatureAtPixel(
+      evt.pixel,
+      (feat) => feat,
+      { hitTolerance: 5 }
+    );
+    if (feature) {
+      selectedFeature.value = feature;
+      selectedCoordinates.value = feature.getGeometry().getCoordinates();
+    } else {
+      selectedFeature.value = null;
+      selectedCoordinates.value = null;
+    }
+  });
 });
 
 watch(
   () => props.params,
   async (newParams) => {
-    areMapPointsLoaded.value = false; // Reset before fetching new data
-    const initialUrl =
-      "https://diana.dh.gu.se/api/etruscantombs/coordinates";
-
+    areMapPointsLoaded.value = false;
     vectorSource.value.clear();
-    clearPopups(); // Clear the popups
 
+    hoveredFeature.value = null;
+    hoverCoordinates.value = null;
+    selectedFeature.value = null;
+    selectedCoordinates.value = null;
+
+    const initialUrl = "https://diana.dh.gu.se/api/etruscantombs/coordinates";
     await fetchData(initialUrl, newParams);
   },
   { immediate: true }
 );
 </script>
+
 <template>
-  <ol-overlay
-    class="ol-popup"
-    v-if="hoveredFeature"
-    :position="hoverCoordinates"
-  >
-    <div
-      class="ol-popup-content"
-      v-html="(hoveredFeature ? hoveredFeature.get('dataset')?.short_name : '') + ' - ' + (hoveredFeature ? hoveredFeature.get('name') : '')"
-    ></div>
+  <ol-overlay v-if="hoveredFeature" class="ol-popup" :position="hoverCoordinates">
+    <div class="ol-popup-content">
+      {{ hoveredFeature?.get("dataset")?.short_name || "" }} -
+      {{ hoveredFeature?.get("name") || "" }}
+    </div>
   </ol-overlay>
 
-  <ol-overlay
-    class="ol-popup"
-    v-if="selectedFeature"
-    :position="selectedCoordinates"
-  >
-    <div
-      class="ol-popup-content"
-      v-html="(selectedFeature ? selectedFeature.get('dataset')?.short_name : '') + ' - ' + (selectedFeature ? selectedFeature.get('name') : '')"
-    ></div>
+  <ol-overlay v-if="selectedFeature" class="ol-popup" :position="selectedCoordinates">
+    <div class="ol-popup-content">
+      {{ selectedFeature?.get("dataset")?.short_name || "" }} -
+      {{ selectedFeature?.get("name") || "" }}
+    </div>
   </ol-overlay>
 </template>
