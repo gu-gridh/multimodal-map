@@ -303,7 +303,6 @@ const downloadJSON = (data: any, filename: string) => {
 };
 
 const handleDownloadChoice = async (format: "csv" | "json") => {
-  console.log(`User selected ${format} format.`);
   showDownloadChoice.value = false;
 
   if (!drawnRectangleBounds.value) return;
@@ -312,6 +311,7 @@ const handleDownloadChoice = async (format: "csv" | "json") => {
   const southWest = bounds.getSouthWest();
   const northEast = bounds.getNorthEast();
   const bboxString = `${southWest.lng},${southWest.lat},${northEast.lng},${northEast.lat}`;
+  const token = await waitForAuthToken();
 
   if (drawnRectangleLayer.value && drawnItems.value) {
     drawnItems.value.removeLayer(drawnRectangleLayer.value);
@@ -319,18 +319,59 @@ const handleDownloadChoice = async (format: "csv" | "json") => {
   }
   drawnRectangleBounds.value = null;
 
-  if (format === "csv") return;
+  const baseUrl = `https://maritime-encounters.dh.gu.se/api/resources/data/`;
+  const queryParams: Record<string, string> = {
+    download_format: format,
+    in_bbox: bboxString,
+    ...props.params,
+  };
+  const queryString = new URLSearchParams(queryParams).toString();
+  const downloadUrl = `${baseUrl}?${queryString}`;
 
-  const baseUrl = `https://maritime-encounters.dh.gu.se/api/resources/search/`;
-  const params = { in_bbox: bboxString, page_size: 100, ...props.params };
-  const queryString = new URLSearchParams(params).toString();
-  const apiUrl = `${baseUrl}?${queryString}`;
+  if (format === "csv") {
+    try {
+      const res = await fetch(downloadUrl, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${token}`,
+        }
+      });
+      if (!res.ok) {
+        const errorData = await res.json();
+        console.error("CSV Download Error:", errorData.error);
+        return; 
+      }
+      window.location.href = downloadUrl;
+    } catch (err) {
+      console.error("error checking CSV data:", err);
+      return;
+    }
+  } else if (format === "json") {
+    try {
+      const res = await fetch(downloadUrl, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${token}`,
+        }
+      });
+      if (!res.ok) throw new Error("failed to fetch JSON data");
+      const jsonData = await res.json();
 
-  try {
-    const jsonData = await fetchAllSites(apiUrl);
-    downloadJSON(jsonData, "data.json");
-  } catch (error) {
-    console.error("Error fetching data:", error);
+      //for each key in the JSON response, trigger a separate file download.
+      let delay = 0;
+      for (const key in jsonData) {
+        if (Object.prototype.hasOwnProperty.call(jsonData, key)) {
+          const fileData = jsonData[key];
+          const filename = key.toLowerCase() + ".json";
+          setTimeout(() => {
+            downloadJSON(fileData, filename);
+          }, delay);
+          delay += 500;
+        }
+      }
+    } catch (error) {
+      console.error("error fetching JSON data.", error);
+    }
   }
 };
 
@@ -424,7 +465,7 @@ watch( //toggle visibility between heatmap and marker clusters
 );
 
 onMounted(async () => {
-  const token = await waitForAuthToken();
+  const token = await waitForAuthToken(); 
 
   if (token) {
     map.value = L.map("map", {
@@ -549,7 +590,7 @@ onMounted(async () => {
         hoverPopup.value = null;
       }
     });
-  }
+  } 
 });
 </script>
 
