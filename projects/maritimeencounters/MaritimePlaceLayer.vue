@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup>
 import { ref, onMounted, defineProps, toRaw, watch, nextTick } from "vue";
 import L from "leaflet";
 import "leaflet.markercluster";
@@ -29,29 +29,29 @@ import spainData from './polygons/spain_simplified.json';
 import swedenData from './polygons/sweden_simplified.json';
 import ukData from './polygons/uk_simplified.json';
 
-(window as any).type = true;
+(window).type = true;
 
-const map = ref<L.Map | null>(null);
-const markerClusterGroup = ref<L.MarkerClusterGroup | null>(null);
-const layerGroupMap = ref<Record<string, L.LayerGroup>>({});
-const fetchedIds = new Set<number>();
+const map = ref(null);
+const markerClusterGroup = ref(null);
+const layerGroupMap = ref({});
+const fetchedIds = new Set();
 const { selectedFeature } = storeToRefs(mapStore());
 const store = maritimeencountersStore();
 const { startRectangleDraw, showHeatMap, doneFetching } = storeToRefs(store);
 const isLoading = ref(false); //spinner visibility
 const showDownloadChoice = ref(false);
-const drawnRectangleBounds = ref<L.LatLngBounds | null>(null);
-const drawnRectangleLayer = ref<L.Layer | null>(null);
-const drawnItems = ref<L.FeatureGroup | null>(null); //drawn bbox rectangle
+const drawnRectangleBounds = ref(null);
+const drawnRectangleLayer = ref(null);
+const drawnItems = ref(null); //drawn bbox rectangle
 
 //Heatmap
-const heatmapLayer = ref<L.HeatLayer | null>(null);
-const heatmapPoints = ref<Array<[number, number, number]>>([]);
+const heatmapLayer = ref(null);
+const heatmapPoints = ref([]);
 
-let hoverPopup = ref<L.Popup | null>(null); //active hover popup
-let polylineLayer = ref<L.LayerGroup | null>(null);
-let abortController: AbortController | null = null;
-let rectangleDrawer: L.Draw.Rectangle | null = null;
+let hoverPopup = ref(null);
+let polylineLayer = ref(null);
+let abortController = null;
+let rectangleDrawer = null;
 
 const props = defineProps({
   mapOptions: {
@@ -91,7 +91,7 @@ function clearMarkerClusterLayersInBatches() {
 }
 
 //draw polygons for each country
-const renderGeoJSON = (geojsonArray: { name: string, data: any, id: string }[]) => {
+const renderGeoJSON = (geojsonArray) => {
   geojsonArray.forEach((geojsonItem) => {
     const { name, data, id } = geojsonItem;
 
@@ -107,7 +107,7 @@ const renderGeoJSON = (geojsonArray: { name: string, data: any, id: string }[]) 
 
     //add hover event listeners to each polygon
     geoJSONLayer.eachLayer((layer) => {
-      const polygon = layer as L.Polygon;
+      const polygon = layer;
 
       polygon.on('mouseover', () => {
         polygon.setStyle({
@@ -131,12 +131,12 @@ const renderGeoJSON = (geojsonArray: { name: string, data: any, id: string }[]) 
       });
     });
 
-    layerGroup.addTo(toRaw(map.value)!);
+    layerGroup.addTo(toRaw(map.value));
     layerGroupMap.value[name] = layerGroup;
   });
 };
 
-const waitForAuthToken = (): Promise<string> => {
+const waitForAuthToken = () => {
   return new Promise((resolve) => {
     const checkToken = () => {
       const token = sessionStorage.getItem("authToken");
@@ -151,7 +151,7 @@ const waitForAuthToken = (): Promise<string> => {
 };
 
 //draw the markers on the map
-const fetchData = async (initialUrl: string, params: Record<string, any>) => {
+const fetchData = async (initialUrl, params) => {
   if (abortController) {
     abortController.abort();
     console.log("Previous fetch aborted");
@@ -183,12 +183,12 @@ const fetchData = async (initialUrl: string, params: Record<string, any>) => {
         const data = await res.json();
 
         const markersToAdd = [];
-        data.features.forEach((feature: any) => {
+        data.features.forEach((feature) => {
           const featureId = feature.id;
 
           if (fetchedIds.has(featureId)) return;
 
-          fetchedIds.add(featureId); // add id to set to prevent duplicates
+          fetchedIds.add(featureId); //add id to set to prevent duplicates
 
           if (feature.geometry && feature.geometry.coordinates && feature.geometry.coordinates.length === 2) {
             const coords = feature.geometry.coordinates;
@@ -222,10 +222,10 @@ const fetchData = async (initialUrl: string, params: Record<string, any>) => {
                   .setContent(
                     `<b>Name:</b> ${feature.properties.name}<br><b>Coordinates:</b> ${coords[1].toFixed(6)}, ${coords[0].toFixed(6)}`
                   )
-                  .openOn(toRaw(map.value) as L.Map);
+                  .openOn(toRaw(map.value));
 
                 marker.on("mouseout", () => {
-                  toRaw(map.value)?.closePopup(toRaw(hoverPopup.value) as L.Popup);
+                  toRaw(map.value)?.closePopup(toRaw(hoverPopup.value));
                   hoverPopup.value = null;
                 });
               });
@@ -238,7 +238,7 @@ const fetchData = async (initialUrl: string, params: Record<string, any>) => {
         toRaw(markerClusterGroup.value)?.addLayers(markersToAdd);
 
         nextUrl = data.next ? data.next.replace(/^http:/, "https:") : null;
-      } catch (err: any) {
+      } catch (err) {
         if (err.name === "AbortError") {
           console.log("Fetch request was aborted");
           return;  //if fetch is aborted
@@ -259,9 +259,9 @@ const fetchData = async (initialUrl: string, params: Record<string, any>) => {
 };
 
 //for downloading site data
-const fetchAllSites = async (initialUrl: string): Promise<any[]> => {
-  let allData: any[] = [];
-  let nextUrl: string | null = initialUrl;
+const fetchAllSites = async (initialUrl) => {
+  let allData = [];
+  let nextUrl = initialUrl;
 
   isLoading.value = true; //show the spinner
   const token = sessionStorage.getItem("authToken");
@@ -289,7 +289,7 @@ const fetchAllSites = async (initialUrl: string): Promise<any[]> => {
 };
 
 //download the data as a JSON file
-const downloadJSON = (data: any, filename: string) => {
+const downloadJSON = (data, filename) => {
   const jsonStr = JSON.stringify(data, null, 2);
   const blob = new Blob([jsonStr], { type: "application/json" });
   const url = URL.createObjectURL(blob);
@@ -302,7 +302,7 @@ const downloadJSON = (data: any, filename: string) => {
   URL.revokeObjectURL(url);
 };
 
-const handleDownloadChoice = async (format: "csv" | "json") => {
+const handleDownloadChoice = async (format) => {
   showDownloadChoice.value = false;
 
   if (!drawnRectangleBounds.value) return;
@@ -320,7 +320,7 @@ const handleDownloadChoice = async (format: "csv" | "json") => {
   drawnRectangleBounds.value = null;
 
   const baseUrl = `https://maritime-encounters.dh.gu.se/api/resources/data/`;
-  const queryParams: Record<string, string> = {
+  const queryParams = {
     download_format: format,
     in_bbox: bboxString,
     ...props.params,
@@ -477,9 +477,9 @@ onMounted(async () => {
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       maxZoom: 19,
       minZoom: 3,
-    }).addTo(toRaw(map.value)!);
+    }).addTo(toRaw(map.value));
 
-    drawnItems.value = L.featureGroup().addTo(toRaw(map.value)!);
+    drawnItems.value = L.featureGroup().addTo(toRaw(map.value));
     const drawControl = new L.Control.Draw({
       draw: {
         marker: false,
@@ -493,9 +493,9 @@ onMounted(async () => {
 
     toRaw(map.value)?.addControl(drawControl);
 
-    rectangleDrawer = new L.Draw.Rectangle(toRaw(map.value)!, drawControl.options.draw.rectangle);
+    rectangleDrawer = new L.Draw.Rectangle(toRaw(map.value), drawControl.options.draw.rectangle);
 
-    toRaw(map.value)?.on(L.Draw.Event.CREATED, (e: any) => {
+    toRaw(map.value)?.on(L.Draw.Event.CREATED, (e) => {
       const layerType = e.layerType;
       const layer = e.layer;
 

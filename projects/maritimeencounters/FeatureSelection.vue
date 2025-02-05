@@ -1,35 +1,24 @@
-<script lang="ts" setup>
+<script setup>
 import { ref, inject, watch} from "vue";
-import type Feature from "ol/Feature";
-import type { SelectEvent } from "ol/interaction/Select";
-import type { DisplayFunction } from "@/types/diana";
-import type { Project } from "@/types/project";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
-import markerIcon from "@/assets/marker-gold.svg";
 import markerIconRed from "@/assets/marker-red.svg";
 import Collection from "ol/Collection";
 
 const { selectedFeature } = storeToRefs(mapStore());
-
-const config = inject("config") as Project;
-
+const config = inject("config");
 const selectedCoordinates = ref();
 const hoverCoordinates = ref();
-
-const hoveredFeature = ref<Feature>();
-
+const hoveredFeature = ref();
 const selectConditions = inject("ol-selectconditions");
-
 const hoverCondition = selectConditions.pointerMove;
 const selectCondition = selectConditions.click;
 
-// This list is connected to the ol-interaction-select element; this is to be able to deselect programmatically
-  const selectedFeaturesCollection = new Collection(
+const selectedFeaturesCollection = new Collection(
   selectedFeature.value ? [selectedFeature.value] : []
 );
 
-const onHover = (event: SelectEvent) => {
+const onHover = (event) => {
   const features = event.selected;
 
   if (features.length === 1 && features[0].get('name')) {
@@ -41,7 +30,7 @@ const onHover = (event: SelectEvent) => {
   }
 };
 
-const onClick = (event: SelectEvent) => {
+const onClick = (event) => {
 const features = event.selected;
 
   if (features.length === 1 && features[0].get('name')) {
@@ -66,25 +55,25 @@ watch(selectedFeature, () => {
   );
 });
 
-const getFeatureDisplayName: DisplayFunction =
+const getFeatureDisplayName =
   config.getFeatureDisplayName ||
 ((feature) => {
   let name = feature.get("Name") || feature.get("name") || feature.get("NAME") || '';
   let rawDate = feature.get("Date");
   let rawYear = feature.get("YEAR_")
-  // Check if rawDate is available
+  //check if rawDate is available
   if (rawDate) {
     let date = rawDate.toString(); 
 
-    // Break the date into component parts
+    //break the date into component parts
     let year = date.substr(0, 4);
     let month = date.substr(4, 2);
     let day = date.substr(6, 2);
 
-    // Parse the date string into a Date object
+    //parse the date string into a Date object
     let dateObject = new Date(`${year}-${month}-${day}`);
 
-    // Format the date for display
+    //format the date for display
     let formattedDate = dateObject.toLocaleDateString(undefined, {
       year: 'numeric',
       month: 'long',
@@ -96,7 +85,6 @@ const getFeatureDisplayName: DisplayFunction =
   {
     return `${name} ${rawYear}`;
   } else {
-    // Return only name if Date is not available
     return `${name}`;
   }
 })
@@ -150,7 +138,7 @@ const getFeatureDisplayName: DisplayFunction =
   >
     <div
       class="ol-popup-content"
-      v-html="'Tomb ' + getFeatureDisplayName(selectedFeature as Feature)"
+      v-html="'Tomb ' + getFeatureDisplayName(selectedFeature)"
     ></div>
   </ol-overlay>
 </template>

@@ -1,14 +1,13 @@
-<script setup lang="ts">
+<script setup>
 import ObjectViewComponent from "@/components/ObjectViewComponentReturn.vue";
 import OpenSeadragon from "@/components/OpenSeadragon.vue";
-import type { ImageDeep } from "./types";
 
-const props = defineProps<{
-  object: ImageDeep;
-  id: Number;
-}>();
+const props = defineProps({
+  object: Object,
+  id: Number
+});
 
-const downloadImage = (fileUrl: string, fileName: string) => {
+const downloadImage = (fileUrl, fileName) => {
   const link = document.createElement('a');
   link.href = fileUrl;
   link.download = fileName;

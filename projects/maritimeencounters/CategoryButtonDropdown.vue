@@ -19,28 +19,25 @@
   </select>
 </template>
 
-<script setup lang="ts">
-// import { storeToRefs } from "pinia";
+<script setup>
 import CategoryButton from "../../src/components/input/CategoryButton.vue";
-// import { maritimeencountersStore } from "./store";
-// const { selectedNecropolisCoordinates } = storeToRefs(maritimeencountersStore());
 
-const props = defineProps<{
-  modelValue: string[];
-  categories: Record<string, string>;
-  limit?: 1;
-  styleType?: "button" | "dropdown";
-  type?: "necropolis" | "tombType" | "datasets";
-}>();
+const props = defineProps({
+  modelValue: Array,
+  categories: Object,
+  limit: Number,
+  styleType: String,
+  type: String
+});
 
 const emit = defineEmits(["update:modelValue", "click"]);
 
-function toggle(key: string) {
+function toggle(key) {
   handleToggle(key);
 }
 
-function dropdownToggle(event: Event) {
-  const selectElement = event.target as HTMLSelectElement | null;
+function dropdownToggle(event) {
+  const selectElement = event.target;
   
   if (selectElement) {
     const selectedKey = selectElement.value;
@@ -48,16 +45,10 @@ function dropdownToggle(event: Event) {
   }
 }
 
-function handleToggle(key: string) {
+function handleToggle(key) {
   if (key === 'all') {
-    emit("update:modelValue", ['all']); // Set modelValue to ['all']
-    
-    // If this dropdown is for "Necropolis", then move the map
-    // if (props.type === 'necropolis') {
-    //   selectedNecropolisCoordinates.value = [1335733.925763396, 5194636.579769473];
-    // }
-
-    emit('click', 'all'); // Emit the special 'all' value
+    emit("update:modelValue", ['all']); 
+    emit('click', 'all');
     return;
   }
   

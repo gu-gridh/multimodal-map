@@ -1,9 +1,8 @@
-<script setup lang="ts">
+<script setup>
 </script>
     
 <template>
     <div class="main-container">
-        hi
     </div>
 </template>
     

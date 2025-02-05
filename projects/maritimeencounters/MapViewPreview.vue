@@ -1,13 +1,12 @@
-<script lang="ts" setup>
+<script setup>
 import { watchEffect, ref, inject } from "vue";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
 
 const { selectedFeature } = storeToRefs(mapStore());
-const imageUrls = ref<string[]>([]);
-let place = ref()
-
-const hasImages = ref<boolean>(false);
+// const imageUrls = ref([]);
+// let place = ref()
+// const hasImages = ref(false);
 
 //when a place is selected, fetch image and info
 watchEffect(() => {

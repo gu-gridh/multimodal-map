@@ -26,42 +26,7 @@
   </footer>
 </template>
 
-<script setup lang="ts">
-import { ref } from 'vue';
-
-// const downloadData = async () => {
-//   let url = 'https://diana.dh.gu.se/api/etruscantombs/geojson/place/?page_size=100';
-//   let pageNumber = 0;
-
-//   try {
-//     while (url) {
-//       const response = await fetch(url);
-//       if (!response.ok) {
-//         throw new Error(`HTTP error! status: ${response.status}`);
-//       }
-//       const pageData = await response.json();
-//       pageNumber++;
-
-//       triggerDownload(pageData.features, `EtruscanTombsData_${pageNumber}.json`);
-
-//       url = pageData.next ? pageData.next.replace(/^http:/, 'https:') : null;
-//     }
-//   } catch (error) {
-//     console.error('Error fetching data:', error);
-//   }
-// };
-
-// const triggerDownload = (data: any[], filename: string) => {
-//   const jsonBlob = new Blob([JSON.stringify(data)], { type: 'application/json' });
-//   const downloadUrl = window.URL.createObjectURL(jsonBlob);
-//   const link = document.createElement('a');
-//   link.href = downloadUrl;
-//   link.download = filename;
-//   document.body.appendChild(link);
-//   link.click();
-//   document.body.removeChild(link);
-//   window.URL.revokeObjectURL(downloadUrl);
-// };
+<script setup>
 </script>
 
 <style>

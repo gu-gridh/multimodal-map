@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup>
 import { provide } from "vue";
 import config from "./config";
 import Footer from './Footer.vue';

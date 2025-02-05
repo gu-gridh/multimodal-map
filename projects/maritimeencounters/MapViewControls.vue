@@ -43,15 +43,14 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { inject, ref, computed, watch } from "vue";
 import CategoryButtonDropdown from "./CategoryButtonDropdown.vue";
 import RangeSlider from "./RangeSliderMaritime.vue";
 import { storeToRefs } from "pinia";
 import { maritimeencountersStore } from "./store";
-import type { MaritimeEncountersProject } from "./types";
 
-const config = inject<MaritimeEncountersProject>("config");
+const config = inject("config");
 const { selectedRange, dataType, imgParams } = storeToRefs(maritimeencountersStore());
 const count = ref(0);
 const initialCount = ref(0);
@@ -63,7 +62,7 @@ const isFilterModified = computed(() => {
   );
 });
 
-const waitForAuthToken = (): Promise<string> => {
+const waitForAuthToken = () => {
   return new Promise((resolve) => {
     const checkToken = () => {
       const token = sessionStorage.getItem("authToken");

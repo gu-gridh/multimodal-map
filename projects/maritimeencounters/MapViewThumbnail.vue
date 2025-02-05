@@ -1,11 +1,11 @@
-<script lang="ts" setup>
+<script setup>
 import { watchEffect, ref, computed } from "vue";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
 
 const { selectedFeature } = storeToRefs(mapStore());
 const place = ref(null);
-const previewData = ref<{ [key: string]: any[] }>({});
+const previewData = ref({});
 const categoryTitles = {
   plank_boats: "Plank Boats",
   log_boats: "Log Boats",
@@ -17,7 +17,7 @@ const categoryTitles = {
   new_samples: "New Samples",
   metalwork: "Metalwork",
 };
-const expandedCard = ref<string | null>(null); //the currently expanded card
+const expandedCard = ref(null);
 
 //compute if all categories have no data
 const allCategoriesEmpty = computed(() => {
@@ -63,7 +63,7 @@ watchEffect(async () => {
 });
 
 //toggles expansion of the card
-function toggleCard(key: string) {
+function toggleCard(key) {
   expandedCard.value = expandedCard.value === key ? null : key;
 }
 
@@ -72,7 +72,7 @@ function deselectPlace() {
   expandedCard.value = null; //reset the expanded card
 }
 
-function navigateToDetail(url: string, id: number) {
+function navigateToDetail(url, id) {
   window.open(`${url}${id}/`, '_blank');
 }
 </script>

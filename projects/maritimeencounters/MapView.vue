@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup>
 import { computed } from "vue";
 import MainLayout from "@/MainLayout.vue";
 import MapViewControls from "./MapViewControls.vue";
@@ -34,7 +34,7 @@ watch(
     if (newFeature && newFeature.getGeometry) {
       const geometry = newFeature.getGeometry();
       if (geometry) {
-        const coordinates = (geometry as any).getCoordinates();
+        const coordinates = (geometry).getCoordinates();
         store.updateCenter(coordinates);
         if (store.zoom < featureZoom)
           {          
@@ -58,7 +58,7 @@ const tagParams = computed(() => {
   const type = dataType.value[0];
   const selectedRangeValue = selectedRange.value;
 
-  const initialParams: any  = { type };
+  const initialParams = { type };
 
    if (selectedRangeValue.length === 2) {
     initialParams.min_year = Math.round(selectedRangeValue[0]);
@@ -67,11 +67,11 @@ const tagParams = computed(() => {
   
   // Remove parameters that are set to "all"
   const cleanedParams = Object.keys(initialParams)
-  .filter((key) => initialParams[key as keyof typeof initialParams] !== "all")
+  .filter((key) => initialParams[key] !== "all")
   .reduce((obj, key) => {
-    obj[key as keyof typeof initialParams] = initialParams[key as keyof typeof initialParams];
+    obj[key] = initialParams[key];
     return obj;
-  }, {} as typeof initialParams);
+  }, {});
   
   const params = clean(cleanedParams);
   maritimeencounters.imgParams = params;

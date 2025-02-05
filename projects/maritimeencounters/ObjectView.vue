@@ -1,7 +1,5 @@
-<script setup lang="ts">
+<script setup>
 import { inject, ref, watchEffect } from "vue";
-import type { Image } from "./types";
-import type { DianaClient } from "@/assets/diana";
 import ObjectViewImage from "./ObjectViewImage.vue";
 
 const props = defineProps({
@@ -15,8 +13,8 @@ const props = defineProps({
   },
 });
 
-const diana = inject("diana") as DianaClient;
-const object = ref<Image>();
+const diana = inject("diana");
+const object = ref();
 
 watchEffect(async () => {
   object.value = await diana.get(props.type, props.id, { depth: 1 });
