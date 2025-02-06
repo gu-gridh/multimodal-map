@@ -1,0 +1,110 @@
+/* CSS - Cascading Style Sheet */
+
+/* Color palette */
+:root{
+  --theme-1: 			#a6bddb; /* This is the background color */
+  --theme-2: 			#a6bddb; /* This is for lighter text on dark backgrounds */
+	--theme-3: 	    #2b8cbe; /* This is the main accent colour */
+  --theme-4: 		  #a6bddb; /* This is for accent hover */
+  --theme-5: 		  #a6bddb; /* This is for accent lines */
+}
+
+/* Main */
+html,
+body {
+  font-family: "Barlow Condensed", sans-serif !important;
+  background-color: var(--theme-1) !important;
+}
+
+.theme-title-typography{
+    font-family: 'Teko', sans-serif;
+}
+
+.theme-color-text {
+  color: var(--theme-3) !important;
+}
+
+.data {
+  color: var(--theme-2) !important;
+}
+
+.theme-color-background {
+  background-color: var(--theme-3) !important;
+}
+
+.dropdown:hover {
+  background-color: var(--theme-4) !important;
+}
+
+.dropdown:focus {
+    outline-color: var(--theme-5) !important;
+}
+
+.main-title {
+  font-family: 'Teko', sans-serif;
+  color: var(--theme-3) !important;
+}
+
+.about {
+  display:none;
+}
+
+#app .left-pane {
+  background: url("images/gradient.png");
+  background-size: contain;
+  width: 56% !important;
+  min-width: 940px;
+  max-width: 1000px;
+  font-size:95%;
+  z-index: 1000;
+}
+
+@media screen and (max-width: 900px) {
+  #app .left-pane {
+    margin-top:0px!important;
+    top: 76%!important;
+    z-index:1000!important;
+    position:absolute!important;
+    width:100%!important;
+    padding: 30px 10px 100px 10px!important;
+  }
+}
+
+.theme-button {
+  border-radius: 5px;
+  padding: 5px 10px;
+  color: white;
+  width:auto;
+  transition: all 0.2s ease-in-out;
+}
+
+.theme-button:hover {
+  background-color: var(--theme-4) !important;
+  transform:scale(1.05);
+}
+
+#app .category-button {
+  background-color: rgba(255, 255, 255, 0.6);
+  color: rgb(71, 85, 105);
+  border-radius: 4px;
+}
+
+#app .category-button:hover {
+  background-color: var(--theme-4) !important;
+  color: white;
+}
+
+#app .category-button.active {
+  background-color: var(--theme-3) !important;
+  color: white;
+}
+
+@media screen and (max-width: 900px) {
+  .atlas-gradient {
+    background: linear-gradient(180deg, rgba(232, 228, 217, 0) 0px, var(--theme-1) 300px) !important;
+}
+
+#app .right-pane {
+/* z-index: 0 !important; */
+}
+}
