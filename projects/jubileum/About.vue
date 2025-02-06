@@ -1,5 +1,5 @@
 <template>
-  <div class="about-container" v-bind:class="{fullopacity: visibleAbout}">
+  <div class="about-container" v-bind:class="{ fullopacity: visibleAbout }" :style="{ display: displayAbout ? 'block' : 'none' }">
     <div class="flex-machine">
       <div class="red-content">
     <div class="about-main-title" v-bind:class="{fullopacityui: visibleAbout}">Göteborgs<br>Jubileum</div>
@@ -55,7 +55,7 @@ Utveckling av datamodellen och backend: Johan Åhlfeldt och Aram Karimi, GRIDH.<
 
 </template>
 
-<script lang="ts">
+<script lang>
 export default {
   name: "aboutview",
   props: {
@@ -63,6 +63,32 @@ export default {
       type: Boolean,
       required: true,
     },
+  },
+  components: {
+ 
+  },
+  data() {
+    return {
+      displayAbout: this.visibleAbout,
+      // carousel settings
+      
+    };
+  },
+  watch: {
+    visibleAbout(newVal) {
+      if (newVal) {
+        // If visibleAbout is true, immediately show the container
+        this.displayAbout = true;
+      } else {
+        // if visibleAbout is false, wait for the transition to finish before hiding
+        setTimeout(() => {
+          this.displayAbout = false;
+        }, 1000); // transition duration
+      }
+    },
+  },
+  methods: {
+    
   },
 };
 </script>

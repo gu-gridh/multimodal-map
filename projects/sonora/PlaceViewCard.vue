@@ -1,16 +1,17 @@
-<script setup lang="ts">
-import router from './router'
-import { ref, inject, onMounted, nextTick } from "vue"
-import markerIcon from "@/assets/marker-red.svg";
+<script setup>
+import router from './settings/router'
+import { ref, onMounted } from "vue"
 import { watch } from 'vue';
 import placeholderImage from './images/placeholder.png';
 import i18n from '../../src/translations/sonora';
 
 const emit = defineEmits(['link-clicked']);
 
-const props = defineProps<{
-  id: string;
-}>();
+const props = defineProps({
+  id: {
+    type: String,
+  }
+});
 
 const organData = ref(null);
 const loading = ref(true);
@@ -27,7 +28,6 @@ const processOrganData = (data) => {
       data.Plats = parts[1].trim();
     }
   }
-
   processedOrganData.value = filteredData;
 };
 
@@ -59,7 +59,7 @@ const handleLinkClick = (event, itemLink, item) => {
 
   if (newId) {
     router.push(`/place/${newId}`);
-    emit('link-clicked', { builder: item.builder, work: item.work });
+    emit('link-clicked', { builder: item.builder, date: item.date, work: item.work });
   }
 };
 
@@ -124,7 +124,7 @@ onMounted(() => {
   top:80px;
   text-shadow: 0px 0px 50px rgba(0,0,0,0.8);
   white-space: pre-line;
-  line-height: 0.9;
+  line-height: 1.0;
   width: 250px;
   font-weight: 600;
   letter-spacing: 0.05rem;

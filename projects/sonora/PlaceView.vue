@@ -1,7 +1,6 @@
-<script setup lang="ts">
-import { ref, defineProps, onMounted, inject, computed, onUnmounted } from 'vue';
-import type { Image, Document, Media } from './types';
-import type { DianaClient } from "@/assets/diana";
+<script setup>
+import { ref, defineProps, onMounted, computed, onUnmounted } from 'vue';
+// import type { Image, Document, Media } from './types';
 import PlaceViewCard from "./PlaceViewCard.vue";
 import MapComponent from "@/components/MapComponent.vue";
 import { watch } from 'vue';
@@ -10,20 +9,18 @@ import i18n from '../../src/translations/sonora';
 
 const organData = ref(null);
 
-// Popup data
+//popup data
 const popupData = ref(null);
 const isPopupVisible = ref(false);
 const mousePosition = ref({ x: 0, y: 0 });
 const popupRef = ref(null);
-
-const linkData = ref({ builder: '', work: '' }); // Selected builder and work from placeviewcard 
-
+const linkData = ref({ builder: '', date: '', work: '' }); //selected builder, date, and work from placeviewcard 
 const route = useRoute();
-const sort = ref('type');
-const groupedByYear = ref<{ [year: string]: (Image | Document | Media)[] }>({});
-const { id } = defineProps<{ id: string; }>();
-let documents = ref<Document[]>([]); // Initialized as an empty array
-let media = ref<Media[]>([]); // Initialized as an empty array
+// const sort = ref('type');
+// const groupedByYear = ref<{ [year: string]: (Image | Document | Media)[] }>({});
+const { id } = defineProps();
+let documents = ref([]); 
+let media = ref([]);
 
 watch(() => route.params.id, async (newId) => {
   if (newId) {
@@ -58,8 +55,7 @@ onMounted(async () => {
 
   try {
     const currentLocale = i18n.global.locale;
-
-    const response = await fetch(`https://orgeldatabas.gu.se/webgoart/goart/organ1.php?id=${id}&lang=${currentLocale}`);    
+    const response = await fetch(`https://orgeldatabas.gu.se/webgoart/goart/organ1.php?id=${route.params.id}&lang=${currentLocale}`);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
@@ -80,6 +76,7 @@ onMounted(async () => {
     if (matchingElement) {
       linkData.value = {
         builder: matchingElement.builder,
+        date: matchingElement.date,
         work: matchingElement.work,
       };
     }
@@ -99,7 +96,7 @@ const fetchDivisionInfo = async (divId) => {
     const response = await fetch(`https://orgeldatabas.gu.se/webgoart/goart/divinfo1.php?div_id=${divId}&lang=${currentLocale}`);
     if (response.ok) {
       const data = await response.json();
-      popupData.value = processOrganData(data);
+      popupData.value = processPopUpData(data);
       isPopupVisible.value = true;
     } else {
       throw new Error('Failed to fetch division info');
@@ -116,7 +113,7 @@ const fetchStopInfo = async (stopId) => {
     const response = await fetch(`https://orgeldatabas.gu.se/webgoart/goart/stopinfo1.php?stop_id=${stopId}&lang=${currentLocale}`);
     if (response.ok) {
       const data = await response.json();
-      popupData.value = processOrganData(data);
+      popupData.value = processPopUpData(data);
       isPopupVisible.value = true;
     }
     else {
@@ -128,6 +125,45 @@ const fetchStopInfo = async (stopId) => {
 };
 
 const processOrganData = (data) => {
+  const processedData = {};
+  const beforeDisposition = {};
+  const afterDisposition = {};
+  let dispositionFound = false;
+
+  //keys to ignore explicitly
+  const keysToIgnore = ['no_docs', 'org_id', 'place_id', 'Fotografi', 'no_links'];
+
+  Object.keys(data).forEach(key => {
+    if (!keysToIgnore.includes(key) && isNaN(parseInt(key[0]))) {
+      if (key === 'Disposition') {
+        dispositionFound = true;
+        processedData[key] = {
+          label: i18n.global.t('disposition'),
+          data: data[key].substring(data[key].indexOf(';') + 1).trim(),
+        };
+      } else if (typeof data[key] === 'string' && data[key].includes(';')) {
+        const index = data[key].indexOf(';');
+        const label = data[key].substring(0, index).trim();
+        const remainingData = data[key].substring(index + 1).trim();
+        if (dispositionFound) {
+          afterDisposition[key] = { label, data: remainingData };
+        } else {
+          beforeDisposition[key] = { label, data: remainingData };
+        }
+      } else {
+        if (dispositionFound) {
+          afterDisposition[key] = data[key];
+        } else {
+          beforeDisposition[key] = data[key];
+        }
+      }
+    }
+  });
+
+  return { beforeDisposition, disposition: processedData['Disposition'], afterDisposition };
+};
+
+const processPopUpData = (data) => {
   const processedData = {};
 
   //keys to ignore explicitly
@@ -147,14 +183,19 @@ const processOrganData = (data) => {
   return processedData;
 };
 
-const filteredOrganData = computed(() => {
+const filteredOrganDataBefore = computed(() => {
   if (!organData.value) return null;
+  return organData.value.beforeDisposition;
+});
 
-  const filteredData = { ...organData.value };
-  //Remove disposition key
-  delete filteredData['Disposition'];
+const filteredOrganDataAfter = computed(() => {
+  if (!organData.value) return null;
+  return organData.value.afterDisposition;
+});
 
-  return filteredData;
+const dispositionData = computed(() => {
+  if (!organData.value) return null;
+  return organData.value.disposition;
 });
 
 const handleDisposition = async (event) => {
@@ -190,6 +231,7 @@ const handleDisposition = async (event) => {
 
 const handleLinkClicked = (data) => {
   linkData.value.builder = data.builder;
+  linkData.value.date = data.date;
   linkData.value.work = data.work;
 };
 
@@ -204,12 +246,12 @@ const handleClickOutside = (event) => {
 <template>
   <div class="main-container">
     <div class="place-card-container">
-      <PlaceViewCard :id="id" @link-clicked="handleLinkClicked" />
+      <PlaceViewCard :id="route.params.id" @link-clicked="handleLinkClicked" />
     </div>
     <div class="place-view">
       <div class="overview-row">
-          <div class="title-event" style="font-weight: 600;">{{ linkData.work }}</div>
-          <div  class="title-builder" style="font-weight: 300;">{{ linkData.builder }}</div>
+        <div class="title-event" style="font-weight: 600;">{{ linkData.work }} {{ linkData.date }}</div>
+        <div class="title-builder" style="font-weight: 300;">{{ linkData.builder }}</div>
       </div>
       <div class="place-gallery-container">
         <!-- Documents -->
@@ -220,13 +262,12 @@ const handleClickOutside = (event) => {
                 <td class="wide-second-td">{{ $t('documents') }}</td>
                 <div class="documents">
                   <div v-for="(doc, index) in documents" :key="index" class="document-link">
-                    <router-link :to="`/detail/image/${doc.Nr}`">
+                    <a :href="`/detail/image/${doc.Nr}`" target="_blank">
                       <div class="document-icon" />
                       {{ doc.Document }}
-                    </router-link>
+                    </a>
                   </div>
                 </div>
-           
               </tr>
             </tbody>
           </table>
@@ -239,67 +280,76 @@ const handleClickOutside = (event) => {
                 <td class="wide-second-td">Media:</td>
                 <div class="documents">
                   <div v-for="(item, index) in media" :key="index" class="document-link">
-                      <a :href="item.Linkaddr" target="_blank" rel="noopener noreferrer">
-                        <div class="media-icon"></div>
-                        {{ item.Linkname }}
-                      </a>
+                    <a :href="item.Linkaddr" target="_blank" rel="noopener noreferrer">
+                      <div class="media-icon"></div>
+                      {{ item.Linkname }}
+                    </a>
                   </div>
                 </div>
-           
               </tr>
             </tbody>
           </table>
         </div>
-          <!-- Metadata -->
-        <div class="table-section">
-          <table class="content-table" v-if="filteredOrganData">
+        <!-- Metadata Before Disposition -->
+        <div class="table-section" v-if="filteredOrganDataBefore">
+          <table class="content-table">
             <tbody>
-              <tr v-for="(item, key) in filteredOrganData" :key="key">
+              <tr v-for="(item, key) in filteredOrganDataBefore" :key="key">
                 <td class="wide-second-td">{{ item.label }}:</td>
-                <td class="tag theme-color-text">{{ item.data }}</td>
+                <td class="tag theme-color-text" v-html="item.data"></td>
               </tr>
             </tbody>
           </table>
         </div>
+        <!-- Disposition Section -->
         <div class="table-section">
           <table class="content-table" v-if="organData">
-
             <tbody>
               <div class="metadata-section">
-              <tr v-if="organData.Disposition">
-                <td class="wide-second-td">{{ organData.Disposition.label }}</td>
-                  <div class="organ-historic-overview" v-html="organData.Disposition.data" @click="handleDisposition"></div>
-                    <div v-if="isPopupVisible" class="popup" ref="popupRef" :style="{ left: mousePosition.x +50 + 'px', top: mousePosition.y -100 + 'px' }">
+                <tr v-if="dispositionData">
+                  <td class="wide-second-td">{{ dispositionData.label }}:</td>
+                  <div class="organ-historic-overview" v-html="dispositionData.data" @click="handleDisposition"></div>
+                  <div v-if="isPopupVisible" class="popup" ref="popupRef" :style="{ left: mousePosition.x +50 + 'px', top: mousePosition.y -100 + 'px' }">
                     <h3 v-if="popupData?.Verk">{{ $t('divisioninfo') }}</h3>
                     <h3 v-else-if="popupData?.Stämma">{{ $t('stopinfo') }}</h3>
                       <div v-if="popupData?.Verk" class="grid-container">
-                        <div class="column">
-                          <p><b>{{ popupData.Verk.label }}:</b> {{ popupData.Verk.data }}</p>
-                          <p v-if="popupData.Typ_av_väderlåda"><b>{{ popupData.Typ_av_väderlåda.label }}:</b> {{ popupData.Typ_av_väderlåda.data }}</p>
-                          <p v-if="popupData.Antal_väderlådor"><b>{{ popupData.Antal_väderlådor.label }}:</b> {{ popupData.Antal_väderlådor.data }}</p>
-                          <p v-if="popupData.Verk_info"><b>{{ popupData.Verk_info.label }}:</b> {{ popupData.Verk_info.data }}</p>
-                          <p v-if="popupData.Manual_nr"><b>{{ popupData.Manual_nr.label }}:</b> {{ popupData.Manual_nr.data }}</p>
-                          <p v-if="popupData.Pipuppställning"><b>{{ popupData.Pipuppställning.label }}:</b> {{ popupData.Pipuppställning.data }}</p>
-                          <p v-if="popupData.Info_tremulant_crescendo"><b>{{ popupData.Info_tremulant_crescendo.label }}:</b> {{ popupData.Info_tremulant_crescendo.data }}</p>
+                          <div class="column">
+                            <p><b>{{ popupData.Verk.label }}:</b> {{ popupData.Verk.data }}</p>
+                            <p v-if="popupData.Typ_av_väderlåda"><b>{{ popupData.Typ_av_väderlåda.label }}:</b> {{ popupData.Typ_av_väderlåda.data }}</p>
+                            <p v-if="popupData.Antal_väderlådor"><b>{{ popupData.Antal_väderlådor.label }}:</b> {{ popupData.Antal_väderlådor.data }}</p>
+                            <p v-if="popupData.Verk_info"><b>{{ popupData.Verk_info.label }}:</b> {{ popupData.Verk_info.data }}</p>
+                            <p v-if="popupData.Manual_nr"><b>{{ popupData.Manual_nr.label }}:</b> {{ popupData.Manual_nr.data }}</p>
+                            <p v-if="popupData.Pipuppställning"><b>{{ popupData.Pipuppställning.label }}:</b> {{ popupData.Pipuppställning.data }}</p>
+                            <p v-if="popupData.Info_tremulant_crescendo"><b>{{ popupData.Info_tremulant_crescendo.label }}:</b> {{ popupData.Info_tremulant_crescendo.data }}</p>
+                          </div>
+                          <div class="column" v-if="popupData.Beskrivning_väderlåda || popupData.Delad_väderlåda || popupData.Historik_väderlåda || popupData.Omfång_väderlåda || popupData.Lufttryck || popupData.Väderlåda_forskningsresultat">
+                            <p v-if="popupData.Beskrivning_väderlåda"><b>{{ popupData.Beskrivning_väderlåda.label }}:</b> {{ popupData.Beskrivning_väderlåda.data }}</p>
+                            <p v-if="popupData.Delad_väderlåda"><b>{{ popupData.Delad_väderlåda.label }}:</b> {{ popupData.Delad_väderlåda.data }}</p>
+                            <p v-if="popupData.Historik_väderlåda"><b>{{ popupData.Historik_väderlåda.label }}:</b> {{ popupData.Historik_väderlåda.data }}</p>
+                            <p v-if="popupData.Omfång_väderlåda"><b>{{ popupData.Omfång_väderlåda.label }}:</b> {{ popupData.Omfång_väderlåda.data }}</p>
+                            <p v-if="popupData.Lufttryck"><b>{{ popupData.Lufttryck.label }}:</b> {{ popupData.Lufttryck.data }}</p>
+                            <p v-if="popupData.Väderlåda_forskningsresultat"><b>{{ popupData.Väderlåda_forskningsresultat.label }}:</b> {{ popupData.Väderlåda_forskningsresultat.data }}</p>
+                          </div>
                         </div>
-                        <div class="column" v-if="popupData.Beskrivning_väderlåda || popupData.Delad_väderlåda || popupData.Historik_väderlåda || popupData.Omfång_väderlåda || popupData.Lufttryck || popupData.Väderlåda_forskningsresultat">
-                          <p v-if="popupData.Beskrivning_väderlåda"><b>{{ popupData.Beskrivning_väderlåda.label }}:</b> {{ popupData.Beskrivning_väderlåda.data }}</p>
-                          <p v-if="popupData.Delad_väderlåda"><b>{{ popupData.Delad_väderlåda.label }}:</b> {{ popupData.Delad_väderlåda.data }}</p>
-                          <p v-if="popupData.Historik_väderlåda"><b>{{ popupData.Historik_väderlåda.label }}:</b> {{ popupData.Historik_väderlåda.data }}</p>
-                          <p v-if="popupData.Omfång_väderlåda"><b>{{ popupData.Omfång_väderlåda.label }}:</b> {{ popupData.Omfång_väderlåda.data }}</p>
-                          <p v-if="popupData.Lufttryck"><b>{{ popupData.Lufttryck.label }}:</b> {{ popupData.Lufttryck.data }}</p>
-                          <p v-if="popupData.Väderlåda_forskningsresultat"><b>{{ popupData.Väderlåda_forskningsresultat.label }}:</b> {{ popupData.Väderlåda_forskningsresultat.data }}</p>
+                        <div v-else-if="popupData?.Stämma" class="stop-container">
+                          <p v-if="popupData.Stämma"><b>{{ popupData.Stämma.label }}:</b> {{ popupData.Stämma.data }}</p>
+                          <p v-if="popupData.Stämma_info"><b>{{ popupData.Stämma_info.label }}:</b> {{ popupData.Stämma_info.data }}</p>
                         </div>
-                      </div>
-                      <div v-else-if="popupData?.Stämma" class="stop-container">
-                        <p v-if="popupData.Stämma"><b>{{ popupData.Stämma.label }}:</b> {{ popupData.Stämma.data }}</p>
-                        <p v-if="popupData.Stämma_info"><b>{{ popupData.Stämma_info.label }}:</b> {{ popupData.Stämma_info.data }}</p>
-                      </div>
-                    <button @click="isPopupVisible = false" class="theme-color-text" style="font-weight: bold">{{ $t('close') }}</button>
+                      <button @click="isPopupVisible = false" class="theme-color-text" style="font-weight: bold">{{ $t('close') }}</button>
                   </div>
-            
+                </tr>
+              </div>
+            </tbody>
+          </table> 
+        </div>  
+        <!-- Metadata After Disposition -->
+        <div class="table-section" v-if="filteredOrganDataAfter">
+          <table class="content-table">
+            <tbody>
+              <tr v-for="(item, key) in filteredOrganDataAfter" :key="key">
+                <td class="wide-second-td">{{ item.label }}:</td>
+                <td class="tag theme-color-text" v-html="item.data"></td>
               </tr>
-            </div>
             </tbody>
           </table>
         </div>
@@ -308,9 +358,15 @@ const handleClickOutside = (event) => {
   </div>
   <MapComponent />
 </template>
-
     
 <style scoped>
+  .main-container {
+  background-color: rgba(84, 105, 108, 0.7) !important;
+  backdrop-filter: blur(10px) saturate(50%) brightness(100%);
+  color: white;
+  height:calc(100vh - 80px);
+}
+
 .place-view {
   margin-left: 20px;
   padding-top: 35px;
@@ -321,7 +377,7 @@ const handleClickOutside = (event) => {
   flex-direction: column; 
   align-items: start; 
   width: 100%; 
-  padding-left:15px;
+  padding-left:50px;
 
 }
 
@@ -372,17 +428,11 @@ font-size: 30px;
 }
 
 .document-link a {
-
   font-weight:300!important;
-
-}
-
-.content-table {
-
 }
 
 .table-section {
- padding-left: 30px;
+ padding-left: 50px;
  padding-bottom: 30px;
 }
 
@@ -397,10 +447,17 @@ table td {
     }
 
 .wide-second-td {
-  min-width:150px!important;
+  min-width: 150px !important;
+  width: 150px !important;
   padding-bottom: 5px;
-  padding-left:5px;
-  position:relative;
+  padding-left: 5px;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.content-table {
+  color: #fff;
+  text-align: left;
 }
 
 .organ-historic-overview{
@@ -409,17 +466,12 @@ table td {
   color:white;
 }
 
-
-
-.main-container {
-  background-color: rgba(84, 105, 108, 0.7) !important;
-  backdrop-filter: blur(10px) saturate(50%) brightness(100%);
-  color: white;
-}
-
-.content-table td {
-  color: white;
-  text-align: left;
+.organ-historic-overview :deep(td) {
+  padding-right: 15px;
+  padding-top: 2px;
+  width: 130px;
+  vertical-align: top;
+  text-align: right;
 }
 
 .document-link:hover {
@@ -473,11 +525,10 @@ margin-bottom:5px!important;
 }
 
 #app .place-view {
-
         width: calc(100%) !important;
- 
         margin-left: 0px !important;
-        padding-left: 15px;
+        padding-left: 0px;
+        padding-bottom:100px;
      
     }
 
@@ -487,7 +538,9 @@ margin-bottom:5px!important;
 }
 
 .table-section{
-  font-size:120%;
+font-size:120%;
+ padding-left: 20px;
+ padding-bottom: 30px;
 }
 
 .tag.theme-color-text {
@@ -498,17 +551,22 @@ margin-bottom:5px!important;
   backdrop-filter: blur(10px) saturate(50%) brightness(100%);
 }
 
+.overview-row {
+  padding-left:20px;
+
+}
+
 .title-event{
   color:black;
-  margin-left:-10px;
+  margin-left:0px;
   background-color:transparent;
   padding-right:15px!important;
-  margin-bottom:5px;
+  margin-bottom:10px;
 }
 
 .title-builder{
   color:black;
-  margin-left:-10px;
+  margin-left:0px;
   margin-bottom:20px;
   padding-right:15px!important;
   line-height:1.1;
@@ -519,9 +577,20 @@ margin-bottom:5px!important;
   margin-top:0px;
 }
 
+.wide-second-td {
+  min-width: 100px !important;
+  width:120px !important;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  position: relative;
+  box-sizing: border-box;
+  font-size:0.9em;
+}
+
 .tag{
   position:relative;
   float:left;
+  font-size:0.9em;
 }
 
 .documents{
@@ -532,7 +601,7 @@ margin-bottom:5px!important;
 .document-icon {
   height: 1.3em;
   vertical-align: middle;
-  margin-right: 8px;
+  margin-right: 0px;
   margin-top:-6px;
   display: inline-block;
   background-image: url("@/assets/document-black.svg");
@@ -543,12 +612,12 @@ margin-bottom:5px!important;
 .document-link {
   display: flex;
   align-items: left;
-  font-size: 1.05em;
+  font-size: 0.9em;
   padding-bottom: 5px;
   color:black;
   font-weight:100!important;
   line-height:1.5;
-  padding-left:5px;
+  padding-left:0px;
 }
 
 .document-link a {
@@ -584,4 +653,3 @@ margin-bottom:5px!important;
 }
 
 </style>
-    

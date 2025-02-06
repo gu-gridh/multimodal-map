@@ -23,16 +23,13 @@
   </VueMasonryWall>
 </template>
 
-<script lang="ts" setup>
-import { ref, inject, onMounted, defineComponent } from "vue";
-import type { Image } from "./types";
-import type { DianaClient } from "@/assets/diana";
+<script setup>
+import { ref, onMounted, defineComponent } from "vue";
 import VueMasonryWall from "@yeger/vue-masonry-wall";
+import { DianaClient } from "./settings/diana.js";
 
-const diana = inject("diana") as DianaClient;
-
-const images = ref<Array<Image>>([]);
-
+const diana = new DianaClient("rephotography");
+const images = ref([]);
 let layoutKey = ref(0);
 let loadedImagesCount = ref(0);
 
@@ -48,7 +45,7 @@ const refreshMasonry = () => {
 }
 
 onMounted(async () => {
-  images.value = await diana.listAll<Image>("image");
+  images.value = await diana.listAll("image");
 });
 
 defineComponent({
@@ -56,8 +53,6 @@ defineComponent({
     VueMasonryWall,
   },
 });
-
-
 </script>
 
 <style>
@@ -85,9 +80,6 @@ defineComponent({
   }
 }
 
-
-
-
 .grid-item:hover .grid-item-info {
   opacity: 0.9;
 }
@@ -109,7 +101,6 @@ defineComponent({
   transform: scale(1.05);
   z-index: 300; 
 }
-
 
 .grid-item-info {
   display: flex;

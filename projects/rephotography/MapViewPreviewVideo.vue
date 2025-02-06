@@ -1,11 +1,10 @@
-<script setup lang="ts">
+<script setup>
 import { computed } from "vue";
-import type { Video } from "./types";
 import GuplayPreview from "@/components/GuplayPreview.vue";
 
-const props = defineProps<{
-  video: Video;
-}>();
+const props = defineProps({
+  video: Object,
+});
 
 const guplayId = computed(() => props.video.link.split("/").pop());
 </script>

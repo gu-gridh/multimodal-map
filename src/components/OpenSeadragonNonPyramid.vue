@@ -1,19 +1,22 @@
-<script setup lang="ts">
+<script setup>
 import { ref, onMounted } from "vue";
 import OpenSeadragon from "openseadragon";
 
-const props = defineProps<{
-  src: string[];  
-}>();
+const props = defineProps({
+  src: {
+    type: Array,
+    required: true,
+  },
+});
 
 const emit = defineEmits(['page-changed']);
 const viewerEl = ref();
-const currentPage = ref(1);  // Define currentPage
+const currentPage = ref(1);
 const isFullscreen = ref(false);
 
 onMounted(() => {  
 
-  const tileSources: any = props.src.map(url => ({
+  const tileSources = props.src.map(url => ({
     type: 'image',
     url: url,
     buildPyramid: false  
@@ -140,8 +143,8 @@ position:absolute;
 }
 
 #FullPage {
-  background: url(@/assets/openseadragon/expand.svg);
-  background-size: 100%;
+  background: url(https://data.dh.gu.se/ui-icons/expand_white.svg);
+  background-size: 70%;
   background-repeat: no-repeat;
   background-position: center;
   background-color: rgba(35, 35, 35, 0.9);
@@ -154,7 +157,7 @@ position:absolute;
 }
 
 #FullPage.minimize {
-  background: url(@/assets/openseadragon/compress.svg);
+  background: url(https://data.dh.gu.se/ui-icons/compress_white.svg);
   background-size: 80%;
   background-repeat: no-repeat;
   background-position: 50% 50%;
@@ -168,7 +171,7 @@ position:absolute;
 }
 
 #Prev {
-  background: url(@/assets/openseadragon/prev.png);
+  background: url(https://data.dh.gu.se/ui-icons/arrow_prev_white.png);
   background-size: 35px 35px;
   background-repeat: no-repeat;
   background-position: center;
@@ -179,7 +182,7 @@ position:absolute;
 
   
 #Next {
-  background: url(@/assets/openseadragon/next.png);
+  background: url(https://data.dh.gu.se/ui-icons/arrow_next_white.png);
   background-size: 35px 35px;
   background-repeat: no-repeat;
   background-position: center;
@@ -189,8 +192,8 @@ position:absolute;
 }
 
 #ZoomIn {
-  background: url(@/assets/openseadragon/plus.svg);
-  background-size: 100%;
+  background: url(https://data.dh.gu.se/ui-icons/zoomin_big_white.png);
+  background-size: 70%;
   background-repeat: no-repeat;
   background-position: center;
   background-color: rgba(35, 35, 35, 0.9);
@@ -203,8 +206,8 @@ position:absolute;
 }
 
 #ZoomOut {
-  background: url(@/assets/openseadragon/minus.svg);
-  background-size: 100%;
+  background: url(https://data.dh.gu.se/ui-icons/zoomout_big_white.png);
+  background-size: 70%;
   background-repeat: no-repeat;
   background-position: center;
   background-color: rgba(35, 35, 35, 0.9);

@@ -1,17 +1,20 @@
-<script setup lang="ts">
+<script setup>
 import { ref, onMounted, defineProps } from "vue";
 import OpenSeadragon from "openseadragon";
 
 const props = defineProps({
-  src: Array as () => string[],
+  src: {
+    type: Array,
+    required: true,
+  },
   showReferenceStrip: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 });
  
 const viewerEl = ref();
-const currentPage = ref(1);  // Define currentPage
+const currentPage = ref(1);
 const isFullscreen = ref(false);
 
 onMounted(() => {  
@@ -27,6 +30,7 @@ onMounted(() => {
     showFullPageControl: true,
     showNavigator: true,
     navigatorAutoFade: true,
+    navigatorPosition:   "BOTTOM_RIGHT",
     showRotationControl: true,
     fullPageButton: "full-page",
     zoomInButton: "zoom-in",
@@ -64,12 +68,7 @@ onMounted(() => {
       <a id="zoom-out" href="#zoom-out">
         <div id="ZoomOut" class="NavButton"></div>
       </a>
-      <a id="rotate-left" href="#rotate-left">
-        <div id="RotateLeft" class="NavButton"></div>
-      </a>
-      <a id="rotate-right" href="#rotate-right">
-        <div id="RotateRight" class="NavButton"></div>
-      </a>
+      
     </div> 
 
     <div id="ToolbarHorizontal">
@@ -145,8 +144,8 @@ position:absolute;
 }
 
 #FullPage {
-  background: url(@/assets/openseadragon/expand.svg);
-  background-size: 100%;
+  background: url(https://data.dh.gu.se/ui-icons/expand_white.svg);
+  background-size: 70%;
   background-repeat: no-repeat;
   background-position: center;
   background-color: rgba(35, 35, 35, 0.9);
@@ -159,7 +158,7 @@ position:absolute;
 }
 
 #FullPage.minimize {
-  background: url(@/assets/openseadragon/compress.svg);
+  background: url(https://data.dh.gu.se/ui-icons/compress_white.svg);
   background-size: 80%;
   background-repeat: no-repeat;
   background-position: 50% 50%;
@@ -173,7 +172,7 @@ position:absolute;
 }
 
 #Prev {
-  background: url(@/assets/openseadragon/prev.png);
+  background: url(https://data.dh.gu.se/ui-icons/arrow_prev_white.png);
   background-size: 35px 35px;
   background-repeat: no-repeat;
   background-position: center;
@@ -184,7 +183,7 @@ position:absolute;
 
   
 #Next {
-  background: url(@/assets/openseadragon/next.png);
+  background: url(https://data.dh.gu.se/ui-icons/arrow_next_white.png);
   background-size: 35px 35px;
   background-repeat: no-repeat;
   background-position: center;
@@ -194,8 +193,8 @@ position:absolute;
 }
 
 #ZoomIn {
-  background: url(@/assets/openseadragon/plus.svg);
-  background-size: 100%;
+  background: url(https://data.dh.gu.se/ui-icons/zoomin_big_white.png);
+  background-size: 70%;
   background-repeat: no-repeat;
   background-position: center;
   background-color: rgba(35, 35, 35, 0.9);
@@ -208,8 +207,8 @@ position:absolute;
 }
 
 #ZoomOut {
-  background: url(@/assets/openseadragon/minus.svg);
-  background-size: 100%;
+  background: url(https://data.dh.gu.se/ui-icons/zoomout_big_white.png);
+  background-size: 70%;
   background-repeat: no-repeat;
   background-position: center;
   background-color: rgba(35, 35, 35, 0.9);
@@ -221,8 +220,8 @@ position:absolute;
 }
 
 #RotateLeft {
-  background: url(@/assets/openseadragon/rotateleft.svg);
-  background-size: 35%;
+  background: url(https://data.dh.gu.se/ui-icons/rotate_left_white.png);
+  background-size: 45%;
   background-repeat: no-repeat;
   background-position: center;
   background-color: rgba(35, 35, 35, 0.9);
@@ -235,8 +234,8 @@ position:absolute;
 }
 
 #RotateRight {
-  background: url(@/assets/openseadragon/rotateright.svg);
-  background-size: 35%;
+  background: url(https://data.dh.gu.se/ui-icons/rotate_right_white.png);
+  background-size: 45%;
   background-repeat: no-repeat;
   background-position: center;
   background-color: rgba(35, 35, 35, 0.9);

@@ -1,13 +1,12 @@
-<script setup lang="ts">
+<script setup>
 import { computed } from "vue";
 import ObjectViewComponent from "@/components/ObjectViewComponent.vue";
-import type { VideoDeep } from "./types";
 import GuplayViewer from "@/components/GuplayViewer.vue";
 
-const props = defineProps<{
-  object: VideoDeep;
-  id: Number;
-}>();
+const props = defineProps({
+  object: Object,
+  id: Number,
+});
 
 const guplayId = computed(() => props.object.link.split("/").pop());
 </script>

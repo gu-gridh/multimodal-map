@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup>
 import { computed } from "vue";
 import MainLayout from "@/MainLayout.vue";
 import MapViewControls from "./MapViewControls.vue";
@@ -10,7 +10,7 @@ import FeatureSelection from "./FeatureSelectionRephoto.vue";
 import MapViewPreview from "./MapViewPreview.vue";
 import MapViewGallery from "./MapViewGallery.vue";
 import { storeToRefs } from "pinia";
-import { rephotographyStore } from "./store";
+import { rephotographyStore } from "./settings/store";
 import { mapStore } from "@/stores/store";
 import { clean } from "@/assets/utils";
 import markerIcon from "@/assets/marker-gold.svg";
@@ -21,8 +21,7 @@ import { onMounted, watch } from "vue";
 import { nextTick } from "vue";
 import GeoJSON from "ol/format/GeoJSON";
 
-
-const { categories, years, tags, tagsLayerVisible, placesLayerVisible, mapLayerVisibility, mapLayerVisibilityTwo, mapLayerVisibilityThree } = storeToRefs(rephotographyStore());
+const { categories, years, tags, tagsLayerVisible, placesLayerVisible, mapLayerVisibility, mapLayerVisibilityTwo } = storeToRefs(rephotographyStore());
 const store = mapStore();
 const { selectedFeature } = storeToRefs(store);
 const minZoom = 9;
@@ -43,10 +42,9 @@ watch(
     if (newFeature && newFeature.getGeometry) {
       const geometry = newFeature.getGeometry();
       if (geometry) {
-        const coordinates = (geometry as any).getCoordinates();
+        const coordinates = (geometry).getCoordinates();
         store.updateCenter(coordinates);
-        if (store.zoom < featureZoom)
-        {
+        if (store.zoom < featureZoom) {
           store.updateZoom(featureZoom);
         }
       }
@@ -56,26 +54,24 @@ watch(
 );
 
 const tagParams = computed(() => {
-  const tag_set = tags.value[0]; // Assuming that tags always contains at least one element
+  const tag_set = tags.value[0];
   return clean({
     tag_set,
   });
 });
 
-
 const visibleAbout = ref(false);
 const showGrid = ref(false);
-let visited = false; // Store the visited status outside of the hook
+let visited = false;
 
 onMounted(() => {
-  // Check if the "visited" key exists in session storage
-  visited = sessionStorage.getItem("visited") === "true"; // Retrieve the visited status from session storage
+  //check if the "visited" key exists in session storage
+  visited = sessionStorage.getItem("visited") === "true";
 
   if (!visited) {
-    // Hide the about component
     visibleAbout.value = true;
     sessionStorage.setItem("visited", "true");
-  } 
+  }
 })
 
 const toggleAboutVisibility = async () => {
@@ -89,12 +85,12 @@ const vectorLayers = computed(() => [
     geoJsonFormat: new GeoJSON(),
   },
   {
-  url: "https://data.dh.gu.se/geography/glacier_front_2021.geojson",
-  geoJsonFormat: new GeoJSON(),
+    url: "https://data.dh.gu.se/geography/glacier_front_2021.geojson",
+    geoJsonFormat: new GeoJSON(),
   },
   {
-  url: "https://data.dh.gu.se/geography/glacier_front_2008.geojson",
-  geoJsonFormat: new GeoJSON(),
+    url: "https://data.dh.gu.se/geography/glacier_front_2008.geojson",
+    geoJsonFormat: new GeoJSON(),
   },
 ]);
 
@@ -118,117 +114,73 @@ watch(showGrid, (newValue) => {
     </div>
   </div>
   <MapViewGallery v-if="showGrid" />
- <About :visibleAbout="visibleAbout" @close="visibleAbout = false" />
- <div class="gradient-blur">
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-    </div>
+  <About :visibleAbout="visibleAbout" @close="visibleAbout = false" />
+  <div class="gradient-blur">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
   <MainLayout>
     <template #search>
-      <button class="item"  @click="toggleAboutVisibility">
-            <div
-              class="p-1 px-2 clickable category-button"
-              style="
+      <button class="item" @click="toggleAboutVisibility">
+        <div class="p-1 px-2 clickable category-button" style="
                 margin-top: -10px;
-              "
-            >More info</div>
-          </button>
+              ">More info</div>
+      </button>
       <MapViewControls />
     </template>
 
-  
-   
-
     <template #background>
-      <MapComponent 
-      :shouldAutoMove="true" 
-      :min-zoom=minZoom
-      :max-zoom=maxZoom 
-      :restrictExtent="[0.0, 75.0, 30.0, 81.0]" >
+      <MapComponent :shouldAutoMove="true" :min-zoom=minZoom :max-zoom=maxZoom
+        :restrictExtent="[0.0, 75.0, 30.0, 81.0]">
         <template #layers>
           <NpolarLayer
-            capabilitiesUrl="https://geodata.npolar.no/arcgis/rest/services/Basisdata/NP_Ortofoto_Svalbard_WMTS_3857/MapServer/WMTS/1.0.0/WMTSCapabilities.xml"
-          />
+            capabilitiesUrl="https://geodata.npolar.no/arcgis/rest/services/Basisdata/NP_Ortofoto_Svalbard_WMTS_3857/MapServer/WMTS/1.0.0/WMTSCapabilities.xml" />
 
-        <!-- places -->
-        <DianaPlaceLayer
-          v-if="placesLayerVisible"
-          path="rephotography/geojson/place/"
-          :params="placeParams"
-          :z-index=2
-        >
-          <ol-style>
-            <ol-style-icon
-              :src="markerIcon"
-              :scale="1.8"
-              :displacement="[-10, 45]"
-              :anchor="[0.0, 0.0]"
-            ></ol-style-icon>
-          </ol-style>
-          <FeatureSelection />
-        </DianaPlaceLayer>
+          <!-- places -->
+          <DianaPlaceLayer v-if="placesLayerVisible" path="rephotography/geojson/place/" :params="placeParams"
+            :z-index=2>
+            <ol-style>
+              <ol-style-icon :src="markerIcon" :scale="1.8" :displacement="[-10, 45]"
+                :anchor="[0.0, 0.0]"></ol-style-icon>
+            </ol-style>
+            <FeatureSelection />
+          </DianaPlaceLayer>
 
-        <!-- tags -->
-        <DianaPlaceLayer
-          v-if="tagsLayerVisible"
-          path="rephotography/search/tag/"
-          :params="tagParams"
-          :z-index=2
-        >
-          <ol-style>
-            <ol-style-icon
-              :src="markerIcon"
-              :scale="1.8"
-              :displacement="[-10, 45]"
-              :anchor="[0.0, 0.0]"
-            ></ol-style-icon>
-          </ol-style>
-          <FeatureSelection />
-        </DianaPlaceLayer>
+          <!-- tags -->
+          <DianaPlaceLayer v-if="tagsLayerVisible" path="rephotography/search/tag/" :params="tagParams" :z-index=2>
+            <ol-style>
+              <ol-style-icon :src="markerIcon" :scale="1.8" :displacement="[-10, 45]"
+                :anchor="[0.0, 0.0]"></ol-style-icon>
+            </ol-style>
+            <FeatureSelection />
+          </DianaPlaceLayer>
 
-          <DianaPlaceLayer
-          path="rephotography/geojson/focus/"
-          :z-index=2
-          >
-          <ol-style>
-            <ol-style-icon
-              :src="markerBlue"
-              :scale="1.8"
-              :displacement="[-10, 45]"
-              :anchor="[0.0, 0.0]"
-            ></ol-style-icon>
-          </ol-style>
-        </DianaPlaceLayer>
+          <DianaPlaceLayer path="rephotography/geojson/focus/" :z-index=2>
+            <ol-style>
+              <ol-style-icon :src="markerBlue" :scale="1.8" :displacement="[-10, 45]"
+                :anchor="[0.0, 0.0]"></ol-style-icon>
+            </ol-style>
+          </DianaPlaceLayer>
 
+          <DianaPlaceLayerRephoto v-for="layer in vectorLayers" :key="layer.url" :geojsonUrl="layer.url" :zIndex="2"
+            :isVisible="mapLayerVisibility" :date=true>
+          </DianaPlaceLayerRephoto>
+
+          <DianaPlaceLayerRephoto :geojsonUrl="'https://data.dh.gu.se/geography/CryoClim_GAO_SJ_1936-1972.geojson'"
+            :zIndex="1" :isVisible="mapLayerVisibilityTwo" :date=false>
+          </DianaPlaceLayerRephoto>
+
+          <!-- 
         <DianaPlaceLayerRephoto
-          v-for="layer in vectorLayers"
-          :key="layer.url"
-          :geojsonUrl="layer.url"
-          :zIndex="2"
-          :isVisible="mapLayerVisibility"
-          :date= true
-        >
-        </DianaPlaceLayerRephoto>
-
-        <DianaPlaceLayerRephoto
-          :geojsonUrl="'https://data.dh.gu.se/geography/CryoClim_GAO_SJ_1936-1972.geojson'"
-          :zIndex="1"
-          :isVisible="mapLayerVisibilityTwo"
-          :date= false
-        >
-        </DianaPlaceLayerRephoto>
-
-        <!-- <DianaPlaceLayerRephoto
           :geojsonUrl="'https://data.dh.gu.se/geography/CryoClim_GAO_SJ_2001-2010.geojson'"
           :zIndex=1
           :isVisible="mapLayerVisibilityThree"
         >
         </DianaPlaceLayerRephoto> -->
-
 
         </template>
       </MapComponent>
@@ -241,24 +193,23 @@ watch(showGrid, (newValue) => {
 </template>
 
 <style>
-
-.main-title{
+.main-title {
   font-size: 4.5vw;
-  margin-bottom:30px;
+  margin-bottom: 30px;
 }
 
 #app .left-pane {
   background-size: contain;
   width: 50%;
   min-width: 900px;
-  user-select:none;
+  user-select: none;
 }
 
 .map-container {
   height: calc(100vh - 80px) !important;
   position: relative;
   width: 100%;
-  user-select:none;
+  user-select: none;
 }
 
 .gradient-blur {
@@ -268,14 +219,14 @@ watch(showGrid, (newValue) => {
   height: calc(100vh - 80px);
   pointer-events: none;
   width: 750px;
-  top:0px;
-  opacity:1.0;
-  user-select:none;
+  top: 0px;
+  opacity: 1.0;
+  user-select: none;
 }
 
 @media screen and (max-width: 900px) {
   .gradient-blur {
-display:none;
+    display: none;
   }
 }
 
@@ -365,5 +316,7 @@ display:none;
       rgba(0, 0, 0, 1) 100%);
 }
 
-
+.ol-hover {
+  color: white !important;
+}
 </style>

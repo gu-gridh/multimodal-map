@@ -58,7 +58,7 @@ body {
 #app .left-pane {
   background-color: transparent !important;
   position: absolute;
-  height: 100vh;
+  height: 100%;
   width: 52%;
   min-width: 900px;
   z-index: 100;
@@ -68,14 +68,14 @@ body {
 .left-pane-layer {
   padding: 0px 480px 0px 0px !important;
   pointer-events: none !important;
-  height: 100vh !important;
+  height: auto !important;
   width: 100% !important;
 }
 
 .left-pane-content {
   padding: 60px 0px 30px 60px !important;
   position: relative;
-  height: calc(100vh - 75px) !important;
+  height: calc(100vh - 75px)!important;
   margin-top: -5px;
   margin-left: -5px;
   padding: 5px;
@@ -209,7 +209,7 @@ body {
     padding-right: 30px;
     width: auto;
     height: auto;
-    background-image: url("/dropdown-arrow.png");
+    background-image: url(https://data.dh.gu.se/ui-icons/dropdown-arrow_white.png);
     background-size: 15px;
     background-repeat: no-repeat;
     background-position: calc(100% - 10px) 55%;

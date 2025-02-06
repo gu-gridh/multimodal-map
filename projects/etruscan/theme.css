@@ -1,0 +1,165 @@
+/* CSS - Cascading Style Sheet */
+
+/* Color palette */
+:root {
+  --theme-1: rgb(232, 228, 217);
+  /* This is the background color */
+  --theme-2: rgb(250, 150, 150);
+  /* This is for lighter text on dark backgrounds */
+  --theme-3: rgb(180, 100, 100);
+  /* This is the main accent colour */
+  --theme-4: rgb(160, 80, 80);
+  /* This is for accent hover */
+  --theme-5: rgb(140, 60, 60);
+  /* This is for accent lines */
+}
+
+/* Main */
+html,
+body {
+  font-family: "Barlow Condensed", sans-serif !important;
+  background-color: var(--theme-1) !important;
+}
+
+.main-title{
+  margin-top:-30px;
+}
+
+.theme-title-typography {
+  font-family: 'Teko', sans-serif;
+}
+
+.theme-color-text {
+  color: var(--theme-3) !important;
+}
+
+.data {
+  color: var(--theme-5) !important;
+}
+
+.theme-color-background {
+  background-color: var(--theme-3) !important;
+}
+
+.dropdown:hover {
+  background-color: var(--theme-4) !important;
+}
+
+.dropdown:focus {
+  outline-color: var(--theme-5) !important;
+}
+
+.main-title {
+  font-family: 'Teko', sans-serif;
+  color: var(--theme-3) !important;
+  font-size: 5.5em;
+}
+
+.about {
+  display: none;
+}
+
+#app .left-pane {
+  background: url("images/gradient.png");
+  background-size: contain;
+  width: 54% !important;
+  min-width: 900px;
+  max-width: 1000px;
+  font-size: 95%;
+}
+
+#app .left-pane-content {
+  margin-left: -20px !important;
+  margin-top: 0px !important;
+}
+
+@media screen and (max-width: 900px) {
+  #app .left-pane {
+    margin-top:0px!important;
+    top: 76%!important;
+    z-index:1000!important;
+    position:absolute!important;
+    width:100%!important;
+    padding: 30px 10px 100px 10px!important;
+  }
+  
+  #app .left-pane-content {
+    margin-left: 0px !important;
+    margin-top: 0px !important;
+  }
+}
+
+.placecard {
+  height: calc(100vh - 33vh);
+  margin-top: 85px;
+}
+
+
+@media screen and (max-width: 1400px) {
+  #app .placecard-title {
+    font-size: 2.6em !important;
+  }
+
+  #app .placecard-text {
+    font-size: 100%;
+  }
+
+
+}
+
+#app .right-pane {
+  width: 28% !important;
+  min-width: 420px;
+  max-width: 600px;
+}
+
+
+.theme-button {
+  border-radius: 5px;
+  padding: 5px 10px;
+  color: white;
+  width: auto;
+  transition: all 0.2s ease-in-out;
+}
+
+.theme-button:hover {
+  background-color: var(--theme-4) !important;
+  transform: scale(1.05);
+}
+
+#app .category-button {
+  background-color: rgba(255, 255, 255, 0.6);
+  color: rgb(71, 85, 105);
+  border-radius: 4px;
+}
+
+#app .category-button:hover {
+  background-color: var(--theme-4) !important;
+  color: white;
+}
+
+#app .category-button.active {
+  background-color: var(--theme-3) !important;
+  color: white;
+}
+
+@media screen and (max-width: 900px) {
+  .atlas-gradient {
+    background: linear-gradient(180deg, rgba(232, 228, 217, 0) 0px, var(--theme-1) 300px) !important;
+  }
+
+  #app .right-pane {
+    min-width: 100%;
+    max-width: 100%;
+    z-index: 502 !important;
+  }
+
+  #app .placecard {
+    margin-top: 0px;
+    height: 100%;
+  }
+
+  #app .toolbar-bottom-mini {
+    display: none;
+  }
+}

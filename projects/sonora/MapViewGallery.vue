@@ -3,90 +3,69 @@
     <div class="gallery">
       <div class="gallery__col-sizer"></div>
       <div class="gallery__gutter-sizer"></div>
-      <div
-        v-for="item in images"
-        :key="item.uuid"
-        class="gallery__item"
-      >
-        <router-link
-          :to="`/place/${item.Id}`"
-        >
-        <div class="item-info">
+      <div v-for="item in images" :key="item.uuid" class="gallery__item">
+        <router-link :to="`/place/${item.Id}`">
+          <div class="item-info">
             <div class="item-info-meta">
               <h1> {{ item.Place }}</h1>
             </div>
-        </div>
-        <img 
-          :src="item.Photo" 
-          loading="lazy" 
-        />
+          </div>
+          <img :src="item.Photo" loading="lazy" />
         </router-link>
       </div>
     </div>
   </div>
 </template>
 
-<script lang="ts" setup>
-import { ref, inject, onMounted, defineComponent, watch } from "vue";
-import type { Image } from "./types";
-import type { DianaClient } from "@/assets/diana";
+<script setup>
+import { ref, inject, onMounted, watch } from "vue";
 import Masonry from 'masonry-layout';
 import InfiniteScroll from 'infinite-scroll';
 import imagesLoaded from 'imagesloaded';
-import { sonoraStore } from "./store";
+import { sonoraStore } from "./settings/store";
 import { storeToRefs } from "pinia";
 
 const { dataParams, selectedBuilderId } = storeToRefs(sonoraStore());
 let msnry;
-let pageIndex = 1;  // Initialize pageIndex to 1
-let canIncrement = true;  // Flag to control the increment
+let pageIndex = 1;  //Initialize pageIndex to 1
+let canIncrement = true;  //Flag to control the increment
 let infScroll;
 
-type GalleryImage = {
-  Id: number;
-  Place: string;
-  Photo: string;
-};
-
-const images = ref<Array<GalleryImage>>([]);
-const diana = inject("diana") as DianaClient;
-
-let layoutKey = ref(0);
-let loadedImagesCount = ref(0);
+const images = ref([]);
 
 const fetchData = async (requestedPageIndex) => {
-    try {
-      const urlToFetch = `https://orgeldatabas.gu.se/webgoart/goart/gallery.php?btype=${dataParams.value.buildingTypeId}&year1=${dataParams.value.year1}&year2=${dataParams.value.year2}&id=${selectedBuilderId.value}&page=${requestedPageIndex}&group=100`;
-      const res = await fetch(urlToFetch);
-      const data = await res.json(); 
-      const newImages = data.map(item => ({
-            Id: item.Id,
-            Place: item.Place,
-            Photo: item.Photo
-          })).filter(img => img.Photo !== "");  
-      
-      images.value = [...images.value, ...newImages];
-      
-    } catch (error) {
-      console.error("Error fetching additional images:", error);
-    }
+  try {
+    const urlToFetch = `https://orgeldatabas.gu.se/webgoart/goart/gallery.php?btype=${dataParams.value.buildingTypeId}&year1=${dataParams.value.year1}&year2=${dataParams.value.year2}&id=${selectedBuilderId.value}&page=${requestedPageIndex}&group=100`;
+    const res = await fetch(urlToFetch);
+    const data = await res.json();
+    const newImages = data.map(item => ({
+      Id: item.Id,
+      Place: item.Place,
+      Photo: item.Photo
+    })).filter(img => img.Photo !== "");
+
+    images.value = [...images.value, ...newImages];
+
+  } catch (error) {
+    console.error("Error fetching additional images:", error);
+  }
 };
 
-  const initMasonry = () => {
-      const gallery = document.querySelector('.gallery');
-      if (!gallery) {
-        console.error('gallery element not found.');
-        return;
-      }
+const initMasonry = () => {
+  const gallery = document.querySelector('.gallery');
+  if (!gallery) {
+    console.error('gallery element not found.');
+    return;
+  }
 
-      msnry = new Masonry(gallery, {
-        itemSelector: '.gallery__item',
-        columnWidth: '.gallery__col-sizer',
-        gutter: '.gallery__gutter-sizer',
-        percentPosition: true,
-      });
+  msnry = new Masonry(gallery, {
+    itemSelector: '.gallery__item',
+    columnWidth: '.gallery__col-sizer',
+    gutter: '.gallery__gutter-sizer',
+    percentPosition: true,
+  });
 
-   infScroll = new InfiniteScroll(gallery, {
+  infScroll = new InfiniteScroll(gallery, {
     path: () => {
       if (canIncrement) {
         pageIndex++;  // Increment pageIndex for the next set of data
@@ -94,7 +73,7 @@ const fetchData = async (requestedPageIndex) => {
       canIncrement = false; // Disable further increments
       const url = `https://orgeldatabas.gu.se/webgoart/goart/gallery.php?btype=${dataParams.value.buildingTypeId}&year1=${dataParams.value.year1}&year2=${dataParams.value.year2}&id=${selectedBuilderId.value}&page=${pageIndex}&group=100`;
       return url;
-  },
+    },
     outlayer: msnry,
     status: '.page-load-status',
     history: false,
@@ -102,64 +81,48 @@ const fetchData = async (requestedPageIndex) => {
     elementScroll: true,
   });
 
-  infScroll.on('load', async function(response) {
-      try {
-          // Extract the body content from the HTML response
-          let bodyContent = response.querySelector("body").textContent;
-          
-          // Convert the body content to JSON
-          const data = JSON.parse(bodyContent);
-          
-           const newImages = data.map(item => ({
-            Id: item.Id,
-            Place: item.Place,
-            Photo: item.Photo
-          })).filter(img => img.Photo !== "");   
+  infScroll.on('load', async function (response) {
+    try {
+      // Extract the body content from the HTML response
+      let bodyContent = response.querySelector("body").textContent;
 
-          images.value = [...images.value, ...newImages];
+      // Convert the body content to JSON
+      const data = JSON.parse(bodyContent);
 
-          imagesLoaded(document.querySelector('.gallery'), () => {
-            msnry.reloadItems();
-            msnry.layout();
-          });
-      }
-      catch (e) {
-          console.error("JSON Parsing failed or other error: ", e);
-      }
+      const newImages = data.map(item => ({
+        Id: item.Id,
+        Place: item.Place,
+        Photo: item.Photo
+      })).filter(img => img.Photo !== "");
 
-      canIncrement = true;
+      images.value = [...images.value, ...newImages];
+
+      imagesLoaded(document.querySelector('.gallery'), () => {
+        msnry.reloadItems();
+        msnry.layout();
+      });
+    }
+    catch (e) {
+      console.error("JSON Parsing failed or other error: ", e);
+    }
+
+    canIncrement = true;
   });
-  };
+};
 
-// const imageLoaded = () => {
-//   loadedImagesCount.value++;
-//   if (loadedImagesCount.value === images.value?.length) {
-//     // refreshMasonry();
-//   }
-// };
-
-// const refreshMasonry = () => {
-//   layoutKey.value++;
-// };
-
-  onMounted(() => {
+onMounted(() => {
   fetchData(1).then(() => {
     imagesLoaded(document.querySelector('.gallery'), () => {
       initMasonry();
-
-      // After the initial Masonry initialization, reload and layout again
-      // to make sure the first batch of images obeys the Masonry layout.
-      // msnry.reloadItems();
-      // msnry.layout();
     });
   });
-  });
+});
 
-// Watcher for dataParams changes to refetch data
+//watcher for dataParams changes to refetch data
 watch(dataParams, async () => {
   images.value = [];
-  pageIndex = 1;  
-  canIncrement = true;  
+  pageIndex = 1;
+  canIncrement = true;
 
   if (infScroll) {
     infScroll.destroy();
@@ -173,58 +136,58 @@ watch(dataParams, async () => {
 });
 
 watch(selectedBuilderId, async () => {
- images.value = [];
- pageIndex = 1;  
- canIncrement = true;  
+  images.value = [];
+  pageIndex = 1;
+  canIncrement = true;
 
- if (infScroll) {
-  infScroll.destroy();
- }
+  if (infScroll) {
+    infScroll.destroy();
+  }
 
- await fetchData(pageIndex);
+  await fetchData(pageIndex);
 
-imagesLoaded(document.querySelector('.gallery'), () => {
+  imagesLoaded(document.querySelector('.gallery'), () => {
     initMasonry();
   });
 });
-
-
 </script>
 
 <style>
-#gallery-container{
-  position:absolute;
-  width:100%;
-  height:calc(100% - 80px);
-  padding-left:33%;
-  z-index:100!important;
+#gallery-container {
+  position: absolute;
+  width: 100%;
+  height: calc(100% - 80px);
+  padding-left: 29%;
+  z-index: 100 !important;
   background-color: rgba(232, 228, 217, 0.9) !important;
-  backdrop-filter:blur(5px);
+  backdrop-filter: blur(5px);
 }
 
 @media screen and (min-width: 1900px) {
-  #gallery-container{ 
-    padding-left:600px;
-}
+  #gallery-container {
+    padding-left: 600px;
   }
+}
 
 @media screen and (max-width: 1500px) {
-  #gallery-container{ 
-    padding-left:500px;
-}
+  #gallery-container {
+    padding-left: 500px;
   }
+}
 
-  @media screen and (max-width: 900px) {
-  #gallery-container{ 
-    padding-left:5px;
-}
+@media screen and (max-width: 900px) {
+  #gallery-container {
+    padding-left: 5px;
   }
+}
 
 .gallery {
   max-height: 100%;
   overflow-y: auto;
-  max-width: 100%; /* Maximum width of the gallery */
-  margin: 0 auto; /* Top and bottom margin 0, left and right margin auto */  
+  max-width: 100%;
+  /* Maximum width of the gallery */
+  margin: 0 auto;
+  /* Top and bottom margin 0, left and right margin auto */
 }
 
 .gallery::-webkit-scrollbar {
@@ -240,34 +203,38 @@ imagesLoaded(document.querySelector('.gallery'), () => {
 .gallery__col-sizer {
   width: calc(16.6% - 10px);
 }
-.gallery__gutter-sizer { width: 10px;}
+
+.gallery__gutter-sizer {
+  width: 10px;
+}
 
 @media screen and (max-width: 2000px) {
-  .gallery__item, .gallery__col-sizer {
+  .gallery__item,
+  .gallery__col-sizer {
     width: calc(20% - 8px);
   }
 }
 
-
 @media screen and (max-width: 1800px) {
-  .gallery__item, .gallery__col-sizer {
+  .gallery__item,
+  .gallery__col-sizer {
     width: calc(25% - 8px);
   }
 }
 
 @media screen and (max-width: 1500px) {
-  .gallery__item, .gallery__col-sizer {
+  .gallery__item,
+  .gallery__col-sizer {
     width: calc(33% - 8px);
   }
 }
 
 @media screen and (max-width: 900px) {
-  .gallery__item, .gallery__col-sizer {
+  .gallery__item,
+  .gallery__col-sizer {
     width: calc(50% - 8px);
-}
   }
-
-
+}
 
 /* hide by default */
 .gallery.are-images-unloaded .image-gallery__item {
@@ -277,37 +244,50 @@ imagesLoaded(document.querySelector('.gallery'), () => {
 .gallery__item {
   margin-bottom: 10px;
   float: left;
-  overflow:hidden !important;
-  -webkit-transition-property: none!important;
-  -moz-transition-property: none!important;
-  -o-transition-property: none!important;
-  transition-property: none!important;
+  overflow: hidden !important;
+  -webkit-transition-property: none !important;
+  -moz-transition-property: none !important;
+  -o-transition-property: none !important;
+  transition-property: none !important;
 }
 
-.gallery__item--height1 { height: 140px; background: #EA0; }
-.gallery__item--height2 { height: 220px; background: #C25; }
-.gallery__item--height3 { height: 300px; background: #19F; }
+.gallery__item--height1 {
+  height: 140px;
+  background: #EA0;
+}
 
-.gallery__item--width2 { width: 66%; }
+.gallery__item--height2 {
+  height: 220px;
+  background: #C25;
+}
 
-.item-info{
-  pointer-events:none;
-  position:absolute!important;
-  height:100%!important;
-  width:100%!important;
-  z-index:1000!important;
-  bottom:0px;
+.gallery__item--height3 {
+  height: 300px;
+  background: #19F;
+}
+
+.gallery__item--width2 {
+  width: 66%;
+}
+
+.item-info {
+  pointer-events: none;
+  position: absolute !important;
+  height: 100% !important;
+  width: 100% !important;
+  z-index: 1000 !important;
+  bottom: 0px;
   transition: all 0.5s ease-in-out;
   background: linear-gradient(0deg, rgba(0, 0, 0, 0.0) 0px, rgba(0, 0, 0, 0)50%) !important;
 }
 
-.item-info-meta{
+.item-info-meta {
   /* text-transform: capitalize; */
-  position:absolute;
-  color:white;
-  bottom:0px;
-  padding:10px 15px;
-  display:none;
+  position: absolute;
+  color: white;
+  bottom: 0px;
+  padding: 10px 15px;
+  display: none;
 }
 
 .gallery__item img {
@@ -319,19 +299,20 @@ imagesLoaded(document.querySelector('.gallery'), () => {
 
 .gallery__item img:hover {
   display: block;
-  transform:scale(1.05);
+  transform: scale(1.05);
 }
 
-.gallery__item:hover .item-info{
+.gallery__item:hover .item-info {
   background: linear-gradient(0deg, rgba(0, 0, 0, 0.7) 0px, rgba(0, 0, 0, 0)50%) !important;
 }
 
-.gallery__item:hover .item-info-meta{
- display:block;
+.gallery__item:hover .item-info-meta {
+  display: block;
 }
 
 .page-load-status {
-  display: none; /* hidden by default */
+  display: none;
+  /* hidden by default */
   padding-top: 20px;
   border-top: 1px solid #DDD;
   text-align: center;

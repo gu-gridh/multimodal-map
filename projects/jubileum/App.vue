@@ -1,6 +1,6 @@
-<script lang="ts" setup>
+<script setup>
 import { provide } from "vue";
-import config from "./config";
+import config from "./settings/config";
 import Footer from "./Footer.vue";
 import { DianaClient } from "@/assets/diana";
 
@@ -52,18 +52,20 @@ body {
 }
 
 #app .about {
-  width:90%
+  width:90%;
+  font-size:90%;
+  text-align:justify;
 }
 
 #app .left-pane {
   background: url("@/assets/gradient-jubileum.png");
   background-size: contain;
-  z-index: 500;
-  width:50%
+  z-index: 249;
+  width:1200px;
 }
 
 .left-pane-layer {
-  padding: 0px 420px 0px 0px !important;
+  padding: 0px 720px 0px 0px !important;
   pointer-events: none !important;
   height: 100vh !important;
   width: 100% !important;
@@ -83,6 +85,7 @@ body {
   padding-bottom: 0px;
   width: auto;
   pointer-events: none;
+  z-index:0!important;
 }
 
 #app .ol-zoom-in {
@@ -104,7 +107,7 @@ body {
   border-radius: 0px 10px 10px 0px !important;
   height: 35px;
   padding-bottom: 3px !important;
-  widtH: 50px;
+  width: 50px;
   background-color: rgba(160, 80, 80, 1.0) !important;
 }
 
@@ -117,6 +120,15 @@ body {
 
 
 @media screen and (max-width: 900px) {
+  #app .left-pane {
+  margin-top:0px!important;
+  top: 75%!important;
+  z-index:1000!important;
+  position:absolute!important;
+  width:100%!important;
+  padding: 30px 10px 100px 10px!important;
+}
+
   #app .right-pane {
     width: 100% !important;
     padding:0px;
@@ -127,10 +139,15 @@ body {
     padding-top: 70px !important;
   }
 
+  .ui-mode {
+    z-index:10001 !important;
+  }
+
   .ui-overlay {
     margin-top: 25px !important;
     margin-left: 0px !important;
     font-size: 120% !important;
+    z-index:10001 !important;
   }
 
   #app .masonry-grid {
@@ -157,5 +174,20 @@ body {
     left: calc(50% + 0px);
     top: calc(100vh - 320px);
   }
+
+  .main-title {
+
+  text-align: left;
+  margin-top:10px!important;
+
+
+}
+
+.sub-title {
+
+  text-align: left;
+
+}
+
 }
 </style>

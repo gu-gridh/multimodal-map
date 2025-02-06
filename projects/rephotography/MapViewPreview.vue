@@ -1,40 +1,28 @@
-<script lang="ts" setup>
+<script setup>
 import { watchEffect, ref, inject } from "vue";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
-import type {
-  Image,
-  ImageDeep,
-  Rephotography,
-  RephotographyDeep,
-  Video,
-  Observation,
-} from "./types";
-import type { DianaClient } from "@/assets/diana";
 import PreviewRephotography from "./MapViewPreviewRephotography.vue";
 import PreviewImage from "./MapViewPreviewImage.vue";
 import PreviewVideo from "./MapViewPreviewVideo.vue";
 import PreviewObservation from "./MapViewPreviewObservation.vue";
-import { rephotographyStore } from "./store";
+import { DianaClient } from "./settings/diana.js";
 
-
+const diana = new DianaClient("rephotography");
 const { selectedFeature } = storeToRefs(mapStore());
-const { years } = storeToRefs(rephotographyStore()); 
-const diana = inject("diana") as DianaClient;
-
-const images = ref<Image[]>();
-const videos = ref<Video[]>();
-const observations = ref<Observation[]>();
-const focusedFeatures = ref<number[]>([]);
-const rephotographies = ref<RephotographyDeep[]>();
+const images = ref();
+const videos = ref();
+const observations = ref();
+const focusedFeatures = ref([]);
+const rephotographies = ref();
 
 (async function fetchFocusedFeatures() {
   const response = await fetch('https://diana.dh.gu.se/api/rephotography/geojson/focus/');
   const json = await response.json();
-  focusedFeatures.value = json.features.map((feature: any) => feature.id);
+  focusedFeatures.value = json.features.map((feature) => feature.id);
 })();
 
-function isFeatureFocused(id: number) {
+function isFeatureFocused(id) {
   return focusedFeatures.value.includes(id);
 }
 
@@ -45,25 +33,24 @@ watchEffect(async () => {
   rephotographies.value = [];
 
   if (selectedFeature.value) {
-    const id = selectedFeature.value.getId() as number;
-    
+    const id = selectedFeature.value.getId();
+
     if (id) {
       const isFocus = isFeatureFocused(id);
       const queryParam = isFocus ? { focus: id } : { place: id };
-  
-      images.value = await diana.listAll<Image>("image", queryParam);
-      videos.value = await diana.listAll<Video>("video", queryParam);
+
+      images.value = await diana.listAll("image", queryParam);
+      videos.value = await diana.listAll("video", queryParam);
       try {
-        observations.value = await diana.listAll<Observation>("observation", { place: id });
+        observations.value = await diana.listAll("observation", { place: id });
       } catch (error) {
         console.error('Failed to fetch observations for place', id, error);
       }
-
       if (isFocus) {
         // direct fetch from the rephotography focus API
         const response = await fetch(`https://diana.dh.gu.se/api/rephotography/rephotography/focus/?focus_id=${id}&depth=2`);
         const json = await response.json();
-        rephotographies.value = json.results.map((rephotography: any) => {
+        rephotographies.value = json.results.map((rephotography) => {
           return {
             ...rephotography,
             old_image: rephotography.old_image,
@@ -72,16 +59,12 @@ watchEffect(async () => {
         });
       } else {
         // Load Rephotographies in two steps because `depth` doesn't work yet.
-        // TODO Implement `depth` instead
-        const rephotographiesShallow = await diana.listAll<Rephotography>(
-          "rephotography",
-          { place: id }
-        );
-        const rephotographiesDeep: RephotographyDeep[] = [];
+        const rephotographiesShallow = await diana.listAll("rephotography", { place: id });
+        const rephotographiesDeep = [];
         for (const rephotography of rephotographiesShallow) {
           const [oldImage, newImage] = await Promise.all([
-            diana.get<ImageDeep>("image", rephotography.old_image),
-            diana.get<ImageDeep>("image", rephotography.new_image),
+            diana.get("image", rephotography.old_image),
+            diana.get("image", rephotography.new_image),
           ]);
           rephotographiesDeep.push({
             ...rephotography,
@@ -89,13 +72,12 @@ watchEffect(async () => {
             new_image: newImage,
           });
         }
+
         rephotographies.value = rephotographiesDeep;
       }
     }
   }
 });
-
-
 
 function deselectPlace() {
   selectedFeature.value = undefined;
@@ -108,29 +90,11 @@ function deselectPlace() {
       <div class="close-button" @click="deselectPlace">+</div>
       <h3 class="">{{ selectedFeature.get("name") }}</h3>
       <div class="pointer">
-        <PreviewRephotography
-          v-for="rephotography in rephotographies"
-          :key="rephotography.old_image + ' ' + rephotography.new_image"
-          :rephotography="rephotography"
-        />
-
-        <PreviewVideo
-          v-for="video in videos"
-          :key="video.uuid"
-          :video="video"
-        />
-
-        <PreviewImage
-          v-for="image in images"
-          :key="image.uuid"
-          :image="image"
-        />
-
-          <PreviewObservation
-          v-for="observation in observations"
-          :key="observation.id"
-          :observation="observation"
-        />
+        <PreviewRephotography v-for="rephotography in rephotographies"
+          :key="rephotography.old_image + ' ' + rephotography.new_image" :rephotography="rephotography" />
+        <PreviewVideo v-for="video in videos" :key="video.uuid" :video="video" />
+        <PreviewImage v-for="image in images" :key="image.uuid" :image="image" />
+        <PreviewObservation v-for="observation in observations" :key="observation.id" :observation="observation" />
       </div>
     </div>
   </div>
@@ -148,7 +112,7 @@ function deselectPlace() {
 
 #app h3 {
   font-size: 35px;
-  line-height:1;
+  line-height: 1;
   font-weight: 100;
   margin-left: -2px;
   margin-bottom: 10px;
@@ -161,6 +125,7 @@ function deselectPlace() {
 .split-image {
   display: flex;
 }
+
 .split-image img {
   width: 50%;
 }
@@ -170,34 +135,33 @@ function deselectPlace() {
 }
 
 #app .image-card {
-  float:left;
+  float: left;
   overflow: hidden;
   margin-bottom: 30px;
-  width:100%;
-  height:auto;
-  padding:0px!important;
+  width: 100%;
+  height: auto;
+  padding: 0px !important;
   transition: all 0.2s ease-in-out;
 }
 
 #app .image-container {
   border-radius: 8px;
   overflow: hidden;
-  margin-bottom: 10px!important;
-  width:100%;
-  height:auto!important;
-  border-radius:8px!important;
-  content:contain;
-  padding:0px;
+  margin-bottom: 10px !important;
+  width: 100%;
+  height: auto !important;
+  border-radius: 8px !important;
+  content: contain;
+  padding: 0px;
 }
 
 #app .image-card:hover {
-transform:scale(1.03);
-border-radius: 8px;
+  transform: scale(1.03);
+  border-radius: 8px;
 }
 
 #app .image {
   display: block;
-  transform:scale(1.3);
+  transform: scale(1.3);
 }
-
 </style>

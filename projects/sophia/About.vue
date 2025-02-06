@@ -12,48 +12,73 @@
       </button>
     </div>
     <div class="main-about-content">
-      <div class="right-content"></div>
+      <div class="logo-area">
+        <div class="logo" :style="{ 'background-image': `url(${logoSophia})` }"></div>
+        <div class="logo" :style="{ 'background-image': `url(${logoGu})` }"></div>
+        <div
+          class="logo"
+          :style="{
+            'background-image': `url(${logoMist})`,
+            width: '280px',
+            'margin-top': '25px',
+            'margin-left': '15px',
+          }"
+        ></div>
+      </div>
       <div class="left-content">
+        <div class="left-content-columns">
+          <div class="left-content-column1">
+            <div class="title-fields">
+              <div class="sophia-main-title theme-color-text" v-bind:class="{ fullopacityui: visibleAbout }">Написи
+                <br>Святої
+                <br>Софії
+              </div>
+              <div class="sophia-sub-title theme-color-text" v-bind:class="{ fullopacityui: visibleAbout }">Saint
+                Sophia's
+                <br>
+                Inscriptions
+              </div>
+            </div>
+          </div>
+          <div class="left-content-column2">
+            <div class="sophia-article-main" v-bind:class="{ fullopacityui: visibleAbout }">
+              {{ $t('aboutportalmain') }}
+            </div>
+            <div class="sophia-article-sub" v-bind:class="{ fullopacityui: visibleAbout }">
+              {{ $t('aboutportal') }}
+            </div>
+            <div class="explore-button">
+              <button @click="$emit('close')">
+                <div class="p-1 px-2 category-button"
+                  style="width:auto; padding:5px 15px; text-align: center; cursor: pointer;"
+                  v-bind:class="{ fullopacityui: visibleAbout }">{{ $t('explore') }}</div>
+              </button>
+            </div>
 
-        <div class="about-main-title theme-color-text" v-bind:class="{ fullopacityui: visibleAbout }">Написи <br>Святої
-          <br>Софії
-        </div>
-        <div class="about-sub-title theme-color-text" v-bind:class="{ fullopacityui: visibleAbout }">Saint Sophia's <br>
-          Inscriptions</div>
-     <!--    <div class="about-article-main" v-bind:class="{ fullopacityui: visibleAbout }">
-          {{ $t('aboutportalmain') }}
-        </div>
-        <div class="about-article-sub" v-bind:class="{ fullopacityui: visibleAbout }">
-          {{ $t('aboutportal') }}
-        </div> -->
-
-        <div class="explore-button">
-          <button @click="toggleLanguageEN(); $emit('close')">
-            <div class="p-1 px-2 category-button"
-              style="width:auto; padding:5px 15px; text-align: center; cursor: pointer;"
-              v-bind:class="{ fullopacityui: visibleAbout }">Explore</div>
-          </button>
-        </div>
-
-        <div class="explore-button">
-          <button @click="toggleLanguageUK(); $emit('close')">
-            <div class="p-1 px-2 category-button"
-              style="width:auto; padding:5px 15px; text-align: center; cursor: pointer;"
-              v-bind:class="{ fullopacityui: visibleAbout }">Досліджуйте</div>
-          </button>
+            <div class="explore-button">
+              <a href="https://www.gu.se/en/research/digital-documentation-of-inscriptions-in-the-saint-sophia-cathedral-in-kyiv"
+                target="_blank">
+                <button>
+                  <div class="p-1 px-2 category-button"
+                    style="margin-left:20px; width:auto; padding:5px 15px; text-align: center; cursor: pointer;"
+                    v-bind:class="{ fullopacityui: visibleAbout }">{{ $t('learnmore') }}</div>
+                </button>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
-
+      <div class="right-content"></div>
 
     </div>
   </div>
 </template>
 
-
-
-<script lang="ts">
-
+<script>
 import i18n from '../../src/translations/sophia';
+import logoSophia from './images/logo-sophia.png';
+import logoGu from './images/logo-gu.png';
+import logoMist from './images/logo-mist_en.png';
 
 export default {
   name: "aboutview",
@@ -62,6 +87,13 @@ export default {
       type: Boolean,
       required: true,
     },
+  },
+  data() {
+    return {
+      logoSophia,
+      logoGu,
+      logoMist,
+    };
   },
   methods: {
     toggleLanguage() {
@@ -79,12 +111,31 @@ export default {
     }
   },
 };
-
-
-
 </script>
 
 <style scoped>
+.logo-area {
+  position: absolute;
+  width: 100%;
+  height: 180px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  z-index: 1000;
+  padding-left: 15%;
+  pointer-events: none;
+  user-select: none;
+}
+
+.logo {
+  background-size: contain;
+  height: 160px;
+  width: 120px;
+  background-repeat: no-repeat;
+  margin-right: 10px;
+  user-select: none;
+}
+
 .about-container {
   color: black;
   overflow-y: auto;
@@ -95,23 +146,21 @@ export default {
 
 .fullopacity {
   background: linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1.0) 100%) !important;
-
 }
 
-
-
-.about-main-title {
+.sophia-main-title {
   font-family: "Alumni Sans Pinstripe", sans-serif;
   color: white !important;
   font-weight: 100 !important;
   line-height: 0.7;
   text-align: right;
   font-size: 7vw;
- top:40%;
-
+  top: 40%;
+  user-select: none;
+  pointer-events: none;
 }
 
-.about-sub-title {
+.sophia-sub-title {
   font-family: "Alumni Sans Pinstripe", sans-serif;
   color: white !important;
   font-weight: 100 !important;
@@ -121,19 +170,41 @@ export default {
   font-size: 3.5vw;
   margin-bottom: 0px;
   letter-spacing: 0px !important;
+  user-select: none;
+  pointer-events: none;
 }
 
-@media screen and (max-width: 1350px) {
-  .about-main-title {
-  font-size: 7em;
+.sophia-article-main {
+  font-family: "Oswald", sans-serif !important;
+  color: white;
+  text-align: left;
+  font-size: 1.1em;
+  line-height: 1.3;
+  width: auto;
+  font-weight: 100;
+  padding: 0px;
+  margin: 0px;
 }
 
-.about-sub-title {
-  font-size: 3.5em;
+.sophia-article-sub {
+  font-family: "Oswald", sans-serif !important;
+  color: white;
+  text-align: left;
+  font-size: 0.95em;
+  line-height: 1.3;
+  width: auto;
+  font-weight: 100;
+  padding: 0px;
+  margin: 0px;
+  columns: 1;
+  margin-top: 20px;
 }
-}
+
 
 .main-about-content {
+  display: flex;
+  flex-direction: row;
+  align-items: top;
   padding: 0px;
   height: calc(100vh - 80px);
   overflow: hidden;
@@ -146,97 +217,223 @@ export default {
   left: 20px;
 }
 
-
 .explore-button {
-  margin-top: 20px;
+  margin-top: 0px;
   position: relative;
-  float: right;
-  margin-left: 20px;
-
+  float: left;
+  margin-left: 0px;
 }
 
 .left-content {
-  width: 50%;
+  width: 60%;
   float: right;
-  padding-right: 100px;
-  padding-top: 8%;
+  margin-top: 80px;
+  padding-right: 10px;
+  min-width: 800px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 .right-content {
-  height: calc(100vh - 0px);
-  width: 50%;
+  height: calc(100vh - 80px);
+  width: 40%;
   background: url(/images/saintsophia.jpg);
   background-size: cover;
   float: right;
 }
 
-.category-button {
-  margin-top: 40px;
+.left-content-columns {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  width: 100%;
   float: right;
-  font-size: 1.2vw !important;
+  padding-right: 10px;
+}
+
+.left-content-column1 {
+  float: right;
+  width: 55%;
+}
+
+.left-content-column2 {
+  float: right;
+  padding-left: 40px;
+  width: 45%;
+  margin-left: 40px;
+  border-width: 0px 0px 0px 0.5px;
+  border-style: dashed;
+  border-color: grey;
+  max-width: 500px;
+}
+
+.category-button {
+  font-family: "Oswald", sans-serif !important;
+  margin-top: 30px;
+  float: left;
+  font-size: 1.0em !important;
   font-weight: 300;
   transition: all 0.4s ease-in-out;
   padding: 4px 15px !important;
   z-index: 1000;
   opacity: 1.0;
   right: 0px;
-  color:white !important;
-  background-color:rgb(50,50,50) !important;
+  color: white !important;
+  background-color: rgb(50, 50, 50) !important;
 }
 
+/*   large screen adaption */
+@media screen and (min-width: 1550px) {
 
-@media screen and (max-width: 1500px) {
-  .category-button {
-    font-size: 1.2em !important;
+.sophia-article-main {
+font-size: 1.1vw;
+}
+
+.sophia-article-sub {
+font-size: 0.9vw;
+}
+.left-content-column2 {
+
+  max-width: 800px;
+}
+.category-button {
+  font-size: 0.9vw !important;
+
+
+}
+}
+
+/*   Mid screen adaption */
+@media screen and (max-width: 1450px) {
+  .left-content {
+    width: 60%;
+    float: left;
+    padding-right: 10px;
+  }
+
+  .sophia-main-title {
+    font-size: 7em;
+  }
+
+  .sophia-sub-title {
+    font-size: 3.5em;
   }
 }
 
+
+/*   Small screen adaption */
 @media screen and (max-width: 900px) {
-  .category-button {
-    margin-top: 30px;
-    font-size: 1.5em !important;
-    float:auto!important;
-  }
-
-  .explore-button {
-  margin-top: 0px;
-  position: relative;
-  float: left;
-  margin-left: 30px;
-
-}
-
-  .about-main-title{
-    text-align:left;
-    margin-left:30px;
-  }
-
-  .about-sub-title{
-    text-align:left;
-    margin-left:30px;
-    font-size:3em;
-  }
-
-  .language-button{
-    margin-left:5px;
+  .logo-area {
+    display: none;
   }
 
   .main-about-content {
-  padding: 0px;
-  height: calc(100vh - 0px);
-  overflow: hidden;
-}
+    display: flex;
+    flex-direction: row;
+    align-items: top;
+    padding: 0px;
+    height: auto;
+    overflow: hidden;
+  }
+
+  .left-content {
+    width: 100%;
+    float: left;
+    padding-left: 50px;
+    min-width: auto;
+    padding-right: 20px;
+    margin-top: 80px;
+    z-index: 10000;
+    position: absolute;
+    padding-bottom: 140px;
+    display: block;
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
   .right-content {
-  width:80%;
+    width: 100%;
+    float: right;
+    margin-left: 150px;
+    height: calc(100vh + 160px);
+  }
+
+  .left-content-columns {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    float: right;
+  }
+
+  .left-content-column2 {
+    float: right;
+    padding-left: 0px;
+    padding-top: 10px;
+    width: 100%;
+    padding-left: 0px;
+    padding-right: 0px;
+    margin-left: 0px;
+    border-width: 0px 0px 0px 0.0px;
+  }
+
+  .category-button {
+    margin-top: 30px;
+    font-size: 1.2em !important;
+    float: auto !important;
+  }
+
+  .explore-button {
+    margin-top: 0px;
+    position: relative;
+    float: left;
+    margin-left: 0px;
+  }
+
+  .sophia-main-title {
+    text-align: left;
+    margin-left: 0px;
+  }
+
+  .sophia-sub-title {
+    text-align: left;
+    margin-left: 0px;
+    font-size: 3.8em;
+  }
+
+  .sophia-article-main {
+    padding-left: 0px !important;
+    margin: 0px;
+    font-weight: 100 !important;
+    font-size: 1.2em !important;
+    padding-right: 0px !important;
+  }
+
+  .sophia-article-sub {
+    font-family: "Oswald", sans-serif;
+    color: white;
+    text-align: left;
+    font-size: 1.0em !important;
+    line-height: 1.3;
+    width: auto;
+    font-weight: 100 !important;
+    padding: 0px !important;
+    margin: 0px !important;
+    columns: 1 !important;
+    margin-top: 20px !important;
+  }
+
+  .language-button {
+    margin-left: 25px;
+    z-index: 10001;
+  }
+
+
 }
-.left-content {
-  width: 80%;
-  float: left;
-  padding-right:30px;
-  padding-top: 8%;
-  z-index:10000;
-  position:absolute;
-}
+
+@media screen and (max-width: 600px) {
+  .right-content {}
 }
 
 .about-logo-top-right {

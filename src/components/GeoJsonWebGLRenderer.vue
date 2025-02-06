@@ -1,5 +1,4 @@
-<script lang="ts" setup>
-// @ts-nocheck
+<script setup>
 import { ref, computed, inject, onMounted } from "vue";
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
@@ -72,9 +71,7 @@ const vectorLayer = new WebGLVectorLayer({
 onMounted(() => {
   try {
     if (map) {
-      console.log("Current map layers: ", map.getLayers().getArray());
       map.addLayer(vectorLayer);
-      console.log('Layer added');
     }
   } catch (e) {
     console.error("An error occurred during component mounting: ", e);

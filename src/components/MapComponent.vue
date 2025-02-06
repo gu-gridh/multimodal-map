@@ -1,20 +1,9 @@
 <template>
-  <ol-map
-    :loadTilesWhileAnimating="true"
-    :loadTilesWhileInteracting="true"
-    style="height: 100%; width: calc(100% + 200px); z-index: !important"
-    ref="map"
-  >
+  <ol-map :loadTilesWhileAnimating="true" :loadTilesWhileInteracting="true"
+    style="height: 100%; width: calc(100% + 200px); z-index: auto !important" ref="map">
 
-  <ol-view
-    ref="view"
-    style="z-index=0"
-    :min-zoom="minZoom"
-    :max-zoom="maxZoom"
-    :extent="transformedRestrictExtent"
-  />
+    <ol-view ref="view" style="z-index:0" :min-zoom="minZoom" :max-zoom="maxZoom" :extent="transformedRestrictExtent" />
 
-  
     <!-- <ol-fullscreen-control v-if="fullscreencontrol" /> -->
     <!--<ol-attribution-control v-if="attributioncontrol" /> -->
     <!-- <ol-overviewmap-control v-if="overviewmapcontrol">
@@ -35,37 +24,34 @@
   </ol-map>
 </template>
 
-<script setup lang="ts">
-import { ref, inject, computed, onMounted, watch, nextTick, provide } from "vue";
+<script setup>
+import { ref, computed, onMounted, watch, nextTick, provide, inject } from "vue";
 import { fromLonLat, transformExtent } from "ol/proj";
 import { mapStore } from "@/stores/store";
-import { storeToRefs } from "pinia";
-import type { Project } from "@/types/project";
-
-const config = inject("config") as Project;
+// import { storeToRefs } from "pinia";
 
 const store = mapStore();
-const { extent, center, zoom } = storeToRefs(store);
+// const { extent, center, zoom } = storeToRefs(store);
 
 let isInitialSettingDone = false; //don't fire the watchers before setting the map location
 const isAnimating = ref(false);
-
+const config = inject("config");
 const projection = ref(config.projection);
-const rotation = ref(0);
+// const rotation = ref(0);
 const view = ref();
 const map = ref();
-const projectedCenter = fromLonLat(config.center, projection.value);
+// const projectedCenter = fromLonLat(config.center, projection.value);
 
 // Controls
-const fullscreencontrol = ref(true);
-const attributioncontrol = ref(true);
+// const fullscreencontrol = ref(true);
+// const attributioncontrol = ref(true);
 const zoomcontrol = ref(true);
-const zoomslidercontrol = ref(true);
-const scalelinecontrol = ref(true);
-const overviewmapcontrol = ref(true);
+// const zoomslidercontrol = ref(true);
+// const scalelinecontrol = ref(true);
+// const overviewmapcontrol = ref(true);
 
 const props = defineProps({
-   shouldAutoMove: {
+  shouldAutoMove: {
     type: Boolean,
     default: false,
   },
@@ -90,7 +76,7 @@ const shouldAutoMove = ref(props.shouldAutoMove);
 const transformedRestrictExtent = computed(() => {
   if (props.restrictExtent.length > 0) {
     return transformExtent(
-      props.restrictExtent as [number, number, number, number],
+      props.restrictExtent,
       "EPSG:4326",
       projection.value
     );
@@ -104,7 +90,7 @@ onMounted(() => {
 
   // Provide the map object for child components
   provide('map', map.value);
-  
+
   if (storeCenter[0] !== 0 && storeZoom !== 1) {
     map.value.map.getView().setCenter(storeCenter);
     map.value.map.getView().setZoom(storeZoom);
@@ -173,6 +159,15 @@ onMounted(() => {
       }
     },
   );
+
+  watch(
+    () => store.extent,
+    (newExtent) => {
+      if (newExtent && newExtent.length === 4) {
+        map.value.map.getView().fit(newExtent, { duration: 500 });
+      }
+    }
+  );
 });
 
 function onMoveEnd() {
@@ -204,16 +199,16 @@ function onMoveEnd() {
 .ol-control button:focus {
   background: #ff9900 !important;
   border-width: 0px !important;
-  outline:0px solid var(--ol-subtle-foreground-color)!important;
+  outline: 0px solid var(--ol-subtle-foreground-color) !important;
 }
 
 .ol-scaleline-control {
   right: 20px !important;
-  display:none!important;
+  display: none !important;
 }
 
 .ol-full-screen {
-  display:none!important;
+  display: none !important;
   right: 25px !important;
   top: 20px !important;
   position: fixed !important;
@@ -244,15 +239,18 @@ function onMoveEnd() {
   top: 20px !important;
   position: fixed;
 }
+
 .ol-zoom-in:hover {
   background-color: rgba(0, 0, 0, 0.7);
 }
+
 .ol-zoom-out {
   right: 20px;
   top: 68px;
   position: fixed;
   margin-top: 3px;
 }
+
 .ol-zoom-out:hover {
   background-color: rgba(0, 0, 0, 0.7);
 }
@@ -260,6 +258,7 @@ function onMoveEnd() {
 .ol-control {
   position: fixed;
 }
+
 #app .ol-zoomslider {
   top: 1rem !important;
   border-radius: 5px !important;

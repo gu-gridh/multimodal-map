@@ -1,47 +1,40 @@
-<script lang="ts" setup>
+<script setup>
 import { computed } from "vue";
 import MainLayout from "@/MainLayout.vue";
 import MapViewControls from "./MapViewControls.vue";
-import MapComponent from "@/components/MapComponentRwanda.vue";
-import DianaPlaceLayer from "./DianaPlaceLayerSonora.vue";
-import GeoJsonWebGLRenderer from "@/components/GeoJsonWebGLRenderer.vue";
-import FeatureSelection from "./FeatureSelection.vue";
+import MapComponent from "./components/MapComponent.vue";
+import DianaPlaceLayer from "./MapViewMarkers.vue";
 import MapViewPreview from "./MapViewPreview.vue";
 import { storeToRefs } from "pinia";
-import { sonoraStore } from "./store";
+import { sonoraStore } from "./settings/store";
 import { mapStore } from "@/stores/store";
-import { clean } from "@/assets/utils";
-import markerIcon from "@/assets/marker-white.svg";
 import MapViewGallery from "./MapViewGallery.vue";
 import MapViewArchive from "./MapViewArchive.vue";
 import { ref } from "vue";
 import About from "./About.vue";
+import Instructions from "./Instructions.vue";
 import { onMounted, watch } from "vue";
 import { nextTick } from "vue";
-import GeoJSON from "ol/format/GeoJSON";
-import Title from "./Title.vue"
+import Title from "./MapViewTitle.vue"
 
-const { categories, tags, necropoli, tombType, placesLayerVisible, tagsLayerVisible, dataParams, enable3D, selectedBuilderId } = storeToRefs(sonoraStore());
+const { placesLayerVisible, dataParams, selectedBuilderId } = storeToRefs(sonoraStore());
 const store = mapStore();
 const { selectedFeature } = storeToRefs(store);
-const storeZ = sonoraStore();
-const minZoom = 9;
-const maxZoom = 20;
 const featureZoom = 16; //value between minZoom and maxZoom when you select a point 
 const visibleAbout = ref(false);
+const visibleInstructions = ref(false);
 const mapViewControls = ref(null);
 const showGrid = ref(false);
 const showArchive = ref(false);
-let visited = true; // Store the visited status outside of the hook
+let visited = true; //store the visited status outside of the hook
 
-// Watcher for selectedFeature changes
 watch(
   selectedFeature,
   (newFeature, oldFeature) => {
     if (newFeature && newFeature.getGeometry) {
       const geometry = newFeature.getGeometry();
       if (geometry) {
-        const coordinates = (geometry as any).getCoordinates();
+        const coordinates = (geometry).getCoordinates();
         store.updateCenter(coordinates);
         if (store.zoom < featureZoom)
           {          
@@ -97,6 +90,11 @@ const toggleAboutVisibility = async () => {
   visibleAbout.value = !visibleAbout.value;
 };
 
+const toggleInstructionsVisibility = async () => {
+  await nextTick();
+  visibleInstructions.value = !visibleInstructions.value;
+};
+
 watch(showGrid, (newValue) => {
   localStorage.setItem("showGrid", JSON.stringify(newValue));
 });
@@ -113,11 +111,12 @@ watch(visibleAbout, async (newVal) => {
     }
   }
 });
+
 </script>
 
 <template>
   <div style="display:flex; align-items: center; justify-content: center; pointer-events: none;">
-    <div class="ui-mode ui-overlay">
+    <div class="ui-mode ui-overlay ui-overlay-top">
      <button class="item" :class="{ selected: !showGrid && !showArchive }" @click="showGrid = false; showArchive = false;">
       {{ $t('map') }}
     </button>
@@ -132,9 +131,10 @@ watch(visibleAbout, async (newVal) => {
   <MapViewGallery v-if="showGrid && !showArchive" />
   <MapViewArchive v-if="showArchive" />
   <About :visibleAbout="visibleAbout" @close="visibleAbout = false" />
+  <Instructions :visibleInstructions="visibleInstructions" @close="visibleInstructions = false" />
   <MainLayout>
     <template #search>
-      <Title @toggle-about="toggleAboutVisibility" />
+      <Title @toggle-about="toggleAboutVisibility" @toggle-instructions="toggleInstructionsVisibility"/>
       <MapViewControls ref="mapViewControls" />
     </template>
 

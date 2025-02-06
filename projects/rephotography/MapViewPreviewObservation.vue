@@ -1,23 +1,20 @@
 <template>
   <div class="observation-card">
     <div class="observation">Observation</div>
-      <div class="date">{{ observation.date }}</div>
-      <div class="title">{{ observation.title }}</div>
-      <p class="description" v-html="observation.description"></p>
-     
+    <div class="date">{{ observation.date }}</div>
+    <div class="title">{{ observation.title }}</div>
+    <p class="description" v-html="observation.description"></p>
+
   </div>
 </template>
 
-<script setup lang="ts">
-import type { Observation } from "./types";
-
-defineProps<{
-  observation: Observation;
-}>();
+<script setup>
+const props = defineProps({
+  observation: Object,
+});
 </script>
 
 <style scoped>
-
 .observation-card {
   float: left;
   height: auto;
@@ -38,29 +35,26 @@ defineProps<{
 
 .observation {
   font-size: 1.0em;
-  line-height:1.0;
+  line-height: 1.0;
   font-weight: 400;
-  padding-bottom:0px;
-  
+  padding-bottom: 0px;
 }
 
 .title {
-  margin-top:20px;
+  margin-top: 20px;
   font-size: 1.3em;
-  line-height:1.0;
+  line-height: 1.0;
   font-weight: 400;
-  
 }
 
 .description {
   margin-top: 10px;
   font-size: 1.0em;
-  line-height:1.2;
-
+  line-height: 1.2;
 }
 
 .date {
   font-size: 1.0em;
-color:rgb(200, 0, 0);
+  color: rgb(200, 0, 0);
 }
 </style>

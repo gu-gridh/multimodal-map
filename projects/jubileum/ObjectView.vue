@@ -1,9 +1,9 @@
-<script setup lang="ts">
-import { inject, ref, watchEffect } from "vue";
-import type { Image } from "./types";
-import type { DianaClient } from "@/assets/diana";
+<script setup>
+import { ref, watchEffect } from "vue";
 import ObjectViewImage from "./ObjectViewImage.vue";
+import { DianaClient } from "./settings/diana.js";
 
+// const { selectedFeature } = storeToRefs(mapStore());
 const props = defineProps({
   type: {
     type: String,
@@ -15,8 +15,8 @@ const props = defineProps({
   },
 });
 
-const diana = inject("diana") as DianaClient;
-const object = ref<Image>();
+const diana = new DianaClient("jubileum");
+const object = ref();
 
 watchEffect(async () => {
   object.value = await diana.get(props.type, props.id, { depth: 1 });

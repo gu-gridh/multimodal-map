@@ -2,15 +2,11 @@
   <footer id="footer">
     <div id="developer-info">
       <div class="links-stack border-style">
-        <a class="site-link link" href="https://www.organacademy.se/svenskt-digitalt-orgelarkiv" target="_blank">The SONORA research project</a>
-          <a class="site-link link" href="https://github.com/gu-gridh/multimodal-map/tree/sonora" target="_blank">GitHub
-            repository and development</a>
-      
-      </div>
-      <div class="links-stack">
-        <a class="download-link" href="" target="_blank">
-          Texts and images: CC BY 4.0</a>
-        <a href="#" class="download-link link" @click="downloadData">Download the structured data</a>
+        <a class="site-link link" href="https://www.organacademy.se/svenskt-digitalt-orgelarkiv" target="_blank">The
+          SONORA research project</a>
+        <a class="site-link link" href="https://github.com/gu-gridh/multimodal-map/tree/sonora" target="_blank">GitHub
+          repository and development</a>
+
       </div>
     </div>
     <div class="partners">
@@ -27,8 +23,7 @@
   </footer>
 </template>
 
-<script setup lang="ts">
-import { ref } from 'vue';
+<script setup>
 
 const downloadData = async () => {
   let url = 'https://diana.dh.gu.se/api/etruscantombs/geojson/place/?page_size=100';
@@ -52,7 +47,7 @@ const downloadData = async () => {
   }
 };
 
-const triggerDownload = (data: any[], filename: string) => {
+const triggerDownload = (data, filename) => {
   const jsonBlob = new Blob([JSON.stringify(data)], { type: 'application/json' });
   const downloadUrl = window.URL.createObjectURL(jsonBlob);
   const link = document.createElement('a');
@@ -90,7 +85,7 @@ a {
   bottom: 0px;
   right: 0px;
   height: 80px;
-  width:600px;
+  width: 600px;
 }
 
 .GRIDHLogo {
@@ -157,7 +152,7 @@ a {
 }
 
 .download-link {
-  background: url("@/assets/interface/downloadbuttonwhite.png");
+  background: url("https://data.dh.gu.se/ui-icons/download_white_circle.png");
   background-size: 18px;
   background-position: 0px 50%;
   background-repeat: no-repeat;
@@ -166,7 +161,7 @@ a {
 }
 
 .site-link {
-  background: url("@/assets/interface/linkbuttonwhite.png");
+  background: url("https://data.dh.gu.se/ui-icons/arrow_link_white_circle.png");
   background-size: 18px;
   background-position: 0px 50%;
   background-repeat: no-repeat;

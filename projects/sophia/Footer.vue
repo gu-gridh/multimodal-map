@@ -1,16 +1,24 @@
 <template>
   <footer id="footer">
     <div id="developer-info">
-      <div class="links-stack border-style">
-        <a class="site-link link" href="https://github.com/gu-gridh/Saint_Sophia" target="_blank">GitHub
+      <div class="links-stack">
+        <a class="site-link link" href="https://github.com/gu-gridh/Saint_Sophia/blob/main/README.md#saint-sophias-inscriptions" target="_blank">GitHub
           repository and development</a>
-        <a class="site-link link" href="https://github.com/gu-gridh/Saint_Sophia?tab=readme-ov-file#database-and-api-documentation"
+        <a class="site-link link"
+          href="https://github.com/gu-gridh/Saint_Sophia#database-and-api-documentation"
           target="_blank">Database and API documentation</a>
       </div>
-      <div class="links-stack">
-        <a class="site-link link" href="https://github.com/gu-gridh/Saint_Sophia?tab=readme-ov-file#datasets" target="_blank">Dataset
-          documentation</a>
-        <a href="#" class="download-link link" @click="downloadData">Download the structured data</a>
+      <div class="links-stack border-style">
+        <a class="site-link link" href="https://github.com/gu-gridh/Saint_Sophia#datasets"
+          target="_blank">Dataset documentation</a>
+        <div class="download-section">
+          <a href="#" class="download-link link" @click="downloadData">Download all inscription data</a>
+          <img v-if="isLoading" :src="Spinner" class="spinner" alt="Loading..." />
+        </div>
+      </div>
+      <div class="links-stack border-style extra">
+        <a class="site-link link" href="https://github.com/gu-gridh/Saint_Sophia/blob/main/README.md#project-team" target="_blank">Project team</a>
+        <a class="site-link link" href="https://forms.office.com/e/3CaZQqAK16" target="_blank">Feedback form</a>
       </div>
     </div>
     <div class="partners">
@@ -30,12 +38,16 @@
   </footer>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref } from 'vue';
+import Spinner from '@/assets/interface/6-dots-rotate_white.svg';
+
+const isLoading = ref(false);
 
 const downloadData = async () => {
-  let url = 'https://diana.dh.gu.se/api/etruscantombs/geojson/place/?page_size=100';
-  let pageNumber = 0;
+  isLoading.value = true;
+  let url = 'https://saintsophia.dh.gu.se/api/inscriptions/inscription/?depth=2';
+  const allData = [];
 
   try {
     while (url) {
@@ -43,19 +55,22 @@ const downloadData = async () => {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      const pageData = await response.json();
-      pageNumber++;
 
-      triggerDownload(pageData.features, `EtruscanTombsData_${pageNumber}.json`);
+      const pageData = await response.json();
+      allData.push(...pageData.results);
 
       url = pageData.next ? pageData.next.replace(/^http:/, 'https:') : null;
     }
+
+    triggerDownload(allData, 'inscriptionData.json');
   } catch (error) {
     console.error('Error fetching data:', error);
+  } finally {
+    isLoading.value = false;
   }
 };
 
-const triggerDownload = (data: any[], filename: string) => {
+const triggerDownload = (data, filename) => {
   const jsonBlob = new Blob([JSON.stringify(data)], { type: 'application/json' });
   const downloadUrl = window.URL.createObjectURL(jsonBlob);
   const link = document.createElement('a');
@@ -69,6 +84,21 @@ const triggerDownload = (data: any[], filename: string) => {
 </script>
 
 <style>
+.download-section a {
+  display: inline;
+}
+
+.download-section {
+  display: inline-flex;
+  align-items: center;
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  margin-left: 10px;
+}
+
 #footer {
   display: block;
   background-color: #222;
@@ -93,7 +123,7 @@ a {
   bottom: 0px;
   right: 0px;
   height: 80px;
-  width:600px;
+  width: 600px;
 }
 
 .GRIDHLogo {
@@ -106,7 +136,7 @@ a {
   font-style: normal;
   font-size: 30px;
   line-height: 0.8;
-  padding: 0px 60px 5px 30px;
+  padding: 0px 40px 5px 30px;
   vertical-align: middle;
 }
 
@@ -131,7 +161,7 @@ a {
 #developer-info {
   display: flex;
   align-items: flex-end;
-  margin-left: 50px;
+  margin-left: 35px;
   margin-top: 15px;
   font-size: 1.5em;
   line-height: 1.4;
@@ -139,12 +169,11 @@ a {
 }
 
 .border-style {
-  border-width: 0 0.5px 0 0px;
+  border-width: 0 0 0 0.5px;
   border-color: white;
   border-style: dashed;
-  padding-left: 10px;
-  padding-right: 20px;
-
+  padding-left: 20px;
+  padding-right: 10px;
 }
 
 .link {
@@ -160,7 +189,7 @@ a {
 }
 
 .download-link {
-  background: url("@/assets/interface/downloadbuttonwhite.png");
+  background: url("https://data.dh.gu.se/ui-icons/download_white_circle.png");
   background-size: 18px;
   background-position: 0px 50%;
   background-repeat: no-repeat;
@@ -169,7 +198,7 @@ a {
 }
 
 .site-link {
-  background: url("@/assets/interface/linkbuttonwhite.png");
+  background: url("https://data.dh.gu.se/ui-icons/arrow_link_white_circle.png");
   background-size: 18px;
   background-position: 0px 50%;
   background-repeat: no-repeat;
@@ -187,5 +216,17 @@ a {
 
 #developer-info a:link {
   font-weight: 200;
+}
+
+@media screen and (max-width: 1090px) {
+  .partners {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 1210px) {
+  .extra {
+    display: none;
+  }
 }
 </style>

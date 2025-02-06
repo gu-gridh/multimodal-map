@@ -236,7 +236,7 @@
 
 @media screen and (max-width: 1300px) {
 .metadata-item {
-  width: 100%;
+ 
   font-size: 17px !important;
 }
 .placecard-metadata-content {
@@ -287,7 +287,6 @@
   }
 
   .metadata-item {
-    width: 100%;
     font-size: 20px;
   }
 

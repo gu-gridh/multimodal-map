@@ -1,12 +1,11 @@
-<script setup lang="ts">
+<script setup>
 import ObjectViewComponent from "@/components/ObjectViewComponent.vue";
-import type { RephotographyDeep } from "./types";
 import ComparisonSlider from "@/components/ComparisonSlider.vue";
 
-const props = defineProps<{
-  object: RephotographyDeep;
-  id: number;
-}>();
+const props = defineProps({
+  object: Object,
+  id: Number,
+});
 
 const images = {
   "Left image": props.object.old_image,

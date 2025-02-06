@@ -1,6 +1,6 @@
-<script lang="ts" setup>
+<script setup>
 import { provide } from "vue";
-import config from "./config";
+import config from "./settings/config";
 import Footer from './Footer.vue';
 import { DianaClient } from "@/assets/diana";
 
@@ -40,7 +40,6 @@ body {
   display:none;
 }
 
-
 #app .left-pane {
   background: url("images/gradient.png");
   background-size: contain;
@@ -57,10 +56,5 @@ body {
   .atlas-gradient {
     background: linear-gradient(180deg, rgba(232, 228, 217, 0) 0px, rgba(232, 228, 217, 1) 300px) !important;
 }
-
-#app .right-pane {
-/* z-index: 0 !important; */
 }
-}
-
 </style>

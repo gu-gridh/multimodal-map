@@ -1,39 +1,34 @@
-<script setup lang="ts">
-
-import { ref, inject, watch, onMounted } from "vue";
+<script setup>
+import { ref, watch, onMounted } from "vue";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
-import type { Image, Document } from "./types";
-import type { DianaClient } from "@/assets/diana";
 import VueMasonryWall from "@yeger/vue-masonry-wall";
 import { useRouter, useRoute } from "vue-router";
 import {fromLonLat} from 'ol/proj.js';
 import * as turf from '@turf/turf'
 import { nextTick } from "vue";
-
+import { DianaClient } from "./settings/diana.js";
 
 const { selectedFeature } = storeToRefs(mapStore());
-const diana = inject("diana") as DianaClient;
+const diana = new DianaClient("rwanda");
 let layoutKey = ref(0);
 const router = useRouter();
 const store = mapStore();
 const route = useRoute();
 //values
-const images = ref<Array<Image>>([]);
+const images = ref([]);
 const place = ref()
-const interviews: any = ref([]);
-const informants: any = ref([]);
+const interviews = ref([]);
 const placeType = ref()
 const placeDescription = ref()
-const placeNames: any = ref([])
+const placeNames = ref([])
 const placeGeoJson = ref()
-const coordinates: any = ref([])
-const interviewsToShow = ref(1) //how many interviews to show in preview
-const showMore = ref(true)
-const documents = ref<Array<Document>>([])
+const coordinates = ref([])
+const documents = ref([])
+const comment = ref('')
 
 //Capitalize first letter since some are lowercase in database
-const capitalize = (word: String) => {
+const capitalize = (word) => {
   if (word[0]) {
     const first = word[0].toUpperCase()
     const rest = word.slice(1)
@@ -41,40 +36,23 @@ const capitalize = (word: String) => {
   }
   else return
 }
-//fetch informants
-const fetchInformants = () => {
-  informants.value = []
-  for (let j = 0; j < interviews.value.length; j++) {
-    for (let i: number = 0; i < interviews.value[0].informants.length; i++) {
-      fetch(`https://diana.dh.gu.se/api/rwanda/informant/${interviews.value[i].informants[i]}`)
-        .then(response => response.json())
-        .then(data => {
-          informants.value.push(data)
-        })
-    }
-  }
-}
 //fetch interviews
-const fetchInterviews = async (id: any) => {
+const fetchInterviews = async (id) => {
   interviews.value = []
-  const data = await diana.listAll("text/");
-  const newInterview = data.find((interview: any) => interview.place_of_interest === id);
-  if (newInterview) {
-    const seenInterviews = new Set(interviews.value.map((i: { id: any }) => i.id));
-    //@ts-ignore
-    if (!seenInterviews.has(newInterview.id)) {
-      interviews.value.push(newInterview);
-    }
-    fetchInformants();
-    showMoreInterviews();
-  } else {
-    informants.value = [];
+  const data = await diana.listAll("text", {});
+  //fetch all interviews and find the ones that matches the place id
+  interviews.value = data.filter((interview) => interview.place_of_interest === id);
+  //fetch the informants of the interviews
+  for (let i = 0; i < interviews.value.length; i++) {
+    const informant = await diana.get("informant", interviews.value[i].informants[0]);
+    //add the informant to the interview
+    interviews.value[i].informant = informant;
   }
 }
-const fetchImages = async (id: any) => {
+const fetchImages = async (id) => {
   if(isNaN(id)) return
   else
-  images.value = await diana.listAll<Image>("image/", { place_of_interest: id });
+  images.value = await diana.listAll("image", { place_of_interest: id });
 }
 const featureZoom = 18;
 
@@ -120,22 +98,22 @@ const zoomMap = () => {
     }
 }
 
-const fetchDocuments = async (id: number) => {
+const fetchDocuments = async (id) => {
   if(id){
-    documents.value = await diana.listAll("document/", { place_of_interest: id});
+    documents.value = await diana.listAll("document", { place_of_interest: id });
+    console.log(documents.value)
   }
   else return
 }
 
-//fetch place data
-const fetchPlaceData =async () => {
-  
+const fetchPlaceData =async () => {  
     //if place is selected on map
     if(selectedFeature.value !== undefined || null) {
         place.value = selectedFeature.value
         placeType.value = capitalize(place.value.values_.type.text)
         placeDescription.value = capitalize(place.value.values_.description)
         placeNames.value = place.value.values_.names
+        comment.value = place.value.values_.comment
         const placeId = selectedFeature.value?.getId()
         fetchInterviews(placeId)
         fetchImages(Number(placeId))
@@ -154,6 +132,7 @@ onMounted(async ()  => {
             placeDescription.value = capitalize(place.value.description)
             placeNames.value = place.value.names
             placeGeoJson.value = data.geometry
+            comment.value = place.value.comment
         })
         const placeId = Number(route.params.placeId)
         fetchInterviews(placeId)
@@ -168,7 +147,6 @@ watch(selectedFeature, () => {
   fetchPlaceData()
 })
 
-
 function deselectPlace() {
   router.push("/")
   selectedFeature.value = undefined;
@@ -179,15 +157,6 @@ function deselectPlace() {
     store.updateCenter([3346522.1909503858, -217337.69352852934])
     store.updateZoom(15)
   })
-  
-}
-
-//show more interviews if more than 1
-const showMoreInterviews =() => {
-  if(interviews.value.length > 1 && interviewsToShow.value < interviews.value.length){
-    showMore.value = true
-  }
-  else showMore.value = false
 }
 
 </script>
@@ -209,26 +178,22 @@ const showMoreInterviews =() => {
             </div>
         </div>
         <!-- Interview if avaliable -->
-        <div class="place-card citation" v-if="interviews && interviews.length != 0">
-            <span v-for="text in interviews">
-                <p>{{ text.title }}</p>
-                <p style="font-style: italic;">{{ text.text}}</p>
+        <div class="place-card citation" v-if="interviews.length > 0">
+            <span v-for="inter in interviews">
+                <p>{{ inter.title }}</p>
+                <p style="font-style: italic;">{{ inter.text}}</p>
+                <p>/{{ inter.informant.custom_id }}</p>
             </span>
-             <!-- Informants if avaliable -->
-            <div v-if="informants && informants.length != 0">
-                 <span v-for="informant in informants">
-                    <p>/{{ informant.custom_id }}</p>
-                </span>
-            </div>
-            <button v-if="showMore" @click="interviewsToShow += 1">Show more</button>
+             
+            <!-- <button v-if="showMore" @click="interviewsToShow += 1">Show more</button> -->
         </div>
         <!-- If documents avaliable-->
         <div v-if="documents.length" class="document">
           Documents
           <div v-for="doc in documents"> 
-            <router-link :to="`/document/${doc.id}`" :doc="{doc}">
-              <div style="font-style: italic;">{{doc.title}}</div>
-            </router-link>
+            <a :href="doc.filename" target="_blank">
+              <li style="font-style: italic;">{{doc.title}}</li>
+            </a>
           </div>
         </div>
         <!-- Images -->
@@ -249,6 +214,10 @@ const showMoreInterviews =() => {
           </VueMasonryWall>
         </div>
       </div>
+      <div v-if="comment" class="comment">
+        Comment:
+        <p>{{ comment }}</p>
+        </div>
     </div>
 </template>
 <style>
@@ -326,13 +295,13 @@ const showMoreInterviews =() => {
   font-size: 0.7vw;
 }
 .place-card p {
-  color: rgb(180, 100, 100);
+  color: var(--theme-2);
   padding-left: 3px;
   font-size: 1.5em;
 }
 .lang {
   border-radius: 5px;
-  background: rgb(180, 100, 100);
+  background: var(--theme-2);
   padding: 4px;
   display: inline-block;
   width: auto;
@@ -342,6 +311,7 @@ const showMoreInterviews =() => {
   margin: 2px;
   color: white;
   font-size: small;
+  min-width:55px;
 }
 .long-name {
   
@@ -361,7 +331,7 @@ const showMoreInterviews =() => {
   line-height: 0.8;
   text-align: center;
   margin-top: 20px;
-  color: rgb(180, 100, 100);
+  color: var(--theme-2);
   padding-bottom: 0px;
   font-size: 1.3em !important;
 }
@@ -374,5 +344,10 @@ const showMoreInterviews =() => {
 .document {
   padding-top: 20px;
   padding-bottom: 20px;
+}
+
+.comment {
+  padding-top: 30px;
+  font-size: 14px;
 }
 </style>

@@ -1,6 +1,6 @@
-<script lang="ts" setup>
+<script setup>
 import { ref } from "vue";
-import { type Options, optionsFromCapabilities } from "ol/source/WMTS";
+import { optionsFromCapabilities } from "ol/source/WMTS";
 import axios from "axios";
 import { WMTSCapabilities } from "ol/format";
 import SourceWMTSRephotography from "./SourceWMTSRephotography.vue";
@@ -12,7 +12,7 @@ const props = defineProps({
   },
 });
 
-const options = ref<Options>();
+const options = ref();
 
 (async () => {
   const response = await axios.get(props.capabilitiesUrl);
