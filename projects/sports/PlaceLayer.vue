@@ -59,17 +59,17 @@ onMounted(async () => {
 
           allLatLngPolygons.push(latLngPolygon);
 
-          //set polygon color depending on value of dd_15_min_total // this can be changed to other values
+          //set polygon color depending on value of number of unique activities
           const time = feature.properties[travelTimes.value[15]]; //set the time value to be displayed
-          if (time === null || time === 0) {
-            L.polygon(latLngPolygon, {
+          if (time === null || time === 0) { // no activites
+            L.polygon(latLngPolygon, { 
               color: "lightgrey",
               fillColor: "lightgrey",
               fillOpacity: 0.8,
               weight: 1,
             }).addTo(map.value);
           }
-          else if (time > 0 && time < 6) {
+          else if (time > 0 && time < 6) { // low activites 1-6
             L.polygon(latLngPolygon, {
               color: "yellow",
               fillColor: "yellow",
@@ -77,7 +77,7 @@ onMounted(async () => {
               weight: 1,
             }).addTo(map.value);
           }
-          else if (time >= 6 && time < 10) {
+          else if (time >= 6 && time < 10) { // medium activites 6-10
             L.polygon(latLngPolygon, {
               color: "orange",
               fillColor: "orange",
@@ -87,7 +87,7 @@ onMounted(async () => {
           }
           
           else {
-            L.polygon(latLngPolygon, {
+            L.polygon(latLngPolygon, { // high activites 10+
               color: "red",
               fillColor: "red",
               fillOpacity: 0.6,
