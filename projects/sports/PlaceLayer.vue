@@ -10,13 +10,31 @@ import { onMounted, ref } from "vue";
 
 const map = ref(null);
 
+//filter types
+const travelTypes = ref({
+  car: "car", 
+  bike: "bicycle", 
+  walk: "walk", 
+  transit: "transit", 
+  sustainable: "sustainable",
+});
+
+const travelTimes = ref({
+  15: "dd_15_min_", 
+  30: "dd_30_min_", 
+  60: "dd_60_min_",
+});
+
+const mapStyles = ref({
+  arcGisTopo: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",
+  OSM: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+})
 
 onMounted(async () => {
   map.value = L.map("map").setView([59.8586, 17.6389], 10); //uppsala
 
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    maxZoom: 19,
-    minZoom: 3,
+  L.tileLayer(mapStyles.value.OSM, { 
+    attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
   }).addTo(map.value);
 
   const response = await fetch("./uppsala_t1.geojson");
@@ -28,8 +46,8 @@ onMounted(async () => {
 
   const allLatLngPolygons = []; 
 
-  geojsonData.features.forEach((feature) => { //only show sustainable data // this can be chaneged to car/bike/walking or ALL but that will put them on top of each other
-    if (feature.properties.mode == "sustainable"){ 
+  geojsonData.features.forEach((feature) => { 
+    if (feature.properties.mode == travelTypes.value.walk){ // this can be chaneged to car/bike/walking or ALL but that will put them on top of each other
       const geometry = feature.geometry;
 
       if (geometry.type === "MultiPolygon") {
@@ -42,28 +60,28 @@ onMounted(async () => {
           allLatLngPolygons.push(latLngPolygon);
 
           //set polygon color depending on value of dd_15_min_total // this can be changed to other values
-          const dd_15 = feature.properties.dd_15_min_;
-          if (dd_15 === null || dd_15 === 0) {
+          const time = feature.properties[travelTimes.value[15]]; //set the time value to be displayed
+          if (time === null || time === 0) {
             L.polygon(latLngPolygon, {
-              color: "whitee",
-              fillColor: "white",
-              fillOpacity: 0.4,
+              color: "lightgrey",
+              fillColor: "lightgrey",
+              fillOpacity: 0.8,
               weight: 1,
             }).addTo(map.value);
           }
-          else if (dd_15 > 0 && dd_15 < 6) {
+          else if (time > 0 && time < 6) {
             L.polygon(latLngPolygon, {
               color: "yellow",
               fillColor: "yellow",
-              fillOpacity: 0.4,
+              fillOpacity: 0.6,
               weight: 1,
             }).addTo(map.value);
           }
-          else if (dd_15 >= 6 && dd_15 < 10) {
+          else if (time >= 6 && time < 10) {
             L.polygon(latLngPolygon, {
               color: "orange",
               fillColor: "orange",
-              fillOpacity: 0.4,
+              fillOpacity: 0.6,
               weight: 1,
             }).addTo(map.value);
           }
@@ -72,7 +90,7 @@ onMounted(async () => {
             L.polygon(latLngPolygon, {
               color: "red",
               fillColor: "red",
-              fillOpacity: 0.4,
+              fillOpacity: 0.6,
               weight: 1,
             }).addTo(map.value);
           }
