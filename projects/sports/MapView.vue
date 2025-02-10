@@ -3,6 +3,7 @@ import PlaceLayer from "./PlaceLayer.vue";
 import { mapStore } from "@/stores/store";
 import { ref, onMounted, watch, nextTick, computed } from "vue";
 import MainLayout from "@/MainLayout.vue";
+import MapControls from "./MapControls.vue";
 
 const store = mapStore();
 
@@ -12,7 +13,7 @@ const store = mapStore();
   <MainLayout>
     <template #background>
       <div class="map-container">
-
+        <MapControls />
         <PlaceLayer :params="tagParams">
         </PlaceLayer>
 

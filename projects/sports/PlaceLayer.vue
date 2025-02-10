@@ -6,23 +6,18 @@
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import proj4 from "proj4";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
+import {useSportsStore} from "./settings/store";
 
 const map = ref(null);
 
-//filter types
-const travelTypes = ref({
-  car: "car", 
-  bike: "bicycle", 
-  walk: "walk", 
-  transit: "transit", 
-  sustainable: "sustainable",
-});
+const sportsStore = useSportsStore();
 
+//this is for all types of sports
 const travelTimes = ref({
-  15: "dd_15_min_", 
-  30: "dd_30_min_", 
-  60: "dd_60_min_",
+  15: "15_total", 
+  30: "30_total", 
+  60: "60_total",
 });
 
 const mapStyles = ref({
@@ -48,8 +43,9 @@ onMounted(async () => {
 
   const allLatLngPolygons = []; 
 
+
   geojsonData.features.forEach((feature) => { 
-    if (feature.properties.mode == travelTypes.value.walk){ // this can be chaneged to car/bike/walking or ALL but that will put them on top of each other
+    if (feature.properties.mode == sportsStore.travelMode){ // this can be chaneged to car/bike/walking or ALL but that will put them on top of each other
       const geometry = feature.geometry;
 
       if (geometry.type === "MultiPolygon") {
@@ -62,7 +58,7 @@ onMounted(async () => {
           allLatLngPolygons.push(latLngPolygon);
 
           //set polygon color depending on value of number of unique activities
-          const time = feature.properties[travelTimes.value[15]]; //set the time value to be displayed
+          const time = feature.properties[travelTimes.value[sportsStore.travelTime]]; //set the time value to be displayed
           if (time === null || time === 0) { // no activites
             L.polygon(latLngPolygon, { 
               color: "blue",
@@ -106,4 +102,10 @@ onMounted(async () => {
   const bounds = L.polygon(allLatLngPolygons.flat()).getBounds();
   map.value.fitBounds(bounds);
 });
+
+//watch for store updates
+watch(() => sportsStore, () => {
+  //redraw map
+});
+
 </script>
