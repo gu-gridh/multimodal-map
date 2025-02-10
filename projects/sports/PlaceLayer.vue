@@ -28,6 +28,7 @@ const travelTimes = ref({
 const mapStyles = ref({
   arcGisTopo: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",
   OSM: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+  topPlus: "http://sgx.geodatenzentrum.de/wmts_topplus_open/tile/1.0.0/web_grau/default/WEBMERCATOR/{z}/{y}/{x}.png"
 })
 
 onMounted(async () => {
@@ -36,6 +37,7 @@ onMounted(async () => {
   L.tileLayer(mapStyles.value.OSM, { 
     attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
   }).addTo(map.value);
+  
 
   const response = await fetch("./uppsala_t1.geojson");
   const geojsonData = await response.json();
@@ -63,9 +65,9 @@ onMounted(async () => {
           const time = feature.properties[travelTimes.value[15]]; //set the time value to be displayed
           if (time === null || time === 0) { // no activites
             L.polygon(latLngPolygon, { 
-              color: "lightgrey",
-              fillColor: "lightgrey",
-              fillOpacity: 0.8,
+              color: "blue",
+              fillColor: "blue",
+              fillOpacity: 0.6,
               weight: 1,
             }).addTo(map.value);
           }
