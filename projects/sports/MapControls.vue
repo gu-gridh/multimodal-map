@@ -1,17 +1,38 @@
 <template>
     <div class="map-controls">
-       <!--buttons for communes--> 
+       <!-- Buttons for communes -->
          <div class="btn-group">
-             <button v-for="commune in communes" :key="commune" @click="setCommune(commune)">{{commune}}</button>
+             <button 
+                 v-for="commune in communes" 
+                 :key="commune" 
+                 @click="setCommune(commune)" 
+                 :class="{ active: store.commune === commune }"
+             >
+                 {{ commune }}
+             </button>
         </div>
+
+        <!-- Travel Type Buttons -->
         <div class="btn-group">
             Travel type
-            <button v-for="mode in store.travelModes" :key="mode" @click="setMode(mode)">{{mode}}</button>
+            <button 
+                v-for="mode in store.travelModes" 
+                :key="mode" 
+                @click="setMode(mode)"
+                :class="{ active: store.travelMode === mode }"
+            >
+                {{ mode }}
+            </button>
         </div>
+
+        <!-- Travel Time Buttons -->
         <div class="btn-group">
             Within travel time
-            <span v-for="time in store.travelTimes" :key="time" @click="setTime(time)"><button>{{time}}</button> min</span>
+            <span v-for="time in store.travelTimes" :key="time" @click="setTime(time)">
+                <button :class="{ active: store.travelTime === time }">{{ time }}</button> min
+            </span>
         </div>
+
         <div class="btn-group">
             Days of the week
             <button>Weekdays</button>
@@ -22,7 +43,8 @@
             Type of sports
             <button>Football</button> etc TODO
         </div>
-        Ammount of accessible sports facilities in {{ store.commune }} within {{ store.travelTime }} minutes by {{ store.travelMode }}
+
+        Amount of accessible sports facilities in {{ store.commune }} within {{ store.travelTime }} minutes by {{ store.travelMode }}
     </div>
 </template>
 
@@ -35,16 +57,15 @@ const communes = ref(["Lilla Edet", "Uppsala"]);
 
 const setCommune = (commune) => {
     store.updateCommune(commune);
-}
+};
 
 const setMode = (mode) => {
     store.updateMode(mode);
-}
+};
 
 const setTime = (time) => {
     store.updateTravelTime(time);
-}
-
+};
 </script>
 
 <style scoped>
@@ -57,7 +78,6 @@ const setTime = (time) => {
     padding: 10px;
     border-radius: 10px;
     box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.5);
-    
 }  
 
 .btn-group {
@@ -72,5 +92,13 @@ button {
     border-radius: 5px;
     background-color: #f0f0f0;
     cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* ✅ Highlight Active Button */
+button.active {
+    background-color: #007bff; /* Blue */
+    color: white;
+    border-color: #0056b3;
 }
 </style>
