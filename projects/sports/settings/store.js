@@ -3,7 +3,7 @@ import { defineStore } from "pinia";
 
 // store for filtering map
 export const useSportsStore = defineStore("sportsStore", () => {
-    const commune = ref('');
+    const commune = ref('Uppsala');
     const activity = ref('');
     const travelMode = ref('sustainable');
     const travelModes = ref([
