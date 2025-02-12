@@ -38,6 +38,14 @@ watch(
   }
 );
 
+//load commune geojson
+watch(
+  () => sportsStore.commune,
+  (newCommune) => {
+    loadCommuneGeoJSON(newCommune);
+  }
+);
+
 const initMap = async () => {
   map.value = L.map("map").setView([59.8586, 17.6389], 10); // Uppsala
 
@@ -46,7 +54,7 @@ const initMap = async () => {
   }).addTo(map.value);
 
   // Load GeoJSON data
-  const response = await fetch("./uppsala_t1.geojson");
+  const response = await fetch("./geojson/uppsala.geojson");
   geojsonData.value = await response.json();
   console.log("GeoJSON Loaded:", geojsonData.value);
 
@@ -104,6 +112,21 @@ const updateMapLayer = () => {
 // determine polygon color based on amount of activities
 const setColor = (time) => {
   return time === null || time === 0 ? "blue" : time > 0 && time < 6 ? "yellow" : time >= 6 && time < 10 ? "orange" : "red";
+};
+
+const loadCommuneGeoJSON = async (commune) => {
+  layerGroup.value.clearLayers();
+
+  const geojsonFile = commune === "Lilla Edet" ? "lilla_edet.geojson" : "uppsala.geojson";
+
+  try {
+    const response = await fetch(`./geojson/${geojsonFile}`);
+    geojsonData.value = await response.json();
+
+    updateMapLayer();
+  } catch (error) {
+    console.error(`error loading GeoJSON for ${commune}:`, error);
+  }
 };
 </script>
 
