@@ -73,39 +73,37 @@ const updateMapLayer = () => {
   layerGroup.value.clearLayers();
 
   const utm33n = "+proj=utm +zone=33 +datum=WGS84 +units=m +no_defs";
-  const allLatLngPolygons = [];
+  // Filter features based on travelMode
+  const filteredGeoJSON = {
+    type: "FeatureCollection",
+    features: geojsonData.value.features.filter(
+      (feature) => feature.properties.mode === sportsStore.travelMode
+    ),
+  };
 
-  geojsonData.value.features.forEach((feature) => {
-    if (feature.properties.mode === sportsStore.travelMode) {
-      const geometry = feature.geometry;
-
-      if (geometry.type === "MultiPolygon") {
-        geometry.coordinates.forEach((polygon) => {
-          const latLngPolygon = polygon[0].map((coord) => {
-            const [lon, lat] = proj4(utm33n, "WGS84", coord); // Convert UTM to WGS84
-            return [lat, lon]; // Flip latitude and longitude
-          });
-
-          allLatLngPolygons.push(latLngPolygon);
-
-          const time = feature.properties[travelTimes.value[sportsStore.travelTime]];
-
-          L.polygon(latLngPolygon, {
-            color: "white",
-            fillColor: setColor(time),
-            fillOpacity: 0.7,
-            weight: 1,
-            dashArray: "2, 2",
-          }).addTo(layerGroup.value);
-        });
-      }
-    }
+  // Create a GeoJSON layer
+  const geoJsonLayer = L.geoJSON(filteredGeoJSON, {
+    style: (feature) => {
+      const time = feature.properties[travelTimes.value[sportsStore.travelTime]];
+      return {
+        color: "white",
+        fillColor: setColor(time),
+        fillOpacity: 0.7,
+        weight: 1,
+        dashArray: "2, 2",
+      };
+    },
+    coordsToLatLng: (coords) => {
+      const [lon, lat] = proj4(utm33n, "WGS84", coords); // Convert UTM to WGS84
+      return [lat, lon]; // Flip latitude and longitude
+    },
   });
 
+  geoJsonLayer.addTo(layerGroup.value);
+
   // Fit the map bounds to new polygons
-  if (allLatLngPolygons.length > 0) {
-    const bounds = L.polygon(allLatLngPolygons.flat()).getBounds();
-    map.value.fitBounds(bounds);
+  if (geoJsonLayer.getBounds().isValid()) {
+    map.value.fitBounds(geoJsonLayer.getBounds());
   }
 };
 
