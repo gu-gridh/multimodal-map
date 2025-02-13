@@ -33,10 +33,14 @@
             </span>
         </div>
 
-        <div class="btn-group">
+        <div class="btn-group" v-if="store.travelMode === 'transit' || store.travelMode === 'sustainable'">
             Days of the week
-            <button>Weekdays</button>
-            <button>Weekends</button>
+            <select @change="setDay($event.target.value)">
+                <option value="all">All</option>
+                <option value="week_day">Weekdays</option>
+                <option value="saturday">Saturday</option>
+                <option value="sunday">Sunday</option>
+            </select>
             TODO
         </div>
         <div class="btn-group">
@@ -60,11 +64,19 @@ const setCommune = (commune) => {
 };
 
 const setMode = (mode) => {
+    if (mode === "car" || mode === "bike" || mode === "walk") {
+        store.updateDayType("all");
+    }
     store.updateMode(mode);
 };
 
 const setTime = (time) => {
     store.updateTravelTime(time);
+};
+
+const setDay = (day) => {
+    console.log(day)
+    store.updateDayType(day);
 };
 </script>
 

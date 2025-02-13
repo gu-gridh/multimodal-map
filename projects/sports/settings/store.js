@@ -19,6 +19,7 @@ export const useSportsStore = defineStore("sportsStore", () => {
         30,
         60,
     ])
+    const dayType = ref('all');  
 
     const updateCommune = (value) => {
         commune.value = value;
@@ -31,6 +32,10 @@ export const useSportsStore = defineStore("sportsStore", () => {
     const updateTravelTime = (value) => {
         travelTime.value = value;
     }
+
+    const updateDayType = (value) => {
+        dayType.value = value;
+    }
     
     return {
         commune, 
@@ -38,7 +43,9 @@ export const useSportsStore = defineStore("sportsStore", () => {
         travelMode, 
         travelTime, 
         travelTimes,
-        travelModes, 
+        travelModes,
+        dayType,
+        updateDayType, 
         updateCommune,
         updateMode,
         updateTravelTime,

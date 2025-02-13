@@ -32,7 +32,7 @@ onMounted(async () => {
 
 // Watch for store updates and refresh the map layer
 watch(
-  () => [sportsStore.travelTime, sportsStore.travelMode],
+  () => [sportsStore.travelTime, sportsStore.travelMode, sportsStore.dayType],
   () => {
     updateMapLayer();
   }
@@ -73,13 +73,19 @@ const updateMapLayer = () => {
   layerGroup.value.clearLayers();
 
   const utm33n = "+proj=utm +zone=33 +datum=WGS84 +units=m +no_defs";
-  // Filter features based on travelMode
-  const filteredGeoJSON = {
-    type: "FeatureCollection",
-    features: geojsonData.value.features.filter(
-      (feature) => feature.properties.mode === sportsStore.travelMode
-    ),
-  };
+
+  // Filter features based on selected filtering types
+  const filteredFeatures = geojsonData.value.features.filter((feature) => {
+  return (
+    feature.properties.mode === sportsStore.travelMode && // filter by travel mode
+    (sportsStore.dayType === "all" || feature.properties.day_type === sportsStore.dayType) //also filter by day type if not "all"
+  );
+});
+
+const filteredGeoJSON = {
+  type: "FeatureCollection",
+  features: filteredFeatures,
+};
 
   // Create a GeoJSON layer
   const geoJsonLayer = L.geoJSON(filteredGeoJSON, {
