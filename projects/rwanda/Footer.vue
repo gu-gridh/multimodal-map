@@ -2,13 +2,12 @@
   <footer id="footer">
     <div id="developer-info">
       <div class="links-stack">
+        <a class="site-link footer-link" href="https://www.gu.se/en/research/reading-the-signs-renaming-and-transformative-processes-in-urban-rwanda" target="_blank">The research project</a>
         <a class="site-link footer-link" href="https://github.com/gu-gridh/rwanda" target="_blank">GitHub repository and development</a>
-        <!-- <a class="site-link footer-link" href="https://github.com/gu-gridh/etruscantombs#database-and-api-documentation" target="_blank">Database and API documentation</a> -->
       </div>
-      <div class="links-stack">
-<!--       <a class="site-link footer-link" href="https://github.com/gu-gridh/etruscantombs#datasets" target="_blank">Dataset documentation</a>
-      <a href="#" class="download-link footer-link" @click="downloadData">Download the structured data</a> -->
-    </div>
+     <!--  <div class="links-stack border-style">
+       <a class="site-link footer-link" href="https://github.com/gu-gridh/etruscantombs#datasets" target="_blank">Dataset documentation</a>
+    </div> -->
     </div>
     <div class="partners">
       <a href="https://dh.gu.se/">
@@ -121,8 +120,8 @@ a {
 
 #developer-info {
   display: flex; 
-  margin-top: 27px;
-  margin-left: 30px;
+  margin-top: 16px;
+  margin-left: 40px;
   align-items: center;
   font-size: 1.5em;
   line-height: 1.4;
@@ -130,11 +129,11 @@ a {
 }
 
 .border-style {
-  border-width: 0 0.5px 0 0px;
+  border-width: 0 0px 0 0.5px;
   border-color: white;
   border-style: dashed;
-  padding-left: 10px; 
-  padding-right: 20px; 
+  padding-left: 20px; 
+  padding-right: 10px; 
 
 }
 

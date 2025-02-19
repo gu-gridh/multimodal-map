@@ -249,6 +249,8 @@ const handleSourcesClick = (key) => {
   width: auto !important;
   padding-left: 10px !important;
   padding-right: 10px !important;
+  padding-top:2px!important;
+  padding-bottom:2px!important;
 }
 
 #app .category-button:hover {

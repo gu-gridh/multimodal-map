@@ -116,7 +116,9 @@ watch(route, () => {
           :displayFunction="displayName"
           :searchItems="searchText"
         />
+       
       </div>
+      <div class="osm">Map data from OpenStreetMap</div> 
     </template>
 
     <template #background>
@@ -167,7 +169,9 @@ watch(route, () => {
           </DianaPlaceLayer>
         </template>
       </MapComponent>
+
     </div>
+  
     <div class="gradient-blur">
       <div></div>
       <div></div>
@@ -176,6 +180,7 @@ watch(route, () => {
       <div></div>
       <div></div>
     </div>
+  
   </template>
 
 </MainLayout>
@@ -207,6 +212,13 @@ watch(route, () => {
   opacity:1.0;
 }
 
+.osm{
+  position:absolute;
+  bottom:10px;
+  margin-top:10px;
+  font-size:14px;
+  opacity:0.8;
+}
 @media screen and (max-width: 900px) {
   .gradient-blur {
 display:none;
