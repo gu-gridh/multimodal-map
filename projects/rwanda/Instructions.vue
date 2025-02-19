@@ -30,14 +30,14 @@
           <div class="buttons">
 
             <!--  Button to go to video tutorial on GU-Play -->
-            <div class="explore-button">
+            <!--    <div class="explore-button">
               <button>
                 <a href="https://play.gu.se/media/Etruscan+Tombs+Guide/0_ev6ow83l" target="_blank">
                 <div class="p-1 px-2 category-button"
                   style="width:auto; padding:5px 15px; text-align: center; cursor: pointer;">{{ $t('video') }}</div>
                 </a>
               </button>
-            </div>
+            </div> -->
 
 
             <!--  Button to close the instructions -->
@@ -69,17 +69,17 @@
             </div>
           </div>
 
-            
-                   <!-- repeat -->
 
-                   <div class="instructions-item">
-                    <div class="instructions-item-icon"
-                      style="background-image:url(https://data.dh.gu.se/ui-icons/search_black.png)"></div>
-                    <div class="instructions-item-description">
-                      <div class="instructions-item-title">{{ $t('f2title') }}</div>
-                      <p>{{ $t('f2description') }}</p>
-                    </div>
-                  </div>
+          <!-- repeat -->
+
+          <div class="instructions-item">
+            <div class="instructions-item-icon"
+              style="background-image:url(https://data.dh.gu.se/ui-icons/search_black.png)"></div>
+            <div class="instructions-item-description">
+              <div class="instructions-item-title">{{ $t('f2title') }}</div>
+              <p>{{ $t('f2description') }}</p>
+            </div>
+          </div>
 
           <!-- repeat -->
 
@@ -92,17 +92,18 @@
             </div>
           </div>
 
-    
+
           <!-- repeat -->
 
           <div class="instructions-item">
             <div class="instructions-item-icon"
-              style="background-image:url(https://data.dh.gu.se/ui-icons/zoomin_big_black.png)"></div>
+              style="background-image:url(https://data.dh.gu.se/ui-icons/search_black.png)"></div>
             <div class="instructions-item-description">
-              <div class="instructions-item-title">{{ $t('f4title') }}</div>
+              <div class="instructions-item-title">{{ $t('f4title') }} </div>
               <p>{{ $t('f4description') }}</p>
             </div>
           </div>
+          
         </div>
       </div>
     </div>
@@ -110,42 +111,42 @@
 </template>
 
 <script>
- import i18n from '../../src/translations/rwanda.js';
+  import i18n from '../../src/translations/rwanda.js';
 
-export default {
-  name: "aboutinstructionsview",
-  props: {
-    visibleInstructions: {
-      type: Boolean,
-      required: true,
+  export default {
+    name: "aboutinstructionsview",
+    props: {
+      visibleInstructions: {
+        type: Boolean,
+        required: true,
+      },
     },
-  },
-  data() {
-    return {
-      displayInstructions: this.visibleInstructions,
-    };
-  },
-  watch: {
-    visibleInstructions(newVal) {
-      if (newVal) {
-        // If visibleInstructions is true, immediately show the container
-        this.displayInstructions = true;
-      } else {
-        // if visibleInstructions is false, wait for the transition to finish before hiding
-        setTimeout(() => {
-          this.displayInstructions = false;
-        }, 1000); // transition duration
-      }
+    data() {
+      return {
+        displayInstructions: this.visibleInstructions,
+      };
     },
-  },
-  methods: {
-    
-  },
-};
+    watch: {
+      visibleInstructions(newVal) {
+        if (newVal) {
+          // If visibleInstructions is true, immediately show the container
+          this.displayInstructions = true;
+        } else {
+          // if visibleInstructions is false, wait for the transition to finish before hiding
+          setTimeout(() => {
+            this.displayInstructions = false;
+          }, 1000); // transition duration
+        }
+      },
+    },
+    methods: {
+
+    },
+  };
 </script>
 
 <style scoped>
-.instructions-container {
+  .instructions-container {
     pointer-events: none;
     width: 100%;
     height: calc(100vh - 80px);
@@ -197,7 +198,7 @@ export default {
   .content-column2 {
     float: right;
     padding-left: 40px;
-    padding-right:30px;
+    padding-right: 30px;
     width: 65%;
     margin-left: 40px;
     border-width: 0px 0px 0px 0.5px;
@@ -216,7 +217,7 @@ export default {
   }
 
   h1 {
-    color:var(--theme-2);
+    color: var(--theme-2);
     font-size: 3.0em;
     font-weight: 200;
     margin-bottom: 20px;
@@ -264,7 +265,7 @@ export default {
     background-repeat: no-repeat;
     background-position-y: 50%;
     margin-left: 0px;
-    margin-top:-15px;
+    margin-top: -15px;
 
 
   }
@@ -273,12 +274,12 @@ export default {
 
     font-weight: 600;
     letter-spacing: 0.05em;
-    color:var(--theme-2);
+    color: var(--theme-2);
     font-size: 1.2em;
   }
 
   .instructions-item-description {
-    color:black;
+    color: black;
     margin-left: 20px;
     font-weight: 200;
     line-height: 1.3;
@@ -317,7 +318,7 @@ export default {
   .instructions-main-title {
     font-family: 'Teko', sans-serif;
     font-size: 0.95em;
-    color:var(--theme-2);
+    color: var(--theme-2);
     font-weight: 600 !important;
     line-height: 0.8;
     text-align: right;
@@ -328,7 +329,7 @@ export default {
 
   .instructions-sub-title {
     align-self: end;
-    color:var(--theme-2);
+    color: var(--theme-2);
     font-weight: 100 !important;
     line-height: 0.8;
     text-align: right;
@@ -413,7 +414,7 @@ export default {
 
   .category-button:hover {
     color: white !important;
-    background-color: var(--theme-3)!important;
+    background-color: var(--theme-3) !important;
   }
 
   /*   Mid screen adaption */
@@ -521,7 +522,4 @@ export default {
       font-size: 1.1em;
     }
   }
-
-
-
 </style>
