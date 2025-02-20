@@ -14,7 +14,7 @@
         <div class="GRIDHLogo" id="">GU / GRIDH</div>
       </a>
 
-      <a href="">
+      <a href="https://www.gu.se/en/research/reading-the-signs-renaming-and-transformative-processes-in-urban-rwanda">
         <div class="PartnerLogo" id="">READING THE SIGNS</div>
       </a>
   </div>
