@@ -23,10 +23,10 @@ const INFORMANTS = {
   "Old": "Old person",
 }
 const PERIODS = {
-  "Before 1899": "Pre-colonial",
-  "1899-1962": "Colonial",
-  "1962-1994": "Post-independence",
-  "1994-2012": "Post-genocide",
+  "Pre-colonial": "Pre-colonial",
+  "Colonial": "Colonial",
+  "Post-independence": "Post-independence",
+  "Post-genocide": "Post-genocide",
   "After 2012": "After 2012"
 }
 const LANGUAGES = {
