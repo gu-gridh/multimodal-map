@@ -3,7 +3,7 @@
     <div id="developer-info">
       <div class="links-stack">
         <a class="site-link footer-link" href="https://github.com/gu-gridh/rwanda" target="_blank">GitHub repository and development</a>
-        <!-- <a class="site-link footer-link" href="https://github.com/gu-gridh/etruscantombs#database-and-api-documentation" target="_blank">Database and API documentation</a> -->
+        <a class="site-link footer-link" href="https://www.gu.se/forskning/tidens-tecken-namngivning-och-omvandlingsprocesser-i-det-urbana-rwanda" target="_blank">About the project</a>
       </div>
       <div class="links-stack">
 <!--       <a class="site-link footer-link" href="https://github.com/gu-gridh/etruscantombs#datasets" target="_blank">Dataset documentation</a>
@@ -121,9 +121,9 @@ a {
 
 #developer-info {
   display: flex; 
-  margin-top: 27px;
+  align-items: flex-end;
   margin-left: 30px;
-  align-items: center;
+  margin-top: 15px;
   font-size: 1.5em;
   line-height: 1.4;
   font-weight: 200;
