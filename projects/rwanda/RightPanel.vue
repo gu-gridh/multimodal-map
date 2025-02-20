@@ -74,6 +74,7 @@ watchEffect(async () => {
 
 .info-text {
     padding-top: 20px;
+    padding-bottom: 20px;
     font-size: 17px;
 }
 
