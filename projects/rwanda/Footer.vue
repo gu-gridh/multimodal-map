@@ -5,9 +5,9 @@
         <a class="site-link footer-link" href="https://www.gu.se/en/research/reading-the-signs-renaming-and-transformative-processes-in-urban-rwanda" target="_blank">The research project</a>
         <a class="site-link footer-link" href="https://github.com/gu-gridh/rwanda" target="_blank">GitHub repository and development</a>
       </div>
-     <!--  <div class="links-stack border-style">
-       <a class="site-link footer-link" href="https://github.com/gu-gridh/etruscantombs#datasets" target="_blank">Dataset documentation</a>
-    </div> -->
+       <div class="links-stack border-style">
+       <a class="site-link footer-link" href="https://github.com/gu-gridh/rwanda/tree/main#project-team" target="_blank">Project team</a>
+    </div> 
     </div>
     <div class="partners">
       <a href="https://dh.gu.se/">
@@ -61,6 +61,7 @@ const triggerDownload = (data, filename) => {
 
 <style>
 #footer {
+  display:block;
   background-color: #222;
   color: white;
   line-height: 1;
@@ -71,7 +72,6 @@ const triggerDownload = (data, filename) => {
   z-index: 3000;
   bottom: -2px;;
   font-family: "Barlow Condensed", sans-serif;
-  align-items: center;
 }
 
 a {
@@ -81,7 +81,7 @@ a {
 .partners {
     float: right;
     position: fixed;
-    vertical-align: middle;
+
     bottom: 0px;
     right: 0px;
     height: 80px;
@@ -120,9 +120,9 @@ a {
 
 #developer-info {
   display: flex; 
-  margin-top: 16px;
+  align-items: flex-end; 
   margin-left: 40px;
-  align-items: center;
+  margin-top: 15px;
   font-size: 1.5em;
   line-height: 1.4;
   font-weight: 200;
@@ -137,15 +137,15 @@ a {
 
 }
 
-.footer-link{
+.link{
 color:white;
 }
 
-.footer-link:visited{
+.link:visited{
 color:white;
 }
 
-.footer-link:hover{
+.link:hover{
 opacity:0.8;
 }
 
@@ -173,12 +173,10 @@ opacity:0.8;
 
 .links-stack a {
   display: block;
-  
 }
 
 #developer-info a:link{
   font-weight:200;
-  align-items: center;
 }
 
 </style>
