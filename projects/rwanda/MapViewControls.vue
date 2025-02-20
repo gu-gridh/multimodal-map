@@ -74,7 +74,8 @@ const handleSourcesClick = (key) => {
 </script>
 
 <template>
-  <div class="filter-container" style="margin-top:20px;">
+  <div class="filter-container" style="margin-top:0px;">
+    <div class="filter-heading" style="font-size:28px!important; line-height:0.6;   color:var(--theme-2); font-family: 'Teko', sans-serif!important;">Filters</div>
     <CategoryButton
       :text="'Show all'"
       :value="allLayer"

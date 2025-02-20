@@ -2,20 +2,19 @@
   <footer id="footer">
     <div id="developer-info">
       <div class="links-stack">
+        <a class="site-link footer-link" href="https://www.gu.se/en/research/reading-the-signs-renaming-and-transformative-processes-in-urban-rwanda" target="_blank">The research project</a>
         <a class="site-link footer-link" href="https://github.com/gu-gridh/rwanda" target="_blank">GitHub repository and development</a>
-        <a class="site-link footer-link" href="https://www.gu.se/forskning/tidens-tecken-namngivning-och-omvandlingsprocesser-i-det-urbana-rwanda" target="_blank">About the project</a>
       </div>
-      <div class="links-stack">
-<!--       <a class="site-link footer-link" href="https://github.com/gu-gridh/etruscantombs#datasets" target="_blank">Dataset documentation</a>
-      <a href="#" class="download-link footer-link" @click="downloadData">Download the structured data</a> -->
-    </div>
+       <div class="links-stack border-style">
+       <a class="site-link footer-link" href="https://github.com/gu-gridh/rwanda/tree/main#project-team" target="_blank">Project team</a>
+    </div> 
     </div>
     <div class="partners">
       <a href="https://dh.gu.se/">
         <div class="GRIDHLogo" id="">GU / GRIDH</div>
       </a>
 
-      <a href="">
+      <a href="https://www.gu.se/en/research/reading-the-signs-renaming-and-transformative-processes-in-urban-rwanda">
         <div class="PartnerLogo" id="">READING THE SIGNS</div>
       </a>
   </div>
@@ -62,6 +61,7 @@ const triggerDownload = (data, filename) => {
 
 <style>
 #footer {
+  display:block;
   background-color: #222;
   color: white;
   line-height: 1;
@@ -72,7 +72,6 @@ const triggerDownload = (data, filename) => {
   z-index: 3000;
   bottom: -2px;;
   font-family: "Barlow Condensed", sans-serif;
-  align-items: center;
 }
 
 a {
@@ -82,7 +81,7 @@ a {
 .partners {
     float: right;
     position: fixed;
-    vertical-align: middle;
+
     bottom: 0px;
     right: 0px;
     height: 80px;
@@ -121,8 +120,8 @@ a {
 
 #developer-info {
   display: flex; 
-  align-items: flex-end;
-  margin-left: 30px;
+  align-items: flex-end; 
+  margin-left: 40px;
   margin-top: 15px;
   font-size: 1.5em;
   line-height: 1.4;
@@ -130,23 +129,23 @@ a {
 }
 
 .border-style {
-  border-width: 0 0.5px 0 0px;
+  border-width: 0 0px 0 0.5px;
   border-color: white;
   border-style: dashed;
-  padding-left: 10px; 
-  padding-right: 20px; 
+  padding-left: 20px; 
+  padding-right: 10px; 
 
 }
 
-.footer-link{
+.link{
 color:white;
 }
 
-.footer-link:visited{
+.link:visited{
 color:white;
 }
 
-.footer-link:hover{
+.link:hover{
 opacity:0.8;
 }
 
@@ -174,12 +173,10 @@ opacity:0.8;
 
 .links-stack a {
   display: block;
-  
 }
 
 #developer-info a:link{
   font-weight:200;
-  align-items: center;
 }
 
 </style>
