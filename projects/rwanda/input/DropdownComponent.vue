@@ -1,6 +1,6 @@
 <template>
   <select :value="modelValue[0]" class="dropdown" @change="dropdownToggle($event)">
-    <option value="all">All</option>
+    <option selected value="">All</option>
     <option 
       v-for="(label, key) in categories"
       :key="key"
