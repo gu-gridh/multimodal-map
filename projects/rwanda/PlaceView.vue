@@ -155,7 +155,7 @@ function deselectPlace() {
   placeGeoJson.value = undefined
   store.selectedFeature = undefined
   nextTick(() => {
-    store.updateCenter([3346522.1909503858, -217337.69352852934])
+    store.updateCenter([3345400.1909503858, -217337.69352852934]) 
     store.updateZoom(15)
   })
 }
