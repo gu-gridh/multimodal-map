@@ -53,6 +53,7 @@ const fetchImages = async (id) => {
   if(isNaN(id)) return
   else
   images.value = await diana.listAll("image", { place_of_interest: id });
+
 }
 const featureZoom = 18;
 

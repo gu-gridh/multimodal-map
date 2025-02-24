@@ -19,7 +19,7 @@
           financed by Vetenskapsrådet (VR). The map is under development in collaboration with Gothenburg Research
           Infrastructure in Digital Humanities (GRIDH) at the University of Gothenburg. The data has been collected by
           Dr. Jean de Dieu Amini Ngabonziza and Dr. Tove Rosendal. The data model and the backend was created by Johan
-          Åhlfeldt and Aram Karimi, GRIDH. The interface has mainly been developed by Kristin Åkerlund, GRIDH.
+          Åhlfeldt and Aram Karimi, GRIDH. The interface has been developed by Victor Wåhlstrand and Kristin Åkerlund, GRIDH.
         </div>
 
 

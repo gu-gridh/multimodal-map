@@ -39,7 +39,7 @@ const LANGUAGES = {
   "French-Kinyarwanda": "FR-KIN",
   "Kinyarwanda": "KIN",
   "Kinyarwanda-English": "KIN-ENG",
-  "Kiswahili": "SW",
+  "Swahili": "SW",
 }
 
 const { sources, placeTypes, periods, informants, allLayer, languages, showAdvancedLayer } = storeToRefs(rwandaStore());

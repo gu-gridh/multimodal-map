@@ -1527,11 +1527,6 @@
   resolved "https://registry.yarnpkg.com/@types/geojson/-/geojson-7946.0.15.tgz#f9d55fd5a0aa2de9dc80b1b04e437538b7298868"
   integrity sha512-9oSxFzDCT2Rj6DfcHF8G++jxBKS7mBqXl5xrRW+Kbvjry6Uduya2iiwqHPhVXpasAVMBYKkEPGgKhd3+/HZ6xA==
 
-"@types/openseadragon@^3.0.5":
-  version "3.0.10"
-  resolved "https://registry.yarnpkg.com/@types/openseadragon/-/openseadragon-3.0.10.tgz#5b73aa32e3120f18428b134a34f078cec6a42475"
-  integrity sha512-nNVlu9PUNDVTudkSqVWhHtghCsyzQrJObEtN5zsVN2ghh5HYAC6U6xAcT9NQRfVfZVZkWXEYp2Hw7hQgwRxqgg==
-
 "@types/raf@^3.4.0":
   version "3.4.3"
   resolved "https://registry.yarnpkg.com/@types/raf/-/raf-3.4.3.tgz#85f1d1d17569b28b8db45e16e996407a56b0ab04"
