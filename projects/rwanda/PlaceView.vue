@@ -55,7 +55,7 @@ const fetchImages = async (id) => {
   images.value = await diana.listAll("image", { place_of_interest: id });
 
 }
-const featureZoom = 18;
+const featureZoom = 16;
 
 const zoomMap = () => {
     const geometry = placeGeoJson.value
