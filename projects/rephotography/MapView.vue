@@ -315,4 +315,8 @@ watch(showGrid, (newValue) => {
       rgba(0, 0, 0, 0) 87.5%,
       rgba(0, 0, 0, 1) 100%);
 }
+
+.ol-hover {
+  color: white !important;
+}
 </style>

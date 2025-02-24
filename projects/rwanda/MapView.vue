@@ -93,6 +93,22 @@ watch(route, () => {
         </div>
       </button>
 
+
+      
+      <button class="item"  @click="visibleInstructions = true;">
+        <div
+          class="p-1 px-3 clickable category-button about-button"
+          style="
+            width: auto;
+            text-align: center;
+            margin-top: -5px;
+            cursor: pointer;
+            margin-left:10px;"
+            >User Guide
+        </div>
+      </button>
+
+
     
       <!--filter map layers-->
       <MapViewControls />
@@ -103,7 +119,9 @@ watch(route, () => {
           :displayFunction="displayName"
           :searchItems="searchText"
         />
+       
       </div>
+      <div class="osm">Map data from OpenStreetMap</div> 
     </template>
 
     <template #background>
@@ -159,7 +177,9 @@ watch(route, () => {
           </DianaPlaceLayer>
         </template>
       </MapComponent>
+
     </div>
+  
     <div class="gradient-blur">
       <div></div>
       <div></div>
@@ -168,6 +188,7 @@ watch(route, () => {
       <div></div>
       <div></div>
     </div>
+  
   </template>
 
 </MainLayout>
@@ -185,7 +206,7 @@ watch(route, () => {
 }
 
 #app .tile-layer {
-  filter: grayscale(45%);
+  filter: grayscale(80%) brightness(0.6);
 }
 
 .gradient-blur {
@@ -199,6 +220,13 @@ watch(route, () => {
   opacity:1.0;
 }
 
+.osm{
+  position:absolute;
+  bottom:10px;
+  margin-top:10px;
+  font-size:14px;
+  opacity:0.8;
+}
 @media screen and (max-width: 900px) {
   .gradient-blur {
 display:none;
@@ -334,4 +362,9 @@ bottom:100px;
   left: -50px;
   min-width: 200px;
 }
+
+.ol-popup {
+  transform: translate(-15%, 0%);
+}
+
 </style>

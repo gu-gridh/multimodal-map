@@ -77,7 +77,7 @@ const handleSourcesClick = (key) => {
   <div class="filter-container" style="margin-top:0px;">
     <div class="filter-heading" style="font-size:28px!important; line-height:0.6;   color:var(--theme-2); font-family: 'Teko', sans-serif!important;">Filters</div>
     <CategoryButton
-      :text="'Show all'"
+      :text="'Show all data'"
       :value="allLayer"
       @toggle="handleSourcesClick('all')"
       class="filter-button"
@@ -85,7 +85,7 @@ const handleSourcesClick = (key) => {
     />
     <div class="main-filters">
       <div style="width:320px; display:flex; flex-direction: row;  align-items: center;">
-    <div class="filter-heading">Places:</div>
+    <div class="filter-heading">Filter by places:</div>
       <CategoryButtonList 
         v-model="placeTypes"
         :categories="PLACE_TYPES"
@@ -95,7 +95,7 @@ const handleSourcesClick = (key) => {
       />
     </div>
       <div style="width:500px; display:flex; flex-direction: row;  align-items: center;">
-    <div class="filter-heading">Sources:</div>
+    <div class="filter-heading">Filter by sources:</div>
       <CategoryButtonList 
         v-model="sources"
         :categories="SOURCES"
@@ -158,7 +158,7 @@ const handleSourcesClick = (key) => {
   background-color:rgba(255,255,255,0.8);
 }
 #app .filter-heading {
-  font-size: 1em!important;
+  font-size: 0.8em!important;
   margin-bottom: 10px;
   margin-top: 10px;
   font-weight: 300;
@@ -250,6 +250,8 @@ const handleSourcesClick = (key) => {
   width: auto !important;
   padding-left: 10px !important;
   padding-right: 10px !important;
+  padding-top:2px!important;
+  padding-bottom:2px!important;
 }
 
 #app .category-button:hover {

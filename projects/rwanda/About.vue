@@ -6,9 +6,9 @@
         <div class="about-sub-title" v-bind:class="{fullopacityui: visibleAbout}"></div>
 
         <div class="about-article-main" v-bind:class="{fullopacityui: visibleAbout}">
-          This map is a part of the research project Reading the signs. The map visualizes some of the data of the
-          project: it shows names of streets , building and areas. It also contains photos of signs and buildings, in
-          addition to texts about them. The map is a free and collaborative OpenStreet map.
+          This portal is a part of the research project Reading the signs. The map visualizes some of the data of the
+          project: it shows names of streets, buildings, and areas. It also contains photos of signs and buildings, in
+          addition to texts about them. 
         </div>
 
 
@@ -16,7 +16,7 @@
 
         <div class="about-article-sub" v-bind:class="{fullopacityui: visibleAbout}">
           This project is a collaboration between University of Gothenburg, Sweden, and University of Kigali, Rwanda and
-          financed by Vetenskapsrådet (VR). The map is under development in collaboration with Gothenburg Research
+          financed by Vetenskapsrådet (VR). The portal was developed by Gothenburg Research
           Infrastructure in Digital Humanities (GRIDH) at the University of Gothenburg. The data has been collected by
           Dr. Jean de Dieu Amini Ngabonziza and Dr. Tove Rosendal. The data model and the backend was created by Johan
           Åhlfeldt and Aram Karimi, GRIDH. The interface has been developed by Victor Wåhlstrand and Kristin Åkerlund, GRIDH.

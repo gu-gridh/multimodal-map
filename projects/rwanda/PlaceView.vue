@@ -24,7 +24,7 @@ const placeDescription = ref()
 const placeNames = ref([])
 const placeGeoJson = ref()
 const coordinates = ref([])
-const documents = ref<Array<Document>([])
+const documents = ref([])
 const comment = ref('')
 
 //Capitalize first letter since some are lowercase in database
@@ -102,6 +102,7 @@ const zoomMap = () => {
 const fetchDocuments = async (id) => {
   if(id){
     documents.value = await diana.listAll("document", { place_of_interest: id });
+    console.log(documents.value)
   }
   else return
 }
