@@ -92,6 +92,8 @@ watch(route, () => {
             >More info
         </div>
       </button>
+
+
       
       <button class="item"  @click="visibleInstructions = true;">
         <div
@@ -105,6 +107,7 @@ watch(route, () => {
             >User Guide
         </div>
       </button>
+
 
     
       <!--filter map layers-->
@@ -128,10 +131,15 @@ watch(route, () => {
           <!-- marker layer for zooming in -->
           <DianaPlaceLayer
             v-if="showMarker"
-            path="rwanda/geojson/place/" >
+            path="rwanda/geojson/place/" 
+            :params="{
+            id: route.params.placeId
+            }"
+            >
             <ol-style>
-              <ol-style-stroke color="#dc6464" :width="4"></ol-style-stroke>
+              <ol-style-stroke color="green" :width="4"></ol-style-stroke>
             </ol-style>
+            <FeatureSelection />
           </DianaPlaceLayer>
           <!-- Advanced search layers -->
           <DianaPlaceLayer 
