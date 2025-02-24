@@ -45,7 +45,7 @@ function displayName(p) {
 }
 
 //zoom to place on click
-const featureZoom = 18; // zoom level when clicking on a feature
+const featureZoom = 16; // zoom level when clicking on a feature
 
 watch(
   selectedFeature,
@@ -108,7 +108,7 @@ watch(route, () => {
         </div>
       </button>
 
-
+      <div class="osm">Map data from OpenStreetMap</div> 
     
       <!--filter map layers-->
       <MapViewControls />
@@ -121,7 +121,7 @@ watch(route, () => {
         />
        
       </div>
-      <div class="osm">Map data from OpenStreetMap</div> 
+      
     </template>
 
     <template #background>
@@ -226,6 +226,7 @@ watch(route, () => {
   margin-top:10px;
   font-size:14px;
   opacity:0.8;
+  z-index:-100;
 }
 @media screen and (max-width: 900px) {
   .gradient-blur {
