@@ -332,7 +332,7 @@ const handleDownloadChoice = async (format) => {
     try {
       const res = await fetch(downloadUrl, {
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/zip",
           Authorization: `Token ${token}`,
         }
       });
