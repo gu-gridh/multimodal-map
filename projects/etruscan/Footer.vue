@@ -11,12 +11,12 @@
     </div>
     </div>
     <div class="partners">
-      <a href="https://dh.gu.se/">
-        <div class="GRIDHLogo" id="">GU / GRIDH</div>
-      </a>
-
+     
       <a href="https://isvroma.org">
         <div class="PartnerLogo" id="">ISVROMA</div>
+      </a>
+      <a href="https://dh.gu.se/">
+        <div class="GRIDHLogo" id="">GU / GRIDH</div>
       </a>
   </div>
   </footer>
@@ -81,7 +81,8 @@ a {
 .partners {
     float: right;
     position: fixed;
-
+    display:flex;
+    flex-direction:row;
     bottom: 0px;
     right: 0px;
     height: 80px;
