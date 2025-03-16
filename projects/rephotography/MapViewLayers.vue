@@ -24,7 +24,7 @@ const hoverPosition = reactive({ x: 0, y: 0 });
 const vectorLayer = new VectorLayer({
   source: vectorSource,
   style: new Style({
-    stroke: new Stroke({ color: 'rgba(200, 255, 255, 0.7)', width: 2 }),
+    stroke: new Stroke({ color: 'rgba(200, 255, 255, 0.7)', width: 3 }),
     fill: new Fill({ color: 'rgba(255, 255, 255, 0.1)' }),
   }),
   zIndex: props.zIndex,
@@ -34,7 +34,7 @@ const featureOverlay = new VectorLayer({
   source: new VectorSource(),
   map: map,
   style: new Style({
-    stroke: new Stroke({ color: 'rgba(200, 200, 255, 1.0)', width: 2 }),
+    stroke: new Stroke({ color: 'rgba(200, 100, 105, 1.0)', width: 4 }),
     fill: new Fill({ color: 'rgba(255,255,255,0.1)' }),
   }),
 });

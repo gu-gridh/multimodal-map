@@ -30,7 +30,7 @@ body {
   line-height: 0.9;
   font-weight: 100;
   margin-bottom: 15px;
-  font-size: 4.9vw !important;
+  font-size: 4.2vw !important;
   width:auto!important;
 }
 
@@ -95,6 +95,12 @@ body {
   background-color: rgb(140, 140, 140);
 }
 
+#app .right-pane {
+
+    z-index: 9 !important;
+
+  }
+
 @media screen and (max-width: 900px) {
   #app .left-pane {
     margin-top:0px!important;
@@ -108,12 +114,11 @@ body {
 
   #app .right-pane {
     width: 100% !important;
-
     left: 0px !important;
     margin-left: 0px !important;
     margin-right: 0px !important;
     padding: 0px !important;
-    z-index: 400 !important;
+ 
     height: calc(100% + 50px) !important;
     padding-bottom: 0px !important;
   }
@@ -126,6 +131,7 @@ body {
     margin-left: 0px !important;
     margin-right: 0px !important;
     padding-bottom: 1000px !important;
+    z-index: 0 !important;
   }
 
   #app .image-card {

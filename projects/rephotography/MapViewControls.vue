@@ -133,10 +133,12 @@ const handleTagClick = (tag) => {
 
 const toggleMapLayer = () => {
   mapLayerVisibility.value = !mapLayerVisibility.value;
+  mapLayerVisibilityTwo.value = false;
 };
 
 const toggleMapLayerTwo = () => {
   mapLayerVisibilityTwo.value = !mapLayerVisibilityTwo.value;
+  mapLayerVisibility.value = false;
 };
 
 // const toggleMapLayerThree = () => {

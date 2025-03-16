@@ -104,8 +104,8 @@ const getFeatureDisplayName =
     <ol-style>
       <ol-style-icon
         :src="markerIconRed"
-        :scale="1.9"
-        :displacement="[-9, 47]"
+        :scale="1.0"
+        :displacement="[-10, 45]"
         :anchor="[0.0, 0.0]"
       ></ol-style-icon>
       <ol-style-stroke color="rgb(220,100,100)" :width="6"></ol-style-stroke>
@@ -116,8 +116,8 @@ const getFeatureDisplayName =
     <ol-style>
       <ol-style-icon
         :src="markerIconRed"
-        :scale="1.9"
-        :displacement="[-9, 47]"
+        :scale="1.0"
+        :displacement="[-10, 45]"
         :anchor="[0.0, 0.0]"
       ></ol-style-icon>
       <ol-style-stroke color="#282828" :width="4" class="ol-hover"></ol-style-stroke>

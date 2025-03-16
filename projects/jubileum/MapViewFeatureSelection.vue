@@ -2,7 +2,7 @@
 import { ref, inject, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
-import markerIconRedOutline from "@/assets/marker-red-outline.svg";
+import markerIconRed from "@/assets/marker-red.svg";
 import Collection from "ol/Collection";
 
 const { selectedFeature } = storeToRefs(mapStore());
@@ -69,8 +69,8 @@ const getFeatureDisplayName =
   >
     <ol-style>
       <ol-style-icon
-        :src="markerIconRedOutline"
-        :scale="1.9"
+        :src="markerIconRed"
+        :scale="1.0"
         :displacement="[-10, 45]"
         :anchor="[0.0, 0.0]"
       ></ol-style-icon>
@@ -81,8 +81,8 @@ const getFeatureDisplayName =
   <ol-interaction-select @select="onHover" :condition="hoverCondition">
     <ol-style>
       <ol-style-icon
-        :src="markerIconRedOutline"
-        :scale="1.9"
+        :src="markerIconRed"
+        :scale="1.0"
         :displacement="[-10, 45]"
         :anchor="[0.0, 0.0]"
       ></ol-style-icon>
