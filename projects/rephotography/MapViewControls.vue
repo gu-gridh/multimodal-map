@@ -20,11 +20,12 @@
       </div>
     </button> -->
   </div>
-
+  <div class="control-section">
   <div class="section-title">Documentation by category</div>
   <CategoryButtonList v-model="categories" :categories="CATEGORIES" :limit="1" class="my-2"
     @click="handleCategoryClick" />
-
+  </div>
+  <div class="control-section">
   <transition name="slide">
     <div class="slideinactive" v-bind:class="{ slideactive: isSliderVisible }">
       <div class="section-title">Time span</div>
@@ -32,12 +33,13 @@
         :isSliderVisible="isSliderVisible" />
     </div>
   </transition>
-
+</div>
+<div class="control-section">
   <div class="section-title">Tags</div>
   <div class="broad-controls">
     <CategoryButtonList v-model="tags" :categories="TAGS" :limit="1" class="my-2" @click="handleTagClick" />
   </div>
-
+</div>
 </template>
 
 <script setup>
@@ -147,6 +149,9 @@ const toggleMapLayerTwo = () => {
 </script>
 
 <style>
+  .control-section{
+    width:96%;
+  }
 .section-title {
   font-weight: 400;
   margin-top: 20px;
@@ -172,7 +177,7 @@ const toggleMapLayerTwo = () => {
 
 #app .range-slider-container {
   display: flex;
-  width: 94%;
+  width: 100%;
   height: auto;
   align-items: bottom;
   padding: 60px 0 15px 0;
