@@ -151,17 +151,20 @@ const toggleMapLayerTwo = () => {
 <style>
   .control-section{
     width:96%;
+    max-width:450px;
   }
 .section-title {
   font-weight: 400;
   margin-top: 20px;
   margin-bottom: 0px;
+  font-size:18px;
 }
 
 #app .category-button {
   background-color: rgba(255, 255, 255, 0.6);
   color: rgb(71, 85, 105);
   border-radius: 4px;
+  font-size:16px!important;
 }
 
 #app .category-button:hover {

@@ -30,15 +30,12 @@ body {
   line-height: 0.9;
   font-weight: 100;
   margin-bottom: 15px;
-  font-size: 4.2vw !important;
-  width:auto!important;
+  font-size: 75px !important;
+  max-width: 500px;
 }
 
 @media screen and (max-width: 1500px) {
-  .main-title {
-    font-size: 80px !important;
-    width: 75%;
-  }
+ 
 }
 
 .about {
