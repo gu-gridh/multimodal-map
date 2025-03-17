@@ -120,6 +120,6 @@ watch(() => props.isVisible, (newValue, oldValue) => {
   background-color: white;
   padding: 5px;
   border-radius: 3px;
-  z-index: 100;
+  z-index: 8;
 }
 </style>
