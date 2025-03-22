@@ -204,6 +204,11 @@
     font-weight:200;
   }
 
+  .close-instructions-button:hover{
+  opacity:0.6;
+  }
+
+
 
   .fullopacity {
     opacity: 1.0;
