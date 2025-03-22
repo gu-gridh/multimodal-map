@@ -417,7 +417,7 @@
     background-color:rgba(220, 215, 210, 0.5);
   }
 
-  @media screen and (max-width: 1300px) {
+  @media screen and (max-width: 1200px) {
 .legend{
   display:none;
 }
