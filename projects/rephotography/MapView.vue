@@ -195,7 +195,7 @@ watch(showGrid, (newValue) => {
 <style>
 .main-title {
   font-size: 4.0vw;
-  margin-bottom: 30px;
+  margin-bottom: 25px;
 }
 
 #app .left-pane {

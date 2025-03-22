@@ -29,7 +29,7 @@ body {
 .main-title {
   line-height: 0.9;
   font-weight: 100;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   font-size: 75px !important;
   max-width: 500px;
 }
