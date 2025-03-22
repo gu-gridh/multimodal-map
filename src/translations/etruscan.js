@@ -55,6 +55,7 @@ const messages = {
       f3description:"Select a tomb to enter a view where you can explore all the documentation and associated data. This might include documents, observations, and interactive 3D data. You can sort the documentation by type or year.",
       f4title: "Analytical tools",
       f4description:"Click on a visual documentation to explore high resolution photographs and 3d data when available. In the 3d viewer you can annotate, measure and move around the tombs.",
+      versionnumb:"Version 1.0",
       "categories": {
         "all": "All types",
         "drawings": "Drawings",
@@ -116,6 +117,7 @@ const messages = {
       f3description:"Seleziona una tomba per accedere a una vista in cui puoi esplorare tutta la documentazione e i dati associati. Ciò potrebbe includere documenti, osservazioni e dati 3D interattivi. Puoi ordinare la documentazione per tipo o anno.",
       f4title: "Strumenti analitici",
       f4description:"Fai clic su una documentazione visiva per esplorare fotografie ad alta risoluzione e dati 3D quando disponibili. Nel visualizzatore 3D puoi annotare, misurare e muoverti attorno alle tombe.",
+      versionnumb:"Version 1.0",
       "categories": {
         "all": "Tutti i tipi",
         "drawings": "Disegni",

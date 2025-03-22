@@ -415,6 +415,7 @@
     justify-content: right;
     backdrop-filter: blur(2px);
     background-color:rgba(220, 215, 210, 0.5);
+    border-radius:7px;
   }
 
   @media screen and (max-width: 1200px) {

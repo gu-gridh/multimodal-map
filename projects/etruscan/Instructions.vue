@@ -7,6 +7,11 @@
       <button @click="toggleLanguage">{{ $t('languagebutton') }}</button>
     </div>
 
+     <!-- top right close icon -->
+     <button @click="$emit('close')">
+      <div class="close-instructions-button" v-bind:class="{ fullopacityui: visibleInstructions }">+</div>
+    </button>
+
     <!--    keeps instructions vertically centered -->
     <div class="instructions-flex">
 
@@ -183,6 +188,22 @@
     overflow: hidden;
     overflow-y: auto;
   }
+
+  .close-instructions-button{
+    position:absolute; 
+    right:10px!important;
+    color:black; 
+    width:auto; 
+    height:auto; 
+    padding:5px 15px; 
+    text-align: center; 
+    cursor: pointer; 
+    font-family: "Barlow Condensed", sans-serif !important;
+    transform:rotate(45deg);
+    font-size:50px;
+    font-weight:200;
+  }
+
 
   .fullopacity {
     opacity: 1.0;

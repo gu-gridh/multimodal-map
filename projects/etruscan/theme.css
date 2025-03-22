@@ -52,7 +52,7 @@ body {
 .main-title {
   font-family: 'Teko', sans-serif;
   color: var(--theme-3) !important;
-  font-size: 5.5em;
+  font-size: 5.0em;
 }
 
 .about {
