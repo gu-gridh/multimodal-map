@@ -322,26 +322,30 @@
         <div class="legend-swatch" style="background-color:rgba(255, 255, 128, 0.7)"> </div>
       </div> -->
       <div class="legend-color-group">
-        <div class="legend-swatch-title legend-bg">1 - 10</div>
-        <div class="legend-swatch" style="background-color:rgba(255, 255, 128, 0.7)"> </div>
+        <div class="legend-swatch-title legend-bg">1 - 5</div>
+        <div class="legend-swatch" style="background-color:rgba(255, 255, 128, 1.0)"> </div>
+      </div>
+      <div class="legend-color-group">
+        <div class="legend-swatch-title legend-bg">6 - 10</div>
+        <div class="legend-swatch" style="background-color:rgba(255, 200, 100, 1.0)"> </div>
       </div>
       <div class="legend-color-group">
         <div class="legend-swatch-title legend-bg">11 - 19</div>
-        <div class="legend-swatch" style="background-color:rgba(255, 150, 80, 0.7)"> </div>
+        <div class="legend-swatch" style="background-color:rgba(255, 150, 80, 1.0)"> </div>
       </div>
       <div class="legend-color-group">
         <div class="legend-swatch-title legend-bg">20 - 39</div>
-        <div class="legend-swatch" style="background-color:rgba(255, 100, 60, 0.8)"> </div>
+        <div class="legend-swatch" style="background-color:rgba(255, 100, 60, 1.0)"> </div>
       </div>
 
       <div class="legend-color-group">
         <div class="legend-swatch-title legend-bg">40 - 59</div>
-        <div class="legend-swatch" style="background-color:rgb(255, 60, 40, 0.9)"> </div>
+        <div class="legend-swatch" style="background-color:rgb(255, 60, 40, 1.0)"> </div>
       </div>
 
       <div class="legend-color-group">
         <div class="legend-swatch-title legend-bg">60 - 79</div>
-        <div class="legend-swatch" style="background-color:rgba(200, 40, 30, 0.9)"> </div>
+        <div class="legend-swatch" style="background-color:rgba(200, 40, 30, 1.0)"> </div>
       </div>
 
       <div class="legend-color-group">
@@ -429,7 +433,7 @@
     margin-bottom:10px;
     font-weight:400;
     line-height: 1.0;
-    padding:5px;
+    padding:2px;
     
   }
 
