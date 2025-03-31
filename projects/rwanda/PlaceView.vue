@@ -102,7 +102,6 @@ const zoomMap = () => {
 const fetchDocuments = async (id) => {
   if(id){
     documents.value = await diana.listAll("document", { place_of_interest: id });
-    console.log(documents.value)
   }
   else return
 }

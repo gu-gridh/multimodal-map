@@ -15,6 +15,7 @@ import AutocompleteComponent from "@/components/input/AutocompleteComponent.vue"
 import { useRwandaMap } from "./settings/map.composable";
 import { rwandaStore } from "./settings/rwandaStore";
 import { useRoute } from "vue-router";
+import Transcriptions from "./Transcriptions.vue";
 
 function getName(f) {
   const place = f.getProperties();
@@ -27,6 +28,7 @@ provide("config", config);
 
 const visibleAbout = ref(false);
 const visibleInstructions = ref(false);
+const visibleTranscriptions = ref(false);
 
 const route = useRoute();
 
@@ -79,6 +81,7 @@ watch(route, () => {
 <template>
   <About :visibleAbout="visibleAbout" @close="visibleAbout = false"/>
   <Instructions :visibleInstructions="visibleInstructions" @close="visibleInstructions = false"/>
+  <Transcriptions :visibleTranscriptions="visibleTranscriptions" @close="visibleTranscriptions = false"/>
   <MainLayout>
     <template #search>
       <button class="item"  @click="visibleAbout = true;">
@@ -105,6 +108,20 @@ watch(route, () => {
             cursor: pointer;
             margin-left:10px;"
             >User Guide
+        </div>
+      </button>
+
+      <button class="item" @click="visibleTranscriptions = true">
+
+        <div
+          class="p-1 px-3 clickable category-button about-button"
+          style="
+            width: auto;
+            text-align: center;
+            margin-top: -5px;
+            cursor: pointer;
+            margin-left:10px;"
+            >Transcriptions
         </div>
       </button>
 
@@ -206,7 +223,7 @@ watch(route, () => {
 }
 
 #app .tile-layer {
-  filter: grayscale(80%) brightness(0.6);
+  
 }
 
 .gradient-blur {
