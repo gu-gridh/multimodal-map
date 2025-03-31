@@ -29,16 +29,6 @@
 
           <div class="buttons">
 
-            <!--  Button to go to video tutorial on GU-Play -->
-            <!--    <div class="explore-button">
-              <button>
-                <a href="https://play.gu.se/media/Etruscan+Tombs+Guide/0_ev6ow83l" target="_blank">
-                <div class="p-1 px-2 category-button"
-                  style="width:auto; padding:5px 15px; text-align: center; cursor: pointer;">{{ $t('video') }}</div>
-                </a>
-              </button>
-            </div> -->
-
 
             <!--  Button to close the instructions -->
             <div class="explore-button">
@@ -120,6 +110,7 @@
         type: Boolean,
         required: true,
       },
+
     },
     data() {
       return {

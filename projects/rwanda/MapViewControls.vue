@@ -283,6 +283,23 @@ color:rgb(180,100,100);
   .filter-heading {
     font-size: 18px;
   }
+  .filter-heading-small {
+    font-size: 16px;
+  }
+  .filter-group {
+    margin-top: 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 10px 5px 10px;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.8);
+  }
+  #app .searchbox {
+    padding: 5px !important;
+    font-size: 18px;
+  }
 }
 
 </style>
