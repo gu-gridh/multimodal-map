@@ -384,4 +384,17 @@ bottom:100px;
   transform: translate(-15%, 0%);
 }
 
+@media screen and (max-width: 1200px) {
+  .map-container {
+    height: calc(100vh - 80px) !important;
+    width: 100%!important;
+  }
+  .search-container {
+    width: 260px;
+    margin-top: -10px;
+    padding: 0px 0px 0px 0px;
+  }
+
+}
+
 </style>
