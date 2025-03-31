@@ -171,6 +171,7 @@ watch(showGallery, (newValue) => {
 </script>
 
 <template>
+  <div id="version"> {{ $t('versionnumb') }}</div>
   <div style="display:flex; align-items: center; justify-content: center; pointer-events: none;">
     <div class="ui-mode ui-overlay ui-overlay-top">
       <button class="item" v-bind:class="{ selected: !showGallery }" v-on:click="showGallery = false;">
@@ -225,6 +226,20 @@ watch(showGallery, (newValue) => {
 </template>
 
 <style>
+  #version {
+    position: absolute;
+    text-align: right;
+    font-size: 0.7em;
+    right: 30px;
+    top: 20px;
+    z-index: 1000;
+    opacity: 0.7;
+    backdrop-filter: blur(2px);
+    background-color:rgba(250, 250, 210, 0.5);
+    border-radius:4px;
+    padding:2px 6px;
+  }
+
 .map-container {
   height: calc(100vh - 80px) !important;
   position: relative;

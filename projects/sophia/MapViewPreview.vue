@@ -109,7 +109,7 @@ function deselectPlace() {
 
       <div class="placecard-center-button">
         <a :href="`https://saintsophia.dh.gu.se/viewer/?q=${selectedFeature.get('title')}/orthophoto`">
-          <button class="theme-button theme-color-background" style="margin-top:0px;">{{ $t('exploreData') }}</button>
+          <button class="theme-button theme-color-background" style="margin-top:0px; padding:5px 12px">{{ $t('exploreData') }}</button>
         </a>
       </div>
     </div>

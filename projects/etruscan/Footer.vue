@@ -1,22 +1,22 @@
 <template>
   <footer id="footer">
     <div id="developer-info">
-      <div class="links-stack border-style">
+      <div class="links-stack">
         <a class="site-link link" href="https://github.com/gu-gridh/etruscantombs#etruscan-tombs" target="_blank">GitHub repository and development</a>
         <a class="site-link link" href="https://github.com/gu-gridh/etruscantombs#database-and-api-documentation" target="_blank">Database and API documentation</a>
       </div>
-      <div class="links-stack">
+      <div class="links-stack border-style">
       <a class="site-link link" href="https://github.com/gu-gridh/etruscantombs#datasets" target="_blank">Dataset documentation</a>
       <a href="#" class="download-link link" @click="downloadData">Download the structured data</a>
     </div>
     </div>
     <div class="partners">
-      <a href="https://dh.gu.se/">
-        <div class="GRIDHLogo" id="">GU / GRIDH</div>
-      </a>
-
+     
       <a href="https://isvroma.org">
         <div class="PartnerLogo" id="">ISVROMA</div>
+      </a>
+      <a href="https://dh.gu.se/">
+        <div class="GRIDHLogo" id="">GU / GRIDH</div>
       </a>
   </div>
   </footer>
@@ -81,7 +81,8 @@ a {
 .partners {
     float: right;
     position: fixed;
-
+    display:flex;
+    flex-direction:row;
     bottom: 0px;
     right: 0px;
     height: 80px;
@@ -129,11 +130,11 @@ a {
 }
 
 .border-style {
-  border-width: 0 0.5px 0 0px;
+  border-width: 0 0px 0 0.5px;
   border-color: white;
   border-style: dashed;
-  padding-left: 10px; 
-  padding-right: 20px; 
+  padding-left: 20px; 
+  padding-right: 10px; 
 
 }
 

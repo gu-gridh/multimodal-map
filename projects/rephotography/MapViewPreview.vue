@@ -103,6 +103,7 @@ function deselectPlace() {
 <style>
 #app .mapview-preview {
   padding-bottom: 80px;
+  font-size: 16px;
 }
 
 #app .mapview-preview {
@@ -111,9 +112,9 @@ function deselectPlace() {
 }
 
 #app h3 {
-  font-size: 35px;
+  font-size: 34px;
   line-height: 1;
-  font-weight: 100;
+  font-weight: 200;
   margin-left: -2px;
   margin-bottom: 10px;
 }

@@ -8,8 +8,8 @@ import { mapStore } from "@/stores/store";
 import { storeToRefs } from "pinia";
 import { etruscanStore } from "./settings/store";
 import markerWhite from "@/assets/marker-white.svg";
-import markerGold from "@/assets/marker-gold-larger.svg";
-import markerRed from "@/assets/marker-red-etruscan.svg";
+import markerGold from "@/assets/marker-gold.svg";
+import markerRed from "@/assets/marker-red.svg";
 
 const { selectedFeature } = storeToRefs(mapStore());
 const { areMapPointsLoaded } = storeToRefs(etruscanStore());

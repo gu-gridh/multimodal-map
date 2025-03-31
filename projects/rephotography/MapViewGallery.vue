@@ -61,7 +61,7 @@ defineComponent({
   top: 0px;
   width: 100%; 
   height: calc(100% - 80px); 
-  z-index: 99;
+  z-index: 10;
   background-color: rgb(234, 228, 219);
   overflow-y: scroll;
   transition: all 0.5s ease-in-out;

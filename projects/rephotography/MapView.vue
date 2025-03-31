@@ -5,8 +5,8 @@ import MapViewControls from "./MapViewControls.vue";
 import MapComponent from "@/components/MapComponent.vue";
 import NpolarLayer from "./NpolarLayer.vue";
 import DianaPlaceLayer from "@/components/DianaPlaceLayer.vue";
-import DianaPlaceLayerRephoto from "./DianaPlaceLayerRephoto.vue";
-import FeatureSelection from "./FeatureSelectionRephoto.vue";
+import MapViewLayers from "./MapViewLayers.vue";
+import MapViewMarkers from "./MapViewMarkers.vue";
 import MapViewPreview from "./MapViewPreview.vue";
 import MapViewGallery from "./MapViewGallery.vue";
 import { storeToRefs } from "pinia";
@@ -104,7 +104,7 @@ watch(showGrid, (newValue) => {
 
 <template>
   <div style="display:flex; align-items: center; justify-content: center;">
-    <div class="ui-mode ui-overlay">
+    <div class="ui-mode ui-overlay ui-overlay-top">
       <button class="item" v-bind:class="{ selected: !showGrid }" v-on:click="showGrid = false;">
         Map
       </button>
@@ -144,43 +144,43 @@ watch(showGrid, (newValue) => {
           <DianaPlaceLayer v-if="placesLayerVisible" path="rephotography/geojson/place/" :params="placeParams"
             :z-index=2>
             <ol-style>
-              <ol-style-icon :src="markerIcon" :scale="1.8" :displacement="[-10, 45]"
+              <ol-style-icon :src="markerIcon" :scale="1.0" :displacement="[-10, 45]"
                 :anchor="[0.0, 0.0]"></ol-style-icon>
             </ol-style>
-            <FeatureSelection />
+            <MapViewMarkers />
           </DianaPlaceLayer>
 
           <!-- tags -->
           <DianaPlaceLayer v-if="tagsLayerVisible" path="rephotography/search/tag/" :params="tagParams" :z-index=2>
             <ol-style>
-              <ol-style-icon :src="markerIcon" :scale="1.8" :displacement="[-10, 45]"
+              <ol-style-icon :src="markerIcon" :scale="1.0" :displacement="[-10, 45]"
                 :anchor="[0.0, 0.0]"></ol-style-icon>
             </ol-style>
-            <FeatureSelection />
+            <MapViewMarkers />
           </DianaPlaceLayer>
 
           <DianaPlaceLayer path="rephotography/geojson/focus/" :z-index=2>
             <ol-style>
-              <ol-style-icon :src="markerBlue" :scale="1.8" :displacement="[-10, 45]"
+              <ol-style-icon :src="markerBlue" :scale="1.0" :displacement="[-10, 45]"
                 :anchor="[0.0, 0.0]"></ol-style-icon>
             </ol-style>
           </DianaPlaceLayer>
 
-          <DianaPlaceLayerRephoto v-for="layer in vectorLayers" :key="layer.url" :geojsonUrl="layer.url" :zIndex="2"
+          <MapViewLayers v-for="layer in vectorLayers" :key="layer.url" :geojsonUrl="layer.url" :zIndex="2"
             :isVisible="mapLayerVisibility" :date=true>
-          </DianaPlaceLayerRephoto>
+          </MapViewLayers>
 
-          <DianaPlaceLayerRephoto :geojsonUrl="'https://data.dh.gu.se/geography/CryoClim_GAO_SJ_1936-1972.geojson'"
+          <MapViewLayers :geojsonUrl="'https://data.dh.gu.se/geography/CryoClim_GAO_SJ_1936-1972.geojson'"
             :zIndex="1" :isVisible="mapLayerVisibilityTwo" :date=false>
-          </DianaPlaceLayerRephoto>
+          </MapViewLayers>
 
           <!-- 
-        <DianaPlaceLayerRephoto
+        <MapViewLayers
           :geojsonUrl="'https://data.dh.gu.se/geography/CryoClim_GAO_SJ_2001-2010.geojson'"
           :zIndex=1
           :isVisible="mapLayerVisibilityThree"
         >
-        </DianaPlaceLayerRephoto> -->
+        </MapViewLayers> -->
 
         </template>
       </MapComponent>
@@ -194,8 +194,8 @@ watch(showGrid, (newValue) => {
 
 <style>
 .main-title {
-  font-size: 4.5vw;
-  margin-bottom: 30px;
+  font-size: 4.0vw;
+  margin-bottom: 25px;
 }
 
 #app .left-pane {
