@@ -176,7 +176,7 @@ body {
   }
 
   .main-title {
-
+  font-size:60px!important;
   text-align: left;
   margin-top:10px!important;
 
