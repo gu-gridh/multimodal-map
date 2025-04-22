@@ -7,8 +7,7 @@ const { selectedFeature } = storeToRefs(mapStore());
 const place = ref(null);
 const previewData = ref({});
 const categoryTitles = {
-  plank_boats: "Plank Boats",
-  log_boats: "Log Boats",
+  boats: "Boats",
   radiocarbon_dates: "Radiocarbon Dates",
   individual_samples: "Individual Samples",
   dna_samples: "DNA Samples",
@@ -16,6 +15,7 @@ const categoryTitles = {
   landing_points: "Landing Points",
   new_samples: "New Samples",
   metalwork: "Metalwork",
+  lnhouses: "Late Neolithic Houses",
 };
 const expandedCard = ref(null);
 
@@ -75,6 +75,11 @@ function deselectPlace() {
 function navigateToDetail(url, id) {
   window.open(`${url}${id}/`, '_blank');
 }
+
+function getCapitalizedVesselType(type) {
+  if (!type) return '';
+  return type.charAt(0).toUpperCase() + type.slice(1);
+}
 </script>
 
 <template>
@@ -93,46 +98,22 @@ function navigateToDetail(url, id) {
         </div>
       </div>
 
-      <!-- Plank Boats Card -->
-      <div v-if="previewData['plank_boats'] && previewData['plank_boats'].length > 0" class="placecard"
-        :class="{ expanded: expandedCard === 'plank_boats' }" @click="toggleCard('plank_boats')">
+      <!-- Boats Card -->
+           <div v-if="previewData['boats'] && previewData['boats'].length > 0" class="placecard"
+        :class="{ expanded: expandedCard === 'boats' }" @click="toggleCard('boats')">
         <div class="placecard-full">
           <div class="placecard-text">
             <div class="placecard-title theme-color-text theme-title-typography">
-              {{ categoryTitles['plank_boats'] }}
+              {{ categoryTitles['boats'] }}
             </div>
           </div>
           <div class="placecard-content">
-            <!-- Content for Plank Boats -->
+            <!-- Content for Boats -->
             <div class="placecard-metadata-content">
               <ul class="sample-id-list">
-                <li v-for="(boat, index) in previewData['plank_boats']" :key="index">
-                  <span class="label-box" @click.stop="navigateToDetail('https://maritime-encounters.dh.gu.se/api/resources/plankboats/', boat.id)">
-                    Plank Boat {{ boat.id }}
-                  </span>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Log Boats Card -->
-      <div v-if="previewData['log_boats'] && previewData['log_boats'].length > 0" class="placecard"
-        :class="{ expanded: expandedCard === 'log_boats' }" @click="toggleCard('log_boats')">
-        <div class="placecard-full">
-          <div class="placecard-text">
-            <div class="placecard-title theme-color-text theme-title-typography">
-              {{ categoryTitles['log_boats'] }}
-            </div>
-          </div>
-          <div class="placecard-content">
-            <!-- Content for Log Boats -->
-            <div class="placecard-metadata-content">
-              <ul class="sample-id-list">
-                <li v-for="(boat, index) in previewData['log_boats']" :key="index">
-                  <span class="label-box" @click.stop="navigateToDetail('https://maritime-encounters.dh.gu.se/api/resources/logboats/', boat.id)">
-                    Log Boat {{ boat.id }}
+                <li v-for="(boat, index) in previewData['boats']" :key="index">
+                  <span class="label-box" @click.stop="navigateToDetail('https://maritime-encounters.dh.gu.se/api/resources/boat/', boat.id)">
+                    {{ getCapitalizedVesselType(boat.vessel_type) }} {{ boat.id }}
                   </span>
                 </li>
               </ul>
@@ -313,6 +294,30 @@ function navigateToDetail(url, id) {
         </div>
       </div>
 
+      <!-- Late Neolithic Houses Card -->
+      <div v-if="previewData['lnhouses'] && previewData['lnhouses'].length > 0" class="placecard"
+        :class="{ expanded: expandedCard === 'lnhouses' }" @click="toggleCard('lnhouses')">
+        <div class="placecard-full">
+          <div class="placecard-text">
+            <div class="placecard-title theme-color-text theme-title-typography">
+              {{ categoryTitles['lnhouses'] }}
+            </div>
+          </div>
+          <div class="placecard-content">
+            <!-- Content for Late Neolithic Houses -->
+            <div class="placecard-metadata-content">
+              <ul class="sample-id-list">
+                <li v-for="(item, index) in previewData['lnhouses']" :key="index">
+                  <span class="label-box"
+                    @click.stop="navigateToDetail('https://maritime-encounters.dh.gu.se/api/resources/lnhouses/', item.id)">
+                    Late Neolithic Houses {{ item.id }}
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>

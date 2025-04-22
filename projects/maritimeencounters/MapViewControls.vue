@@ -4,7 +4,7 @@
       <div class="section-title">Type of Data</div>
       <div class="broad-controls" style="width:120px">
         <CategoryButtonDropdown v-model="dataType"
-          :categories="{'radiocarbon_dates': 'Radiocarbon Dates', 'individual_samples': 'Individual Samples', 'dna_samples': 'DNA Samples', 'metal_analysis': 'Metal Analysis', 'landing_points': 'Landing Points', 'new_samples': 'New Samples'}"
+          :categories="{'radiocarbon_dates': 'Radiocarbon Dates', 'individual_samples': 'Individual Samples', 'dna_samples': 'DNA Samples', 'metal_analysis': 'Metal Analysis', 'landing_points': 'Landing Points', 'new_samples': 'New Samples', 'lnhouses': 'Late Neolithic Houses', 'boats': 'Boats'}" 
           :limit="1" styleType="dropdown" class="my-2" type="site" style="width:100%" />
       </div>
     </div>
