@@ -195,5 +195,6 @@ function deselectPlace() {
 
 .close-card-button{
     left: calc(45px);
+    background-color:black;
   }
 </style>
