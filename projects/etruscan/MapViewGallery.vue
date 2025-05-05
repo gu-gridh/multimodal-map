@@ -269,6 +269,18 @@ const fetchData = async (requestedPageIndex) => {
   opacity: 0;
 }
 
+.gallery__item {
+  opacity: 1;
+  min-height: 30px; 
+  margin-bottom: 10px;
+  float: left;
+  overflow: hidden !important;
+  -webkit-transition-property: none !important;
+  -moz-transition-property: none !important;
+  -o-transition-property: none !important;
+  transition-property: none !important;
+}
+
 .gallery__item,
 .gallery__col-sizer {
   width: calc(25% - 10px);
