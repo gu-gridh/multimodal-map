@@ -6,7 +6,7 @@ export const etruscanStore = defineStore("etruscan", () => {
   const tags = ref(["all"]);
   const dataSetValue = ref(["all"]);
   const necropoli = ref(["all"]);
-  const selectedSite = ref(["1"]);
+  const selectedSite = ref(["all"]);
   const selectedRange = ref([-700, -200]);
   const showUnknownRange = ref(true);
   const tombType = ref(["all"]);
