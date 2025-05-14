@@ -5,7 +5,7 @@
         <a class="site-link link" href="https://github.com/gu-gridh/documentation/blob/main/gridh-projects/saintsophia.md#saint-sophias-inscriptions" target="_blank">GitHub
           repositories and development</a>
         <a class="site-link link"
-          href="https://github.com/gu-gridh/Saint_Sophia#database-and-api-documentation"
+          href="https://github.com/gu-gridh/documentation/blob/main/gridh-projects/saintsophia.md#database-and-api-documentation"
           target="_blank">Database and API documentation</a>
       </div>
       <div class="links-stack border-style">
