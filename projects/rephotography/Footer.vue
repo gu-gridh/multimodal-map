@@ -2,12 +2,12 @@
   <footer id="footer">
     <div id="developer-info">
       <div class="links-stack">
-        <a class="site-link link" href="https://github.com/gu-gridh/documentation/blob/main/rephotography.md" target="_blank">GitHub repository and development</a>
-        <a class="site-link link" href="https://github.com/gu-gridh/documentation/blob/main/rephotography.md#database-and-api-documentation" target="_blank">Database and API documentation</a>
+        <a class="site-link link" href="https://github.com/gu-gridh/documentation/blob/main/gridh-projects/rephotography.md" target="_blank">GitHub repository and development</a>
+        <a class="site-link link" href="https://github.com/gu-gridh/documentation/blob/main/gridh-projects/rephotography.md#database-and-api-documentation" target="_blank">Database and API documentation</a>
       </div>
       <div class="links-stack border-style">
-      <a class="site-link link" href="https://github.com/gu-gridh/documentation/blob/main/rephotography.md#about-the-project" target="_blank">About the project</a>
-      <a class="site-link link" href="https://github.com/gu-gridh/documentation/blob/main/rephotography.md#development-team" target="_blank">Development team</a>
+      <a class="site-link link" href="https://github.com/gu-gridh/documentation/blob/main/gridh-projects/rephotography.md#about-the-project" target="_blank">About the project</a>
+      <a class="site-link link" href="https://github.com/gu-gridh/documentation/blob/main/gridh-projects/rephotography.md#development-team" target="_blank">Development team</a>
     </div> 
     </div>
     <div class="partners">
