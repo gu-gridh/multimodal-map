@@ -393,7 +393,7 @@ export default {
   }
 }
 
-@media screen and (max-width: 1200px) {
+@media screen and (max-width: 1100px) {
 
   .gallery__item,
   .gallery__col-sizer {
@@ -468,7 +468,7 @@ export default {
   width: 100% !important;
   z-index: 1000 !important;
   bottom: 0px;
-  transition: all 0.2s ease-in-out;
+/*   transition: all 0.2s ease-in-out; */
   background: linear-gradient(0deg, rgba(0, 0, 0, 0.2) 0px, rgba(0, 0, 0, 0)30%) !important;
   /*   box-shadow: inset 0rem 0rem 5rem rgba(0, 0, 0, 0.3) !important; */
 }
