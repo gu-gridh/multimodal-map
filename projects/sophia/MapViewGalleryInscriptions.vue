@@ -1,5 +1,8 @@
 <template>
   <div id="gallery-container">
+    <div v-show="isLoading" class="gallery-loader">
+      <img :src="loaderSvg" alt="loading" />
+    </div>
     <div class="gallery-filters">
       <div class="gallery-filters-padding">
         <div class="gallery-filter-container">
@@ -41,10 +44,6 @@
       </div>
       <div class="gallery-corner-blur"></div>
     </div>
-
-    <div class="page-load-status">
-      <div class="infinite-scroll-request"></div>
-    </div>
   </div>
 </template>
 
@@ -55,12 +54,14 @@ import imagesLoaded from 'imagesloaded';
 import InfiniteScroll from 'infinite-scroll';
 import { inscriptionsStore } from "./settings/store";
 import i18n from '../../src/translations/sophia';
+import loaderSvg from '../../src/assets/interface/6-dots-rotate.svg';
 
 export default {
   setup() {
     const images = ref([]);
     const store = inscriptionsStore();
     const alignments = ref([]);
+    const isLoading = ref(false);
     const conditions = ref([]);
     let msnry;
     let pageIndex = 1;  //initialize pageIndex to 1
@@ -169,6 +170,7 @@ export default {
     const reloadAndLayout = () => {
       return new Promise((resolve) => {
         msnry.reloadItems();
+        isLoading.value = false;
         resolve();
       }).then(() => {
         msnry.layout();
@@ -197,10 +199,13 @@ export default {
           return url;
         },
         outlayer: msnry,
-        status: '.page-load-status',
         history: false,
         scrollThreshold: 200,
         elementScroll: true,
+      });
+
+      infScroll.on('request', () => {
+        isLoading.value = true;
       });
 
       infScroll.on('load', async function () {
@@ -231,11 +236,6 @@ export default {
     const reinitInfiniteScroll = () => {
       if (infScroll) {
         infScroll.destroy();
-        //hide the loader
-        const loader = document.querySelector('.infinite-scroll-request');
-        if (loader) {
-          loader.style.display = 'none';
-        }
       }
       if (msnry) {
         msnry.destroy();
@@ -272,7 +272,9 @@ export default {
       alignments,
       conditions,
       updateFilter,
-      store
+      store,
+      isLoading,
+      loaderSvg
     };
   },
 };
@@ -412,7 +414,7 @@ export default {
 
 .gallery__item {
   opacity: 1;
-  min-height: 30px; 
+  min-height: 30px;
   margin-bottom: 10px;
   float: left;
   overflow: hidden !important;
@@ -527,8 +529,21 @@ h1 span {
   display: block;
 }
 
-
 .gallery-tag.active {
   background-color: rgba(100, 40, 40, 1.0) !important;
+}
+
+.gallery-loader {
+  position: fixed;
+  bottom: 100px;
+  left: 60%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.gallery-loader img {
+  width: 48px;
+  height: 48px;
 }
 </style>
