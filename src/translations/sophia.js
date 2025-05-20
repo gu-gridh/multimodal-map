@@ -89,9 +89,10 @@ const messages = {
       namedentity:"Named entity",
       material:"Material",
       medium:"Medium",
-      versionnumb:"Version 1.1.5",
+      versionnumb:"Version 1.1.8",
       overview:"Overview",
       immersive:"Immersive",
+      numberofinscriptions:"Number of inscriptions",
       pictorialdescription:"Pictorial description",
       "categories": {
         "all": "All types",
@@ -189,9 +190,10 @@ const messages = {
       namedentity:"Іменована сутність",
       material:"Матеріал",
       medium:"Середній",
-      versionnumb:"Версія 1.1.5",
+      versionnumb:"Версія 1.1.8",
       overview:"Оглядова",
       immersive:"Занурювальний",
+      numberofinscriptions:"Кількість написів",
       pictorialdescription:"Картинний опис",
       "categories": {
         "all": "Всі види",

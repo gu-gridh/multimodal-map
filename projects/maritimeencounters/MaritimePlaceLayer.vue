@@ -332,19 +332,26 @@ const handleDownloadChoice = async (format) => {
     try {
       const res = await fetch(downloadUrl, {
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/zip",
           Authorization: `Token ${token}`,
         }
       });
       if (!res.ok) {
         const errorData = await res.json();
         console.error("CSV Download Error:", errorData.error);
-        return; 
+        return;
       }
-      window.location.href = downloadUrl;
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "exported_csv.zip";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
     } catch (err) {
-      console.error("error checking CSV data:", err);
-      return;
+      console.error("error downloading CSV:", err);
     }
   } else if (format === "json") {
     try {
@@ -354,7 +361,9 @@ const handleDownloadChoice = async (format) => {
           Authorization: `Token ${token}`,
         }
       });
+
       if (!res.ok) throw new Error("failed to fetch JSON data");
+
       const jsonData = await res.json();
 
       //for each key in the JSON response, trigger a separate file download.

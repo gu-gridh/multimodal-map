@@ -30,7 +30,7 @@ const props = defineProps({
 
 .observation-card:hover {
   cursor: pointer;
-  transform: scale(1.05);
+  transform: scale(1.02);
 }
 
 .observation {
@@ -49,7 +49,7 @@ const props = defineProps({
 
 .description {
   margin-top: 10px;
-  font-size: 1.0em;
+  font-size: 17.0px;
   line-height: 1.2;
 }
 
