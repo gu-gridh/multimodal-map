@@ -118,7 +118,7 @@ watch(showGrid, (newValue) => {
 
     <template #background>
       <div class="map-container">
-        <MapComponent :shouldAutoMove="true" :min-zoom="12" :max-zoom="18"
+        <MapComponent :shouldAutoMove="true" :min-zoom="15.2" :max-zoom="18"
           :restrictExtent="[11.919, 57.685, 12.055, 57.7215]" :key="showGrid.toString()">
           <template #layers>
 
@@ -132,7 +132,7 @@ watch(showGrid, (newValue) => {
             </DianaPlaceLayer>
 
             <ol-tile-layer className="map-tiles">
-              <ol-source-xyz url="https://data.dh.gu.se/tiles/gbg_1921a/{z}/{x}/{y}.png" />
+              <ol-source-xyz url=" https://data.dh.gu.se/tiles/jubileum/{z}/{x}/{y}.png" />
             </ol-tile-layer>
 
           </template>
