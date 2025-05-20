@@ -331,6 +331,7 @@ watch(showGrid, (newValue) => {
   bottom: 40px;
   left: -80px;
   width: 170px;
+  background-color:  rgb(180, 100, 100)!important;
 }
 
 .ol-popup:after,
@@ -342,6 +343,7 @@ watch(showGrid, (newValue) => {
   width: 0;
   position: absolute;
   pointer-events: none;
+
 }
 
 .ol-popup:after {
@@ -349,10 +351,11 @@ watch(showGrid, (newValue) => {
   border-width: 0px !important;
   left: 45px !important;
   margin-left: 20px;
+
 }
 
 .ol-popup:before {
-  border-top-color: #cccccc;
+  border-top-color:  rgb(180, 100, 100)!important;
   border-width: 11px;
   left: 55px;
   margin-left: 15px;
