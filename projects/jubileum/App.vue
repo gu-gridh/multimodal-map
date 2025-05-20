@@ -61,11 +61,11 @@ body {
   background: url("@/assets/gradient-jubileum.png");
   background-size: contain;
   z-index: 249;
-  width:1200px;
+  width:900px;
 }
 
 .left-pane-layer {
-  padding: 0px 720px 0px 0px !important;
+  padding: 0px 420px 0px 0px !important;
   pointer-events: none !important;
   height: 100vh !important;
   width: 100% !important;
