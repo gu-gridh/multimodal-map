@@ -103,6 +103,7 @@ export default {
     watch(
       () => store.imgParams,
       async (newCategory, oldCategory) => {
+        isLoading.value = true;
         pageIndex = 1;
         lastFetchedPageIndex = 0;
         canIncrement = true;
@@ -244,6 +245,7 @@ export default {
     };
 
     onMounted(() => {
+      isLoading.value = true;
       fetchDataAndPopulateRef(
         'https://saintsophia.dh.gu.se/api/inscriptions/graffitialignment/',
         alignments
