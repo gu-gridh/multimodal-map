@@ -537,8 +537,8 @@ h1 span {
 
 .gallery-loader {
   position: fixed;
-  bottom: 100px;
-  left: 60%;
+  bottom: 200px;
+  left: 65%;
   transform: translateX(-50%);
   z-index: 9999;
   pointer-events: none;

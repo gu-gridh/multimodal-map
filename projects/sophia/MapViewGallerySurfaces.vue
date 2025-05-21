@@ -419,7 +419,7 @@ export default {
 .gallery-loader {
   position: fixed;
   bottom: 200px;
-  left: 60%;
+  left: 65%;
   transform: translateX(-50%);
   z-index: 9999;
   pointer-events: none;
