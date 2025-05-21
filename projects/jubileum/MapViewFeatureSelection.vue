@@ -23,8 +23,10 @@ const onHover = (event) => {
   const features = event.selected;
 
   if (features.length === 1) {
-    hoverCoordinates.value = event.mapBrowserEvent.coordinate;
     hoveredFeature.value = features[0];
+    hoverCoordinates.value = hoveredFeature.value
+      .getGeometry()
+      .getCoordinates();
   } else {
     hoverCoordinates.value = undefined;
     hoveredFeature.value = undefined;
@@ -32,7 +34,7 @@ const onHover = (event) => {
 };
 
 const onClick = (event) => {
-const features = event.selected;
+  const features = event.selected;
 
   if (features.length === 1) {
     // Unselect the hovered feature
@@ -40,8 +42,10 @@ const features = event.selected;
     hoveredFeature.value = undefined;
 
     // Select the clicked feature
-    selectedCoordinates.value = event.mapBrowserEvent.coordinate;
     selectedFeature.value = features[0];
+    selectedCoordinates.value = selectedFeature.value
+      .getGeometry()
+      .getCoordinates();
   } else {
     selectedCoordinates.value = undefined;
     selectedFeature.value = undefined;
