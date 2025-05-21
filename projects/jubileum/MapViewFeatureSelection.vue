@@ -74,28 +74,30 @@ const getFeatureDisplayName =
     <ol-style>
       <ol-style-icon
         :src="markerIconRed"
-        :scale="1.0"
+        :scale="1"
+        :anchor="[0, 0]"       
         :displacement="[-10, 45]"
-        :anchor="[0.0, 0.0]"
-      ></ol-style-icon>
-      <ol-style-stroke color="rgb(220,100,100)" :width="6"></ol-style-stroke>
+      />
+      <ol-style-stroke color="rgb(220,100,100)" :width="6" />
     </ol-style>
   </ol-interaction-select>
-  
+
   <ol-interaction-select @select="onHover" :condition="hoverCondition">
     <ol-style>
       <ol-style-icon
         :src="markerIconRed"
-        :scale="1.0"
+        :scale="1"
+        :anchor="[0, 0]"         
         :displacement="[-10, 45]"
-        :anchor="[0.0, 0.0]"
-      ></ol-style-icon>
-      <ol-style-stroke color="rgb(220,100,100)" :width="6"></ol-style-stroke>
+      />
+      <ol-style-stroke color="rgb(220,100,100)" :width="6" />
     </ol-style>
   </ol-interaction-select>
 
   <ol-overlay
     class="ol-popup"
+    positioning="bottom-center" 
+    :offset="[0, -50]"           
     v-if="hoveredFeature"
     :position="hoverCoordinates"
   >
@@ -107,6 +109,8 @@ const getFeatureDisplayName =
 
   <ol-overlay
     class="ol-popup"
+    positioning="bottom-center"   
+    :offset="[0, -50]"         
     v-if="selectedFeature"
     :position="selectedCoordinates"
   >
