@@ -1,17 +1,15 @@
 <template>
   <div id="gallery-container">
+    <div v-show="isLoading" class="gallery-loader">
+      <img :src="loaderSvg" alt="loading" />
+    </div>
     <div class="gallery-filters">
       <div class="gallery-filters-padding" style="padding-left:30px;">
         <div class="gallery-filter-container">
           <h1>{{ $t('medium') }}</h1>
           <div class="tag-container">
-            <div
-              v-for="media in medias"
-              :key="media.id"
-              class="gallery-tag"
-              :class="{ active: store.mediaModel === media.id }"
-              @click="updateFilter('media', media.id)"
-            >
+            <div v-for="media in medias" :key="media.id" class="gallery-tag"
+              :class="{ active: store.mediaModel === media.id }" @click="updateFilter('media', media.id)">
               {{ media.text }}
             </div>
           </div>
@@ -19,13 +17,8 @@
         <div class="gallery-filter-container">
           <h1>{{ $t('material') }}</h1>
           <div class="tag-container">
-            <div
-              v-for="material in materials"
-              :key="material.id"
-              class="gallery-tag"
-              :class="{ active: store.materialModel === material.id }"
-              @click="updateFilter('material', material.id)"
-            >
+            <div v-for="material in materials" :key="material.id" class="gallery-tag"
+              :class="{ active: store.materialModel === material.id }" @click="updateFilter('material', material.id)">
               {{ material.text }}
             </div>
           </div>
@@ -42,18 +35,11 @@
               <h1>{{ $t('panel') }} {{ item.name }}</h1>
             </div>
           </div>
-          <img
-            :src="`${item.attached_orthophoto}/pct:0,0,100,70/250,/0/default.jpg`"
-            loading="lazy"
-            @load="imageLoaded"
-          />
+          <img :src="`${item.attached_orthophoto}/pct:0,0,100,70/250,/0/default.jpg`" loading="lazy"
+            @load="imageLoaded" />
         </a>
         <div class="cut-off"></div>
       </div>
-    </div>
-
-    <div class="page-load-status">
-      <div class="infinite-scroll-request"></div>
     </div>
   </div>
 </template>
@@ -65,6 +51,7 @@ import imagesLoaded from 'imagesloaded';
 import InfiniteScroll from 'infinite-scroll';
 import { inscriptionsStore } from './settings/store';
 import i18n from '../../src/translations/sophia';
+import loaderSvg from '../../src/assets/interface/6-dots-rotate_white.svg';
 
 export default {
   setup() {
@@ -72,6 +59,7 @@ export default {
     const store = inscriptionsStore();
     const medias = ref([]);
     const materials = ref([]);
+    const isLoading = ref(false);
     let msnry;
     let pageIndex = 1;
     let canIncrement = true;
@@ -117,6 +105,7 @@ export default {
     const reloadAndLayout = () => {
       return new Promise((resolve) => {
         msnry.reloadItems();
+        isLoading.value = false;
         resolve();
       }).then(() => {
         msnry.layout();
@@ -126,6 +115,7 @@ export default {
     watch(
       () => store.surfaceParams,
       async () => {
+        isLoading.value = true;
         pageIndex = 1;
         lastFetchedPageIndex = 0;
         images.value = [];
@@ -208,6 +198,10 @@ export default {
         elementScroll: true,
       });
 
+      infScroll.on('request', () => {
+        isLoading.value = true;
+      });
+
       infScroll.on('load', async function () {
         if (pageIndex >= lastFetchedPageIndex) {
           try {
@@ -249,6 +243,7 @@ export default {
     };
 
     onMounted(() => {
+      isLoading.value = true;
       fetchDataAndPopulateRef('https://saintsophia.dh.gu.se/api/inscriptions/medium/', medias);
       fetchDataAndPopulateRef('https://saintsophia.dh.gu.se/api/inscriptions/material/', materials);
 
@@ -272,6 +267,8 @@ export default {
       materials,
       updateFilter,
       store,
+      isLoading,
+      loaderSvg,
     };
   },
 };
@@ -415,7 +412,21 @@ export default {
 }
 
 .infinite-scroll-request {
-  filter:invert(1); 
+  filter: invert(1);
   background-color: transparent !important;
+}
+
+.gallery-loader {
+  position: fixed;
+  bottom: 200px;
+  left: 60%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.gallery-loader img {
+  width: 48px;
+  height: 48px;
 }
 </style>
