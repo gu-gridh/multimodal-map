@@ -97,7 +97,7 @@ const getFeatureDisplayName =
   <ol-overlay
     class="ol-popup"
     positioning="bottom-center" 
-    :offset="[0, -50]"           
+    :offset="[4, -25]"           
     v-if="hoveredFeature"
     :position="hoverCoordinates"
   >
@@ -110,7 +110,7 @@ const getFeatureDisplayName =
   <ol-overlay
     class="ol-popup"
     positioning="bottom-center"   
-    :offset="[0, -50]"         
+    :offset="[4, -25]"         
     v-if="selectedFeature"
     :position="selectedCoordinates"
   >
