@@ -240,8 +240,27 @@ overflow:hidden;
   font-size:0.85em!important;
 }
 
+.gallery-loader {
+  position: fixed;
+  bottom: 200px;
+  left:calc(50vw + 250px - 24px);
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.gallery-loader img {
+  width: 48px;
+  height: 48px;
+}
+
 
 @media screen and (max-width: 900px) {
+  .gallery-loader {
+    bottom: 300px;
+    left: calc(50vw - 24px);
+    transform: translateX(0%);
+  }
+  
   .atlas-gradient {
     background: linear-gradient(180deg, rgba(232, 228, 217, 0) 0px, var(--theme-1) 300px) !important;
   }

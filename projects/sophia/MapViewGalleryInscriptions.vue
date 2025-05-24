@@ -535,17 +535,5 @@ h1 span {
   background-color: rgba(100, 40, 40, 1.0) !important;
 }
 
-.gallery-loader {
-  position: fixed;
-  bottom: 200px;
-  left: 65%;
-  transform: translateX(-50%);
-  z-index: 9999;
-  pointer-events: none;
-}
 
-.gallery-loader img {
-  width: 48px;
-  height: 48px;
-}
 </style>
