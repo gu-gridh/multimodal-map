@@ -28,6 +28,7 @@
   const visibleAbout = ref(false);
   const visibleInstructions = ref(false);
   const showGuideButton = computed(() => showPlan.value);
+  const showLegend = computed(() => showPlan.value);
   const showFirstFloor = ref(true);
   const showSecondFloor = ref(false);
   const searchType = ref("inscriptionobjects");
@@ -315,7 +316,7 @@
       </button>
     </div>
 
-    <div class="legend">
+    <div class="legend" v-if="showLegend">
       <div class="legend-title legend-bg">{{ $t('numberofinscriptions') }}</div>
     <!--   <div class="legend-color-group">
         <div class="legend-swatch-title legend-bg">1 - 5</div>
