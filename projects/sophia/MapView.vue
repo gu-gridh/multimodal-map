@@ -691,13 +691,11 @@
   }
 
   #app .ol-zoom-in {
-    top: calc(100vh - 190px);
     background-color: rgba(0, 0, 0, 0.9) !important;
     border-radius: 8px 0px 0px 8px !important;
   }
 
   #app .ol-zoom-out {
-    top: calc(100vh - 190px);
     background-color: rgba(0, 0, 0, 0.9) !important;
     border-radius: 0px 8px 8px 0px !important;
   }
