@@ -55,7 +55,7 @@ const goBack = () => {
   overflow-y: auto;
   height:calc(100vh - 80px);
   padding-bottom:30px;
-  padding-left:75px;
+  padding-left:35px;
   padding-right:20px;
   -ms-overflow-style: none!important;
   scrollbar-width: none;
@@ -150,7 +150,7 @@ const goBack = () => {
   overflow-y: auto;
   height:calc(auto)!important;
   padding-bottom:230px!important;
-  padding-left:75px!important;
+  padding-left:25px!important;
   -ms-overflow-style: none!important;
   scrollbar-width: none;
 }
