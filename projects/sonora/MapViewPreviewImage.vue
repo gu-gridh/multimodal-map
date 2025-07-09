@@ -144,29 +144,6 @@ onMounted(() => {
     opacity: 0.8;
 }
 
-#navigatorDiv{
-position:absolute;
-  width:80px;
-  height:80px;
-  margin-top:10px;
-  margin-right:10px;
-
-}
-
-#ToolbarHorizontal {
-  position: absolute;
-  display: flex;
-  bottom: 10px;
-  width: 100%;
-  z-index: 1000;
-}
-
-#CenterNav {
-  margin: auto;
-}
-
-
-
 #ToolbarVertical {
   position: absolute;
   top: 10px;
@@ -175,8 +152,6 @@ position:absolute;
   z-index: 1000;
   cursor:pointer;
 }
-
-
 
 #RotateLeft {
   background: url(https://data.dh.gu.se/ui-icons/rotate_left_white.png);
@@ -205,23 +180,4 @@ border-radius: 50%;;
   margin-top:-5px;
 }
 
-
-.NavButton {
-  width: 35px;
-  height: 35px;
-  color: white;
-  opacity: 1;
-  cursor:pointer;
-  overflow:hidden;
-  outline: none;
-}
-.NavButton:hover {
-  opacity: 0.8;
-  cursor:pointer;
-}
-
-
-      *:focus {
-        outline:none!important;
-      }
 </style>
