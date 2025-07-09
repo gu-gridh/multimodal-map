@@ -132,7 +132,7 @@ onMounted(() => {
     overflow: hidden;
     position: absolute;
     bottom: 18px;
-    left: 20px;
+    left: 10px;
    background-color: rgba(10, 10, 10, 0.9) !important;
     border-radius: 50%;
     user-select: none;
