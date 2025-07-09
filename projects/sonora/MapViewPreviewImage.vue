@@ -114,7 +114,7 @@ onMounted(() => {
    
     </div> 
        <a id="download" ref="downloadButton" target="_blank">
-        <div id="" class="download-button compact" title="Download image"></div>
+        <div id="" class="download-button NavButton" title="Download image"></div>
       </a>
   </div>
 </template>
@@ -133,16 +133,13 @@ onMounted(() => {
     position: absolute;
     bottom: 18px;
     left: 20px;
-    background-color: rgba(35, 35, 35, 0.9) !important;
+   background-color: rgba(10, 10, 10, 0.9) !important;
     border-radius: 50%;
     user-select: none;
     -webkit-user-select: none;
     z-index:2000
 }
 
-.download-button:hover {
-    opacity: 0.8;
-}
 
 #ToolbarVertical {
   position: absolute;
@@ -158,7 +155,7 @@ onMounted(() => {
   background-size: 45%;
   background-repeat: no-repeat;
   background-position: center;
-   background-color: rgba(35, 35, 35, 0.9) !important;
+   background-color: rgba(10, 10, 10, 0.9) !important;
 border-radius: 50%;;
   width: 40px;
   height: 40px;
@@ -171,7 +168,7 @@ border-radius: 50%;;
   background-size: 45%;
   background-repeat: no-repeat;
   background-position: center;
-   background-color: rgba(35, 35, 35, 0.9) !important;
+   background-color: rgba(10, 10, 10, 0.9) !important;
 border-radius: 50%;;
   width: 40px;
   height: 40px;
