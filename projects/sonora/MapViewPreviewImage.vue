@@ -32,7 +32,7 @@ onMounted(() => {
     maxZoomPixelRatio: 4,
     homeFillsViewer: true,
     showZoomControl: true,
-    showHomeControl: false,
+    showHomeControl: true,
     showFullPageControl: true,
     showNavigator: true,
     navigatorAutoFade: true,
@@ -44,9 +44,11 @@ onMounted(() => {
     previousButton: "prev-button",
     rotateLeftButton: "rotate-left",
     rotateRightButton: "rotate-right",
+    homeButton: "home",
     prefixUrl: "/openseadragon/",
     sequenceMode: true,
     showReferenceStrip: props.showReferenceStrip,
+    referenceStripPosition: "right",
     preload: true,
     tileSources: props.src,
   });
@@ -69,38 +71,51 @@ onMounted(() => {
 
 <template>
   <div ref="viewerEl" class="osd">
-    <div id="ToolbarVertical">
-      <a id="full-page" href="#full-page">
-        <div :class="{ 'minimize': isFullscreen }" id="FullPage" class="NavButton"></div>
-      </a>
-      <a id="zoom-in" href="#zoom-in">
-        <div id="ZoomIn" class="NavButton"></div>
-      </a>
-      <a id="zoom-out" href="#zoom-out">
-        <div id="ZoomOut" class="NavButton"></div>
-      </a>
-      <a id="rotate-left" href="#rotate-left">
+     <div class="interface-area-top">
+      <div class="toolbar-top-mini">
+
+        <a id="prev-button">
+          <div id="Prev" class="switch-button"></div>
+        </a>
+        <span id="currentpage">{{ currentPage }} / {{ src ? src.length : 0 }}</span>
+        <a id="next-button">
+          <div id="Next" class="switch-button"></div>
+        </a>
+
+      </div>
+    </div>
+
+    <div class="interface-area-bottom">
+      <div class="toolbar-bottom-mini">
+
+        <a id="home" href="#home">
+          <div id="Home" class="NavButton"></div>
+        </a>
+        <a id="zoom-in" href="#zoom-in">
+          <div id="ZoomIn" class="NavButton"></div>
+        </a>
+        <a id="zoom-out" href="#zoom-out">
+          <div id="ZoomOut" class="NavButton"></div>
+        </a>
+        <a id="full-page" class="full-screen-option" href="#full-page">
+          <div id="FullPage" class="NavButton full-page"></div>
+        </a>
+
+      </div>
+    </div>
+
+     <div id="ToolbarVertical">
+           <a id="rotate-left" href="#rotate-left">
         <div id="RotateLeft" class="NavButton"></div>
       </a>
       <a id="rotate-right" href="#rotate-right">
         <div id="RotateRight" class="NavButton"></div>
       </a>
-      <a id="download" ref="downloadButton" target="_blank">
+   
+    </div> 
+       <a id="download" ref="downloadButton" target="_blank">
         <div id="" class="download-button compact" title="Download image"></div>
       </a>
-    </div> 
-
-    <div id="ToolbarHorizontal">
-      <a id="prev-button" ref="prevButton">
-        <div id="Prev" class="NavButton"></div>
-      </a>
-
-      <span id="currentpage">{{ currentPage }} / {{ src ? src.length : 0 }}</span>
-       
-      <a id="next-button" ref="nextButton">
-        <div id="Next" class="NavButton"></div>
-      </a>
-    </div>
   </div>
 </template>
 
@@ -116,12 +131,13 @@ onMounted(() => {
     cursor: pointer;
     overflow: hidden;
     position: absolute;
-    top: 230px;
-    left: -2px;
+    bottom: 18px;
+    left: 20px;
     background-color: rgba(35, 35, 35, 0.9) !important;
     border-radius: 50%;
     user-select: none;
     -webkit-user-select: none;
+    z-index:2000
 }
 
 .download-button:hover {
@@ -149,31 +165,7 @@ position:absolute;
   margin: auto;
 }
 
-#ToolbarHorizontal {
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  bottom: 10px;
-  width: 100%;
-  z-index: 1000;
-}
 
-#ToolbarHorizontal span {
-  display: flex;
-  flex-direction:column;
-  justify-content: center;
-  background-color: rgba(35, 35, 35, 0.6);
-  color: white;
-  text-align: center;
-  width:120px;
-  border-radius: 8px;
-  font-size:15px;
-  font-weight: bold;
-  vertical-align: 13px;
-  margin-left: 10px;
-  margin-right: 10px;
-  height:35px
-}
 
 #ToolbarVertical {
   position: absolute;
@@ -184,94 +176,19 @@ position:absolute;
   cursor:pointer;
 }
 
-#FullPage {
-  background: url(https://data.dh.gu.se/ui-icons/expand_white.svg);
-  background-size: 70%;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-color: rgba(35, 35, 35, 0.9);
-  border-radius: 50%;
-  width: 35px;
-  height: 35px;
-  border-radius: 50%;
-  overflow: hidden;
-  cursor:pointer;
-}
 
-#FullPage.minimize {
-  background: url(https://data.dh.gu.se/ui-icons/compress_white.svg);
-  background-size: 80%;
-  background-repeat: no-repeat;
-  background-position: 50% 50%;
-  background-color: rgba(35, 35, 35, 0.9);
-  border-radius: 50%;
-  width: 35px;
-  height: 35px;
-  border-radius: 50%;
-  overflow: hidden;
-  cursor: pointer;
-}
-
-#Prev {
-  background: url(https://data.dh.gu.se/ui-icons/arrow_prev_white.png);
-  background-size: 35px 35px;
-  background-repeat: no-repeat;
-  background-position: center;
-  display: inline-block;
-  position: absolute;
-  left:10px;
-      }
-
-  
-#Next {
-  background: url(https://data.dh.gu.se/ui-icons/arrow_next_white.png);
-  background-size: 35px 35px;
-  background-repeat: no-repeat;
-  background-position: center;
-  display: inline-block;
-  position: absolute;
-  left:-47px;
-}
-
-#ZoomIn {
-  background: url(https://data.dh.gu.se/ui-icons/zoomin_big_white.png);
-  background-size: 70%;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-color: rgba(35, 35, 35, 0.9);
-  border-radius: 50%;
-  width: 35px;
-  height: 35px;
-  margin-top: 10px;
-  cursor:pointer;
-  overflow: hidden;
-}
-
-#ZoomOut {
-  background: url(https://data.dh.gu.se/ui-icons/zoomout_big_white.png);
-  background-size: 70%;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-color: rgba(35, 35, 35, 0.9);
-  border-radius: 50%;
-  width: 35px;
-  height: 35px;
-  cursor:pointer;
-  overflow: hidden;
-}
 
 #RotateLeft {
   background: url(https://data.dh.gu.se/ui-icons/rotate_left_white.png);
   background-size: 45%;
   background-repeat: no-repeat;
   background-position: center;
-  background-color: rgba(35, 35, 35, 0.9);
-  border-radius: 50%;
-  width: 35px;
-  height: 35px;
+   background-color: rgba(35, 35, 35, 0.9) !important;
+border-radius: 50%;;
+  width: 40px;
+  height: 40px;
   cursor:pointer;
   overflow: hidden;
-  margin-top:10px;
 }
 
 #RotateRight {
@@ -279,12 +196,13 @@ position:absolute;
   background-size: 45%;
   background-repeat: no-repeat;
   background-position: center;
-  background-color: rgba(35, 35, 35, 0.9);
-  border-radius: 50%;
-  width: 35px;
-  height: 35px;
+   background-color: rgba(35, 35, 35, 0.9) !important;
+border-radius: 50%;;
+  width: 40px;
+  height: 40px;
   cursor:pointer;
   overflow: hidden;
+  margin-top:-5px;
 }
 
 
