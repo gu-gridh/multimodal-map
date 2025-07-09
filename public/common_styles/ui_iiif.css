@@ -214,10 +214,10 @@
   }
 
   #currentpage {
-    font-family: "Oswald", sans-serif !important;
+    font-family: "Barlow Condensed", sans-serif !important;
     color: white;
     font-size: 0.8em !important;
-    font-weight: 100;
+    font-weight: 400;
     pointer-events: none !important;
     background:transparent!important;
   }
