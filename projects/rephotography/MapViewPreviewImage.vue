@@ -14,9 +14,9 @@ defineProps({
           class="image"
         />
       </div>
-      <div>{{ image.title }}</div>
-      <div v-html="image.description"></div>
-      <div>{{ image.date }}</div>
+      <div class="previewtitle">{{ image.title }}</div>
+   <!--    <div v-html="image.description"></div> -->
+      <div class="previewdate">{{ image.date }}</div>
     </div>
   </router-link>
 </div>
@@ -32,4 +32,5 @@ h2{
   height:auto;
   background-color:none;
 }
+
 </style>

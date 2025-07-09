@@ -33,12 +33,12 @@ const props = defineProps({
       <div>
          <!--<div>{{ rephotography.old_image.title }}</div>
         <div>{{ rephotography.old_image.description }}</div> -->
-        <div>{{ rephotography.old_image.date }}</div>
+        <div class="previewdate">{{ rephotography.old_image.date }}</div>
       </div>
       <div class="text-right">
          <!--<div>{{ rephotography.new_image.title }}</div>
         <div>{{ rephotography.new_image.description }}</div> -->
-        <div>{{ rephotography.new_image.date }}</div>
+        <div class="previewdate">{{ rephotography.new_image.date }}</div>
       </div>
     </div>
   </router-link>

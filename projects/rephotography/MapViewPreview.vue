@@ -88,7 +88,7 @@ function deselectPlace() {
   <div v-if="selectedFeature" class="mapview-preview">
     <div class="px-8 py-6">
       <div class="close-button" @click="deselectPlace">+</div>
-      <h3 class="">{{ selectedFeature.get("name") }}</h3>
+      <h3 class="previewplace">{{ selectedFeature.get("name") }}</h3>
       <div class="pointer">
         <PreviewRephotography v-for="rephotography in rephotographies"
           :key="rephotography.old_image + ' ' + rephotography.new_image" :rephotography="rephotography" />

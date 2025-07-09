@@ -98,6 +98,54 @@ body {
 
   }
 
+  .description{
+  margin-top:30px;
+  font-weight:100;
+}
+
+.previewplace{
+  font-size:1.7em!important;
+  margin-bottom:20px!important;
+}
+.previewtitle{
+
+}
+.previewdate{
+   font-weight:200;
+}
+
+.metadata{
+  font-weight:100;
+    user-select: none;
+  -webkit-user-select: none;
+}
+
+.metadata-post{
+  margin-bottom:5px;
+  display:flex;
+  flex-direction:row;  
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.metadata-label{
+  float:left;
+  font-weight:100;
+  margin-right:20px;
+    user-select: none;
+  -webkit-user-select: none;
+}
+
+.metadata-item{
+  float:left;
+  font-weight:400;
+width:auto;
+ text-transform: capitalize;
+   user-select: none;
+  -webkit-user-select: none;
+
+}
+
 @media screen and (max-width: 900px) {
   #app .left-pane {
     margin-top:0px!important;

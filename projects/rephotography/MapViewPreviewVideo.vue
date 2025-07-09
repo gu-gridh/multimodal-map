@@ -17,9 +17,9 @@ const guplayId = computed(() => props.video.link.split("/").pop());
         <GuplayPreview :guplayId="guplayId || ''" />
       </div>
       <h2>Video </h2>
-      <div>{{ video.title }}</div>
-      <div>{{ video.description }}</div>
-      <div>{{ video.date }}</div>
+      <div class="previewtitle">{{ video.title }}</div>
+      <!-- <div>{{ video.description }}</div> -->
+      <div class="previewdate">{{ video.date }}</div>
     </div>
   </router-link>
 </div>
