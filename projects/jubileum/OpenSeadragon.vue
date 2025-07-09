@@ -43,7 +43,7 @@ onMounted(() => {
 <template>
   <div ref="viewerEl" class="osd">
     <div class="interface-area-bottom">
-      <div class="toolbar-bottom-mini">
+      <div class="toolbar-bottom">
 
         <a id="home" href="#home">
           <div id="Home" class="NavButton"></div>

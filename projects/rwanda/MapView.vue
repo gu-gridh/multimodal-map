@@ -224,7 +224,7 @@ watch(route, () => {
 }
 
 #app .tile-layer {
-  
+  filter: saturate(35%) brightness(110%);
 }
 
 .gradient-blur {

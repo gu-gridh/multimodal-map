@@ -44,7 +44,7 @@
 
         <div class="metadata-post" v-if="image.tag?.length">
           <div class="metadata-label">Tags:</div>
-          <div class="metadata-item">{{ image.tag.map((tag) => tag.text).join(", ") }}</div>
+          <div class="metadata-item-tag">{{ image.tag.map((tag) => tag.text).join(", ") }}</div>
         </div>
 
       </template>

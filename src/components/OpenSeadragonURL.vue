@@ -54,7 +54,7 @@ onMounted(() => {
 <template>
   <div ref="viewerEl" class="osd">
     <div class="interface-area">
-      <div class="toolbar-bottom-mini">
+      <div class="toolbar-bottom">
 
         <a id="home" href="#home">
           <div id="Home" class="NavButton" title="Fit image to view"></div>
@@ -74,25 +74,3 @@ onMounted(() => {
   </div>
 </template>
 
-<style>
-.openseadragon-canvas {
-    background-color: #000 !important;
-}
-
-#navigatorDiv{
-  position:absolute;
-  width:80px;
-  height:80px;
-  margin-top:10px;
-  margin-right:10px;
-
-}
-
-
-
-
-
-
- /*      DigiCure Look */
-
-</style>

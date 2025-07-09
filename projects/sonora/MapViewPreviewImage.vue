@@ -72,7 +72,7 @@ onMounted(() => {
 <template>
   <div ref="viewerEl" class="osd">
      <div class="interface-area-top">
-      <div class="toolbar-top-mini">
+      <div class="toolbar-top">
 
         <a id="prev-button">
           <div id="Prev" class="switch-button"></div>
@@ -86,7 +86,7 @@ onMounted(() => {
     </div>
 
     <div class="interface-area-bottom">
-      <div class="toolbar-bottom-mini">
+      <div class="toolbar-bottom">
 
         <a id="home" href="#home">
           <div id="Home" class="NavButton"></div>

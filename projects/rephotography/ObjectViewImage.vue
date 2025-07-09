@@ -30,7 +30,7 @@
       </div>
       <div class="metadata-post" v-if="object.tag?.length">
         <div class="metadata-label">Tags:</div>
-        <div class="metadata-item"> {{ object.tag.map((tag) => tag.text).join(", ") }}</div>
+        <div class="metadata-item-tag"> {{ object.tag.map((tag) => tag.text).join(", ") }}</div>
       </div>
     </ObjectViewComponent>
   </div>

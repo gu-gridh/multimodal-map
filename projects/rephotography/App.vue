@@ -146,6 +146,20 @@ width:auto;
 
 }
 
+.metadata-item-tag{
+  float:left;
+  font-weight:400;
+width:auto;
+ text-transform: capitalize;
+   user-select: none;
+  -webkit-user-select: none;
+  background-color:rgb(40,40,40);
+  border-radius:5px;
+  padding:1px 10px;
+  margin-right:5px;
+
+}
+
 @media screen and (max-width: 900px) {
   #app .left-pane {
     margin-top:0px!important;
