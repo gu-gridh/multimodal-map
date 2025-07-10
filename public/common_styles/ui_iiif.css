@@ -112,6 +112,26 @@
   z-index:1000;
 } 
 
+.download-button {
+    pointer-events: auto;
+    background: url(https://data.dh.gu.se/ui-icons/download_white.png);
+    background-size: 75%;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    overflow: hidden;
+    position: absolute;
+    bottom: 18px;
+    left: 10px;
+   background-color: rgba(10, 10, 10, 0.9) !important;
+    border-radius: 50%;
+    user-select: none;
+    -webkit-user-select: none;
+    z-index:2000
+}
+
 
   #Home {
     background: url(https://data.dh.gu.se/ui-icons/frame_small_white.png);
@@ -241,6 +261,42 @@
     opacity: 1;
     cursor: pointer;
   }
+
+  #ToolbarVertical {
+  position: absolute;
+  top: 10px;
+  width: 60px;
+  margin-left: 10px;
+  z-index: 1000;
+  cursor:pointer;
+}
+
+#RotateLeft {
+  background: url(https://data.dh.gu.se/ui-icons/rotate_left_white.png);
+  background-size: 45%;
+  background-repeat: no-repeat;
+  background-position: center;
+   background-color: rgba(10, 10, 10, 0.9) !important;
+border-radius: 50%;;
+  width: 40px;
+  height: 40px;
+  cursor:pointer;
+  overflow: hidden;
+}
+
+#RotateRight {
+  background: url(https://data.dh.gu.se/ui-icons/rotate_right_white.png);
+  background-size: 45%;
+  background-repeat: no-repeat;
+  background-position: center;
+   background-color: rgba(10, 10, 10, 0.9) !important;
+border-radius: 50%;;
+  width: 40px;
+  height: 40px;
+  cursor:pointer;
+  overflow: hidden;
+  margin-top:-5px;
+}
 
   *:focus {
     outline: none !important;
