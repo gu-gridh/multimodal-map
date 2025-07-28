@@ -99,38 +99,7 @@
     backdrop-filter: blur(3px);
   }
 
-  #DownloadButton {
-  position: absolute;
-  bottom: 12px;
-  background: url(https://data.dh.gu.se/ui-icons/download_white.png);
-  background-size: 80%;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-color: var(--viewer-button-background);
-  overflow: hidden;
-  cursor: pointer;
-  z-index:1000;
-} 
-
-.download-button {
-    pointer-events: auto;
-    background: url(https://data.dh.gu.se/ui-icons/download_white.png);
-    background-size: 75%;
-    background-repeat: no-repeat;
-    background-position: center;
-    width: 40px;
-    height: 40px;
-    cursor: pointer;
-    overflow: hidden;
-    position: absolute;
-    bottom: 18px;
-    left: 10px;
-   background-color: rgba(10, 10, 10, 0.9) !important;
-    border-radius: 50%;
-    user-select: none;
-    -webkit-user-select: none;
-    z-index:2000
-}
+  
 
 
   #Home {
@@ -209,6 +178,39 @@
     cursor: pointer;
     background-color:transparent;
   }
+
+  #DownloadButton {
+  position: absolute;
+  bottom: 12px;
+  background: url(https://data.dh.gu.se/ui-icons/download_white.png);
+  background-size: 80%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: var(--viewer-button-background);
+  overflow: hidden;
+  cursor: pointer;
+  z-index:1000;
+} 
+
+.download-button {
+    pointer-events: auto;
+    background: url(https://data.dh.gu.se/ui-icons/download_white.png);
+    background-size: 75%;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    overflow: hidden;
+    position: absolute;
+    bottom: 18px;
+    left: 10px;
+   background-color: rgba(10, 10, 10, 0.9) !important;
+    border-radius: 50%;
+    user-select: none;
+    -webkit-user-select: none;
+    z-index:2000
+}
 
   #Prev,
   #Next {
