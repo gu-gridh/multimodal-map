@@ -512,11 +512,6 @@ const handleClickOutside = (event) => {
     color: var(--theme-3) !important;
   }
 
-  #app .main-container {
-    background-color: rgba(84, 105, 108, 0.7) !important;
-    backdrop-filter: blur(10px) saturate(50%) brightness(100%);
-  }
-
   .overview-row {
     padding-left: 20px;
     padding-top: 20px;
@@ -619,13 +614,35 @@ const handleClickOutside = (event) => {
     margin: 0;
   }
   
-  .overview-row,
-  .place-gallery-container {
-    background-color: rgba(84, 105, 108, 0.7) !important;
-  }
-
   .place-card-container {
     padding: 0px;
+  }
+}
+
+@media (max-width: 900px) {
+  .place-card-container {
+    background: rgba(84, 105, 108, 0.7) !important;
+  }
+
+  .place-view {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .place-view::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(84, 105, 108, 0.7);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .overview-row,
+  .place-gallery-container {
+    position: relative;
+    z-index: 1;
+    background: transparent !important;
   }
 }
 </style>
