@@ -109,24 +109,14 @@ body {
   background-color: rgb(180, 100, 100)!important;
 }
 
-
-
 @media screen and (max-width: 900px) {
   .atlas-gradient {
     background: linear-gradient(180deg, rgba(232, 228, 217, 0) 0px, var(--theme-1) 300px) !important;
 }
 
-
-
 .organ-historic-overview a {
   color: var(--theme-3) !important;
 }
-
-.organ-historic-overview a:hover {
-  color: black!important;
-}
-
-
 
 #app .left-pane {
   margin-top:0px!important;

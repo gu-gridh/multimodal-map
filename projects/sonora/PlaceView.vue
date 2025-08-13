@@ -207,7 +207,6 @@ const handleClickOutside = (event) => {
       </div>
 
       <div class="place-gallery-container">
-        <!-- Documents -->
         <div class="table-section" v-if="documents.length > 0">
           <table class="content-table">
             <tbody>
@@ -497,7 +496,6 @@ const handleClickOutside = (event) => {
     width: calc(100%) !important;
     margin-left: 0px !important;
     padding-left: 0px;
-    padding-bottom: 100px;
   }
 
   .content-table {
@@ -507,7 +505,7 @@ const handleClickOutside = (event) => {
   .table-section {
     font-size: 120%;
     padding-left: 20px;
-    padding-bottom: 30px;
+    padding-bottom: 0px;
   }
 
   .tag.theme-color-text {
@@ -521,20 +519,25 @@ const handleClickOutside = (event) => {
 
   .overview-row {
     padding-left: 20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin: 0;
   }
 
   .title-event {
-    color: black;
+    color: white;
     margin-left: 0px;
+    margin-bottom: 10px;
+    margin-top: 0px;
     background-color: transparent;
     padding-right: 15px !important;
-    margin-bottom: 10px;
   }
 
   .title-builder {
-    color: black;
+    color: white;
     margin-left: 0px;
-    margin-bottom: 20px;
+    margin-bottom: 0px;
+    margin-top: 0px;
     padding-right: 15px !important;
     line-height: 1.1;
     background-color: transparent;
@@ -571,7 +574,6 @@ const handleClickOutside = (event) => {
     margin-right: 0px;
     margin-top: -6px;
     display: inline-block;
-    background-image: url("@/assets/document-black.svg");
     background-repeat: no-repeat;
     background-size: contain;
     width: 30px;
@@ -582,7 +584,6 @@ const handleClickOutside = (event) => {
     align-items: left;
     font-size: 0.9em;
     padding-bottom: 5px;
-    color: black;
     font-weight: 100 !important;
     line-height: 1.5;
     padding-left: 0px;
@@ -613,7 +614,14 @@ const handleClickOutside = (event) => {
 
   .place-gallery-container {
     flex: 1;
-    padding: 10px 30px 30px 0px;
+    padding: 0px 30px 30px 0px;
+    width: 100%;
+    margin: 0;
+  }
+  
+  .overview-row,
+  .place-gallery-container {
+    background-color: rgba(84, 105, 108, 0.7) !important;
   }
 
   .place-card-container {
