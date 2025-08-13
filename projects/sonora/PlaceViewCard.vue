@@ -222,7 +222,7 @@ onMounted(() => {
   text-decoration: none;
 }
 
-::v-deep a:hover {
+:deep(a:hover) {
   color: var(--theme-3) !important;
   text-decoration: underline;
 }

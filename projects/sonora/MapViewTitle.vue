@@ -1,11 +1,11 @@
 <template>
     <div class="main-title">Svenskt <br>digitalt <br>orgelarkiv</div>
     <!-- <div class="about">{{ $t('sonoraabout') }}</div> -->
-    <button class="item" @click="$emit('toggle-about')">
+    <button class="item" @click="$emit('toggleAbout')">
       <div class="p-0.5 px-2 clickable category-button about-button">
         {{ $t('infobutton') }}</div>
     </button>
-    <button class="item" @click="$emit('toggle-instructions')">
+    <button class="item" @click="$emit('toggleInstructions')">
       <div class="p-0.5 px-2 clickable category-button about-button" style="
                 margin-left: 5px;">
         {{ $t('instructions') }}</div>
@@ -32,11 +32,9 @@ export default {
       localStorage.setItem('sonoraLanguage', i18n.global.locale);
     },
   },
-  emits: ['toggle-about'],
+  emits: ['toggleAbout', 'toggleInstructions']
 };
 </script>
 
-
 <style>
-
 </style>

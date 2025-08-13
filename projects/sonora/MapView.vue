@@ -134,7 +134,7 @@ watch(visibleAbout, async (newVal) => {
   <Instructions :visibleInstructions="visibleInstructions" @close="visibleInstructions = false" />
   <MainLayout>
     <template #search>
-      <Title @toggle-about="toggleAboutVisibility" @toggle-instructions="toggleInstructionsVisibility"/>
+      <Title @toggleAbout="toggleAboutVisibility" @toggleInstructions="toggleInstructionsVisibility"/>
       <MapViewControls ref="mapViewControls" />
     </template>
 
