@@ -509,7 +509,7 @@ const handleClickOutside = (event) => {
   }
 
   .tag.theme-color-text {
-    color: var(--theme-3) !important;
+ 
   }
 
   .overview-row {
