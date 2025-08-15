@@ -92,7 +92,6 @@
             </div>
           </div>
 
-
           <!-- repeat -->
           <div class="instructions-item">
             <div class="instructions-item-icon"
@@ -140,22 +139,19 @@ export default {
   methods: {
     toggleLanguage() {
       if (i18n.global.locale === 'en') {
-        i18n.global.locale = 'it';
+        i18n.global.locale = 'sv';
       } else {
         i18n.global.locale = 'en';
       }
     },
     toggleLanguageIT() {
-      i18n.global.locale = 'it';
+      i18n.global.locale = 'sv';
     },
     toggleLanguageEN() {
       i18n.global.locale = 'en';
     }
   },
 };
-
-
-
 </script>
 
 <style scoped>
@@ -280,8 +276,6 @@ h1 {
   background-position-y: 50%;
   margin-left: 0px;
   margin-top: -15px;
-
-
 }
 
 .instructions-item-title {
@@ -318,8 +312,6 @@ h1 {
   background-color: green;
   height: auto;
 }
-
-
 
 .title-fields {
   display: flex;
@@ -405,11 +397,6 @@ h1 {
   pointer-events: auto;
 }
 
-
-
-
-
-
 .category-button {
   font-family: "Barlow Condensed", sans-serif !important;
   margin-top: 30px;
@@ -442,10 +429,7 @@ h1 {
   }
 }
 
-
-
 /*   Small screen adaption */
-
 @media screen and (max-width: 900px) {
   h1 {
     color: vlack !important;
