@@ -209,6 +209,7 @@ watch(selectedBuilderId, async () => {
 }
 
 @media screen and (max-width: 2000px) {
+
   .gallery__item,
   .gallery__col-sizer {
     width: calc(20% - 8px);
@@ -216,6 +217,7 @@ watch(selectedBuilderId, async () => {
 }
 
 @media screen and (max-width: 1800px) {
+
   .gallery__item,
   .gallery__col-sizer {
     width: calc(25% - 8px);
@@ -223,6 +225,7 @@ watch(selectedBuilderId, async () => {
 }
 
 @media screen and (max-width: 1500px) {
+
   .gallery__item,
   .gallery__col-sizer {
     width: calc(33% - 8px);
@@ -230,6 +233,7 @@ watch(selectedBuilderId, async () => {
 }
 
 @media screen and (max-width: 900px) {
+
   .gallery__item,
   .gallery__col-sizer {
     width: calc(50% - 8px);

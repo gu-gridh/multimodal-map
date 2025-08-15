@@ -1,5 +1,6 @@
 <template>
-  <div class="about-container" v-bind:class="{ fullopacity: visibleAbout }" :style="{ display: displayAbout ? 'block' : 'none' }">
+  <div class="about-container" v-bind:class="{ fullopacity: visibleAbout }"
+    :style="{ display: displayAbout ? 'block' : 'none' }">
     <button @click="toggleLanguage">
       <div class="p-1 px-2 clickable category-button about-button" style="
                 left: 20px !important;
@@ -10,7 +11,7 @@
     <div class="flex-machine">
       <div class="red-content">
 
-        <div class="about-main-title theme-color-text" v-bind:class="{ fullopacityui: visibleAbout }"> 
+        <div class="about-main-title theme-color-text" v-bind:class="{ fullopacityui: visibleAbout }">
           {{ $t('sonoratitle') }}
         </div>
 
@@ -26,7 +27,8 @@
         </div>
 
         <button @click="$emit('close')" style="margin-top: 30px;">
-          <div class="p-1 px-2 category-button" style="width:auto; padding:5px 15px; text-align: center; cursor: pointer;"
+          <div class="p-1 px-2 category-button"
+            style="width:auto; padding:5px 15px; text-align: center; cursor: pointer;"
             v-bind:class="{ fullopacityui: visibleAbout }"> {{ $t('explore') }}</div>
         </button>
 
@@ -37,7 +39,7 @@
           <div class="about-logo about-logo-bottom4"></div>
         </div>
 
-        <div class="about-main-subtitle theme-color-text" v-bind:class="{ fullopacityui: visibleAbout }"> 
+        <div class="about-main-subtitle theme-color-text" v-bind:class="{ fullopacityui: visibleAbout }">
           {{ $t('thearchives') }}
         </div>
 
@@ -46,13 +48,8 @@
             <Slide v-for="slide in slides" :key="slide.id">
               <div class="carousel__item">
                 <div class="carousel__images">
-                  <img 
-                    v-for="(image, index) in slide.images" 
-                    :key="index" 
-                    :src="image" 
-                    alt="slide image" 
-                    :style="image === '/sonora_archive/Moberg-2.jpg' ? { maxHeight: '300px', margin: '0 auto' } : { maxWidth: '300px', maxHeight: '300px', margin: '0 auto' }"
-                  />
+                  <img v-for="(image, index) in slide.images" :key="index" :src="image" alt="slide image"
+                    :style="image === '/sonora_archive/Moberg-2.jpg' ? { maxHeight: '300px', margin: '0 auto' } : { maxWidth: '300px', maxHeight: '300px', margin: '0 auto' }" />
                 </div>
                 <div class="text-content">
                   <h3 v-html="$t(slide.title)"></h3>
@@ -62,7 +59,7 @@
             </Slide>
             <template #addons>
               <Navigation />
-            </template>       
+            </template>
           </Carousel>
         </div>
       </div>
@@ -120,8 +117,8 @@ export default {
         },
         {
           id: '2',
-          images: [ 
-            '/sonora_archive/Unnerback-1.jpg', 
+          images: [
+            '/sonora_archive/Unnerback-1.jpg',
             '/sonora_archive/Unnerback-2.jpg'
           ],
           title: 'axel_title',
@@ -135,10 +132,10 @@ export default {
           ],
           title: 'moberg_title',
           content: `moberg_content`
-          },
+        },
         {
           id: '4',
-          images: [ 
+          images: [
             '/sonora_archive/lewen1.jpg',
             '/sonora_archive/lewen2.jpeg'
           ],
@@ -354,9 +351,9 @@ ul {
   opacity: 0.7;
 }
 
-.carousel-container .custom-carousel >>> .carousel__prev,
-.carousel-container .custom-carousel >>> .carousel__next {
-    top: 12%;
+.carousel-container .custom-carousel :deep(.carousel__prev),
+.carousel-container .custom-carousel :deep(.carousel__next) {
+  top: 12%;
 }
 
 @media screen and (max-width: 1500px) {
@@ -382,18 +379,18 @@ ul {
   }
 
   .about-main-title {
-    font-size: 3.5em!important;
+    font-size: 3.5em !important;
   }
 
   .about-article-main {
-    font-size: 1.3em!important;
-    font-weight:300;
-}
+    font-size: 1.3em !important;
+    font-weight: 300;
+  }
 
-.about-article-sub {
-  font-size: 1.0em!important;
-    font-weight:300;
-}
+  .about-article-sub {
+    font-size: 1.0em !important;
+    font-weight: 300;
+  }
 
   .carousel-container {
     max-width: 100%;
@@ -402,7 +399,7 @@ ul {
 
   .about-logos-container {
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
     gap: 20px;
     padding: 20px;
     align-items: center;
@@ -410,13 +407,13 @@ ul {
 
   .about-logo {
     float: left;
-   height: 100px;
+    height: 100px;
     width: 200px;
     margin: 0px;
   }
 
   .about-logo-bottom {
-  margin-bottom:20px;
-}
+    margin-bottom: 20px;
+  }
 }
 </style>

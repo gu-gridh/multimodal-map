@@ -19,7 +19,7 @@ const object = ref({});
 const fetchObjectData = async () => {
   try {
     const currentLocale = localStorage.getItem('sonoraLanguage') || i18n.global.locale;
-    const response = await fetch(`https://orgeldatabas.gu.se/webgoart/goart/document1.php?id=${props.id}&lang=${currentLocale}`);    
+    const response = await fetch(`https://orgeldatabas.gu.se/webgoart/goart/document1.php?id=${props.id}&lang=${currentLocale}`);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
@@ -50,7 +50,7 @@ const objectComponent = {
 
 <template>
 
-    <component :is="objectComponent" :object="object" :id="Number(id)" />
+  <component :is="objectComponent" :object="object" :id="Number(id)" />
 
 </template>
 
@@ -62,6 +62,7 @@ const objectComponent = {
   background-color: black;
   color: white;
 }
+
 .illustration {
   float: left;
   width: calc(100% - 450px);

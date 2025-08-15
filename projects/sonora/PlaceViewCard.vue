@@ -115,28 +115,29 @@ onMounted(() => {
 
 </template>
 <style scoped>
-.placeview-main-title{
-  pointer-events:none;
-  position:absolute;
-  z-index:1000;
-  font-size:30px;
-  padding:25px 25px;
-  top:80px;
-  text-shadow: 0px 0px 50px rgba(0,0,0,0.8);
+.placeview-main-title {
+  pointer-events: none;
+  position: absolute;
+  z-index: 1000;
+  font-size: 30px;
+  padding: 25px 25px;
+  top: 80px;
+  text-shadow: 0px 0px 50px rgba(0, 0, 0, 0.8);
   white-space: pre-line;
   line-height: 1.0;
   width: 250px;
   font-weight: 600;
   letter-spacing: 0.05rem;
   transition: all 0.5s ease-in-out;
-  color:white;
-  float:left;
+  color: white;
+  float: left;
 }
-.placecard-text{
-  overflow-y:scroll;
+
+.placecard-text {
+  overflow-y: scroll;
   -ms-overflow-style: none;
   scrollbar-width: none;
-  height:46vh;
+  height: 46vh;
 }
 
 .placecard-text::-webkit-scrollbar {
@@ -144,21 +145,23 @@ onMounted(() => {
 }
 
 
-.fog{
-    background:linear-gradient(00deg, #ffffff 10%, transparent);;
-    bottom:150px;
-    width:calc(100% - 50px);
-    height:150px;
-    position:relative;
-    float:left;
-    margin-top:-10px;
-    margin-left:50px;
-    border-radius:0px 0px 16px 16px;
-    pointer-events:none;
+.fog {
+  background: linear-gradient(00deg, #ffffff 10%, transparent);
+  ;
+  bottom: 150px;
+  width: calc(100% - 50px);
+  height: 150px;
+  position: relative;
+  float: left;
+  margin-top: -10px;
+  margin-left: 50px;
+  border-radius: 0px 0px 16px 16px;
+  pointer-events: none;
 }
+
 .placecard-title {
   padding-left: 10px;
-  font-size:2.2em;
+  font-size: 2.2em;
 }
 
 .historical-overview-title {
@@ -171,7 +174,7 @@ onMounted(() => {
 .historical-overview {
   display: flex;
   flex-direction: column;
-  padding-bottom:100px;
+  padding-bottom: 100px;
 }
 
 .overview-row {
@@ -190,7 +193,7 @@ onMounted(() => {
 }
 
 .overview-row a {
- float:left;
+  float: left;
   text-decoration: none;
   color: inherit;
   cursor: pointer;
@@ -204,15 +207,16 @@ onMounted(() => {
 }
 
 .date-column {
-  float:left;
+  float: left;
   width: 160px;
   padding: 10px;
   font-size: 25px;
 }
+
 @media screen and (max-width: 1400px) {
   .date-column {
-  width: 120px;
-}
+    width: 120px;
+  }
 }
 
 .info-column {
@@ -320,11 +324,11 @@ onMounted(() => {
 .mini-map {
   width: 100%;
   height: 35vh;
- 
+
   overflow: hidden;
   background-color: grey;
   margin-bottom: 0px;
-display:block;
+  display: block;
 }
 
 .placecard-metadata-description {
@@ -335,69 +339,69 @@ display:block;
 @media screen and (max-width: 900px) {
   .placecard-full {
     margin-top: 40px !important;
-    width:100% !important;
+    width: 100% !important;
   }
 
-  .placeview-main-title{
-  font-size:30px;
-  padding:25px 25px;
-  top:40px;
-  line-height: 0.9;
-  width: 250px;
-}
-
-.mini-map {
-  width: 100%;
-  height: 50vh;
-  overflow: hidden;
-  background-color: grey;
-  margin-bottom: 0px;
-display:block;
-}
-
-  .fog{
-display:none;
+  .placeview-main-title {
+    font-size: 30px;
+    padding: 25px 25px;
+    top: 40px;
+    line-height: 0.9;
+    width: 250px;
   }
 
-  .placecard-text{
-  height:auto;
-}
-  
-
-  .placecard-title{
-    font-size:6em;
+  .mini-map {
+    width: 100%;
+    height: 50vh;
+    overflow: hidden;
+    background-color: grey;
+    margin-bottom: 0px;
+    display: block;
   }
 
-  .historical-overview-title{
-    font-size:2em;
-    padding-left:0px;
-  margin-left:-10px;
+  .fog {
+    display: none;
+  }
+
+  .placecard-text {
+    height: auto;
+  }
+
+
+  .placecard-title {
+    font-size: 6em;
+  }
+
+  .historical-overview-title {
+    font-size: 2em;
+    padding-left: 0px;
+    margin-left: -10px;
   }
 
   .date-column {
-  width: 100%;
-  font-size: 30px;
-  padding-left:0px;
-  margin-left:-10px;
-}
+    width: 100%;
+    font-size: 30px;
+    padding-left: 0px;
+    margin-left: -10px;
+  }
 
-.info-column{
-  width: 100%;
+  .info-column {
+    width: 100%;
 
-  padding-left:0px;
-  margin-left:-10px;
-}
+    padding-left: 0px;
+    margin-left: -10px;
+  }
 
-.historical-overview {
+  .historical-overview {
 
-  padding-bottom:0px;
-}
+    padding-bottom: 0px;
+  }
 
 
-.historical-overview a {
+  .historical-overview a {
 
-  font-size: 24px;
-}
+    font-size: 24px;
+  }
 
   #app .place-meta-container {
     position: relative !important;
@@ -431,7 +435,7 @@ display:none;
     height: auto;
     overflow: hidden;
     border-radius: 20px 20px 0px 0px !important;
-    width:100%!important;
+    width: 100% !important;
   }
 
   .placecard-full .category-button {
@@ -442,4 +446,5 @@ display:none;
     padding-left: 0px;
     margin-bottom: 0px !important;
   }
-}</style>
+}
+</style>

@@ -36,10 +36,9 @@ watch(
       if (geometry) {
         const coordinates = (geometry).getCoordinates();
         store.updateCenter(coordinates);
-        if (store.zoom < featureZoom)
-          {          
-            store.updateZoom(featureZoom);
-          }
+        if (store.zoom < featureZoom) {
+          store.updateZoom(featureZoom);
+        }
       }
     }
   },
@@ -50,14 +49,14 @@ watch(
 watch(showArchive, (newValue, oldValue) => {
   // Check if the archive was open before
   if (oldValue && !newValue) {
-    selectedBuilderId.value = 0;  
+    selectedBuilderId.value = 0;
   }
 });
 
 const apiUrl = computed(() => {
   const baseUrl = 'https://orgeldatabas.gu.se/webgoart/goart/map.php';
   const buildingTypeId = dataParams.value.buildingTypeId || 0; // Default to 0
-  const year1 = dataParams.value.year1 || ''; 
+  const year1 = dataParams.value.year1 || '';
   const year2 = dataParams.value.year2 || '';
   return `${baseUrl}?btype=${buildingTypeId}&year1=${year1}&year2=${year2}`;
 });
@@ -117,15 +116,16 @@ watch(visibleAbout, async (newVal) => {
 <template>
   <div style="display:flex; align-items: center; justify-content: center; pointer-events: none;">
     <div class="ui-mode ui-overlay ui-overlay-top">
-     <button class="item" :class="{ selected: !showGrid && !showArchive }" @click="showGrid = false; showArchive = false;">
-      {{ $t('map') }}
-    </button>
-    <button class="item" :class="{ selected: showGrid }" @click="showGrid = true; showArchive = false;">
-      {{ $t('gallery') }}
-    </button>
-    <button class="item" :class="{ selected: showArchive }" @click="showArchive = true; showGrid = false;">
-      {{ $t('archive') }}
-    </button>
+      <button class="item" :class="{ selected: !showGrid && !showArchive }"
+        @click="showGrid = false; showArchive = false;">
+        {{ $t('map') }}
+      </button>
+      <button class="item" :class="{ selected: showGrid }" @click="showGrid = true; showArchive = false;">
+        {{ $t('gallery') }}
+      </button>
+      <button class="item" :class="{ selected: showArchive }" @click="showArchive = true; showGrid = false;">
+        {{ $t('archive') }}
+      </button>
     </div>
   </div>
   <MapViewGallery v-if="showGrid && !showArchive" />
@@ -134,37 +134,33 @@ watch(visibleAbout, async (newVal) => {
   <Instructions :visibleInstructions="visibleInstructions" @close="visibleInstructions = false" />
   <MainLayout>
     <template #search>
-      <Title @toggleAbout="toggleAboutVisibility" @toggleInstructions="toggleInstructionsVisibility"/>
+      <Title @toggleAbout="toggleAboutVisibility" @toggleInstructions="toggleInstructionsVisibility" />
       <MapViewControls ref="mapViewControls" />
     </template>
 
     <template #background>
       <div class="map-container">
-        <MapComponent 
-          :shouldAutoMove="true" 
-          :key="showGrid.toString()"
-        >
+        <MapComponent :shouldAutoMove="true" :key="showGrid.toString()">
           <!-- :min-zoom=minZoom
           :max-zoom=maxZoom  -->
-        <!-- :restrictExtent="[11.9, 42.15, 12.2, 42.4]"      -->
+          <!-- :restrictExtent="[11.9, 42.15, 12.2, 42.4]"      -->
           <template #layers>
             <DianaPlaceLayer v-if="placesLayerVisible" :apiUrl="apiUrl" :zIndex="20">
             </DianaPlaceLayer>
           </template>
-          
-        </MapComponent>  
-      </div> 
+
+        </MapComponent>
+      </div>
     </template>
 
     <template #details>
-      <MapViewPreview v-if="!showGrid && !showArchive"/>
+      <MapViewPreview v-if="!showGrid && !showArchive" />
     </template>
 
   </MainLayout>
 </template>
 
 <style>
-
 #app .tile-layer {
   filter: grayscale(80%);
 }
@@ -180,7 +176,7 @@ watch(visibleAbout, async (newVal) => {
   left: -85px;
   width: 180px;
   min-width: 90px;
-  bottom:55px;
+  bottom: 55px;
 }
 
 #app .ol-popup:before {

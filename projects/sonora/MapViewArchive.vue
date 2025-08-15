@@ -2,19 +2,19 @@
   <div class="map-view-archive-overlay">
     <div class="filters-container">
       <select class="dropdown theme-color-background my-2" v-model="selectedArchive">
-        <option  value="0">{{$t('allaArkiv')}}</option>
+        <option value="0">{{ $t('allaArkiv') }}</option>
         <option v-for="(option, id) in filters.Archive" :key="id" :value="id">
           {{ option }}
         </option>
       </select>
       <select class="dropdown theme-color-background my-2" v-model="selectedSeries">
-        <option value="0">{{$t('allaSeries')}}</option>
+        <option value="0">{{ $t('allaSeries') }}</option>
         <option v-for="(label, value) in series" :key="value" :value="value">
           {{ label }}
         </option>
       </select>
       <select class="dropdown theme-color-background my-2" v-model="selectedVolume">
-        <option value="0">{{$t('allaVolumes')}}</option>
+        <option value="0">{{ $t('allaVolumes') }}</option>
         <option v-for="(label, id) in volumes" :key="id" :value="id">
           {{ label }}
         </option>
@@ -22,18 +22,12 @@
     </div>
 
     <div class="archive-content">
-      <input type="text" 
-             :placeholder="$t('searchArkiv')"
-             class="archive-search-box"
-             v-model="searchQuery"
-             @input="fetchSearchResults" />
+      <input type="text" :placeholder="$t('searchArkiv')" class="archive-search-box" v-model="searchQuery"
+        @input="fetchSearchResults" />
       <div class="archive-search-results">
-        <router-link v-for="doc in filteredSearchResults" 
-              :key="doc.Dokument_nr" 
-              :to="`/detail/image/${doc.Dokument_nr}`" 
-              class="search-result-item"
-              target="_blank">
-                {{ doc.Titel }}
+        <router-link v-for="doc in filteredSearchResults" :key="doc.Dokument_nr"
+          :to="`/detail/image/${doc.Dokument_nr}`" class="search-result-item" target="_blank">
+          {{ doc.Titel }}
         </router-link>
       </div>
     </div>
@@ -49,7 +43,7 @@ const searchResults = ref([]);
 
 const selectedArchive = ref('0');
 const selectedSeries = ref('0');
-const selectedVolume = ref('0'); 
+const selectedVolume = ref('0');
 
 const filters = ref({});
 const series = ref({});
@@ -79,41 +73,41 @@ const fetchSearchResults = async () => {
       volumes.value = {};
       searchResults.value = [];
     } else {
-        // Update series if the response is for an archive selection
-        if (selectedSeries.value === '0' || Object.keys(data).some(key => data[key].hasOwnProperty('dropdownseries'))) {
-          const newSeries = {};
-          Object.entries(data).forEach(([id, { dropdownseries }]) => {
-            if (dropdownseries) newSeries[dropdownseries] = dropdownseries;
-          });
-          series.value = newSeries;
-        }
-
-        // Update volumes if the response is for a series selection
-        if (selectedSeries.value !== '0' && Object.keys(data).some(key => data[key].hasOwnProperty('dropdownvolume'))) {
-          const newVolumes = {};
-          Object.entries(data).forEach(([id, { dropdownvolume }]) => {
-            if (dropdownvolume) newVolumes[dropdownvolume] = dropdownvolume;
-          });
-          volumes.value = newVolumes;
-        }
+      // Update series if the response is for an archive selection
+      if (selectedSeries.value === '0' || Object.keys(data).some(key => data[key].hasOwnProperty('dropdownseries'))) {
+        const newSeries = {};
+        Object.entries(data).forEach(([id, { dropdownseries }]) => {
+          if (dropdownseries) newSeries[dropdownseries] = dropdownseries;
+        });
+        series.value = newSeries;
       }
-      searchResults.value = Object.values(data);
-    } catch (error) {
-      console.error('Error fetching data:', error);
+
+      // Update volumes if the response is for a series selection
+      if (selectedSeries.value !== '0' && Object.keys(data).some(key => data[key].hasOwnProperty('dropdownvolume'))) {
+        const newVolumes = {};
+        Object.entries(data).forEach(([id, { dropdownvolume }]) => {
+          if (dropdownvolume) newVolumes[dropdownvolume] = dropdownvolume;
+        });
+        volumes.value = newVolumes;
+      }
     }
+    searchResults.value = Object.values(data);
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
 };
 
 watch(selectedArchive, () => {
   selectedSeries.value = '0';
-  selectedVolume.value = '0'; 
-  series.value = {'0': 'All Series'}; 
-  volumes.value = {'0': 'All Volumes'}; 
-  fetchSearchResults(); 
+  selectedVolume.value = '0';
+  series.value = { '0': 'All Series' };
+  volumes.value = { '0': 'All Volumes' };
+  fetchSearchResults();
 });
 
 watch(selectedSeries, () => {
   selectedVolume.value = '0';
-  volumes.value = {'0': 'All Volumes'}; 
+  volumes.value = { '0': 'All Volumes' };
   fetchSearchResults();
 });
 
@@ -135,9 +129,10 @@ onMounted(async () => {
 </script>
 
 <style>
-.archive-menu{
-  padding:20px;
+.archive-menu {
+  padding: 20px;
 }
+
 .filters-container select {
   border-radius: 4px;
 }
@@ -186,22 +181,23 @@ onMounted(async () => {
   width: 600px;
   transition: ease-in-out 0.2s;
 }
+
 @media (max-width: 1300px) {
-.archive-content {
-  width: 500px;
-  margin-left: calc(500px);
-}
+  .archive-content {
+    width: 500px;
+    margin-left: calc(500px);
+  }
 }
 
 @media (max-width: 1100px) {
-.archive-content {
-  width: 400px;
-  margin-left: calc(400px);
-}
+  .archive-content {
+    width: 400px;
+    margin-left: calc(400px);
+  }
 }
 
 .archive-search-box {
-  width: 100%; 
+  width: 100%;
   padding: 8px;
   margin-bottom: 0px;
   border: 1px solid #ddd;
@@ -216,11 +212,11 @@ onMounted(async () => {
 .archive-search-results {
   position: absolute;
   width: 100%;
-  background-color:rgba(255,255,255,1.0);
+  background-color: rgba(255, 255, 255, 1.0);
   border: 0px solid #ccc;
   border-top: none;
-  border-radius:0px 0px 8px 8px;
-  margin-top:-4px;
+  border-radius: 0px 0px 8px 8px;
+  margin-top: -4px;
   z-index: 1000;
   max-height: calc(90vh - 285px);
   overflow-y: auto;
@@ -246,23 +242,24 @@ onMounted(async () => {
   }
 
   .archive-search-box {
-  width: 100%; 
-  padding: 8px;
-  margin-bottom: 0px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  height:60px;
-  font-size:1.8em;
-}
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 0px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    height: 60px;
+    font-size: 1.8em;
+  }
 
-.archive-search-results {
-  margin-top:-8px;
-  z-index: 1000;
-  max-height: calc(100vh - 500px);
-  font-size:1.3em;
-}
+  .archive-search-results {
+    margin-top: -8px;
+    z-index: 1000;
+    max-height: calc(100vh - 500px);
+    font-size: 1.3em;
+  }
 
-  .filter-dropdown select, .archive-search-box {
+  .filter-dropdown select,
+  .archive-search-box {
     max-width: none;
   }
 }

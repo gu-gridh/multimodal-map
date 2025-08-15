@@ -1,5 +1,5 @@
 <script setup>
-import { ref, inject, computed, watch } from "vue";
+import { ref, computed, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { sonoraStore } from "./settings/store";
 import { mapStore } from "@/stores/store";
@@ -51,7 +51,7 @@ watch(selectedFeature, async (newFeature, oldFeature) => {
     place.value = { id_: placeId };
     try {
       const currentLocale = i18n.global.locale;
-      const response = await fetch(`https://orgeldatabas.gu.se/webgoart/goart/place1.php?id=${placeId}&lang=${currentLocale}`);      
+      const response = await fetch(`https://orgeldatabas.gu.se/webgoart/goart/place1.php?id=${placeId}&lang=${currentLocale}`);
       if (response.ok) {
         const data = await response.json();
         processOrganData(data);
@@ -64,22 +64,22 @@ watch(selectedFeature, async (newFeature, oldFeature) => {
         organNumbers.value = {};
         imageUrls.value = [];
 
-           let i = 1;
-          while (data[`orgnr${i}`]) {
-            const imageUrl = data[`orgph${i}`] ? data[`orgph${i}`] : placeholderImage; //if no images were found, use the placeholder
-            imageUrls.value.push(imageUrl);
-            organNumbers.value[i] = data[`orgnr${i}`];
-            i++;
-          }
+        let i = 1;
+        while (data[`orgnr${i}`]) {
+          const imageUrl = data[`orgph${i}`] ? data[`orgph${i}`] : placeholderImage; //if no images were found, use the placeholder
+          imageUrls.value.push(imageUrl);
+          organNumbers.value[i] = data[`orgnr${i}`];
+          i++;
+        }
 
-          if (imageUrls.value.length === 0) {
-            //if no images were found, use the placeholder
-            imageUrls.value.push(placeholderImage);
-          }
+        if (imageUrls.value.length === 0) {
+          //if no images were found, use the placeholder
+          imageUrls.value.push(placeholderImage);
+        }
 
-          if (i > 1) {
-            currentOrganNumber.value = organNumbers.value[1];
-          }
+        if (i > 1) {
+          currentOrganNumber.value = organNumbers.value[1];
+        }
       } else {
         imageUrls.value = [placeholderImage];
         organNumbers.value = {};
@@ -149,48 +149,48 @@ const processOrganData = (data) => {
   <div v-if="lastInteraction === 'place' && selectedFeature" class="mapview-preview">
     <div class="placecard">
       <div class="close-card-button" @click="deselectPlace">+</div>
-        <div class="placecard-top">
-          <OpenSeadragon :src="imageUrls" :key="imageUrls.join(',')" @page-changed="handlePageChange" class="flex-1" />
+      <div class="placecard-top">
+        <OpenSeadragon :src="imageUrls" :key="imageUrls.join(',')" @page-changed="handlePageChange" class="flex-1" />
+      </div>
+      <div class="placecard-bottom">
+        <div class="placecard-text" v-if="responseData && responseData.Byggnadens_namn && responseData.Ort">
+          <div class="placecard-title theme-color-text">{{ responseData.Byggnadens_namn.data }}</div>
+          <div class="placecard-subtitle theme-color-text">{{ responseData.Ort.data }}</div>
         </div>
-        <div class="placecard-bottom">
-          <div class="placecard-text" v-if="responseData && responseData.Byggnadens_namn && responseData.Ort">
-            <div class="placecard-title theme-color-text">{{ responseData.Byggnadens_namn.data }}</div>
-            <div class="placecard-subtitle theme-color-text">{{ responseData.Ort.data }}</div>
-          </div>
-          <div class="placecard-content" v-if="responseData">
-            <div class="placecard-metadata-content">
-              <div class="metadata-item" v-if="responseData.Loc">
-                <div class="label">{{ $t('location') }}</div>
-                <div class="tag theme-color-text">{{ responseData.Loc }}</div>
-              </div>
-              <div class="metadata-item" v-if="responseData.Stift">
-                <div class="label">{{ $t('stift') }}</div>
-                <div class="tag theme-color-text">{{ responseData.Stift.data }}</div>
-              </div>
-              <div class="metadata-item" v-if="responseData.Kontrakt">
-                <div class="label">{{ $t('kontrakt') }}</div>
-                <div class="tag theme-color-text">{{ responseData.Kontrakt.data }}</div>
-              </div>
-              <div class="metadata-item" v-if="responseData.Kommun">
-                <div class="label">{{ $t('kommun') }}</div>
-                <div class="tag theme-color-text">{{ responseData.Kommun.data }}</div>
-              </div>
-              <div class="metadata-item" v-if="responseData.Pastorat">
-                <div class="label">{{ $t('pastorat') }}</div>
-                <div class="tag theme-color-text">{{ responseData.Pastorat.data }}</div>
-              </div>
+        <div class="placecard-content" v-if="responseData">
+          <div class="placecard-metadata-content">
+            <div class="metadata-item" v-if="responseData.Loc">
+              <div class="label">{{ $t('location') }}</div>
+              <div class="tag theme-color-text">{{ responseData.Loc }}</div>
+            </div>
+            <div class="metadata-item" v-if="responseData.Stift">
+              <div class="label">{{ $t('stift') }}</div>
+              <div class="tag theme-color-text">{{ responseData.Stift.data }}</div>
+            </div>
+            <div class="metadata-item" v-if="responseData.Kontrakt">
+              <div class="label">{{ $t('kontrakt') }}</div>
+              <div class="tag theme-color-text">{{ responseData.Kontrakt.data }}</div>
+            </div>
+            <div class="metadata-item" v-if="responseData.Kommun">
+              <div class="label">{{ $t('kommun') }}</div>
+              <div class="tag theme-color-text">{{ responseData.Kommun.data }}</div>
+            </div>
+            <div class="metadata-item" v-if="responseData.Pastorat">
+              <div class="label">{{ $t('pastorat') }}</div>
+              <div class="tag theme-color-text">{{ responseData.Pastorat.data }}</div>
             </div>
           </div>
+        </div>
         <!-- <div class="placecard-metadata-content">
             <div class="preview" v-html="description">
             </div>
           </div> -->
       </div>
-      
+
       <div class="placecard-center-button">
-      <router-link :to="computedRoute">
+        <router-link :to="computedRoute">
           <button class="theme-button" style="margin-top:0px;">{{ $t('moreinfo') }}</button>
-      </router-link>
+        </router-link>
       </div>
     </div>
   </div>
@@ -199,19 +199,19 @@ const processOrganData = (data) => {
       <div class="close-card-button" @click="deselectPlace">+</div>
       <div class="placecard-bottom">
         <div class="placecard-text">
-        <div class="placecard-title-builder theme-color-text">
-          {{ builderNameAndDate.name }}<br>
-          <span v-if="builderNameAndDate.date">{{ builderNameAndDate.date }}</span>
-        </div>
+          <div class="placecard-title-builder theme-color-text">
+            {{ builderNameAndDate.name }}<br>
+            <span v-if="builderNameAndDate.date">{{ builderNameAndDate.date }}</span>
+          </div>
         </div>
         <div class="placecard-content">
           <div class="placecard-metadata-content" v-if="builderData.Biografi">
-            <div class="builder-label">{{$t('biography')}}</div>
+            <div class="builder-label">{{ $t('biography') }}</div>
             <div class="metadata-item-wide">
               <div class="biography">{{ builderData.Biografi }}</div>
             </div>
           </div>
-          
+
         </div>
         <!-- <div class="placecard-metadata-content">
             <div class="preview" v-html="description">
@@ -224,14 +224,14 @@ const processOrganData = (data) => {
 
 <style>
 .placecard {
-  height: calc(100vh - 32vh)!important;
+  height: calc(100vh - 32vh) !important;
   margin-top: 12vh;
-  font-size:90%;
-  font-weight:300;
+  font-size: 90%;
+  font-weight: 300;
 }
 
-.placecard-top{
-  height:65%;
+.placecard-top {
+  height: 65%;
 }
 
 .metadata-item-wide {
@@ -245,38 +245,38 @@ const processOrganData = (data) => {
 }
 
 .placecard-title-builder {
-  margin-top:50px;
-  font-size:2.5vw;
-  text-align:center;
-  font-weight:200;
-  padding:10px;
+  margin-top: 50px;
+  font-size: 2.5vw;
+  text-align: center;
+  font-weight: 200;
+  padding: 10px;
 }
 
 #app .placecard-title {
-  font-size:35px!important;
-  padding-bottom:5px;
-  font-weight:300;
-  margin-left:-1px;
+  font-size: 35px !important;
+  padding-bottom: 5px;
+  font-weight: 300;
+  margin-left: -1px;
 }
 
 
 
 #app .placecard-subtitle {
-  font-size:25px!important;
-padding-bottom:5px;
-font-weight:300;
-margin-left:-1px;
+  font-size: 25px !important;
+  padding-bottom: 5px;
+  font-weight: 300;
+  margin-left: -1px;
 
 }
 
-.builder-label{
-  font-size:1.5vw;
-  margin-top:20px;
-  text-align:center;
+.builder-label {
+  font-size: 1.5vw;
+  margin-top: 20px;
+  text-align: center;
 }
 
-.biography{
-  text-align:justify;
-  padding:10px;
+.biography {
+  text-align: justify;
+  padding: 10px;
 }
 </style>

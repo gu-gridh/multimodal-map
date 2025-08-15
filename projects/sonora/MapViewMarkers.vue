@@ -1,5 +1,5 @@
 <script setup>
-import { ref, defineProps, onMounted, inject, watch } from "vue";
+import { ref, onMounted, inject, watch } from "vue";
 import GeoJSON from "ol/format/GeoJSON.js";
 import VectorSource from "ol/source/Vector";
 import WebGLPointsLayer from "ol/layer/WebGLPoints.js";
@@ -35,8 +35,8 @@ const vectorSource = ref(
   })
 );
 
-const fetchData = async (url) => {  
-   try {
+const fetchData = async (url) => {
+  try {
     const response = await fetch(url);
     const data = await response.json();
     const geoJSONFormat = new GeoJSON({ featureProjection: "EPSG:3857" });
@@ -108,8 +108,8 @@ const handleBuilderIdChange = async (newId) => {
           const coordinates = fromLonLat([parseFloat(builder.lng), parseFloat(builder.lat)]);
           const builderFeature = new Feature({
             geometry: new Point(coordinates),
-            name: builder.place, 
-            place_nr: builder.place_nr, 
+            name: builder.place,
+            place_nr: builder.place_nr,
           });
 
           vectorSource.value.addFeature(builderFeature);
@@ -153,7 +153,7 @@ onMounted(() => {
         const feature = event.selected[0];
         hoveredFeature.value = feature;
         const geometry = feature.getGeometry();
-        hoverCoordinates.value = geometry.getCoordinates();      
+        hoverCoordinates.value = geometry.getCoordinates();
       } else {
         //clear hover information when no feature is hovered
         hoveredFeature.value = null;
@@ -196,7 +196,7 @@ onMounted(() => {
 
 watch(selectedFeature, (newValue, oldValue) => {
   clearPopups();
-}); 
+});
 
 watch(() => props.apiUrl, (newUrl) => {
   if (newUrl && selectedBuilderId.value === 0) {
@@ -221,25 +221,11 @@ watch(() => builderLayerVisible.value, (newId) => {
 </script>
 
 <template>
-  <ol-overlay
-    class="ol-popup"
-    v-if="hoveredFeature"
-    :position="hoverCoordinates"
-  >
-    <div
-      class="ol-popup-content"
-      v-html="(hoveredFeature ? hoveredFeature.get('name') : '')"
-    ></div>
+  <ol-overlay class="ol-popup" v-if="hoveredFeature" :position="hoverCoordinates">
+    <div class="ol-popup-content" v-html="(hoveredFeature ? hoveredFeature.get('name') : '')"></div>
   </ol-overlay>
 
-  <ol-overlay
-    class="ol-popup"
-    v-if="selectedFeature"
-    :position="selectedCoordinates"
-  >
-    <div
-      class="ol-popup-content"
-      v-html="(selectedFeature ? selectedFeature.get('name') : '')"
-    ></div>
+  <ol-overlay class="ol-popup" v-if="selectedFeature" :position="selectedCoordinates">
+    <div class="ol-popup-content" v-html="(selectedFeature ? selectedFeature.get('name') : '')"></div>
   </ol-overlay>
 </template>

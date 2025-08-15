@@ -1,20 +1,20 @@
 <template>
-    <div class="main-title">Svenskt <br>digitalt <br>orgelarkiv</div>
-    <!-- <div class="about">{{ $t('sonoraabout') }}</div> -->
-    <button class="item" @click="$emit('toggleAbout')">
-      <div class="p-0.5 px-2 clickable category-button about-button">
-        {{ $t('infobutton') }}</div>
-    </button>
-    <button class="item" @click="$emit('toggleInstructions')">
-      <div class="p-0.5 px-2 clickable category-button about-button" style="
+  <div class="main-title">Svenskt <br>digitalt <br>orgelarkiv</div>
+  <!-- <div class="about">{{ $t('sonoraabout') }}</div> -->
+  <button class="item" @click="$emit('toggleAbout')">
+    <div class="p-0.5 px-2 clickable category-button about-button">
+      {{ $t('infobutton') }}</div>
+  </button>
+  <button class="item" @click="$emit('toggleInstructions')">
+    <div class="p-0.5 px-2 clickable category-button about-button" style="
                 margin-left: 5px;">
-        {{ $t('instructions') }}</div>
-    </button>
-    <button @click="toggleLanguage">
-        <div class="p-0.5 px-2 clickable category-button about-button" style="
+      {{ $t('instructions') }}</div>
+  </button>
+  <button @click="toggleLanguage">
+    <div class="p-0.5 px-2 clickable category-button about-button" style="
                 margin-left: 5px;
               ">{{ $t('languagebutton') }}</div>
-    </button>
+  </button>
 </template>
 
 <script>
@@ -36,5 +36,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

@@ -33,11 +33,11 @@ body {
 .main-title {
   font-family: 'Teko', sans-serif;
   color: rgb(250, 250, 250);
-  font-size:5.5vw;
+  font-size: 5.5vw;
 }
 
 .about {
-  display:none;
+  display: none;
 }
 
 #app .left-pane {
@@ -55,6 +55,6 @@ body {
 @media screen and (max-width: 900px) {
   .atlas-gradient {
     background: linear-gradient(180deg, rgba(232, 228, 217, 0) 0px, rgba(232, 228, 217, 1) 300px) !important;
-}
+  }
 }
 </style>

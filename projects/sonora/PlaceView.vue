@@ -509,7 +509,7 @@ const handleClickOutside = (event) => {
   }
 
   .tag.theme-color-text {
- /*    color: var(--theme-3) !important; */
+    /*    color: var(--theme-3) !important; */
   }
 
   .overview-row {
@@ -613,7 +613,7 @@ const handleClickOutside = (event) => {
     width: 100%;
     margin: 0;
   }
-  
+
   .place-card-container {
     padding: 0px;
   }
@@ -628,7 +628,7 @@ const handleClickOutside = (event) => {
     position: relative;
     overflow: hidden;
   }
-  
+
   .place-view::before {
     content: "";
     position: absolute;

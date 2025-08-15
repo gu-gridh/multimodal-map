@@ -9,19 +9,19 @@ const props = defineProps({
 
 const router = useRouter();
 
-const goBack = () => {
-    router.go(-1);
-};
+// const goBack = () => {
+//     router.go(-1);
+// };
 </script>
 
 <template>
-     <div class="meta-top-gradient"> </div>
+  <div class="meta-top-gradient"> </div>
   <div class="meta-container no-touch">
- 
+
 
     <header class="flex flex-row-reverse pt-8">
-      <div class="flex-1" ></div>
-      <div class="container" >
+      <div class="flex-1"></div>
+      <div class="container">
         <slot name="title">
           <h1 class="meta-title theme-title-typography">{{ title }}</h1>
         </slot>
@@ -31,39 +31,39 @@ const goBack = () => {
       </div> -->
     </header>
 
-    <main class="container metadata-posts" >
+    <main class="container metadata-posts">
       <slot />
     </main>
   </div>
 </template>
 
 <style>
-#app Body{
+/* #app Body{
  
+} */
+
+.meta-top-gradient {
+  margin-top: 0vh;
+  width: 450px;
+  height: 30px;
+  background: linear-gradient(0deg, rgba(114, 135, 138, 0) 00%, rgba(114, 135, 138, 1) 90%);
+  z-index: 100;
+  position: absolute;
 }
 
-.meta-top-gradient{
-  margin-top:0vh;
- width:450px;
- height:30px;
- background: linear-gradient(0deg, rgba(114,135,138,0) 00%, rgba(114,135,138,1) 90%);
- z-index:100;
- position:absolute;
-}
-
-.meta-container{
+.meta-container {
   overflow-y: auto;
-  height:calc(100vh - 80px);
-  padding-bottom:30px;
-  padding-left:35px;
-  padding-right:20px;
-  -ms-overflow-style: none!important;
+  height: calc(100vh - 80px);
+  padding-bottom: 30px;
+  padding-left: 35px;
+  padding-right: 20px;
+  -ms-overflow-style: none !important;
   scrollbar-width: none;
 }
 
 .meta-container::-webkit-scrollbar {
-    width: 0px !important;
-    }
+  width: 0px !important;
+}
 
 .back-button {
   left: 20px;
@@ -89,7 +89,7 @@ const goBack = () => {
   padding-right: 20px;
   padding-top: 6px;
   width: calc(100% - 25px);
- 
+
 }
 
 .metadata {
@@ -118,44 +118,42 @@ const goBack = () => {
   height: 100vh;
 }
 
-#app p{
-  margin-bottom:20px;
+#app p {
+  margin-bottom: 20px;
 }
 
-#app .meta-container a{
-  color:#CCFFFF;
-  cursor:pointer;
+#app .meta-container a {
+  color: #CCFFFF;
+  cursor: pointer;
 }
 
-#app .meta-container a:hover{
-  cursor:pointer;
+#app .meta-container a:hover {
+  cursor: pointer;
 }
 
 /* If your screen is very small */
 
 /* The basic structure */
 @media screen and (max-width: 900px) {
-  .meta-top-gradient{
-  width:100%;
-  margin-top:49.9vh;
+  .meta-top-gradient {
+    width: 100%;
+    margin-top: 49.9vh;
+
+  }
+
+  .illustration {
+    height: 70vh !important;
+  }
+
+  .meta-container {
+    top: 0vh;
+    overflow-y: auto;
+    height: calc(auto) !important;
+    padding-bottom: 230px !important;
+    padding-left: 25px !important;
+    -ms-overflow-style: none !important;
+    scrollbar-width: none;
+  }
 
 }
-
-.illustration {
-  height: 70vh!important;
-}
-
-.meta-container{
-  top:0vh;
-  overflow-y: auto;
-  height:calc(auto)!important;
-  padding-bottom:230px!important;
-  padding-left:25px!important;
-  -ms-overflow-style: none!important;
-  scrollbar-width: none;
-}
-
-}
-
-
 </style>

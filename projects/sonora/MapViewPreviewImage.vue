@@ -1,16 +1,16 @@
 <script setup>
-import { ref, onMounted, defineProps } from "vue";
+import { ref, onMounted } from "vue";
 import OpenSeadragon from "openseadragon";
 
 const props = defineProps({
-  src: Array, 
+  src: Array,
   downloadUrls: Array,
   showReferenceStrip: {
     type: Boolean,
     default: false
   }
 });
- 
+
 const viewerEl = ref();
 const currentPage = ref(1);  //define currentPage
 const isFullscreen = ref(false);
@@ -23,7 +23,7 @@ const downloadImage = () => {
   window.open(iiifFile, '_blank');
 };
 
-onMounted(() => {  
+onMounted(() => {
   const viewer = OpenSeadragon({
     element: viewerEl.value,
     immediateRender: false,
@@ -53,16 +53,16 @@ onMounted(() => {
     tileSources: props.src,
   });
 
-  viewer.addHandler('page', function(event) {
+  viewer.addHandler('page', function (event) {
     currentPage.value = event.page + 1;
   });
 
-  viewer.addHandler('full-page', function(event) {
+  viewer.addHandler('full-page', function (event) {
     isFullscreen.value = viewer.isFullPage(); //update isFullscreen state
   });
 
   const downloadButton = document.getElementById('download');
-  downloadButton.addEventListener('click', function(event) {
+  downloadButton.addEventListener('click', function (event) {
     event.preventDefault();
     downloadImage();
   });
@@ -71,7 +71,7 @@ onMounted(() => {
 
 <template>
   <div ref="viewerEl" class="osd">
-     <div class="interface-area-top">
+    <div class="interface-area-top">
       <div class="toolbar-top">
 
         <a id="prev-button">
@@ -104,21 +104,19 @@ onMounted(() => {
       </div>
     </div>
 
-     <div id="ToolbarVertical">
-           <a id="rotate-left" href="#rotate-left">
+    <div id="ToolbarVertical">
+      <a id="rotate-left" href="#rotate-left">
         <div id="RotateLeft" class="NavButton"></div>
       </a>
       <a id="rotate-right" href="#rotate-right">
         <div id="RotateRight" class="NavButton"></div>
       </a>
-   
-    </div> 
-       <a id="download" ref="downloadButton" target="_blank">
-        <div id="" class="download-button NavButton" title="Download image"></div>
-      </a>
+
+    </div>
+    <a id="download" ref="downloadButton" target="_blank">
+      <div id="" class="download-button NavButton" title="Download image"></div>
+    </a>
   </div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
