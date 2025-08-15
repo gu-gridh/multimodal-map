@@ -224,6 +224,7 @@ const processOrganData = (data) => {
 
 <style>
 .placecard {
+  position: relative;
   height: calc(100vh - 32vh) !important;
   margin-top: 12vh;
   font-size: 90%;
