@@ -3,14 +3,16 @@
     <div class="summary-content">
       <!-- bar charts -->
       <div class="charts">
-        <div class="chart-card" v-for="c in barCharts" :key="c.title">
+        <div class="chart-card" v-for="(c,i) in barCharts" :key="c.title">
           <div class="chart-title">{{ c.title }}</div>
           <VueECharts
             :option="c.option"
-            renderer="svg"
+            renderer="canvas"
             autoresize
             class="chart"
+            :ref="el => (chartRefs[i] = el)"
           />
+          <button class="dl-btn" @click="downloadPng(i, c.title)">PNG</button>
         </div>
       </div>
 
@@ -19,21 +21,23 @@
         <div class="chart-title">Inscription Year</div>
         <VueECharts
           :option="timelineOption"
-          renderer="svg"
+          renderer="canvas"
           autoresize
           class="chart tall"
+          :ref="el => (chartRefs['timeline'] = el)"
         />
+        <button class="dl-btn" @click="downloadPng('timeline', 'Inscription Year')">PNG</button>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, nextTick } from 'vue'
 import VueECharts from 'vue-echarts'
 import { use } from 'echarts/core'
 
-import { SVGRenderer } from 'echarts/renderers'
+import { CanvasRenderer } from 'echarts/renderers'
 import {
   GridComponent,
   TooltipComponent,
@@ -43,8 +47,10 @@ import {
 } from 'echarts/components'
 import { BarChart, LineChart } from 'echarts/charts'
 
+const chartRefs = ref([]);
+
 use([
-  SVGRenderer,
+  CanvasRenderer,
   GridComponent,
   TooltipComponent,
   LegendComponent,
@@ -152,16 +158,43 @@ const data = {
   ],
 }
 
-function makeBarOption(title, dataset) {
+function downloadDataURL(dataURL, filename) {
+  const a = document.createElement('a')
+  a.href = dataURL
+  a.download = filename
+  document.body.appendChild(a)
+  a.click()
+  a.remove()
+}
+
+async function downloadPng(index, title) {
+  await nextTick()
+  const comp = chartRefs.value[index]
+  const inst = comp?.chart
+  if (!inst) return
+  const url = inst.getDataURL({
+    type: 'png',
+    pixelRatio: 2,
+    backgroundColor: '#000',
+  })
+  downloadDataURL(url, `${title.replace(/\s+/g,'_').toLowerCase()}.png`)
+}
+
+function makeBarOption(title, dataset, rotate = 0) {
   return {
     backgroundColor: 'transparent',
-    grid: { left: 8, right: 8, top: 10, bottom: 30, containLabel: true },
+    grid: { left: 8, right: 8, top: 10, bottom: rotate ? 48 : 30, containLabel: true },
     tooltip: { trigger: 'axis' },
     dataset: { source: dataset },
     xAxis: {
       type: 'category',
       axisLine: { lineStyle: { color: '#bbb' } },
-      axisLabel: { color: '#ddd' },
+      axisLabel: {
+        color: '#ddd',
+        interval: 0,
+        rotate,
+        margin: 10,
+      },
     },
     yAxis: {
       axisLine: { lineStyle: { color: '#bbb' } },
@@ -174,11 +207,11 @@ function makeBarOption(title, dataset) {
 }
 
 const barCharts = ref([
-  { title: 'Type of inscription', option: makeBarOption('Type', data.typeOfInscription) },
-  { title: 'Writing system', option: makeBarOption('Writing', data.writingSystem) },
-  { title: 'Language', option: makeBarOption('Language', data.language) },
-  { title: 'Textual genre', option: makeBarOption('Genre', data.textualGenre) },
-  { title: 'Pictorial description', option: makeBarOption('Pictorial', data.pictorialDescription) },
+  { title: 'Type of inscription', option: makeBarOption('Type', data.typeOfInscription, 0) },
+  { title: 'Writing system', option: makeBarOption('Writing', data.writingSystem, 45) },
+  { title: 'Language', option: makeBarOption('Language', data.language, 45) },
+  { title: 'Textual genre', option: makeBarOption('Genre', data.textualGenre, 45) },
+  { title: 'Pictorial description', option: makeBarOption('Pictorial', data.pictorialDescription, 45) },
 ])
 
 const timelineOption = ref({
@@ -223,6 +256,7 @@ const timelineOption = ref({
 }
 
 .chart-card {
+  position: relative;
   background: rgba(255,255,255,0.06);
   border: 1px solid rgba(255,255,255,0.12);
   border-radius: 12px;
@@ -265,4 +299,18 @@ const timelineOption = ref({
     height: 220px;
   }
 }
+
+.dl-btn {
+  position: absolute;
+  right: 10px;
+  bottom: 8px;
+  font-size: 12px;
+  padding: 6px 8px;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.18);
+  color: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.dl-btn:hover { background: rgba(255,255,255,0.18); }
 </style>
