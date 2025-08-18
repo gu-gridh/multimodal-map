@@ -346,7 +346,7 @@ export default {
   }
 
   #gallery-container {
-    padding: 0px 00px 0px 0px;
+    padding: 0px 0px 0px 0px;
 
   }
 }

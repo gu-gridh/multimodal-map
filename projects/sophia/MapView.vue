@@ -10,6 +10,7 @@
   import { mapStore } from "@/stores/store";
   import { clean } from "@/assets/utils";
   import MapViewGallery from "./MapViewGallerySurfaces.vue";
+  import Summary from "./Summary.vue";
   import MapViewGalleryInscriptions from "./MapViewGalleryInscriptions.vue";
   import { ref } from "vue";
   import About from "./About.vue";
@@ -18,7 +19,7 @@
   import { nextTick } from "vue";
   import Title from "./MapViewTitle.vue";
 
-  const { selectedCategory, writingModel, languageModel, pictorialModel, textualModel, alignmentModel, conditionModel, panelId, inscriptionId, mediaModel, materialModel, panelStr, showGallery, showGalleryInscriptions, showPlan } = storeToRefs(inscriptionsStore());
+  const { selectedCategory, writingModel, languageModel, pictorialModel, textualModel, alignmentModel, conditionModel, panelId, inscriptionId, mediaModel, materialModel, panelStr, showGallery, showGalleryInscriptions, showPlan, showSummary } = storeToRefs(inscriptionsStore());
   const store = mapStore();
   const inscriptions = inscriptionsStore();  //get the instance of inscriptionsStore
   const { selectedFeature } = storeToRefs(store);
@@ -39,18 +40,28 @@
     showPlan.value = true;
     showGallery.value = false;
     showGalleryInscriptions.value = false;
+    showSummary.value = false
   };
+
+  const switchToSummary = () => {
+    showPlan.value = false
+    showGallery.value = false
+    showGalleryInscriptions.value = false
+    showSummary.value = true
+  }
 
   const switchToGallery = () => {
     showPlan.value = false;
     showGallery.value = true;
     showGalleryInscriptions.value = false;
+    showSummary.value = false;
   };
 
   const switchToInscriptions = () => {
     showPlan.value = false;
     showGallery.value = false;
     showGalleryInscriptions.value = true;
+    showSummary.value = false;
   };
 
   watch( //watcher for selectedFeature changes
@@ -273,7 +284,7 @@
   <div id="version"> {{ $t('versionnumb') }}</div>
   <div style="display:flex; align-items: center; justify-content: center; pointer-events: none;">
 
-    <!--   Top widget for the main modes  -->
+    <!--  top widget for the main modes  -->
     <div class="ui-mode ui-overlay ui-overlay-top">
       <button class="item" :class="{ selected: showPlan }" @click="switchToPlan" title="Plans">
         {{ $t('plans') }}
@@ -285,9 +296,13 @@
         title="Inscriptions">
         {{ $t('inscriptions') }}
       </button>
+      <button class="item" :class="{ selected: showSummary }" @click="switchToSummary"
+        title="Summary">
+        {{ $t('summary') }}
+      </button>
     </div>
 
-    <!--   Widget for Overview or Immersive  -->
+    <!--  Widget for Overview or Immersive  -->
     <div id="dimension" class="ui-mode ui-overlay ui-overlay-top" v-if="showPlan">
       <div class="item overview selected" @click="switchToPlan" title="Overview map">
         {{ $t('overview') }}
@@ -295,7 +310,7 @@
 
       <div class="item divider"></div>
 
-      <!--   links to the immersve view switches on what floor plan is shown  -->
+      <!--  links to the immersve view switches on what floor plan is shown  -->
       <div class="item immersive selected" v-bind:class="{ immersivevisible: !showSecondFloor }"
         onclick="location.href='/viewer/?q=immersive1/pointcloud'" title="Immersive view">
         {{ $t('immersive') }}
@@ -306,7 +321,7 @@
       </div>
     </div>
 
-    <!--   Widget for switching floor plan / tiles  -->
+    <!--  Widget for switching floor plan / tiles  -->
     <div class="ui-mode ui-overlay tile-switcher" style="" v-if="showPlan">
       <button class="item" v-bind:class="{ selected: !showSecondFloor }" v-on:click="showSecondFloor = false;">
         {{ $t('groundfloor') }}
@@ -318,7 +333,7 @@
 
     <div class="legend" v-if="showLegend">
       <div class="legend-title legend-bg">{{ $t('numberofinscriptions') }}</div>
-    <!--   <div class="legend-color-group">
+    <!--  <div class="legend-color-group">
         <div class="legend-swatch-title legend-bg">1 - 5</div>
         <div class="legend-swatch" style="background-color:rgba(255, 255, 128, 0.7)"> </div>
       </div> -->
@@ -360,6 +375,7 @@
     </div>
 
   </div>
+  <Summary v-if="showSummary" />
   <MapViewGallery v-if="showGallery" />
   <MapViewGalleryInscriptions v-if="showGalleryInscriptions" />
   <About :visibleAbout="visibleAbout" @close="visibleAbout = false" />
