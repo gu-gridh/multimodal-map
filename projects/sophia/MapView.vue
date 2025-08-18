@@ -139,6 +139,10 @@
     localStorage.setItem("showSecondFloor", JSON.stringify(newValue));
   });
 
+  watch(showSummary, (newValue) => {
+    localStorage.setItem("showSummary", JSON.stringify(newValue));
+  });
+
   const panelParams = computed(() => {
     const panelIdValue = panelId.value;
     const medium = mediaModel.value;
@@ -239,11 +243,16 @@
   );
 
   onMounted(() => {
-    // Check if the "visited" key exists in session storage
-    visited = localStorage.getItem("visited") === "true"; // Retrieve the visited status from session storage
+    //check if the "visited" key exists in session storage
+    visited = localStorage.getItem("visited") === "true"; //retrieve the visited status from session storage
     const storedShowPlan = localStorage.getItem("showPlan");
     const storedShowGallery = localStorage.getItem("showGallery");
     const storedShowGalleryInscriptions = localStorage.getItem("showGalleryInscriptions");
+    const storedShowSummary = localStorage.getItem("showSummary");
+
+    if (storedShowSummary !== null) {
+      showSummary.value = JSON.parse(storedShowSummary);
+    }
 
     if (!visited) {
       //hide the about component
