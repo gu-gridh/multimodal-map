@@ -287,19 +287,11 @@ overflow:hidden;
     min-height:100%;
   }
 
- 
-
-  #app .left-pane-layer {
-
-  }
-
   #app .left-pane-content {
       padding:0px!important;
       height:auto!important;
       padding-bottom:100px!important;
-
   }
-
  
   #app .main-title {
     font-size: 6.5em!important;
@@ -328,7 +320,6 @@ overflow:hidden;
   .placecard-bottom {
     height: 30% !important;
   }
-
 
   #app .placecard-title{
     font-size:8em!important;

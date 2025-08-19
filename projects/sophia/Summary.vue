@@ -298,6 +298,9 @@ const timelineOption = ref({
   .chart {
     height: 220px;
   }
+  .summary-content {
+    padding-bottom: 25vh;
+  }
 }
 
 .dl-btn {
