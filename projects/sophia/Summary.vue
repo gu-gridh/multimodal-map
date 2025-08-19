@@ -12,7 +12,7 @@
 
       <!-- timeline -->
       <div class="chart-card full-width">
-        <div class="chart-title">Inscription Year</div>
+        <div class="chart-title">Inscriptions Per Year</div>
         <VueECharts :option="timelineOption" renderer="canvas" autoresize class="chart tall"
           :ref="el => (chartRefs['timeline'] = el)" />
         <button class="dl-btn" @click="downloadPng('timeline', 'Inscription Year')">PNG</button>
@@ -196,7 +196,7 @@ function makeBarOption(title, dataset, rotate = 0) {
 }
 
 const barCharts = ref([
-  { title: 'Type of inscription', option: makeBarOption('Type', data.typeOfInscription, 0) },
+  { title: 'Type of inscription', option: makeBarOption('Type', data.typeOfInscription, 45) },
   { title: 'Writing system', option: makeBarOption('Writing', data.writingSystem, 45) },
   { title: 'Language', option: makeBarOption('Language', data.language, 45) },
   { title: 'Textual genre', option: makeBarOption('Genre', data.textualGenre, 90) },
