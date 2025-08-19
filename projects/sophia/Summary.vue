@@ -3,15 +3,9 @@
     <div class="summary-content">
       <!-- bar charts -->
       <div class="charts">
-        <div class="chart-card" v-for="(c,i) in barCharts" :key="c.title">
+        <div class="chart-card" v-for="(c, i) in barCharts" :key="c.title">
           <div class="chart-title">{{ c.title }}</div>
-          <VueECharts
-            :option="c.option"
-            renderer="canvas"
-            autoresize
-            class="chart"
-            :ref="el => (chartRefs[i] = el)"
-          />
+          <VueECharts :option="c.option" renderer="canvas" autoresize class="chart" :ref="el => (chartRefs[i] = el)" />
           <button class="dl-btn" @click="downloadPng(i, c.title)">PNG</button>
         </div>
       </div>
@@ -19,13 +13,8 @@
       <!-- timeline -->
       <div class="chart-card full-width">
         <div class="chart-title">Inscription Year</div>
-        <VueECharts
-          :option="timelineOption"
-          renderer="canvas"
-          autoresize
-          class="chart tall"
-          :ref="el => (chartRefs['timeline'] = el)"
-        />
+        <VueECharts :option="timelineOption" renderer="canvas" autoresize class="chart tall"
+          :ref="el => (chartRefs['timeline'] = el)" />
         <button class="dl-btn" @click="downloadPng('timeline', 'Inscription Year')">PNG</button>
       </div>
     </div>
@@ -177,7 +166,7 @@ async function downloadPng(index, title) {
     pixelRatio: 2,
     backgroundColor: '#000',
   })
-  downloadDataURL(url, `${title.replace(/\s+/g,'_').toLowerCase()}.png`)
+  downloadDataURL(url, `${title.replace(/\s+/g, '_').toLowerCase()}.png`)
 }
 
 function makeBarOption(title, dataset, rotate = 0) {
@@ -210,7 +199,7 @@ const barCharts = ref([
   { title: 'Type of inscription', option: makeBarOption('Type', data.typeOfInscription, 0) },
   { title: 'Writing system', option: makeBarOption('Writing', data.writingSystem, 45) },
   { title: 'Language', option: makeBarOption('Language', data.language, 45) },
-  { title: 'Textual genre', option: makeBarOption('Genre', data.textualGenre, 45) },
+  { title: 'Textual genre', option: makeBarOption('Genre', data.textualGenre, 90) },
   { title: 'Pictorial description', option: makeBarOption('Pictorial', data.pictorialDescription, 45) },
 ])
 
@@ -257,8 +246,8 @@ const timelineOption = ref({
 
 .chart-card {
   position: relative;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 12px;
   padding: 12px;
   flex: 1 1 320px;
@@ -280,6 +269,7 @@ const timelineOption = ref({
   width: 100%;
   height: 240px;
 }
+
 .chart.tall {
   height: 300px;
 }
@@ -295,9 +285,11 @@ const timelineOption = ref({
     width: 100%;
     height: 100%;
   }
+
   .chart {
     height: 220px;
   }
+
   .summary-content {
     padding-bottom: 25vh;
   }
@@ -309,11 +301,14 @@ const timelineOption = ref({
   bottom: 8px;
   font-size: 12px;
   padding: 6px 8px;
-  background: rgba(255,255,255,0.12);
-  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   color: #fff;
   border-radius: 8px;
   cursor: pointer;
 }
-.dl-btn:hover { background: rgba(255,255,255,0.18); }
+
+.dl-btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
 </style>

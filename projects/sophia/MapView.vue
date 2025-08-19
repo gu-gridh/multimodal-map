@@ -93,6 +93,7 @@ watch( //if a dropdown has been selected, toggle to the inscriptions view
       showPlan.value = false;
       showGalleryInscriptions.value = true;
       showGallery.value = false;
+      showSummary.value = false;
     }
   }
 );
@@ -103,6 +104,7 @@ watch(selectedCategory, (newValue, oldValue) => {
     showPlan.value = false;
     showGalleryInscriptions.value = true;
     showGallery.value = false;
+    showSummary.value = false;
   }
 });
 
