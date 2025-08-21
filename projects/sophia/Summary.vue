@@ -6,16 +6,22 @@
         <div class="chart-card" v-for="(c, i) in barCharts" :key="c.title">
           <div class="chart-title">{{ c.title }}</div>
           <VueECharts :option="c.option" renderer="canvas" autoresize class="chart" :ref="el => (chartRefs[i] = el)" />
-          <button class="dl-btn" @click="downloadPng(i, c.title)">PNG</button>
+          <div class="dl-actions">
+            <button class="dl-btn" @click="downloadCsv(i, c.title)">CSV</button>
+            <button class="dl-btn" @click="downloadPng(i, c.title)">PNG</button>
+          </div>
         </div>
       </div>
 
       <!-- timeline -->
       <div class="chart-card full-width">
-        <div class="chart-title">Inscriptions Per Year</div>
+        <div class="chart-title">Inscriptions per Year</div>
         <VueECharts :option="timelineOption" renderer="canvas" autoresize class="chart tall"
           :ref="el => (chartRefs['timeline'] = el)" />
-        <button class="dl-btn" @click="downloadPng('timeline', 'Inscription Year')">PNG</button>
+        <div class="dl-actions">
+          <button class="dl-btn" @click="downloadCsv('timeline', 'Inscription Year')">CSV</button>
+          <button class="dl-btn" @click="downloadPng('timeline', 'Inscription Year')">PNG</button>
+        </div>
       </div>
     </div>
   </div>
@@ -25,7 +31,6 @@
 import { ref, nextTick } from 'vue'
 import VueECharts from 'vue-echarts'
 import { use } from 'echarts/core'
-
 import { CanvasRenderer } from 'echarts/renderers'
 import {
   GridComponent,
@@ -36,7 +41,7 @@ import {
 } from 'echarts/components'
 import { BarChart, LineChart } from 'echarts/charts'
 
-const chartRefs = ref([]);
+const chartRefs = ref([])
 
 use([
   CanvasRenderer,
@@ -49,7 +54,7 @@ use([
   LineChart,
 ])
 
-//fake data...
+// fake data...
 const data = {
   typeOfInscription: [
     ['Category', 'Count'],
@@ -122,7 +127,6 @@ const data = {
     ['Symbolism', 1],
     ['Zoomorphic', 1],
   ],
-
   //years
   byYear: [
     ['Year', 'Count'],
@@ -167,6 +171,29 @@ async function downloadPng(index, title) {
     backgroundColor: '#000',
   })
   downloadDataURL(url, `${title.replace(/\s+/g, '_').toLowerCase()}.png`)
+}
+
+function getDatasetSource(index) {
+  if (index === 'timeline') {
+    return timelineOption.value?.dataset?.source || []
+  }
+  const item = barCharts.value[index]
+  return item?.option?.dataset?.source || []
+}
+
+function downloadCsv(index, title) {
+  const source = getDatasetSource(index)
+  if (!source?.length) return
+
+  const csv = source.map(r => r.join(',')).join('\n')
+  const BOM = '\uFEFF'
+  const url = URL.createObjectURL(new Blob([BOM + csv], { type: 'text/csv;charset=utf-8' }))
+
+  const a = document.createElement('a')
+  a.href = url
+  a.download = title + '.csv'
+  a.click()
+  setTimeout(() => URL.revokeObjectURL(url), 0)
 }
 
 function makeBarOption(title, dataset, rotate = 0) {
@@ -295,10 +322,15 @@ const timelineOption = ref({
   }
 }
 
-.dl-btn {
+.dl-actions {
   position: absolute;
   right: 10px;
   bottom: 8px;
+  display: flex;
+  gap: 8px;
+}
+
+.dl-btn {
   font-size: 12px;
   padding: 6px 8px;
   background: rgba(255, 255, 255, 0.12);
