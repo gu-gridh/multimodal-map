@@ -325,20 +325,20 @@ const handleDownloadChoice = async (format) => {
     in_bbox: bboxString,
     ...props.params,
   };
-  let downloadUrl = `${baseUrl}?${new URLSearchParams(queryParams).toString()}`;
-
-  if (format === "csv") {
-    downloadUrl += `&token=${encodeURIComponent(token)}`;
-  }
+  const queryString = new URLSearchParams(queryParams).toString();
+  const downloadUrl = `${baseUrl}?${queryString}`;
 
   if (format === "csv") {
     try {
       const res = await fetch(downloadUrl, {
-        headers: { Accept: "application/zip" }
+        headers: {
+          "Content-Type": "application/zip",
+          Authorization: `Token ${token}`,
+        }
       });
       if (!res.ok) {
-        const msg = await res.text();
-        console.error("CSV Download Error:", res.status, msg);
+        const errorData = await res.json();
+        console.error("CSV Download Error:", errorData.error);
         return;
       }
       const blob = await res.blob();
