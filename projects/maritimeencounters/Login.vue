@@ -79,11 +79,9 @@ export default {
                 }
 
                 const responseData = await response.json();
-                console.log('Login successful:', responseData);
+                console.log('Login successful');
 
                 const token = responseData.token;
-                console.log('Token:', token);
-
                 sessionStorage.setItem('authToken', token);
 
                 this.$emit('close');
