@@ -325,35 +325,26 @@ const handleDownloadChoice = async (format) => {
     in_bbox: bboxString,
     ...props.params,
   };
-  const queryString = new URLSearchParams(queryParams).toString();
-  const downloadUrl = `${baseUrl}?${queryString}`;
+
+  let downloadUrl = `${baseUrl}?${new URLSearchParams(queryParams).toString()}`;
 
   if (format === "csv") {
-    try {
-      const res = await fetch(downloadUrl, {
-        headers: {
-          "Content-Type": "application/zip",
-          Authorization: `Token ${token}`,
-        }
-      });
-      if (!res.ok) {
-        const errorData = await res.json();
-        console.error("CSV Download Error:", errorData.error);
-        return;
-      }
-      const blob = await res.blob();
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "exported_csv.zip";
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    } catch (err) {
-      console.error("error downloading CSV:", err);
+    if (!token) {
+      console.error("No auth token found");
+      return;
     }
-  } else if (format === "json") {
+    const urlObj = new URL(downloadUrl);
+    urlObj.searchParams.set("token", token);
+    downloadUrl = urlObj.toString();
+    const a = document.createElement("a");
+    a.href = downloadUrl;
+    a.target = "_blank";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    return;
+  }
+  else if (format === "json") {
     try {
       const res = await fetch(downloadUrl, {
         headers: {
@@ -474,7 +465,7 @@ watch( //toggle visibility between heatmap and marker clusters
 );
 
 onMounted(async () => {
-  const token = await waitForAuthToken(); 
+  const token = await waitForAuthToken();
 
   if (token) {
     map.value = L.map("map", {
@@ -599,7 +590,7 @@ onMounted(async () => {
         hoverPopup.value = null;
       }
     });
-  } 
+  }
 });
 </script>
 
@@ -631,29 +622,35 @@ onMounted(async () => {
 
 /* Small Clusters */
 :deep(.marker-cluster-small) {
-  background-color: #dddddd !important; /* outer circle color */
+  background-color: #dddddd !important;
+  /* outer circle color */
 }
 
 :deep(.marker-cluster-small div) {
-  background-color: #d0d0d0 !important; /* inner circle color */
+  background-color: #d0d0d0 !important;
+  /* inner circle color */
 }
 
 /* Medium Clusters */
 :deep(.marker-cluster-medium) {
-  background-color: rgba(166, 189, 219, 0.6) !important; /* outer circle color */
+  background-color: rgba(166, 189, 219, 0.6) !important;
+  /* outer circle color */
 }
 
 :deep(.marker-cluster-medium div) {
-  background-color: rgba(140, 165, 200, 0.6) !important; /* inner circle color */
+  background-color: rgba(140, 165, 200, 0.6) !important;
+  /* inner circle color */
 }
 
 /* Large Clusters */
 :deep(.marker-cluster-large) {
-  background-color: #6aa7c5 !important; /* outer circle color */
+  background-color: #6aa7c5 !important;
+  /* outer circle color */
 }
 
 :deep(.marker-cluster-large div) {
-  background-color: #2b8cbe !important; /* inner circle color */
+  background-color: #2b8cbe !important;
+  /* inner circle color */
 }
 
 .download-choice-modal {
