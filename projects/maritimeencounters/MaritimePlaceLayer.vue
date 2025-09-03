@@ -327,26 +327,44 @@ const handleDownloadChoice = async (format) => {
   };
 
   let downloadUrl = `${baseUrl}?${new URLSearchParams(queryParams).toString()}`;
-  console.log("download URL:", downloadUrl);
 
   if (format === "csv") {
     if (!token) {
       console.error("No auth token found");
       return;
     }
-    const urlObj = new URL(downloadUrl);
-    urlObj.searchParams.set("token", token);
-    downloadUrl = urlObj.toString();
-    const a = document.createElement("a");
-    a.href = downloadUrl;
-    console.log("csv URL:", downloadUrl);
-    a.target = "_self";
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
+
+    try {
+      const res = await fetch(downloadUrl, {
+        headers: {
+          Authorization: `Token ${token}`,
+          Accept: "application/zip"
+        }
+      });
+
+      if (!res.ok) {
+        const msg = await res.text();
+        console.error("CSV Download Error:", res.status, msg);
+        return;
+      }
+
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "exported_csv.zip";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error("error downloading CSV:", err);
+    }
+
     return;
-  }
-  else if (format === "json") {
+  } else if (format === "json") {
     try {
       const res = await fetch(downloadUrl, {
         headers: {
@@ -402,7 +420,6 @@ watch(
 
     await fetchData(baseUrl, { page_size: 500, ...newParams })
       .then(() => {
-        console.log("full dataset fetch completed with new params.");
         doneFetching.value = true;
       })
       .catch((err) => {
@@ -467,7 +484,7 @@ watch( //toggle visibility between heatmap and marker clusters
 );
 
 onMounted(async () => {
-  console.log('Mounted.');
+  console.log('Mounted');
   const token = await waitForAuthToken();
 
   if (token) {
@@ -575,11 +592,9 @@ onMounted(async () => {
     //fetch the full dataset after bounding box
     fetchData(urlWithBBox, {})
       .then(() => {
-        console.log('bbox fetch completed. Now fetching the full dataset.');
         return fetchData("https://maritime-encounters.dh.gu.se/api/resources/search/?page_size=1000", {});
       })
       .then(() => {
-        console.log('Full dataset fetch completed.');
         doneFetching.value = true;
       })
       .catch((err) => {
