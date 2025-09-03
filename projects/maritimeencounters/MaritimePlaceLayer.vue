@@ -327,6 +327,7 @@ const handleDownloadChoice = async (format) => {
   };
 
   let downloadUrl = `${baseUrl}?${new URLSearchParams(queryParams).toString()}`;
+  console.log("download URL:", downloadUrl);
 
   if (format === "csv") {
     if (!token) {
@@ -338,7 +339,8 @@ const handleDownloadChoice = async (format) => {
     downloadUrl = urlObj.toString();
     const a = document.createElement("a");
     a.href = downloadUrl;
-    a.target = "_blank";
+    console.log("csv URL:", downloadUrl);
+    a.target = "_self";
     document.body.appendChild(a);
     a.click();
     a.remove();
