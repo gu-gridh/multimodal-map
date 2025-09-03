@@ -467,6 +467,7 @@ watch( //toggle visibility between heatmap and marker clusters
 );
 
 onMounted(async () => {
+  console.log('Mounted.');
   const token = await waitForAuthToken();
 
   if (token) {
