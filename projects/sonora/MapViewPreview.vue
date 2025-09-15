@@ -17,7 +17,6 @@ const lastInteraction = ref('none'); //'none', 'place', or 'builder'
 const responseData = ref(null);
 
 let currentOrganNumber = ref(0); //organ number corresponding to page in openseadragonviewer
-let text = ref(false)
 let place = ref()
 
 //for filtering out the date from the Builder Name and putting it on a new line
@@ -60,7 +59,7 @@ watch(selectedFeature, async (newFeature, oldFeature) => {
         if (responseData.value) {
           responseData.value.Loc = data.loc1 || '';
         }
-        // Initialize the organNumbers and imageUrls arrays
+        //initialize the organNumbers and imageUrls arrays
         organNumbers.value = {};
         imageUrls.value = [];
 
@@ -260,14 +259,11 @@ const processOrganData = (data) => {
   margin-left: -1px;
 }
 
-
-
 #app .placecard-subtitle {
   font-size: 25px !important;
   padding-bottom: 5px;
   font-weight: 300;
   margin-left: -1px;
-
 }
 
 .builder-label {

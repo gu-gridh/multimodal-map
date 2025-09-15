@@ -89,7 +89,6 @@ const router = useRouter();
   padding-right: 20px;
   padding-top: 6px;
   width: calc(100% - 25px);
-
 }
 
 .metadata {

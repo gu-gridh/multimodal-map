@@ -71,11 +71,11 @@ import _debounce from 'lodash/debounce';
 import i18n from '../../src/translations/sonora';
 
 const store = mapStore();
-const timePeriods = ref({}); // State to store time periods
-const selectedTimePeriodIndex = ref(null); // State to track the selected time period index
-const buildingTypes = ref({}); // State to store time periods
-const firstSearchBoxClick = ref(true); // track the first click of the search box
-const searchType = ref('places'); // Default to 'places' 
+const timePeriods = ref({}); //state to store time periods
+const selectedTimePeriodIndex = ref(null); //state to track the selected time period index
+const buildingTypes = ref({}); //state to store time periods
+const firstSearchBoxClick = ref(true); //track the first click of the search box
+const searchType = ref('places'); //default to 'places' 
 const searchQuery = ref('');
 const { selectedFeature } = storeToRefs(mapStore());
 const searchResults = ref([]);
@@ -94,10 +94,10 @@ const setSearchType = (type) => {
 const onBuilderClick = (builderId) => {
   const geographicCoordinates = [16, 59.3];
 
-  // Transform the geographic coordinates to the map's coordinate system
+  //transform the geographic coordinates to the map's coordinate system
   const transformedCoordinates = fromLonLat(geographicCoordinates);
 
-  // Update the map's zoom and center
+  //update the map's zoom and center
   store.updateZoom(allZoom);
   store.updateCenter(transformedCoordinates);
 
@@ -119,7 +119,7 @@ const filteredPlaces = computed(() => {
 const handleSearchBoxFocus = () => {
   if (firstSearchBoxClick.value && searchType.value === 'places') {
     fetchPlaces('');
-    firstSearchBoxClick.value = false; // Set to false after first fetch
+    firstSearchBoxClick.value = false; //set to false after first fetch
   }
 };
 
@@ -151,7 +151,7 @@ watch(() => i18n.global.locale, (newLang, oldLang) => {
   }
 });
 
-// filter options
+//filter options
 async function fetchFilters() {
   const lang = i18n.global.locale;
 
@@ -169,11 +169,11 @@ async function fetchFilters() {
   }
 }
 
-// selection of buttons
+//selection of buttons
 function selectCategory(type, index) {
   if (type === 'building') {
     if (selectedBuildingTypeIndex.value === index) {
-      // If active, reset to 'All Buildings'
+      //if active, reset to 'All Buildings'
       selectedBuildingTypeIndex.value = 0;
       sonora.updateMapParams(0, selectedRange.value);
     } else {
@@ -187,7 +187,7 @@ function selectCategory(type, index) {
 const fetchPlaces = _debounce(async (query) => {
   let apiUrl;
   if (searchType.value === 'places') {
-    // If query is empty, fetch all places
+    //if query is empty, fetch all places
     apiUrl = query
       ? `https://orgeldatabas.gu.se/webgoart/goart/searchpl.php?seastr=${encodeURIComponent(query)}&btype=0&year1=1500&year2=1899&lang=sv`
       : 'https://orgeldatabas.gu.se/webgoart/goart/searchpl.php?seastr=&btype=0&year1=1500&year2=1899&lang=sv';

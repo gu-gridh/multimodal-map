@@ -27,8 +27,8 @@ import { storeToRefs } from "pinia";
 
 const { dataParams, selectedBuilderId } = storeToRefs(sonoraStore());
 let msnry;
-let pageIndex = 1;  //Initialize pageIndex to 1
-let canIncrement = true;  //Flag to control the increment
+let pageIndex = 1;  //initialize pageIndex to 1
+let canIncrement = true;  //flag to control the increment
 let infScroll;
 
 const images = ref([]);

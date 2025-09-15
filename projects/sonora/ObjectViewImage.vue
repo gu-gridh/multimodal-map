@@ -31,7 +31,7 @@ const imageUrls = computed(() => {
   const urls = [];
   for (const key in props.object) {
     if (props.object[key].Filename) {
-      urls.push(props.object[key].Filename + '/info.json');
+      urls.push(props.object[key].Filename);
     }
   }
   return urls;

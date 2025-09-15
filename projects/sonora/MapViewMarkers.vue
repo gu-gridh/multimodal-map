@@ -22,7 +22,7 @@ const props = defineProps({
   },
 });
 
-let selectHover; // Select interaction for hover
+let selectHover; //select interaction for hover
 const { selectedBuilderId, noPlaceCount, builderLayerVisible } = storeToRefs(sonoraStore());
 const { selectedFeature } = storeToRefs(mapStore());
 const hoveredFeature = ref(null);

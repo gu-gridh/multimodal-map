@@ -50,7 +50,10 @@ onMounted(() => {
     showReferenceStrip: props.showReferenceStrip,
     referenceStripPosition: "right",
     preload: true,
-    tileSources: props.src,
+    tileSources: props.src.map(url => ({
+      type: 'image',
+      url: url
+    })),
   });
 
   viewer.addHandler('page', function (event) {

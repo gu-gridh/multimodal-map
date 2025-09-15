@@ -17,8 +17,6 @@
       <a href="https://www.organacademy.se/svenskt-digitalt-orgelarkiv">
         <div class="link PartnerLogo" id="">SONORA</div>
       </a>
-
-
     </div>
   </footer>
 </template>
