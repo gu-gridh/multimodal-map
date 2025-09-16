@@ -10,8 +10,8 @@ import VueMatomo from 'vue-matomo';
 
 createApp(App) //
   .use(VueMatomo, {
-    host: import.meta.env.VITE_MATOMO_URL,
-    siteId: import.meta.env.VITE_MATOMO_ID,
+    host: import.meta.env.VITE_SONORA_MATOMO_URL,
+    siteId: import.meta.env.VITE_SONORA_MATOMO_ID,
     router: router,
     enableLinkTracking: true,
     trackInitialView: true,
