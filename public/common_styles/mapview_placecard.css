@@ -203,6 +203,7 @@
   margin-top:-1px;
   transition: all 0.2s ease-in-out;
   cursor:pointer;
+  font-size:90%;
   }
 
   .dataset-tag:hover{

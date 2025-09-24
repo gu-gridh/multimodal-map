@@ -121,10 +121,12 @@ function deselectPlace() {
               <div class="short-label">{{ $t('site') }}:</div>
               <div class="tag theme-color-text">{{ siteName }}</div>
             </div>
-            <div class="metadata-item">
-              <div class="label">Necropolis:</div>
-              <div class="tag theme-color-text">{{ necropolisName }}</div>
+
+              <div class="metadata-item">
+              <div class="label">{{ $t('dataset') }}:</div>
+              <div v-if="dataset" class="dataset-tag">{{ dataset }}</div>
             </div>
+           
             <div class="metadata-item">
               <div class="short-label">{{ $t('type') }}:</div>
               <div class="tag theme-color-text">{{ type }}</div>
@@ -138,11 +140,13 @@ function deselectPlace() {
               <div class="short-label">{{ $t('period') }}:</div>
               <div class="tag theme-color-text">{{ period }}</div>
             </div>
-         
-            <div class="metadata-item">
-              <div class="label">{{ $t('dataset') }}:</div>
-              <div v-if="dataset" class="dataset-tag">{{ dataset }}</div>
+
+             <div class="metadata-item">
+              <div class="label">Necropolis:</div>
+              <div class="tag theme-color-text">{{ necropolisName }}</div>
             </div>
+         
+          
 
           </div>
 
