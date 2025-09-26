@@ -223,7 +223,7 @@ function makeBarOption(title, dataset, rotate = 0) {
 }
 
 const barCharts = ref([
-  { title: 'Types of inscription', option: makeBarOption('Type', data.typeOfInscription, 45) },
+  { title: 'Inscription types', option: makeBarOption('Type', data.typeOfInscription, 45) },
   { title: 'Writing systems', option: makeBarOption('Writing', data.writingSystem, 45) },
   { title: 'Languages', option: makeBarOption('Language', data.language, 45) },
   { title: 'Textual genres', option: makeBarOption('Genre', data.textualGenre, 90) },
