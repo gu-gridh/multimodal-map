@@ -217,7 +217,7 @@ function makeBarOption(title, dataset, rotate = 0) {
       splitLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } },
       axisLabel: { color: '#ddd' },
     },
-    series: [{ type: 'bar', barMaxWidth: 28, emphasis: { focus: 'series' } }],
+    series: [{ type: 'bar', barMaxWidth: 28, emphasis: { focus: 'series' }, itemStyle: { color: '#fff' } }],
     textStyle: { color: '#ddd' },
   }
 }
@@ -246,7 +246,7 @@ const timelineOption = ref({
     splitLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } },
     axisLabel: { color: '#ddd' },
   },
-  series: [{ type: 'line', symbol: 'none', smooth: true }],
+  series: [{ type: 'line', symbol: 'none', smooth: true, itemStyle: { color: '#fff' } }],
   textStyle: { color: '#ddd' },
 })
 </script>
@@ -343,4 +343,6 @@ const timelineOption = ref({
 .dl-btn:hover {
   background: rgba(255, 255, 255, 0.18);
 }
+
+
 </style>
