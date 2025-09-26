@@ -223,11 +223,11 @@ function makeBarOption(title, dataset, rotate = 0) {
 }
 
 const barCharts = ref([
-  { title: 'Type of inscription', option: makeBarOption('Type', data.typeOfInscription, 45) },
-  { title: 'Writing system', option: makeBarOption('Writing', data.writingSystem, 45) },
-  { title: 'Language', option: makeBarOption('Language', data.language, 45) },
-  { title: 'Textual genre', option: makeBarOption('Genre', data.textualGenre, 90) },
-  { title: 'Pictorial description', option: makeBarOption('Pictorial', data.pictorialDescription, 45) },
+  { title: 'Types of inscription', option: makeBarOption('Type', data.typeOfInscription, 45) },
+  { title: 'Writing systems', option: makeBarOption('Writing', data.writingSystem, 45) },
+  { title: 'Languages', option: makeBarOption('Language', data.language, 45) },
+  { title: 'Textual genres', option: makeBarOption('Genre', data.textualGenre, 90) },
+  { title: 'Pictorial descriptions', option: makeBarOption('Pictorial', data.pictorialDescription, 45) },
 ])
 
 const timelineOption = ref({
