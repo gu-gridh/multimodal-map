@@ -279,16 +279,11 @@ const timelineOption = ref({
   border-width:1px 0px 0px 0px;
   border-radius: 12px;
   padding: 12px;
-  flex: 1 1 420px;
+  flex: 1 1 320px;
 }
 
 .chart-card.full-width {
   flex: 1 1 100%;
-  margin-top: 16px;
-}
-
-.chart-card.half-width {
-  flex: 1 1 48%;
   margin-top: 16px;
 }
 
