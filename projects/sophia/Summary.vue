@@ -217,7 +217,7 @@ function makeBarOption(title, dataset, rotate = 0) {
       splitLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } },
       axisLabel: { color: '#ddd' },
     },
-    series: [{ type: 'bar', barMaxWidth: 28, emphasis: { focus: 'series' }, itemStyle: { color: '#fff' } }],
+    series: [{ type: 'bar', barMaxWidth: 28, emphasis: { focus: 'series' }, itemStyle: { color: 'rgb(200,80,80)' } }],
     textStyle: { color: '#ddd' },
   }
 }
@@ -226,8 +226,9 @@ const barCharts = ref([
   { title: 'Inscription types', option: makeBarOption('Type', data.typeOfInscription, 45) },
   { title: 'Writing systems', option: makeBarOption('Writing', data.writingSystem, 45) },
   { title: 'Languages', option: makeBarOption('Language', data.language, 45) },
+    { title: 'Pictorial descriptions', option: makeBarOption('Pictorial', data.pictorialDescription, 90) },
   { title: 'Textual genres', option: makeBarOption('Genre', data.textualGenre, 90) },
-  { title: 'Pictorial descriptions', option: makeBarOption('Pictorial', data.pictorialDescription, 45) },
+
 ])
 
 const timelineOption = ref({
@@ -246,7 +247,7 @@ const timelineOption = ref({
     splitLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } },
     axisLabel: { color: '#ddd' },
   },
-  series: [{ type: 'line', symbol: 'none', smooth: true, itemStyle: { color: '#fff' } }],
+  series: [{ type: 'line', symbol: 'none', smooth: true, itemStyle: { color: 'rgb(200,80,80)' } }],
   textStyle: { color: '#ddd' },
 })
 </script>
@@ -274,14 +275,20 @@ const timelineOption = ref({
 .chart-card {
   position: relative;
   background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-width:1px 0px 0px 0px;
   border-radius: 12px;
   padding: 12px;
-  flex: 1 1 320px;
+  flex: 1 1 420px;
 }
 
 .chart-card.full-width {
   flex: 1 1 100%;
+  margin-top: 16px;
+}
+
+.chart-card.half-width {
+  flex: 1 1 48%;
   margin-top: 16px;
 }
 
