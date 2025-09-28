@@ -273,6 +273,8 @@ const timelineOption = ref({
   border-radius: 12px;
   padding: 12px;
   flex: 1 1 320px;
+  padding-bottom:0px;
+  padding-top:5px;
 }
 
 .chart-card.full-width {
@@ -289,7 +291,7 @@ const timelineOption = ref({
 
 .chart {
   width: 100%;
-  height: 240px;
+  height: 260px;
 }
 
 .chart.tall {
