@@ -16,7 +16,7 @@
       <!-- timeline -->
       <div class="chart-card full-width">
         <div class="chart-title">Inscriptions per Year</div>
-        <VueECharts :option="timelineOption" renderer="canvas" autoresize class="chart tall"
+        <VueECharts :option="timelineOption" renderer="canvas" autoresize class="chart low"
           :ref="el => (chartRefs['timeline'] = el)" />
         <div class="dl-actions">
           <button class="dl-btn" @click="downloadCsv('timeline', 'Inscription Year')">CSV</button>
@@ -192,7 +192,7 @@ function downloadCsv(index, title) {
 function makeBarOption(title, dataset, rotate = 0) {
   return {
     backgroundColor: 'transparent',
-    grid: { left: 8, right: 8, top: 10, bottom: rotate ? 48 : 30, containLabel: true },
+    grid: { left: 8, right: 8, top: 10, bottom: rotate ? 12 : 30, containLabel: true },
     tooltip: { trigger: 'axis' },
     dataset: { source: dataset },
     xAxis: {
@@ -274,13 +274,13 @@ const timelineOption = ref({
   padding: 12px;
   flex: 1 1 320px;
   padding-bottom:0px;
-  padding-top:5px;
+  padding-top:6px;
 }
 
 .chart-card.full-width {
   flex: 1 1 100%;
   margin-top: 16px;
-    padding-bottom:15px;
+  padding-bottom:15px;
 }
 
 .chart-title {
@@ -292,12 +292,18 @@ const timelineOption = ref({
 
 .chart {
   width: 100%;
-  height: 260px;
+  height: 270px;
+
 }
 
 .chart.tall {
   height: 300px;
 }
+
+.chart.low {
+  height: 200px;
+}
+
 
 .summary-content {
   max-width: 1400px;
@@ -323,18 +329,18 @@ const timelineOption = ref({
 .dl-actions {
   position: absolute;
   right: 10px;
-  bottom: 8px;
+  top: 8px;
   display: flex;
-  gap: 8px;
+  gap: 6px;
 }
 
 .dl-btn {
   font-size: 12px;
-  padding: 6px 8px;
+  padding: 2px 8px;
   background: rgba(255, 255, 255, 0.12);
   border: 1px solid rgba(255, 255, 255, 0.18);
   color: #fff;
-  border-radius: 8px;
+  border-radius: 6px;
   cursor: pointer;
 }
 
