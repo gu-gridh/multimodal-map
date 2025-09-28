@@ -91,7 +91,7 @@ const messages = {
     namedentity: "Named entity",
     material: "Material",
     medium: "Medium",
-    versionnumb: "Version 1.3.0",
+    versionnumb: "Version 1.4.0",
     overview: "Overview",
     immersive: "Immersive",
     numberofinscriptions: "Number of inscriptions",
