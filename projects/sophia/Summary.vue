@@ -280,6 +280,7 @@ const timelineOption = ref({
 .chart-card.full-width {
   flex: 1 1 100%;
   margin-top: 16px;
+    padding-bottom:15px;
 }
 
 .chart-title {
