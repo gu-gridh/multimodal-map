@@ -194,7 +194,7 @@ const messages = {
     namedentity: "Іменована сутність",
     material: "Матеріал",
     medium: "Середній",
-    versionnumb: "Версія 1.3.0",
+    versionnumb: "Версія 1.4.0",
     overview: "Оглядова",
     immersive: "Занурювальний",
     numberofinscriptions: "Кількість написів",
