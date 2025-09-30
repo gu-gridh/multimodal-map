@@ -28,8 +28,9 @@
 </template>
 
 <script setup>
-import { ref, nextTick } from 'vue'
+import { ref, nextTick, onMounted, computed } from 'vue'
 import VueECharts from 'vue-echarts'
+import i18n from '../../src/translations/sophia';
 import { use } from 'echarts/core'
 import { CanvasRenderer } from 'echarts/renderers'
 import {
@@ -54,80 +55,8 @@ use([
   LineChart,
 ])
 
-// fake data...
+//years hardcoded for now
 const data = {
-  typeOfInscription: [
-    ['Category', 'Count'],
-    ['Textual', 2096],
-    ['Pictorial', 569],
-    ['Composite', 34],
-  ],
-  writingSystem: [
-    ['System', 'Count'],
-    ['Armenian', 27],
-    ['Cyrillic', 1367],
-    ['Glagolitic', 1],
-    ['Greek', 104],
-    ['Latin', 185],
-    ['Mixed script', 7],
-    ['N/A', 2],
-  ],
-  language: [
-    ['Language', 'Count'],
-    ['Ancient Greek', 96],
-    ['Armenian', 28],
-    ['Church Slavonic', 956],
-    ['Greek', 10],
-    ['Latin', 8],
-    ['Low German', 1],
-    ['Mixed', 9],
-    ['N/A', 12],
-    ['Polish', 148],
-    ['Ukranian', 343],
-    ['Russian', 6],
-  ],
-  textualGenre: [
-    ['Genre', 'Count'],
-    ['Abecedary', 2],
-    ['Alphabet', 291],
-    ['Calendar', 2],
-    ['Christogram', 24],
-    ['Commemoration', 480],
-    ['Curse', 4],
-    ['Exercise', 4],
-    ['Invocation', 2],
-    ['List', 8],
-    ['Monogram', 30],
-    ['Musical notation', 6],
-    ['N/A', 45],
-    ['Name', 113],
-    ['Name list', 3],
-    ['Numbers', 377],
-    ['Other', 7],
-    ['Phrase', 66],
-    ['Prayer', 635],
-    ['Quotation', 11],
-    ['Signature', 131],
-    ['Theonym', 24],
-    ['Travel', 1],
-    ['Word', 66],
-  ],
-  pictorialDescription: [
-    ['Motif', 'Count'],
-    ['Anthropomorphic', 46],
-    ['Bible stories', 3],
-    ['Cross', 372],
-    ['Emblem', 97],
-    ['Hand', 47],
-    ['Ornithomorphic', 21],
-    ['Plants', 3],
-    ['Religious Objects', 9],
-    ['Saints', 9],
-    ['Skulls', 2],
-    ['Symbolism', 6],
-    ['Zoomorphic', 30],
-  ],
-  //years
   byYear: [
     ['Year', 'Count'],
     ['1000', 11],
@@ -144,26 +73,22 @@ const data = {
   ],
 }
 
-function downloadDataURL(dataURL, filename) {
-  const a = document.createElement('a')
-  a.href = dataURL
-  a.download = filename
-  document.body.appendChild(a)
-  a.click()
-  a.remove()
-}
-
 async function downloadPng(index, title) {
   await nextTick()
   const comp = chartRefs.value[index]
   const inst = comp?.chart
   if (!inst) return
-  const url = inst.getDataURL({
+
+  const dataURL = inst.getDataURL({
     type: 'png',
     pixelRatio: 8,
     backgroundColor: 'rgb(45,45,45)',
   })
-  downloadDataURL(url, `${title.replace(/\s+/g, '_').toLowerCase()}.png`)
+
+  const blob = await (await fetch(dataURL)).blob()
+  const url = URL.createObjectURL(blob)
+  const filename = `${title.replace(/\s+/g, '_').toLowerCase()}.png`
+  save(url, filename)
 }
 
 function getDatasetSource(index) {
@@ -174,22 +99,37 @@ function getDatasetSource(index) {
   return item?.option?.dataset?.source || []
 }
 
+function save(url, name) {
+  const a = document.createElement('a')
+  a.href = url
+  a.download = name
+  a.rel = 'noopener'
+  document.body.appendChild(a)
+  a.click()
+  document.body.removeChild(a)
+  setTimeout(() => URL.revokeObjectURL(url), 1500)
+}
+
 function downloadCsv(index, title) {
   const source = getDatasetSource(index)
   if (!source?.length) return
 
-  const csv = source.map(r => r.join(',')).join('\n')
-  const BOM = '\uFEFF'
-  const url = URL.createObjectURL(new Blob([BOM + csv], { type: 'text/csv;charset=utf-8' }))
+  const esc = v => {
+    if (v == null) return ''
+    const s = String(v)
+    return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s
+  }
 
-  const a = document.createElement('a')
-  a.href = url
-  a.download = title + '.csv'
-  a.click()
-  setTimeout(() => URL.revokeObjectURL(url), 0)
+  const csv = source.map(row => row.map(esc).join(',')).join('\n')
+  const BOM = '\uFEFF'
+  const blob = new Blob([BOM + csv], { type: 'text/csv;charset=utf-8;' })
+  const url = URL.createObjectURL(blob)
+
+  const filename = `${title.replace(/\s+/g, '_').toLowerCase()}.csv`
+  save(url, filename)
 }
 
-function makeBarOption(title, dataset, rotate = 0) {
+function makeBarOption(_title, dataset, rotate = 0) {
   return {
     backgroundColor: 'transparent',
     grid: { left: 8, right: 8, top: 10, bottom: rotate ? 12 : 30, containLabel: true },
@@ -198,12 +138,7 @@ function makeBarOption(title, dataset, rotate = 0) {
     xAxis: {
       type: 'category',
       axisLine: { lineStyle: { color: '#bbb' } },
-      axisLabel: {
-        color: '#ddd',
-        interval: 0,
-        rotate,
-        margin: 10,
-      },
+      axisLabel: { color: '#ddd', interval: 0, rotate, margin: 10 },
     },
     yAxis: {
       axisLine: { lineStyle: { color: '#bbb' } },
@@ -215,14 +150,41 @@ function makeBarOption(title, dataset, rotate = 0) {
   }
 }
 
-const barCharts = ref([
-  { title: 'Inscription types', option: makeBarOption('Type', data.typeOfInscription, 45) },
-  { title: 'Writing systems', option: makeBarOption('Writing', data.writingSystem, 45) },
-  { title: 'Languages', option: makeBarOption('Language', data.language, 45) },
-  { title: 'Pictorial descriptions', option: makeBarOption('Pictorial', data.pictorialDescription, 90) },
-  { title: 'Textual genres', option: makeBarOption('Genre', data.textualGenre, 90) },
+const summaryPayload = ref(null)
+const isUk = computed(() => {
+  const loc = typeof i18n.global.locale === 'object' && 'value' in i18n.global.locale
+    ? i18n.global.locale.value
+    : i18n.global.locale
+  return String(loc).toLowerCase().startsWith('uk')
+})
 
-])
+function pick(obj, enKey, ukKey) {
+  return isUk.value ? (obj[ukKey] ?? obj[enKey]) : (obj[enKey] ?? obj[ukKey])
+}
+
+const barCharts = computed(() => {
+  const s = summaryPayload.value
+  if (!s) return []
+
+  const typeRows = [['Category', 'Count'],
+  ...s.type_of_inscription.map(it => [pick(it, 'type', 'type_ukr'), it.count])]
+  const writingRows = [['System', 'Count'],
+  ...s.writing_system.map(it => [pick(it, 'writing_system', 'writing_system_ukr'), it.count])]
+  const languageRows = [['Language', 'Count'],
+  ...s.language.map(it => [pick(it, 'language', 'language_ukr'), it.count])]
+  const pictorialRows = [['Motif', 'Count'],
+  ...s.pictorial_description.map(it => [pick(it, 'pictorial_description', 'pictorial_description_ukr'), it.count])]
+  const textualRows = [['Genre', 'Count'],
+  ...s.textual_genre.map(it => [pick(it, 'textual_genre', 'textual_genre_ukr'), it.count])]
+
+  return [
+    { title: i18n.global.t('inscriptiontypes'), option: makeBarOption('Type', typeRows, 45) },
+    { title: i18n.global.t('writingsystems'), option: makeBarOption('Writing', writingRows, 45) },
+    { title: i18n.global.t('languages'), option: makeBarOption('Language', languageRows, 45) },
+    { title: i18n.global.t('pictorialdescriptions'), option: makeBarOption('Pictorial', pictorialRows, 90) },
+    { title: i18n.global.t('textualgenres'), option: makeBarOption('Genre', textualRows, 90) },
+  ]
+})
 
 const timelineOption = ref({
   backgroundColor: 'transparent',
@@ -243,6 +205,19 @@ const timelineOption = ref({
   series: [{ type: 'line', symbol: 'none', smooth: true, itemStyle: { color: 'rgb(200,80,80)' } }],
   textStyle: { color: '#ddd' },
 })
+
+async function fetchSummary() {
+  const res = await fetch('https://saintsophia.dh.gu.se/api/inscriptions/summary/')
+  if (!res.ok) throw new Error(`HTTP ${res.status}`)
+
+  summaryPayload.value = await res.json()
+}
+
+onMounted(() => {
+  fetchSummary().catch(console.error)
+})
+
+defineExpose({ downloadCsv, downloadPng })
 </script>
 
 <style scoped>
@@ -269,18 +244,18 @@ const timelineOption = ref({
   position: relative;
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.22);
-  border-width:1px 0px 0px 0px;
+  border-width: 1px 0px 0px 0px;
   border-radius: 12px;
   padding: 12px;
   flex: 1 1 320px;
-  padding-bottom:0px;
-  padding-top:6px;
+  padding-bottom: 0px;
+  padding-top: 6px;
 }
 
 .chart-card.full-width {
   flex: 1 1 100%;
   margin-top: 16px;
-  padding-bottom:15px;
+  padding-bottom: 15px;
 }
 
 .chart-title {
@@ -293,7 +268,6 @@ const timelineOption = ref({
 .chart {
   width: 100%;
   height: 270px;
-
 }
 
 .chart.tall {
@@ -303,7 +277,6 @@ const timelineOption = ref({
 .chart.low {
   height: 200px;
 }
-
 
 .summary-content {
   max-width: 1400px;
@@ -347,6 +320,4 @@ const timelineOption = ref({
 .dl-btn:hover {
   background: rgba(255, 255, 255, 0.18);
 }
-
-
 </style>

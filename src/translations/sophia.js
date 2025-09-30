@@ -2,6 +2,11 @@ import { createI18n } from 'vue-i18n';
 
 const messages = {
   en: {
+    inscriptiontypes: "Inscription types",
+    writingsystems: "Writing systems",
+    languages: "Languages",
+    pictorialdescriptions: "Pictorial descriptions",
+    textualgenres: "Textual genres",
     portaltitle: "Saint \nSophia's\nInscriptions",
     documentation: "Documentation by category",
     timeperiod: "Time period",
@@ -106,6 +111,11 @@ const messages = {
   },
 
   uk: {
+    inscriptiontypes: "Типи написів",
+    writingsystems: "Системи письма",
+    languages: "Мови",
+    pictorialdescriptions: "Опис малюнків",
+    textualgenres: "Текстові жанри",
     portaltitle: "Написи \nСвятої \nСофії",
     documentation: "Documentation by category",
     timeperiod: "Time period",
