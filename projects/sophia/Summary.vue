@@ -219,7 +219,7 @@ const barCharts = ref([
   { title: 'Inscription types', option: makeBarOption('Type', data.typeOfInscription, 45) },
   { title: 'Writing systems', option: makeBarOption('Writing', data.writingSystem, 45) },
   { title: 'Languages', option: makeBarOption('Language', data.language, 45) },
-    { title: 'Pictorial descriptions', option: makeBarOption('Pictorial', data.pictorialDescription, 90) },
+  { title: 'Pictorial descriptions', option: makeBarOption('Pictorial', data.pictorialDescription, 90) },
   { title: 'Textual genres', option: makeBarOption('Genre', data.textualGenre, 90) },
 
 ])

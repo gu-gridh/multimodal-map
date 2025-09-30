@@ -139,8 +139,8 @@ export default {
       if (requestedPageIndex > lastFetchedPageIndex && !isFetching) {
         try {
           isFetching = true;
-          const offset = (requestedPageIndex - 1) * 25;
-          const baseUrl = `https://saintsophia.dh.gu.se/api/inscriptions/inscription/?depth=1&offset=${offset}&${new URLSearchParams(store.imgParams).toString()}`;
+          const offset = (requestedPageIndex - 1) * 50;
+          const baseUrl = `https://saintsophia.dh.gu.se/api/inscriptions/inscription/?depth=1&limit=50&offset=${offset}&${new URLSearchParams(store.imgParams).toString()}`;
           const res = await fetch(baseUrl);
           const data = await res.json();
 
@@ -195,9 +195,8 @@ export default {
       infScroll = new InfiniteScroll(gallery, {
         path: () => {
           canIncrement = false; //disable further increments
-          const offset = (pageIndex - 1) * 25;
-          const url = `https://saintsophia.dh.gu.se/api/inscriptions/inscription/?depth=1&offset=${offset}&${new URLSearchParams(store.imgParams).toString()}`;
-          return url;
+          const offset = (pageIndex - 1) * 50;
+          return `https://saintsophia.dh.gu.se/api/inscriptions/inscription/?depth=1&limit=50&offset=${offset}&${new URLSearchParams(store.imgParams).toString()}`;
         },
         outlayer: msnry,
         history: false,
@@ -363,6 +362,16 @@ export default {
 
 .gallery__gutter-sizer {
   width: 10px;
+}
+
+.gallery__item a {
+  display: block;
+}
+
+.gallery__item img {
+  width: 100%;
+  height: auto;
+  display: block;
 }
 
 @media screen and (max-width: 2000px) {
@@ -534,6 +543,4 @@ h1 span {
 .gallery-tag.active {
   background-color: rgba(100, 40, 40, 1.0) !important;
 }
-
-
 </style>
