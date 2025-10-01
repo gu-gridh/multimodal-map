@@ -231,6 +231,7 @@ defineExpose({ downloadCsv, downloadPng })
   opacity: 0.9;
   padding: 20px;
   overflow-y: auto;
+    background-color: var(--theme-1);
 }
 
 .charts {
@@ -238,18 +239,23 @@ defineExpose({ downloadCsv, downloadPng })
   flex-wrap: wrap;
   gap: 16px;
   align-items: stretch;
+  min-height:600px;
+
 }
 
 .chart-card {
   position: relative;
   background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: linear-gradient(0deg, rgba(30, 30, 30, 1.0) 0px, rgba(70, 70, 70, 1)100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-width: 1px 0px 0px 0px;
   border-radius: 12px;
   padding: 12px;
   flex: 1 1 320px;
   padding-bottom: 0px;
   padding-top: 6px;
+  animation-duration: 0.5s;
+   animation-name: pop-up;
 }
 
 .chart-card.full-width {
@@ -258,11 +264,24 @@ defineExpose({ downloadCsv, downloadPng })
   padding-bottom: 15px;
 }
 
+@keyframes pop-up {
+    from {
+      scale: 80% 80%;
+        opacity: 0;
+    }
+
+    to {
+        scale: 100% 100%;
+        opacity: 1;
+    }
+}
+
 .chart-title {
   font-size: 14px;
   letter-spacing: 0.02em;
   opacity: 0.9;
   margin-bottom: 6px;
+  margin-left:8px;
 }
 
 .chart {
