@@ -307,11 +307,11 @@ export default {
   display: none;
 }
 
-.gallery-filters {
+ .gallery-filters {
   background: transparent !important;
   color: white !important;
 }
-
+/*
 .gallery-filters .tag-container .gallery-tag {
   background-color: rgba(40, 40, 40, 0.4);
   border-color: white;
@@ -326,17 +326,18 @@ export default {
 .gallery-filters h1 {
   color: black;
   text-shadow: rgb(235, 230, 225) 1px 0 4px;
-}
+} */
 
 .gallery-corner-blur {
   position: fixed;
-  right: -250px;
+  right: -200px;
   bottom: -350px;
   width: 100px;
-  height: 50px;
-  box-shadow: 0px 0px 100px 600px rgba(235, 230, 225, 0.4);
+  height: 0px;
+  box-shadow: 0px 0px 400px 800px rgba(0, 0, 0, 0.6);
   border-radius: 50%;
   z-index: 100;
+  transform: rotate(75deg);
 }
 
 @media screen and (max-width: 900px) {
