@@ -357,7 +357,7 @@ export default {
 
 .gallery__item,
 .gallery__col-sizer {
-  width: calc(14.28% - 1px);
+  width: calc(13.8% - 1px);
 }
 
 .gallery__gutter-sizer {
@@ -378,7 +378,7 @@ export default {
 
   .gallery__item,
   .gallery__col-sizer {
-    width: calc(16.6 - 10.0px);
+    width: calc(16.6% - 8.0px);
   }
 }
 
@@ -386,7 +386,7 @@ export default {
 
   .gallery__item,
   .gallery__col-sizer {
-    width: calc(20% - 10.0px);
+    width: calc(20% - 9.0px);
   }
 }
 
@@ -394,7 +394,7 @@ export default {
 
   .gallery__item,
   .gallery__col-sizer {
-    width: calc(25% - 10.0px);
+    width: calc(25% - 9.0px);
   }
 }
 
@@ -402,7 +402,7 @@ export default {
 
   .gallery__item,
   .gallery__col-sizer {
-    width: calc(33% - 10.0px);
+    width: calc(33% - 5.0px);
   }
 }
 
