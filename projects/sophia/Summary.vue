@@ -15,7 +15,7 @@
 
       <!-- timeline -->
       <div class="chart-card full-width">
-        <div class="chart-title">Approx. distribution of inscriptions over time</div>
+        <div class="chart-title">Approx. distribution of new inscriptions over time</div>
         <VueECharts :option="timelineOption" renderer="canvas" autoresize class="chart low"
           :ref="el => (chartRefs['timeline'] = el)" />
         <div class="dl-actions">
