@@ -132,7 +132,7 @@ function downloadCsv(index, title) {
 function makeBarOption(_title, dataset, rotate = 0) {
   return {
     backgroundColor: 'transparent',
-    grid: { left: 8, right: 8, top: 10, bottom: rotate ? 12 : 30, containLabel: true },
+    grid: { left: 8, right: 8, top: 10, bottom: rotate ? 12 : 30},
     tooltip: { trigger: 'axis' },
     dataset: { source: dataset },
     xAxis: {
@@ -188,7 +188,7 @@ const barCharts = computed(() => {
 
 const timelineOption = ref({
   backgroundColor: 'transparent',
-  grid: { left: 8, right: 8, top: 10, bottom: 35, containLabel: true },
+  grid: { left: 8, right: 8, top: 10, bottom: 35},
   tooltip: { trigger: 'axis' },
   dataset: { source: data.byYear },
   xAxis: {
