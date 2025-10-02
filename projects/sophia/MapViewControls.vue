@@ -504,7 +504,7 @@ function handleSurfaceClick(surface) {
   inscriptionId.value = null;
   showSuggestions.value = false;
   searchQuery.value = '';
-  panelStr.value = null;
+  panelStr.value = surface.title;
   emit('update:searchType', searchType.value);
 }
 
