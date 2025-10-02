@@ -239,7 +239,7 @@ defineExpose({ downloadCsv, downloadPng })
   flex-wrap: wrap;
   gap: 16px;
   align-items: stretch;
-  min-height:600px;
+  min-height:620px;
 
 }
 
@@ -247,7 +247,7 @@ defineExpose({ downloadCsv, downloadPng })
   position: relative;
   background: rgba(255, 255, 255, 0.06);
   background: linear-gradient(0deg, rgba(30, 30, 30, 1.0) 0px, rgba(70, 70, 70, 1)100%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.6);
   border-width: 1px 0px 0px 0px;
   border-radius: 12px;
   padding: 12px;
@@ -267,7 +267,7 @@ defineExpose({ downloadCsv, downloadPng })
 @keyframes pop-up {
     from {
       scale: 80% 80%;
-        opacity: 0;
+        opacity: 1;
     }
 
     to {
