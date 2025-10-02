@@ -281,7 +281,7 @@ defineExpose({ downloadCsv, downloadPng })
   letter-spacing: 0.02em;
   opacity: 0.9;
   margin-bottom: 6px;
-  margin-left:8px;
+  margin-left:2px;
 }
 
 .chart {
