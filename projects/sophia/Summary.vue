@@ -181,8 +181,8 @@ const barCharts = computed(() => {
     { title: i18n.global.t('inscriptiontypes'), option: makeBarOption('Type', typeRows, 45) },
     { title: i18n.global.t('writingsystems'), option: makeBarOption('Writing', writingRows, 45) },
     { title: i18n.global.t('languages'), option: makeBarOption('Language', languageRows, 45) },
-    { title: i18n.global.t('pictorialdescriptions'), option: makeBarOption('Pictorial', pictorialRows, 90) },
-    { title: i18n.global.t('textualgenres'), option: makeBarOption('Genre', textualRows, 90) },
+    { title: i18n.global.t('pictorialdescriptions'), option: makeBarOption('Pictorial', pictorialRows, 45) },
+    { title: i18n.global.t('textualgenres'), option: makeBarOption('Genre', textualRows, 45) },
   ]
 })
 
@@ -288,7 +288,7 @@ defineExpose({ downloadCsv, downloadPng })
 
 .chart {
   width: 100%;
-  height: 275px;
+  height: 260px;
 }
 
 .chart.tall {
