@@ -82,7 +82,7 @@ async function downloadPng(index, title) {
   const dataURL = inst.getDataURL({
     type: 'png',
     pixelRatio: 8,
-    backgroundColor: 'rgb(45,45,45)',
+    backgroundColor: 'rgb(255,255,255)',
   })
 
   const blob = await (await fetch(dataURL)).blob()
@@ -137,16 +137,16 @@ function makeBarOption(_title, dataset, rotate = 0) {
     dataset: { source: dataset },
     xAxis: {
       type: 'category',
-      axisLine: { lineStyle: { color: '#bbb' } },
-      axisLabel: { color: '#ddd', interval: 0, rotate, margin: 10 },
+      axisLine: { lineStyle: { color: '#333' } },
+      axisLabel: { color: '#222', interval: 0, rotate, margin: 10 },
     },
     yAxis: {
-      axisLine: { lineStyle: { color: '#bbb' } },
-      splitLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } },
-      axisLabel: { color: '#ddd' },
+      axisLine: { lineStyle: { color: '#222' } },
+      splitLine: { lineStyle: { color: 'rgba(0,0,0,0.1)' } },
+      axisLabel: { color: '#444' },
     },
-    series: [{ type: 'bar', barMaxWidth: 28, emphasis: { focus: 'series' }, itemStyle: { color: 'rgb(200,80,80)' } }],
-    textStyle: { color: '#ddd' },
+    series: [{ type: 'bar', barMaxWidth: 28, emphasis: { focus: 'series' }, itemStyle: { color: 'rgb(180,80,80)' } }],
+    textStyle: { color: '#444' },
   }
 }
 
@@ -194,16 +194,16 @@ const timelineOption = ref({
   xAxis: {
     type: 'category',
     boundaryGap: false,
-    axisLine: { lineStyle: { color: '#bbb' } },
-    axisLabel: { color: '#ddd', rotate: 45, margin: 12 },
+    axisLine: { lineStyle: { color: '#222' } },
+    axisLabel: { color: '#444', rotate: 45, margin: 12 },
   },
   yAxis: {
     axisLine: { lineStyle: { color: '#bbb' } },
-    splitLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } },
-    axisLabel: { color: '#ddd' },
+    splitLine: { lineStyle: { color: 'rgba(0,0,0,0.1)' } },
+    axisLabel: { color: '#444' },
   },
   series: [{ type: 'line', symbol: 'none', smooth: true, itemStyle: { color: 'rgb(200,80,80)' } }],
-  textStyle: { color: '#ddd' },
+  textStyle: { color: '#444' },
 })
 
 async function fetchSummary() {
@@ -239,20 +239,21 @@ defineExpose({ downloadCsv, downloadPng })
   flex-wrap: wrap;
   gap: 16px;
   align-items: stretch;
-  min-height:620px;
+  min-height:660px;
 
 }
 
 .chart-card {
+  color:black;
   position: relative;
-  background: rgba(255, 255, 255, 0.06);
+/*   background: rgba(255, 255, 255, 0.06);
   background: linear-gradient(0deg, rgba(30, 30, 30, 1.0) 0px, rgba(70, 70, 70, 1)100%) !important;
   border: 1px solid rgba(255, 255, 255, 0.6);
   border-width: 1px 0px 0px 0px;
-  border-radius: 12px;
+  border-radius: 12px; */
   padding: 12px;
   flex: 1 1 320px;
-  padding-bottom: 0px;
+  padding-bottom: 15px;
   padding-top: 6px;
   animation-duration: 0.5s;
    animation-name: pop-up;
@@ -277,16 +278,17 @@ defineExpose({ downloadCsv, downloadPng })
 }
 
 .chart-title {
-  font-size: 14px;
+  font-size: 16px;
   letter-spacing: 0.02em;
   opacity: 0.9;
   margin-bottom: 6px;
   margin-left:2px;
+  font-weight:400;
 }
 
 .chart {
   width: 100%;
-  height: 270px;
+  height: 275px;
 }
 
 .chart.tall {
@@ -329,14 +331,16 @@ defineExpose({ downloadCsv, downloadPng })
 .dl-btn {
   font-size: 12px;
   padding: 2px 8px;
-  background: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  color: #fff;
+  background: rgba(255, 255, 255, 0.3);
+  /* border: 1px solid rgba(255, 255, 255, 0.18); */
+  color: black;
   border-radius: 6px;
   cursor: pointer;
+  
 }
 
 .dl-btn:hover {
   background: rgba(255, 255, 255, 0.18);
+    transform: scale(1.1);
 }
 </style>

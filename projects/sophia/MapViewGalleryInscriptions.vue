@@ -311,14 +311,15 @@ export default {
   background: transparent !important;
   color: white !important;
 }
-/*
+
 .gallery-filters .tag-container .gallery-tag {
-  background-color: rgba(40, 40, 40, 0.4);
-  border-color: white;
+  background-color: rgba(100, 100, 100, 0.2);
+  border-color: grey;
+  border-width:1px 0 0 0!important;
   font-weight: 300;
   backdrop-filter: blur(5px);
 }
-
+/*
 .gallery-filters .tag-container .gallery-tag:hover {
   background-color: rgba(140, 60, 60, 1.0);
 }
@@ -334,7 +335,7 @@ export default {
   bottom: -350px;
   width: 100px;
   height: 0px;
-  box-shadow: 0px 0px 400px 800px rgba(0, 0, 0, 0.6);
+  box-shadow: 0px 0px 400px 800px rgba(0, 0, 0, 0.3);
   border-radius: 50%;
   z-index: 100;
   transform: rotate(75deg);
