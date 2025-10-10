@@ -2,8 +2,10 @@
 import { ref, onMounted, inject, watch } from "vue";
 import GeoJSON from "ol/format/GeoJSON.js";
 import VectorSource from "ol/source/Vector";
-import WebGLPointsLayer from "ol/layer/WebGLPoints.js";
 import { fromLonLat } from "ol/proj";
+import VectorLayer from "ol/layer/Vector.js";
+import Icon from "ol/style/Icon.js";
+import Style from "ol/style/Style.js";
 import markerIcon from "@/assets/marker-sonora.svg";
 import Feature from "ol/Feature";
 import { mapStore } from "@/stores/store";
@@ -71,21 +73,16 @@ const fetchData = async (url) => {
   }
 };
 
-// Create a WebGLPointsLayer
-const webGLPointsLayer = ref(
-  new WebGLPointsLayer({
-    source: vectorSource.value,
-    style: {
-      symbol: {
-        symbolType: "image",
-        color: "#ffffff",
-        offset: [0, 20],
-        size: [25, 35],
-        src: markerIcon,
-      },
-    },
-  })
-);
+const pointsLayer = new VectorLayer({
+  source: vectorSource.value,
+  style: new Style({
+    image: new Icon({
+      src: markerIcon,
+      anchor: [0.5, 1],
+      scale: 0.5,
+    }),
+  }),
+});
 
 const clearPopups = () => {
   hoverCoordinates.value = null;
@@ -128,24 +125,21 @@ const handleBuilderIdChange = async (newId) => {
 
 onMounted(() => {
   if (map) {
-    map.addLayer(webGLPointsLayer.value);
+    pointsLayer.setZIndex(props.zIndex);
+    map.addLayer(pointsLayer);
 
-    // Initialize the select interaction for hover
     selectHover = new Select({
-      condition: pointerMove,
-      layers: [webGLPointsLayer.value],
+      condition: (e) => pointerMove(e) && !e.dragging,
+      layers: [pointsLayer],
+      hitTolerance: 6,
+      style: null,
     });
-
-    // Add select interaction to the map for hover
     map.addInteraction(selectHover);
 
-    // Add an event listener for when a feature is hovered over
     let debounceHoverTimer;
     selectHover.on("select", (event) => {
       clearTimeout(debounceHoverTimer);
-      debounceHoverTimer = setTimeout(() => {
-        handleHover(event);
-      }, 20);
+      debounceHoverTimer = setTimeout(() => handleHover(event), 20);
     });
 
     function handleHover(event) {
