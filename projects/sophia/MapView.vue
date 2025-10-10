@@ -48,6 +48,12 @@ const switchToSummary = () => {
   showGallery.value = false
   showGalleryInscriptions.value = false
   showSummary.value = true
+
+  //reset inscription and surface filters
+  alignmentModel.value = null;
+  conditionModel.value  = null;
+  mediaModel.value      = null;
+  materialModel.value   = null;
 }
 
 const switchToGallery = () => {
