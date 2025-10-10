@@ -2,6 +2,7 @@ import { createI18n } from 'vue-i18n';
 
 const messages = {
   en: {
+    approxDistribution: "Approximate distribution of inscriptions over time",
     inscriptiontypes: "Inscription types",
     writingsystems: "Writing systems",
     languages: "Languages",
@@ -111,6 +112,7 @@ const messages = {
   },
 
   uk: {
+    approxDistribution: "Приблизний розподіл написів за часом",
     inscriptiontypes: "Типи написів",
     writingsystems: "Системи письма",
     languages: "Мови",

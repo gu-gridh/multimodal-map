@@ -15,7 +15,7 @@
 
       <!-- timeline -->
       <div class="chart-card full-width">
-        <div class="chart-title">Approx. distribution of new inscriptions over time</div>
+        <div class="chart-title">{{ $t('approxDistribution') }}</div>
         <VueECharts :option="timelineOption" renderer="canvas" autoresize class="chart low"
           :ref="el => (chartRefs['timeline'] = el)" />
         <div class="dl-actions">
@@ -54,24 +54,6 @@ use([
   BarChart,
   LineChart,
 ])
-
-//years hardcoded for now
-const data = {
-  byYear: [
-    ['Year', 'Count'],
-    ['1000', 11],
-    ['1100', 60],
-    ['1200', 130],
-    ['1300', 345],
-    ['1400', 678],
-    ['1500', 532],
-    ['1600', 33],
-    ['1700', 0],
-    ['1800', 10],
-    ['1900', 13],
-    ['2000', 13],
-  ],
-}
 
 async function downloadPng(index, title) {
   await nextTick()
@@ -132,7 +114,7 @@ function downloadCsv(index, title) {
 function makeBarOption(_title, dataset, rotate = 0) {
   return {
     backgroundColor: 'transparent',
-    grid: { left: 8, right: 8, top: 10, bottom: rotate ? 12 : 30},
+    grid: { left: 8, right: 8, top: 10, bottom: rotate ? 12 : 30 },
     tooltip: { trigger: 'axis' },
     dataset: { source: dataset },
     xAxis: {
@@ -186,11 +168,21 @@ const barCharts = computed(() => {
   ]
 })
 
-const timelineOption = ref({
+const timelineDataset = computed(() => {
+  const arr = summaryPayload.value?.avg_year || []
+  if (!arr.length) return [['Year', 'Count']]
+  const rows = arr
+    .filter(it => Number.isFinite(+it.avg_year) && Number.isFinite(+it.count))
+    .sort((a, b) => a.avg_year - b.avg_year)
+    .map(it => [String(it.avg_year), it.count])
+  return [['Year', 'Count'], ...rows]
+})
+
+const timelineOption = computed(() => ({
   backgroundColor: 'transparent',
-  grid: { left: 8, right: 8, top: 10, bottom: 35},
+  grid: { left: 8, right: 8, top: 10, bottom: 35 },
   tooltip: { trigger: 'axis' },
-  dataset: { source: data.byYear },
+  dataset: { source: timelineDataset.value },
   xAxis: {
     type: 'category',
     boundaryGap: false,
@@ -204,7 +196,7 @@ const timelineOption = ref({
   },
   series: [{ type: 'line', symbol: 'none', smooth: true, itemStyle: { color: 'rgb(200,80,80)' } }],
   textStyle: { color: '#444' },
-})
+}))
 
 async function fetchSummary() {
   const res = await fetch('https://saintsophia.dh.gu.se/api/inscriptions/summary/')
@@ -226,12 +218,11 @@ defineExpose({ downloadCsv, downloadPng })
   margin-left: 510px;
   width: calc(100% - 510px);
   height: calc(100% - 80px);
-  background-color: black;
   color: white;
   opacity: 0.9;
   padding: 20px;
   overflow-y: auto;
-    background-color: var(--theme-1);
+  background-color: var(--theme-1);
 }
 
 .charts {
@@ -239,14 +230,13 @@ defineExpose({ downloadCsv, downloadPng })
   flex-wrap: wrap;
   gap: 16px;
   align-items: stretch;
-  min-height:660px;
-
+  min-height: 660px;
 }
 
 .chart-card {
-  color:black;
+  color: black;
   position: relative;
-/*   background: rgba(255, 255, 255, 0.06);
+  /*   background: rgba(255, 255, 255, 0.06);
   background: linear-gradient(0deg, rgba(30, 30, 30, 1.0) 0px, rgba(70, 70, 70, 1)100%) !important;
   border: 1px solid rgba(255, 255, 255, 0.6);
   border-width: 1px 0px 0px 0px;
@@ -256,7 +246,7 @@ defineExpose({ downloadCsv, downloadPng })
   padding-bottom: 15px;
   padding-top: 6px;
   animation-duration: 0.5s;
-   animation-name: pop-up;
+  animation-name: pop-up;
 }
 
 .chart-card.full-width {
@@ -266,15 +256,15 @@ defineExpose({ downloadCsv, downloadPng })
 }
 
 @keyframes pop-up {
-    from {
-      scale: 80% 80%;
-        opacity: 1;
-    }
+  from {
+    scale: 80% 80%;
+    opacity: 1;
+  }
 
-    to {
-        scale: 100% 100%;
-        opacity: 1;
-    }
+  to {
+    scale: 100% 100%;
+    opacity: 1;
+  }
 }
 
 .chart-title {
@@ -282,8 +272,8 @@ defineExpose({ downloadCsv, downloadPng })
   letter-spacing: 0.02em;
   opacity: 0.9;
   margin-bottom: 6px;
-  margin-left:2px;
-  font-weight:400;
+  margin-left: 2px;
+  font-weight: 400;
 }
 
 .chart {
@@ -336,11 +326,10 @@ defineExpose({ downloadCsv, downloadPng })
   color: black;
   border-radius: 6px;
   cursor: pointer;
-  
 }
 
 .dl-btn:hover {
   background: rgba(255, 255, 255, 0.18);
-    transform: scale(1.1);
+  transform: scale(1.1);
 }
 </style>
