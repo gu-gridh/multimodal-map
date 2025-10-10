@@ -379,10 +379,9 @@ export default {
 }
 
 .gallery__item img {
+  width: 100%;
+  height: auto;
   display: block;
-  max-width: 100%;
-  transition: all 0.2s ease-in-out;
-  transform: scale(0.98);
 }
 
 .gallery__item img:hover {

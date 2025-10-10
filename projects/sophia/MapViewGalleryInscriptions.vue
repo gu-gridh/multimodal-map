@@ -139,8 +139,8 @@ export default {
       if (requestedPageIndex > lastFetchedPageIndex && !isFetching) {
         try {
           isFetching = true;
-          const offset = (requestedPageIndex - 1) * 25;
-          const baseUrl = `https://saintsophia.dh.gu.se/api/inscriptions/inscription/?depth=1&offset=${offset}&${new URLSearchParams(store.imgParams).toString()}`;
+          const offset = (requestedPageIndex - 1) * 50;
+          const baseUrl = `https://saintsophia.dh.gu.se/api/inscriptions/inscription/?depth=1&limit=50&offset=${offset}&${new URLSearchParams(store.imgParams).toString()}`;
           const res = await fetch(baseUrl);
           const data = await res.json();
 
@@ -195,9 +195,8 @@ export default {
       infScroll = new InfiniteScroll(gallery, {
         path: () => {
           canIncrement = false; //disable further increments
-          const offset = (pageIndex - 1) * 25;
-          const url = `https://saintsophia.dh.gu.se/api/inscriptions/inscription/?depth=1&offset=${offset}&${new URLSearchParams(store.imgParams).toString()}`;
-          return url;
+          const offset = (pageIndex - 1) * 50;
+          return `https://saintsophia.dh.gu.se/api/inscriptions/inscription/?depth=1&limit=50&offset=${offset}&${new URLSearchParams(store.imgParams).toString()}`;
         },
         outlayer: msnry,
         history: false,
@@ -308,18 +307,19 @@ export default {
   display: none;
 }
 
-.gallery-filters {
+ .gallery-filters {
   background: transparent !important;
   color: white !important;
 }
 
 .gallery-filters .tag-container .gallery-tag {
-  background-color: rgba(40, 40, 40, 0.4);
-  border-color: white;
+  background-color: rgba(100, 100, 100, 0.2);
+  border-color: grey;
+  border-width:1px 0 0 0!important;
   font-weight: 300;
   backdrop-filter: blur(5px);
 }
-
+/*
 .gallery-filters .tag-container .gallery-tag:hover {
   background-color: rgba(140, 60, 60, 1.0);
 }
@@ -327,17 +327,18 @@ export default {
 .gallery-filters h1 {
   color: black;
   text-shadow: rgb(235, 230, 225) 1px 0 4px;
-}
+} */
 
 .gallery-corner-blur {
   position: fixed;
-  right: -250px;
+  right: -200px;
   bottom: -350px;
   width: 100px;
-  height: 50px;
-  box-shadow: 0px 0px 100px 600px rgba(235, 230, 225, 0.4);
+  height: 0px;
+  box-shadow: 0px 0px 400px 800px rgba(0, 0, 0, 0.3);
   border-radius: 50%;
   z-index: 100;
+  transform: rotate(75deg);
 }
 
 @media screen and (max-width: 900px) {
@@ -346,7 +347,7 @@ export default {
   }
 
   #gallery-container {
-    padding: 0px 00px 0px 0px;
+    padding: 0px 0px 0px 0px;
 
   }
 }
@@ -358,18 +359,28 @@ export default {
 
 .gallery__item,
 .gallery__col-sizer {
-  width: calc(14.28% - 1px);
+  width: calc(13.8% - 1px);
 }
 
 .gallery__gutter-sizer {
   width: 10px;
 }
 
+.gallery__item a {
+  display: block;
+}
+
+.gallery__item img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
 @media screen and (max-width: 2000px) {
 
   .gallery__item,
   .gallery__col-sizer {
-    width: calc(16.6 - 10.0px);
+    width: calc(16.6% - 8.0px);
   }
 }
 
@@ -377,7 +388,7 @@ export default {
 
   .gallery__item,
   .gallery__col-sizer {
-    width: calc(20% - 10.0px);
+    width: calc(20% - 9.0px);
   }
 }
 
@@ -385,7 +396,7 @@ export default {
 
   .gallery__item,
   .gallery__col-sizer {
-    width: calc(25% - 10.0px);
+    width: calc(25% - 9.0px);
   }
 }
 
@@ -393,7 +404,7 @@ export default {
 
   .gallery__item,
   .gallery__col-sizer {
-    width: calc(33% - 10.0px);
+    width: calc(33% - 5.0px);
   }
 }
 
@@ -534,6 +545,4 @@ h1 span {
 .gallery-tag.active {
   background-color: rgba(100, 40, 40, 1.0) !important;
 }
-
-
 </style>

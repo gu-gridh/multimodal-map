@@ -24,6 +24,7 @@ export const inscriptionsStore = defineStore("inscriptions", () => {
   const showGallery = ref(false);
   const showGalleryInscriptions = ref(false);
   const showPlan = ref(true);
+  const showSummary = ref(false);
 
   const setSelectedCategory = (categoryNumber) => {
     selectedCategory.value = categoryNumber;
@@ -53,5 +54,6 @@ export const inscriptionsStore = defineStore("inscriptions", () => {
     showGallery,
     showGalleryInscriptions,
     showPlan,
+    showSummary
   };
 });
