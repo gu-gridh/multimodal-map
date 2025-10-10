@@ -221,6 +221,7 @@ defineExpose({ downloadCsv, downloadPng })
   color: white;
   opacity: 0.9;
   padding: 20px;
+  padding-top:40px;
   overflow-y: auto;
   background-color: var(--theme-1);
 }
