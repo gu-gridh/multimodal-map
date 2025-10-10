@@ -221,11 +221,11 @@ watch(() => builderLayerVisible.value, (newId) => {
 </script>
 
 <template>
-  <ol-overlay class="ol-popup" v-if="hoveredFeature" :position="hoverCoordinates">
-    <div class="ol-popup-content" v-html="(hoveredFeature ? hoveredFeature.get('name') : '')"></div>
+  <ol-overlay v-if="hoveredFeature" :position="hoverCoordinates">
+    <div class="ol-popup" v-html="(hoveredFeature ? hoveredFeature.get('name') : '')"></div>
   </ol-overlay>
 
-  <ol-overlay class="ol-popup" v-if="selectedFeature" :position="selectedCoordinates">
-    <div class="ol-popup-content" v-html="(selectedFeature ? selectedFeature.get('name') : '')"></div>
+  <ol-overlay v-if="selectedFeature" :position="selectedCoordinates">
+    <div class="ol-popup" v-html="(selectedFeature ? selectedFeature.get('name') : '')"></div>
   </ol-overlay>
 </template>

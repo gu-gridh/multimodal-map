@@ -1,15 +1,16 @@
 <template>
   <ol-map
+    renderer="webgl"
     :loadTilesWhileAnimating="true"
     :loadTilesWhileInteracting="true"
-    style="height: 100%; width: calc(100% + 180px); z-index: !important"
+    style="height: 100%; width: calc(100% + 180px);"
     ref="map"
     id="map-component"
   >
 
   <ol-view
     ref="view"
-    style="z-index=0"
+    style="z-index: 0"
     :min-zoom="minZoom"
     :max-zoom="maxZoom"
     :extent="transformedRestrictExtent"

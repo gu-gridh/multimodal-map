@@ -162,15 +162,15 @@ watch(
 </script>
 
 <template>
-  <ol-overlay v-if="hoveredFeature" class="ol-popup" :position="hoverCoordinates">
-    <div class="ol-popup-content">
+  <ol-overlay v-if="hoveredFeature" :position="hoverCoordinates">
+    <div class="ol-popup">
       {{ hoveredFeature?.get("dataset")?.short_name || "" }} -
       {{ hoveredFeature?.get("name") || "" }}
     </div>
   </ol-overlay>
 
-  <ol-overlay v-if="selectedFeature" class="ol-popup" :position="selectedCoordinates">
-    <div class="ol-popup-content">
+  <ol-overlay v-if="selectedFeature" :position="selectedCoordinates">
+    <div class="ol-popup">
       {{ selectedFeature?.get("dataset")?.short_name || "" }} -
       {{ selectedFeature?.get("name") || "" }}
     </div>

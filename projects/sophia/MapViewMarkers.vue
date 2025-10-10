@@ -232,12 +232,12 @@ watch(
 
 </script>
 <template>
-  <ol-overlay class="ol-popup" v-if="hoveredFeature" :position="hoverCoordinates">
-    <div class="ol-popup-content" v-html="'Surface ' + (hoveredFeature ? hoveredFeature.get('title') : '')"></div>
+  <ol-overlay v-if="hoveredFeature" :position="hoverCoordinates">
+    <div class="ol-popup" v-html="'Surface ' + (hoveredFeature ? hoveredFeature.get('title') : '')"></div>
   </ol-overlay>
 
-  <ol-overlay class="ol-popup" v-if="selectedFeature" :position="selectedCoordinates">
-    <div class="ol-popup-content" v-html="'Surface ' + (selectedFeature ? selectedFeature.get('title') : '')"></div>
+  <ol-overlay v-if="selectedFeature" :position="selectedCoordinates">
+    <div class="ol-popup" v-html="'Surface ' + (selectedFeature ? selectedFeature.get('title') : '')"></div>
   </ol-overlay>
 </template>
 

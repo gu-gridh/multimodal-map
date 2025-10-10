@@ -58,53 +58,26 @@ const getFeatureDisplayName =
 </script>
 
 <template>
-  <ol-interaction-select
-    @select="onClick"
-    :condition="selectCondition"
-    :features="selectedFeaturesCollection"
-  >
+  <ol-interaction-select @select="onClick" :condition="selectCondition" :features="selectedFeaturesCollection">
     <ol-style>
-      <ol-style-icon
-        :src="markerIconRedOutline"
-        :scale="2.1"
-        :displacement="[-10, 50]"
-        :anchor="[0.0, 0.0]"
-      ></ol-style-icon>
+      <ol-style-icon :src="markerIconRedOutline" :scale="2.1" :displacement="[-10, 50]"
+        :anchor="[0.0, 0.0]"></ol-style-icon>
       <ol-style-stroke color="rgb(220,100,100)" :width="6"></ol-style-stroke>
     </ol-style>
   </ol-interaction-select>
-  
+
   <ol-interaction-select @select="onHover" :condition="hoverCondition">
     <ol-style>
-      <ol-style-icon
-        :src="markerIcon"
-        :scale="2.1"
-        :displacement="[-10, 50]"
-        :anchor="[0.0, 0.0]"
-      ></ol-style-icon>
+      <ol-style-icon :src="markerIcon" :scale="2.1" :displacement="[-10, 50]" :anchor="[0.0, 0.0]"></ol-style-icon>
       <ol-style-stroke color="rgb(220,100,100)" :width="6"></ol-style-stroke>
     </ol-style>
   </ol-interaction-select>
 
-  <ol-overlay
-    class="ol-popup"
-    v-if="hoveredFeature"
-    :position="hoverCoordinates"
-  >
-    <div
-      class="ol-popup-content"
-      v-html="getFeatureDisplayName(hoveredFeature)"
-    ></div>
+  <ol-overlay v-if="hoveredFeature" :position="hoverCoordinates">
+    <div class="ol-popup" v-html="getFeatureDisplayName(hoveredFeature)"></div>
   </ol-overlay>
 
-  <ol-overlay
-    class="ol-popup"
-    v-if="selectedFeature"
-    :position="selectedCoordinates"
-  >
-    <div
-      class="ol-popup-content"
-      v-html="getFeatureDisplayName(selectedFeature)"
-    ></div>
+  <ol-overlay v-if="selectedFeature" :position="selectedCoordinates">
+    <div class="ol-popup" v-html="getFeatureDisplayName(selectedFeature)"></div>
   </ol-overlay>
 </template>
