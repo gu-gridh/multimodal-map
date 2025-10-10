@@ -116,7 +116,7 @@
 
           <div class="instructions-item">
             <div class="instructions-item-icon"
-              style="background-image:url(https://data.dh.gu.se/ui-icons/search_white.png)"></div>
+              style="background-image:url(https://data.dh.gu.se/ui-icons/barchart_white.svg); background-size: 80%; background-position: 6px 0px;"></div>
             <div class="instructions-item-description">
               <div class="instructions-item-title">{{ $t('f5title') }}</div>
               <p>{{ $t('f5description') }}</p>
@@ -127,7 +127,7 @@
 
           <div class="instructions-item">
             <div class="instructions-item-icon"
-              style="background-image:url(https://data.dh.gu.se/ui-icons/idea_white.png)"></div>
+              style="background-image:url(https://data.dh.gu.se/ui-icons/idea_white.png);"></div>
             <div class="instructions-item-description">
               <div class="instructions-item-title">{{ $t('f6title') }}</div>
               <p>{{ $t('f6description') }}</p>
