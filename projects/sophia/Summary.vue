@@ -223,6 +223,7 @@ defineExpose({ downloadCsv, downloadPng })
   padding: 20px;
   overflow-y: auto;
   background-color: var(--theme-1);
+    pointer-events: none;
 }
 
 .charts {
@@ -234,6 +235,7 @@ defineExpose({ downloadCsv, downloadPng })
 }
 
 .chart-card {
+   pointer-events: auto;
   color: black;
   position: relative;
   /*   background: rgba(255, 255, 255, 0.06);
