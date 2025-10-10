@@ -221,7 +221,6 @@ defineExpose({ downloadCsv, downloadPng })
   color: white;
   opacity: 0.9;
   padding: 20px;
-  padding-top:40px;
   overflow-y: auto;
   background-color: var(--theme-1);
 }
@@ -292,7 +291,7 @@ defineExpose({ downloadCsv, downloadPng })
 
 .summary-content {
   max-width: 1400px;
-  margin: 50px auto 0;
+  margin: 70px auto 0;
 }
 
 @media screen and (max-width: 900px) {
