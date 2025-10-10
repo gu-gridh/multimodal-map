@@ -81,7 +81,7 @@ async function downloadPng(index, title) {
 
   const dataURL = inst.getDataURL({
     type: 'png',
-    pixelRatio: 8,
+    pixelRatio: 4,
     backgroundColor: 'rgb(255,255,255)',
   })
 
