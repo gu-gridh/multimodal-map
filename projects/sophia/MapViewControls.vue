@@ -23,7 +23,7 @@
                 <div class="section-title">{{ $t('textualgenre') }}</div>
                 <div title="Narrow the result to a certain language group" class="broad-controls">
                   <Dropdown v-model="textualModel" :categories="TEXTUAL" :limit="1" styleType="dropdown" class="my-2"
-                    type="language" @change="resetAllExcept('textualModel')" style="padding-right:30px;" />
+                    type="language" @change="resetSpecific('pictorialModel')" style="padding-right:30px;" />
                 </div>
               </div>
 
@@ -47,14 +47,14 @@
                 <div class="section-title">{{ $t('writingsystem') }}</div>
                 <div title="Narrow the result to a certain language group" class="broad-controls">
                   <Dropdown v-model="writingModel" :categories="WRITING" :limit="1" styleType="dropdown" class="my-2"
-                    @change="resetAllExcept('writingModel')" style="padding-right:30px;" />
+                    @change="resetSpecific('pictorialModel'), resetSpecific('languageModel')" style="padding-right:30px;" />
                 </div>
               </div>
               <div class="tag-section">
                 <div class="section-title">{{ $t('language') }}</div>
                 <div title="Narrow the result to a certain language group" class="broad-controls">
                   <Dropdown v-model="languageModel" :categories="LANGUAGE" :limit="1" styleType="dropdown" class="my-2"
-                    type="language" @change="resetAllExcept('languageModel')" style="padding-right:30px;" />
+                    type="language" @change="resetSpecific('pictorialModel')" style="padding-right:30px;" />
                 </div>
               </div>
             </div>
@@ -480,6 +480,18 @@ function resetAllExcept(exceptModel) { //reset the other dropdowns to all when a
   if (exceptModel !== "pictorialModel") pictorialModel.value = ["all"];
   if (exceptModel !== "textualModel") textualModel.value = ["all"];
   if (exceptModel !== "writingModel") writingModel.value = ["all"];
+}
+
+function resetSpecific(specificModel) { //reset the other dropdowns to all when a selection is made
+  categories.value = ["all"];
+  lastClickedCategory.value = '';
+  selectedCategory.value = null;
+  alignmentModel.value = null;
+  conditionModel.value = null;
+  if (specificModel == "languageModel") languageModel.value = ["all"];
+  if (specificModel == "pictorialModel") pictorialModel.value = ["all"];
+  if (specificModel == "textualModel") textualModel.value = ["all"];
+  if (specificModel == "writingModel") writingModel.value = ["all"];
 }
 
 async function fetchDataAndPopulateRef(type, refToPopulate) {
