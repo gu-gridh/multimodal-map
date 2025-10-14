@@ -284,6 +284,16 @@ defineExpose({ downloadCsv, downloadPng })
   font-weight: 400;
 }
 
+@media (max-width: 900px) {
+  .chart-title {
+    display: block;
+    max-width: 65%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+}
+
 .chart {
   width: 100%;
   height: 260px;
