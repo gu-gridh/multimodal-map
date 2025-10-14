@@ -223,6 +223,13 @@ defineExpose({ downloadCsv, downloadPng })
   padding: 20px;
   overflow-y: auto;
   background-color: var(--theme-1);
+  pointer-events: none;
+}
+
+@media (max-width: 900px) {
+  #gallery-container {
+    pointer-events: all;
+  }
 }
 
 .charts {
