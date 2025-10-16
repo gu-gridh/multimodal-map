@@ -224,6 +224,8 @@ defineExpose({ downloadCsv, downloadPng })
   overflow-y: auto;
   background-color: var(--theme-1);
   pointer-events: none;
+     user-select: none;
+   -webkit-user-select: none;
 }
 
 @media (max-width: 900px) {

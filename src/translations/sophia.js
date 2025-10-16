@@ -55,7 +55,7 @@ const messages = {
     plans: "Plans",
     type: "Type",
     period: "Period",
-    aboutportalmain: "Carved into the walls of Saint Sophia Cathedral there are more than 7,000 inscriptions. They span a thousand years and constitute a source of knowledge about cultural exchange, about language, migration, trade, and diversity in Europe.",
+    aboutportalmain: "Carved into the walls of Saint Sophia Cathedral there are more than 7,000 inscriptions. They span a thousand years and constitute a source of knowledge about cultural exchange, language, migration, trade, and diversity in Europe.",
     aboutportal: "This research infrastructure, which lets researchers and the public explore the inscriptions, is the result of a close collaboration between National Conservation Area “St. Sophia of Kyiv”, the National Museum of the History of Ukraine, and the University of Gothenburg, Sweden.",
     learnmore: "Learn more",
     explore: "Explore",
