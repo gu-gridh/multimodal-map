@@ -166,21 +166,12 @@ watch(showGrid, (newValue) => {
             </ol-style>
           </DianaPlaceLayer>
 
-          <MapViewLayers v-for="layer in vectorLayers" :key="layer.url" :geojsonUrl="layer.url" :zIndex="2"
-            :isVisible="mapLayerVisibility" :date=true>
-          </MapViewLayers>
+          <MapViewLayers v-for="(layer, i) in vectorLayers" :key="layer.url" :geojsonUrl="layer.url" :zIndex="2"
+            :isVisible="mapLayerVisibility" :date="true" :color="layerColors[i]" />
 
-          <MapViewLayers :geojsonUrl="'https://data.dh.gu.se/geography/CryoClim_GAO_SJ_1936-1972.geojson'"
-            :zIndex="1" :isVisible="mapLayerVisibilityTwo" :date=false>
+          <MapViewLayers :geojsonUrl="'https://data.dh.gu.se/geography/CryoClim_GAO_SJ_1936-1972.geojson'" :zIndex="1"
+            :isVisible="mapLayerVisibilityTwo" :date=false :color="'rgb(200, 231, 247)'">
           </MapViewLayers>
-
-          <!-- 
-        <MapViewLayers
-          :geojsonUrl="'https://data.dh.gu.se/geography/CryoClim_GAO_SJ_2001-2010.geojson'"
-          :zIndex=1
-          :isVisible="mapLayerVisibilityThree"
-        >
-        </MapViewLayers> -->
 
         </template>
       </MapComponent>

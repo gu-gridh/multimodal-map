@@ -1,5 +1,5 @@
 <template>
-  <div v-if="hoveredFeatureInfo" :style="{position: 'absolute', left: `${hoverPosition.x}px`, top: `${hoverPosition.y}px`}" class="hover-info">{{ hoveredFeatureInfo }}</div>
+  <div v-if="hoveredFeatureInfo" :style="{ position: 'absolute', left: `${hoverPosition.x}px`, top: `${hoverPosition.y}px` }" class="hover-info">{{ hoveredFeatureInfo }}</div>
 </template>
 
 <script setup>
@@ -15,18 +15,24 @@ const props = defineProps({
   zIndex: { type: Number, default: 2 },
   isVisible: { type: Boolean, required: true },
   date: { type: Boolean },
+  color: { type: String, default: 'rgb(0,100,255)' },
 });
 
 const vectorSource = new VectorSource({ format: new GeoJSON(), url: props.geojsonUrl });
 const hoveredFeatureInfo = ref(null);
 const hoverPosition = reactive({ x: 0, y: 0 });
 
+const makeFill = (rgb, a = 0.15) =>
+  rgb.startsWith('rgba') ? rgb : rgb.replace('rgb', 'rgba').replace(')', `, ${a})`);
+
+const layerStyle = new Style({
+  stroke: new Stroke({ color: props.color, width: 3 }),
+  fill: new Fill({ color: makeFill(props.color, 0.15) }),
+});
+
 const vectorLayer = new VectorLayer({
   source: vectorSource,
-  style: new Style({
-    stroke: new Stroke({ color: 'rgba(200, 255, 255, 0.7)', width: 3 }),
-    fill: new Fill({ color: 'rgba(255, 255, 255, 0.1)' }),
-  }),
+  style: layerStyle,
   zIndex: props.zIndex,
 });
 
