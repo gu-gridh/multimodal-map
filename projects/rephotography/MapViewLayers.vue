@@ -40,7 +40,7 @@ const featureOverlay = new VectorLayer({
   source: new VectorSource(),
   map: map,
   style: new Style({
-    stroke: new Stroke({ color: 'rgba(200, 100, 105, 1.0)', width: 4 }),
+    stroke: new Stroke({ color: 'rgba(200, 100, 105, 1.0)', width: 6 }),
     fill: new Fill({ color: 'rgba(255,255,255,0.1)' }),
   }),
 });
@@ -127,5 +127,7 @@ watch(() => props.isVisible, (newValue, oldValue) => {
   padding: 5px;
   border-radius: 3px;
   z-index: 8;
+  transform:translate(-30px, 30px);
+  transform:
 }
 </style>
