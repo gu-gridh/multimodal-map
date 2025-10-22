@@ -79,7 +79,7 @@ const pointsLayer = new VectorLayer({
     image: new Icon({
       src: markerIcon,
       anchor: [0.5, 1],
-      scale: 0.5,
+      scale: 0.6,
     }),
   }),
 });
