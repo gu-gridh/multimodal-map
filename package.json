@@ -28,7 +28,7 @@
     "leaflet.markercluster": "^1.5.3",
     "lodash": "^4.17.21",
     "masonry-layout": "^4.2.2",
-    "openseadragon": "^4.0.0",
+    "openseadragon": "^5.0.1",
     "pinia": "^2.0.21",
     "proj4": "^2.8.1",
     "split.js": "^1.6.5",
