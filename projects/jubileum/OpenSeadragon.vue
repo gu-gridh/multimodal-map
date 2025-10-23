@@ -31,7 +31,7 @@ onMounted(() => {
     fullPageButton: 'full-page',
     zoomInButton: 'zoom-in',
     zoomOutButton: 'zoom-out',
-       homeButton: "home",
+    homeButton: "home",
     prefixUrl: '/openseadragon/',
     tileSources: props.src,
   });
@@ -68,27 +68,27 @@ onMounted(() => {
   outline: none;
 }
 
-a:visited{
-  outline:none;
-}
-a:focus{
-  outline:none;
-}
-a:active{
-  outline:none;
+a:visited {
+  outline: none;
 }
 
-::v-deep .openseadragon-canvas {
-    background-color: #000 !important;
+a:focus {
+  outline: none;
 }
 
-#navigatorDiv{
-position:absolute;
-  width:80px;
-  height:80px;
-  margin-top:10px;
-  margin-right:10px;
+a:active {
+  outline: none;
 }
 
+:deep(.openseadragon-canvas) {
+  background-color: #000 !important;
+}
 
+#navigatorDiv {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  margin-top: 10px;
+  margin-right: 10px;
+}
 </style>
