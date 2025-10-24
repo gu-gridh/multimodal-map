@@ -269,7 +269,6 @@ body {
   width: 100%;
   left: 0px;
   padding-right:0px;
-
 }
 
 #app .mapview-preview {
@@ -316,7 +315,7 @@ border-radius: 8px;
 }
 
 #app .place-title {
-  width: calc(100% -25px);
+  width: calc(100% - 25px);
   margin-bottom: - 25px;
   padding-right:10px;
 }

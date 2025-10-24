@@ -80,9 +80,7 @@
     outline: none;
   }
 
-  ::v-deep .openseadragon-canvas {
+  :deep(.openseadragon-canvas) {
     background-color: #000 !important;
   }
-
-  
 </style>

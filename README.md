@@ -17,6 +17,7 @@ yarn install
 ### Start local development server
 
 ```sh
+nvm use 22
 yarn dev
 ```
 

@@ -70,8 +70,8 @@ a:active{
   outline:none;
 }
 
-::v-deep .openseadragon-canvas {
-    background-color: #000 !important;
+:deep(.openseadragon-canvas) {
+  background-color: #000 !important;
 }
 
 #navigatorDiv{
