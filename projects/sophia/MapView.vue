@@ -10,7 +10,7 @@ import { inscriptionsStore } from "./settings/store";
 import { mapStore } from "@/stores/store";
 import { clean } from "@/assets/utils";
 import MapViewGallery from "./MapViewGallerySurfaces.vue";
-import Summary from "./Summary.vue";
+import Summary from "./MapViewSummary.vue";
 import MapViewGalleryInscriptions from "./MapViewGalleryInscriptions.vue";
 import { ref } from "vue";
 import About from "./About.vue";
@@ -563,10 +563,14 @@ function handleDeselectSurface() {
   position: absolute;
   text-align: right;
   font-size: 0.7em;
-  right: 30px;
-  top: 15px;
+  right: 25px;
+  top: 10px;
   z-index: 1000;
   opacity: 0.7;
+padding:5px;
+border-radius: 5px;
+backdrop-filter:blur(5px);
+
 }
 
 @media screen and (max-width: 400px) {

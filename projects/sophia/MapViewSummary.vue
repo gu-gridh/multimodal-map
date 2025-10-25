@@ -114,13 +114,14 @@ function downloadCsv(index, title) {
 function makeBarOption(_title, dataset, rotate = 0) {
   return {
     backgroundColor: 'transparent',
-    grid: { left: 8, right: 8, top: 10, bottom: rotate ? 12 : 30 },
+    grid: {left: 8, right: 8, top: 10, bottom: rotate ? 12 : 30 },
     tooltip: { trigger: 'axis' },
     dataset: { source: dataset },
     xAxis: {
       type: 'category',
       axisLine: { lineStyle: { color: '#333' } },
-      axisLabel: { color: '#222', interval: 0, rotate, margin: 10 },
+      axisLabel: { color: '#222', backgroundColor: "rgba(255, 255, 255, 0)", interval: 0, rotate, margin: 10, width:90},
+
     },
     yAxis: {
       axisLine: { lineStyle: { color: '#222' } },
@@ -223,14 +224,12 @@ defineExpose({ downloadCsv, downloadPng })
   padding: 20px;
   overflow-y: auto;
   background-color: var(--theme-1);
-  pointer-events: none;
      user-select: none;
    -webkit-user-select: none;
 }
 
 @media (max-width: 900px) {
   #gallery-container {
-    pointer-events: all;
   }
 }
 
@@ -239,11 +238,10 @@ defineExpose({ downloadCsv, downloadPng })
   flex-wrap: wrap;
   gap: 16px;
   align-items: stretch;
-  min-height: 660px;
+  min-height: 630px;
 }
 
 .chart-card {
-   pointer-events: auto;
   color: black;
   position: relative;
   /*   background: rgba(255, 255, 255, 0.06);
@@ -253,7 +251,7 @@ defineExpose({ downloadCsv, downloadPng })
   border-radius: 12px; */
   padding: 12px;
   flex: 1 1 320px;
-  padding-bottom: 15px;
+  padding-bottom: 0px;
   padding-top: 6px;
   animation-duration: 0.5s;
   animation-name: pop-up;
