@@ -15,7 +15,7 @@ const hoverCondition = selectConditions.pointerMove;
 const selectCondition = selectConditions.click;
 
 // This list is connected to the ol-interaction-select element; this is to be able to deselect programmatically
-  const selectedFeaturesCollection = new Collection(
+const selectedFeaturesCollection = new Collection(
   selectedFeature.value ? [selectedFeature.value] : []
 );
 
@@ -66,57 +66,27 @@ const getFeatureDisplayName =
 </script>
 
 <template>
-  <ol-interaction-select
-    @select="onClick"
-    :condition="selectCondition"
-    :features="selectedFeaturesCollection"
-  >
+  <ol-interaction-select @select="onClick" :condition="selectCondition" :features="selectedFeaturesCollection">
     <ol-style>
-      <ol-style-icon
-        :src="markerIconRed"
-        :scale="1"
-        :anchor="[0, 0]"       
-        :displacement="[-10, 45]"
-      />
+      <ol-style-icon :src="markerIconRed" :scale="1" :anchor="[0, 0]" :displacement="[-10, 45]" />
       <ol-style-stroke color="rgb(220,100,100)" :width="6" />
     </ol-style>
   </ol-interaction-select>
 
   <ol-interaction-select @select="onHover" :condition="hoverCondition">
     <ol-style>
-      <ol-style-icon
-        :src="markerIconRed"
-        :scale="1"
-        :anchor="[0, 0]"         
-        :displacement="[-10, 45]"
-      />
+      <ol-style-icon :src="markerIconRed" :scale="1" :anchor="[0, 0]" :displacement="[-10, 45]" />
       <ol-style-stroke color="rgb(220,100,100)" :width="6" />
     </ol-style>
   </ol-interaction-select>
 
-  <ol-overlay
-    class="ol-popup"
-    positioning="bottom-center" 
-    :offset="[4, -25]"           
-    v-if="hoveredFeature"
-    :position="hoverCoordinates"
-  >
-    <div
-      class="ol-popup-content"
-      v-html="getFeatureDisplayName(hoveredFeature)"
-    ></div>
+  <ol-overlay positioning="bottom-center" :offset="[4, -25]" v-if="hoveredFeature"
+    :position="hoverCoordinates">
+    <div class="ol-popup" v-html="getFeatureDisplayName(hoveredFeature)"></div>
   </ol-overlay>
 
-  <ol-overlay
-    class="ol-popup"
-    positioning="bottom-center"   
-    :offset="[4, -25]"         
-    v-if="selectedFeature"
-    :position="selectedCoordinates"
-  >
-    <div
-      class="ol-popup-content"
-      v-html="getFeatureDisplayName(selectedFeature)"
-    ></div>
+  <ol-overlay positioning="bottom-center" :offset="[4, -25]" v-if="selectedFeature"
+    :position="selectedCoordinates">
+    <div class="ol-popup" v-html="getFeatureDisplayName(selectedFeature)"></div>
   </ol-overlay>
 </template>

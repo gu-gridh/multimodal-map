@@ -77,7 +77,7 @@ const downloadImage = (fileUrl, fileName) => {
 </template>
 
 <style scoped>
-.description ::v-deep * {
+.description :deep(*) {
   color: white !important;
 }
 

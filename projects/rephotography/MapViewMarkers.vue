@@ -1,5 +1,5 @@
 <script setup>
-import { ref, inject, watch} from "vue";
+import { ref, inject, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
 import markerIconRed from "@/assets/marker-red.svg";
@@ -41,7 +41,7 @@ const onHover = (event) => {
 };
 
 const onClick = (event) => {
-  const featureLayerName = event.selected[0]?.get('name'); 
+  const featureLayerName = event.selected[0]?.get('name');
   if (!featureLayerName) {
     selectedFeaturesCollection.clear();
     return;
@@ -69,89 +69,60 @@ watch(selectedFeature, () => {
 
 const getFeatureDisplayName =
   config.getFeatureDisplayName ||
-((feature) => {
-  let name = feature.get("Name") || feature.get("name") || feature.get("NAME") || '';
-  let rawDate = feature.get("Date");
-  let rawYear = feature.get("YEAR_")
-  if (rawDate) {
-    let date = rawDate.toString(); 
+  ((feature) => {
+    let name = feature.get("Name") || feature.get("name") || feature.get("NAME") || '';
+    let rawDate = feature.get("Date");
+    let rawYear = feature.get("YEAR_")
+    if (rawDate) {
+      let date = rawDate.toString();
 
-    // Break the date into component parts
-    let year = date.substr(0, 4);
-    let month = date.substr(4, 2);
-    let day = date.substr(6, 2);
+      // Break the date into component parts
+      let year = date.substr(0, 4);
+      let month = date.substr(4, 2);
+      let day = date.substr(6, 2);
 
-    // Parse the date string into a Date object
-    let dateObject = new Date(`${year}-${month}-${day}`);
+      // Parse the date string into a Date object
+      let dateObject = new Date(`${year}-${month}-${day}`);
 
-    // Format the date for display
-    let formattedDate = dateObject.toLocaleDateString(undefined, {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    });
-    
-    return `${name} ${formattedDate}`;
-  } else if (rawYear)
-  {
-    return `${name} ${rawYear}`;
-  } else {
-    // Return only name if Date is not available
-    return `${name}`;
-  }
-})
+      // Format the date for display
+      let formattedDate = dateObject.toLocaleDateString(undefined, {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      });
+
+      return `${name} ${formattedDate}`;
+    } else if (rawYear) {
+      return `${name} ${rawYear}`;
+    } else {
+      // Return only name if Date is not available
+      return `${name}`;
+    }
+  })
 
 </script>
 
 <template>
-  <ol-interaction-select
-    @select="onClick"
-    :condition="selectCondition"
-    :features="selectedFeaturesCollection"
-  >
+  <ol-interaction-select @select="onClick" :condition="selectCondition" :features="selectedFeaturesCollection">
     <ol-style>
-      <ol-style-icon
-        :src="markerIconRed"
-        :scale="1.0"
-        :displacement="[-10, 45]"
-        :anchor="[0.0, 0.0]"
-      ></ol-style-icon>
+      <ol-style-icon :src="markerIconRed" :scale="1.0" :displacement="[-10, 45]" :anchor="[0.0, 0.0]"></ol-style-icon>
       <ol-style-stroke color="rgb(220,100,100)" :width="6"></ol-style-stroke>
     </ol-style>
   </ol-interaction-select>
-  
+
   <ol-interaction-select @select="onHover" :condition="hoverCondition">
     <ol-style>
-      <ol-style-icon
-        :src="markerIconRed"
-        :scale="1.0"
-        :displacement="[-10, 45]"
-        :anchor="[0.0, 0.0]"
-      ></ol-style-icon>
+      <ol-style-icon :src="markerIconRed" :scale="1.0" :displacement="[-10, 45]" :anchor="[0.0, 0.0]"></ol-style-icon>
       <ol-style-stroke color="rgb(220,100,100)" :width="6"></ol-style-stroke>
-      <ol-style-fill color="rgba(0,0,0,0)"></ol-style-fill> 
+      <ol-style-fill color="rgba(0,0,0,0)"></ol-style-fill>
     </ol-style>
   </ol-interaction-select>
 
-  <ol-overlay
-    class="ol-popup"
-    v-if="hoveredFeature"
-    :position="hoverCoordinates"
-  >
-    <div
-      class="ol-popup-content"
-      v-html="getFeatureDisplayName(hoveredFeature)"
-    ></div>
+  <ol-overlay v-if="hoveredFeature" :position="hoverCoordinates">
+    <div class="ol-popup" v-html="getFeatureDisplayName(hoveredFeature)"></div>
   </ol-overlay>
 
-  <ol-overlay
-    class="ol-popup"
-    v-if="selectedFeature"
-    :position="selectedCoordinates"
-  >
-    <div
-      class="ol-popup-content"
-      v-html="getFeatureDisplayName(selectedFeature)"
-    ></div>
+  <ol-overlay v-if="selectedFeature" :position="selectedCoordinates">
+    <div class="ol-popup" v-html="getFeatureDisplayName(selectedFeature)"></div>
   </ol-overlay>
 </template>
