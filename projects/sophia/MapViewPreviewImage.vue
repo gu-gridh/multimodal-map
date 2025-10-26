@@ -32,7 +32,7 @@
       navigatorAutoFade: true,
       showRotationControl: true,
       preserveViewport: true,
-      fullPageButton: "full-page",
+      fullPageButton: "full-page-button",
       zoomInButton: "zoom-in",
       zoomOutButton: "zoom-out",
       nextButton: "next-button",
@@ -76,17 +76,17 @@
     <div class="interface-area-bottom">
       <div class="toolbar-bottom">
 
-        <a id="home" href="#home">
+        <a id="home" href="#home" title="Reset the view">
           <div id="Home" class="NavButton"></div>
         </a>
         <a id="zoom-in" href="#zoom-in">
-          <div id="ZoomIn" class="NavButton"></div>
+          <div id="ZoomIn" class="NavButton" title="Zoom in the view"></div>
         </a>
-        <a id="zoom-out" href="#zoom-out">
+        <a id="zoom-out" href="#zoom-out" title="Zoom out the view">
           <div id="ZoomOut" class="NavButton"></div>
         </a>
-        <a id="full-page" class="full-screen-option" href="#full-page">
-          <div id="FullPage" class="NavButton full-page"></div>
+        <a id="full-page-button" href="#full-page" title="Toggle full screen">
+          <div class="NavButton full-page"></div>
         </a>
 
       </div>

@@ -195,7 +195,7 @@ const timelineOption = computed(() => ({
     splitLine: { lineStyle: { color: 'rgba(0,0,0,0.1)' } },
     axisLabel: { color: '#444' },
   },
-  series: [{ type: 'line', symbol: 'none', smooth: true, itemStyle: { color: 'rgb(200,80,80)' } }],
+  series: [{ type: 'line', smooth: true, symbol: 'circle', symbolSize: 0, itemStyle: { color: 'rgb(200,80,80)' } }],
   textStyle: { color: '#444' },
 }))
 
