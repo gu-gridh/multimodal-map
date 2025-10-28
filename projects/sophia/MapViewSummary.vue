@@ -111,6 +111,7 @@ function downloadCsv(index, title) {
   save(url, filename)
 }
 
+
 function makeBarOption(_title, dataset, rotate = 0) {
   return {
     backgroundColor: 'transparent',
@@ -120,8 +121,8 @@ function makeBarOption(_title, dataset, rotate = 0) {
     xAxis: {
       type: 'category',
       axisLine: { lineStyle: { color: '#333' } },
+      // by defining background color (can be transparent) and width for the axisLabel the labels take up the same space and the bars have the same baseline
       axisLabel: { color: '#222', backgroundColor: "rgba(255, 255, 255, 0)", interval: 0, rotate, margin: 10, width:90},
-
     },
     yAxis: {
       axisLine: { lineStyle: { color: '#222' } },
