@@ -5,11 +5,11 @@
     <div class="p-0.5 px-2 clickable category-button about-button">
       {{ $t('infobutton') }}</div>
   </button>
-  <button class="item" @click="$emit('toggleInstructions')">
+  <!-- <button class="item" @click="$emit('toggleInstructions')">
     <div class="p-0.5 px-2 clickable category-button about-button" style="
                 margin-left: 5px;">
       {{ $t('instructions') }}</div>
-  </button>
+  </button> -->
   <button @click="toggleLanguage">
     <div class="p-0.5 px-2 clickable category-button about-button" style="
                 margin-left: 5px;
