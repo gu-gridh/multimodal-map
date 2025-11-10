@@ -234,6 +234,12 @@ const processOrganData = (data) => {
   height: 65%;
 }
 
+.mapview-preview {
+  position: relative;
+  z-index: 2000;
+  isolation: isolate;
+}
+
 .metadata-item-wide {
   margin-bottom: 5px;
   float: left;
