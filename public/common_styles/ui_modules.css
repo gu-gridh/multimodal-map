@@ -54,7 +54,7 @@
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
   padding: 3px 10px;
   border-radius: 8px !important;
-  border: 0px solid #cccccc;
+  border: 0px solid black;
   bottom: 40px;
   left: -80px;
   width: 170px;
@@ -73,16 +73,18 @@
 
 #app .ol-popup:after {
   border-top-color: transparent!important;
-  border-width: 1px!important;
+  border-width: 0px!important;
   left: 45px!important;
   margin-left: 20px!important;
+  
 }
 
 #app .ol-popup:before {
   border-top-color: #cccccc;
   border-width: 11px;
   left: 55px;
-  margin-left: 15px;
+  margin-left: 20px;
+   margin-top: -1px!important;
 }
 
 
