@@ -116,6 +116,7 @@ watch(selectedCategory, (newValue, oldValue) => {
 
 const handleSearchTypeChange = (type) => {
   searchType.value = type;
+  showSummary.value = false;
   if (type === "surfaces") {
     showPlan.value = false;
     showGallery.value = true;
