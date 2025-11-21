@@ -736,7 +736,7 @@ defineExpose({ clearSelection });
   text-decoration: dashed;
   text-decoration-style: dashed;
   text-decoration-thickness: 2px;
-  text-decoration-line: underline;
+  text-decoration-line: none;
 }
 
 .search-box:focus {
