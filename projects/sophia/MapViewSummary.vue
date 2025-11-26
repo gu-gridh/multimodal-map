@@ -3,9 +3,11 @@
     <div class="summary-content">
       <!-- bar charts -->
       <div class="charts">
-      <!-- last chart spans the full row -->
-        <div v-for="(c, i) in barCharts" :key="c.title"
-          :class="['chart-card', { 'span-2': barCharts.length % 2 === 1 && i === barCharts.length - 1 }]"> 
+        <div
+          v-for="(c, i) in barCharts"
+          :key="c.title"
+          class="chart-card"
+        > 
           <div class="chart-title">{{ c.title }}</div>
           <VueECharts :option="c.option" renderer="canvas" autoresize class="chart" :ref="el => (chartRefs[i] = el)" />
           <div class="dl-actions">
@@ -201,7 +203,8 @@ const timelineDataset = computed(() => {
   return [['Year', 'Count'], ...rows]
 })
 
-const hasTimelineData = computed(() => timelineDataset.value.length > 1)
+//hide timeline when there is zero or only a single year data
+const hasTimelineData = computed(() => timelineDataset.value.length > 2)
 
 const timelineOption = computed(() => ({
   backgroundColor: 'transparent',
@@ -251,11 +254,11 @@ async function fetchSummary() {
 watch(
   () => [surfaceParams.value, imgParams.value],
   () => {
-    console.log('Summary params changed:', {
-      surfaceParams: surfaceParams.value,
-      imgParams: imgParams.value,
-      query: summaryQueryString.value,
-    });
+    // console.log('Summary params changed:', {
+    //   surfaceParams: surfaceParams.value,
+    //   imgParams: imgParams.value,
+    //   query: summaryQueryString.value,
+    // });
     fetchSummary().catch(console.error)
   },
   { immediate: true, deep: true }
@@ -280,8 +283,8 @@ defineExpose({ downloadCsv, downloadPng })
 }
 
 .charts {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: 16px;
   align-items: stretch;
 }
@@ -290,7 +293,9 @@ defineExpose({ downloadCsv, downloadPng })
   color: black;
   position: relative;
   padding: 12px;
-  width: 100%;
+  flex: 1 1 32%;
+  min-width: 280px;
+  max-width: 100%;
   padding-bottom: 0px;
   padding-top: 6px;
   animation-duration: 0.5s;
@@ -298,12 +303,12 @@ defineExpose({ downloadCsv, downloadPng })
 }
 
 .chart-card.full-width {
-  grid-column: 1 / -1;
+  flex-basis: 100%;
   margin-top: 16px;
   padding-bottom: 15px;
 }
 
-.chart-card.span-2 {
+.chart-card.span-full {
   grid-column: 1 / -1;
 }
 
@@ -329,10 +334,6 @@ defineExpose({ downloadCsv, downloadPng })
 }
 
 @media (max-width: 900px) {
-  .charts {
-    grid-template-columns: 1fr;
-  }
-
   .chart-title {
     display: block;
     max-width: 65%;
