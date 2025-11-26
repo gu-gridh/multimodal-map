@@ -3,7 +3,9 @@
     <div class="summary-content">
       <!-- bar charts -->
       <div class="charts">
-        <div class="chart-card" v-for="(c, i) in barCharts" :key="c.title">
+      <!-- last chart spans the full row -->
+        <div v-for="(c, i) in barCharts" :key="c.title"
+          :class="['chart-card', { 'span-2': barCharts.length % 2 === 1 && i === barCharts.length - 1 }]"> 
           <div class="chart-title">{{ c.title }}</div>
           <VueECharts :option="c.option" renderer="canvas" autoresize class="chart" :ref="el => (chartRefs[i] = el)" />
           <div class="dl-actions">
@@ -14,7 +16,7 @@
       </div>
 
       <!-- timeline -->
-      <div class="chart-card full-width">
+      <div class="chart-card full-width" v-if="hasTimelineData">
         <div class="chart-title">{{ $t('approxDistribution') }}</div>
         <VueECharts :option="timelineOption" renderer="canvas" autoresize class="chart low"
           :ref="el => (chartRefs['timeline'] = el)" />
@@ -153,28 +155,44 @@ const barCharts = computed(() => {
   const s = summaryPayload.value
   if (!s) return []
 
-  const typeRows = [['Category', 'Count'],
-  ...s.type_of_inscription.map(it => [pick(it, 'type', 'type_ukr'), it.count])]
-  const writingRows = [['System', 'Count'],
-  ...s.writing_system.map(it => [pick(it, 'writing_system', 'writing_system_ukr'), it.count])]
-  const languageRows = [['Language', 'Count'],
-  ...s.language.map(it => [pick(it, 'language', 'language_ukr'), it.count])]
-  const pictorialRows = [['Motif', 'Count'],
-  ...s.pictorial_description.map(it => [pick(it, 'pictorial_description', 'pictorial_description_ukr'), it.count])]
-  const textualRows = [['Genre', 'Count'],
-  ...s.textual_genre.map(it => [pick(it, 'textual_genre', 'textual_genre_ukr'), it.count])]
+  const charts = []
+  const pushIfData = (items, title, mapper, rotate = 45) => {
+    if (!Array.isArray(items) || items.length === 0) return
+    const rows = [['Label', 'Count'], ...items.map(mapper)]
+    charts.push({ title, option: makeBarOption(title, rows, rotate) })
+  }
 
-  return [
-    { title: i18n.global.t('inscriptiontypes'), option: makeBarOption('Type', typeRows, 45) },
-    { title: i18n.global.t('writingsystems'), option: makeBarOption('Writing', writingRows, 45) },
-    { title: i18n.global.t('languages'), option: makeBarOption('Language', languageRows, 45) },
-    { title: i18n.global.t('pictorialdescriptions'), option: makeBarOption('Pictorial', pictorialRows, 45) },
-    { title: i18n.global.t('textualgenres'), option: makeBarOption('Genre', textualRows, 45) },
-  ]
+  pushIfData(
+    s.type_of_inscription,
+    i18n.global.t('inscriptiontypes'),
+    it => [pick(it, 'type', 'type_ukr'), it.count]
+  )
+  pushIfData(
+    s.writing_system,
+    i18n.global.t('writingsystems'),
+    it => [pick(it, 'writing_system', 'writing_system_ukr'), it.count]
+  )
+  pushIfData(
+    s.language,
+    i18n.global.t('languages'),
+    it => [pick(it, 'language', 'language_ukr'), it.count]
+  )
+  pushIfData(
+    s.pictorial_description,
+    i18n.global.t('pictorialdescriptions'),
+    it => [pick(it, 'pictorial_description', 'pictorial_description_ukr'), it.count]
+  )
+  pushIfData(
+    s.textual_genre,
+    i18n.global.t('textualgenres'),
+    it => [pick(it, 'textual_genre', 'textual_genre_ukr'), it.count]
+  )
+
+  return charts
 })
 
 const timelineDataset = computed(() => {
-  const arr = summaryPayload.value?.avg_year || []
+  const arr = Array.isArray(summaryPayload.value?.avg_year) ? summaryPayload.value.avg_year : []
   if (!arr.length) return [['Year', 'Count']]
   const rows = arr
     .filter(it => Number.isFinite(+it.avg_year) && Number.isFinite(+it.count))
@@ -182,6 +200,8 @@ const timelineDataset = computed(() => {
     .map(it => [String(it.avg_year), it.count])
   return [['Year', 'Count'], ...rows]
 })
+
+const hasTimelineData = computed(() => timelineDataset.value.length > 1)
 
 const timelineOption = computed(() => ({
   backgroundColor: 'transparent',
@@ -260,18 +280,17 @@ defineExpose({ downloadCsv, downloadPng })
 }
 
 .charts {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 16px;
   align-items: stretch;
-  min-height: 630px;
 }
 
 .chart-card {
   color: black;
   position: relative;
   padding: 12px;
-  flex: 1 1 320px;
+  width: 100%;
   padding-bottom: 0px;
   padding-top: 6px;
   animation-duration: 0.5s;
@@ -279,9 +298,13 @@ defineExpose({ downloadCsv, downloadPng })
 }
 
 .chart-card.full-width {
-  flex: 1 1 100%;
+  grid-column: 1 / -1;
   margin-top: 16px;
   padding-bottom: 15px;
+}
+
+.chart-card.span-2 {
+  grid-column: 1 / -1;
 }
 
 @keyframes pop-up {
@@ -306,6 +329,10 @@ defineExpose({ downloadCsv, downloadPng })
 }
 
 @media (max-width: 900px) {
+  .charts {
+    grid-template-columns: 1fr;
+  }
+
   .chart-title {
     display: block;
     max-width: 65%;
