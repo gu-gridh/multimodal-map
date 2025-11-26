@@ -48,12 +48,6 @@ const switchToSummary = () => {
   showGallery.value = false
   showGalleryInscriptions.value = false
   showSummary.value = true
-
-  //reset inscription and surface filters
-  alignmentModel.value = null;
-  conditionModel.value  = null;
-  mediaModel.value      = null;
-  materialModel.value   = null;
 }
 
 const switchToGallery = () => {
@@ -90,6 +84,7 @@ watch( //watcher for selectedFeature changes
 watch( //if a dropdown has been selected, toggle to the inscriptions view
   [writingModel, languageModel, pictorialModel, textualModel],
   ([newWriting, newLanguage, newPictorial, newTextual]) => {
+    if (showSummary.value) return;
     if (
       newWriting[0] !== "all" ||
       newLanguage[0] !== "all" ||
@@ -106,6 +101,7 @@ watch( //if a dropdown has been selected, toggle to the inscriptions view
 
 // if selectedCategory is not null, toggle to the inscriptions view
 watch(selectedCategory, (newValue, oldValue) => {
+  if (showSummary.value) return;
   if (newValue !== null && newValue !== undefined) {
     showPlan.value = false;
     showGalleryInscriptions.value = true;
@@ -115,6 +111,10 @@ watch(selectedCategory, (newValue, oldValue) => {
 });
 
 const handleSearchTypeChange = (type) => {
+  if (showSummary.value) {
+    searchType.value = type;
+    return;
+  }
   searchType.value = type;
   showSummary.value = false;
   if (type === "surfaces") {

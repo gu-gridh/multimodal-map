@@ -65,13 +65,13 @@
           <div class="toggle-buttons" style="margin-top: 5px">
             <button 
               :class="{ active: searchType === 'surfaces' }" 
-              @click="() => $emit('update:searchType', 'surfaces')">
+              @click="() => { setSearchType('surfaces'); $emit('update:searchType', 'surfaces'); }">
               {{ $t('panels') }}
             </button>
 
             <button 
               :class="{ active: searchType === 'inscriptionobjects' }" 
-              @click="() => $emit('update:searchType', 'inscriptionobjects')">
+              @click="() => { setSearchType('inscriptionobjects'); $emit('update:searchType', 'inscriptionobjects'); }">
               {{ $t('inscriptions') }}
             </button>
           </div>
@@ -388,7 +388,6 @@ async function fetchDataSection() {
   );
 
   const queryString = new URLSearchParams(params).toString();
-
   const url = `https://saintsophia.dh.gu.se/api/inscriptions/inscriptions-info/?${queryString}`;
 
   try {

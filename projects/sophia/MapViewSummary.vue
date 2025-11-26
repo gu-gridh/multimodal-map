@@ -28,7 +28,7 @@
 </template>
 
 <script setup>
-import { ref, nextTick, onMounted, computed } from 'vue'
+import { ref, nextTick, computed, watch } from 'vue'
 import VueECharts from 'vue-echarts'
 import i18n from '../../src/translations/sophia';
 import { use } from 'echarts/core'
@@ -41,8 +41,11 @@ import {
   TitleComponent,
 } from 'echarts/components'
 import { BarChart, LineChart } from 'echarts/charts'
+import { storeToRefs } from 'pinia';
+import { inscriptionsStore } from './settings/store';
 
 const chartRefs = ref([])
+const { surfaceParams, imgParams } = storeToRefs(inscriptionsStore())
 
 use([
   CanvasRenderer,
@@ -115,14 +118,14 @@ function downloadCsv(index, title) {
 function makeBarOption(_title, dataset, rotate = 0) {
   return {
     backgroundColor: 'transparent',
-    grid: {left: 8, right: 8, top: 10, bottom: rotate ? 12 : 30 },
+    grid: { left: 8, right: 8, top: 10, bottom: rotate ? 12 : 30 },
     tooltip: { trigger: 'axis' },
     dataset: { source: dataset },
     xAxis: {
       type: 'category',
       axisLine: { lineStyle: { color: '#333' } },
       // by defining background color (can be transparent) and width for the axisLabel the labels take up the same space and the bars have the same baseline
-      axisLabel: { color: '#222', backgroundColor: "rgba(255, 255, 255, 0)", interval: 0, rotate, margin: 10, width:90},
+      axisLabel: { color: '#222', backgroundColor: "rgba(255, 255, 255, 0)", interval: 0, rotate, margin: 10, width: 90 },
     },
     yAxis: {
       axisLine: { lineStyle: { color: '#222' } },
@@ -200,16 +203,43 @@ const timelineOption = computed(() => ({
   textStyle: { color: '#444' },
 }))
 
+const summaryQueryString = computed(() => {
+  const merged = {
+    ...surfaceParams.value,
+    ...imgParams.value,
+  };
+
+  const transformed = Object.fromEntries(
+    Object.entries(merged).map(([key, value]) =>
+      key === 'panel__title__startswith' ? ['panel_title_str', value] : [key, value]
+    )
+  );
+
+  return new URLSearchParams(transformed).toString();
+});
+
 async function fetchSummary() {
-  const res = await fetch('https://saintsophia.dh.gu.se/api/inscriptions/summary/')
+  const baseUrl = 'https://saintsophia.dh.gu.se/api/inscriptions/summary/'
+  const query = summaryQueryString.value
+  const url = query ? `${baseUrl}?${query}` : baseUrl
+  const res = await fetch(url)
   if (!res.ok) throw new Error(`HTTP ${res.status}`)
 
   summaryPayload.value = await res.json()
 }
 
-onMounted(() => {
-  fetchSummary().catch(console.error)
-})
+watch(
+  () => [surfaceParams.value, imgParams.value],
+  () => {
+    console.log('Summary params changed:', {
+      surfaceParams: surfaceParams.value,
+      imgParams: imgParams.value,
+      query: summaryQueryString.value,
+    });
+    fetchSummary().catch(console.error)
+  },
+  { immediate: true, deep: true }
+)
 
 defineExpose({ downloadCsv, downloadPng })
 </script>
@@ -225,13 +255,8 @@ defineExpose({ downloadCsv, downloadPng })
   padding: 20px;
   overflow-y: auto;
   background-color: var(--theme-1);
-     user-select: none;
-   -webkit-user-select: none;
-}
-
-@media (max-width: 900px) {
-  #gallery-container {
-  }
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .charts {
@@ -245,11 +270,6 @@ defineExpose({ downloadCsv, downloadPng })
 .chart-card {
   color: black;
   position: relative;
-  /*   background: rgba(255, 255, 255, 0.06);
-  background: linear-gradient(0deg, rgba(30, 30, 30, 1.0) 0px, rgba(70, 70, 70, 1)100%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  border-width: 1px 0px 0px 0px;
-  border-radius: 12px; */
   padding: 12px;
   flex: 1 1 320px;
   padding-bottom: 0px;
