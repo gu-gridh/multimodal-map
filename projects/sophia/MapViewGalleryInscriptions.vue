@@ -426,6 +426,7 @@ export default {
 }
 
 .gallery__item {
+  background-color:rgb(0,0,0,0.04);
   opacity: 1;
   min-height: 30px;
   margin-bottom: 10px;

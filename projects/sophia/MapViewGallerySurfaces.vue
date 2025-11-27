@@ -349,6 +349,7 @@ export default {
 }
 
 .gallery__item {
+   background-color:rgb(255,255,255,0.0);
   margin-bottom: 10px;
   float: left;
   overflow: hidden !important;
