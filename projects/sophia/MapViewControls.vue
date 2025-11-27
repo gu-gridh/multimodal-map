@@ -11,6 +11,7 @@
               <div class="section-title">{{ $t('typeofinscription') }}</div>
               <div class="broad-controls">
                 <CategoryButton v-model="categories" :categories="{
+                  all: $t('all'),
                   textualgraffiti: $t('textualgraffiti'),
                   pictorialgraffiti: $t('pictorialgraffiti'),
                   composite: $t('composite')

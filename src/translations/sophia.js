@@ -102,6 +102,7 @@ const messages = {
     immersive: "Immersive",
     numberofinscriptions: "Number of inscriptions",
     pictorialdescription: "Pictorial description",
+    all: "All",
     "categories": {
       "all": "All types",
       "drawings": "Drawings",
@@ -211,6 +212,7 @@ const messages = {
     immersive: "Занурювальний",
     numberofinscriptions: "Кількість написів",
     pictorialdescription: "Картинний опис",
+    all: "Всі",
     "categories": {
       "all": "Всі види",
       "drawings": "Drawings",
