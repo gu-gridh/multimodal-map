@@ -122,10 +122,6 @@ export default {
             store.imgParams
           ).toString()}`;
 
-          console.log(`https://saintsophia.dh.gu.se/api/inscriptions/inscription/?depth=1&limit=50&offset=${offset}&${new URLSearchParams(
-            store.imgParams
-          ).toString()}`)
-          
           const res = await fetch(baseUrl);
           const data = await res.json();
 
