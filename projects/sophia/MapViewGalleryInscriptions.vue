@@ -350,6 +350,12 @@ export default {
   display: block;
 }
 
+.gallery__item img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
 @media screen and (max-width: 2000px) {
 
   .gallery__item,
