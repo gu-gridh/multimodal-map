@@ -3,6 +3,7 @@
     <div v-show="isLoading" class="gallery-loader">
       <img :src="loaderSvg" alt="loading" />
     </div>
+
     <div class="gallery-filters">
       <div class="gallery-filters-padding">
         <div class="gallery-filter-container">
@@ -28,31 +29,40 @@
         </div>
       </div>
     </div>
+
     <div class="gallery">
       <div class="gallery__col-sizer"></div>
       <div class="gallery__gutter-sizer"></div>
-      <div v-for="item in images" :key="item.id" class="gallery__item image-unloaded">
+
+      <div v-for="item in images" :key="item.id" class="gallery__item">
         <a :href="`https://saintsophia.dh.gu.se/viewer/?q=${item.panelTitle}/${item.id}`">
-          <div class="item-info">
-            <div class="item-info-meta">
-              <h1>{{ item.panelTitle }}:{{ item.id }}<span v-if="item.subtitle">|</span><span v-if="item.subtitle">{{
-                item.subtitle }}</span></h1>
+          <div class="gallery__item-inner" :style="getAspectStyle(item)">
+            <div class="item-info">
+              <div class="item-info-meta">
+                <h1>
+                  {{ item.panelTitle }}:{{ item.id }}
+                  <span v-if="item.subtitle">|</span>
+                  <span v-if="item.subtitle">{{ item.subtitle }}</span>
+                </h1>
+              </div>
             </div>
+
+            <img :src="`${item.inscription_iiif_url}/!300,/0/default.jpg`" :width="item.width" :height="item.height"
+              loading="lazy" />
           </div>
-          <img :src="`${item.inscription_iiif_url}/!300,/0/default.jpg`" loading="lazy" @load="imageLoaded" />
         </a>
       </div>
+
       <div class="gallery-corner-blur"></div>
     </div>
   </div>
 </template>
 
 <script>
-import { onMounted, ref, watch } from 'vue';
+import { ref, watch, onMounted, nextTick } from 'vue';
 import Masonry from 'masonry-layout';
-import imagesLoaded from 'imagesloaded';
 import InfiniteScroll from 'infinite-scroll';
-import { inscriptionsStore } from "./settings/store";
+import { inscriptionsStore } from './settings/store';
 import i18n from '../../src/translations/sophia';
 import loaderSvg from '../../src/assets/interface/6-dots-rotate.svg';
 
@@ -63,105 +73,78 @@ export default {
     const alignments = ref([]);
     const isLoading = ref(false);
     const conditions = ref([]);
+
     let msnry;
-    let pageIndex = 1;  //initialize pageIndex to 1
-    let canIncrement = true;  //flag to control the increment
+    let pageIndex = 1;
+    let canIncrement = true;
     let infScroll;
     let lastFetchedPageIndex = 0;
     let isFetching = false;
+
+    const getAspectStyle = (item) => {
+      if (!item.width || !item.height) {
+        return { aspectRatio: '4 / 3' };
+      }
+      return {
+        aspectRatio: `${item.width} / ${item.height}`,
+      };
+    };
 
     const fetchDataAndPopulateRef = async (url, refToPopulate) => {
       try {
         const res = await fetch(url);
         const data = await res.json();
         const textKey = i18n.global.locale === 'uk' ? 'text_ukr' : 'text';
-        refToPopulate.value = data.results.map(item => ({
+        refToPopulate.value = data.results.map((item) => ({
           id: item.id,
           text: item[textKey] || item.text,
         }));
       } catch (error) {
-        console.error(`Error fetching data from ${url}:`, error);
+        console.error(error);
       }
     };
 
     const updateFilter = (filterType, selectedId) => {
       if (filterType === 'alignment') {
-        if (store.alignmentModel === selectedId) {
-          store.alignmentModel = null;  //deselect
-        } else {
-          store.alignmentModel = selectedId;
-        }
+        store.alignmentModel =
+          store.alignmentModel === selectedId ? null : selectedId;
       } else if (filterType === 'condition') {
-        if (store.conditionModel === selectedId) {
-          store.conditionModel = null;  //deselect
-        } else {
-          store.conditionModel = selectedId;
-        }
+        store.conditionModel =
+          store.conditionModel === selectedId ? null : selectedId;
       }
     };
-
-    watch(
-      () => store.imgParams,
-      async (newCategory, oldCategory) => {
-        isLoading.value = true;
-        pageIndex = 1;
-        lastFetchedPageIndex = 0;
-        canIncrement = true;
-        images.value = [];
-
-        await fetchData(pageIndex);
-        pageIndex = 2;
-
-        imagesLoaded('.gallery', () => {
-          const newItems = document.querySelectorAll('.gallery__item.image-unloaded');
-          newItems.forEach(item => {
-            item.classList.remove('image-unloaded');
-          });
-
-          reinitInfiniteScroll();
-          reloadAndLayout();
-        });
-      }
-    );
-
-    watch(() => i18n.global.locale, (newLocale) => {
-      fetchDataAndPopulateRef(
-        'https://saintsophia.dh.gu.se/api/inscriptions/graffitialignment/',
-        alignments
-      );
-      fetchDataAndPopulateRef(
-        'https://saintsophia.dh.gu.se/api/inscriptions/graffiticondition/',
-        conditions
-      );
-    });
 
     const fetchData = async (requestedPageIndex) => {
       if (requestedPageIndex > lastFetchedPageIndex && !isFetching) {
         try {
           isFetching = true;
           const offset = (requestedPageIndex - 1) * 50;
-          const baseUrl = `https://saintsophia.dh.gu.se/api/inscriptions/inscription/?depth=1&limit=50&offset=${offset}&${new URLSearchParams(store.imgParams).toString()}`;
+          const baseUrl = `https://saintsophia.dh.gu.se/api/inscriptions/inscription/?depth=1&limit=50&offset=${offset}&${new URLSearchParams(
+            store.imgParams
+          ).toString()}`;
           const res = await fetch(baseUrl);
           const data = await res.json();
 
           if (data.results && data.results.length > 0) {
-            const newImages = data.results.map(item => ({
-              inscription_iiif_url: item.inscription_iiif_url,
-              panelTitle: item.panel ? item.panel.title : 'Unknown',
-              subtitle: item.title,
-              id: item.id,
-            })).filter(img => img && img.inscription_iiif_url);
+            const newImages = data.results
+              .map((item) => ({
+                inscription_iiif_url: item.inscription_iiif_url,
+                panelTitle: item.panel ? item.panel.title : 'Unknown',
+                subtitle: item.title,
+                id: item.id,
+                width: item.width,
+                height: item.height,
+              }))
+              .filter((img) => img && img.inscription_iiif_url);
 
             images.value = [...images.value, ...newImages];
-            // storedApiData.value = [...storedApiData.value, ...data.results];
-
             lastFetchedPageIndex = requestedPageIndex;
           } else {
-            console.log("No more data available.");
+            //console.log('no more data available');
             infScroll && infScroll.off('load');
           }
         } catch (error) {
-          console.error("Error fetching additional images:", error);
+          console.error(error);
         } finally {
           isFetching = false;
         }
@@ -169,13 +152,11 @@ export default {
     };
 
     const reloadAndLayout = () => {
-      return new Promise((resolve) => {
+      if (msnry) {
         msnry.reloadItems();
-        isLoading.value = false;
-        resolve();
-      }).then(() => {
         msnry.layout();
-      });
+      }
+      isLoading.value = false;
     };
 
     const initMasonry = () => {
@@ -194,9 +175,11 @@ export default {
 
       infScroll = new InfiniteScroll(gallery, {
         path: () => {
-          canIncrement = false; //disable further increments
+          canIncrement = false;
           const offset = (pageIndex - 1) * 50;
-          return `https://saintsophia.dh.gu.se/api/inscriptions/inscription/?depth=1&limit=50&offset=${offset}&${new URLSearchParams(store.imgParams).toString()}`;
+          return `https://saintsophia.dh.gu.se/api/inscriptions/inscription/?depth=1&limit=50&offset=${offset}&${new URLSearchParams(
+            store.imgParams
+          ).toString()}`;
         },
         outlayer: msnry,
         history: false,
@@ -208,42 +191,70 @@ export default {
         isLoading.value = true;
       });
 
-      infScroll.on('load', async function () {
+      infScroll.on('load', async () => {
         if (pageIndex >= lastFetchedPageIndex) {
           try {
             await fetchData(pageIndex);
             pageIndex++;
-
-            imagesLoaded('.gallery', () => {
-              const newItems = document.querySelectorAll('.gallery__item.image-unloaded');
-              newItems.forEach(item => {
-                item.classList.remove('image-unloaded');
-              });
-
-              reloadAndLayout();
-            });
+            await nextTick();
+            reloadAndLayout();
           } catch (e) {
-            console.error("error in the load event of infinite scroll:", e);
+            console.error(e);
           } finally {
             canIncrement = true;
           }
         } else {
           canIncrement = true;
+          isLoading.value = false;
         }
       });
     };
 
-    const reinitInfiniteScroll = () => {
+    const reinitInfiniteScroll = async () => {
       if (infScroll) {
         infScroll.destroy();
+        infScroll = null;
       }
       if (msnry) {
         msnry.destroy();
+        msnry = null;
       }
-      initMasonry(); //reinitialize Masonry and InfiniteScroll
+      await nextTick();
+      initMasonry();
+      reloadAndLayout();
     };
 
-    onMounted(() => {
+    watch(
+      () => store.imgParams,
+      async () => {
+        isLoading.value = true;
+        pageIndex = 1;
+        lastFetchedPageIndex = 0;
+        canIncrement = true;
+        images.value = [];
+
+        await fetchData(pageIndex);
+        pageIndex = 2;
+        await nextTick();
+        await reinitInfiniteScroll();
+      }
+    );
+
+    watch(
+      () => i18n.global.locale,
+      () => {
+        fetchDataAndPopulateRef(
+          'https://saintsophia.dh.gu.se/api/inscriptions/graffitialignment/',
+          alignments
+        );
+        fetchDataAndPopulateRef(
+          'https://saintsophia.dh.gu.se/api/inscriptions/graffiticondition/',
+          conditions
+        );
+      }
+    );
+
+    onMounted(async () => {
       isLoading.value = true;
       fetchDataAndPopulateRef(
         'https://saintsophia.dh.gu.se/api/inscriptions/graffitialignment/',
@@ -254,18 +265,12 @@ export default {
         conditions
       );
 
-      fetchData(1).then(() => {
-        pageIndex = 2;
-        imagesLoaded('.gallery', () => {
-          const newItems = document.querySelectorAll('.gallery__item.image-unloaded');
-          newItems.forEach(item => {
-            item.classList.remove('image-unloaded');
-          });
+      await fetchData(1);
+      pageIndex = 2;
+      await nextTick();
 
-          initMasonry();
-          reloadAndLayout();
-        });
-      });
+      initMasonry();
+      reloadAndLayout();
     });
 
     return {
@@ -275,7 +280,8 @@ export default {
       updateFilter,
       store,
       isLoading,
-      loaderSvg
+      loaderSvg,
+      getAspectStyle,
     };
   },
 };
@@ -284,7 +290,7 @@ export default {
 <style scoped>
 #gallery-container {
   padding: 0px 10px 0px 0px;
-  opacity: 1.0;
+  opacity: 1;
   background-color: var(--theme-1);
 }
 
@@ -295,19 +301,16 @@ export default {
   min-height: 100%;
   overflow-y: auto;
   max-width: 100%;
-  /* Maximum width of the gallery */
   margin: 0 auto;
-  padding: 100px 0px 0px 0px !important;
+  padding: 100px 0 0 0 !important;
   pointer-events: auto;
-  /* Top and bottom margin 0, left and right margin auto */
-
 }
 
 .gallery::-webkit-scrollbar {
   display: none;
 }
 
- .gallery-filters {
+.gallery-filters {
   background: transparent !important;
   color: white !important;
 }
@@ -315,27 +318,18 @@ export default {
 .gallery-filters .tag-container .gallery-tag {
   background-color: rgba(100, 100, 100, 0.2);
   border-color: grey;
-  border-width:1px 0 0 0!important;
+  border-width: 1px 0 0 0 !important;
   font-weight: 300;
   backdrop-filter: blur(5px);
 }
-/*
-.gallery-filters .tag-container .gallery-tag:hover {
-  background-color: rgba(140, 60, 60, 1.0);
-}
-
-.gallery-filters h1 {
-  color: black;
-  text-shadow: rgb(235, 230, 225) 1px 0 4px;
-} */
 
 .gallery-corner-blur {
   position: fixed;
   right: -200px;
   bottom: -350px;
   width: 100px;
-  height: 0px;
-  box-shadow: 0px 0px 400px 800px rgba(0, 0, 0, 0.3);
+  height: 0;
+  box-shadow: 0 0 400px 800px rgba(0, 0, 0, 0.3);
   border-radius: 50%;
   z-index: 100;
   transform: rotate(75deg);
@@ -347,14 +341,8 @@ export default {
   }
 
   #gallery-container {
-    padding: 0px 0px 0px 0px;
-
+    padding: 0;
   }
-}
-
-/* reveal gallery after images loaded */
-.gallery.are-images-unloaded {
-  opacity: 0;
 }
 
 .gallery__item,
@@ -380,7 +368,7 @@ export default {
 
   .gallery__item,
   .gallery__col-sizer {
-    width: calc(16.6% - 8.0px);
+    width: calc(16.6% - 8px);
   }
 }
 
@@ -388,7 +376,7 @@ export default {
 
   .gallery__item,
   .gallery__col-sizer {
-    width: calc(20% - 9.0px);
+    width: calc(20% - 9px);
   }
 }
 
@@ -396,7 +384,7 @@ export default {
 
   .gallery__item,
   .gallery__col-sizer {
-    width: calc(25% - 9.0px);
+    width: calc(25% - 9px);
   }
 }
 
@@ -404,7 +392,7 @@ export default {
 
   .gallery__item,
   .gallery__col-sizer {
-    width: calc(33% - 5.0px);
+    width: calc(33% - 5px);
   }
 }
 
@@ -412,23 +400,12 @@ export default {
 
   .gallery__item,
   .gallery__col-sizer {
-    width: calc(50% - 10.0px);
+    width: calc(50% - 10px);
   }
 }
 
-/* hide by default */
-.gallery.are-images-unloaded .image-gallery__item {
-  opacity: 0;
-}
-
-.gallery__item.image-unloaded {
-  opacity: 0;
-}
-
 .gallery__item {
-  background-color:rgb(0,0,0,0.04);
-  opacity: 1;
-  min-height: 30px;
+  background-color: rgba(0, 0, 0, 0.04);
   margin-bottom: 10px;
   float: left;
   overflow: hidden !important;
@@ -438,11 +415,24 @@ export default {
   transition-property: none !important;
 }
 
+.gallery__item-inner {
+  position: relative;
+  width: 100%;
+}
+
+.gallery__item-inner img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 @media screen and (max-width: 900px) {
 
   .gallery__item,
   .gallery__col-sizer {
-    width: calc(50% - 0.0px);
+    width: calc(50% - 0);
   }
 
   .gallery {
@@ -450,31 +440,12 @@ export default {
   }
 
   .gallery__gutter-sizer {
-    width: 0px;
+    width: 0;
   }
 
   .gallery__item {
-    margin-bottom: 0px;
+    margin-bottom: 0;
   }
-}
-
-.gallery__item--height1 {
-  height: 140px;
-  background: #EA0;
-}
-
-.gallery__item--height2 {
-  height: 220px;
-  background: #C25;
-}
-
-.gallery__item--height3 {
-  height: 300px;
-  background: #19F;
-}
-
-.gallery__item--width2 {
-  width: 66%;
 }
 
 .item-info {
@@ -483,22 +454,22 @@ export default {
   height: 100% !important;
   width: 100% !important;
   z-index: 1000 !important;
-  bottom: 0px;
+  bottom: 0;
   transition: all 0.2s ease-in-out;
-  background: linear-gradient(0deg, rgba(0, 0, 0, 0.2) 0px, rgba(0, 0, 0, 0)30%) !important;
-  /*   box-shadow: inset 0rem 0rem 5rem rgba(0, 0, 0, 0.3) !important; */
+  background: linear-gradient(0deg,
+      rgba(0, 0, 0, 0.2) 0px,
+      rgba(0, 0, 0, 0) 30%) !important;
 }
 
 .item-info-meta {
-  /* text-transform: capitalize; */
   position: absolute;
   width: 100%;
   color: white;
-  bottom: 0px;
+  bottom: 0;
   padding: 10px 15px;
   font-weight: 200;
   display: block;
-  border-width: 0px 0 0px 0;
+  border-width: 0;
   border-color: white;
   border-style: dotted;
 }
@@ -519,24 +490,26 @@ h1 span {
   transition: all 0.1s ease-in-out;
 }
 
-
 .gallery__item img:hover {
-  display: block;
   transform: scale(1.03);
   border-radius: 4px;
 }
 
 .gallery__item:hover .item-info {
-  background: linear-gradient(0deg, rgba(0, 0, 0, 0.3) 0px, rgba(0, 0, 0, 0)30%) !important;
+  background: linear-gradient(0deg,
+      rgba(0, 0, 0, 0.3) 0px,
+      rgba(0, 0, 0, 0) 30%) !important;
 }
 
 .gallery__item .cut-off {
-  height: 0px;
+  height: 0;
   pointer-events: none;
   width: 100%;
   position: absolute;
-  bottom: 0px;
-  background: linear-gradient(0deg, rgba(0, 0, 0, 1.0)5px, rgba(0, 0, 0, 0)100%) !important;
+  bottom: 0;
+  background: linear-gradient(0deg,
+      rgba(0, 0, 0, 1) 5px,
+      rgba(0, 0, 0, 0) 100%) !important;
 }
 
 .gallery__item:hover .item-info-meta {
@@ -544,6 +517,6 @@ h1 span {
 }
 
 .gallery-tag.active {
-  background-color: rgba(100, 40, 40, 1.0) !important;
+  background-color: rgba(100, 40, 40, 1) !important;
 }
 </style>
