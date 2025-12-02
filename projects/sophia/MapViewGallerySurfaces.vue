@@ -184,7 +184,6 @@ export default {
           return `https://saintsophia.dh.gu.se/api/inscriptions/image/?type_of_image=1&depth=2&offset=${offset}&${transformedParams.value}`;
         },
         outlayer: msnry,
-        status: '.page-load-status',
         history: false,
         scrollThreshold: 1200,
         elementScroll: true,
@@ -211,10 +210,6 @@ export default {
     const reinitInfiniteScroll = async () => {
       if (infScroll) {
         infScroll.destroy();
-        const loader = document.querySelector('.infinite-scroll-request');
-        if (loader) {
-          loader.style.display = 'none';
-        }
       }
       if (msnry) {
         msnry.destroy();
@@ -431,10 +426,5 @@ export default {
 
 .gallery-tag.active {
   background-color: rgba(100, 40, 40, 1) !important;
-}
-
-.infinite-scroll-request {
-  filter: invert(1);
-  background-color: transparent !important;
 }
 </style>
