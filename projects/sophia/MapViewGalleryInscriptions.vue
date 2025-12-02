@@ -76,7 +76,6 @@ export default {
 
     let msnry;
     let pageIndex = 1;
-    let canIncrement = true;
     let infScroll;
     let lastFetchedPageIndex = 0;
     let isFetching = false;
@@ -122,6 +121,11 @@ export default {
           const baseUrl = `https://saintsophia.dh.gu.se/api/inscriptions/inscription/?depth=1&limit=50&offset=${offset}&${new URLSearchParams(
             store.imgParams
           ).toString()}`;
+
+          console.log(`https://saintsophia.dh.gu.se/api/inscriptions/inscription/?depth=1&limit=50&offset=${offset}&${new URLSearchParams(
+            store.imgParams
+          ).toString()}`)
+          
           const res = await fetch(baseUrl);
           const data = await res.json();
 
@@ -139,9 +143,6 @@ export default {
 
             images.value = [...images.value, ...newImages];
             lastFetchedPageIndex = requestedPageIndex;
-          } else {
-            //console.log('no more data available');
-            infScroll && infScroll.off('load');
           }
         } catch (error) {
           console.error(error);
@@ -175,7 +176,6 @@ export default {
 
       infScroll = new InfiniteScroll(gallery, {
         path: () => {
-          canIncrement = false;
           const offset = (pageIndex - 1) * 50;
           return `https://saintsophia.dh.gu.se/api/inscriptions/inscription/?depth=1&limit=50&offset=${offset}&${new URLSearchParams(
             store.imgParams
@@ -200,11 +200,8 @@ export default {
             reloadAndLayout();
           } catch (e) {
             console.error(e);
-          } finally {
-            canIncrement = true;
           }
         } else {
-          canIncrement = true;
           isLoading.value = false;
         }
       });
@@ -230,7 +227,6 @@ export default {
         isLoading.value = true;
         pageIndex = 1;
         lastFetchedPageIndex = 0;
-        canIncrement = true;
         images.value = [];
 
         await fetchData(pageIndex);
@@ -355,12 +351,6 @@ export default {
 }
 
 .gallery__item a {
-  display: block;
-}
-
-.gallery__item img {
-  width: 100%;
-  height: auto;
   display: block;
 }
 
@@ -499,17 +489,6 @@ h1 span {
   background: linear-gradient(0deg,
       rgba(0, 0, 0, 0.3) 0px,
       rgba(0, 0, 0, 0) 30%) !important;
-}
-
-.gallery__item .cut-off {
-  height: 0;
-  pointer-events: none;
-  width: 100%;
-  position: absolute;
-  bottom: 0;
-  background: linear-gradient(0deg,
-      rgba(0, 0, 0, 1) 5px,
-      rgba(0, 0, 0, 0) 100%) !important;
 }
 
 .gallery__item:hover .item-info-meta {
