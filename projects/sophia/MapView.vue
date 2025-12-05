@@ -35,6 +35,19 @@ const showSecondFloor = ref(false);
 const searchType = ref("inscriptionobjects");
 const mapviewControlsRef = ref(null);
 let visited = true; //store the visited status outside of the hook
+const autoSetFloorFromPanel = () => {
+  const panelTitle = panelStr.value || "";
+  if (!panelTitle || typeof panelTitle !== "string" || panelTitle.trim() === "") {
+    return;
+  }
+
+  const leadingChar = panelTitle.trim().charAt(0);
+  if (leadingChar === "1") {
+    showSecondFloor.value = false;
+  } else if (leadingChar === "2") {
+    showSecondFloor.value = true;
+  }
+};
 
 const switchToPlan = () => {
   showPlan.value = true;
@@ -81,6 +94,15 @@ watch( //watcher for selectedFeature changes
   { immediate: true }
 );
 
+watch(
+  panelStr,
+  (newVal) => {
+    if (showPlan.value && newVal) {
+      autoSetFloorFromPanel();
+    }
+  }
+);
+
 watch( //if a dropdown has been selected, toggle to the inscriptions view
   [writingModel, languageModel, pictorialModel, textualModel],
   ([newWriting, newLanguage, newPictorial, newTextual]) => {
@@ -107,6 +129,7 @@ watch(selectedCategory, (newValue, oldValue) => {
     showGalleryInscriptions.value = true;
     showGallery.value = false;
     showSummary.value = false;
+    autoSetFloorFromPanel();
   }
 });
 
@@ -130,6 +153,9 @@ const handleSearchTypeChange = (type) => {
 
 watch(showPlan, (newValue) => {
   localStorage.setItem("showPlan", JSON.stringify(newValue));
+  if (newValue && panelStr.value) {
+    autoSetFloorFromPanel();
+  }
 });
 
 watch(showGallery, (newValue) => {

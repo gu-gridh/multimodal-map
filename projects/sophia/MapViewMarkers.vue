@@ -13,11 +13,13 @@ import { Vector as VectorLayer } from "ol/layer.js"
 
 let selectHover;
 const emit = defineEmits(["deselect-surface"]);
+const mapState = mapStore();
 const { selectedFeature } = storeToRefs(mapStore());
+const { zoom } = storeToRefs(mapState);
 const hoveredFeature = ref(null);
 const hoverCoordinates = ref(null);
 const selectedCoordinates = ref(null);
-const { areMapPointsLoaded, panelStr } = storeToRefs(inscriptionsStore());
+const { areMapPointsLoaded, panelStr, panelId } = storeToRefs(inscriptionsStore());
 const map = inject("map");
 const vectorSource = ref(
   new VectorSource({
@@ -136,6 +138,18 @@ const vectorLayer = new VectorLayer({
   style: styleFunction,
 });
 
+const getFeatureCenterCoordinate = (feature) => {
+  const geometry = feature?.getGeometry();
+  if (!geometry) return null;
+
+  const type = geometry.getType();
+  if (type === "MultiLineString" && geometry.getLineString) {
+    return geometry.getLineString(0).getCoordinateAt(0.5);
+  }
+
+  return geometry.getFirstCoordinate ? geometry.getFirstCoordinate() : null;
+};
+
 const clearPopups = () => {
   hoverCoordinates.value = null;
   hoveredFeature.value = null;
@@ -196,8 +210,14 @@ onMounted(() => {
 
         //select the clicked feature
         selectedFeature.value = clickedFeatures[0];
-        const geometry = clickedFeatures[0].getGeometry();
-        selectedCoordinates.value = geometry.getLineString(0).getCoordinateAt(0.5);
+        const centerCoordinate = getFeatureCenterCoordinate(clickedFeatures[0]);
+        selectedCoordinates.value = centerCoordinate;
+        if (centerCoordinate) {
+          mapState.updateCenter(centerCoordinate);
+          if (zoom.value < 15) {
+            mapState.updateZoom(15);
+          }
+        }
 
         //set store value
         panelStr.value = selectedFeature.value.values_?.title || '';
@@ -211,6 +231,51 @@ onMounted(() => {
     console.error("Map object is not initialized.");
   }
 });
+
+const selectFeatureByPanel = () => {
+  if (!areMapPointsLoaded.value || (!panelId.value && !panelStr.value)) {
+    return;
+  }
+
+  let feature =
+    panelId.value !== null
+      ? vectorSource.value.getFeatureById(panelId.value) ||
+        vectorSource.value.getFeatureById(panelId.value?.toString())
+      : null;
+
+  if (!feature && panelStr.value) {
+    feature = vectorSource.value
+      .getFeatures()
+      .find((feat) => {
+        const title = feat.get("title");
+        return (
+          typeof title === "string" &&
+          title.toLowerCase() === panelStr.value.toLowerCase()
+        );
+      });
+  }
+
+  if (!feature) return;
+
+  selectedFeature.value = feature;
+  const centerCoordinate = getFeatureCenterCoordinate(feature);
+  selectedCoordinates.value = centerCoordinate;
+
+  if (centerCoordinate) {
+    mapState.updateCenter(centerCoordinate);
+    if (zoom.value < 15) {
+      mapState.updateZoom(15);
+    }
+  }
+};
+
+watch(
+  () => [areMapPointsLoaded.value, panelId.value, panelStr.value],
+  () => {
+    selectFeatureByPanel();
+  },
+  { immediate: true }
+);
 
 watch(
   () => props.showSecondFloor,
