@@ -6,8 +6,28 @@ const router = createRouter({
   history: createWebHistory(),
   routes: [
     {
+      path: "/summary/:panel?",
+      name: "summary",
+      component: MapView,
+    },
+    {
+      path: "/surfaces/:panel?",
+      name: "surfaces",
+      component: MapView,
+    },
+    {
+      path: "/inscriptions/:panel?",
+      name: "inscriptions",
+      component: MapView,
+    },
+    {
       path: "/",
       name: "home",
+      component: MapView,
+    },
+    {
+      path: "/:panel",
+      name: "plan",
       component: MapView,
     },
   ],

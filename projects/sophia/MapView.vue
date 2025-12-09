@@ -18,6 +18,7 @@ import Instructions from "./Instructions.vue";
 import { onMounted, watch } from "vue";
 import { nextTick } from "vue";
 import Title from "./MapViewTitle.vue";
+import { useRoute, useRouter } from "vue-router";
 
 const { selectedCategory, writingModel, languageModel, pictorialModel, textualModel, alignmentModel, conditionModel, panelId, inscriptionId, mediaModel, materialModel, panelStr, showGallery, showGalleryInscriptions, showPlan, showSummary } = storeToRefs(inscriptionsStore());
 const store = mapStore();
@@ -34,7 +35,58 @@ const showFirstFloor = ref(true);
 const showSecondFloor = ref(false);
 const searchType = ref("inscriptionobjects");
 const mapviewControlsRef = ref(null);
+const route = useRoute();
+const router = useRouter();
 let visited = true; //store the visited status outside of the hook
+
+const extractPanelFromRoute = (currentRoute) => {
+  const panelParam = currentRoute?.params?.panel;
+  if (Array.isArray(panelParam)) {
+    return panelParam[0] || null;
+  }
+  return panelParam || null;
+};
+
+const applyRouteState = (currentRoute) => {
+  const panelParam = extractPanelFromRoute(currentRoute);
+  panelStr.value = panelParam || null;
+
+  if (currentRoute.name === "summary") {
+    showSummary.value = true;
+    showPlan.value = false;
+    showGallery.value = false;
+    showGalleryInscriptions.value = false;
+  } else if (currentRoute.name === "surfaces") {
+    showSummary.value = false;
+    showPlan.value = false;
+    showGallery.value = true;
+    showGalleryInscriptions.value = false;
+  } else if (currentRoute.name === "inscriptions") {
+    showSummary.value = false;
+    showPlan.value = false;
+    showGallery.value = false;
+    showGalleryInscriptions.value = true;
+  } else {
+    showSummary.value = false;
+    showPlan.value = true;
+    showGallery.value = false;
+    showGalleryInscriptions.value = false;
+  }
+};
+
+const buildPathFromState = () => {
+  const slug = panelStr.value ? encodeURIComponent(panelStr.value) : "";
+  if (showSummary.value) {
+    return slug ? `/summary/${slug}` : "/summary";
+  }
+  if (showGallery.value) {
+    return slug ? `/surfaces/${slug}` : "/surfaces";
+  }
+  if (showGalleryInscriptions.value) {
+    return slug ? `/inscriptions/${slug}` : "/inscriptions";
+  }
+  return slug ? `/${slug}` : "/";
+};
 const autoSetFloorFromPanel = () => {
   const panelTitle = panelStr.value || "";
   if (!panelTitle || typeof panelTitle !== "string" || panelTitle.trim() === "") {
@@ -178,6 +230,23 @@ watch(showSummary, (newValue) => {
   localStorage.setItem("showSummary", JSON.stringify(newValue));
 });
 
+watch(
+  () => route.fullPath,
+  () => {
+    applyRouteState(route);
+  }
+);
+
+watch(
+  [panelStr, showSummary, showGalleryInscriptions, showPlan, showGallery],
+  () => {
+    const targetPath = buildPathFromState();
+    if (route.path !== targetPath) {
+      router.replace(targetPath);
+    }
+  }
+);
+
 const panelParams = computed(() => {
   const panelIdValue = panelId.value;
   const medium = mediaModel.value;
@@ -306,6 +375,7 @@ onMounted(() => {
   if (storedShowGalleryInscriptions) {
     showGalleryInscriptions.value = JSON.parse(storedShowGalleryInscriptions);
   }
+  applyRouteState(route);
 })
 
 const toggleAboutVisibility = async () => {
