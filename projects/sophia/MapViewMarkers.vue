@@ -9,9 +9,11 @@ import { storeToRefs } from "pinia";
 import Select from "ol/interaction/Select";
 import { inscriptionsStore } from "./settings/store";
 import { pointerMove } from "ol/events/condition";
-import { Vector as VectorLayer } from "ol/layer.js"
+import { Vector as VectorLayer } from "ol/layer.js";
 
 let selectHover;
+let currentFloorRequestId = 0;
+
 const emit = defineEmits(["deselect-surface"]);
 const mapState = mapStore();
 const { selectedFeature } = storeToRefs(mapStore());
@@ -36,7 +38,7 @@ const props = defineProps({
   showSecondFloor: {
     type: Boolean,
     default: false,
-  }
+  },
 });
 
 const updateFeatures = (features) => {
@@ -48,19 +50,23 @@ const updateFeatures = (features) => {
   vectorSource.value.addFeatures(transformedFeatures);
 };
 
-const fetchData = async (initialUrl, isSecondFloor) => {
+const fetchData = async (initialUrl, isSecondFloor, requestId) => {
   let nextUrl = initialUrl;
-  let initialParams = new URLSearchParams({ page_size: '500' }).toString();
+  const initialParams = new URLSearchParams({ page_size: "500" }).toString();
 
   if (nextUrl && initialParams) {
     if (!isSecondFloor) {
       nextUrl = `${nextUrl}?${initialParams}&floor=1&published=true`;
-    }
-    else if (isSecondFloor) {
+    } else {
       nextUrl = `${nextUrl}?${initialParams}&floor=2&published=true`;
     }
   }
+
   while (nextUrl) {
+    if (requestId !== currentFloorRequestId) {
+      return;
+    }
+
     const res = await fetch(nextUrl.replace(/^http:/, "https:")).catch((err) => {
       throw err;
     });
@@ -69,17 +75,25 @@ const fetchData = async (initialUrl, isSecondFloor) => {
 
     const data = await res.json();
     const features = data.features || [];
+
+    if (requestId !== currentFloorRequestId) {
+      return;
+    }
+
     updateFeatures(features);
 
     nextUrl = data.next ? data.next.replace(/^http:/, "https:") : null;
   }
-  areMapPointsLoaded.value = true; //set to true once all points are loaded
+
+  if (requestId === currentFloorRequestId) {
+    areMapPointsLoaded.value = true;
+  }
 };
 
 const styles = {
-  'MultiLineString': new Style({
+  MultiLineString: new Style({
     stroke: new Stroke({
-      color: 'rgba(180,80,80, 0.7)',
+      color: "rgba(180,80,80, 0.7)",
       width: 10,
     }),
   }),
@@ -88,38 +102,40 @@ const styles = {
 // hover style
 const hoverStyle = new Style({
   stroke: new Stroke({
-    color: 'rgba(220, 0, 0, 1.0)',
+    color: "rgba(220, 0, 0, 1.0)",
     width: 13,
   }),
 });
 
 const colorMappingByInscriptions = [
-  { min: 1, max: 5, color: 'rgba(255, 255, 128, 0.7)' },   //few inscriptions
-  { min: 6, max: 10, color: 'rgba(255, 200, 100, 0.7)' },
-  { min: 11, max: 19, color: 'rgba(255, 150, 80, 0.7)' },
-  { min: 20, max: 39, color: 'rgba(255, 100, 60, 0.8)' },
-  { min: 40, max: 59, color: 'rgba(255, 60, 40, 0.9)' },
-  { min: 60, max: 79, color: 'rgba(200, 40, 30, 0.9)' },
-  { min: 80, max: Infinity, color: 'rgba(180, 0, 0, 1.0)' }, //many inscriptions
+  { min: 1, max: 5, color: "rgba(255, 255, 128, 0.7)" }, //few inscriptions
+  { min: 6, max: 10, color: "rgba(255, 200, 100, 0.7)" },
+  { min: 11, max: 19, color: "rgba(255, 150, 80, 0.7)" },
+  { min: 20, max: 39, color: "rgba(255, 100, 60, 0.8)" },
+  { min: 40, max: 59, color: "rgba(255, 60, 40, 0.9)" },
+  { min: 60, max: 79, color: "rgba(200, 40, 30, 0.9)" },
+  { min: 80, max: Infinity, color: "rgba(180, 0, 0, 1.0)" }, //many inscriptions
 ];
 
 const getColorByInscriptions = (numberOfInscriptions) => {
   const mapping = colorMappingByInscriptions.find(
-    (range) => numberOfInscriptions >= range.min && numberOfInscriptions <= range.max
+    (range) =>
+      numberOfInscriptions >= range.min &&
+      numberOfInscriptions <= range.max
   );
-  return mapping ? mapping.color : 'rgba(0, 0, 0, 0.0)';
+  return mapping ? mapping.color : "rgba(0, 0, 0, 0.0)";
 };
 
 const styleFunction = function (feature) {
-  const numInscriptions = feature.get('number_of_inscriptions');
-  const dataAvailable = feature.get('data_available');
+  const numInscriptions = feature.get("number_of_inscriptions");
+  const dataAvailable = feature.get("data_available");
 
   let color;
 
-  if (typeof numInscriptions !== 'number' || numInscriptions === 0) {
-    color = 'rgba(50, 0, 0, 0.1)'; // default gray for no inscriptions
+  if (typeof numInscriptions !== "number" || numInscriptions === 0) {
+    color = "rgba(50, 0, 0, 0.1)"; //default gray for no inscriptions
     if (dataAvailable > 1) {
-      color = 'rgba(155, 55, 0, 0.3)'; // if there is visible data but no registered inscriptions
+      color = "rgba(155, 55, 0, 0.3)"; //if there is visible data but no registered inscriptions
     }
   } else {
     color = getColorByInscriptions(numInscriptions);
@@ -189,8 +205,10 @@ onMounted(() => {
         hoveredFeature.value = feature;
         feature.setStyle(hoverStyle); //apply the hover style
         const geometry = feature.getGeometry();
-        hoverCoordinates.value = geometry.getLineString(0).getCoordinateAt(0.5);
-      } else { //clear hover information when no feature is hovered
+        hoverCoordinates.value =
+          geometry.getLineString(0).getCoordinateAt(0.5);
+      } else {
+        //clear hover information when no feature is hovered
         hoveredFeature.value = null;
         hoverCoordinates.value = null;
       }
@@ -210,7 +228,9 @@ onMounted(() => {
 
         //select the clicked feature
         selectedFeature.value = clickedFeatures[0];
-        const centerCoordinate = getFeatureCenterCoordinate(clickedFeatures[0]);
+        const centerCoordinate = getFeatureCenterCoordinate(
+          clickedFeatures[0]
+        );
         selectedCoordinates.value = centerCoordinate;
         if (centerCoordinate) {
           mapState.updateCenter(centerCoordinate);
@@ -220,7 +240,7 @@ onMounted(() => {
         }
 
         //set store value
-        panelStr.value = selectedFeature.value.values_?.title || '';
+        panelStr.value = selectedFeature.value.values_?.title || "";
       } else {
         selectedCoordinates.value = undefined;
         selectedFeature.value = undefined;
@@ -240,19 +260,17 @@ const selectFeatureByPanel = () => {
   let feature =
     panelId.value !== null
       ? vectorSource.value.getFeatureById(panelId.value) ||
-        vectorSource.value.getFeatureById(panelId.value?.toString())
+      vectorSource.value.getFeatureById(panelId.value?.toString())
       : null;
 
   if (!feature && panelStr.value) {
-    feature = vectorSource.value
-      .getFeatures()
-      .find((feat) => {
-        const title = feat.get("title");
-        return (
-          typeof title === "string" &&
-          title.toLowerCase() === panelStr.value.toLowerCase()
-        );
-      });
+    feature = vectorSource.value.getFeatures().find((feat) => {
+      const title = feat.get("title");
+      return (
+        typeof title === "string" &&
+        title.toLowerCase() === panelStr.value.toLowerCase()
+      );
+    });
   }
 
   if (!feature) return;
@@ -279,23 +297,22 @@ watch(
 
 watch(
   () => props.showSecondFloor,
-  async (newFloor) => {
+  (newFloor) => {
+    const requestId = ++currentFloorRequestId;
+
     areMapPointsLoaded.value = false;
     const initialUrl =
       "https://saintsophia.dh.gu.se/api/inscriptions/coordinates/";
 
     vectorSource.value.clear();
     clearPopups(); // Clear the popups
-    if (newFloor) {
-      await fetchData(initialUrl, true);
-    }
-    else {
-      await fetchData(initialUrl, false);
-    }
-  }, { immediate: true }
-)
 
+    fetchData(initialUrl, newFloor, requestId);
+  },
+  { immediate: true }
+);
 </script>
+
 <template>
   <ol-overlay v-if="hoveredFeature" :position="hoverCoordinates">
     <div class="ol-popup" v-html="'Surface ' + (hoveredFeature ? hoveredFeature.get('title') : '')"></div>
