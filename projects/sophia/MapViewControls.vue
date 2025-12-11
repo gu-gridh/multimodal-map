@@ -77,8 +77,7 @@
 
           <div class="search-box-wrapper">
             <!-- Selected item bubble -->
-            <div class="selected-item-bubble" v-if="selectedInscription || selectedSurface || panelStr"
-              ref="bubbleElement">
+            <div class="selected-item-bubble" v-if="selectedInscription || selectedSurface || panelStr">
               <span @click="clearSelection">
                 {{ selectedInscription ? selectedInscription.displayText : selectedSurface ? selectedSurface.title :
                   panelStr }}
@@ -90,7 +89,7 @@
             <input ref="searchInput" type="text" v-model="searchQuery" @input="handleSearch"
               @keydown.enter="handleEnter" @focus="handleSearchBoxFocus" @keydown="handleKeydown"
               :placeholder="searchType === 'surfaces' ? $t('searchsurfacesplaceholder') : $t('searchinscriptionsplaceholder')"
-              class="search-box" :style="{ paddingLeft: bubbleWidth + 'px' }" />
+              class="search-box" />
             <div id="search-button" @click="handleEnter"></div>
           </div>
 
@@ -208,8 +207,6 @@ const emit = defineEmits(["update:searchType"]);
 const searchType = ref("inscriptionobjects");
 const selectedInscription = ref(null); // from search results
 const selectedSurface = ref(null); // from search results
-const bubbleElement = ref(null);
-const bubbleWidth = ref(0);
 const firstSearchBoxClick = ref(true);
 const searchQuery = ref("");
 const searchResults = ref([]);
@@ -254,20 +251,6 @@ const filteredInscription = computed(() => {
   }
   return [];
 });
-
-watch(
-  () => [selectedInscription.value, selectedSurface.value, panelStr.value],
-  () => {
-    nextTick(() => {
-      const bubbleEl = bubbleElement.value;
-      if (bubbleEl) {
-        bubbleWidth.value = bubbleEl.offsetWidth + 10;
-      } else {
-        bubbleWidth.value = 0;
-      }
-    });
-  }
-);
 
 const shouldShowReset = computed(() => {
   const categoryCondition = selectedCategory.value !== null;
@@ -957,25 +940,30 @@ defineExpose({ clearSelection });
 }
 
 .selected-item-bubble {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-45%);
+  position: relative;
+  top: auto;
+  transform: none;
   background-color: #e0e0e0;
   border-radius: 8px;
   padding: 5px 10px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   cursor: pointer;
   z-index: 2;
+  white-space: nowrap;
 }
 
 .search-box-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   position: relative;
   width: 100%;
 }
 
 .search-box {
-  width: calc(100% - 50px);
+  flex: 1;
+  min-width: 0;
   box-sizing: border-box;
   z-index: 1;
   background-color: rgba(0, 0, 0, 0);
@@ -997,7 +985,7 @@ defineExpose({ clearSelection });
   background-image: url(https://data.dh.gu.se/ui-icons/search_white.png);
   background-size: contain;
   border-radius: 50%;
-  float: right;
+  flex-shrink: 0;
 }
 
 #search-button:hover {
