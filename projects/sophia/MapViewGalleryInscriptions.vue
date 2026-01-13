@@ -333,7 +333,7 @@ export default {
   }
 
   #gallery-container {
-    padding: 0;
+    padding: 0px;
   }
 }
 
@@ -392,7 +392,7 @@ export default {
 
   .gallery__item,
   .gallery__col-sizer {
-    width: calc(50% - 10px);
+    width: calc(50% - 0px);
   }
 }
 
