@@ -1,7 +1,8 @@
 <script setup>
 import { ref, onMounted } from "vue";
+import { useRoute } from "vue-router";
+import { useI18n } from "vue-i18n";
 import ObjectViewImage from "./ObjectViewImage.vue";
-import i18n from '../../src/translations/sonora';
 
 const props = defineProps({
   type: {
@@ -15,11 +16,16 @@ const props = defineProps({
 });
 
 const object = ref({});
+const route = useRoute();
+const { locale } = useI18n({ useScope: 'global' });
 
 const fetchObjectData = async () => {
   try {
-    const currentLocale = localStorage.getItem('sonoraLanguage') || i18n.global.locale;
-    const response = await fetch(`https://orgeldatabas.gu.se/webgoart/goart/document1.php?id=${props.id}&lang=${currentLocale}`);
+    const lang = route.query.lang || locale.value;
+    if (route.query.lang && route.query.lang !== locale.value) {
+      locale.value = route.query.lang;
+    }
+    const response = await fetch(`https://orgeldatabas.gu.se/webgoart/goart/document1.php?id=${props.id}&lang=${lang}`);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
@@ -41,7 +47,7 @@ const fetchObjectData = async () => {
   }
 };
 
-onMounted(fetchObjectData);
+onMounted(() => fetchObjectData());
 
 const objectComponent = {
   image: ObjectViewImage,

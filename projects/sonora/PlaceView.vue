@@ -215,7 +215,7 @@ const handleClickOutside = (event) => {
                 <td>
                   <div class="documents">
                     <div v-for="(doc, index) in documents" :key="index" class="document-link">
-                      <a :href="`/detail/image/${doc.Nr}`" target="_blank">
+                      <a :href="`/detail/image/${doc.Nr}?lang=${i18n.global.locale}`" target="_blank">
                         <div class="document-icon" />
                         {{ doc.Document }}
                       </a>

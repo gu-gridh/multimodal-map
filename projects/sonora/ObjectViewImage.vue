@@ -2,7 +2,6 @@
 import { ref, computed, onMounted, onUnmounted } from "vue";
 import ObjectViewComponent from "./ObjectViewComponent.vue";
 import OpenSeadragon from "./MapViewPreviewImage.vue";
-import i18n from '../../src/translations/sonora';
 
 const props = defineProps({
   object: Object,
@@ -72,10 +71,6 @@ const handleClickOutside = (event) => {
     isPopupVisible.value = false;
   }
 };
-
-//check and set the locale
-const currentLanguage = ref(localStorage.getItem('sonoraLanguage') || 'en');
-i18n.global.locale = currentLanguage.value;
 
 onMounted(() => {
   document.addEventListener('click', handleClickOutside);

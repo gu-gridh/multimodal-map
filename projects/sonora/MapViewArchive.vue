@@ -26,7 +26,8 @@
         @input="fetchSearchResults" />
       <div class="archive-search-results">
         <router-link v-for="doc in filteredSearchResults" :key="doc.Dokument_nr"
-          :to="`/detail/image/${doc.Dokument_nr}`" class="search-result-item" target="_blank">
+          :to="{ path: `/detail/image/${doc.Dokument_nr}`, query: { lang: i18n.global.locale } }"
+          class="search-result-item" target="_blank">
           {{ doc.Titel }}
         </router-link>
       </div>
@@ -36,6 +37,7 @@
 
 <script setup>
 import { ref, onMounted, watch, computed } from 'vue';
+import i18n from '../../src/translations/sonora';
 import _debounce from 'lodash/debounce';
 
 const searchQuery = ref('');
