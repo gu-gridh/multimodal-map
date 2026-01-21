@@ -18,7 +18,7 @@ const loading = ref(true);
 const processedOrganData = ref([]);
 
 const processOrganData = (data) => {
-  // Filter entries that start with 'work'
+  //filter entries that start with 'work'
   const filteredData = Object.values(data).filter(item => item.work);
 
   //check if Plats exists and split it after the semicolon
@@ -33,20 +33,20 @@ const processOrganData = (data) => {
 
 const fetchOrganData = async () => {
   const currentLocale = i18n.global.locale;
-  loading.value = true; // Start loading
+  loading.value = true; //start loading
   try {
     const response = await fetch(`https://orgeldatabas.gu.se/webgoart/goart/organ1.php?id=${props.id}&lang=${currentLocale}`);
     if (response.ok) {
       const data = await response.json();
       organData.value = data;
-      processOrganData(data); // Process the data for the table
+      processOrganData(data); //process the data for the table
     } else {
       throw new Error('Failed to fetch organ data');
     }
   } catch (error) {
     console.error("Error fetching organ data:", error);
   } finally {
-    loading.value = false; // Finish loading
+    loading.value = false; //finish loading
   }
 };
 

@@ -59,7 +59,7 @@ onMounted(() => {
 
 <template>
   <div ref="viewerEl" class="osd">
-    <!-- <div class="interface-area-top">
+    <div class="interface-area-top">
       <div class="toolbar-top">
 
         <a id="prev-button">
@@ -71,7 +71,7 @@ onMounted(() => {
         </a>
 
       </div>
-    </div> -->
+    </div>
 
     <div class="interface-area-bottom">
       <div class="toolbar-bottom">
@@ -93,5 +93,4 @@ onMounted(() => {
     </div>
   </div>
 </template>
-
 
