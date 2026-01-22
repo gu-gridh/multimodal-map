@@ -1,13 +1,19 @@
 /* CSS - Cascading Style Sheet */
 
 /* Color palette */
-:root{
-  --theme-1: 			rgb(108, 136, 139); /* This is the background color */
-  --theme-2: 			rgb(250, 150, 150); /* This is for lighter text on dark backgrounds */
-	--theme-3: 			rgb(180, 100, 100); /* This is the main accent colour */
-  --theme-4: 			rgb(160, 80, 80); /* This is for accent hover */
-  --theme-5: 			rgb(140, 60, 60); /* This is for accent lines */
-  --theme-6:      rgb(250,220,220); /* This is for data on theme-1 background */
+:root {
+  --theme-1: rgb(108, 136, 139);
+  /* This is the background color */
+  --theme-2: rgb(250, 150, 150);
+  /* This is for lighter text on dark backgrounds */
+  --theme-3: rgb(180, 100, 100);
+  /* This is the main accent colour */
+  --theme-4: rgb(160, 80, 80);
+  /* This is for accent hover */
+  --theme-5: rgb(140, 60, 60);
+  /* This is for accent lines */
+  --theme-6: rgb(250, 220, 220);
+  /* This is for data on theme-1 background */
 }
 
 /* Main */
@@ -17,8 +23,8 @@ body {
   background-color: var(--theme-1) !important;
 }
 
-.theme-title-typography{
-    font-family: 'Teko', sans-serif;
+.theme-title-typography {
+  font-family: 'Teko', sans-serif;
 }
 
 .theme-color-text {
@@ -38,39 +44,39 @@ body {
 }
 
 .dropdown:focus {
-    outline-color: var(--theme-5) !important;
+  outline-color: var(--theme-5) !important;
 }
 
 .main-title {
   font-family: 'Teko', sans-serif;
-  color:white !important;
-  line-height:0.75;
+  color: white !important;
+  line-height: 0.75;
 }
 
 .about {
-  display:none;
+  display: none;
 }
 
 #app .left-pane {
-  background: url("images/gradient.png")!important;
+  background: url("images/gradient.png") !important;
   background-size: contain;
   width: 50% !important;
   min-width: 900px;
   max-width: 1000px;
-  font-size:95%;
+  font-size: 95%;
 }
 
 .theme-button {
   border-radius: 5px;
   padding: 5px 10px;
   color: white;
-  width:auto;
+  width: auto;
   transition: all 0.2s ease-in-out;
 }
 
 .theme-button:hover {
   background-color: var(--theme-4) !important;
-  transform:scale(1.05);
+  transform: scale(1.05);
 }
 
 #app .category-button {
@@ -91,18 +97,22 @@ body {
 
 .organ-historic-overview a {
   color: var(--theme-6) !important;
-  cursor:pointer!important;
+  cursor: pointer !important;
 }
 
 .organ-historic-overview a:hover {
-  color: white!important;
-  cursor:pointer!important;
-  font-size:110%;
+  color: white !important;
+  cursor: pointer !important;
+  font-size: 110%;
 }
 
 #app .right-pane {
-  max-width:600px!important; 
-  }
+  max-width: 600px !important;
+}
+
+.placecard-content {
+  padding: 0px !important;
+}
 
 .close-card-button {
   position: absolute;
@@ -115,24 +125,30 @@ body {
 @media screen and (max-width: 900px) {
   .atlas-gradient {
     background: linear-gradient(180deg, rgba(232, 228, 217, 0) 0px, var(--theme-1) 300px) !important;
-}
-
-.organ-historic-overview a {
-  color: var(--theme-3) !important;
-}
-
-#app .left-pane {
-  margin-top:0px!important;
-  top: 75%!important;
-  z-index:1000!important;
-  position:absolute!important;
-  width:100%!important;
-  padding: 30px 10px 100px 10px!important;
-}
-
-  #gallery-container{
-    height:calc(100% - 0px)!important;
   }
-  
 
+  .organ-historic-overview a {
+    color: var(--theme-3) !important;
+  }
+
+  #app .left-pane {
+    margin-top: 0px !important;
+    top: 75% !important;
+    z-index: 1000 !important;
+    position: absolute !important;
+    width: 100% !important;
+    padding: 30px 10px 100px 10px !important;
+  }
+
+  #app .right-pane {
+    display: flex !important;
+    justify-content: center;
+    padding: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+
+  #gallery-container {
+    height: calc(100% - 0px) !important;
+  }
 }

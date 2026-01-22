@@ -274,12 +274,22 @@ const processOrganData = (data) => {
 
 .builder-label {
   font-size: 1.5vw;
-  margin-top: 20px;
+  margin-top: 10px;
   text-align: center;
 }
 
 .biography {
   text-align: justify;
   padding: 10px;
+}
+
+@media (max-width: 900px) {
+  .placecard-title-builder {
+    font-size: 22px;
+  }
+
+  .builder-label {
+    font-size: 16px;
+  }
 }
 </style>

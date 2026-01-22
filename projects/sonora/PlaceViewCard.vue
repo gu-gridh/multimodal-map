@@ -305,9 +305,7 @@ onMounted(() => {
 .placecard-full-content {
   height: auto;
   width: 100%;
-  padding: 0px 0px 10px 0px;
 }
-
 
 .placecard-full .category-button {
   width: 110px !important;
