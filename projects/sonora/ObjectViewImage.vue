@@ -59,7 +59,6 @@ const placesBeforeFiles = computed(() => {
 
 //state for popup
 const isPopupVisible = ref(false);
-const mousePosition = ref({ x: 0, y: 0 });
 
 const togglePopup = (event) => {
   isPopupVisible.value = !isPopupVisible.value;
@@ -102,7 +101,7 @@ onUnmounted(() => {
     </ObjectViewComponent>
 
     <!-- Popup window -->
-    <div v-if="isPopupVisible" class="popup" :style="{ left: mousePosition.x + 'px', top: mousePosition.y + 'px' }">
+    <div v-if="isPopupVisible" class="popup">
       <div class="popup-content">
         <p v-for="(field, key) in explFields" :key="key">
           <b>{{ field.label }}:</b> {{ field.data }}
@@ -194,24 +193,29 @@ onUnmounted(() => {
 
 .popup {
   position: fixed;
-  top: 40% !important;
-  left: 40% !important;
+  top: 50% !important;
+  left: 50% !important;
   transform: translate(-50%, -50%);
   background-color: white;
+  width: fit-content;
+  max-width: 90vw;
   padding: 15px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  z-index: 1200;
+  z-index: 2100;
   color: black;
   border-radius: 8px;
   box-shadow: 0 0 20px #0000004d;
+  max-height: 80vh;
+  overflow-y: auto;
 }
 
 @media (max-width: 900px) {
   .popup {
     top: 50% !important;
     left: 50% !important;
-    width: 50%;
-    height: 50%;
+    width: fit-content;
+    max-width: 90vw;
+    height: auto;
     overflow-y: auto;
     padding: 10px;
   }

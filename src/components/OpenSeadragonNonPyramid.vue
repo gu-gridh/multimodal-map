@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
 import OpenSeadragon from "openseadragon";
 
 const props = defineProps({
@@ -13,6 +13,7 @@ const emit = defineEmits(['page-changed']);
 const viewerEl = ref();
 const currentPage = ref(1);
 const isFullscreen = ref(false);
+let viewer = null;
 
 onMounted(() => {  
 
@@ -22,7 +23,7 @@ onMounted(() => {
     buildPyramid: false  
   }));
 
-  const viewer = OpenSeadragon({
+  viewer = OpenSeadragon({
     element: viewerEl.value,
     immediateRender: false,
     visibilityRatio: 1.0,
@@ -54,6 +55,14 @@ onMounted(() => {
     isFullscreen.value = viewer.isFullPage(); //update isFullscreen state
   });
 
+});
+
+onUnmounted(() => {
+  //release WebGL contexts when leaving the view
+  if (viewer && typeof viewer.destroy === 'function') {
+    viewer.destroy();
+    viewer = null;
+  }
 });
 </script>
 
@@ -93,4 +102,3 @@ onMounted(() => {
     </div>
   </div>
 </template>
-

@@ -15,6 +15,9 @@ const mousePosition = ref({ x: 0, y: 0 })
 const popupRef = ref(null)
 const linkData = ref({ builder: '', date: '', work: '' })
 const route = useRoute()
+const hasOverviewContent = computed(() =>
+  Boolean(linkData.value.builder || linkData.value.date || linkData.value.work)
+)
 
 const loadData = async (placeId) => {
   try {
@@ -201,7 +204,7 @@ const handleClickOutside = (event) => {
     </div>
 
     <div class="place-view">
-      <div class="overview-row">
+      <div class="overview-row" :class="{ 'hide-when-empty-mobile': !hasOverviewContent }">
         <div class="title-event" style="font-weight: 600;">{{ linkData.work }} {{ linkData.date }}</div>
         <div class="title-builder" style="font-weight: 300;">{{ linkData.builder }}</div>
       </div>
@@ -466,6 +469,7 @@ const handleClickOutside = (event) => {
   flex-grow: 1;
   flex-basis: 0;
   max-width: 300px;
+  margin-right: 5px;
 }
 
 .stop-container {
@@ -508,15 +512,15 @@ const handleClickOutside = (event) => {
     padding-bottom: 0px;
   }
 
-  .tag.theme-color-text {
-    /*    color: var(--theme-3) !important; */
-  }
-
   .overview-row {
     padding-left: 20px;
     padding-top: 20px;
     padding-bottom: 20px;
     margin: 0;
+  }
+
+  .hide-when-empty-mobile {
+    display: none;
   }
 
   .title-event {
