@@ -256,10 +256,18 @@ ul {
 }
 
 .carousel-container {
-  max-width: 800px;
-  max-height: 500px;
+  position: relative;
+  max-width: 900px;
   margin: 0 auto;
-  padding: 0 10px;
+  padding: 32px 52px 32px;
+  background: rgba(0, 0, 0, 0.18);
+  border-radius: 14px;
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.24);
+}
+
+.carousel-container .custom-carousel {
+  padding: 0;
+  background: none;
 }
 
 .carousel-container h3 {
@@ -291,10 +299,24 @@ ul {
 
 .carousel__text {
   text-align: left;
+  display: block;
+  background: none;
+  padding: 0;
+  border-radius: 0;
+  max-width: 100%;
+}
+
+.carousel__item h3 {
+  display: block;
+  background: none;
+  padding: 0;
+  border-radius: 0;
+  margin-bottom: 10px;
 }
 
 .custom-carousel .carousel__slide {
-  align-items: flex-start !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
 .text-content {
@@ -353,18 +375,48 @@ ul {
 
 .carousel-container .custom-carousel :deep(.carousel__prev),
 .carousel-container .custom-carousel :deep(.carousel__next) {
-  top: 12%;
+  top: 40%;
+  width: 72px !important;
+  height: 72px !important;
 }
 
-@media screen and (max-width: 1500px) {
-  .category-button {
-    font-size: 1.2em !important;
+.carousel-container .custom-carousel :deep(.carousel__prev svg),
+.carousel-container .custom-carousel :deep(.carousel__next svg) {
+  width: 50px !important;
+  height: 50px !important;
+}
+
+@media screen and (min-width: 901px) {
+  .carousel-container .custom-carousel :deep(.carousel__prev) {
+    left: -60px !important;
+  }
+
+  .carousel-container .custom-carousel :deep(.carousel__next) {
+    right: -60px !important;
   }
 }
 
 @media screen and (max-width: 900px) {
+
+  .carousel-container .custom-carousel :deep(.carousel__prev),
+  .carousel-container .custom-carousel :deep(.carousel__next) {
+    top: -75px !important;
+    left: 47% !important;
+    right: auto !important;
+    transform: translateX(-60px) !important;
+  }
+
+  .carousel-container .custom-carousel :deep(.carousel__next) {
+    transform: translateX(-8px) !important;
+  }
+
+  .carousel-container .custom-carousel :deep(.carousel__prev svg),
+  .carousel-container .custom-carousel :deep(.carousel__next svg) {
+    width: 32px !important;
+    height: 32px !important;
+  }
+
   .category-button {
-    margin-top: 30px;
     font-size: 1.9em !important;
   }
 
@@ -394,7 +446,7 @@ ul {
 
   .carousel-container {
     max-width: 100%;
-    padding: 0 15px;
+    padding: 72px 18px 16px;
   }
 
   .about-logos-container {
