@@ -1,30 +1,39 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch, computed, onUnmounted } from "vue";
 import OpenSeadragon from "openseadragon";
 
 const props = defineProps({
   src: Array,
   downloadUrls: Array,
+  page: {
+    type: Number,
+    default: 1
+  },
+  totalPages: {
+    type: Number,
+    default: 1
+  },
   showReferenceStrip: {
     type: Boolean,
     default: false
   }
 });
 
-const viewerEl = ref();
-const currentPage = ref(1);  //define currentPage
-const isFullscreen = ref(false);
+const emit = defineEmits(['next', 'prev']);
 
+const viewerEl = ref();
+const viewer = ref(null);
+const currentPage = computed(() => props.page || 1);
 //open in new tab
 const downloadImage = () => {
-  const pageIndex = currentPage.value - 1;
-  const iiifFile = props.downloadUrls[pageIndex];
+  const iiifFile = props.downloadUrls && props.downloadUrls[0];
+  if (!iiifFile) return;
 
   window.open(iiifFile, '_blank');
 };
 
 onMounted(() => {
-  const viewer = OpenSeadragon({
+  viewer.value = OpenSeadragon({
     element: viewerEl.value,
     immediateRender: false,
     visibilityRatio: 1.0,
@@ -40,13 +49,11 @@ onMounted(() => {
     fullPageButton: "full-page",
     zoomInButton: "zoom-in",
     zoomOutButton: "zoom-out",
-    nextButton: "next-button",
-    previousButton: "prev-button",
     rotateLeftButton: "rotate-left",
     rotateRightButton: "rotate-right",
     homeButton: "home",
     prefixUrl: "/openseadragon/",
-    sequenceMode: true,
+    sequenceMode: false,
     showReferenceStrip: props.showReferenceStrip,
     referenceStripPosition: "right",
     preload: true,
@@ -56,19 +63,19 @@ onMounted(() => {
     })),
   });
 
-  viewer.addHandler('page', function (event) {
-    currentPage.value = event.page + 1;
-  });
+});
 
-  viewer.addHandler('full-page', function (event) {
-    isFullscreen.value = viewer.isFullPage(); //update isFullscreen state
-  });
+watch(() => props.src, (newVal) => {
+  if (viewer.value && newVal && newVal.length > 0) {
+    viewer.value.open(newVal.map(url => ({ type: 'image', url })));
+  }
+});
 
-  const downloadButton = document.getElementById('download');
-  downloadButton.addEventListener('click', function (event) {
-    event.preventDefault();
-    downloadImage();
-  });
+onUnmounted(() => {
+  if (viewer.value) {
+    viewer.value.destroy();
+    viewer.value = null;
+  }
 });
 </script>
 
@@ -77,11 +84,11 @@ onMounted(() => {
     <div class="interface-area-top">
       <div class="toolbar-top">
 
-        <a id="prev-button">
+        <a id="prev-button" @click.prevent="emit('prev')">
           <div id="Prev" class="switch-button"></div>
         </a>
-        <span id="currentpage">{{ currentPage }} / {{ src ? src.length : 0 }}</span>
-        <a id="next-button">
+        <span id="currentpage">{{ currentPage }} / {{ totalPages }}</span>
+        <a id="next-button" @click.prevent="emit('next')">
           <div id="Next" class="switch-button"></div>
         </a>
 
@@ -117,7 +124,7 @@ onMounted(() => {
 
     </div>
     <a id="download" ref="downloadButton" target="_blank">
-      <div id="" class="download-button NavButton" title="Download image"></div>
+      <div id="" class="download-button NavButton" title="Download image" @click.prevent="downloadImage"></div>
     </a>
   </div>
 </template>

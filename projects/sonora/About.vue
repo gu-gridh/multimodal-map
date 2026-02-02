@@ -88,7 +88,7 @@ export default {
   data() {
     return {
       displayAbout: this.visibleAbout,
-      // carousel settings
+      //carousel settings
       settings: {
         itemsToShow: 1,
         snapAlign: 'center',
@@ -166,13 +166,13 @@ export default {
   watch: {
     visibleAbout(newVal) {
       if (newVal) {
-        // If visibleAbout is true, immediately show the container
+        //if visibleAbout is true, immediately show the container
         this.displayAbout = true;
       } else {
-        // if visibleAbout is false, wait for the transition to finish before hiding
+        //if visibleAbout is false, wait for the transition to finish before hiding
         setTimeout(() => {
           this.displayAbout = false;
-        }, 1000); // transition duration
+        }, 1000); //transition duration
       }
     },
   },
@@ -397,7 +397,6 @@ ul {
 }
 
 @media screen and (max-width: 900px) {
-
   .carousel-container .custom-carousel :deep(.carousel__prev),
   .carousel-container .custom-carousel :deep(.carousel__next) {
     top: -75px !important;

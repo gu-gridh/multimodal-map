@@ -5,8 +5,12 @@ import OpenSeadragon from "./MapViewPreviewImage.vue";
 
 const props = defineProps({
   object: Object,
-  id: Number
+  id: Number,
+  page: Number,
+  totalPages: Number
 });
+
+const emit = defineEmits(['next', 'prev']);
 
 const metadataFields = computed(() => {
   return Object.entries(props.object).reduce((acc, [key, value]) => {
@@ -78,6 +82,9 @@ onMounted(() => {
 onUnmounted(() => {
   document.removeEventListener('click', handleClickOutside);
 });
+
+const handleNext = () => emit('next');
+const handlePrev = () => emit('prev');
 </script>
 
 <template>
@@ -112,8 +119,18 @@ onUnmounted(() => {
   </div>
 
   <section class="illustration flex">
-    <OpenSeadragon v-if="imageUrls.length > 0" :src="imageUrls" :downloadUrls="downloadUrls" :showReferenceStrip="true"
-      :key="imageUrls.join(',')" class="flex-1" />
+    <OpenSeadragon
+      v-if="imageUrls.length > 0"
+      :src="imageUrls"
+      :downloadUrls="downloadUrls"
+      :showReferenceStrip="true"
+      :page="page"
+      :total-pages="totalPages"
+      @next="handleNext"
+      @prev="handlePrev"
+      :key="imageUrls.join(',')"
+      class="flex-1"
+    />
 
   </section>
 </template>

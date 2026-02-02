@@ -19,13 +19,16 @@ const object = ref({});
 const route = useRoute();
 const { locale } = useI18n({ useScope: 'global' });
 
-const fetchObjectData = async () => {
+const currentPage = ref(Number(route.query.page) || 1);
+const totalPages = ref(1);
+
+const fetchObjectData = async (page = currentPage.value) => {
   try {
     const lang = route.query.lang || locale.value;
     if (route.query.lang && route.query.lang !== locale.value) {
       locale.value = route.query.lang;
     }
-    const response = await fetch(`https://orgeldatabas.gu.se/webgoart/goart/document1.php?id=${props.id}&lang=${lang}`);
+    const response = await fetch(`https://orgeldatabas.gu.se/webgoart/goart/document1.php?id=${props.id}&lang=${lang}&page=${page}`);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
@@ -42,12 +45,22 @@ const fetchObjectData = async () => {
     });
 
     object.value = data;
+    totalPages.value = Number(data.no_facs) || 1;
+    currentPage.value = page;
   } catch (error) {
-    console.error("Error fetching data:", error);
+    console.error(error);
   }
 };
 
 onMounted(() => fetchObjectData());
+
+const goToPage = (page) => {
+  if (page < 1 || page > totalPages.value) return;
+  fetchObjectData(page);
+};
+
+const handleNext = () => goToPage(currentPage.value + 1);
+const handlePrev = () => goToPage(currentPage.value - 1);
 
 const objectComponent = {
   image: ObjectViewImage,
@@ -56,7 +69,15 @@ const objectComponent = {
 
 <template>
 
-  <component :is="objectComponent" :object="object" :id="Number(id)" />
+  <component
+    :is="objectComponent"
+    :object="object"
+    :id="Number(id)"
+    :page="currentPage"
+    :total-pages="totalPages"
+    @next="handleNext"
+    @prev="handlePrev"
+  />
 
 </template>
 

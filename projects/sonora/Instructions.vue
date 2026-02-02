@@ -7,7 +7,7 @@
       <button @click="toggleLanguage">{{ $t('languagebutton') }}</button>
     </div>
 
-    <!--    keeps instructions vertically centered -->
+    <!-- keeps instructions vertically centered -->
     <div class="instructions-flex">
 
       <div class="content-columns">

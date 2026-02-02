@@ -55,20 +55,20 @@ watch(showArchive, (newValue, oldValue) => {
 
 const apiUrl = computed(() => {
   const baseUrl = 'https://orgeldatabas.gu.se/webgoart/goart/map.php';
-  const buildingTypeId = dataParams.value.buildingTypeId || 0; // Default to 0
+  const buildingTypeId = dataParams.value.buildingTypeId || 0;
   const year1 = dataParams.value.year1 || '';
   const year2 = dataParams.value.year2 || '';
   return `${baseUrl}?btype=${buildingTypeId}&year1=${year1}&year2=${year2}`;
 });
 
 onMounted(() => {
-  // Check if the "visited" key exists in session storage
-  visited = sessionStorage.getItem("visited") === "true"; // Retrieve the visited status from session storage
+  //check if the "visited" key exists in session storage
+  visited = sessionStorage.getItem("visited") === "true"; //retrieve the visited status from session storage
   const storedShowGrid = localStorage.getItem("showGrid");
   const storedShowArchive = localStorage.getItem("showArchive");
 
   if (!visited) {
-    // Hide the about component
+    //hide the about component
     visibleAbout.value = true;
     sessionStorage.setItem("visited", "true");
   }
