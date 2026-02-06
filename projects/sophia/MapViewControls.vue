@@ -21,7 +21,7 @@
             <div class="row-1" style="display:flex; flex-direction: row;">
               <div class="tag-section tag-section-left" style="">
                 <div class="section-title">{{ $t('textualgenre') }}</div>
-                <div title="Narrow the result to a certain language group" class="broad-controls">
+                <div title="Narrow the result to a certain textual genre" class="broad-controls">
                   <Dropdown v-model="textualModel" :categories="TEXTUAL" :limit="1" styleType="dropdown" class="my-2"
                     type="language" @change="resetSpecific('pictorialModel')" style="padding-right:30px;" />
                 </div>
@@ -29,7 +29,7 @@
 
               <div class="tag-section">
                 <div class="section-title">{{ $t('pictorialdescription') }}</div>
-                <div title="Narrow the result to a certain language group" class="broad-controls">
+                <div title="Narrow the result to a certain pictorial description" class="broad-controls">
                   <Dropdown v-model="pictorialModel" :categories="PICTORIAL" :limit="1" styleType="dropdown"
                     class="my-2" @change="resetAllExcept('pictorialModel')" style="padding-right:30px;" />
                 </div>
@@ -45,7 +45,7 @@
             <div class="control-group">
               <div class="tag-section">
                 <div class="section-title">{{ $t('writingsystem') }}</div>
-                <div title="Narrow the result to a certain language group" class="broad-controls">
+                <div title="Narrow the result to a certain writing system" class="broad-controls">
                   <Dropdown v-model="writingModel" :categories="WRITING" :limit="1" styleType="dropdown" class="my-2"
                     @change="resetSpecific('pictorialModel'), resetSpecific('languageModel')"
                     style="padding-right:30px;" />
