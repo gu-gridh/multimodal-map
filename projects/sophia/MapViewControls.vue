@@ -77,35 +77,23 @@
 
           <div class="search-box-wrapper">
             <!-- Selected item bubble -->
-            <div
-              class="selected-item-bubble"
-              v-if="selectedInscription || selectedSurface || panelStr"
-              @click="clearSelection"
-            >
+            <div class="selected-item-bubble" v-if="selectedInscription || selectedSurface || panelStr"
+              @click="clearSelection">
               <span class="selected-text">
-                {{ selectedInscription ? selectedInscription.displayText : selectedSurface ? selectedSurface.title : panelStr }}
+                {{ selectedInscription ? selectedInscription.displayText : selectedSurface ? selectedSurface.title :
+                  panelStr }}
               </span>
               <span class="remove-icon">&times;</span>
             </div>
 
             <!-- Input field -->
-            <input
-              ref="searchInput"
-              type="text"
-              v-model="searchQuery"
-              @input="handleSearch"
-              @keydown.enter="handleEnter"
-              @focus="handleSearchBoxFocus"
-              @keydown="handleKeydown"
-              :placeholder="
-                selectedInscription || selectedSurface || panelStr
-                  ? ''
-                  : searchType === 'surfaces'
-                    ? $t('searchsurfacesplaceholder')
-                    : $t('searchinscriptionsplaceholder')
-              "
-              class="search-box"
-            />
+            <input ref="searchInput" type="text" v-model="searchQuery" @input="handleSearch"
+              @keydown.enter="handleEnter" @focus="handleSearchBoxFocus" @keydown="handleKeydown" :placeholder="selectedInscription || selectedSurface || panelStr
+                ? ''
+                : searchType === 'surfaces'
+                  ? $t('searchsurfacesplaceholder')
+                  : $t('searchinscriptionsplaceholder')
+                " class="search-box" />
             <div id="search-button" @click="handleEnter"></div>
           </div>
 
@@ -263,12 +251,16 @@ const filteredInscription = computed(() => {
     const value = result.value ?? "";
     const source = result.source ?? "";
     const numericValue = Number(value);
+    const primaryId =
+      (Array.isArray(result.ids) && result.ids.length > 0 && result.ids[0]) ??
+      result.id ??
+      null;
     const derivedId =
-      typeof result.id === "number"
-        ? result.id
+      typeof primaryId === "number"
+        ? primaryId
         : Number.isFinite(numericValue) && value !== ""
           ? numericValue
-          : value || null;
+          : primaryId ?? value ?? null;
     const displayText = source ? `${value} — ${source}` : `${value}`;
     const resultKey = `${derivedId ?? "unknown"}-${source || "nosource"}`;
 
@@ -367,6 +359,7 @@ const handleKeydown = (event) => {
 function handleEnter() {
   const enteredValue = searchQuery.value.trim();
   if (enteredValue) {
+    inscriptionId.value = null; //free typed uses ?q=
     if (searchType.value === "surfaces") {
       panelStr.value = enteredValue;
       selectedInscription.value = { displayText: enteredValue };
@@ -565,15 +558,16 @@ function handleSurfaceClick(surface) {
 function handleInscriptionClick(feature) {
   selectedInscription.value = feature;
   selectedSurface.value = null;
-  searchId.value = feature.id;
-  inscriptionId.value = null;
+  const resolvedId =
+    (Array.isArray(feature.ids) && feature.ids.length > 0 && feature.ids[0]) ??
+    feature.id ??
+    null;
+  searchId.value = resolvedId;
+  inscriptionId.value = resolvedId;
   panelId.value = null;
   showSuggestions.value = false;
   searchQuery.value = "";
-  panelStr.value =
-    feature && feature.id !== undefined && feature.id !== null
-      ? String(feature.id)
-      : feature.value ?? feature.displayText ?? "";
+  panelStr.value = feature?.value ?? feature?.displayText ?? (resolvedId !== null ? String(resolvedId) : "");
   emit("update:searchType", searchType.value);
 }
 
@@ -600,7 +594,6 @@ watch(
       searchResults.value = [];
       searchQuery.value = "";
       panelId.value = null;
-      inscriptionId.value = null;
       currentOffset.value = 0;
       hasMoreResults.value = true;
       showSuggestions.value = false;
