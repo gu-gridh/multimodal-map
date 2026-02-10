@@ -270,7 +270,7 @@ const panelParams = computed(() => {
     delete (params)['material'];
   }
 
-  if (panelString !== null && panelString !== undefined) {
+  if (searchType.value === "surfaces" && panelString !== null && panelString !== undefined) {
     (params)['panel__title__startswith'] = panelString;
   }
 
@@ -286,7 +286,6 @@ const tagParams = computed(() => {
   const alignment = alignmentModel.value;
   const condition = conditionModel.value;
   const selectedCategoryValue = selectedCategory.value;
-  const id = inscriptionId.value;
   const panelString = panelStr.value;
   const initialParams = { genre, tags, writing_system, language };
 
@@ -317,13 +316,7 @@ const tagParams = computed(() => {
     delete (params)['condition'];
   }
 
-  if (id !== null) {
-    (params)['id'] = id;
-  } else {
-    delete (params)['id'];
-  }
-
-  if (panelString !== null && panelString !== undefined) {
+  if (searchType.value === "surfaces" && panelString !== null && panelString !== undefined) {
     (params)['panel__title__startswith'] = panelString;
   }
 

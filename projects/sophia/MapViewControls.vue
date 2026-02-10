@@ -77,19 +77,35 @@
 
           <div class="search-box-wrapper">
             <!-- Selected item bubble -->
-            <div class="selected-item-bubble" v-if="selectedInscription || selectedSurface || panelStr">
-              <span @click="clearSelection">
-                {{ selectedInscription ? selectedInscription.displayText : selectedSurface ? selectedSurface.title :
-                  panelStr }}
-                <span class="remove-icon">&times;</span>
+            <div
+              class="selected-item-bubble"
+              v-if="selectedInscription || selectedSurface || panelStr"
+              @click="clearSelection"
+            >
+              <span class="selected-text">
+                {{ selectedInscription ? selectedInscription.displayText : selectedSurface ? selectedSurface.title : panelStr }}
               </span>
+              <span class="remove-icon">&times;</span>
             </div>
 
             <!-- Input field -->
-            <input ref="searchInput" type="text" v-model="searchQuery" @input="handleSearch"
-              @keydown.enter="handleEnter" @focus="handleSearchBoxFocus" @keydown="handleKeydown"
-              :placeholder="searchType === 'surfaces' ? $t('searchsurfacesplaceholder') : $t('searchinscriptionsplaceholder')"
-              class="search-box" />
+            <input
+              ref="searchInput"
+              type="text"
+              v-model="searchQuery"
+              @input="handleSearch"
+              @keydown.enter="handleEnter"
+              @focus="handleSearchBoxFocus"
+              @keydown="handleKeydown"
+              :placeholder="
+                selectedInscription || selectedSurface || panelStr
+                  ? ''
+                  : searchType === 'surfaces'
+                    ? $t('searchsurfacesplaceholder')
+                    : $t('searchinscriptionsplaceholder')
+              "
+              class="search-box"
+            />
             <div id="search-button" @click="handleEnter"></div>
           </div>
 
@@ -106,7 +122,7 @@
 
             <!-- Rendering for inscriptions -->
             <template v-else-if="searchType === 'inscriptionobjects'">
-              <div v-for="feature in filteredInscription" :key="feature.id"
+              <div v-for="feature in filteredInscription" :key="feature.resultKey || feature.id"
                 :class="['search-result-item', { selected: searchId === feature.id }]"
                 @click="handleInscriptionClick(feature)">
                 {{ feature.displayText }}
@@ -234,22 +250,35 @@ const filteredInscription = computed(() => {
   if (searchType.value !== "inscriptionobjects") {
     return [];
   }
-  if (Array.isArray(searchResults.value)) {
-    return searchResults.value.map((result) => {
-      if (result && typeof result === "object") {
-        const panelTitle = result.panel?.title || "";
-        const inscriptionIdLocal = result.id || "";
-        const inscriptionTitle = result.title ? ` | ${result.title}` : "";
-        return {
-          ...result,
-          displayText: `${panelTitle}:${inscriptionIdLocal} ${inscriptionTitle}`,
-        };
-      } else {
-        return { displayText: "No data available" };
-      }
-    });
+
+  if (!Array.isArray(searchResults.value)) {
+    return [];
   }
-  return [];
+
+  return searchResults.value.map((result) => {
+    if (!result || typeof result !== "object") {
+      return { displayText: "No data available" };
+    }
+
+    const value = result.value ?? "";
+    const source = result.source ?? "";
+    const numericValue = Number(value);
+    const derivedId =
+      typeof result.id === "number"
+        ? result.id
+        : Number.isFinite(numericValue) && value !== ""
+          ? numericValue
+          : value || null;
+    const displayText = source ? `${value} — ${source}` : `${value}`;
+    const resultKey = `${derivedId ?? "unknown"}-${source || "nosource"}`;
+
+    return {
+      ...result,
+      id: derivedId,
+      displayText,
+      resultKey,
+    };
+  });
 });
 
 const shouldShowReset = computed(() => {
@@ -383,6 +412,9 @@ async function fetchDataSection() {
     ...imgParams.value,
   };
 
+  //for inscriptions tbd!!!
+
+
   //replace the key 'panel__title__startswith' with 'panel_title_str'
   params = Object.fromEntries(
     Object.entries(params).map(([key, value]) =>
@@ -412,30 +444,34 @@ async function fetchDataSection() {
 
 // fetch inscriptions
 const fetchInscriptions = async (query, offset = 0) => {
-  if (searchType.value === "inscriptionobjects") {
-    const apiUrl = `https://saintsophia.dh.gu.se/api/inscriptions/inscription-string/?str=${encodeURIComponent(
-      query
-    )}&offset=${offset}&depth=1`;
-    try {
-      const response = await fetch(apiUrl);
-      const data = await response.json();
+  if (searchType.value !== "inscriptionobjects") return;
 
-      if (searchType.value === "inscriptionobjects") {
-        if (offset === 0) {
-          searchResults.value = data.results || [];
-        } else {
-          searchResults.value = [...searchResults.value, ...(data.results || [])];
-        }
+  const apiUrl = `https://saintsophia.dh.gu.se/api/inscriptions/autocomplete/inscription/?q=${encodeURIComponent(
+    query || ""
+  )}&offset=${offset}&limit=${limit}`;
 
-        currentOffset.value = offset + limit;
-        hasMoreResults.value = !!data.next;
+  try {
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+
+    if (searchType.value === "inscriptionobjects") {
+      const results = Array.isArray(data) ? data : data.results || [];
+      const next = Array.isArray(data) ? null : data.next;
+
+      if (offset === 0) {
+        searchResults.value = results;
+      } else {
+        searchResults.value = [...searchResults.value, ...results];
       }
-    } catch (error) {
-      console.error(error);
-      searchResults.value = [];
-    } finally {
-      isLoadingMore.value = false;
+
+      currentOffset.value = offset + limit;
+      hasMoreResults.value = !!next;
     }
+  } catch (error) {
+    console.error(error);
+    searchResults.value = [];
+  } finally {
+    isLoadingMore.value = false;
   }
 };
 
@@ -530,11 +566,14 @@ function handleInscriptionClick(feature) {
   selectedInscription.value = feature;
   selectedSurface.value = null;
   searchId.value = feature.id;
-  inscriptionId.value = feature.id;
+  inscriptionId.value = null;
   panelId.value = null;
   showSuggestions.value = false;
   searchQuery.value = "";
-  panelStr.value = null;
+  panelStr.value =
+    feature && feature.id !== undefined && feature.id !== null
+      ? String(feature.id)
+      : feature.value ?? feature.displayText ?? "";
   emit("update:searchType", searchType.value);
 }
 
@@ -950,7 +989,18 @@ defineExpose({ clearSelection });
   align-items: center;
   cursor: pointer;
   z-index: 2;
+  max-width: 90%;
+  min-width: 0;
+  overflow: hidden;
+  gap: 6px;
+}
+
+.selected-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
   white-space: nowrap;
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 .search-box-wrapper {

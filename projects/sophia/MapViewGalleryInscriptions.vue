@@ -118,9 +118,11 @@ export default {
         try {
           isFetching = true;
           const offset = (requestedPageIndex - 1) * 50;
-          const baseUrl = `https://saintsophia.dh.gu.se/api/inscriptions/inscription/?depth=1&limit=50&offset=${offset}&${new URLSearchParams(
-            store.imgParams
-          ).toString()}`;
+          const params = new URLSearchParams(store.imgParams);
+          const queryString = params.toString();
+          const baseUrl = `https://saintsophia.dh.gu.se/api/inscriptions/search/inscription/?q=${encodeURIComponent(
+            store.panelStr || ''
+          )}&depth=1&limit=50&offset=${offset}${queryString ? `&${queryString}` : ''}`;
 
           const res = await fetch(baseUrl);
           const data = await res.json();
@@ -173,9 +175,11 @@ export default {
       infScroll = new InfiniteScroll(gallery, {
         path: () => {
           const offset = (pageIndex - 1) * 50;
-          return `https://saintsophia.dh.gu.se/api/inscriptions/inscription/?depth=1&limit=50&offset=${offset}&${new URLSearchParams(
-            store.imgParams
-          ).toString()}`;
+          const params = new URLSearchParams(store.imgParams);
+          const queryString = params.toString();
+          return `https://saintsophia.dh.gu.se/api/inscriptions/search/inscription/?q=${encodeURIComponent(
+            store.panelStr || ''
+          )}&depth=1&limit=50&offset=${offset}${queryString ? `&${queryString}` : ''}`;
         },
         outlayer: msnry,
         history: false,
