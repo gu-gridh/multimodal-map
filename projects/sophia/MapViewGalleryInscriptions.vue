@@ -224,7 +224,7 @@ export default {
     };
 
     watch(
-      () => store.imgParams,
+      [() => store.imgParams, () => store.inscriptionId, () => store.panelStr],
       async () => {
         isLoading.value = true;
         pageIndex = 1;

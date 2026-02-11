@@ -6,6 +6,11 @@ const router = createRouter({
   history: createWebHistory(),
   routes: [
     {
+      path: "/inscriptions/id/:id",
+      name: "inscriptionById",
+      component: MapView,
+    },
+    {
       path: "/summary/:panel?",
       name: "summary",
       component: MapView,

@@ -51,6 +51,12 @@ const applyRouteState = (currentRoute) => {
   const panelParam = extractPanelFromRoute(currentRoute);
   panelStr.value = panelParam || null;
 
+  if (currentRoute.name === "inscriptionById") {
+    const inscriptionParam = currentRoute?.params?.id;
+    inscriptionId.value = inscriptionParam ?? null;
+    panelStr.value = null;
+  }
+
   if (currentRoute.name === "summary") {
     showSummary.value = true;
     showPlan.value = false;
@@ -62,6 +68,11 @@ const applyRouteState = (currentRoute) => {
     showGallery.value = true;
     showGalleryInscriptions.value = false;
   } else if (currentRoute.name === "inscriptions") {
+    showSummary.value = false;
+    showPlan.value = false;
+    showGallery.value = false;
+    showGalleryInscriptions.value = true;
+  } else if (currentRoute.name === "inscriptionById") {
     showSummary.value = false;
     showPlan.value = false;
     showGallery.value = false;
@@ -83,6 +94,9 @@ const buildPathFromState = () => {
     return slug ? `/surfaces/${slug}` : "/surfaces";
   }
   if (showGalleryInscriptions.value) {
+    if (inscriptionId.value !== null && inscriptionId.value !== undefined) {
+      return `/inscriptions/id/${encodeURIComponent(inscriptionId.value)}`;
+    }
     return slug ? `/inscriptions/${slug}` : "/inscriptions";
   }
   return slug ? `/${slug}` : "/";
@@ -238,7 +252,7 @@ watch(
 );
 
 watch(
-  [panelStr, showSummary, showGalleryInscriptions, showPlan, showGallery],
+  [panelStr, inscriptionId, showSummary, showGalleryInscriptions, showPlan, showGallery],
   () => {
     const targetPath = buildPathFromState();
     if (route.path !== targetPath) {

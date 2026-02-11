@@ -367,6 +367,10 @@ function handleEnter() {
       panelStr.value = enteredValue;
       selectedInscription.value = { displayText: enteredValue };
     }
+    else if (searchType.value === "inscriptionobjects") {
+      panelStr.value = enteredValue;
+      selectedInscription.value = { displayText: enteredValue };
+    }
     emit("update:searchType", searchType.value);
   }
 }
@@ -567,7 +571,7 @@ function handleInscriptionClick(feature) {
   panelId.value = null;
   showSuggestions.value = false;
   searchQuery.value = "";
-  panelStr.value = feature?.value ?? feature?.displayText ?? (resolvedId !== null ? String(resolvedId) : "");
+  panelStr.value = null;
   emit("update:searchType", searchType.value);
 }
 
