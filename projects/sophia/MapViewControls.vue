@@ -592,9 +592,19 @@ function clearAll() {
 }
 
 watch(
-  () => panelStr.value,
-  (newPanelStr) => {
+  [() => panelStr.value, () => inscriptionId.value],
+  ([newPanelStr, newId]) => {
+    if (newId !== null && newId !== undefined) {
+      //direct ID route
+      selectedInscription.value = { displayText: String(newId) };
+      selectedSurface.value = null;
+      searchQuery.value = "";
+      showSuggestions.value = false;
+      return;
+    }
+
     if (newPanelStr) {
+      //free-typed route
       searchResults.value = [];
       searchQuery.value = "";
       panelId.value = null;
@@ -602,8 +612,13 @@ watch(
       hasMoreResults.value = true;
       showSuggestions.value = false;
       selectedInscription.value = { displayText: newPanelStr };
+      return;
     }
-  }
+
+    //nothing selected
+    selectedInscription.value = null;
+  },
+  { immediate: true }
 );
 
 watch(
