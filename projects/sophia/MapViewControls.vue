@@ -61,17 +61,17 @@
             </div>
           </div>
         </div>
-
+      <!-- Search mode buttons -->
         <div class="search-section" ref="searchSection">
           <div class="toggle-buttons" style="margin-top: 5px">
-            <button :class="{ active: searchType === 'surfaces' }"
-              @click="() => { setSearchType('surfaces'); $emit('update:searchType', 'surfaces'); }">
-              {{ $t('panels') }}
-            </button>
-
             <button :class="{ active: searchType === 'inscriptionobjects' }"
               @click="() => { setSearchType('inscriptionobjects'); $emit('update:searchType', 'inscriptionobjects'); }">
               {{ $t('inscriptions') }}
+            </button>
+
+            <button :class="{ active: searchType === 'surfaces' }"
+              @click="() => { setSearchType('surfaces'); $emit('update:searchType', 'surfaces'); }">
+              {{ $t('panels') }}
             </button>
           </div>
 
@@ -686,7 +686,7 @@ watch(
   showPlan,
   (newValue) => {
     if (newValue) {
-      setSearchType("surfaces");
+      setSearchType("inscriptionobjects");
     }
   },
   { immediate: true }
