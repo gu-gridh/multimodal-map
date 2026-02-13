@@ -233,6 +233,9 @@ const hiddenPanels = ref(0);
 const totalTextual = ref(0);
 const totalPictorial = ref(0);
 const totalComposite = ref(0);
+const selectedInscriptionWidgetFilter = ref(null);
+const lastDataWidgetQueryString = ref(null);
+const inFlightDataWidgetQueryString = ref(null);
 
 const filteredInscription = computed(() => {
   if (searchType.value !== "inscriptionobjects") {
@@ -263,7 +266,6 @@ const filteredInscription = computed(() => {
           : primaryId ?? value ?? null;
     const displayText = source ? `${value} — ${source}` : `${value}`;
     const resultKey = `${derivedId ?? "unknown"}-${source || "nosource"}`;
-
     return {
       ...result,
       id: derivedId,
@@ -360,6 +362,7 @@ function handleEnter() {
   const enteredValue = searchQuery.value.trim();
   if (enteredValue) {
     inscriptionId.value = null; //free typed uses ?q=
+    selectedInscriptionWidgetFilter.value = null;
     if (searchType.value === "surfaces") {
       panelStr.value = enteredValue;
       selectedInscription.value = { displayText: enteredValue };
@@ -408,8 +411,25 @@ async function fetchDataSection() {
     ...surfaceParams.value,
     ...imgParams.value,
   };
+  const hasSelectedInscriptionId =
+    inscriptionId.value !== null &&
+    inscriptionId.value !== undefined &&
+    String(inscriptionId.value).trim() !== "";
 
-  //for inscriptions tbd!!!
+  if (
+    selectedInscriptionWidgetFilter.value !== null &&
+    selectedInscriptionWidgetFilter.value !== undefined &&
+    selectedInscriptionWidgetFilter.value !== ""
+  ) {
+    params.id = selectedInscriptionWidgetFilter.value;
+  } else if (
+    searchType.value === "inscriptionobjects" &&
+    !hasSelectedInscriptionId &&
+    panelStr.value &&
+    String(panelStr.value).trim() !== ""
+  ) {
+    params.q = String(panelStr.value).trim();
+  }
 
 
   //replace the key 'panel__title__startswith' with 'panel_title_str'
@@ -420,7 +440,14 @@ async function fetchDataSection() {
   );
 
   const queryString = new URLSearchParams(params).toString();
-  const url = `https://saintsophia.dh.gu.se/api/inscriptions/inscriptions-info/?${queryString}`;
+  if (
+    queryString === lastDataWidgetQueryString.value ||
+    queryString === inFlightDataWidgetQueryString.value
+  ) {
+    return;
+  }
+  inFlightDataWidgetQueryString.value = queryString;
+  const url = `https://saintsophia.dh.gu.se/api/inscriptions/data-widget/?${queryString}`;
 
   try {
     const response = await fetch(url);
@@ -428,6 +455,7 @@ async function fetchDataSection() {
       throw new Error(`${response.status}`);
     }
     const data = await response.json();
+    lastDataWidgetQueryString.value = queryString;
 
     currentPanelCount.value = data.shown_inscriptions;
     hiddenPanels.value = data.hidden_inscriptions;
@@ -436,6 +464,10 @@ async function fetchDataSection() {
     totalComposite.value = data.composites_inscriptions;
   } catch (error) {
     console.error(error);
+  } finally {
+    if (inFlightDataWidgetQueryString.value === queryString) {
+      inFlightDataWidgetQueryString.value = null;
+    }
   }
 }
 
@@ -505,6 +537,7 @@ function clearSelection() {
   panelStr.value = null;
   searchId.value = null;
   selectedInscription.value = null;
+  selectedInscriptionWidgetFilter.value = null;
   selectedFeature.value = undefined;
   selectedSurface.value = null;
 }
@@ -550,6 +583,7 @@ async function fetchDataAndPopulateRef(type, refToPopulate) {
 function handleSurfaceClick(surface) {
   selectedSurface.value = surface;
   selectedInscription.value = null;
+  selectedInscriptionWidgetFilter.value = null;
   searchId.value = surface.id;
   panelId.value = surface.id;
   inscriptionId.value = null;
@@ -568,6 +602,8 @@ function handleInscriptionClick(feature) {
     null;
   searchId.value = resolvedId;
   inscriptionId.value = resolvedId;
+  selectedInscriptionWidgetFilter.value =
+    resolvedId !== null && resolvedId !== undefined ? resolvedId : null;
   panelId.value = null;
   showSuggestions.value = false;
   searchQuery.value = "";
@@ -595,8 +631,16 @@ watch(
   [() => panelStr.value, () => inscriptionId.value],
   ([newPanelStr, newId]) => {
     if (newId !== null && newId !== undefined) {
-      //direct ID route
-      selectedInscription.value = { displayText: String(newId) };
+      const currentFilter = selectedInscriptionWidgetFilter.value;
+      const isMatchingFilter =
+        currentFilter !== null &&
+        currentFilter !== undefined &&
+        String(currentFilter) === String(newId);
+
+      if (!isMatchingFilter) {
+        selectedInscriptionWidgetFilter.value = null;
+        selectedInscription.value = { displayText: String(newId) };
+      }
       selectedSurface.value = null;
       searchQuery.value = "";
       showSuggestions.value = false;
@@ -612,11 +656,13 @@ watch(
       hasMoreResults.value = true;
       showSuggestions.value = false;
       selectedInscription.value = { displayText: newPanelStr };
+      selectedInscriptionWidgetFilter.value = null;
       return;
     }
 
     //nothing selected
     selectedInscription.value = null;
+    selectedInscriptionWidgetFilter.value = null;
   },
   { immediate: true }
 );
@@ -671,6 +717,14 @@ watch(
 
 watch(
   () => imgParams.value,
+  async () => {
+    if (!isDataWidgetInitialized.value) return;
+    await fetchDataSection();
+  }
+);
+
+watch(
+  () => selectedInscriptionWidgetFilter.value,
   async () => {
     if (!isDataWidgetInitialized.value) return;
     await fetchDataSection();
