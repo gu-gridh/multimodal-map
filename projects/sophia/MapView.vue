@@ -63,16 +63,19 @@ const applyRouteState = (currentRoute) => {
     showGallery.value = false;
     showGalleryInscriptions.value = false;
   } else if (currentRoute.name === "surfaces") {
+    searchType.value = "surfaces";
     showSummary.value = false;
     showPlan.value = false;
     showGallery.value = true;
     showGalleryInscriptions.value = false;
   } else if (currentRoute.name === "inscriptions") {
+    searchType.value = "inscriptionobjects";
     showSummary.value = false;
     showPlan.value = false;
     showGallery.value = false;
     showGalleryInscriptions.value = true;
   } else if (currentRoute.name === "inscriptionById") {
+    searchType.value = "inscriptionobjects";
     showSummary.value = false;
     showPlan.value = false;
     showGallery.value = false;
@@ -130,6 +133,7 @@ const switchToSummary = () => {
 }
 
 const switchToGallery = () => {
+  searchType.value = "surfaces";
   showPlan.value = false;
   showGallery.value = true;
   showGalleryInscriptions.value = false;
@@ -137,6 +141,7 @@ const switchToGallery = () => {
 };
 
 const switchToInscriptions = () => {
+  searchType.value = "inscriptionobjects";
   showPlan.value = false;
   showGallery.value = false;
   showGalleryInscriptions.value = true;

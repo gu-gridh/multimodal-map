@@ -242,7 +242,7 @@ const summaryQueryString = computed(() => {
 });
 
 async function fetchSummary() {
-  const baseUrl = 'https://saintsophia.dh.gu.se/api/inscriptions/summary/'
+  const baseUrl = 'https://saintsophia.dh.gu.se/api/inscriptions/data-summary/'
   const query = summaryQueryString.value
   const url = query ? `${baseUrl}?${query}` : baseUrl
   const res = await fetch(url)

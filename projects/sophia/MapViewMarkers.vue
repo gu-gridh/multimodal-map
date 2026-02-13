@@ -21,7 +21,7 @@ const { zoom } = storeToRefs(mapState);
 const hoveredFeature = ref(null);
 const hoverCoordinates = ref(null);
 const selectedCoordinates = ref(null);
-const { areMapPointsLoaded, panelStr, panelId } = storeToRefs(inscriptionsStore());
+const { areMapPointsLoaded, panelStr, panelId, inscriptionId } = storeToRefs(inscriptionsStore());
 const map = inject("map");
 const vectorSource = ref(
   new VectorSource({
@@ -240,6 +240,7 @@ onMounted(() => {
         }
 
         //set store value
+        inscriptionId.value = null;
         panelStr.value = selectedFeature.value.values_?.title || "";
       } else {
         selectedCoordinates.value = undefined;
