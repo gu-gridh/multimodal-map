@@ -87,7 +87,7 @@
             </div>
 
             <!-- Input field -->
-            <input ref="searchInput" type="text" v-model="searchQuery" @input="handleSearch"
+            <input type="text" v-model="searchQuery" @input="handleSearch"
               @keydown.enter="handleEnter" @focus="handleSearchBoxFocus" @keydown="handleKeydown" :placeholder="selectedInscription || selectedSurface || panelStr
                 ? ''
                 : searchType === 'surfaces'
@@ -167,7 +167,7 @@
 </template>
 
 <script setup>
-import { inject, ref, onMounted, onUnmounted, computed, watch, nextTick } from "vue";
+import { ref, onMounted, onUnmounted, computed, watch, nextTick } from "vue";
 import Dropdown from "./components/DropdownComponent.vue";
 import CategoryButton from "@/components/input/CategoryButtonList.vue";
 import { storeToRefs } from "pinia";
@@ -225,7 +225,6 @@ const TEXTUAL = ref([]);
 const WRITING = ref([]);
 const PICTORIAL = ref([]);
 const LANGUAGE = ref([]);
-const searchInput = ref(null);
 
 // data section
 const currentPanelCount = ref(0);
@@ -367,10 +366,6 @@ function handleEnter() {
       panelStr.value = enteredValue;
       selectedInscription.value = { displayText: enteredValue };
     } else if (searchType.value === "inscriptionobjects") {
-      panelStr.value = enteredValue;
-      selectedInscription.value = { displayText: enteredValue };
-    }
-    else if (searchType.value === "inscriptionobjects") {
       panelStr.value = enteredValue;
       selectedInscription.value = { displayText: enteredValue };
     }
@@ -638,7 +633,7 @@ watch(
         String(currentFilter) === String(newId);
 
       if (!isMatchingFilter) {
-        selectedInscriptionWidgetFilter.value = null;
+        selectedInscriptionWidgetFilter.value = newId;
         selectedInscription.value = { displayText: String(newId) };
       }
       selectedSurface.value = null;
