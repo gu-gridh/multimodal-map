@@ -11,6 +11,11 @@ const router = createRouter({
       component: MapView,
     },
     {
+      path: "/summary/id/:id",
+      name: "summaryById",
+      component: MapView,
+    },
+    {
       path: "/summary/:panel?",
       name: "summary",
       component: MapView,

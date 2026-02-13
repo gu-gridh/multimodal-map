@@ -20,7 +20,7 @@ import { nextTick } from "vue";
 import Title from "./MapViewTitle.vue";
 import { useRoute, useRouter } from "vue-router";
 
-const { selectedCategory, writingModel, languageModel, pictorialModel, textualModel, alignmentModel, conditionModel, panelId, inscriptionId, mediaModel, materialModel, panelStr, showGallery, showGalleryInscriptions, showPlan, showSummary } = storeToRefs(inscriptionsStore());
+const { selectedCategory, writingModel, languageModel, pictorialModel, textualModel, alignmentModel, conditionModel, panelId, inscriptionId, mediaModel, materialModel, panelStr, showGallery, showGalleryInscriptions, showPlan, showSummary, searchType } = storeToRefs(inscriptionsStore());
 const store = mapStore();
 const inscriptions = inscriptionsStore();  //get the instance of inscriptionsStore
 const { selectedFeature } = storeToRefs(store);
@@ -33,7 +33,6 @@ const showGuideButton = computed(() => showPlan.value);
 const showLegend = computed(() => showPlan.value);
 const showFirstFloor = ref(true);
 const showSecondFloor = ref(false);
-const searchType = ref("inscriptionobjects");
 const mapviewControlsRef = ref(null);
 const route = useRoute();
 const router = useRouter();
@@ -56,8 +55,17 @@ const applyRouteState = (currentRoute) => {
     inscriptionId.value = inscriptionParam ?? null;
     panelStr.value = null;
   }
+  if (currentRoute.name === "summaryById") {
+    const inscriptionParam = currentRoute?.params?.id;
+    inscriptionId.value = inscriptionParam ?? null;
+    panelStr.value = null;
+  }
+  if (currentRoute.name === "summary" || currentRoute.name === "inscriptions") {
+    inscriptionId.value = null;
+  }
 
-  if (currentRoute.name === "summary") {
+  if (currentRoute.name === "summary" || currentRoute.name === "summaryById") {
+    searchType.value = "inscriptionobjects";
     showSummary.value = true;
     showPlan.value = false;
     showGallery.value = false;
@@ -91,6 +99,9 @@ const applyRouteState = (currentRoute) => {
 const buildPathFromState = () => {
   const slug = panelStr.value ? encodeURIComponent(panelStr.value) : "";
   if (showSummary.value) {
+    if (inscriptionId.value !== null && inscriptionId.value !== undefined) {
+      return `/summary/id/${encodeURIComponent(inscriptionId.value)}`;
+    }
     return slug ? `/summary/${slug}` : "/summary";
   }
   if (showGallery.value) {

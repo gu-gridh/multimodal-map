@@ -199,6 +199,7 @@ const {
   showGallery,
   showGalleryInscriptions,
   showPlan,
+  searchType,
   mediaModel,
   materialModel,
 } = storeToRefs(inscriptionsStore());
@@ -208,7 +209,6 @@ const isDataWidgetInitialized = ref(false);
 
 // initialize variables for data section
 const emit = defineEmits(["update:searchType"]);
-const searchType = ref("inscriptionobjects");
 const selectedInscription = ref(null); // from search results
 const selectedSurface = ref(null); // from search results
 const firstSearchBoxClick = ref(true);

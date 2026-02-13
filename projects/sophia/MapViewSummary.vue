@@ -3,11 +3,7 @@
     <div class="summary-content">
       <!-- bar charts -->
       <div class="charts">
-        <div
-          v-for="(c, i) in barCharts"
-          :key="c.title"
-          class="chart-card"
-        > 
+        <div v-for="(c, i) in barCharts" :key="c.title" class="chart-card">
           <div class="chart-title">{{ c.title }}</div>
           <VueECharts :option="c.option" renderer="canvas" autoresize class="chart" :ref="el => (chartRefs[i] = el)" />
           <div class="dl-actions">
@@ -49,7 +45,7 @@ import { storeToRefs } from 'pinia';
 import { inscriptionsStore } from './settings/store';
 
 const chartRefs = ref([])
-const { surfaceParams, imgParams } = storeToRefs(inscriptionsStore())
+const { surfaceParams, imgParams, inscriptionId, panelStr } = storeToRefs(inscriptionsStore())
 
 use([
   CanvasRenderer,
@@ -232,6 +228,17 @@ const summaryQueryString = computed(() => {
     ...imgParams.value,
   };
 
+  const hasSelectedInscriptionId =
+    inscriptionId.value !== null &&
+    inscriptionId.value !== undefined &&
+    String(inscriptionId.value).trim() !== '';
+
+  if (hasSelectedInscriptionId) {
+    merged.id = inscriptionId.value;
+  } else if (panelStr.value && String(panelStr.value).trim() !== '') {
+    merged.q = String(panelStr.value).trim();
+  }
+
   const transformed = Object.fromEntries(
     Object.entries(merged).map(([key, value]) =>
       key === 'panel__title__startswith' ? ['panel_title_str', value] : [key, value]
@@ -252,16 +259,11 @@ async function fetchSummary() {
 }
 
 watch(
-  () => [surfaceParams.value, imgParams.value],
+  summaryQueryString,
   () => {
-    // console.log('Summary params changed:', {
-    //   surfaceParams: surfaceParams.value,
-    //   imgParams: imgParams.value,
-    //   query: summaryQueryString.value,
-    // });
     fetchSummary().catch(console.error)
   },
-  { immediate: true, deep: true }
+  { immediate: true }
 )
 
 defineExpose({ downloadCsv, downloadPng })
