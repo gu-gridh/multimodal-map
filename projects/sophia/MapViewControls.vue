@@ -370,6 +370,8 @@ function handleEnter() {
       selectedInscription.value = { displayText: enteredValue };
     }
     emit("update:searchType", searchType.value);
+    //reset all active filters
+    resetAllExcept();
   }
 }
 
@@ -536,6 +538,7 @@ function clearSelection() {
   selectedFeature.value = undefined;
   selectedSurface.value = null;
 }
+
 
 function resetAllExcept(exceptModel) {
   categories.value = ["all"];
