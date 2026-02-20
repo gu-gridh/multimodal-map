@@ -369,7 +369,7 @@ function handleEnter() {
       panelStr.value = enteredValue;
       selectedInscription.value = { displayText: enteredValue };
     }
-    resetAllExcept();//reset all active filters
+    resetAllExcept(); //reset all active filters
     emit("update:searchType", searchType.value);
   }
 }
