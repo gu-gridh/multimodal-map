@@ -369,9 +369,8 @@ function handleEnter() {
       panelStr.value = enteredValue;
       selectedInscription.value = { displayText: enteredValue };
     }
+    resetAllExcept();//reset all active filters
     emit("update:searchType", searchType.value);
-    //reset all active filters
-    resetAllExcept();
   }
 }
 
@@ -538,7 +537,6 @@ function clearSelection() {
   selectedFeature.value = undefined;
   selectedSurface.value = null;
 }
-
 
 function resetAllExcept(exceptModel) {
   categories.value = ["all"];
