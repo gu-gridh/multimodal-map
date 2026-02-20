@@ -590,6 +590,7 @@ function handleSurfaceClick(surface) {
 }
 
 function handleInscriptionClick(feature) {
+  resetAllExcept(); //reset active filters 
   selectedInscription.value = feature;
   selectedSurface.value = null;
   const resolvedId =
