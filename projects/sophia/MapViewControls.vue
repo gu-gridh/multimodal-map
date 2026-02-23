@@ -236,6 +236,12 @@ const selectedInscriptionWidgetFilter = ref(null);
 const lastDataWidgetQueryString = ref(null);
 const inFlightDataWidgetQueryString = ref(null);
 
+const resolveFirstId = (item) =>
+  Array.isArray(item?.ids) && item.ids.length > 0 ? item.ids[0] : item?.id ?? null;
+
+const isMentionedPersonSource = (item) =>
+  String(item?.source || "").trim() === "Mentioned Person";
+
 const filteredInscription = computed(() => {
   if (searchType.value !== "inscriptionobjects") {
     return [];
@@ -252,19 +258,9 @@ const filteredInscription = computed(() => {
 
     const value = result.value ?? "";
     const source = result.source ?? "";
-    const numericValue = Number(value);
-    const primaryId =
-      (Array.isArray(result.ids) && result.ids.length > 0 && result.ids[0]) ??
-      result.id ??
-      null;
-    const derivedId =
-      typeof primaryId === "number"
-        ? primaryId
-        : Number.isFinite(numericValue) && value !== ""
-          ? numericValue
-          : primaryId ?? value ?? null;
+    const derivedId = resolveFirstId(result);
     const displayText = source ? `${value} — ${source}` : `${value}`;
-    const resultKey = `${derivedId ?? "unknown"}-${source || "nosource"}`;
+    const resultKey = `${derivedId ?? value ?? "unknown"}-${source || "nosource"}`;
     return {
       ...result,
       id: derivedId,
@@ -593,18 +589,16 @@ function handleInscriptionClick(feature) {
   resetAllExcept(); //reset active filters 
   selectedInscription.value = feature;
   selectedSurface.value = null;
-  const resolvedId =
-    (Array.isArray(feature.ids) && feature.ids.length > 0 && feature.ids[0]) ??
-    feature.id ??
-    null;
+  const isMentionedPerson = isMentionedPersonSource(feature);
+  const resolvedId = resolveFirstId(feature);
   searchId.value = resolvedId;
-  inscriptionId.value = resolvedId;
+  inscriptionId.value = isMentionedPerson ? null : resolvedId;
   selectedInscriptionWidgetFilter.value =
-    resolvedId !== null && resolvedId !== undefined ? resolvedId : null;
+    !isMentionedPerson && resolvedId !== null && resolvedId !== undefined ? resolvedId : null;
   panelId.value = null;
   showSuggestions.value = false;
   searchQuery.value = "";
-  panelStr.value = null;
+  panelStr.value = isMentionedPerson ? String(feature?.value || "").trim() : null;
   emit("update:searchType", searchType.value);
 }
 
