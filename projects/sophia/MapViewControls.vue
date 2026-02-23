@@ -471,7 +471,7 @@ async function fetchDataSection() {
 const fetchInscriptions = async (query, offset = 0) => {
   if (searchType.value !== "inscriptionobjects") return;
 
-  const apiUrl = `https://saintsophia.dh.gu.se/api/inscriptions/autocomplete/inscription/?q=${encodeURIComponent(
+  const apiUrl = `https://saintsophia.dh.gu.se/api/inscriptions/autocomplete/?q=${encodeURIComponent(
     query || ""
   )}&offset=${offset}&limit=${limit}`;
 

@@ -123,7 +123,7 @@ export default {
           const coreQuery = store.inscriptionId
             ? `id=${store.inscriptionId}`
             : `q=${encodeURIComponent(store.panelStr || '')}`;
-          const baseUrl = `https://saintsophia.dh.gu.se/api/inscriptions/search/inscription/?${coreQuery}&depth=1&limit=50&offset=${offset}${queryString ? `&${queryString}` : ''}`;
+          const baseUrl = `https://saintsophia.dh.gu.se/api/inscriptions/search/?${coreQuery}&depth=1&limit=50&offset=${offset}${queryString ? `&${queryString}` : ''}`;
 
           const res = await fetch(baseUrl);
           const data = await res.json();
@@ -181,7 +181,7 @@ export default {
           const coreQuery = store.inscriptionId
             ? `id=${store.inscriptionId}`
             : `q=${encodeURIComponent(store.panelStr || '')}`;
-          return `https://saintsophia.dh.gu.se/api/inscriptions/search/inscription/?${coreQuery}&depth=1&limit=50&offset=${offset}${queryString ? `&${queryString}` : ''}`;
+          return `https://saintsophia.dh.gu.se/api/inscriptions/search/?${coreQuery}&depth=1&limit=50&offset=${offset}${queryString ? `&${queryString}` : ''}`;
         },
         outlayer: msnry,
         history: false,
