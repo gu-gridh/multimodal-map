@@ -3,7 +3,7 @@
   <div class="controls">
     <div :class="{ 'non-interactive': !areMapPointsLoaded }">
       <div class="filtercontrolwidgets">
-        <!-- This organises the three top dropdown columns -->
+        <!-- This organises the two button/dropdown columns at the top -->
         <div class="control-organisation">
           <div class="column-1" style="width:auto;">
             <div class="tag-section">
@@ -37,11 +37,11 @@
             </div>
           </div>
 
-          <div class="column-2 vertical-divider"
-            style="width:1px; height:110px; margin-top:7px; border-width:0 1px 0 0; border-style:dotted; border-color:var(--theme-3);">
+          <div class="vertical-divider"
+            style="width:1px; height:108px; margin-top:5px; border-width:0 1px 0 0; border-style:dotted; border-color:var(--theme-3);">
           </div>
 
-          <div class="column-3">
+          <div class="column-2">
             <div class="control-group">
               <div class="tag-section">
                 <div class="section-title">{{ $t('writingsystem') }}</div>
@@ -892,7 +892,7 @@ defineExpose({ clearSelection });
   justify-content: space-between;
   margin-top: 10px;
   pointer-events: auto;
-  padding-bottom: 10px;
+  margin-bottom: 10px;
   padding-top: 10px;
 }
 
