@@ -25,6 +25,7 @@
     <div class="compare-checklist">
       <label v-for="(label, key) in resourceCategories" :key="key" class="compare-check-item">
         <input type="checkbox" :value="key" v-model="compareTypes" class="compare-checkbox" />
+        <span class="compare-color-dot" :style="{ background: RESOURCE_COLORS[key] || '#666' }"></span>
         <span class="compare-check-label">{{ label }}</span>
       </label>
     </div>
@@ -37,7 +38,7 @@
     <!-- Cluster radius slider -->
     <div v-if="compareTypes.length >= 2" class="cluster-radius-section">
       <div class="section-title">Area Highlight Radius: {{ clusterRadius }} km</div>
-      <input type="range" v-model.number="clusterRadius" :min="10" :max="200" :step="10" class="cluster-slider" />
+      <input type="range" v-model.number="clusterRadius" :min="10" :max="500" :step="10" class="cluster-slider" />
     </div>
   </div>
 
@@ -86,6 +87,17 @@ import RangeSlider from "./RangeSliderMaritime.vue";
 import { storeToRefs } from "pinia";
 import { maritimeencountersStore } from "./store";
 import API_ENDPOINTS from "./apiConfig";
+
+const RESOURCE_COLORS = {
+  'radiocarbon_dates': '#e74c3c',
+  'individual_samples': '#3498db',
+  'dna_samples': '#2ecc71',
+  'metal_analysis': '#f39c12',
+  'landing_points': '#9b59b6',
+  'new_samples': '#1abc9c',
+  'lnhouses': '#e67e22',
+  'boats': '#2980b9',
+};
 
 const config = inject("config");
 const store = maritimeencountersStore();
@@ -453,10 +465,20 @@ function clearAll() {
 
 .compare-checkbox {
   accent-color: var(--theme-3);
-  margin-right: 8px;
+  margin-right: 6px;
   width: 16px;
   height: 16px;
   flex-shrink: 0;
+}
+
+.compare-color-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-right: 6px;
+  display: inline-block;
+  border: 1px solid rgba(0,0,0,0.15);
 }
 
 .compare-check-label {

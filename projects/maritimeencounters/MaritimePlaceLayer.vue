@@ -659,6 +659,7 @@ async function fetchCommonSites(params) {
   const queryString = new URLSearchParams({ page_size: 500, ...params }).toString();
   let allFeatures = [];
   let nextUrl = `${API_ENDPOINTS.COMMON_SITES}?${queryString}`;
+  console.log('Fetching common sites:', nextUrl);
 
   try {
     while (nextUrl) {
@@ -669,14 +670,27 @@ async function fetchCommonSites(params) {
           Authorization: `Token ${token}`,
         },
       });
-      if (!res.ok) throw new Error("Failed to fetch common sites");
+      
+      if (!res.ok) {
+        const errorText = await res.text();
+        console.error(`Common sites API error ${res.status}:`, errorText);
+        throw new Error(`Failed to fetch common sites: ${res.status}`);
+      }
 
       const data = await res.json();
+      console.log('Common sites response:', { 
+        count: data.count, 
+        featuresInPage: data.features?.length, 
+        next: data.next 
+      });
+      
       if (data.features) {
         allFeatures = allFeatures.concat(data.features);
       }
       nextUrl = data.next ? data.next.replace(/^http:/, "https:") : null;
     }
+
+    console.log(`Common sites total: ${allFeatures.length} features found`);
 
     const geoJsonData = {
       type: "FeatureCollection",
@@ -1040,7 +1054,7 @@ onMounted(async () => {
   </div>
 
   <!-- Compare Mode Legend -->
-  <div v-if="compareMode && commonSitesData && commonSitesData.features && commonSitesData.features.length > 0" class="compare-legend">
+  <div v-if="compareMode && activeCompareTypes.length > 0" class="compare-legend">
     <div class="compare-legend-title">Resource Types</div>
     <div v-for="type in activeCompareTypes" :key="type" class="compare-legend-item">
       <span class="compare-legend-dot" :style="{ background: RESOURCE_COLORS[type] }"></span>
@@ -1051,6 +1065,10 @@ onMounted(async () => {
       <span class="compare-legend-dot" style="background: #3498db; opacity: 0.5;"></span>
       <span class="compare-legend-label">Cluster area</span>
     </div>
+    <div v-if="commonSitesData && commonSitesData.features" class="compare-legend-count">
+      {{ commonSitesData.features.length }} common site{{ commonSitesData.features.length !== 1 ? 's' : '' }} found
+    </div>
+    <div v-else-if="isLoading" class="compare-legend-count">Loading...</div>
   </div>
 
   <!-- Download Choice -->
@@ -1194,6 +1212,13 @@ onMounted(async () => {
   height: 1px;
   background: #ddd;
   margin: 8px 0;
+}
+
+.compare-legend-count {
+  font-size: 11px;
+  color: #888;
+  margin-top: 6px;
+  text-align: center;
 }
 
 :deep(.compare-area-tooltip) {
