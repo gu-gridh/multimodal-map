@@ -24,6 +24,7 @@ export const maritimeencountersStore = defineStore("resources", () => {
   // Compare mode state
   const compareMode = ref(false);
   const compareTypes = ref([]);
+  const compareLogic = ref('and'); // 'and' or 'or'
   const commonSitesData = ref(null);
   const commonSitesLoading = ref(false);
   const clusterRadius = ref(500); // km radius for area highlighting
@@ -52,6 +53,7 @@ export const maritimeencountersStore = defineStore("resources", () => {
     doneFetching,
     compareMode,
     compareTypes,
+    compareLogic,
     commonSitesData,
     commonSitesLoading,
     clusterRadius,

@@ -16,7 +16,7 @@ import { onMounted, watch } from "vue";
 import { nextTick } from "vue";
 import Title from "./Title.vue"
 
-const { selectedRange, dataParams, dataType, compareMode, compareTypes } = storeToRefs(maritimeencountersStore());
+const { selectedRange, dataParams, dataType, compareMode, compareTypes, compareLogic } = storeToRefs(maritimeencountersStore());
 const store = mapStore();
 const maritimeencounters = maritimeencountersStore();
 const { selectedFeature } = storeToRefs(store);
@@ -92,6 +92,7 @@ const compareParams = computed(() => {
     type: compareTypes.value.join(','),
     min_year: Math.round(selectedRangeValue[0]),
     max_year: Math.round(selectedRangeValue[1]),
+    mode: compareLogic.value,
   };
 });
 

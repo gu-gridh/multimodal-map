@@ -29,8 +29,26 @@
         <span class="compare-check-label">{{ label }}</span>
       </label>
     </div>
-    <div v-if="compareTypes.length >= 2" class="compare-info">
-      Showing sites with <strong>all {{ compareTypes.length }}</strong> selected resource types
+    <!-- AND/OR toggle -->
+    <div v-if="compareTypes.length >= 2" class="compare-logic-section">
+      <div class="compare-logic-toggle">
+        <button 
+          :class="['logic-btn', { active: compareLogic === 'and' }]" 
+          @click="compareLogic = 'and'"
+        >ALL (AND)</button>
+        <button 
+          :class="['logic-btn', { active: compareLogic === 'or' }]" 
+          @click="compareLogic = 'or'"
+        >ANY (OR)</button>
+      </div>
+      <div class="compare-info">
+        <template v-if="compareLogic === 'and'">
+          Sites with <strong>all {{ compareTypes.length }}</strong> selected types
+        </template>
+        <template v-else>
+          Sites with <strong>any</strong> of {{ compareTypes.length }} selected types
+        </template>
+      </div>
     </div>
     <div v-else class="compare-info compare-info-hint">
       Select at least 2 resource types to find common sites
@@ -101,7 +119,7 @@ const RESOURCE_COLORS = {
 
 const config = inject("config");
 const store = maritimeencountersStore();
-const { selectedRange, dataType, imgParams, compareMode, compareTypes, commonSitesData, clusterRadius } = storeToRefs(store);
+const { selectedRange, dataType, imgParams, compareMode, compareTypes, compareLogic, commonSitesData, clusterRadius } = storeToRefs(store);
 const count = ref(0);
 const initialCount = ref(0);
 
@@ -179,6 +197,7 @@ const pointsHidden = computed(() => initialCount.value - count.value);
 function clearAll() {
   dataType.value = ["all"];
   compareTypes.value = [];
+  compareLogic.value = 'and';
   compareMode.value = false;
   selectedRange.value = [-2450, 50];
 }
@@ -502,6 +521,40 @@ function clearAll() {
 .cluster-radius-section {
   margin-top: 10px;
   width: 100%;
+}
+
+.compare-logic-section {
+  margin-top: 8px;
+  width: 100%;
+}
+
+.compare-logic-toggle {
+  display: flex;
+  gap: 0;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid var(--theme-3);
+}
+
+.logic-btn {
+  flex: 1;
+  padding: 5px 10px;
+  border: none;
+  background: white;
+  color: var(--theme-3);
+  font-size: 0.8em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.logic-btn.active {
+  background: var(--theme-3);
+  color: white;
+}
+
+.logic-btn:hover:not(.active) {
+  background: rgba(106, 167, 197, 0.15);
 }
 
 .cluster-slider {
