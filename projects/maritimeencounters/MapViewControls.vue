@@ -29,28 +29,7 @@
         <span class="compare-check-label">{{ label }}</span>
       </label>
     </div>
-    <!-- AND/OR toggle -->
-    <div v-if="compareTypes.length >= 2" class="compare-logic-section">
-      <div class="compare-logic-toggle">
-        <button 
-          :class="['logic-btn', { active: compareLogic === 'and' }]" 
-          @click="compareLogic = 'and'"
-        >ALL (AND)</button>
-        <button 
-          :class="['logic-btn', { active: compareLogic === 'or' }]" 
-          @click="compareLogic = 'or'"
-        >ANY (OR)</button>
-      </div>
-      <div class="compare-info">
-        <template v-if="compareLogic === 'and'">
-          Sites with <strong>all {{ compareTypes.length }}</strong> selected types
-        </template>
-        <template v-else>
-          Sites with <strong>any</strong> of {{ compareTypes.length }} selected types
-        </template>
-      </div>
-    </div>
-    <div v-else class="compare-info compare-info-hint">
+    <div v-if="compareTypes.length < 2" class="compare-info compare-info-hint">
       Select at least 2 resource types to find common sites
     </div>
     <!-- Cluster radius slider -->
@@ -105,21 +84,11 @@ import RangeSlider from "./RangeSliderMaritime.vue";
 import { storeToRefs } from "pinia";
 import { maritimeencountersStore } from "./store";
 import API_ENDPOINTS from "./apiConfig";
-
-const RESOURCE_COLORS = {
-  'radiocarbon_dates': '#e74c3c',
-  'individual_samples': '#3498db',
-  'dna_samples': '#2ecc71',
-  'metal_analysis': '#f39c12',
-  'landing_points': '#9b59b6',
-  'new_samples': '#1abc9c',
-  'lnhouses': '#e67e22',
-  'boats': '#2980b9',
-};
+import { RESOURCE_COLORS } from "./useCompareMode";
 
 const config = inject("config");
 const store = maritimeencountersStore();
-const { selectedRange, dataType, imgParams, compareMode, compareTypes, compareLogic, commonSitesData, clusterRadius } = storeToRefs(store);
+const { selectedRange, dataType, imgParams, compareMode, compareTypes, commonSitesData, clusterRadius } = storeToRefs(store);
 const count = ref(0);
 const initialCount = ref(0);
 
@@ -197,7 +166,6 @@ const pointsHidden = computed(() => initialCount.value - count.value);
 function clearAll() {
   dataType.value = ["all"];
   compareTypes.value = [];
-  compareLogic.value = 'and';
   compareMode.value = false;
   selectedRange.value = [-2450, 50];
 }
@@ -521,40 +489,6 @@ function clearAll() {
 .cluster-radius-section {
   margin-top: 10px;
   width: 100%;
-}
-
-.compare-logic-section {
-  margin-top: 8px;
-  width: 100%;
-}
-
-.compare-logic-toggle {
-  display: flex;
-  gap: 0;
-  border-radius: 6px;
-  overflow: hidden;
-  border: 1px solid var(--theme-3);
-}
-
-.logic-btn {
-  flex: 1;
-  padding: 5px 10px;
-  border: none;
-  background: white;
-  color: var(--theme-3);
-  font-size: 0.8em;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.logic-btn.active {
-  background: var(--theme-3);
-  color: white;
-}
-
-.logic-btn:hover:not(.active) {
-  background: rgba(106, 167, 197, 0.15);
 }
 
 .cluster-slider {
