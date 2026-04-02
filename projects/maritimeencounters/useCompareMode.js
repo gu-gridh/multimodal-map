@@ -1,5 +1,6 @@
 import { ref, computed, watch, toRaw } from "vue";
 import L from "leaflet";
+import "leaflet.markercluster";
 import { storeToRefs } from "pinia";
 import { maritimeencountersStore } from "./store";
 import { mapStore } from "@/stores/store";
@@ -28,17 +29,6 @@ export const RESOURCE_LABELS = {
   boats: "Boats",
 };
 
-/**
- * Composable that owns all compare-mode map logic.
- *
- * @param {import('vue').Ref} mapRef       – reactive ref to the Leaflet map instance
- * @param {import('vue').Ref} markerClusterRef – reactive ref to the normal marker cluster group
- * @param {import('vue').Ref} heatmapRef   – reactive ref to the heatmap layer
- * @param {import('vue').Ref} hoverPopupRef – reactive ref shared with the main layer
- * @param {import('vue').Ref} isLoadingRef – reactive ref controlling the spinner
- * @param {Function} waitForAuthToken      – function returning a Promise<string>
- * @param {Object} props                   – component props (compareParams)
- */
 export function useCompareMode(
   mapRef,
   markerClusterRef,
@@ -50,31 +40,44 @@ export function useCompareMode(
 ) {
   const store = maritimeencountersStore();
   const { selectedFeature } = storeToRefs(mapStore());
-  const { compareMode, commonSitesData, clusterRadius } = storeToRefs(store);
+  const { compareMode, commonSitesData } = storeToRefs(store);
 
-  const markerGroup = ref(null);
-  const areaGroup = ref(null);
+  const compareCluster = ref(null);
   let abortController = null;
 
-  // Which types are currently selected (derived from compareParams prop)
   const activeTypes = computed(() => {
     if (!props.compareParams || !props.compareParams.type) return [];
     return props.compareParams.type.split(",");
   });
 
-  // ---- Leaflet layer helpers ----
+  // ---- Init ----
 
   function initLayers() {
-    markerGroup.value = L.layerGroup();
-    areaGroup.value = L.layerGroup();
+    compareCluster.value = L.markerClusterGroup({
+      showCoverageOnHover: true,
+      zoomToBoundsOnClick: true,
+      maxClusterRadius: 80,
+      chunkedLoading: true,
+      spiderfyOnMaxZoom: true,
+      iconCreateFunction(cluster) {
+        const count = cluster.getChildCount();
+        let sizeClass = "small";
+        if (count >= 100) sizeClass = "large";
+        else if (count >= 10) sizeClass = "medium";
+        return L.divIcon({
+          html: `<div><span>${count}</span></div>`,
+          className: `marker-cluster marker-cluster-${sizeClass} compare-cluster`,
+          iconSize: L.point(40, 40),
+        });
+      },
+    });
   }
 
   function clearLayers() {
-    if (markerGroup.value) toRaw(markerGroup.value).clearLayers();
-    if (areaGroup.value) toRaw(areaGroup.value).clearLayers();
+    if (compareCluster.value) toRaw(compareCluster.value).clearLayers();
   }
 
-  // ---- SVG pie-chart icon ----
+  // ---- SVG pie-chart icon for individual sites ----
 
   function polarToCartesian(cx, cy, r, angleDeg) {
     const rad = ((angleDeg - 90) * Math.PI) / 180;
@@ -117,7 +120,7 @@ export function useCompareMode(
     });
   }
 
-  // ---- Popup builder ----
+  // ---- Popup ----
 
   function popupContent(feature) {
     const p = feature.properties;
@@ -132,85 +135,15 @@ export function useCompareMode(
     return `<div style="min-width:160px"><b>${p.name || "Unknown Site"}</b><br/><div style="margin-top:4px">${badges}</div></div>`;
   }
 
-  // ---- Geo helpers ----
-
-  function haversine(lat1, lng1, lat2, lng2) {
-    const R = 6371;
-    const dLat = ((lat2 - lat1) * Math.PI) / 180;
-    const dLng = ((lng2 - lng1) * Math.PI) / 180;
-    const a =
-      Math.sin(dLat / 2) ** 2 +
-      Math.cos((lat1 * Math.PI) / 180) *
-        Math.cos((lat2 * Math.PI) / 180) *
-        Math.sin(dLng / 2) ** 2;
-    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  }
-
-  function cluster(features, radiusKm) {
-    const pts = features.map((f) => ({
-      lat: f.geometry.coordinates[1],
-      lng: f.geometry.coordinates[0],
-      feature: f,
-    }));
-    const visited = new Set();
-    const clusters = [];
-
-    for (let i = 0; i < pts.length; i++) {
-      if (visited.has(i)) continue;
-      const group = [pts[i]];
-      visited.add(i);
-
-      for (let j = i + 1; j < pts.length; j++) {
-        if (visited.has(j)) continue;
-        if (group.some((p) => haversine(p.lat, p.lng, pts[j].lat, pts[j].lng) <= radiusKm)) {
-          group.push(pts[j]);
-          visited.add(j);
-        }
-      }
-      if (group.length >= 2) clusters.push(group);
-    }
-    return clusters;
-  }
-
-  function convexHull(points) {
-    if (points.length < 3) return points;
-    let lowest = 0;
-    for (let i = 1; i < points.length; i++) {
-      if (
-        points[i][0] < points[lowest][0] ||
-        (points[i][0] === points[lowest][0] && points[i][1] < points[lowest][1])
-      ) {
-        lowest = i;
-      }
-    }
-    [points[0], points[lowest]] = [points[lowest], points[0]];
-    const pivot = points[0];
-    const sorted = points.slice(1).sort((a, b) => {
-      return (
-        Math.atan2(a[0] - pivot[0], a[1] - pivot[1]) -
-        Math.atan2(b[0] - pivot[0], b[1] - pivot[1])
-      );
-    });
-    const hull = [pivot, sorted[0]];
-    for (let i = 1; i < sorted.length; i++) {
-      while (
-        hull.length > 1 &&
-        (hull[hull.length - 1][1] - hull[hull.length - 2][1]) *
-          (sorted[i][0] - hull[hull.length - 2][0]) -
-          (hull[hull.length - 1][0] - hull[hull.length - 2][0]) *
-            (sorted[i][1] - hull[hull.length - 2][1]) <=
-          0
-      ) {
-        hull.pop();
-      }
-      hull.push(sorted[i]);
-    }
-    return hull;
-  }
-
   // ---- Render ----
 
-  function renderMarkers(features) {
+  function render(geoJson) {
+    if (!mapRef.value || !compareCluster.value) return;
+    clearLayers();
+    const features = geoJson.features || [];
+    if (!features.length) return;
+
+    const markers = [];
     features.forEach((f) => {
       if (!f.geometry?.coordinates) return;
       const [lng, lat] = f.geometry.coordinates;
@@ -234,65 +167,10 @@ export function useCompareMode(
         hoverPopupRef.value = null;
       });
 
-      toRaw(markerGroup.value)?.addLayer(marker);
+      markers.push(marker);
     });
-  }
 
-  function renderAreas(features) {
-    if (!mapRef.value || !areaGroup.value) return;
-    const radiusKm = clusterRadius.value;
-    const groups = cluster(features, radiusKm);
-
-    groups.forEach((grp) => {
-      const avgLat = grp.reduce((s, p) => s + p.lat, 0) / grp.length;
-      const avgLng = grp.reduce((s, p) => s + p.lng, 0) / grp.length;
-      let maxDist = 0;
-      grp.forEach((p) => {
-        const d = haversine(avgLat, avgLng, p.lat, p.lng);
-        if (d > maxDist) maxDist = d;
-      });
-      const highlightRadius = Math.max(maxDist * 1.3, 5) * 1000;
-
-      if (grp.length >= 3) {
-        const hull = convexHull(grp.map((p) => [p.lat, p.lng]));
-        const poly = L.polygon(hull, {
-          color: "#e74c3c",
-          weight: 2,
-          opacity: 0.6,
-          fillColor: "#e74c3c",
-          fillOpacity: 0.1,
-          dashArray: "5,5",
-        });
-        poly.bindTooltip(`${grp.length} common sites in this area`, {
-          sticky: true,
-          className: "compare-area-tooltip",
-        });
-        toRaw(areaGroup.value)?.addLayer(poly);
-      }
-
-      const circle = L.circle([avgLat, avgLng], {
-        radius: highlightRadius,
-        color: "#3498db",
-        weight: 1.5,
-        opacity: 0.4,
-        fillColor: "#3498db",
-        fillOpacity: 0.07,
-      });
-      circle.bindTooltip(
-        `${grp.length} common sites within ${Math.round(maxDist || radiusKm)} km`,
-        { sticky: true, className: "compare-area-tooltip" },
-      );
-      toRaw(areaGroup.value)?.addLayer(circle);
-    });
-  }
-
-  function render(geoJson) {
-    if (!mapRef.value) return;
-    clearLayers();
-    const features = geoJson.features || [];
-    if (!features.length) return;
-    renderMarkers(features);
-    renderAreas(features);
+    toRaw(compareCluster.value).addLayers(markers);
   }
 
   // ---- Fetch ----
@@ -340,7 +218,6 @@ export function useCompareMode(
   // ---- Watchers ----
 
   function setupWatchers() {
-    // Toggle compare mode on/off
     watch(
       () => compareMode.value,
       (on) => {
@@ -348,20 +225,20 @@ export function useCompareMode(
         const raw = toRaw(mapRef.value);
 
         if (on) {
+          // Hide normal markers & heatmap
           if (markerClusterRef.value && raw.hasLayer(toRaw(markerClusterRef.value)))
             raw.removeLayer(toRaw(markerClusterRef.value));
           if (heatmapRef.value && raw.hasLayer(toRaw(heatmapRef.value)))
             raw.removeLayer(toRaw(heatmapRef.value));
-          if (markerGroup.value && !raw.hasLayer(toRaw(markerGroup.value)))
-            raw.addLayer(toRaw(markerGroup.value));
-          if (areaGroup.value && !raw.hasLayer(toRaw(areaGroup.value)))
-            raw.addLayer(toRaw(areaGroup.value));
+          // Show compare cluster
+          if (compareCluster.value && !raw.hasLayer(toRaw(compareCluster.value)))
+            raw.addLayer(toRaw(compareCluster.value));
         } else {
+          // Hide compare cluster
           clearLayers();
-          if (markerGroup.value && raw.hasLayer(toRaw(markerGroup.value)))
-            raw.removeLayer(toRaw(markerGroup.value));
-          if (areaGroup.value && raw.hasLayer(toRaw(areaGroup.value)))
-            raw.removeLayer(toRaw(areaGroup.value));
+          if (compareCluster.value && raw.hasLayer(toRaw(compareCluster.value)))
+            raw.removeLayer(toRaw(compareCluster.value));
+          // Restore normal markers
           if (markerClusterRef.value && !raw.hasLayer(toRaw(markerClusterRef.value)))
             raw.addLayer(toRaw(markerClusterRef.value));
           store.commonSitesData = null;
@@ -369,7 +246,6 @@ export function useCompareMode(
       },
     );
 
-    // Re-fetch when compare params change
     watch(
       () => props.compareParams,
       async (p) => {
@@ -378,17 +254,6 @@ export function useCompareMode(
           return;
         }
         await fetchSites(p);
-      },
-    );
-
-    // Re-draw areas when cluster radius changes
-    watch(
-      () => clusterRadius.value,
-      () => {
-        if (compareMode.value && commonSitesData.value?.features) {
-          if (areaGroup.value) toRaw(areaGroup.value).clearLayers();
-          renderAreas(commonSitesData.value.features);
-        }
       },
     );
   }

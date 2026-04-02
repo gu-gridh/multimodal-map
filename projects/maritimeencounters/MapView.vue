@@ -87,11 +87,8 @@ const compareParams = computed(() => {
   if (!compareMode.value || compareTypes.value.length < 2) {
     return null;
   }
-  const selectedRangeValue = selectedRange.value;
   return {
     type: compareTypes.value.join(','),
-    min_year: Math.round(selectedRangeValue[0]),
-    max_year: Math.round(selectedRangeValue[1]),
   };
 });
 

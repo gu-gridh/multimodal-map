@@ -32,14 +32,9 @@
     <div v-if="compareTypes.length < 2" class="compare-info compare-info-hint">
       Select at least 2 resource types to find common sites
     </div>
-    <!-- Cluster radius slider -->
-    <div v-if="compareTypes.length >= 2" class="cluster-radius-section">
-      <div class="section-title">Area Highlight Radius: {{ clusterRadius }} km</div>
-      <input type="range" v-model.number="clusterRadius" :min="10" :max="500" :step="10" class="cluster-slider" />
-    </div>
   </div>
 
-  <div class="tag-section margin-3">
+  <div v-if="!compareMode" class="tag-section margin-3">
     <div class="slider-widget">
       <div class="slider-section">
         <RangeSlider ref="rangeSliderRef" v-model="selectedRange" :min="-2450" :max="50" :step="1" class="my-2"
@@ -88,7 +83,7 @@ import { RESOURCE_COLORS } from "./useCompareMode";
 
 const config = inject("config");
 const store = maritimeencountersStore();
-const { selectedRange, dataType, imgParams, compareMode, compareTypes, commonSitesData, clusterRadius } = storeToRefs(store);
+const { selectedRange, dataType, imgParams, compareMode, compareTypes, commonSitesData } = storeToRefs(store);
 const count = ref(0);
 const initialCount = ref(0);
 
@@ -484,16 +479,5 @@ function clearAll() {
 .compare-info-hint {
   color: #888;
   background: rgba(0, 0, 0, 0.04);
-}
-
-.cluster-radius-section {
-  margin-top: 10px;
-  width: 100%;
-}
-
-.cluster-slider {
-  width: 100%;
-  margin-top: 4px;
-  accent-color: var(--theme-3);
 }
 </style>

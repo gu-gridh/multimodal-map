@@ -26,7 +26,6 @@ export const maritimeencountersStore = defineStore("resources", () => {
   const compareTypes = ref([]);
   const commonSitesData = ref(null);
   const commonSitesLoading = ref(false);
-  const clusterRadius = ref(500); // km radius for area highlighting
 
   // Computed: whether compare has enough types selected
   const canCompare = computed(() => compareTypes.value.length >= 2);
@@ -54,7 +53,6 @@ export const maritimeencountersStore = defineStore("resources", () => {
     compareTypes,
     commonSitesData,
     commonSitesLoading,
-    clusterRadius,
     canCompare,
   };
 });

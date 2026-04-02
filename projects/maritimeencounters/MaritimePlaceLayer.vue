@@ -634,13 +634,8 @@ onMounted(async () => {
       <span class="compare-legend-dot" :style="{ background: RESOURCE_COLORS[type] }"></span>
       <span class="compare-legend-label">{{ RESOURCE_LABELS[type] }}</span>
     </div>
-    <div class="compare-legend-divider"></div>
-    <div class="compare-legend-item">
-      <span class="compare-legend-dot" style="background: #3498db; opacity: 0.5;"></span>
-      <span class="compare-legend-label">Cluster area</span>
-    </div>
     <div v-if="commonSitesData && commonSitesData.features" class="compare-legend-count">
-      {{ commonSitesData.features.length }} common site{{ commonSitesData.features.length !== 1 ? 's' : '' }} found
+      {{ commonSitesData.features.length }} site{{ commonSitesData.features.length !== 1 ? 's' : '' }} found
     </div>
     <div v-else-if="isLoading" class="compare-legend-count">Loading...</div>
   </div>
@@ -737,6 +732,15 @@ onMounted(async () => {
   border: none !important;
 }
 
+:deep(.compare-cluster) {
+  background-color: rgba(231, 76, 60, 0.5) !important;
+}
+
+:deep(.compare-cluster div) {
+  background-color: rgba(231, 76, 60, 0.7) !important;
+  color: white !important;
+}
+
 .compare-legend {
   position: absolute;
   bottom: 80px;
@@ -787,18 +791,5 @@ onMounted(async () => {
   color: #888;
   margin-top: 6px;
   text-align: center;
-}
-
-:deep(.compare-area-tooltip) {
-  background: rgba(52, 152, 219, 0.9) !important;
-  color: white !important;
-  border: none !important;
-  border-radius: 6px !important;
-  font-size: 12px !important;
-  padding: 4px 8px !important;
-}
-
-:deep(.compare-area-tooltip::before) {
-  border-top-color: rgba(52, 152, 219, 0.9) !important;
 }
 </style>
