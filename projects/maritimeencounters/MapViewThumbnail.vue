@@ -2,6 +2,7 @@
 import { watchEffect, ref, computed } from "vue";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
+import API_ENDPOINTS from "./apiConfig";
 
 const { selectedFeature } = storeToRefs(mapStore());
 const place = ref(null);
@@ -36,7 +37,7 @@ watchEffect(async () => {
       const token = sessionStorage.getItem("authToken");
 
       const response = await fetch(
-        `https://maritime-encounters.dh.gu.se/api/resources/site_resources/?site_id=${selectedFeature.value}`,
+        `${API_ENDPOINTS.SITE_RESOURCES}?site_id=${selectedFeature.value}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -72,8 +73,8 @@ function deselectPlace() {
   expandedCard.value = null; //reset the expanded card
 }
 
-function navigateToDetail(url, id) {
-  window.open(`${url}${id}/`, '_blank');
+function navigateToDetail(path, id) {
+  window.open(`${API_ENDPOINTS.BASE}/api/resources/${path}/${id}/`, '_blank');
 }
 
 function getCapitalizedVesselType(type) {
@@ -112,7 +113,7 @@ function getCapitalizedVesselType(type) {
             <div class="placecard-metadata-content">
               <ul class="sample-id-list">
                 <li v-for="(boat, index) in previewData['boats']" :key="index">
-                  <span class="label-box" @click.stop="navigateToDetail('https://maritime-encounters.dh.gu.se/api/resources/boat/', boat.id)">
+                  <span class="label-box" @click.stop="navigateToDetail('boat', boat.id)">
                     {{ getCapitalizedVesselType(boat.vessel_type) }} {{ boat.id }}
                   </span>
                 </li>
@@ -137,7 +138,7 @@ function getCapitalizedVesselType(type) {
               <ul class="sample-id-list">
                 <li v-for="(date, index) in previewData['radiocarbon_dates']" :key="index">
                   <span class="label-box"
-                    @click.stop="navigateToDetail('https://maritime-encounters.dh.gu.se/api/resources/radiocarbon/', date.id)">
+                    @click.stop="navigateToDetail('radiocarbon', date.id)">
                     Radiocarbon Date {{ date.id }}
                   </span>
                 </li>
@@ -161,7 +162,7 @@ function getCapitalizedVesselType(type) {
             <div class="placecard-metadata-content">
               <ul class="sample-id-list">
                 <li v-for="(sample, index) in previewData['individual_samples']" :key="index">
-                  <span class="label-box" @click.stop="navigateToDetail('https://maritime-encounters.dh.gu.se/api/resources/individualobjects/', sample.id)">
+                  <span class="label-box" @click.stop="navigateToDetail('individualobjects', sample.id)">
                     Individual Sample {{ sample.id }}
                   </span>
                 </li>
@@ -185,7 +186,7 @@ function getCapitalizedVesselType(type) {
             <div class="placecard-metadata-content">
               <ul class="sample-id-list">
                 <li v-for="(sample, index) in previewData['dna_samples']" :key="index">
-                  <span class="label-box" @click.stop="navigateToDetail('https://maritime-encounters.dh.gu.se/api/resources/adna/', sample.id)">
+                  <span class="label-box" @click.stop="navigateToDetail('adna', sample.id)">
                     DNA Sample {{ sample.id }}
                   </span>
                 </li>
@@ -210,7 +211,7 @@ function getCapitalizedVesselType(type) {
               <ul class="sample-id-list">
                 <li v-for="(analysis, index) in previewData['metal_analysis']" :key="index">
                   <span class="label-box"
-                    @click.stop="navigateToDetail('https://maritime-encounters.dh.gu.se/api/resources/metalanalysis/', analysis.id)">
+                    @click.stop="navigateToDetail('metalanalysis', analysis.id)">
                     Metal Analysis {{ analysis.id }}
                   </span>
                 </li>
@@ -234,7 +235,7 @@ function getCapitalizedVesselType(type) {
             <div class="placecard-metadata-content">
               <ul class="sample-id-list">
                 <li v-for="(point, index) in previewData['landing_points']" :key="index">
-                  <span class="label-box" @click.stop="navigateToDetail('https://maritime-encounters.dh.gu.se/api/resources/landingpoints/', point.id)">
+                  <span class="label-box" @click.stop="navigateToDetail('landingpoints', point.id)">
                     Landing Point {{ point.id }}
                   </span>
                 </li>
@@ -259,7 +260,7 @@ function getCapitalizedVesselType(type) {
               <ul class="sample-id-list">
                 <li v-for="(sample, index) in previewData['new_samples']" :key="index">
                   <span class="label-box"
-                    @click.stop="navigateToDetail('https://maritime-encounters.dh.gu.se/api/resources/newsamples/', sample.id)">
+                    @click.stop="navigateToDetail('newsamples', sample.id)">
                     New Sample {{ sample.id }}
                   </span>
                 </li>
@@ -284,7 +285,7 @@ function getCapitalizedVesselType(type) {
               <ul class="sample-id-list">
                 <li v-for="(item, index) in previewData['metalwork']" :key="index">
                   <span class="label-box"
-                    @click.stop="navigateToDetail('https://maritime-encounters.dh.gu.se/api/resources/metalwork/', item.id)">
+                    @click.stop="navigateToDetail('metalwork', item.id)">
                     Metalwork {{ item.id }}
                   </span>
                 </li>
@@ -309,7 +310,7 @@ function getCapitalizedVesselType(type) {
               <ul class="sample-id-list">
                 <li v-for="(item, index) in previewData['lnhouses']" :key="index">
                   <span class="label-box"
-                    @click.stop="navigateToDetail('https://maritime-encounters.dh.gu.se/api/resources/lnhouses/', item.id)">
+                    @click.stop="navigateToDetail('lnhouses', item.id)">
                     Late Neolithic Houses {{ item.id }}
                   </span>
                 </li>

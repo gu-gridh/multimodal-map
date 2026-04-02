@@ -30,6 +30,8 @@
 </template>
 
 <script>
+import API_ENDPOINTS from "./apiConfig";
+
 export default {
     name: "aboutview",
     props: {
@@ -59,7 +61,7 @@ export default {
     methods: {
         async handleLogin() {
             try {
-                const response = await fetch('https://maritime-encounters.dh.gu.se/login/', {
+                const response = await fetch(API_ENDPOINTS.LOGIN, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

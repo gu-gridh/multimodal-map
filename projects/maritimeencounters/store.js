@@ -1,4 +1,4 @@
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { defineStore } from "pinia";
 
 export const maritimeencountersStore = defineStore("resources", () => {
@@ -21,6 +21,16 @@ export const maritimeencountersStore = defineStore("resources", () => {
   const showHeatMap = ref(false);
   const doneFetching = ref(false);
 
+  // Compare mode state
+  const compareMode = ref(false);
+  const compareTypes = ref([]);
+  const commonSitesData = ref(null);
+  const commonSitesLoading = ref(false);
+  const clusterRadius = ref(50); // km radius for area highlighting
+
+  // Computed: whether compare has enough types selected
+  const canCompare = computed(() => compareTypes.value.length >= 2);
+
   return { 
     categories, 
     tags, 
@@ -39,6 +49,12 @@ export const maritimeencountersStore = defineStore("resources", () => {
     dataType, 
     startRectangleDraw, 
     showHeatMap, 
-    doneFetching 
+    doneFetching,
+    compareMode,
+    compareTypes,
+    commonSitesData,
+    commonSitesLoading,
+    clusterRadius,
+    canCompare,
   };
 });

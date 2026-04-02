@@ -16,17 +16,16 @@ import { onMounted, watch } from "vue";
 import { nextTick } from "vue";
 import Title from "./Title.vue"
 
-const { selectedRange, dataParams, dataType } = storeToRefs(maritimeencountersStore());
+const { selectedRange, dataParams, dataType, compareMode, compareTypes } = storeToRefs(maritimeencountersStore());
 const store = mapStore();
-const maritimeencounters = maritimeencountersStore();  // Get the instance of maritimeencountersStore
+const maritimeencounters = maritimeencountersStore();
 const { selectedFeature } = storeToRefs(store);
 const minZoom = 1;
 const maxZoom = 25;
-const featureZoom = 10; //value between minZoom and maxZoom when you select a point;
+const featureZoom = 10;
 const visibleAbout = ref(false);
 const visibleLogin = ref(false);
 const showConnections = ref(false);
-// let visited = true; //store the visited status outside of the hook
 
 watch(
   selectedFeature,
@@ -55,6 +54,11 @@ const toggleHeatMap = () => {
 };
 
 const tagParams = computed(() => {
+  // In compare mode, don't generate normal search params
+  if (compareMode.value) {
+    return null;
+  }
+
   const type = dataType.value[0];
   const selectedRangeValue = selectedRange.value;
 
@@ -65,7 +69,6 @@ const tagParams = computed(() => {
     initialParams.max_year = Math.round(selectedRangeValue[1]);
   }
   
-  // Remove parameters that are set to "all"
   const cleanedParams = Object.keys(initialParams)
   .filter((key) => initialParams[key] !== "all")
   .reduce((obj, key) => {
@@ -79,10 +82,25 @@ const tagParams = computed(() => {
   return params;
 });
 
+// Compare mode params
+const compareParams = computed(() => {
+  if (!compareMode.value || compareTypes.value.length < 2) {
+    return null;
+  }
+  const selectedRangeValue = selectedRange.value;
+  return {
+    type: compareTypes.value.join(','),
+    min_year: Math.round(selectedRangeValue[0]),
+    max_year: Math.round(selectedRangeValue[1]),
+  };
+});
+
 watch(
   tagParams, 
   (newParams) => {
-    dataParams.value = newParams;
+    if (newParams) {
+      dataParams.value = newParams;
+    }
   }, 
   { immediate: true }
 );
@@ -128,7 +146,7 @@ const toggleLoginVisilibity = async () => {
           :restrictExtent="[-45.0, 32.00, 55.0, 75.0]"    
         > 
           <template #layers>
-            <MaritimePlaceLayer :params="tagParams" :showConnections="showConnections">
+            <MaritimePlaceLayer :params="tagParams" :compareParams="compareParams" :showConnections="showConnections">
             </MaritimePlaceLayer> 
           </template>
           
