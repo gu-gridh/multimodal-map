@@ -458,14 +458,15 @@ ul {
 @media screen and (max-width: 900px) {
   .carousel-container .custom-carousel :deep(.carousel__prev),
   .carousel-container .custom-carousel :deep(.carousel__next) {
-    top: -75px !important;
-    left: 47% !important;
+    top: auto !important;
+    bottom: -56px !important;
+    left: 50% !important;
     right: auto !important;
-    transform: translateX(-60px) !important;
+    transform: translateX(calc(-100% - 10px)) !important;
   }
 
   .carousel-container .custom-carousel :deep(.carousel__next) {
-    transform: translateX(-8px) !important;
+    transform: translateX(10px) !important;
   }
 
   .carousel-container .custom-carousel :deep(.carousel__prev svg),
@@ -504,7 +505,7 @@ ul {
 
   .carousel-container {
     max-width: 100%;
-    padding: 72px 18px 16px;
+    padding: 16px 18px 72px;
   }
 
   .about-logos-container {
