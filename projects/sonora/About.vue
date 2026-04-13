@@ -253,6 +253,7 @@ ul {
   line-height: 0.9;
   margin-bottom: 0px;
   font-size: 5.0em;
+  padding: 0 20px;
 }
 
 .about-main-subtitle {
