@@ -53,7 +53,7 @@
                 </div>
                 <div class="text-content">
                   <h3 v-html="$t(slide.title)"></h3>
-                  <p v-html="$t(slide.content)" class="carousel__text"></p>
+                  <div v-html="$t(slide.content)" class="carousel__text"></div>
                 </div>
               </div>
             </Slide>
@@ -304,6 +304,20 @@ ul {
   padding: 0;
   border-radius: 0;
   max-width: 100%;
+}
+
+.carousel__text :deep(p) {
+  margin: 0 0 1em;
+}
+
+.carousel__text :deep(ul) {
+  list-style-type: circle;
+  padding-left: 30px;
+  margin: 0 0 1em;
+}
+
+.carousel__text :deep(ul + p) {
+  margin-top: 1em;
 }
 
 .carousel__item h3 {
