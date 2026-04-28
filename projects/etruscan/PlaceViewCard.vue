@@ -206,6 +206,10 @@
     padding-right: 20px;
   }
 
+    .placecard-metadata-content .label{
+    min-width:65px!important;
+  }
+
   .placecard-full {
     margin-top: 80px;
     margin-left: 50px;
@@ -255,6 +259,7 @@
 
   .placecard-metadata-description {
     font-size: 0.9em;
+    font-weight:400;
   }
 
   /* For small screens */

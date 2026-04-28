@@ -107,6 +107,7 @@
 
 .placecard-text p {
   padding: 0px;
+  padding-bottom:10px;
 }
 
 .placecard-title {
@@ -166,6 +167,8 @@
   width: 65%;
   /* text-transform: capitalize; */
   font-weight: 600;
+   white-space: pre-wrap;
+  word-break: break-word;
 }
 
 
