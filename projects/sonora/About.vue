@@ -44,16 +44,18 @@
         </div>
 
         <div class="carousel-container" v-if="displayAbout">
-          <Carousel v-bind="settings" :breakpoints="breakpoints" class="custom-carousel">
+          <Carousel ref="aboutCarousel" v-model="currentSlide" v-bind="settings" :breakpoints="breakpoints"
+            class="custom-carousel">
             <Slide v-for="slide in slides" :key="slide.id">
               <div class="carousel__item">
                 <div class="carousel__images">
                   <img v-for="(image, index) in slide.images" :key="index" :src="image" alt="slide image"
+                    @load="updateCarouselHeight"
                     :style="image === '/sonora_archive/Moberg-2.jpg' ? { maxHeight: '300px', margin: '0 auto' } : { maxWidth: '300px', maxHeight: '300px', margin: '0 auto' }" />
                 </div>
                 <div class="text-content">
                   <h3 v-html="$t(slide.title)"></h3>
-                  <p v-html="$t(slide.content)" class="carousel__text"></p>
+                  <div v-html="$t(slide.content)" class="carousel__text"></div>
                 </div>
               </div>
             </Slide>
@@ -88,6 +90,7 @@ export default {
   data() {
     return {
       displayAbout: this.visibleAbout,
+      currentSlide: 0,
       //carousel settings
       settings: {
         itemsToShow: 1,
@@ -164,10 +167,14 @@ export default {
     };
   },
   watch: {
+    currentSlide() {
+      this.updateCarouselHeight();
+    },
     visibleAbout(newVal) {
       if (newVal) {
         //if visibleAbout is true, immediately show the container
         this.displayAbout = true;
+        this.updateCarouselHeight();
       } else {
         //if visibleAbout is false, wait for the transition to finish before hiding
         setTimeout(() => {
@@ -176,6 +183,13 @@ export default {
       }
     },
   },
+  mounted() {
+    this.updateCarouselHeight();
+    window.addEventListener('resize', this.updateCarouselHeight);
+  },
+  beforeUnmount() {
+    window.removeEventListener('resize', this.updateCarouselHeight);
+  },
   methods: {
     toggleLanguage() {
       if (i18n.global.locale === 'en') {
@@ -183,7 +197,23 @@ export default {
       } else {
         i18n.global.locale = 'en';
       }
+
+      this.updateCarouselHeight();
     },
+    updateCarouselHeight() {
+      this.$nextTick(() => {
+        const carouselElement = this.$refs.aboutCarousel?.$el;
+
+        if (!carouselElement) return;
+
+        const viewport = carouselElement.querySelector('.carousel__viewport');
+        const activeSlide = carouselElement.querySelector('.carousel__slide--active .carousel__item');
+
+        if (!viewport || !activeSlide) return;
+
+        viewport.style.height = `${activeSlide.offsetHeight}px`;
+      });
+    }
   },
 };
 </script>
@@ -223,6 +253,7 @@ ul {
   line-height: 0.9;
   margin-bottom: 0px;
   font-size: 5.0em;
+  padding: 0 20px;
 }
 
 .about-main-subtitle {
@@ -270,6 +301,10 @@ ul {
   background: none;
 }
 
+.carousel-container .custom-carousel :deep(.carousel__track) {
+  align-items: flex-start;
+}
+
 .carousel-container h3 {
   font-size: 1.5em;
   margin-bottom: 2%;
@@ -306,6 +341,26 @@ ul {
   max-width: 100%;
 }
 
+.carousel__text :deep(p) {
+  margin: 0 0 1em;
+}
+
+.carousel__text :deep(ul) {
+  list-style-type: circle;
+  padding-left: 30px;
+  margin: 0 0 1em;
+}
+
+.carousel__text :deep(ul + p) {
+  margin-top: 1em;
+}
+
+.carousel__text :deep(a) {
+  color: inherit;
+  font-weight: 400;
+  text-decoration: underline;
+}
+
 .carousel__item h3 {
   display: block;
   background: none;
@@ -317,6 +372,10 @@ ul {
 .custom-carousel .carousel__slide {
   align-items: center !important;
   justify-content: center !important;
+}
+
+.custom-carousel :deep(.carousel__slide) {
+  align-items: flex-start;
 }
 
 .text-content {
@@ -375,7 +434,8 @@ ul {
 
 .carousel-container .custom-carousel :deep(.carousel__prev),
 .carousel-container .custom-carousel :deep(.carousel__next) {
-  top: 40%;
+  top: 170px;
+  transform: none;
   width: 72px !important;
   height: 72px !important;
 }
@@ -399,14 +459,15 @@ ul {
 @media screen and (max-width: 900px) {
   .carousel-container .custom-carousel :deep(.carousel__prev),
   .carousel-container .custom-carousel :deep(.carousel__next) {
-    top: -75px !important;
-    left: 47% !important;
+    top: auto !important;
+    bottom: -56px !important;
+    left: 50% !important;
     right: auto !important;
-    transform: translateX(-60px) !important;
+    transform: translateX(calc(-100% - 10px)) !important;
   }
 
   .carousel-container .custom-carousel :deep(.carousel__next) {
-    transform: translateX(-8px) !important;
+    transform: translateX(10px) !important;
   }
 
   .carousel-container .custom-carousel :deep(.carousel__prev svg),
@@ -445,7 +506,7 @@ ul {
 
   .carousel-container {
     max-width: 100%;
-    padding: 72px 18px 16px;
+    padding: 16px 18px 72px;
   }
 
   .about-logos-container {
