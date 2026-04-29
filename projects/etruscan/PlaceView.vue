@@ -316,7 +316,7 @@ async function initMasonry() {
                 <!-- Sort by TYPE table-->
                 <table class="content-table" v-if="sort == 'type'">
                     <tr v-if="documents.length > 0">
-                        <td>{{ $t('documents') }}</td>
+                        <td><div class="gallery-label">{{ $t('documents') }}</div></td>
                         <td>
                             <a v-for="(document, index) in documents" :key="index" :href="document.upload" target="_top"
                                 download>
@@ -334,7 +334,7 @@ async function initMasonry() {
                     </tr>
 
                     <tr v-if="combined3DModels.length > 0">
-                        <td>{{ $t('threedmodels') }}</td>
+                        <td><div class="gallery-label">{{ $t('threedmodels') }}</div></td>
                         <td><div v-for="(model, index) in combined3DModels" :key="index" class="image-placeholder square"> 
                             <a v-if="model.modelType === 'mesh'" :href="`https://etruscan.dh.gu.se/viewer/?q=${model.id}/pointcloud`"
                                 target="_top">
@@ -360,7 +360,7 @@ async function initMasonry() {
                     </tr>
 
                     <tr v-if="plans.length > 0">
-                        <td>{{ $t('drawings') }}</td>
+                        <td><div class="gallery-label">{{ $t('drawings') }}</div></td>
                         <td><div class="plans-masonry-gallery">
                             <div v-for="(image, index) in plans" :key="index" class="plan-gallery__item">
                                 <div class="masonry-image" v-if="'iiif_file' in image">
@@ -378,9 +378,9 @@ async function initMasonry() {
                     </tr>
                     <tr v-if="images.length > 0">
                         <td>
-                            <div style="display: flex; flex-direction: column; align-items: flex-start;">
+                            <div class="gallery-label" style="display:flex; flex-direction:column; align-items:flex-end; justify-content:right;">
                                 <a :href="`${apiConfig.ADMIN_IMAGE}?q=${route.params.name}`">
-                                    {{ $t('photographs') }}
+                                   <div>{{ $t('photographs') }}</div>
                                 </a>
                                 <button class="show-button theme-color-background" v-if="nextPageUrl" 
                                     @click="fetchMoreImages" :disabled="isLoading">
@@ -405,7 +405,7 @@ async function initMasonry() {
                     </tr>
 
                     <tr v-if="observations.length > 0">
-                        <td>Observations</td>
+                        <td> <div class="gallery-label">{{ $t('observations') }}</div></td>
                         <td><div v-for="(observation, index) in observations" :key="index"
                             class="image-placeholder observation-placeholder">
                             <div class="observation-title">
@@ -507,13 +507,13 @@ margin-left:120px;
     color: white;
     height: auto;
     border-radius: 4px;
-    padding: 2px 8px;
+    padding: 1px 6px;
     background-color: transparent;
     float: right;
-    font-size: 0.9em;
+    font-size: 0.85em;
     margin-top: 5px;
     transition: all 0.2s ease-in-out;
-    min-width:60px;
+    min-width:10px;
 }
 
 .show-button:hover {
@@ -539,6 +539,12 @@ a:active {}
 
 .content-table td {
     color: black;
+}
+
+.content-table td .gallery-label {
+    text-align: right;
+    width:75%;
+    margin-top:2px;
 }
 
 /* hides the zoom controls for the background map*/
