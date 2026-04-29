@@ -143,6 +143,10 @@ body {
   color: white;
 }
 
+#app .placecard-metadata-description p {
+  padding-bottom:10px;
+}
+
 @media screen and (max-width: 900px) {
   .atlas-gradient {
     background: linear-gradient(180deg, rgba(232, 228, 217, 0) 0px, var(--theme-1) 300px) !important;
@@ -163,3 +167,4 @@ body {
     display: none;
   }
 }
+
