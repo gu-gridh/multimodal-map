@@ -336,12 +336,12 @@ async function initMasonry() {
                     <tr v-if="combined3DModels.length > 0">
                         <td><div class="gallery-label">{{ $t('threedmodels') }}</div></td>
                         <td><div v-for="(model, index) in combined3DModels" :key="index" class="image-placeholder square"> 
-                            <a v-if="model.modelType === 'mesh'" :href="`https://etruscan.dh.gu.se/viewer/?q=${model.id}/pointcloud`"
+                            <a v-if="model.modelType === 'mesh'" :href="`https://etruscan.dh.gu.se/viewer/?q=${model.id}/model`"
                                 target="_top">
                                 <div class="meta-data-overlay">
-                                    <div class="meta-data-overlay-text">{{ model.title }}</div>
-                                    <div class="meta-data-overlay-text">{{ model.technique ? model.technique.text : 'N/A' }}
-                                    </div>
+                                    <div class="meta-data-overlay-text"><b>{{ model.title }}</b></div>
+                                    <div class="meta-data-overlay-text">{{ model.technique ? model.technique.text : 'N/A' }}</div>
+                                    <div class="meta-data-overlay-text">Mesh</div>  
                                 </div>
                                 <img :src="`${model.preview_image.iiif_file}/full/400,/0/default.jpg`" :alt="model.title"
                                     class="image-square" />
@@ -349,9 +349,10 @@ async function initMasonry() {
                             <a v-else-if="model.modelType === 'pointcloud'"
                                 :href="`https://etruscan.dh.gu.se/viewer/?q=${model.id}/pointcloud`" target="_top">
                                 <div class="meta-data-overlay">
-                                    <div class="meta-data-overlay-text">{{ model.title }}</div>
-                                    <div class="meta-data-overlay-text">{{ model.technique ? model.technique.text : 'N/A' }}
-                                    </div>
+                                    <div class="meta-data-overlay-text"><b>{{ model.title }}</b></div>
+                                     <div class="meta-data-overlay-text">Pointcloud</div> 
+                                    <div class="meta-data-overlay-text">{{ model.technique ? model.technique.text : 'N/A' }}</div>
+                                    
                                 </div>
                                 <img :src="`${model.preview_image.iiif_file}/full/400,/0/default.jpg`" :alt="model.title"
                                     class="image-square" />
