@@ -251,7 +251,7 @@ async function initMasonry() {
         });
         msnry.value = new Masonry(photoGallery, {
             itemSelector: '.gallery__item',
-            columnWidth: 100,
+            columnWidth: 87,
             gutter: 8,
             percentPosition: true,
         });
@@ -265,7 +265,7 @@ async function initMasonry() {
         });
         plansMsnry.value = new Masonry(plansGallery, {
             itemSelector: '.plan-gallery__item',
-            columnWidth: 100,
+            columnWidth: 87,
             gutter: 8,
             percentPosition: true,
         });
@@ -329,7 +329,7 @@ async function initMasonry() {
                                     <p class="documentdata theme-color-text">{{ document.type_names[0] }}</p>
                                     <p class="documentlabel">{{ $t('size') }}:</p>
                                     <p class="documentdata theme-color-text">{{ document.size }} MB</p>
-                                    <p class="documentlabel">{{ $t('published') }}:</p>
+                                    <p class="documentlabel">{{ $t('date') }}:</p>
                                     <p class="documentdata theme-color-text">{{ document.date }}</p>
                                 </div>
                             </a>
@@ -347,23 +347,26 @@ async function initMasonry() {
                                     :href="`https://etruscan.dh.gu.se/viewer/?q=${model.id}/pointcloud`" target="_top">
                                     <div class="meta-data-overlay">
                                         <div class="meta-data-overlay-text"><b>{{ model.title }}</b></div>
-                                        <div class="meta-data-overlay-text">Pointcloud</div>
+                                       
                                         <div class="meta-data-overlay-text">{{ model.technique ? model.technique.text :
                                             'N/A' }}</div>
+                                              <div class="meta-data-overlay-text mpelleteta-"> <div class="meta-pellet">Pointcloud</div></div>
                                     </div>
-                                    <img :src="`${model.preview_image.iiif_file}/full/400,/0/default.jpg`"
+                                   
+                                    <img :src="`${model.preview_image.iiif_file}/full/200,/0/default.jpg`"
                                         :alt="model.title" class="image-square" />
                                 </a>
                                 <a v-else-if="model.modelType === 'object3js'"
                                     :href="`http://localhost:8094/viewer/?q=${model.id}/model`" target="_top">
                                     <div class="meta-data-overlay">
                                         <div class="meta-data-overlay-text"><b>{{ model.title }}</b></div>
-                                        <div class="meta-data-overlay-text">Textured mesh</div>
+                                       
                                         <div class="meta-data-overlay-text">{{ model.technique ? model.technique.text :
                                             'N/A' }}</div>
+                                             <div class="meta-data-overlay-text"><div class="meta-pellet">Textured mesh</div></div>
                                     </div>
                                     <img v-if="model.preview_image?.iiif_file"
-                                        :src="`${model.preview_image.iiif_file}/full/400,/0/default.jpg`"
+                                        :src="`${model.preview_image.iiif_file}/full/200,/0/default.jpg`"
                                         :alt="model.title" class="image-square" />
                                 </a>
                             </div>
@@ -385,7 +388,7 @@ async function initMasonry() {
                                                 <div class="meta-data-overlay-text"> {{ image.type_of_image[0].text }}
                                                 </div>
                                             </div>
-                                            <img :src="`${image.iiif_file}/full/400,/0/default.jpg`" :alt="image.title"
+                                            <img :src="`${image.iiif_file}/full/200,/0/default.jpg`" :alt="image.title"
                                                 class="image-square-plan" />
                                         </a>
                                     </div>
@@ -417,7 +420,7 @@ async function initMasonry() {
                                                 <div class="meta-data-overlay-text">{{ image.type_of_image[0].text }}
                                                 </div>
                                             </div>
-                                            <img :src="`${image.iiif_file}/full/400,/0/default.jpg`" :alt="image.title"
+                                            <img :src="`${image.iiif_file}/full/200,/0/default.jpg`" :alt="image.title"
                                                 class="image-square-inner" />
                                         </a>
                                     </div>
@@ -460,7 +463,7 @@ async function initMasonry() {
                                             <div class="meta-data-overlay-text">{{ item.title }}</div>
                                             <div class="meta-data-overlay-text">{{ item.type_of_image[0].text }}</div>
                                         </div>
-                                        <img :src="`${item.iiif_file}/full/400,/0/default.jpg`" :alt="item.title"
+                                        <img :src="`${item.iiif_file}/full/200,/0/default.jpg`" :alt="item.title"
                                             class="image-square-inner" />
                                     </a>
                                 </div>
@@ -482,13 +485,14 @@ async function initMasonry() {
                                     :href="`http://localhost:8094/viewer/?q=${item.id}/model`" target="_top">
                                     <div class="meta-data-overlay">
                                         <div class="meta-data-overlay-text">{{ item.title }}</div>
-                                        <div class="meta-data-overlay-text">Textured mesh</div>
+                                       
                                         <div class="meta-data-overlay-text">{{ item.technique ? item.technique.text :
                                             'N/A' }}
                                         </div>
+                                         <div class="meta-data-overlay-text"><div class="meta-pellet">Textured mesh</div></div>
                                     </div>
                                     <img v-if="item.preview_image?.iiif_file"
-                                        :src="`${item.preview_image.iiif_file}/full/400,/0/default.jpg`"
+                                        :src="`${item.preview_image.iiif_file}/full/200,/0/default.jpg`"
                                         :alt="item.title" class="image-square" />
                                 </a>
 
@@ -497,12 +501,13 @@ async function initMasonry() {
                                     :href="` https://etruscan.dh.gu.se/viewer/?q=${item.id}/pointcloud`" target="_top">
                                     <div class="meta-data-overlay">
                                         <div class="meta-data-overlay-text">{{ item.title }}</div>
-                                        <div class="meta-data-overlay-text">Pointcloud</div>
+                                      
                                         <div class="meta-data-overlay-text">{{ item.technique ? item.technique.text :
                                             'N/A' }}
                                         </div>
+                                          <div class="meta-data-overlay-text"><div class="meta-pellet">Pointcloud</div></div>
                                     </div>
-                                    <img :src="`${item.preview_image.iiif_file}/full/400,/0/default.jpg`"
+                                    <img :src="`${item.preview_image.iiif_file}/full/200,/0/default.jpg`"
                                         :alt="item.title" class="image-square" />
                                 </a>
 
@@ -588,13 +593,66 @@ a:active {}
 }
 
 .gallery__item {
-    width: 200px;
+    width: 180px;
     margin-bottom: 10px;
 }
 
 .plan-gallery__item {
-    width: 200px;
+    width: 180px;
     margin-bottom: 10px;
+}
+
+.masonry-image .meta-data-overlay {
+    display:flex;
+    flex-direction:column;
+    justify-content: end;
+    bottom: 0px;
+    opacity: 0.0;
+    padding-bottom:5px;
+    background: rgba(0,0,0,0.6);
+    transition: all 0.2s ease-in-out;
+    padding-bottom:8px;
+}
+
+.masonry-image:hover .meta-data-overlay {
+    opacity: 1.0;
+}
+
+.image-placeholder .meta-data-overlay {
+    display:flex;
+    flex-direction:column;
+    justify-content:end;
+    flex-wrap: nowrap;
+   align-items: flex-start;
+    opacity: 0.0;
+    background: rgba(0,0,0,0.6);
+    transition: all 0.2s ease-in-out;
+    padding-bottom:8px;
+}
+
+
+.plan-placeholder .meta-data-overlay {
+    color: black;
+    background: linear-gradient(rgba(255, 255, 255, 0.0) 50%, rgba(255, 255, 255, 0.8) 100%);
+    transition: all 0.2s ease-in-out;
+}
+
+.image-placeholder:hover .meta-data-overlay {
+    opacity: 1.0;
+}
+
+.meta-data-overlay .meta-data-overlay-text {
+    font-size:0.8em;
+    width:auto;
+}
+
+.meta-pellet{
+    background-color:white;
+    color:black;
+    border-radius:5px;
+    padding:5px;
+    width: auto;
+    margin-left:-2px;
 }
 
 

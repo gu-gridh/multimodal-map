@@ -57,6 +57,7 @@ const messages = {
       f4title: "Analytical tools",
       f4description:"Click on a visual documentation to explore high resolution photographs and 3d data when available. In the 3d viewer you can annotate, measure and move around the tombs.",
       versionnumb:"Version 1.1",
+      date:"Date",
       "categories": {
         "all": "All types",
         "drawings": "Drawings",
@@ -120,6 +121,7 @@ const messages = {
       f4title: "Strumenti analitici",
       f4description:"Fai clic su una documentazione visiva per esplorare fotografie ad alta risoluzione e dati 3D quando disponibili. Nel visualizzatore 3D puoi annotare, misurare e muoverti attorno alle tombe.",
       versionnumb:"Version 1.1",
+      date:"Data",
       "categories": {
         "all": "Tutti i tipi",
         "drawings": "Disegni",
