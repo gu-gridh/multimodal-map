@@ -582,12 +582,8 @@ a:active {}
     margin-top: 2px;
 }
 
-/* hides the zoom controls for the background map*/
-#app .ol-zoom-in {
-    display: none !important;
-}
-
-#app .ol-zoom-out {
+/* hide map zoom controls in placeview */
+:deep(.ol-zoom) {
     display: none !important;
 }
 
