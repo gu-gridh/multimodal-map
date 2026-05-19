@@ -185,7 +185,7 @@ onMounted(async () => {
                 dianaClient.listAll("observation", { place: id.value }),
                 dianaClient.listAll("document", { place: id.value }),
                 dianaClient.listAll("objectpointcloud", { tomb: id.value, depth: 2 }),
-                dianaClient.listAll("object3dhop", { tomb: id.value, depth: 2 }),
+                dianaClient.listAll("objectmesh", { tomb: id.value, depth: 2 }),
                 fetch(`${apiConfig.IMAGE}?tomb=${id.value}&type_of_image=1&type_of_image=5&depth=2`).then(res => res.json())
             ]);
 
