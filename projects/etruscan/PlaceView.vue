@@ -24,17 +24,17 @@ const route = useRoute();
 const nextPageUrl = ref(null);
 const hasMoreImages = ref(true);
 const isLoading = ref(false);
-const selectedDataset = ref(null); 
+const selectedDataset = ref(null);
 const cloneTombOptions = ref([]);
 
 const props = defineProps({
-  name: String,
+    name: String,
 });
 
 let observations = ref([]);
 let documents = ref([]);
 let pointcloud = ref([]);
-let mesh = ref([]);
+let object3jsModels = ref([]);
 
 const datasetsMap = {
     1: "CTSG",
@@ -42,8 +42,8 @@ const datasetsMap = {
 };
 
 const combined3DModels = computed(() => [
-    ...mesh.value.map(m => ({ ...m, modelType: 'mesh' })),
-    ...pointcloud.value.map(p => ({ ...p, modelType: 'pointcloud' }))
+    ...pointcloud.value.map(p => ({ ...p, modelType: 'pointcloud' })),
+    ...object3jsModels.value
 ]);
 
 const sortedGroupedByYear = computed(() => {
@@ -85,11 +85,11 @@ function isPointcloud(item) {
     return 'camera_position' in item;
 }
 
-function isMesh(item) {
-    return 'triangles_optimized' in item;
+function isObject3jsModel(item) {
+    return item.modelType === 'object3js';
 }
 
-function isDocument(item)  {
+function isDocument(item) {
     return 'upload' in item;
 }
 
@@ -126,9 +126,9 @@ async function fetchMoreImages() {
         }
         images.value = [...images.value, ...newImages];
 
-        groupAndSortByYear([...images.value, ...plans.value, ...observations.value, ...documents.value, ...pointcloud.value, ...mesh.value]);
+        groupAndSortByYear([...images.value, ...plans.value, ...observations.value, ...documents.value, ...pointcloud.value, ...object3jsModels.value]);
 
-        await nextTick(); 
+        await nextTick();
 
         const photoGallery = document.querySelector('.placeview-masonry-gallery');
         if (photoGallery) {
@@ -177,15 +177,15 @@ onMounted(async () => {
             }
         });
     }
-    
+
     if (id) {
-        const [fetchedImages, fetchedObservations, fetchedDocuments, fetchedPointclouds, fetchedMeshes, fetchedPlans] = await Promise.all
+        const [fetchedImages, fetchedObservations, fetchedDocuments, fetchedPointclouds, fetchedObject3jsModels, fetchedPlans] = await Promise.all
             ([
                 fetch(`${apiConfig.IMAGE}?tomb=${id.value}&limit=8&type_of_image=2&depth=2`).then(res => res.json()),
                 dianaClient.listAll("observation", { place: id.value }),
                 dianaClient.listAll("document", { place: id.value }),
                 dianaClient.listAll("objectpointcloud", { tomb: id.value, depth: 2 }),
-                dianaClient.listAll("objectmesh", { tomb: id.value, depth: 2 }),
+                fetch(`https://diana.dh.gu.se/api/etruscantombs/object3js/?tomb=${id.value}&depth=1`).then(res => res.json()),
                 fetch(`${apiConfig.IMAGE}?tomb=${id.value}&type_of_image=1&type_of_image=5&depth=2`).then(res => res.json())
             ]);
 
@@ -197,11 +197,13 @@ onMounted(async () => {
         observations.value = fetchedObservations;
         documents.value = fetchedDocuments;
         pointcloud.value = fetchedPointclouds;
-        mesh.value = fetchedMeshes;
+        object3jsModels.value = fetchedObject3jsModels.results
+            .filter((model) => model.published)
+            .map((model) => ({ ...model, modelType: 'object3js' }));
         plans.value = fetchedPlans.results;
 
         /* For sorting by year */
-        groupAndSortByYear([...images.value, ...plans.value, ...observations.value, ...documents.value, ...pointcloud.value, ...mesh.value]);
+        groupAndSortByYear([...images.value, ...plans.value, ...observations.value, ...documents.value, ...pointcloud.value, ...object3jsModels.value]);
     }
 
     nextTick(() => {
@@ -234,7 +236,7 @@ function handleCloneTombChange(event) {
     const selectedValue = (event.target).value;
     const selectedOption = cloneTombOptions.value.find(option => option.id.toString() === selectedValue);
     if (selectedOption) {
-        selectedDataset.value = selectedOption.datasetName;        
+        selectedDataset.value = selectedOption.datasetName;
         const formattedId = selectedOption.id.toString().replace(/\s+/g, '_');
         window.location.href = `/${selectedDataset.value}_${formattedId}`;
     }
@@ -270,17 +272,19 @@ async function initMasonry() {
     }
 }
 </script>
-    
+
 <template>
     <div class="main-container">
         <div class="place-card-container">
             <div class="placeview-topbutton-container">
                 <button @click="toggleLanguage">
-                    <div class="p-1 px-2 clickable category-button about-button placeview-topbutton" style="float:left;">
+                    <div class="p-1 px-2 clickable category-button about-button placeview-topbutton"
+                        style="float:left;">
                         {{ $t('languagebutton') }}</div>
                 </button>
                 <button @click="createPlaceURL()">
-                    <div class="p-1 px-2 clickable category-button about-button placeview-topbutton" style="float:left;">
+                    <div class="p-1 px-2 clickable category-button about-button placeview-topbutton"
+                        style="float:left;">
                         {{ $t('editplace') }}</div>
                 </button>
             </div>
@@ -304,11 +308,8 @@ async function initMasonry() {
                 <div>
                     <select class="dropdown theme-color-background" @change="handleCloneTombChange">
                         <option :value="null">{{ selectedDataset }}</option>
-                        <option 
-                            v-for="option in cloneTombOptions" 
-                            :key="option.id" 
-                            :value="option.id">
-                            {{ option.datasetName}}
+                        <option v-for="option in cloneTombOptions" :key="option.id" :value="option.id">
+                            {{ option.datasetName }}
                         </option>
                     </select>
                 </div>
@@ -316,7 +317,9 @@ async function initMasonry() {
                 <!-- Sort by TYPE table-->
                 <table class="content-table" v-if="sort == 'type'">
                     <tr v-if="documents.length > 0">
-                        <td><div class="gallery-label">{{ $t('documents') }}</div></td>
+                        <td>
+                            <div class="gallery-label">{{ $t('documents') }}</div>
+                        </td>
                         <td>
                             <a v-for="(document, index) in documents" :key="index" :href="document.upload" target="_top"
                                 download>
@@ -334,159 +337,189 @@ async function initMasonry() {
                     </tr>
 
                     <tr v-if="combined3DModels.length > 0">
-                        <td><div class="gallery-label">{{ $t('threedmodels') }}</div></td>
-                        <td><div v-for="(model, index) in combined3DModels" :key="index" class="image-placeholder square"> 
-                            <a v-if="model.modelType === 'mesh'" :href="`https://etruscan.dh.gu.se/viewer/?q=${model.id}/model`"
-                                target="_top">
-                                <div class="meta-data-overlay">
-                                    <div class="meta-data-overlay-text"><b>{{ model.title }}</b></div>
-                                    <div class="meta-data-overlay-text">{{ model.technique ? model.technique.text : 'N/A' }}</div>
-                                    <div class="meta-data-overlay-text">Mesh</div>  
-                                </div>
-                                <img :src="`${model.preview_image.iiif_file}/full/400,/0/default.jpg`" :alt="model.title"
-                                    class="image-square" />
-                            </a>
-                            <a v-else-if="model.modelType === 'pointcloud'"
-                                :href="`https://etruscan.dh.gu.se/viewer/?q=${model.id}/pointcloud`" target="_top">
-                                <div class="meta-data-overlay">
-                                    <div class="meta-data-overlay-text"><b>{{ model.title }}</b></div>
-                                     <div class="meta-data-overlay-text">Pointcloud</div> 
-                                    <div class="meta-data-overlay-text">{{ model.technique ? model.technique.text : 'N/A' }}</div>
-                                    
-                                </div>
-                                <img :src="`${model.preview_image.iiif_file}/full/400,/0/default.jpg`" :alt="model.title"
-                                    class="image-square" />
-                            </a>
-                        </div></td>
+                        <td>
+                            <div class="gallery-label">{{ $t('threedmodels') }}</div>
+                        </td>
+                        <td>
+                            <div v-for="(model, index) in combined3DModels" :key="index"
+                                class="image-placeholder square">
+                                <a v-if="model.modelType === 'pointcloud'"
+                                    :href="`https://etruscan.dh.gu.se/viewer/?q=${model.id}/pointcloud`" target="_top">
+                                    <div class="meta-data-overlay">
+                                        <div class="meta-data-overlay-text"><b>{{ model.title }}</b></div>
+                                        <div class="meta-data-overlay-text">Pointcloud</div>
+                                        <div class="meta-data-overlay-text">{{ model.technique ? model.technique.text :
+                                            'N/A' }}</div>
+                                    </div>
+                                    <img :src="`${model.preview_image.iiif_file}/full/400,/0/default.jpg`"
+                                        :alt="model.title" class="image-square" />
+                                </a>
+                                <a v-else-if="model.modelType === 'object3js'"
+                                    :href="`http://localhost:8094/viewer/?q=${model.id}/model`" target="_top">
+                                    <div class="meta-data-overlay">
+                                        <div class="meta-data-overlay-text"><b>{{ model.title }}</b></div>
+                                        <div class="meta-data-overlay-text">Textured mesh</div>
+                                        <div class="meta-data-overlay-text">{{ model.technique ? model.technique.text :
+                                            'N/A' }}</div>
+                                    </div>
+                                    <img v-if="model.preview_image?.iiif_file"
+                                        :src="`${model.preview_image.iiif_file}/full/400,/0/default.jpg`"
+                                        :alt="model.title" class="image-square" />
+                                </a>
+                            </div>
+                        </td>
                     </tr>
 
                     <tr v-if="plans.length > 0">
-                        <td><div class="gallery-label">{{ $t('drawings') }}</div></td>
-                        <td><div class="plans-masonry-gallery">
-                            <div v-for="(image, index) in plans" :key="index" class="plan-gallery__item">
-                                <div class="masonry-image" v-if="'iiif_file' in image">
-                                    <a :href="`https://etruscan.dh.gu.se/viewer/?q=${image.id}/image`" target="_top">
-                                        <div class="meta-data-overlay">
-                                            <div class="meta-data-overlay-text">{{ image.title }}</div>
-                                            <div class="meta-data-overlay-text"> {{ image.type_of_image[0].text }}</div>
-                                        </div>
-                                        <img :src="`${image.iiif_file}/full/400,/0/default.jpg`" :alt="image.title"
-                                            class="image-square-plan" />
-                                    </a>
+                        <td>
+                            <div class="gallery-label">{{ $t('drawings') }}</div>
+                        </td>
+                        <td>
+                            <div class="plans-masonry-gallery">
+                                <div v-for="(image, index) in plans" :key="index" class="plan-gallery__item">
+                                    <div class="masonry-image" v-if="'iiif_file' in image">
+                                        <a :href="`https://etruscan.dh.gu.se/viewer/?q=${image.id}/image`"
+                                            target="_top">
+                                            <div class="meta-data-overlay">
+                                                <div class="meta-data-overlay-text">{{ image.title }}</div>
+                                                <div class="meta-data-overlay-text"> {{ image.type_of_image[0].text }}
+                                                </div>
+                                            </div>
+                                            <img :src="`${image.iiif_file}/full/400,/0/default.jpg`" :alt="image.title"
+                                                class="image-square-plan" />
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
-                        </div></td>
+                        </td>
                     </tr>
                     <tr v-if="images.length > 0">
                         <td>
-                            <div class="gallery-label" style="display:flex; flex-direction:column; align-items:flex-end; justify-content:right;">
+                            <div class="gallery-label"
+                                style="display:flex; flex-direction:column; align-items:flex-end; justify-content:right;">
                                 <a :href="`${apiConfig.ADMIN_IMAGE}?q=${route.params.name}`">
-                                   <div>{{ $t('photographs') }}</div>
+                                    <div>{{ $t('photographs') }}</div>
                                 </a>
-                                <button class="show-button theme-color-background" v-if="nextPageUrl" 
+                                <button class="show-button theme-color-background" v-if="nextPageUrl"
                                     @click="fetchMoreImages" :disabled="isLoading">
                                     {{ $t('showall') }}
                                 </button>
                             </div>
                         </td>
-                        <td><div class="placeview-masonry-gallery">
-                            <div v-for="(image, index) in images" :key="index" class="gallery__item">
-                                <div class="masonry-image" v-if="'iiif_file' in image">
-                                    <a :href="`https://etruscan.dh.gu.se/viewer/?q=${image.id}/image`" target="_top">
-                                        <div class="meta-data-overlay">
-                                            <div class="meta-data-overlay-text">{{ image.title }}</div>
-                                            <div class="meta-data-overlay-text">{{ image.type_of_image[0].text }}</div>
-                                        </div>
-                                        <img :src="`${image.iiif_file}/full/400,/0/default.jpg`" :alt="image.title"
-                                            class="image-square-inner" />
-                                    </a>
+                        <td>
+                            <div class="placeview-masonry-gallery">
+                                <div v-for="(image, index) in images" :key="index" class="gallery__item">
+                                    <div class="masonry-image" v-if="'iiif_file' in image">
+                                        <a :href="`https://etruscan.dh.gu.se/viewer/?q=${image.id}/image`"
+                                            target="_top">
+                                            <div class="meta-data-overlay">
+                                                <div class="meta-data-overlay-text">{{ image.title }}</div>
+                                                <div class="meta-data-overlay-text">{{ image.type_of_image[0].text }}
+                                                </div>
+                                            </div>
+                                            <img :src="`${image.iiif_file}/full/400,/0/default.jpg`" :alt="image.title"
+                                                class="image-square-inner" />
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
-                        </div></td>
+                        </td>
                     </tr>
 
                     <tr v-if="observations.length > 0">
-                        <td> <div class="gallery-label">{{ $t('observations') }}</div></td>
-                        <td><div v-for="(observation, index) in observations" :key="index"
-                            class="image-placeholder observation-placeholder">
-                            <div class="observation-title">
-                                {{ observation.title }}
+                        <td>
+                            <div class="gallery-label">{{ $t('observations') }}</div>
+                        </td>
+                        <td>
+                            <div v-for="(observation, index) in observations" :key="index"
+                                class="image-placeholder observation-placeholder">
+                                <div class="observation-title">
+                                    {{ observation.title }}
+                                </div>
+                                <div class="observation-date">
+                                    {{ observation.date }}
+                                </div>
+                                <div class="observation-body" v-html="observation.observation">
+                                </div>
                             </div>
-                            <div class="observation-date">
-                                {{ observation.date }}
-                            </div>
-                            <div class="observation-body" v-html="observation.observation">
-                            </div>
-                        </div></td>
+                        </td>
                     </tr>
                 </table>
 
                 <table class="content-table-date" v-else-if="sort == 'year'">
                     <tr v-for="[year, items] in sortedGroupedByYear" :key="year">
                         <td style="font-size:1.5em; font-weight:200; text-align:right;">{{ year }}</td>
-                        <td><div v-for="(item, index) in items" :key="index"
-                            :class="(isImage(item) || isPointcloud(item) || isMesh(item)) ? 'image-placeholder square' : ''">
-                            <!-- If the item is an image -->
-                            <div class="image-square" v-if="'iiif_file' in item">
-                                <a v-if="item.iiif_file" :href="`https://etruscan.dh.gu.se/viewer/?q=${item.id}/image`" target="_top">
+                        <td>
+                            <div v-for="(item, index) in items" :key="index"
+                                :class="(isImage(item) || isPointcloud(item) || isObject3jsModel(item)) ? 'image-placeholder square' : ''">
+                                <!-- If the item is an image -->
+                                <div class="image-square" v-if="'iiif_file' in item">
+                                    <a v-if="item.iiif_file"
+                                        :href="`https://etruscan.dh.gu.se/viewer/?q=${item.id}/image`" target="_top">
+                                        <div class="meta-data-overlay">
+                                            <div class="meta-data-overlay-text">{{ item.title }}</div>
+                                            <div class="meta-data-overlay-text">{{ item.type_of_image[0].text }}</div>
+                                        </div>
+                                        <img :src="`${item.iiif_file}/full/400,/0/default.jpg`" :alt="item.title"
+                                            class="image-square-inner" />
+                                    </a>
+                                </div>
+
+                                <!-- If the item is an observation -->
+                                <div v-else-if="isObservation(item)" class="image-placeholder observation-placeholder">
+                                    <div class="observation-title">
+                                        {{ item.title }}
+                                    </div>
+                                    <div class="observation-date">
+                                        {{ item.date }}
+                                    </div>
+                                    <div class="observation-body" v-html="item.observation">
+                                    </div>
+                                </div>
+
+                                <!-- If the item is a model -->
+                                <a v-else-if="isObject3jsModel(item)"
+                                    :href="`http://localhost:8094/viewer/?q=${item.id}/model`" target="_top">
                                     <div class="meta-data-overlay">
                                         <div class="meta-data-overlay-text">{{ item.title }}</div>
-                                        <div class="meta-data-overlay-text">{{ item.type_of_image[0].text }}</div>
+                                        <div class="meta-data-overlay-text">Textured mesh</div>
+                                        <div class="meta-data-overlay-text">{{ item.technique ? item.technique.text :
+                                            'N/A' }}
+                                        </div>
                                     </div>
-                                    <img :src="`${item.iiif_file}/full/400,/0/default.jpg`" :alt="item.title"
-                                    class="image-square-inner" />
+                                    <img v-if="item.preview_image?.iiif_file"
+                                        :src="`${item.preview_image.iiif_file}/full/400,/0/default.jpg`"
+                                        :alt="item.title" class="image-square" />
+                                </a>
+
+                                <!-- If the item is a pointcloud -->
+                                <a v-else-if="isPointcloud(item)"
+                                    :href="` https://etruscan.dh.gu.se/viewer/?q=${item.id}/pointcloud`" target="_top">
+                                    <div class="meta-data-overlay">
+                                        <div class="meta-data-overlay-text">{{ item.title }}</div>
+                                        <div class="meta-data-overlay-text">Pointcloud</div>
+                                        <div class="meta-data-overlay-text">{{ item.technique ? item.technique.text :
+                                            'N/A' }}
+                                        </div>
+                                    </div>
+                                    <img :src="`${item.preview_image.iiif_file}/full/400,/0/default.jpg`"
+                                        :alt="item.title" class="image-square" />
+                                </a>
+
+                                <!-- If the item is an document -->
+                                <a v-else-if="isDocument(item)" :href="item.upload" target="_top" download>
+                                    <div class="image-placeholder document-placeholder">
+                                        <div class="document-title">{{ item.title }}</div>
+                                        <p class="documentlabel">{{ $t('type') }}:</p>
+                                        <p class="documentdata theme-color-text">{{ item.type[0].text }}</p>
+                                        <p class="documentlabel">{{ $t('size') }}:</p>
+                                        <p class="documentdata theme-color-text">{{ item.size }} MB</p>
+                                        <p class="documentlabel">{{ $t('published') }}:</p>
+                                        <p class="documentdata theme-color-text">{{ item.date }}</p>
+                                    </div>
                                 </a>
                             </div>
-
-                            <!-- If the item is an observation -->
-                            <div v-else-if="isObservation(item)" class="image-placeholder observation-placeholder">
-                                <div class="observation-title">
-                                    {{ item.title }}
-                                </div>
-                                <div class="observation-date">
-                                    {{ item.date }}
-                                </div>
-                                <div class="observation-body" v-html="item.observation">
-                                </div>
-                            </div>
-
-                            <!-- If the item is a pointcloud -->
-                            <a v-else-if="isPointcloud(item)"
-                                :href="` https://etruscan.dh.gu.se/viewer/?q=${item.id}/pointcloud`" target="_top">
-                                <div class="meta-data-overlay">
-                                    <div class="meta-data-overlay-text">{{ item.title }}</div>
-                                    <div class="meta-data-overlay-text">{{ item.technique ? item.technique.text : 'N/A' }}
-                                    </div>
-                                </div>
-                                <img :src="`${item.preview_image.iiif_file}/full/400,/0/default.jpg`" :alt="item.title"
-                                    class="image-square" />
-                            </a>
-
-                            <!-- If the item is a mesh -->
-                            <a v-else-if="isMesh(item)" :href="`https://etruscan.dh.gu.se/viewer/?q=${item.id}/pointcloud`"
-                                target="_top">
-                                <div class="meta-data-overlay">
-                                    <div class="meta-data-overlay-text">{{ item.title }}</div>
-                                    <div class="meta-data-overlay-text">{{ item.technique ? item.technique.text : 'N/A' }}
-                                    </div>
-                                </div>
-                                <img :src="`${item.preview_image.iiif_file}/full/400,/0/default.jpg`" :alt="item.title"
-                                    class="image-square" />
-                            </a>
-
-                            <!-- If the item is an document -->
-                            <a v-else-if="isDocument(item)" :href="item.upload" target="_top" download>
-                                <div class="image-placeholder document-placeholder">
-                                    <div class="document-title">{{ item.title }}</div>
-                                    <p class="documentlabel">{{ $t('type') }}:</p>
-                                    <p class="documentdata theme-color-text">{{ item.type[0].text }}</p>
-                                    <p class="documentlabel">{{ $t('size') }}:</p>
-                                    <p class="documentdata theme-color-text">{{ item.size }} MB</p>
-                                    <p class="documentlabel">{{ $t('published') }}:</p>
-                                    <p class="documentdata theme-color-text">{{ item.date }}</p>
-                                </div>
-                            </a>
-                        </div></td>
+                        </td>
                     </tr>
                 </table>
             </div>
@@ -494,16 +527,17 @@ async function initMasonry() {
     </div>
     <MapComponent />
 </template>
-    
+
 <style scoped>
 .main-container {
     background-color: rgba(232, 228, 217, 0.5) !important;
     backdrop-filter: blur(10px) saturate(50%) brightness(100%);
 }
 
-.sort{
-margin-left:120px;
+.sort {
+    margin-left: 120px;
 }
+
 .show-button {
     color: white;
     height: auto;
@@ -514,7 +548,7 @@ margin-left:120px;
     font-size: 0.85em;
     margin-top: 5px;
     transition: all 0.2s ease-in-out;
-    min-width:10px;
+    min-width: 10px;
 }
 
 .show-button:hover {
@@ -544,8 +578,8 @@ a:active {}
 
 .content-table td .gallery-label {
     text-align: right;
-    width:75%;
-    margin-top:2px;
+    width: 75%;
+    margin-top: 2px;
 }
 
 /* hides the zoom controls for the background map*/
@@ -570,48 +604,49 @@ a:active {}
 
 @media screen and (max-width: 900px) {
 
-    #app .maijn-container{
-    padding:0px!important;
-}
-#app .place-gallery-container{
-    padding:0px!important;
-    margin-left:0px;
-}
-#app .place-view{
-    width:100%!important;
-    padding-top:20px!important;
-    margin-left:0px!important;
-    padding-bottom:100px;
-}
+    #app .maijn-container {
+        padding: 0px !important;
+    }
 
-.sort{
-margin-left:20px;
-}
+    #app .place-gallery-container {
+        padding: 0px !important;
+        margin-left: 0px;
+    }
 
-.square
-{
-  width:120px;  
-  height:120px;  
-}
+    #app .place-view {
+        width: 100% !important;
+        padding-top: 20px !important;
+        margin-left: 0px !important;
+        padding-bottom: 100px;
+    }
 
-.placeview-masonry-gallery
-{
-  width:100%;  
-}
-.document-placeholder
-{
-max-width:90%;
-}
-.documentlabel{
-    display:none;
-}
-.documentdata{
-    display:none;
-}
+    .sort {
+        margin-left: 20px;
+    }
 
-.observation-placeholder{
-    max-width:90%;
-}
+    .square {
+        width: 120px;
+        height: 120px;
+    }
+
+    .placeview-masonry-gallery {
+        width: 100%;
+    }
+
+    .document-placeholder {
+        max-width: 90%;
+    }
+
+    .documentlabel {
+        display: none;
+    }
+
+    .documentdata {
+        display: none;
+    }
+
+    .observation-placeholder {
+        max-width: 90%;
+    }
 }
 </style>
-    
