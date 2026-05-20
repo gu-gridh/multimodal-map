@@ -267,17 +267,17 @@ transform:scale(1.02);
 }
 
 .image-placeholder img {
-    transform: scale(1.05);
+    transform: scale(1.00);
     transition: all 0.2s ease-in-out;
 }
 
 .image-placeholder:hover {
     transform: scale(1.02);
-    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.12);
+
 }
 
 .image-placeholder:hover img {
-    transform: scale(1.1);
+    transform: scale(1.05);
 }
 
 .image-placeholder .meta-data-overlay {
@@ -400,7 +400,7 @@ transform:scale(1.02);
 
     .place-gallery-container {
         color: black;
-        overflow: hidden;
+        overflow: auto;
         position: relative;
         float: left;
     }
