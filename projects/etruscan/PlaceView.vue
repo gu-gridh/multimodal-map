@@ -338,7 +338,7 @@ async function initMasonry() {
 
                     <tr v-if="combined3DModels.length > 0">
                         <td>
-                            <div class="gallery-label">{{ $t('threedmodels') }}</div>
+                            <div class="gallery-label hexagon-adapted">{{ $t('threedmodels') }}</div>
                         </td>
                         <td>
                             <div v-for="(model, index) in combined3DModels" :key="index"
@@ -635,6 +635,10 @@ a:active {}
 
 .hexagon  {
   clip-path: polygon(50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%);
+}
+
+.hexagon-adapted{
+   padding-top:40px;
 }
 
 .hexagon .orange  {
