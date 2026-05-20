@@ -342,34 +342,37 @@ async function initMasonry() {
                         </td>
                         <td>
                             <div v-for="(model, index) in combined3DModels" :key="index"
-                                class="image-placeholder square">
+                                class="image-placeholder square hexagon">
                                 <a v-if="model.modelType === 'pointcloud'"
                                     :href="`https://etruscan.dh.gu.se/viewer/?q=${model.id}/pointcloud`" target="_top">
-                                    <div class="meta-data-overlay">
-                                        <div class="meta-data-overlay-text"><b>{{ model.title }}</b></div>
-                                       
-                                        <div class="meta-data-overlay-text">{{ model.technique ? model.technique.text :
-                                            'N/A' }}</div>
+                                    <div class="meta-data-overlay-center">
+                                           <!--  <div class="meta-data-overlay-text"><b>{{ model.title }}</b></div> -->
+                                        
                                               <div class="meta-data-overlay-text mpelleteta-"> <div class="meta-pellet">Pointcloud</div></div>
                                     </div>
-                                   
+                               
                                     <img :src="`${model.preview_image.iiif_file}/full/200,/0/default.jpg`"
                                         :alt="model.title" class="image-square" />
                                 </a>
+                                
                                 <a v-else-if="model.modelType === 'object3js'"
                                     :href="`http://localhost:8094/viewer/?q=${model.id}/model`" target="_top">
-                                    <div class="meta-data-overlay">
-                                        <div class="meta-data-overlay-text"><b>{{ model.title }}</b></div>
+                                    <div class="meta-data-overlay-center">
+                                        
                                        
-                                        <div class="meta-data-overlay-text">{{ model.technique ? model.technique.text :
-                                            'N/A' }}</div>
+                                       <!--   <div class="meta-data-overlay-text"><b>{{ model.title }}</b></div> -->
                                              <div class="meta-data-overlay-text"><div class="meta-pellet">Textured mesh</div></div>
+                                            
                                     </div>
+                                   
                                     <img v-if="model.preview_image?.iiif_file"
                                         :src="`${model.preview_image.iiif_file}/full/200,/0/default.jpg`"
                                         :alt="model.title" class="image-square" />
+                                       
                                 </a>
+                                
                             </div>
+                              
                         </td>
                     </tr>
 
@@ -630,6 +633,34 @@ a:active {}
     padding-bottom:8px;
 }
 
+.hexagon  {
+  clip-path: polygon(50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%);
+}
+
+.hexagon .orange  {
+  opacity:0.4;
+}
+
+.meta-data-overlay-center{
+      display:flex;
+    flex-direction:column;
+    justify-content: center;
+   align-items: center;
+    position: absolute;
+    bottom: 0px;
+    opacity: 0.0;
+    z-index: 10;
+    padding: 0px;
+    height: 100%;
+    width: 100%;
+    padding-bottom:5px;
+    color: white;
+       background: rgba(0,0,0,0.6);
+    transition: all 0.2s ease-in-out;
+}
+.image-placeholder:hover .meta-data-overlay-center {
+    opacity: 1.0;
+}
 
 .plan-placeholder .meta-data-overlay {
     color: black;
@@ -653,6 +684,7 @@ a:active {}
     padding:5px;
     width: auto;
     margin-left:-2px;
+    font-size:0.8em;
 }
 
 
