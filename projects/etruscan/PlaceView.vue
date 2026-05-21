@@ -348,13 +348,14 @@
                                     <div class="meta-data-overlay-center">
                                         <!--  <div class="meta-data-overlay-text"><b>{{ model.title }}</b></div> -->
 
-                                        <div class="meta-data-overlay-text mpelleteta-">
+                                        <div class="meta-data-overlay-text">
                                             <div class="meta-pellet">Pointcloud</div>
                                         </div>
                                     </div>
-
-                                    <img :src="`${model.preview_image.iiif_file}/full/200,/0/default.jpg`"
-                                        :alt="model.title" class="image-square" />
+                                    <div class="pointcloud">
+                                        <img :src="`${model.preview_image.iiif_file}/full/250,/0/default.jpg`"
+                                            :alt="model.title" class="image-square pointcloud" />
+                                    </div>
                                 </a>
 
                                 <a v-else-if="model.modelType === 'object3js'"
@@ -368,11 +369,11 @@
                                         </div>
 
                                     </div>
-
-                                    <img v-if="model.preview_image?.iiif_file"
-                                        :src="`${model.preview_image.iiif_file}/full/200,/0/default.jpg`"
-                                        :alt="model.title" class="image-square" />
-
+                                    <div class="mesh">
+                                        <img v-if="model.preview_image?.iiif_file"
+                                            :src="`${model.preview_image.iiif_file}/full/250,/0/default.jpg`"
+                                            :alt="model.title" class="image-square" />
+                                    </div>
                                 </a>
 
                             </div>
@@ -491,13 +492,13 @@
                                 <a v-else-if="isObject3jsModel(item)"
                                     :href="`http://localhost:8094/viewer/?q=${item.id}/model`" target="_top">
                                     <div class="model-object">
-                                    
+
                                         <img v-if="item.preview_image?.iiif_file"
-                                            :src="`${item.preview_image.iiif_file}/full/200,/0/default.jpg`"
+                                            :src="`${item.preview_image.iiif_file}/full/250,/0/default.jpg`"
                                             :alt="item.title" class="image-square hexagon hexagon-small" />
                                     </div>
-                                     <div class="meta-data-bellow-text">
-                                                <div class="meta-pellet">Textured mesh</div>
+                                    <div class="meta-data-below-text">
+                                        <div class="meta-pellet">Textured mesh</div>
                                     </div>
                                 </a>
 
@@ -505,12 +506,12 @@
                                 <a v-else-if="isPointcloud(item)"
                                     :href="` https://etruscan.dh.gu.se/viewer/?q=${item.id}/pointcloud`" target="_top">
                                     <div class="model-object">
-                                    
-                                        <img :src="`${item.preview_image.iiif_file}/full/200,/0/default.jpg`"
+
+                                        <img :src="`${item.preview_image.iiif_file}/full/250,/0/default.jpg`"
                                             :alt="item.title" class="image-square hexagon hexagon-small" />
                                     </div>
-                                     <div class="meta-data-bellow-text">
-                                      <div class="meta-pellet">Pointcloud</div>
+                                    <div class="meta-data-below-text">
+                                        <div class="meta-pellet">Pointcloud</div>
                                     </div>
                                 </a>
 
@@ -645,17 +646,16 @@
         padding-top: 40px;
     }
 
-    .hexagon .orange {
-        opacity: 0.4;
+  
+
+    .hexagon-small {
+        transform: scale(1.0);
+        overflow: auto !important;
     }
 
-    .hexagon-small{
-        transform:scale(1.0);
-        overflow:auto!important;
-    }
-    .model-object{
-        width:180px;
-        height:180px;
+    .model-object {
+        width: 180px;
+        height: 180px;
     }
 
     .meta-data-overlay-center {
@@ -710,28 +710,56 @@
         width: auto;
     }
 
-      .meta-data-bellow-text {
+    .meta-data-below-text {
         font-size: 1.0em;
         width: 180px;
-        height:180px;
-        position:absolute;
-        display:flex;
+        height: 180px;
+        position: relative;
+        display: flex;
         flex-direction: row;
-          flex-wrap: nowrap;
+        flex-wrap: nowrap;
         align-items: center;
         justify-content: center;
-        align-items: 180px;
-        margin-top:-180px;
+        margin-top: -180px;
+        opacity:0.0;
+        background-color:rgb(0,0,0,0.6);
+        clip-path: polygon(50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%);
+         transition: all 0.2s ease-in-out;
+        transform:scale(1.0);
     }
 
+       .meta-data-below-text:hover {
+       opacity:1.0;
+       
+    }
+
+ 
+
     .meta-pellet {
-        background-color: white;
+      /*   background-color: white;
         color: black;
         border-radius: 5px;
         padding: 3px 5px;
         width: auto;
         margin-left: -2px;
-        font-size: 0.8em;
+        */
+        font-size: 0.9em; 
+        color:white;
+    }
+
+      .hexagon img {
+        opacity: 1.0;
+    }
+
+    .pointcloud { 
+      background-color:orange;
+       transform: scale(1.15);
+    }
+
+
+    .mesh {
+      background-color: cyan;
+    transform: scale(1.15);
     }
 
 

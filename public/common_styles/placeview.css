@@ -232,16 +232,16 @@ border-radius:4px;
 transition: all 0.3s ease-in-out;
 }
 
-.masonry-image:hover{
+.content-table .masonry-image:hover{
     transform:scale(1.02);
     }
 
 .masonry-image img{
-    transition: all 0.3s ease-in-out;
+    transition: all 0.2s ease-in-out;
     }
 
-.masonry-image:hover img{
-transform:scale(1.02);
+.content-table .masonry-image:hover img{
+transform:scale(1.05);
 }
 
 .masonry-image .meta-data-overlay {
@@ -266,8 +266,8 @@ transform:scale(1.02);
     opacity: 1.0;
 }
 
-.image-placeholder img {
-    transform: scale(1.00);
+.content-table .image-placeholder img {
+    transform: scale(1.02);
     transition: all 0.2s ease-in-out;
 }
 
@@ -276,7 +276,7 @@ transform:scale(1.02);
 
 }
 
-.image-placeholder:hover img {
+.content-table .image-placeholder:hover img {
     transform: scale(1.05);
 }
 
