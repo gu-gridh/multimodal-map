@@ -354,7 +354,7 @@
                                     </div>
                                     <div class="pointcloud">
                                         <img :src="`${model.preview_image.iiif_file}/full/250,/0/default.jpg`"
-                                            :alt="model.title" class="image-square pointcloud" />
+                                            :alt="model.title" class="image-square" />
                                     </div>
                                 </a>
 
@@ -636,6 +636,7 @@
 
     .hexagon {
         clip-path: polygon(50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%);
+        background-color:green;
     }
 
     .heptagon {
@@ -748,18 +749,26 @@
     }
 
       .hexagon img {
-        opacity: 1.0;
+        opacity: 1;
+
     }
 
     .pointcloud { 
       background-color:orange;
        transform: scale(1.15);
+       display:flex;
+       flex-direction: column;
+       align-items: center;
+       margin-top:14px;
     }
-
 
     .mesh {
       background-color: cyan;
-    transform: scale(1.15);
+    transform: scale(1.2);
+        display:flex;
+       flex-direction: column;
+       align-items: center;
+       margin-top:14px;
     }
 
 
