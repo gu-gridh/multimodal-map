@@ -4,7 +4,7 @@
       <!-- <div v-if="areMapPointsLoaded"> -->
 
       <!-- This creates a 2-column section with for the controls -->
-      <div class="control-organisation justify-left" style="margin-bottom:8px;">
+      <div class="control-organisation justify-left" style="margin-bottom:0px;">
         <div class="tag-section margin-3">
           <div class="section-title">Dataset</div>
           <div title="Narrow the result to a certain dataset" class="broad-controls">
@@ -31,22 +31,7 @@
 
       </div>
 
-     <div class="tag-section margin-3" >
-        <!-- <div class="section-title">{{ $t('timeperiod') }}</div> -->
-        <div class="slider-widget">
-          <div class="slider-section">
-              <RangeSlider
-                ref="rangeSliderRef"
-                v-model="selectedRange"
-                :min="-700"
-                :max="-200"
-                :step="1"
-                class="my-2"
-                :isSliderVisible="true"
-              />
-          </div>
-        </div>
-      </div>
+   
 
       <!-- This creates a 2-column section width for the controls -->
       <div class="control-organisation justify-space">
@@ -71,6 +56,23 @@
           <div title="Narrow the result to a certain tomb type" class="broad-controls">
             <Dropdown v-model="tombType" :categories="TOMBTYPE" :limit="1" styleType="dropdown" class="my-2"
               type="tombType" />
+          </div>
+        </div>
+      </div>
+
+        <div class="tag-section margin-3" >
+        <!-- <div class="section-title">{{ $t('timeperiod') }}</div> -->
+        <div class="slider-widget">
+          <div class="slider-section">
+              <RangeSlider
+                ref="rangeSliderRef"
+                v-model="selectedRange"
+                :min="-700"
+                :max="-200"
+                :step="1"
+                class="my-2"
+                :isSliderVisible="true"
+              />
           </div>
         </div>
       </div>
