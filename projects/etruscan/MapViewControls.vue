@@ -328,7 +328,8 @@ font-size:0.9em;
 
 #app .section-title {
   margin-top: 6px;
-  margin-bottom: -3px;
+  margin-bottom: -5px;
+  font-size:1em;
 }
 
 #app .tag-section {

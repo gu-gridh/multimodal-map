@@ -199,14 +199,30 @@ export default {
 
 .gallery__item,
 .gallery__col-sizer {
-  width: calc(25% - 10px);
+  width: calc(16.66% - 10px);
 }
 
 .gallery__gutter-sizer {
   width: 10px;
 }
 
+@media screen and (max-width: 2000px) {
+
+  .gallery__item,
+  .gallery__col-sizer {
+    width: calc(20% - 8px);
+  }
+}
+
 @media screen and (max-width: 1500px) {
+
+  .gallery__item,
+  .gallery__col-sizer {
+    width: calc(25% - 8px);
+  }
+}
+
+@media screen and (max-width: 1200px) {
 
   .gallery__item,
   .gallery__col-sizer {
@@ -218,7 +234,7 @@ export default {
 
   .gallery__item,
   .gallery__col-sizer {
-    width: calc(50% - 8px);
+    width: calc(33% - 8px);
   }
 }
 
