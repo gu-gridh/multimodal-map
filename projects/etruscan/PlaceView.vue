@@ -275,6 +275,7 @@
 
 <template>
     <div class="main-container">
+        <div id="version"> {{ $t('versionnumb') }}</div>
         <div class="place-card-container">
             <div class="placeview-topbutton-container">
                 <button @click="toggleLanguage">
