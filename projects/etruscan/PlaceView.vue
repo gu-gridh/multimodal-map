@@ -185,7 +185,7 @@
                     dianaClient.listAll("observation", { place: id.value }),
                     dianaClient.listAll("document", { place: id.value }),
                     dianaClient.listAll("objectpointcloud", { tomb: id.value, depth: 2 }),
-                    fetch(`https://diana.dh.gu.se/api/etruscantombs/object3js/?tomb=${id.value}&depth=1`).then(res => res.json()),
+                    fetch(`https://diana.dh.gu.se/api/etruscantombs/objecttexturedmesh/?tomb=${id.value}&depth=1`).then(res => res.json()),
                     fetch(`${apiConfig.IMAGE}?tomb=${id.value}&type_of_image=1&type_of_image=5&depth=2`).then(res => res.json())
                 ]);
 
