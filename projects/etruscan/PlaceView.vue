@@ -365,7 +365,7 @@ async function initMasonry() {
                                 </a>
 
                                 <a v-else-if="model.modelType === 'object3js'"
-                                    :href="`http://localhost:8094/viewer/?q=${model.id}/model`" target="_top">
+                                    :href="``" target="_top">
                                     <div class="meta-data-overlay-center">
 
 
@@ -496,7 +496,7 @@ async function initMasonry() {
 
                                 <!-- If the item is a model -->
                                 <a v-else-if="isObject3jsModel(item)"
-                                    :href="`http://localhost:8094/viewer/?q=${item.id}/model`" target="_top">
+                                    :href="``" target="_top">
                                     <div class="model-object">
 
                                         <img v-if="previewImageUrl(item.preview_image)"
