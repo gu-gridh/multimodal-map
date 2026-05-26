@@ -1,6 +1,7 @@
 const API_ENDPOINTS = {
     PLACE: 'https://diana.dh.gu.se/api/etruscantombs/geojson/place/',
     IMAGE: 'https://diana.dh.gu.se/api/etruscantombs/image/',
+    DATASET: 'https://diana.dh.gu.se/api/etruscantombs/dataset/',
     ADMIN_PLACE: 'https://diana.dh.gu.se/admin/etruscantombs/place/',
     ADMIN_IMAGE: 'https://diana.dh.gu.se/admin/etruscantombs/image/',
 };

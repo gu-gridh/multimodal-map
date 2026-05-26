@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, inject, computed, nextTick, watch } from 'vue';
+import { ref, onMounted, computed, nextTick, watch } from 'vue';
 import PlaceViewCard from "./PlaceViewCard.vue";
 import MapComponent from "@/components/MapComponent.vue";
 import i18n from '../../src/translations/etruscan';
@@ -22,22 +22,13 @@ const route = useRoute();
 const nextPageUrl = ref(null);
 const hasMoreImages = ref(true);
 const isLoading = ref(false);
-const selectedDataset = ref(null);
-const cloneTombOptions = ref([]);
-
-const props = defineProps({
-    name: String,
-});
+const selectedDatasetId = ref("");
+const datasets = ref([]);
 
 let observations = ref([]);
 let documents = ref([]);
 let pointcloud = ref([]);
 let object3jsModels = ref([]);
-
-const datasetsMap = {
-    1: "CTSG",
-    2: "SIR",
-};
 
 const combined3DModels = computed(() => [
     ...pointcloud.value.map(p => ({ ...p, modelType: 'pointcloud' })),
@@ -49,24 +40,8 @@ const sortedGroupedByYear = computed(() => {
         .sort((a, b) => parseInt(b[0]) - parseInt(a[0]));
 });
 
-watch(sort, (newValue, oldValue) => {
-    if (newValue === 'year' && hasMoreImages.value) {
-        fetchMoreImages();
-    }
-});
-
 watch(() => sort.value, async () => {
-    await nextTick();
-
-    if (msnry.value?.destroy) {
-        msnry.value.destroy();
-    }
-
-    if (plansMsnry.value?.destroy) {
-        plansMsnry.value.destroy();
-    }
-
-    await initMasonry();
+    await loadContent();
 });
 
 function isImage(item) {
@@ -99,6 +74,16 @@ function getAspectStyle(image) {
     }
 
     return { aspectRatio: `${image.width} / ${image.height}` };
+}
+
+async function fetchDatasets() {
+    try {
+        const response = await fetch(apiConfig.DATASET);
+        const data = await response.json();
+        datasets.value = data.results?.filter(dataset => dataset.published) || [];
+    } catch (error) {
+        console.error(error);
+    }
 }
 
 function toggleLanguage() {
@@ -148,6 +133,8 @@ async function fetchMoreImages() {
 }
 
 onMounted(async () => {
+    await fetchDatasets();
+
     let urlId = route.params.name;
 
     if (Array.isArray(urlId)) {
@@ -164,54 +151,46 @@ onMounted(async () => {
     if (data.features && data.features.length > 0) {
         const mainFeature = data.features[0];
         etruscan.placeId = mainFeature.id;
-        const mainDatasetId = mainFeature.properties.dataset.id;
-        selectedDataset.value = datasetsMap[mainDatasetId] || "Unknown Dataset";
-
-        //check clone_tombs for different dataset IDs
-        mainFeature.properties.clone_tombs.forEach(cloneTomb => {
-            if (cloneTomb.dataset !== mainDatasetId) {
-                //determine the id based on the name
-                const id = isNaN(parseInt(cloneTomb.name)) ? cloneTomb.name : parseInt(cloneTomb.name);
-
-                cloneTombOptions.value.push({
-                    id: id,
-                    datasetId: cloneTomb.dataset,
-                    datasetName: datasetsMap[cloneTomb.dataset] || "Unknown Dataset"
-                });
-            }
-        });
     }
 
-    if (id) {
-        const [fetchedImages, fetchedObservations, fetchedDocuments, fetchedPointclouds, fetchedObject3jsModels, fetchedPlans] = await Promise.all
-            ([
-                fetch(`${apiConfig.IMAGE}?tomb=${id.value}&limit=8&type_of_image=2&depth=2`).then(res => res.json()),
-                dianaClient.listAll("observation", { place: id.value }),
-                dianaClient.listAll("document", { place: id.value }),
-                dianaClient.listAll("objectpointcloud", { tomb: id.value, depth: 2 }),
-                fetch(`https://diana.dh.gu.se/api/etruscantombs/objecttexturedmesh/?tomb=${id.value}&depth=1`).then(res => res.json()),
-                fetch(`${apiConfig.IMAGE}?tomb=${id.value}&type_of_image=1&type_of_image=5&depth=2`).then(res => res.json())
-            ]);
-
-        images.value = fetchedImages.results.filter((image) => image.published);
-        nextPageUrl.value = fetchedImages.next && fetchedImages.next.startsWith('http://')
-            ? fetchedImages.next.replace('http://', 'https://')
-            : fetchedImages.next;
-        hasMoreImages.value = !!fetchedImages.next;
-        observations.value = fetchedObservations;
-        documents.value = fetchedDocuments;
-        pointcloud.value = fetchedPointclouds;
-        object3jsModels.value = fetchedObject3jsModels.results
-            .filter((model) => model.published)
-            .map((model) => ({ ...model, modelType: 'object3js' }));
-        plans.value = fetchedPlans.results;
-
-        /* For sorting by year */
-        groupAndSortByYear([...images.value, ...plans.value, ...observations.value, ...documents.value, ...pointcloud.value, ...object3jsModels.value]);
-    }
-
-    await initMasonry();
+    await loadContent();
 });
+
+async function loadContent() {
+    if (!id.value) return;
+
+    const datasetParam = selectedDatasetId.value ? { dataset: selectedDatasetId.value } : {};
+    const datasetQuery = selectedDatasetId.value ? `&dataset=${selectedDatasetId.value}` : "";
+    const imageLimit = sort.value === 'year' ? 500 : 8;
+
+    const [fetchedImages, fetchedObservations, fetchedDocuments, fetchedPointclouds, fetchedObject3jsModels, fetchedPlans] = await Promise.all
+        ([
+            fetch(`${apiConfig.IMAGE}?tomb=${id.value}&limit=${imageLimit}&type_of_image=2&depth=2${datasetQuery}`).then(res => res.json()),
+            dianaClient.listAll("observation", { place: id.value, ...datasetParam }),
+            dianaClient.listAll("document", { place: id.value, ...datasetParam }),
+            dianaClient.listAll("objectpointcloud", { tomb: id.value, depth: 2, ...datasetParam }),
+            fetch(`https://diana.dh.gu.se/api/etruscantombs/objecttexturedmesh/?tomb=${id.value}&depth=1${datasetQuery}`).then(res => res.json()),
+            fetch(`${apiConfig.IMAGE}?tomb=${id.value}&type_of_image=1&type_of_image=5&depth=2${datasetQuery}`).then(res => res.json())
+        ]);
+
+    images.value = fetchedImages.results.filter((image) => image.published);
+    nextPageUrl.value = fetchedImages.next && fetchedImages.next.startsWith('http://')
+        ? fetchedImages.next.replace('http://', 'https://')
+        : fetchedImages.next;
+    hasMoreImages.value = !!fetchedImages.next;
+    observations.value = fetchedObservations;
+    documents.value = fetchedDocuments;
+    pointcloud.value = fetchedPointclouds;
+    object3jsModels.value = fetchedObject3jsModels.results
+        .filter((model) => model.published)
+        .map((model) => ({ ...model, modelType: 'object3js' }));
+    plans.value = fetchedPlans.results;
+
+    groupAndSortByYear([...images.value, ...plans.value, ...observations.value, ...documents.value, ...pointcloud.value, ...object3jsModels.value]);
+
+    await nextTick();
+    await initMasonry();
+}
 
 function groupAndSortByYear(allItems) {
     // Reset groupedByYear
@@ -234,24 +213,18 @@ function createPlaceURL() {
     window.open(url, "_top");
 }
 
-function handleCloneTombChange(event) {
-    const selectedValue = (event.target).value;
-    const selectedOption = cloneTombOptions.value.find(option => option.id.toString() === selectedValue);
-    if (selectedOption) {
-        selectedDataset.value = selectedOption.datasetName;
-        const formattedId = selectedOption.id.toString().replace(/\s+/g, '_');
-        window.location.href = `/${selectedDataset.value}_${formattedId}`;
-    }
-}
-
 async function initMasonry() {
     await nextTick();
     await nextFrame();
 
+    msnry.value?.destroy?.();
+    plansMsnry.value?.destroy?.();
+    msnry.value = null;
+    plansMsnry.value = null;
+
     // Initialize Photograph Masonry
     const photoGallery = document.querySelector('.placeview-masonry-gallery');
     if (photoGallery) {
-        msnry.value?.destroy?.();
         msnry.value = new Masonry(photoGallery, {
             itemSelector: '.gallery__item',
             columnWidth: 87,
@@ -264,7 +237,6 @@ async function initMasonry() {
     // Initialize Plans Masonry
     const plansGallery = document.querySelector('.plans-masonry-gallery');
     if (plansGallery) {
-        plansMsnry.value?.destroy?.();
         plansMsnry.value = new Masonry(plansGallery, {
             itemSelector: '.plan-gallery__item',
             columnWidth: 87,
@@ -315,8 +287,6 @@ function nextFrame() {
         <div class="place-view">
             <div class="place-gallery-container">
                 <!-- Gallery of objects will show here with the ability to sort by TYPE of object -->
-                <!-- <p>ID: {{ id }}</p> -->
-                <!-- <p>PLACE: {{ place.id }}</p> -->
                 <div>
                     <select v-model="sort" class="dropdown theme-color-background sort">
                         <option active value="type">{{ $t('sortbytype') }}</option>
@@ -325,10 +295,10 @@ function nextFrame() {
                 </div>
 
                 <div>
-                    <select class="dropdown theme-color-background" @change="handleCloneTombChange">
-                        <option :value="null">{{ selectedDataset }}</option>
-                        <option v-for="option in cloneTombOptions" :key="option.id" :value="option.id">
-                            {{ option.datasetName }}
+                    <select v-model="selectedDatasetId" class="dropdown theme-color-background" @change="loadContent">
+                        <option value="">All datasets</option>
+                        <option v-for="dataset in datasets" :key="dataset.id" :value="dataset.id.toString()">
+                            {{ dataset.short_name }}
                         </option>
                     </select>
                 </div>
@@ -605,6 +575,22 @@ a:visited {
     text-align: right;
     width: 75%;
     margin-top: 2px;
+}
+
+.content-table-date {
+    table-layout: fixed;
+}
+
+.content-table-date td:first-child {
+    width: 100px;
+    min-width: 100px;
+    padding-left: 0;
+    padding-right: 20px;
+}
+
+.content-table-date td:nth-child(2) {
+    width: calc(100% - 100px);
+    padding-left: 0;
 }
 
 /* hide map zoom controls in placeview */
