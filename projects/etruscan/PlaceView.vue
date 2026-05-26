@@ -779,12 +779,15 @@ a:visited {
     flex-direction: column;
     align-items: center;
     margin-top: 14px;
+      height:100%!important;
+        width:auto!important;
+         
 }
 
 .hexagon img {
     opacity: 1;
-    height:100%!important;
-    width:auto!important;
+   
+    object-fit: cover;
 }
 
 @media screen and (max-width: 900px) {
