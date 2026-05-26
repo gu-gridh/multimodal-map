@@ -762,26 +762,29 @@ a:visited {
     color: white;
 }
 
-.hexagon img {
-    opacity: 1;
-}
+
 
 .pointcloud {
-    background-color: orange;
     transform: scale(1.15);
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-top: 14px;
+     height:100%!important;
 }
 
 .mesh {
-    background-color: cyan;
     transform: scale(1.2);
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-top: 14px;
+}
+
+.hexagon img {
+    opacity: 1;
+    height:100%!important;
+    width:auto!important;
 }
 
 @media screen and (max-width: 900px) {
