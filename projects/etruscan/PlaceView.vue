@@ -1,276 +1,280 @@
 <script setup>
-    import { ref, onMounted, inject, computed, nextTick, watch } from 'vue';
-    import PlaceViewCard from "./PlaceViewCard.vue";
-    import MapComponent from "@/components/MapComponent.vue";
-    import i18n from '../../src/translations/etruscan';
-    import { etruscanStore } from "./settings/store";
-    import { useRoute } from 'vue-router';
-    import apiConfig from "./settings/apiConfig";
-    import Masonry from 'masonry-layout';
-    import imagesLoaded from 'imagesloaded';
-    import { DianaClient } from "./settings/diana.js";
+import { ref, onMounted, inject, computed, nextTick, watch } from 'vue';
+import PlaceViewCard from "./PlaceViewCard.vue";
+import MapComponent from "@/components/MapComponent.vue";
+import i18n from '../../src/translations/etruscan';
+import { etruscanStore } from "./settings/store";
+import { useRoute } from 'vue-router';
+import apiConfig from "./settings/apiConfig";
+import Masonry from 'masonry-layout';
+import imagesLoaded from 'imagesloaded';
+import { DianaClient } from "./settings/diana.js";
 
 
-    const msnry = ref(null);
-    const plansMsnry = ref(null);
-    const sort = ref('type');
-    const etruscan = etruscanStore();
-    const groupedByYear = ref({});
-    const id = computed(() => etruscan.placeId);
-    const dianaClient = new DianaClient("etruscantombs");
-    const images = ref([]);
-    const plans = ref([]);
-    const route = useRoute();
-    const nextPageUrl = ref(null);
-    const hasMoreImages = ref(true);
-    const isLoading = ref(false);
-    const selectedDataset = ref(null);
-    const cloneTombOptions = ref([]);
+const msnry = ref(null);
+const plansMsnry = ref(null);
+const sort = ref('type');
+const etruscan = etruscanStore();
+const groupedByYear = ref({});
+const id = computed(() => etruscan.placeId);
+const dianaClient = new DianaClient("etruscantombs");
+const images = ref([]);
+const plans = ref([]);
+const route = useRoute();
+const nextPageUrl = ref(null);
+const hasMoreImages = ref(true);
+const isLoading = ref(false);
+const selectedDataset = ref(null);
+const cloneTombOptions = ref([]);
 
-    const props = defineProps({
-        name: String,
-    });
+const props = defineProps({
+    name: String,
+});
 
-    let observations = ref([]);
-    let documents = ref([]);
-    let pointcloud = ref([]);
-    let object3jsModels = ref([]);
+let observations = ref([]);
+let documents = ref([]);
+let pointcloud = ref([]);
+let object3jsModels = ref([]);
 
-    const datasetsMap = {
-        1: "CTSG",
-        2: "SIR",
-    };
+const datasetsMap = {
+    1: "CTSG",
+    2: "SIR",
+};
 
-    const combined3DModels = computed(() => [
-        ...pointcloud.value.map(p => ({ ...p, modelType: 'pointcloud' })),
-        ...object3jsModels.value
-    ]);
+const combined3DModels = computed(() => [
+    ...pointcloud.value.map(p => ({ ...p, modelType: 'pointcloud' })),
+    ...object3jsModels.value
+]);
 
-    const sortedGroupedByYear = computed(() => {
-        return Object.entries(groupedByYear.value)
-            .sort((a, b) => parseInt(b[0]) - parseInt(a[0]));
-    });
+const sortedGroupedByYear = computed(() => {
+    return Object.entries(groupedByYear.value)
+        .sort((a, b) => parseInt(b[0]) - parseInt(a[0]));
+});
 
-    watch(sort, (newValue, oldValue) => {
-        if (newValue === 'year' && hasMoreImages.value) {
-            fetchMoreImages();
-        }
-    });
+watch(sort, (newValue, oldValue) => {
+    if (newValue === 'year' && hasMoreImages.value) {
+        fetchMoreImages();
+    }
+});
 
-    watch(() => sort.value, async () => {
-        await nextTick(); // Wait for Vue to update the DOM
+watch(() => sort.value, async () => {
+    await nextTick(); // Wait for Vue to update the DOM
 
-        // Destroy the old Masonry instance if it exists
-        if (msnry.value?.destroy) {
-            msnry.value.destroy();
-        }
-
-        if (plansMsnry.value?.destroy) {
-            plansMsnry.value.destroy();
-        }
-
-        // Reinitialize Masonry
-        initMasonry();
-    });
-
-    function isImage(item) {
-        return 'iiif_file' in item;
+    // Destroy the old Masonry instance if it exists
+    if (msnry.value?.destroy) {
+        msnry.value.destroy();
     }
 
-    function isObservation(item) {
-        return 'observation' in item;
+    if (plansMsnry.value?.destroy) {
+        plansMsnry.value.destroy();
     }
 
-    function isPointcloud(item) {
-        return 'camera_position' in item;
+    // Reinitialize Masonry
+    initMasonry();
+});
+
+function isImage(item) {
+    return 'iiif_file' in item;
+}
+
+function isObservation(item) {
+    return 'observation' in item;
+}
+
+function isPointcloud(item) {
+    return 'camera_position' in item;
+}
+
+function isObject3jsModel(item) {
+    return item.modelType === 'object3js';
+}
+
+function isDocument(item) {
+    return 'upload' in item;
+}
+
+function previewImageUrl(previewImage) {
+    return previewImage ? `${previewImage}/full/250,/0/default.jpg` : null;
+}
+
+function toggleLanguage() {
+    if (i18n.global.locale === 'en') {
+        i18n.global.locale = 'it';
+    } else {
+        i18n.global.locale = 'en';
     }
+}
 
-    function isObject3jsModel(item) {
-        return item.modelType === 'object3js';
+async function fetchMoreImages() {
+    if (!hasMoreImages.value || !nextPageUrl.value) {
+        return;
     }
+    isLoading.value = true;
 
-    function isDocument(item) {
-        return 'upload' in item;
-    }
-
-    function toggleLanguage() {
-        if (i18n.global.locale === 'en') {
-            i18n.global.locale = 'it';
-        } else {
-            i18n.global.locale = 'en';
-        }
-    }
-
-    async function fetchMoreImages() {
-        if (!hasMoreImages.value || !nextPageUrl.value) {
-            return;
-        }
-        isLoading.value = true;
-
-        try {
-            const newImages = [];
-            while (nextPageUrl.value) {
-                const response = await fetch(nextPageUrl.value);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const data = await response.json();
-
-                nextPageUrl.value = data.next && data.next.startsWith('http://')
-                    ? data.next.replace('http://', 'https://')
-                    : data.next;
-
-                hasMoreImages.value = !!data.next;
-
-                newImages.push(...data.results.filter((image) => image.published));
+    try {
+        const newImages = [];
+        while (nextPageUrl.value) {
+            const response = await fetch(nextPageUrl.value);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
-            images.value = [...images.value, ...newImages];
+            const data = await response.json();
 
-            groupAndSortByYear([...images.value, ...plans.value, ...observations.value, ...documents.value, ...pointcloud.value, ...object3jsModels.value]);
+            nextPageUrl.value = data.next && data.next.startsWith('http://')
+                ? data.next.replace('http://', 'https://')
+                : data.next;
 
-            await nextTick();
+            hasMoreImages.value = !!data.next;
 
-            const photoGallery = document.querySelector('.placeview-masonry-gallery');
-            if (photoGallery) {
-                await new Promise(resolve => imagesLoaded(photoGallery, resolve));
-                msnry.value?.reloadItems();
-                msnry.value?.layout();
-            }
-        } catch (error) {
-            console.error("Failed to fetch more images:", error);
-        } finally {
-            isLoading.value = false;
+            newImages.push(...data.results.filter((image) => image.published));
         }
-    }
+        images.value = [...images.value, ...newImages];
 
-    onMounted(async () => {
-        let urlId = route.params.name;
+        groupAndSortByYear([...images.value, ...plans.value, ...observations.value, ...documents.value, ...pointcloud.value, ...object3jsModels.value]);
 
-        if (Array.isArray(urlId)) {
-            urlId = urlId[0];
-        }
+        await nextTick();
 
-        urlId = urlId.split('/').pop().split('_').slice(1).join('_'); //get everything after the first _ in the URL
-        urlId = urlId.replace(/_/g, '%20'); //replace _ with spaces
-
-        // Check if placeId is undefined or null and fetch for the id based on the name
-        const response = await fetch(`https://diana.dh.gu.se/api/etruscantombs/geojson/place/?name=${urlId}&depth=1`);
-        const data = await response.json();
-
-        if (data.features && data.features.length > 0) {
-            const mainFeature = data.features[0];
-            etruscan.placeId = mainFeature.id;
-            const mainDatasetId = mainFeature.properties.dataset.id;
-            selectedDataset.value = datasetsMap[mainDatasetId] || "Unknown Dataset";
-
-            //check clone_tombs for different dataset IDs
-            mainFeature.properties.clone_tombs.forEach(cloneTomb => {
-                if (cloneTomb.dataset !== mainDatasetId) {
-                    //determine the id based on the name
-                    const id = isNaN(parseInt(cloneTomb.name)) ? cloneTomb.name : parseInt(cloneTomb.name);
-
-                    cloneTombOptions.value.push({
-                        id: id,
-                        datasetId: cloneTomb.dataset,
-                        datasetName: datasetsMap[cloneTomb.dataset] || "Unknown Dataset"
-                    });
-                }
-            });
-        }
-
-        if (id) {
-            const [fetchedImages, fetchedObservations, fetchedDocuments, fetchedPointclouds, fetchedObject3jsModels, fetchedPlans] = await Promise.all
-                ([
-                    fetch(`${apiConfig.IMAGE}?tomb=${id.value}&limit=8&type_of_image=2&depth=2`).then(res => res.json()),
-                    dianaClient.listAll("observation", { place: id.value }),
-                    dianaClient.listAll("document", { place: id.value }),
-                    dianaClient.listAll("objectpointcloud", { tomb: id.value, depth: 2 }),
-                    fetch(`https://diana.dh.gu.se/api/etruscantombs/objecttexturedmesh/?tomb=${id.value}&depth=1`).then(res => res.json()),
-                    fetch(`${apiConfig.IMAGE}?tomb=${id.value}&type_of_image=1&type_of_image=5&depth=2`).then(res => res.json())
-                ]);
-
-            images.value = fetchedImages.results.filter((image) => image.published);
-            nextPageUrl.value = fetchedImages.next && fetchedImages.next.startsWith('http://')
-                ? fetchedImages.next.replace('http://', 'https://')
-                : fetchedImages.next;
-            hasMoreImages.value = !!fetchedImages.next;
-            observations.value = fetchedObservations;
-            documents.value = fetchedDocuments;
-            pointcloud.value = fetchedPointclouds;
-            object3jsModels.value = fetchedObject3jsModels.results
-                .filter((model) => model.published)
-                .map((model) => ({ ...model, modelType: 'object3js' }));
-            plans.value = fetchedPlans.results;
-
-            /* For sorting by year */
-            groupAndSortByYear([...images.value, ...plans.value, ...observations.value, ...documents.value, ...pointcloud.value, ...object3jsModels.value]);
-        }
-
-        nextTick(() => {
-            initMasonry();
-        });
-    });
-
-    function groupAndSortByYear(allItems) {
-        // Reset groupedByYear
-        groupedByYear.value = {};
-
-        // Group items by year
-        allItems.forEach((item) => {
-            const fullDate = new Date(item.date);
-            const year = fullDate.getFullYear().toString();
-
-            if (!groupedByYear.value[year]) {
-                groupedByYear.value[year] = [];
-            }
-            groupedByYear.value[year].push(item);
-        });
-    }
-
-    function createPlaceURL() {
-        const url = `${apiConfig.ADMIN_PLACE}${id.value}`;
-        window.open(url, "_top");
-    }
-
-    function handleCloneTombChange(event) {
-        const selectedValue = (event.target).value;
-        const selectedOption = cloneTombOptions.value.find(option => option.id.toString() === selectedValue);
-        if (selectedOption) {
-            selectedDataset.value = selectedOption.datasetName;
-            const formattedId = selectedOption.id.toString().replace(/\s+/g, '_');
-            window.location.href = `/${selectedDataset.value}_${formattedId}`;
-        }
-    }
-
-    async function initMasonry() {
-        // Initialize Photograph Masonry
         const photoGallery = document.querySelector('.placeview-masonry-gallery');
         if (photoGallery) {
-            await new Promise(resolve => {
-                imagesLoaded(photoGallery, resolve);
-            });
-            msnry.value = new Masonry(photoGallery, {
-                itemSelector: '.gallery__item',
-                columnWidth: 87,
-                gutter: 8,
-                percentPosition: true,
-            });
+            await new Promise(resolve => imagesLoaded(photoGallery, resolve));
+            msnry.value?.reloadItems();
+            msnry.value?.layout();
         }
-
-        // Initialize Plans Masonry
-        const plansGallery = document.querySelector('.plans-masonry-gallery');
-        if (plansGallery) {
-            await new Promise(resolve => {
-                imagesLoaded(plansGallery, resolve);
-            });
-            plansMsnry.value = new Masonry(plansGallery, {
-                itemSelector: '.plan-gallery__item',
-                columnWidth: 87,
-                gutter: 8,
-                percentPosition: true,
-            });
-        }
+    } catch (error) {
+        console.error("Failed to fetch more images:", error);
+    } finally {
+        isLoading.value = false;
     }
+}
+
+onMounted(async () => {
+    let urlId = route.params.name;
+
+    if (Array.isArray(urlId)) {
+        urlId = urlId[0];
+    }
+
+    urlId = urlId.split('/').pop().split('_').slice(1).join('_'); //get everything after the first _ in the URL
+    urlId = urlId.replace(/_/g, '%20'); //replace _ with spaces
+
+    // Check if placeId is undefined or null and fetch for the id based on the name
+    const response = await fetch(`https://diana.dh.gu.se/api/etruscantombs/geojson/place/?name=${urlId}&depth=1`);
+    const data = await response.json();
+
+    if (data.features && data.features.length > 0) {
+        const mainFeature = data.features[0];
+        etruscan.placeId = mainFeature.id;
+        const mainDatasetId = mainFeature.properties.dataset.id;
+        selectedDataset.value = datasetsMap[mainDatasetId] || "Unknown Dataset";
+
+        //check clone_tombs for different dataset IDs
+        mainFeature.properties.clone_tombs.forEach(cloneTomb => {
+            if (cloneTomb.dataset !== mainDatasetId) {
+                //determine the id based on the name
+                const id = isNaN(parseInt(cloneTomb.name)) ? cloneTomb.name : parseInt(cloneTomb.name);
+
+                cloneTombOptions.value.push({
+                    id: id,
+                    datasetId: cloneTomb.dataset,
+                    datasetName: datasetsMap[cloneTomb.dataset] || "Unknown Dataset"
+                });
+            }
+        });
+    }
+
+    if (id) {
+        const [fetchedImages, fetchedObservations, fetchedDocuments, fetchedPointclouds, fetchedObject3jsModels, fetchedPlans] = await Promise.all
+            ([
+                fetch(`${apiConfig.IMAGE}?tomb=${id.value}&limit=8&type_of_image=2&depth=2`).then(res => res.json()),
+                dianaClient.listAll("observation", { place: id.value }),
+                dianaClient.listAll("document", { place: id.value }),
+                dianaClient.listAll("objectpointcloud", { tomb: id.value, depth: 2 }),
+                fetch(`https://diana.dh.gu.se/api/etruscantombs/objecttexturedmesh/?tomb=${id.value}&depth=1`).then(res => res.json()),
+                fetch(`${apiConfig.IMAGE}?tomb=${id.value}&type_of_image=1&type_of_image=5&depth=2`).then(res => res.json())
+            ]);
+
+        images.value = fetchedImages.results.filter((image) => image.published);
+        nextPageUrl.value = fetchedImages.next && fetchedImages.next.startsWith('http://')
+            ? fetchedImages.next.replace('http://', 'https://')
+            : fetchedImages.next;
+        hasMoreImages.value = !!fetchedImages.next;
+        observations.value = fetchedObservations;
+        documents.value = fetchedDocuments;
+        pointcloud.value = fetchedPointclouds;
+        object3jsModels.value = fetchedObject3jsModels.results
+            .filter((model) => model.published)
+            .map((model) => ({ ...model, modelType: 'object3js' }));
+        plans.value = fetchedPlans.results;
+
+        /* For sorting by year */
+        groupAndSortByYear([...images.value, ...plans.value, ...observations.value, ...documents.value, ...pointcloud.value, ...object3jsModels.value]);
+    }
+
+    nextTick(() => {
+        initMasonry();
+    });
+});
+
+function groupAndSortByYear(allItems) {
+    // Reset groupedByYear
+    groupedByYear.value = {};
+
+    // Group items by year
+    allItems.forEach((item) => {
+        const fullDate = new Date(item.date);
+        const year = fullDate.getFullYear().toString();
+
+        if (!groupedByYear.value[year]) {
+            groupedByYear.value[year] = [];
+        }
+        groupedByYear.value[year].push(item);
+    });
+}
+
+function createPlaceURL() {
+    const url = `${apiConfig.ADMIN_PLACE}${id.value}`;
+    window.open(url, "_top");
+}
+
+function handleCloneTombChange(event) {
+    const selectedValue = (event.target).value;
+    const selectedOption = cloneTombOptions.value.find(option => option.id.toString() === selectedValue);
+    if (selectedOption) {
+        selectedDataset.value = selectedOption.datasetName;
+        const formattedId = selectedOption.id.toString().replace(/\s+/g, '_');
+        window.location.href = `/${selectedDataset.value}_${formattedId}`;
+    }
+}
+
+async function initMasonry() {
+    // Initialize Photograph Masonry
+    const photoGallery = document.querySelector('.placeview-masonry-gallery');
+    if (photoGallery) {
+        await new Promise(resolve => {
+            imagesLoaded(photoGallery, resolve);
+        });
+        msnry.value = new Masonry(photoGallery, {
+            itemSelector: '.gallery__item',
+            columnWidth: 87,
+            gutter: 8,
+            percentPosition: true,
+        });
+    }
+
+    // Initialize Plans Masonry
+    const plansGallery = document.querySelector('.plans-masonry-gallery');
+    if (plansGallery) {
+        await new Promise(resolve => {
+            imagesLoaded(plansGallery, resolve);
+        });
+        plansMsnry.value = new Masonry(plansGallery, {
+            itemSelector: '.plan-gallery__item',
+            columnWidth: 87,
+            gutter: 8,
+            percentPosition: true,
+        });
+    }
+}
 </script>
 
 <template>
@@ -354,8 +358,9 @@
                                         </div>
                                     </div>
                                     <div class="pointcloud">
-                                        <img :src="`${model.preview_image.iiif_file}/full/250,/0/default.jpg`"
-                                            :alt="model.title" class="image-square" />
+                                        <img v-if="previewImageUrl(model.preview_image)"
+                                            :src="previewImageUrl(model.preview_image)" :alt="model.title"
+                                            class="image-square" />
                                     </div>
                                 </a>
 
@@ -371,9 +376,9 @@
 
                                     </div>
                                     <div class="mesh">
-                                        <img v-if="model.preview_image?.iiif_file"
-                                            :src="`${model.preview_image.iiif_file}/full/250,/0/default.jpg`"
-                                            :alt="model.title" class="image-square" />
+                                        <img v-if="previewImageUrl(model.preview_image)"
+                                            :src="previewImageUrl(model.preview_image)" :alt="model.title"
+                                            class="image-square" />
                                     </div>
                                 </a>
 
@@ -494,9 +499,9 @@
                                     :href="`http://localhost:8094/viewer/?q=${item.id}/model`" target="_top">
                                     <div class="model-object">
 
-                                        <img v-if="item.preview_image?.iiif_file"
-                                            :src="`${item.preview_image.iiif_file}/full/250,/0/default.jpg`"
-                                            :alt="item.title" class="image-square hexagon hexagon-small" />
+                                        <img v-if="previewImageUrl(item.preview_image)"
+                                            :src="previewImageUrl(item.preview_image)" :alt="item.title"
+                                            class="image-square hexagon hexagon-small" />
                                     </div>
                                     <div class="meta-data-below-text">
                                         <div class="meta-pellet">Textured mesh</div>
@@ -508,8 +513,9 @@
                                     :href="` https://etruscan.dh.gu.se/viewer/?q=${item.id}/pointcloud`" target="_top">
                                     <div class="model-object">
 
-                                        <img :src="`${item.preview_image.iiif_file}/full/250,/0/default.jpg`"
-                                            :alt="item.title" class="image-square hexagon hexagon-small" />
+                                        <img v-if="previewImageUrl(item.preview_image)"
+                                            :src="previewImageUrl(item.preview_image)" :alt="item.title"
+                                            class="image-square hexagon hexagon-small" />
                                     </div>
                                     <div class="meta-data-below-text">
                                         <div class="meta-pellet">Pointcloud</div>
@@ -539,285 +545,283 @@
 </template>
 
 <style scoped>
-    .main-container {
-        background-color: rgba(232, 228, 217, 0.5) !important;
-        backdrop-filter: blur(10px) saturate(50%) brightness(100%);
-    }
+.main-container {
+    background-color: rgba(232, 228, 217, 0.5) !important;
+    backdrop-filter: blur(10px) saturate(50%) brightness(100%);
+}
 
-    .sort {
-        margin-left: 120px;
-    }
+.sort {
+    margin-left: 120px;
+}
 
-    .show-button {
-        color: white;
-        height: auto;
-        border-radius: 4px;
-        padding: 1px 6px;
-        background-color: transparent;
-        float: right;
-        font-size: 0.85em;
-        margin-top: 5px;
-        transition: all 0.2s ease-in-out;
-        min-width: 10px;
-    }
+.show-button {
+    color: white;
+    height: auto;
+    border-radius: 4px;
+    padding: 1px 6px;
+    background-color: transparent;
+    float: right;
+    font-size: 0.85em;
+    margin-top: 5px;
+    transition: all 0.2s ease-in-out;
+    min-width: 10px;
+}
 
-    .show-button:hover {
-        background-color: var(--theme-4) !important;
-        transform: scale(1.05);
-    }
+.show-button:hover {
+    background-color: var(--theme-4) !important;
+    transform: scale(1.05);
+}
 
-    /* unvisited link */
-    a:link {
-        font-weight: normal !important;
-    }
+/* unvisited link */
+a:link {
+    font-weight: normal !important;
+}
 
-    /* visited link */
-    a:visited {
-        font-weight: normal !important;
-    }
+/* visited link */
+a:visited {
+    font-weight: normal !important;
+}
 
-    /* mouse over link */
-    a:hover {}
+/* mouse over link */
+a:hover {}
 
-    /* selected link */
-    a:active {}
+/* selected link */
+a:active {}
 
-    .content-table td {
-        color: black;
-    }
+.content-table td {
+    color: black;
+}
 
-    .content-table td .gallery-label {
-        text-align: right;
-        width: 75%;
-        margin-top: 2px;
-    }
+.content-table td .gallery-label {
+    text-align: right;
+    width: 75%;
+    margin-top: 2px;
+}
 
-    /* hide map zoom controls in placeview */
-    :deep(.ol-zoom) {
-        display: none !important;
-    }
+/* hide map zoom controls in placeview */
+:deep(.ol-zoom) {
+    display: none !important;
+}
 
-    .gallery__item {
-        width: 180px;
-        margin-bottom: 10px;
-    }
+.gallery__item {
+    width: 180px;
+    margin-bottom: 10px;
+}
 
-    .plan-gallery__item {
-        width: 180px;
-        margin-bottom: 10px;
-    }
+.plan-gallery__item {
+    width: 180px;
+    margin-bottom: 10px;
+}
 
-    .masonry-image .meta-data-overlay {
-        display: flex;
-        flex-direction: column;
-        justify-content: end;
-        bottom: 0px;
-        opacity: 0.0;
-        padding-bottom: 5px;
-        background: rgba(0, 0, 0, 0.6);
-        transition: all 0.2s ease-in-out;
-        padding-bottom: 8px;
-    }
+.masonry-image .meta-data-overlay {
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    bottom: 0px;
+    opacity: 0.0;
+    padding-bottom: 5px;
+    background: rgba(0, 0, 0, 0.6);
+    transition: all 0.2s ease-in-out;
+    padding-bottom: 8px;
+}
 
-    .masonry-image:hover .meta-data-overlay {
-        opacity: 1.0;
-    }
+.masonry-image:hover .meta-data-overlay {
+    opacity: 1.0;
+}
 
-    .image-placeholder .meta-data-overlay {
-        display: flex;
-        flex-direction: column;
-        justify-content: end;
-        flex-wrap: nowrap;
-        align-items: flex-start;
-        opacity: 0.0;
-        background: rgba(0, 0, 0, 0.6);
-        transition: all 0.2s ease-in-out;
-        padding-bottom: 8px;
-    }
+.image-placeholder .meta-data-overlay {
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+    opacity: 0.0;
+    background: rgba(0, 0, 0, 0.6);
+    transition: all 0.2s ease-in-out;
+    padding-bottom: 8px;
+}
 
-    .hexagon {
-        clip-path: polygon(50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%);
-        background-color:green;
-    }
+.hexagon {
+    clip-path: polygon(50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%);
+    background-color: green;
+}
 
-    .heptagon {
-        clip-path: polygon(50% 0%, 90% 20%, 100% 60%, 75% 100%, 25% 100%, 0% 60%, 10% 20%)
-    }
+.heptagon {
+    clip-path: polygon(50% 0%, 90% 20%, 100% 60%, 75% 100%, 25% 100%, 0% 60%, 10% 20%)
+}
 
-    .hexagon-adapted {
-        padding-top: 40px;
-    }
-
-  
-
-    .hexagon-small {
-        transform: scale(1.0);
-        overflow: auto !important;
-    }
-
-    .model-object {
-        width: 180px;
-        height: 180px;
-    }
-
-    .meta-data-overlay-center {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        position: absolute;
-        bottom: 0px;
-        opacity: 0.0;
-        z-index: 10;
-        padding: 0px;
-        height: 100%;
-        width: 100%;
-        color: white;
-        background: rgba(0, 0, 0, 0.6);
-        transition: all 0.2s ease-in-out;
-    }
-
-    .image-placeholder:hover .meta-data-overlay-center {
-        opacity: 1.0;
-    }
-
-    .meta-data-overlay-year {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        position: absolute;
-        bottom: 0px;
-        opacity: 1.0;
-        z-index: 10;
-        padding: 0px;
-        height: 100%;
-        width: 100%;
-        color: white;
-    }
+.hexagon-adapted {
+    padding-top: 40px;
+}
 
 
-    .plan-placeholder .meta-data-overlay {
-        color: black;
-        background: linear-gradient(rgba(255, 255, 255, 0.0) 50%, rgba(255, 255, 255, 0.8) 100%);
-        transition: all 0.2s ease-in-out;
-    }
 
-    .image-placeholder:hover .meta-data-overlay {
-        opacity: 1.0;
-    }
+.hexagon-small {
+    transform: scale(1.0);
+    overflow: auto !important;
+}
 
-    .meta-data-overlay .meta-data-overlay-text {
-        font-size: 0.8em;
-        width: auto;
-    }
+.model-object {
+    width: 180px;
+    height: 180px;
+}
 
-    .meta-data-below-text {
-        font-size: 1.0em;
-        width: 180px;
-        height: 180px;
-        position: relative;
-        display: flex;
-        flex-direction: row;
-        flex-wrap: nowrap;
-        align-items: center;
-        justify-content: center;
-        margin-top: -180px;
-        opacity:0.0;
-        background-color:rgb(0,0,0,0.6);
-        clip-path: polygon(50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%);
-         transition: all 0.2s ease-in-out;
-        transform:scale(1.0);
-    }
+.meta-data-overlay-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    bottom: 0px;
+    opacity: 0.0;
+    z-index: 10;
+    padding: 0px;
+    height: 100%;
+    width: 100%;
+    color: white;
+    background: rgba(0, 0, 0, 0.6);
+    transition: all 0.2s ease-in-out;
+}
 
-       .meta-data-below-text:hover {
-       opacity:1.0;
-       
-    }
+.image-placeholder:hover .meta-data-overlay-center {
+    opacity: 1.0;
+}
 
- 
+.meta-data-overlay-year {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    bottom: 0px;
+    opacity: 1.0;
+    z-index: 10;
+    padding: 0px;
+    height: 100%;
+    width: 100%;
+    color: white;
+}
 
-    .meta-pellet {
-      /*   background-color: white;
+
+.plan-placeholder .meta-data-overlay {
+    color: black;
+    background: linear-gradient(rgba(255, 255, 255, 0.0) 50%, rgba(255, 255, 255, 0.8) 100%);
+    transition: all 0.2s ease-in-out;
+}
+
+.image-placeholder:hover .meta-data-overlay {
+    opacity: 1.0;
+}
+
+.meta-data-overlay .meta-data-overlay-text {
+    font-size: 0.8em;
+    width: auto;
+}
+
+.meta-data-below-text {
+    font-size: 1.0em;
+    width: 180px;
+    height: 180px;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+    margin-top: -180px;
+    opacity: 0.0;
+    background-color: rgb(0, 0, 0, 0.6);
+    clip-path: polygon(50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%);
+    transition: all 0.2s ease-in-out;
+    transform: scale(1.0);
+}
+
+.meta-data-below-text:hover {
+    opacity: 1.0;
+
+}
+
+
+
+.meta-pellet {
+    /*   background-color: white;
         color: black;
         border-radius: 5px;
         padding: 3px 5px;
         width: auto;
         margin-left: -2px;
         */
-        font-size: 0.9em; 
-        color:white;
-    }
+    font-size: 0.9em;
+    color: white;
+}
 
-      .hexagon img {
-        opacity: 1;
+.hexagon img {
+    opacity: 1;
+}
 
-    }
+.pointcloud {
+    background-color: orange;
+    transform: scale(1.15);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 14px;
+}
 
-    .pointcloud { 
-      background-color:orange;
-       transform: scale(1.15);
-       display:flex;
-       flex-direction: column;
-       align-items: center;
-       margin-top:14px;
-    }
-
-    .mesh {
-      background-color: cyan;
+.mesh {
+    background-color: cyan;
     transform: scale(1.2);
-        display:flex;
-       flex-direction: column;
-       align-items: center;
-       margin-top:14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 14px;
+}
+
+@media screen and (max-width: 900px) {
+
+    #app .maijn-container {
+        padding: 0px !important;
     }
 
-
-    @media screen and (max-width: 900px) {
-
-        #app .maijn-container {
-            padding: 0px !important;
-        }
-
-        #app .place-gallery-container {
-            padding: 0px !important;
-            margin-left: 0px;
-        }
-
-        #app .place-view {
-            width: 100% !important;
-            padding-top: 20px !important;
-            margin-left: 0px !important;
-            padding-bottom: 100px;
-        }
-
-        .sort {
-            margin-left: 20px;
-        }
-
-        .square {
-            width: 120px;
-            height: 120px;
-        }
-
-        .placeview-masonry-gallery {
-            width: 100%;
-        }
-
-        .document-placeholder {
-            max-width: 90%;
-        }
-
-        .documentlabel {
-            display: none;
-        }
-
-        .documentdata {
-            display: none;
-        }
-
-        .observation-placeholder {
-            max-width: 90%;
-        }
+    #app .place-gallery-container {
+        padding: 0px !important;
+        margin-left: 0px;
     }
+
+    #app .place-view {
+        width: 100% !important;
+        padding-top: 20px !important;
+        margin-left: 0px !important;
+        padding-bottom: 100px;
+    }
+
+    .sort {
+        margin-left: 20px;
+    }
+
+    .square {
+        width: 120px;
+        height: 120px;
+    }
+
+    .placeview-masonry-gallery {
+        width: 100%;
+    }
+
+    .document-placeholder {
+        max-width: 90%;
+    }
+
+    .documentlabel {
+        display: none;
+    }
+
+    .documentdata {
+        display: none;
+    }
+
+    .observation-placeholder {
+        max-width: 90%;
+    }
+}
 </style>
