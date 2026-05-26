@@ -7,9 +7,7 @@ import { etruscanStore } from "./settings/store";
 import { useRoute } from 'vue-router';
 import apiConfig from "./settings/apiConfig";
 import Masonry from 'masonry-layout';
-import imagesLoaded from 'imagesloaded';
 import { DianaClient } from "./settings/diana.js";
-
 
 const msnry = ref(null);
 const plansMsnry = ref(null);
@@ -58,9 +56,8 @@ watch(sort, (newValue, oldValue) => {
 });
 
 watch(() => sort.value, async () => {
-    await nextTick(); // Wait for Vue to update the DOM
+    await nextTick();
 
-    // Destroy the old Masonry instance if it exists
     if (msnry.value?.destroy) {
         msnry.value.destroy();
     }
@@ -69,8 +66,7 @@ watch(() => sort.value, async () => {
         plansMsnry.value.destroy();
     }
 
-    // Reinitialize Masonry
-    initMasonry();
+    await initMasonry();
 });
 
 function isImage(item) {
@@ -95,6 +91,14 @@ function isDocument(item) {
 
 function previewImageUrl(previewImage) {
     return previewImage ? `${previewImage}/full/250,/0/default.jpg` : null;
+}
+
+function getAspectStyle(image) {
+    if (!image.width || !image.height) {
+        return { aspectRatio: '1 / 1' };
+    }
+
+    return { aspectRatio: `${image.width} / ${image.height}` };
 }
 
 function toggleLanguage() {
@@ -133,13 +137,9 @@ async function fetchMoreImages() {
         groupAndSortByYear([...images.value, ...plans.value, ...observations.value, ...documents.value, ...pointcloud.value, ...object3jsModels.value]);
 
         await nextTick();
+        await nextFrame();
 
-        const photoGallery = document.querySelector('.placeview-masonry-gallery');
-        if (photoGallery) {
-            await new Promise(resolve => imagesLoaded(photoGallery, resolve));
-            msnry.value?.reloadItems();
-            msnry.value?.layout();
-        }
+        layoutMasonry(msnry.value);
     } catch (error) {
         console.error("Failed to fetch more images:", error);
     } finally {
@@ -210,9 +210,7 @@ onMounted(async () => {
         groupAndSortByYear([...images.value, ...plans.value, ...observations.value, ...documents.value, ...pointcloud.value, ...object3jsModels.value]);
     }
 
-    nextTick(() => {
-        initMasonry();
-    });
+    await initMasonry();
 });
 
 function groupAndSortByYear(allItems) {
@@ -247,33 +245,49 @@ function handleCloneTombChange(event) {
 }
 
 async function initMasonry() {
+    await nextTick();
+    await nextFrame();
+
     // Initialize Photograph Masonry
     const photoGallery = document.querySelector('.placeview-masonry-gallery');
     if (photoGallery) {
-        await new Promise(resolve => {
-            imagesLoaded(photoGallery, resolve);
-        });
+        msnry.value?.destroy?.();
         msnry.value = new Masonry(photoGallery, {
             itemSelector: '.gallery__item',
             columnWidth: 87,
             gutter: 8,
             percentPosition: true,
         });
+        layoutMasonry(msnry.value);
     }
 
     // Initialize Plans Masonry
     const plansGallery = document.querySelector('.plans-masonry-gallery');
     if (plansGallery) {
-        await new Promise(resolve => {
-            imagesLoaded(plansGallery, resolve);
-        });
+        plansMsnry.value?.destroy?.();
         plansMsnry.value = new Masonry(plansGallery, {
             itemSelector: '.plan-gallery__item',
             columnWidth: 87,
             gutter: 8,
             percentPosition: true,
         });
+        layoutMasonry(plansMsnry.value);
     }
+}
+
+function layoutMasonry(instance) {
+    instance?.reloadItems();
+    instance?.layout();
+}
+
+function nextFrame() {
+    return new Promise(resolve => {
+        if (typeof requestAnimationFrame === 'function') {
+            requestAnimationFrame(resolve);
+        } else {
+            resolve();
+        }
+    });
 }
 </script>
 
@@ -364,8 +378,7 @@ async function initMasonry() {
                                     </div>
                                 </a>
 
-                                <a v-else-if="model.modelType === 'object3js'"
-                                    :href="``" target="_top">
+                                <a v-else-if="model.modelType === 'object3js'" :href="``" target="_top">
                                     <div class="meta-data-overlay-center">
 
 
@@ -394,7 +407,8 @@ async function initMasonry() {
                         <td>
                             <div class="plans-masonry-gallery">
                                 <div v-for="(image, index) in plans" :key="index" class="plan-gallery__item">
-                                    <div class="masonry-image" v-if="'iiif_file' in image">
+                                    <div class="masonry-image" v-if="'iiif_file' in image"
+                                        :style="getAspectStyle(image)">
                                         <a :href="`https://etruscan.dh.gu.se/viewer/?q=${image.id}/image`"
                                             target="_top">
                                             <div class="meta-data-overlay">
@@ -403,7 +417,7 @@ async function initMasonry() {
                                                 </div>
                                             </div>
                                             <img :src="`${image.iiif_file}/full/200,/0/default.jpg`" :alt="image.title"
-                                                class="image-square-plan" />
+                                                :width="image.width" :height="image.height" class="image-square-plan" />
                                         </a>
                                     </div>
                                 </div>
@@ -426,7 +440,8 @@ async function initMasonry() {
                         <td>
                             <div class="placeview-masonry-gallery">
                                 <div v-for="(image, index) in images" :key="index" class="gallery__item">
-                                    <div class="masonry-image" v-if="'iiif_file' in image">
+                                    <div class="masonry-image" v-if="'iiif_file' in image"
+                                        :style="getAspectStyle(image)">
                                         <a :href="`https://etruscan.dh.gu.se/viewer/?q=${image.id}/image`"
                                             target="_top">
                                             <div class="meta-data-overlay">
@@ -435,6 +450,7 @@ async function initMasonry() {
                                                 </div>
                                             </div>
                                             <img :src="`${image.iiif_file}/full/200,/0/default.jpg`" :alt="image.title"
+                                                :width="image.width" :height="image.height"
                                                 class="image-square-inner" />
                                         </a>
                                     </div>
@@ -495,8 +511,7 @@ async function initMasonry() {
                                 </div>
 
                                 <!-- If the item is a model -->
-                                <a v-else-if="isObject3jsModel(item)"
-                                    :href="``" target="_top">
+                                <a v-else-if="isObject3jsModel(item)" :href="``" target="_top">
                                     <div class="model-object">
 
                                         <img v-if="previewImageUrl(item.preview_image)"
@@ -582,12 +597,6 @@ a:visited {
     font-weight: normal !important;
 }
 
-/* mouse over link */
-a:hover {}
-
-/* selected link */
-a:active {}
-
 .content-table td {
     color: black;
 }
@@ -606,17 +615,42 @@ a:active {}
 .gallery__item {
     width: 180px;
     margin-bottom: 10px;
+    float: left;
 }
 
 .plan-gallery__item {
     width: 180px;
     margin-bottom: 10px;
+    float: left;
+}
+
+.masonry-image {
+    position: relative;
+    width: 100%;
+    background-color: rgba(232, 228, 217, 0.6);
+    overflow: hidden;
+}
+
+.masonry-image a {
+    display: block;
+    height: 100%;
+}
+
+.masonry-image img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .masonry-image .meta-data-overlay {
     display: flex;
     flex-direction: column;
     justify-content: end;
+    position: absolute;
+    inset: 0;
+    z-index: 2;
     bottom: 0px;
     opacity: 0.0;
     padding-bottom: 5px;
@@ -653,8 +687,6 @@ a:active {}
 .hexagon-adapted {
     padding-top: 40px;
 }
-
-
 
 .hexagon-small {
     transform: scale(1.0);
@@ -702,7 +734,6 @@ a:active {}
     color: white;
 }
 
-
 .plan-placeholder .meta-data-overlay {
     color: black;
     background: linear-gradient(rgba(255, 255, 255, 0.0) 50%, rgba(255, 255, 255, 0.8) 100%);
@@ -738,19 +769,9 @@ a:active {}
 
 .meta-data-below-text:hover {
     opacity: 1.0;
-
 }
 
-
-
 .meta-pellet {
-    /*   background-color: white;
-        color: black;
-        border-radius: 5px;
-        padding: 3px 5px;
-        width: auto;
-        margin-left: -2px;
-        */
     font-size: 0.9em;
     color: white;
 }
