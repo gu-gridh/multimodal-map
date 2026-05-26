@@ -769,7 +769,7 @@ a:visited {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 14px;
+    margin-top: 0px;
      height:100%!important;
 }
 
@@ -778,15 +778,13 @@ a:visited {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 14px;
+    margin-top: 0px;
       height:100%!important;
         width:auto!important;
-         
 }
 
 .hexagon img {
     opacity: 1;
-   
     object-fit: cover;
 }
 
