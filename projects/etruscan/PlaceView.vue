@@ -928,7 +928,7 @@ a:visited {
 
     .gallery__item,
     .plan-gallery__item {
-        width: 180px;
+        width: 120px;
         margin-bottom: 8px;
     }
 
