@@ -24,11 +24,14 @@ const hasMoreImages = ref(true);
 const isLoading = ref(false);
 const selectedDatasetId = ref("");
 const datasets = ref([]);
+defineProps({
+    name: String,
+});
 
-let observations = ref([]);
-let documents = ref([]);
-let pointcloud = ref([]);
-let object3jsModels = ref([]);
+const observations = ref([]);
+const documents = ref([]);
+const pointcloud = ref([]);
+const object3jsModels = ref([]);
 
 const combined3DModels = computed(() => [
     ...pointcloud.value.map(p => ({ ...p, modelType: 'pointcloud' })),
@@ -38,6 +41,10 @@ const combined3DModels = computed(() => [
 const sortedGroupedByYear = computed(() => {
     return Object.entries(groupedByYear.value)
         .sort((a, b) => parseInt(b[0]) - parseInt(a[0]));
+});
+
+const selectedDatasetLabel = computed(() => {
+    return datasets.value.find(dataset => dataset.id.toString() === selectedDatasetId.value)?.short_name || "All datasets";
 });
 
 watch(() => sort.value, async () => {
@@ -74,6 +81,21 @@ function getAspectStyle(image) {
     }
 
     return { aspectRatio: `${image.width} / ${image.height}` };
+}
+
+function closeDropdown(event) {
+    event.currentTarget.closest('details')?.removeAttribute('open');
+}
+
+function selectSort(value, event) {
+    sort.value = value;
+    closeDropdown(event);
+}
+
+async function selectDataset(value, event) {
+    selectedDatasetId.value = value;
+    closeDropdown(event);
+    await loadContent();
 }
 
 async function fetchDatasets() {
@@ -144,7 +166,6 @@ onMounted(async () => {
     urlId = urlId.split('/').pop().split('_').slice(1).join('_'); //get everything after the first _ in the URL
     urlId = urlId.replace(/_/g, '%20'); //replace _ with spaces
 
-    // Check if placeId is undefined or null and fetch for the id based on the name
     const response = await fetch(`https://diana.dh.gu.se/api/etruscantombs/geojson/place/?name=${urlId}&depth=1`);
     const data = await response.json();
 
@@ -193,10 +214,8 @@ async function loadContent() {
 }
 
 function groupAndSortByYear(allItems) {
-    // Reset groupedByYear
     groupedByYear.value = {};
 
-    // Group items by year
     allItems.forEach((item) => {
         const fullDate = new Date(item.date);
         const year = fullDate.getFullYear().toString();
@@ -222,24 +241,22 @@ async function initMasonry() {
     msnry.value = null;
     plansMsnry.value = null;
 
-    // Initialize Photograph Masonry
     const photoGallery = document.querySelector('.placeview-masonry-gallery');
     if (photoGallery) {
         msnry.value = new Masonry(photoGallery, {
             itemSelector: '.gallery__item',
-            columnWidth: 87,
+            columnWidth: '.gallery__item',
             gutter: 8,
             percentPosition: true,
         });
         layoutMasonry(msnry.value);
     }
 
-    // Initialize Plans Masonry
     const plansGallery = document.querySelector('.plans-masonry-gallery');
     if (plansGallery) {
         plansMsnry.value = new Masonry(plansGallery, {
             itemSelector: '.plan-gallery__item',
-            columnWidth: 87,
+            columnWidth: '.plan-gallery__item',
             gutter: 8,
             percentPosition: true,
         });
@@ -264,7 +281,7 @@ function nextFrame() {
 </script>
 
 <template>
-    <div class="main-container">
+    <div class="main-container" :class="{ 'is-year-view': sort === 'year' }">
         <div id="version"> {{ $t('versionnumb') }}</div>
         <div class="place-card-container">
             <div class="placeview-topbutton-container">
@@ -287,29 +304,43 @@ function nextFrame() {
         <div class="place-view">
             <div class="place-gallery-container">
                 <!-- Gallery of objects will show here with the ability to sort by TYPE of object -->
-                <div>
-                    <select v-model="sort" class="dropdown theme-color-background sort">
-                        <option active value="type">{{ $t('sortbytype') }}</option>
-                        <option value="year">{{ $t('sortbyyear') }}</option>
-                    </select>
+                <div class="gallery-controls">
+                    <details class="select-menu">
+                        <summary class="dropdown theme-color-background">
+                            {{ sort === 'type' ? $t('sortbytype') : $t('sortbyyear') }}
+                        </summary>
+                        <div class="select-menu-options">
+                            <button type="button" :class="{ active: sort === 'type' }"
+                                @click="selectSort('type', $event)">
+                                {{ $t('sortbytype') }}
+                            </button>
+                            <button type="button" :class="{ active: sort === 'year' }"
+                                @click="selectSort('year', $event)">
+                                {{ $t('sortbyyear') }}
+                            </button>
+                        </div>
+                    </details>
+
+                    <details class="select-menu">
+                        <summary class="dropdown theme-color-background">{{ selectedDatasetLabel }}</summary>
+                        <div class="select-menu-options">
+                            <button type="button" :class="{ active: selectedDatasetId === '' }"
+                                @click="selectDataset('', $event)">
+                                All datasets
+                            </button>
+                            <button type="button" v-for="dataset in datasets" :key="dataset.id"
+                                :class="{ active: selectedDatasetId === dataset.id.toString() }"
+                                @click="selectDataset(dataset.id.toString(), $event)">
+                                {{ dataset.short_name }}
+                            </button>
+                        </div>
+                    </details>
                 </div>
 
-                <div>
-                    <select v-model="selectedDatasetId" class="dropdown theme-color-background" @change="loadContent">
-                        <option value="">All datasets</option>
-                        <option v-for="dataset in datasets" :key="dataset.id" :value="dataset.id.toString()">
-                            {{ dataset.short_name }}
-                        </option>
-                    </select>
-                </div>
-
-                <!-- Sort by TYPE table-->
-                <table class="content-table" v-if="sort == 'type'">
-                    <tr v-if="documents.length > 0">
-                        <td>
-                            <div class="gallery-label">{{ $t('documents') }}</div>
-                        </td>
-                        <td>
+                <div class="content-table" v-if="sort == 'type'">
+                    <div class="type-row" v-if="documents.length > 0">
+                        <div class="gallery-label">{{ $t('documents') }}</div>
+                        <div class="type-items">
                             <a v-for="(document, index) in documents" :key="index" :href="document.upload" target="_top"
                                 download>
                                 <div class="image-placeholder document-placeholder">
@@ -322,21 +353,17 @@ function nextFrame() {
                                     <p class="documentdata theme-color-text">{{ document.date }}</p>
                                 </div>
                             </a>
-                        </td>
-                    </tr>
+                        </div>
+                    </div>
 
-                    <tr v-if="combined3DModels.length > 0">
-                        <td>
-                            <div class="gallery-label hexagon-adapted">{{ $t('threedmodels') }}</div>
-                        </td>
-                        <td>
+                    <div class="type-row" v-if="combined3DModels.length > 0">
+                        <div class="gallery-label hexagon-adapted">{{ $t('threedmodels') }}</div>
+                        <div class="type-items">
                             <div v-for="(model, index) in combined3DModels" :key="index"
                                 class="image-placeholder square hexagon">
                                 <a v-if="model.modelType === 'pointcloud'"
                                     :href="`https://etruscan.dh.gu.se/viewer/?q=${model.id}/pointcloud`" target="_top">
                                     <div class="meta-data-overlay-center">
-                                        <!--  <div class="meta-data-overlay-text"><b>{{ model.title }}</b></div> -->
-
                                         <div class="meta-data-overlay-text">
                                             <div class="meta-pellet">Pointcloud</div>
                                         </div>
@@ -348,15 +375,12 @@ function nextFrame() {
                                     </div>
                                 </a>
 
-                                <a v-else-if="model.modelType === 'object3js'" :href="`https://etruscan.dh.gu.se/viewer/?q=${model.id}/model`" target="_top">
+                                <a v-else-if="model.modelType === 'object3js'"
+                                    :href="`https://etruscan.dh.gu.se/viewer/?q=${model.id}/model`" target="_top">
                                     <div class="meta-data-overlay-center">
-
-
-                                        <!--   <div class="meta-data-overlay-text"><b>{{ model.title }}</b></div> -->
                                         <div class="meta-data-overlay-text">
                                             <div class="meta-pellet">Textured mesh</div>
                                         </div>
-
                                     </div>
                                     <div class="mesh">
                                         <img v-if="previewImageUrl(model.preview_image)"
@@ -364,17 +388,13 @@ function nextFrame() {
                                             class="image-square" />
                                     </div>
                                 </a>
-
                             </div>
+                        </div>
+                    </div>
 
-                        </td>
-                    </tr>
-
-                    <tr v-if="plans.length > 0">
-                        <td>
-                            <div class="gallery-label">{{ $t('drawings') }}</div>
-                        </td>
-                        <td>
+                    <div class="type-row" v-if="plans.length > 0">
+                        <div class="gallery-label">{{ $t('drawings') }}</div>
+                        <div class="type-items">
                             <div class="plans-masonry-gallery">
                                 <div v-for="(image, index) in plans" :key="index" class="plan-gallery__item">
                                     <div class="masonry-image" v-if="'iiif_file' in image"
@@ -392,22 +412,20 @@ function nextFrame() {
                                     </div>
                                 </div>
                             </div>
-                        </td>
-                    </tr>
-                    <tr v-if="images.length > 0">
-                        <td>
-                            <div class="gallery-label"
-                                style="display:flex; flex-direction:column; align-items:flex-end; justify-content:right;">
-                                <a :href="`${apiConfig.ADMIN_IMAGE}?q=${route.params.name}`">
-                                    <div>{{ $t('photographs') }}</div>
-                                </a>
-                                <button class="show-button theme-color-background" v-if="nextPageUrl"
-                                    @click="fetchMoreImages" :disabled="isLoading">
-                                    {{ $t('showall') }}
-                                </button>
-                            </div>
-                        </td>
-                        <td>
+                        </div>
+                    </div>
+
+                    <div class="type-row" v-if="images.length > 0">
+                        <div class="gallery-label photo-label">
+                            <a :href="`${apiConfig.ADMIN_IMAGE}?q=${route.params.name}`">
+                                <div>{{ $t('photographs') }}</div>
+                            </a>
+                            <button class="show-button theme-color-background" v-if="nextPageUrl"
+                                @click="fetchMoreImages" :disabled="isLoading">
+                                {{ $t('showall') }}
+                            </button>
+                        </div>
+                        <div class="type-items">
                             <div class="placeview-masonry-gallery">
                                 <div v-for="(image, index) in images" :key="index" class="gallery__item">
                                     <div class="masonry-image" v-if="'iiif_file' in image"
@@ -426,14 +444,12 @@ function nextFrame() {
                                     </div>
                                 </div>
                             </div>
-                        </td>
-                    </tr>
+                        </div>
+                    </div>
 
-                    <tr v-if="observations.length > 0">
-                        <td>
-                            <div class="gallery-label">{{ $t('observations') }}</div>
-                        </td>
-                        <td>
+                    <div class="type-row" v-if="observations.length > 0">
+                        <div class="gallery-label">{{ $t('observations') }}</div>
+                        <div class="type-items">
                             <div v-for="(observation, index) in observations" :key="index"
                                 class="image-placeholder observation-placeholder">
                                 <div class="observation-title">
@@ -445,14 +461,14 @@ function nextFrame() {
                                 <div class="observation-body" v-html="observation.observation">
                                 </div>
                             </div>
-                        </td>
-                    </tr>
-                </table>
+                        </div>
+                    </div>
+                </div>
 
-                <table class="content-table-date" v-else-if="sort == 'year'">
-                    <tr v-for="[year, items] in sortedGroupedByYear" :key="year">
-                        <td style="font-size:1.5em; font-weight:200; text-align:right;">{{ year }}</td>
-                        <td>
+                <div class="content-table content-table-date" v-else-if="sort == 'year'">
+                    <div class="type-row year-row" v-for="[year, items] in sortedGroupedByYear" :key="year">
+                        <div class="gallery-label year-label">{{ year }}</div>
+                        <div class="type-items year-items">
                             <div v-for="(item, index) in items" :key="index"
                                 :class="(isImage(item) || isPointcloud(item) || isObject3jsModel(item)) ? 'image-placeholder square' : ''">
                                 <!-- If the item is an image -->
@@ -481,7 +497,8 @@ function nextFrame() {
                                 </div>
 
                                 <!-- If the item is a model -->
-                                <a v-else-if="isObject3jsModel(item)" :href="`https://etruscan.dh.gu.se/viewer/?q=${item.id}/model`" target="_top">
+                                <a v-else-if="isObject3jsModel(item)"
+                                    :href="`https://etruscan.dh.gu.se/viewer/?q=${item.id}/model`" target="_top">
                                     <div class="model-object">
 
                                         <img v-if="previewImageUrl(item.preview_image)"
@@ -520,13 +537,15 @@ function nextFrame() {
                                     </div>
                                 </a>
                             </div>
-                        </td>
-                    </tr>
-                </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <MapComponent />
+    <div class="placeview-map">
+        <MapComponent />
+    </div>
 </template>
 
 <style scoped>
@@ -535,8 +554,66 @@ function nextFrame() {
     backdrop-filter: blur(10px) saturate(50%) brightness(100%);
 }
 
-.sort {
+.placeview-map {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.gallery-controls {
+    display: flex;
+    gap: 10px;
     margin-left: 120px;
+    margin-bottom: 15px;
+    clear: both;
+}
+
+.gallery-controls .dropdown {
+    float: none;
+    margin: 0;
+}
+
+.select-menu {
+    position: relative;
+    display: inline-block;
+}
+
+.select-menu summary {
+    display: block;
+    cursor: pointer;
+    list-style: none;
+}
+
+.select-menu summary::-webkit-details-marker {
+    display: none;
+}
+
+.select-menu-options {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    z-index: 10000;
+    min-width: 100%;
+    overflow: hidden;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+}
+
+.select-menu-options button {
+    display: block;
+    width: 100%;
+    padding: 6px 14px;
+    color: black;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.select-menu-options button:hover,
+.select-menu-options button.active {
+    color: white;
+    background-color: var(--theme-3);
 }
 
 .show-button {
@@ -567,30 +644,51 @@ a:visited {
     font-weight: normal !important;
 }
 
-.content-table td {
+.content-table {
+    width: 100%;
+    margin-left: 20px;
+    clear: both;
     color: black;
 }
 
-.content-table td .gallery-label {
+.type-row {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 20px;
+    align-items: start;
+    padding-top: 2px;
+}
+
+.type-items {
+    min-width: 0;
+}
+
+.content-table .gallery-label {
     text-align: right;
-    width: 75%;
     margin-top: 2px;
 }
 
+.photo-label {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: right;
+}
+
 .content-table-date {
-    table-layout: fixed;
+    margin-bottom: 0;
 }
 
-.content-table-date td:first-child {
+.year-label {
     width: 100px;
-    min-width: 100px;
-    padding-left: 0;
-    padding-right: 20px;
+    font-size: 1.5em;
+    font-weight: 200;
 }
 
-.content-table-date td:nth-child(2) {
-    width: calc(100% - 100px);
-    padding-left: 0;
+.year-items {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
 }
 
 /* hide map zoom controls in placeview */
@@ -705,21 +803,6 @@ a:visited {
     opacity: 1.0;
 }
 
-.meta-data-overlay-year {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    bottom: 0px;
-    opacity: 1.0;
-    z-index: 10;
-    padding: 0px;
-    height: 100%;
-    width: 100%;
-    color: white;
-}
-
 .plan-placeholder .meta-data-overlay {
     color: black;
     background: linear-gradient(rgba(255, 255, 255, 0.0) 50%, rgba(255, 255, 255, 0.8) 100%);
@@ -762,15 +845,13 @@ a:visited {
     color: white;
 }
 
-
-
 .pointcloud {
     transform: scale(1.15);
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-top: 0px;
-     height:100%!important;
+    height: 100% !important;
 }
 
 .mesh {
@@ -779,8 +860,8 @@ a:visited {
     flex-direction: column;
     align-items: center;
     margin-top: 0px;
-      height:100%!important;
-        width:auto!important;
+    height: 100% !important;
+    width: auto !important;
 }
 
 .hexagon img {
@@ -790,29 +871,76 @@ a:visited {
 
 @media screen and (max-width: 900px) {
 
-    #app .maijn-container {
+    #app .main-container {
         padding: 0px !important;
+        height: 100dvh !important;
+        min-height: 0 !important;
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch;
     }
 
     #app .place-gallery-container {
         padding: 0px !important;
         margin-left: 0px;
+        float: none !important;
+        overflow: visible !important;
+        width: 100%;
     }
 
     #app .place-view {
         width: 100% !important;
         padding-top: 20px !important;
         margin-left: 0px !important;
-        padding-bottom: 100px;
+        padding-bottom: 20px;
     }
 
-    .sort {
+    .content-table {
+        margin-left: 0;
+    }
+
+    .type-row {
+        grid-template-columns: 70px 1fr;
+    }
+
+    .type-row .gallery-label {
+        margin-top: 12px;
+    }
+
+    .main-container.is-year-view .year-row {
+        grid-template-columns: 55px 1fr;
+        gap: 10px;
+    }
+
+    .main-container.is-year-view .year-label {
+        width: 55px;
+    }
+
+    .gallery-controls {
+        flex-wrap: wrap;
         margin-left: 20px;
+        margin-bottom: 10px;
     }
 
     .square {
         width: 120px;
         height: 120px;
+    }
+
+    .gallery__item,
+    .plan-gallery__item {
+        width: 180px;
+        margin-bottom: 8px;
+    }
+
+    .main-container.is-year-view .year-items .square,
+    .main-container.is-year-view .year-items .model-object,
+    .main-container.is-year-view .year-items .meta-data-below-text {
+        width: 100px;
+        height: 100px;
+    }
+
+    .main-container.is-year-view .year-items .meta-data-below-text {
+        margin-top: -100px;
     }
 
     .placeview-masonry-gallery {
