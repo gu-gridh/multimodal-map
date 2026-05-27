@@ -112,7 +112,7 @@ table td {
 
 .image-placeholder {
     border-radius: 0px;
-    margin: 5px 10px 0px 0px;
+    margin: 5px 10px 5px 0px;
     display: inline-block;
     overflow: hidden;
     transition: all 0.2s ease-in-out;
@@ -129,6 +129,7 @@ table td {
     background-position: 8px;
     background-color: white;
     padding: 11px 10px 5px 55px;
+            border-radius:6px!important;
 }
 
 .document-placeholder .documentlabel {

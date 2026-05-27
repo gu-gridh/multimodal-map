@@ -656,7 +656,7 @@ a:visited {
     grid-template-columns: 100px 1fr;
     gap: 20px;
     align-items: start;
-    padding-top: 2px;
+    padding-top: 20px;
 }
 
 .type-items {
@@ -778,8 +778,9 @@ a:visited {
 }
 
 .model-object {
-    width: 180px;
-    height: 180px;
+    width: 170px;
+    height: 170px;
+    margin-top:5px;
 }
 
 .meta-data-overlay-center {
@@ -820,20 +821,20 @@ a:visited {
 
 .meta-data-below-text {
     font-size: 1.0em;
-    width: 180px;
-    height: 180px;
+    width: 170px;
+    height: 170px;
     position: relative;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
     align-items: center;
     justify-content: center;
-    margin-top: -180px;
+    margin-top: -170px;
     opacity: 0.0;
     background-color: rgb(0, 0, 0, 0.6);
     clip-path: polygon(50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%);
     transition: all 0.2s ease-in-out;
-    transform: scale(1.0);
+    transform: scale(1.05);
 }
 
 .meta-data-below-text:hover {
