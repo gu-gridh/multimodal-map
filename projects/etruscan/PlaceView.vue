@@ -936,8 +936,8 @@ a:visited {
     .main-container.is-year-view .year-items .square,
     .main-container.is-year-view .year-items .model-object,
     .main-container.is-year-view .year-items .meta-data-below-text {
-        width: 100px;
-        height: 100px;
+        width: 130px;
+        height: 130px;
     }
 
     .main-container.is-year-view .year-items .meta-data-below-text {
@@ -949,7 +949,7 @@ a:visited {
     }
 
     .document-placeholder {
-        max-width: 90%;
+        max-width: 270px;
     }
 
     .documentlabel {

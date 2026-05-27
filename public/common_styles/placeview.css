@@ -5,17 +5,17 @@
 
 
 /* Main */
-.placeview-topbutton-container{
-    margin-left: 95px !important; 
-    margin-top: 40px !important; 
-    margin-bottom: 0px !important; 
-    position:absolute !important; 
-    z-index:1000;
+.placeview-topbutton-container {
+    margin-left: 95px !important;
+    margin-top: 40px !important;
+    margin-bottom: 0px !important;
+    position: absolute !important;
+    z-index: 1000;
 }
 
-.placeview-topbutton{
-  float:left;
-  margin-right:10px;
+.placeview-topbutton {
+    float: left;
+    margin-right: 10px;
 }
 
 table p {
@@ -31,12 +31,12 @@ table td {
 }
 
 .main-container {
-    position:absolute;
+    position: absolute;
     display: flex;
     flex-direction: row;
     height: 100%;
     width: 100%;
-    z-index:100;
+    z-index: 100;
     overflow: hidden;
 }
 
@@ -65,18 +65,18 @@ table td {
 }
 
 .place-gallery-container .dropdown {
-    margin-right:10px;
-    margin-bottom:15px;
-    float:left;
+    margin-right: 10px;
+    margin-bottom: 15px;
+    float: left;
 }
 
 .content-table {
-  width:100%;
-  margin-left: 20px;
+    width: 100%;
+    margin-left: 20px;
 }
 
-.content-table-date{
-    width:100%;
+.content-table-date {
+    width: 100%;
     margin-left: 20px;
 }
 
@@ -87,8 +87,7 @@ table td {
 }
 
 @media screen and (max-width: 900px) {
-    .content-table tr td:nth-child(1)
-    {
+    .content-table tr td:nth-child(1) {
         width: 80px;
     }
 }
@@ -101,11 +100,9 @@ table td {
     text-align: left;
 }
 
-.masonry-gallery{
+.masonry-gallery {}
 
-}
-
-.square{
+.square {
     width: 180px;
     height: 180px;
 }
@@ -121,7 +118,7 @@ table td {
 
 .document-placeholder {
     font-size: 16px;
-    width:  370px;
+    width: 370px;
     height: 60px;
     background-image: url("/file.png");
     background-size: 44px;
@@ -129,7 +126,8 @@ table td {
     background-position: 8px;
     background-color: white;
     padding: 11px 10px 5px 55px;
-            border-radius:6px!important;
+    border-radius: 6px !important;
+    text-overflow: ellipsis;
 }
 
 .document-placeholder .documentlabel {
@@ -211,43 +209,43 @@ table td {
     background-color: white;
 }
 
-.placeview-masonry-gallery{
-margin-top:10px;
-margin-bottom:10px;
-min-height:180px; 
-display:block;
-overflow:hidden;
+.placeview-masonry-gallery {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    min-height: 180px;
+    display: block;
+    overflow: hidden;
 }
 
-.plans-masonry-gallery{
-margin-top:10px;
-margin-bottom:10px;
-min-height:100px; 
-display:block;
-overflow:hidden;
+.plans-masonry-gallery {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    min-height: 100px;
+    display: block;
+    overflow: hidden;
 }
 
-.masonry-image{
-overflow:hidden;
-border-radius:4px;
-transition: all 0.3s ease-in-out;
+.masonry-image {
+    overflow: hidden;
+    border-radius: 4px;
+    transition: all 0.3s ease-in-out;
 }
 
-.content-table .masonry-image:hover{
-    transform:scale(1.02);
-    }
+.content-table .masonry-image:hover {
+    transform: scale(1.02);
+}
 
-.masonry-image img{
+.masonry-image img {
     transition: all 0.2s ease-in-out;
-    }
+}
 
-.content-table .masonry-image:hover img{
-transform:scale(1.05);
+.content-table .masonry-image:hover img {
+    transform: scale(1.05);
 }
 
 .masonry-image .meta-data-overlay {
-    display:flex;
-    flex-direction:column;
+    display: flex;
+    flex-direction: column;
     justify-content: end;
     pointer-events: none;
     position: absolute;
@@ -257,7 +255,7 @@ transform:scale(1.05);
     padding: 0px;
     height: 100%;
     width: 100%;
-    padding-bottom:5px;
+    padding-bottom: 5px;
     color: white;
     background: linear-gradient(rgba(0, 0, 0, 0.0) 50%, rgba(0, 0, 0, 0.5) 100%);
     transition: all 0.5s ease-in-out;
@@ -282,9 +280,9 @@ transform:scale(1.05);
 }
 
 .image-placeholder .meta-data-overlay {
-    display:flex;
-    flex-direction:column;
-    justify-content:end;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
     pointer-events: none;
     position: absolute;
     opacity: 0.0;
@@ -295,14 +293,14 @@ transform:scale(1.05);
     color: white;
     background: linear-gradient(rgba(0, 0, 0, 0.0) 50%, rgba(0, 0, 0, 0.5) 100%);
     transition: all 0.2s ease-in-out;
-    padding-bottom:5px;
+    padding-bottom: 5px;
 }
 
 .meta-data-overlay .meta-data-overlay-text {
     position: relative;
     padding-bottom: 6px;
     padding-top: 0px;
-    line-height:1.0;
+    line-height: 1.0;
     padding-left: 15px;
     transition: all 0.2s ease-in-out;
     opacity: 1.0;
@@ -352,13 +350,27 @@ transform:scale(1.05);
 
 @media screen and (max-width: 900px) {
 
-    .placeview-topbutton-container{
-        margin-left: 95px !important; 
-        margin-top: 25px !important; 
+    .document-placeholder {
+        width: calc(100% - 20px);
+        max-width: 420px;
+        background-color: rgb(240, 240, 240)!important;
+
     }
-    
-    .placeview-topbutton{
-        font-size:20px;
+
+    .document-title {
+        margin-top: 5px;
+        height: 35px;
+        overflow: auto;
+        width: 100%;
+    }
+
+    .placeview-topbutton-container {
+        margin-left: 95px !important;
+        margin-top: 25px !important;
+    }
+
+    .placeview-topbutton {
+        font-size: 20px;
     }
 
     #app html,
@@ -417,57 +429,42 @@ transform:scale(1.05);
         cursor: pointer;
         background-color: white;
     }
+}
 
 
 
-    @media screen and (max-width: 400px) {
+@media screen and (max-width: 400px) {
 
+    .document-placeholder p {
+        display: none;
+    }
+}
 
-        .document-title {
-            margin-top: 5px;
-            height: 35px;
-            overflow: hidden;
-            width: 100%;
-        }
+.placecard-metadata-content {
+    font-size: 2.5em;
+}
 
-        .document-placeholder p {
-            display: none;
-        }
+.observation-placeholder {
+    background-color: rgb(240, 240, 240);
+
+}
+
+@media screen and (max-width: 500px) {
+    .observation-title {
+        display: none;
     }
 
-    .placecard-metadata-content {
-        font-size: 2.5em;
+    .observation-date {
+        float: left;
     }
 
     .observation-placeholder {
-        background-color: rgb(240, 240, 240);
-
+        height: auto;
+        width: 100% !important;
     }
+}
 
-    @media screen and (max-width: 500px) {
-        .observation-title {
-            display: none;
-        }
-
-        .observation-date {
-            float: left;
-        }
-
-        .observation-placeholder {
-            height: auto;
-            width: 100% !important;
-        }
-    }
-
-    .document-placeholder {
-        width: calc(100% - 20px);
-        max-width: 420px;
-        background-color: rgb(240, 240, 240);
-
-    }
-
-    .place-gallery-container .dropdown {
-        margin-left: 3px;
-        margin-bottom: 10px;
-    }
+.place-gallery-container .dropdown {
+    margin-left: 3px;
+    margin-bottom: 10px;
 }
