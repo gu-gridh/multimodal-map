@@ -150,6 +150,7 @@ table td {
     overflow: hidden;
     width: 100%;
     line-height: 1.0;
+    text-overflow: ellipsis;
 }
 
 .observation-placeholder {
@@ -350,28 +351,33 @@ table td {
 
 @media screen and (max-width: 900px) {
 
-    .document-placeholder {
+    .placeview-topbutton-container{
+        margin-left: 95px !important; 
+        margin-top: 25px !important; 
+    }
+    
+    .placeview-topbutton{
+        font-size:20px;
+    }
+
+      .document-placeholder {
         width: calc(100% - 20px);
         max-width: 420px;
         background-color: rgb(240, 240, 240)!important;
-
     }
 
-    .document-title {
-        margin-top: 5px;
-        height: 35px;
-        overflow: auto;
-        width: 100%;
-    }
+      .document-title {
+            margin-top: 5px;
+            height: 35px;
+            overflow: auto;
+            width: 100%;
+            text-overflow: ellipsis;
+        }
 
-    .placeview-topbutton-container {
-        margin-left: 95px !important;
-        margin-top: 25px !important;
-    }
+        .document-placeholder p {
+            display: none;
+        }
 
-    .placeview-topbutton {
-        font-size: 20px;
-    }
 
     #app html,
     body {
@@ -413,7 +419,7 @@ table td {
 
     .place-gallery-container {
         color: black;
-        overflow: auto;
+        overflow: hidden;
         position: relative;
         float: left;
     }
@@ -422,49 +428,42 @@ table td {
 
         background-color: #eee;
         border-radius: 4px;
-        margin: 8px 8px 8px 0px;
+        margin: 8px 16px 8px 0px;
         display: inline-block;
         overflow: hidden;
         transition: all 0.2s ease-in-out;
         cursor: pointer;
         background-color: white;
     }
-}
 
 
-
-@media screen and (max-width: 400px) {
-
-    .document-placeholder p {
-        display: none;
-    }
-}
-
-.placecard-metadata-content {
-    font-size: 2.5em;
-}
-
-.observation-placeholder {
-    background-color: rgb(240, 240, 240);
-
-}
-
-@media screen and (max-width: 500px) {
-    .observation-title {
-        display: none;
-    }
-
-    .observation-date {
-        float: left;
+    .placecard-metadata-content {
+        font-size: 2.5em;
     }
 
     .observation-placeholder {
-        height: auto;
-        width: 100% !important;
-    }
-}
+        background-color: rgb(240, 240, 240);
 
-.place-gallery-container .dropdown {
-    margin-left: 3px;
-    margin-bottom: 10px;
+    }
+
+    @media screen and (max-width: 500px) {
+        .observation-title {
+            display: none;
+        }
+
+        .observation-date {
+            float: left;
+        }
+
+        .observation-placeholder {
+            height: auto;
+            width: 100% !important;
+        }
+    }
+
+  
+    .place-gallery-container .dropdown {
+        margin-left: 3px;
+        margin-bottom: 10px;
+    }
 }
