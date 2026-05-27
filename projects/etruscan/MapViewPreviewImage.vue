@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, defineProps } from "vue";
+import { ref, onMounted, onUnmounted, defineProps } from "vue";
 import OpenSeadragon from "openseadragon";
 
 const props = defineProps({
@@ -12,9 +12,10 @@ const props = defineProps({
 
 const viewerEl = ref();
 const currentPage = ref(1);  //define currentPage
+let viewer = null;
 
 onMounted(() => {
-  const viewer = OpenSeadragon({
+  viewer = OpenSeadragon({
     element: viewerEl.value,
     immediateRender: false,
     visibilityRatio: 0.8,
@@ -46,6 +47,11 @@ onMounted(() => {
   viewer.addHandler('page', function (event) {
     currentPage.value = event.page + 1;
   });
+});
+
+onUnmounted(() => {
+  viewer?.destroy?.();
+  viewer = null;
 });
 </script>
 
