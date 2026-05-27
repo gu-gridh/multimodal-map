@@ -3,18 +3,20 @@
     <div class="gallery">
       <div class="gallery__col-sizer"></div>
       <div class="gallery__gutter-sizer"></div>
-      <div v-for="item in images" :key="item.uuid" class="gallery__item">
+      <div v-for="item in images" :key="item.featureId" class="gallery__item">
 
         <router-link :to="`/${item.datasetShortName}_${item.name.replace(/\s+/g, '_')}`" @click="updatePlaceId(item)">
-          <div class="item-info">
-            <div class="item-info-meta">
-              <h1>{{ $t('tomb') }} {{ item.name }}</h1>
-              <h1> {{ item.necropolis }}</h1>
+          <div class="gallery__item-inner" :style="getAspectStyle(item)">
+            <div class="item-info">
+              <div class="item-info-meta">
+                <h1>{{ $t('tomb') }} {{ item.name }}</h1>
+                <h1> {{ item.necropolis }}</h1>
+              </div>
             </div>
+            <img v-if="item.published && (item.first_photograph_id || item.default_image)"
+              :src="item.default_image ? `${item.default_image}/full/450,/0/default.jpg` : `https://img.dh.gu.se/diana/static/${item.first_photograph_id}/full/450,/0/default.jpg`"
+              :width="item.width" :height="item.height" loading="lazy" />
           </div>
-          <img v-if="item.published && (item.first_photograph_id || item.default_image)"
-            :src="item.default_image ? `${item.default_image}/full/450,/0/default.jpg` : `https://img.dh.gu.se/diana/static/${item.first_photograph_id}/full/450,/0/default.jpg`"
-            loading="lazy" @load="imageLoaded" />
         </router-link>
       </div>
     </div>
@@ -30,9 +32,8 @@
 </template>
 
 <script>
-import { ref, watch, onMounted } from 'vue'
+import { ref, watch, nextTick } from 'vue'
 import Masonry from 'masonry-layout'
-import imagesLoaded from 'imagesloaded'
 import InfiniteScroll from 'infinite-scroll'
 import { etruscanStore } from './settings/store'
 import apiConfig from './settings/apiConfig'
@@ -48,6 +49,15 @@ export default {
     let isFetching = false
 
     const store = etruscanStore()
+
+    const getAspectStyle = (item) => {
+      if (!item.width || !item.height) {
+        return { aspectRatio: '4 / 3' }
+      }
+
+      return { aspectRatio: `${item.width} / ${item.height}` }
+    }
+
     const fetchData = async (page) => {
       if (page <= lastFetched || isFetching) return
       isFetching = true
@@ -60,6 +70,7 @@ export default {
           .filter(f => !seenIds.has(f.id))
           .map(f => {
             seenIds.add(f.id)
+            const image = f.properties.default_image || f.properties.first_photograph_id
             return {
               featureId: f.id,
               name: f.properties.name,
@@ -67,6 +78,8 @@ export default {
               datasetShortName: f.properties.dataset.short_name,
               default_image: f.properties.default_image?.iiif_file ?? null,
               first_photograph_id: f.properties.first_photograph_id?.iiif_file ?? null,
+              width: image?.width ?? null,
+              height: image?.height ?? null,
               published: !!f.properties.published
             }
           })
@@ -108,10 +121,8 @@ export default {
       infScroll.on('load', async () => {
         await fetchData(pageIndex)
         pageIndex += 1
-        imagesLoaded('.gallery', () => {
-          msnry.reloadItems()
-          msnry.layout()
-        })
+        await nextTick()
+        layoutMasonry()
       })
     }
 
@@ -130,12 +141,18 @@ export default {
       await fetchData(1)
       pageIndex = 2
 
-      imagesLoaded('.gallery', reinitInfiniteScroll)
+      await nextTick()
+      reinitInfiniteScroll()
     }, { immediate: true })
 
     const updatePlaceId = (item) => { store.placeId = item.featureId }
 
-    return { images, updatePlaceId }
+    const layoutMasonry = () => {
+      msnry?.reloadItems()
+      msnry?.layout()
+    }
+
+    return { images, updatePlaceId, getAspectStyle }
   }
 }
 </script>
@@ -244,9 +261,27 @@ export default {
 }
 
 .gallery__item {
+  background-color: rgba(232, 228, 217, 0.6);
   margin-bottom: 10px;
   float: left;
   overflow: hidden !important;
+}
+
+.gallery__item a {
+  display: block;
+}
+
+.gallery__item-inner {
+  position: relative;
+  width: 100%;
+}
+
+.gallery__item-inner img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .gallery__item--height1 {
