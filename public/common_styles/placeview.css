@@ -425,7 +425,6 @@ table td {
     }
 
     .image-placeholder {
-
         background-color: #eee;
         border-radius: 4px;
         margin: 8px 16px 8px 0px;
@@ -443,7 +442,6 @@ table td {
 
     .observation-placeholder {
         background-color: rgb(240, 240, 240);
-
     }
 
     @media screen and (max-width: 500px) {
@@ -461,7 +459,6 @@ table td {
         }
     }
 
-  
     .place-gallery-container .dropdown {
         margin-left: 3px;
         margin-bottom: 10px;

@@ -778,8 +778,8 @@ a:visited {
 }
 
 .model-object {
-    width: 170px;
-    height: 170px;
+    width: 160px;
+    height: 160px;
     margin-top:5px;
 }
 
@@ -821,15 +821,15 @@ a:visited {
 
 .meta-data-below-text {
     font-size: 1.0em;
-    width: 170px;
-    height: 170px;
+    width: 160px;
+    height: 160px;
     position: relative;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
     align-items: center;
     justify-content: center;
-    margin-top: -170px;
+    margin-top: -160px;
     opacity: 0.0;
     background-color: rgb(0, 0, 0, 0.6);
     clip-path: polygon(50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%);
@@ -939,9 +939,21 @@ a:visited {
         width: 130px;
         height: 130px;
     }
+.type-row{
+    padding-bottom:10px;
+}
+
+.main-container.is-year-view .year-items .square {
+  width: 140px;
+        height: 140px;
+}
+
+.main-container.is-year-view .year-items .model-object{
+    margin-top:5px;
+}
 
     .main-container.is-year-view .year-items .meta-data-below-text {
-        margin-top: -100px;
+        margin-top: -130px;
     }
 
     .placeview-masonry-gallery {
@@ -949,7 +961,7 @@ a:visited {
     }
 
     .document-placeholder {
-        max-width: 270px;
+        max-width: 280px;
     }
 
     .documentlabel {
