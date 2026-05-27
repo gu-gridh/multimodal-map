@@ -481,7 +481,7 @@ function nextFrame() {
                                 </div>
 
                                 <!-- If the item is a model -->
-                                <a v-else-if="isObject3jsModel(item)" :href="`https://etruscan.dh.gu.se/viewer/?q=${model.id}/model`" target="_top">
+                                <a v-else-if="isObject3jsModel(item)" :href="`https://etruscan.dh.gu.se/viewer/?q=${item.id}/model`" target="_top">
                                     <div class="model-object">
 
                                         <img v-if="previewImageUrl(item.preview_image)"
