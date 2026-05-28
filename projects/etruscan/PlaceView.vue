@@ -362,11 +362,13 @@ function nextFrame() {
                         <div class="type-items">
                             <div v-for="(model, index) in combined3DModels" :key="index"
                                 class="image-placeholder square hexagon">
+                                
                                 <a v-if="model.modelType === 'pointcloud'"
                                     :href="`https://etruscan.dh.gu.se/viewer/?q=${model.id}/pointcloud`" target="_top">
                                     <div class="meta-data-overlay-center">
                                         <div class="meta-data-overlay-text">
-                                            <div class="meta-pellet">Pointcloud</div>
+                                            <div class="meta-center-type">Pointcloud</div>
+                                            <div class="meta-center-title">{{ model.title }}</div>
                                         </div>
                                     </div>
                                     <div class="pointcloud">
@@ -380,7 +382,8 @@ function nextFrame() {
                                     :href="`https://etruscan.dh.gu.se/viewer/?q=${model.id}/model`" target="_top">
                                     <div class="meta-data-overlay-center">
                                         <div class="meta-data-overlay-text">
-                                            <div class="meta-pellet">Textured mesh</div>
+                                            <div class="meta-center-type">Textured mesh</div>
+                                            <div class="meta-center-title">{{ model.title }}</div>
                                         </div>
                                     </div>
                                     <div class="mesh">
@@ -466,6 +469,7 @@ function nextFrame() {
                     </div>
                 </div>
 
+
                 <div class="content-table content-table-date" v-else-if="sort == 'year'">
                     <div class="type-row year-row" v-for="[year, items] in sortedGroupedByYear" :key="year">
                         <div class="gallery-label year-label">{{ year }}</div>
@@ -507,7 +511,7 @@ function nextFrame() {
                                             class="image-square hexagon hexagon-small" />
                                     </div>
                                     <div class="meta-data-below-text">
-                                        <div class="meta-pellet">Textured mesh</div>
+                                        <div class="meta-center-type">Textured mesh</div>
                                     </div>
                                 </a>
 
@@ -521,7 +525,7 @@ function nextFrame() {
                                             class="image-square hexagon hexagon-small" />
                                     </div>
                                     <div class="meta-data-below-text">
-                                        <div class="meta-pellet">Pointcloud</div>
+                                        <div class="meta-center-type">Pointcloud</div>
                                     </div>
                                 </a>
 
@@ -842,10 +846,18 @@ a:visited {
     opacity: 1.0;
 }
 
-.meta-pellet {
-    font-size: 0.9em;
+.meta-center-type {
+    font-size: 1.0em;
     color: white;
+    text-align: center;
 }
+
+.meta-center-title {
+    font-size: 0.8em;
+    color: rgb(200,200,200);
+     text-align: center;
+}
+
 
 .pointcloud {
     transform: scale(1.15);
