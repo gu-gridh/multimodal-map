@@ -97,9 +97,7 @@
     color: white;
     overflow-y: auto;
     background: linear-gradient(90deg, rgba(245, 235, 225, 1) 0%, rgba(245, 235, 225, 0.8) 100%) !important;
-    padding-bottom: 40px !important;
-    height:100dvh!important;
-   
+    padding-bottom: 40px !important;   
   }
 
   .fullopacity {
@@ -132,13 +130,19 @@
   }
 
   @media screen and (max-width: 900px) {
+
+     .about-container {
+    height:100dvh!important;
+   
+  }
+
     .category-button {
       margin-top: 30px;
       font-size: 1.9em !important;
     }
 
     .about-container {
-      padding-bottom: 60px !important;
+      padding-bottom: 120px !important;
     }
 .about-article-sub{
      text-align: center!important;

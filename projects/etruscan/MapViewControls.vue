@@ -428,7 +428,8 @@ margin-left:5px;
   width:98%; 
   float:none; 
   display:flex; 
-  flex-direction:column; 
+  flex-direction:row; 
+  flex-wrap: wrap;
   margin-top:10px;
 }
 
@@ -438,6 +439,11 @@ margin-left:5px;
 
   #app .tag-section {
  font-size:100%;
+ margin-right:10px;
+}
+
+.slider-widget{
+  margin-top:15px;
 }
 
 .margin-20 {
