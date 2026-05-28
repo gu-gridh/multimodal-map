@@ -94,10 +94,12 @@
 
 <style scoped>
   .about-container {
-    color: black;
+    color: white;
     overflow-y: auto;
     background: linear-gradient(90deg, rgba(245, 235, 225, 1) 0%, rgba(245, 235, 225, 0.8) 100%) !important;
     padding-bottom: 40px !important;
+    height:100dvh!important;
+   
   }
 
   .fullopacity {
@@ -136,8 +138,12 @@
     }
 
     .about-container {
-      padding-bottom: 120px !important;
+      padding-bottom: 60px !important;
     }
+.about-article-sub{
+     text-align: center!important;
+     line-height:1.2;
+}
   }
 
   .about-logo-top-right {
