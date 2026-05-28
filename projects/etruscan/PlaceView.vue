@@ -564,7 +564,7 @@ function nextFrame() {
 .gallery-controls {
     display: flex;
     gap: 10px;
-    margin-left: 120px;
+    margin-left: 140px;
     margin-bottom: 15px;
     clear: both;
 }
@@ -918,7 +918,7 @@ a:visited {
 
     .gallery-controls {
         flex-wrap: wrap;
-        margin-left: 20px;
+        margin-left:   15px;
         margin-bottom: 10px;
     }
 
