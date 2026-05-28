@@ -99,8 +99,10 @@ async function selectDataset(value, event) {
 }
 
 async function fetchDatasets() {
+    if (!id.value) return;
+
     try {
-        const response = await fetch(apiConfig.DATASET);
+        const response = await fetch(`${apiConfig.DATASET}?tomb=${id.value}`);
         const data = await response.json();
         datasets.value = data.results?.filter(dataset => dataset.published) || [];
     } catch (error) {
@@ -155,8 +157,6 @@ async function fetchMoreImages() {
 }
 
 onMounted(async () => {
-    await fetchDatasets();
-
     let urlId = route.params.name;
 
     if (Array.isArray(urlId)) {
@@ -174,6 +174,7 @@ onMounted(async () => {
         etruscan.placeId = mainFeature.id;
     }
 
+    await fetchDatasets();
     await loadContent();
 });
 
