@@ -344,7 +344,7 @@ table td {
 @media screen and (max-width: 1100px) {
 
     .document-placeholder {
-        width: 100% !important;
+        width: 90% !important;
     }
 }
 
