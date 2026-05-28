@@ -223,6 +223,15 @@ export default {
   width: 10px;
 }
 
+@media screen and (min-width: 2001px) {
+
+  .gallery__item,
+  .gallery__col-sizer {
+    width: calc(25% - 8px);
+  }
+  
+}
+
 @media screen and (max-width: 2000px) {
 
   .gallery__item,
