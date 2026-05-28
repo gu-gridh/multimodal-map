@@ -369,8 +369,8 @@ function nextFrame() {
                                         </div>
                                     </div>
                                     <div class="pointcloud">
-                                        <img v-if="previewImageUrl(model.preview_image)"
-                                            :src="previewImageUrl(model.preview_image)" :alt="model.title"
+                                        <img v-if="model.preview_image"
+                                            :src="model.preview_image" :alt="model.title"
                                             class="image-square" />
                                     </div>
                                 </a>
@@ -383,8 +383,8 @@ function nextFrame() {
                                         </div>
                                     </div>
                                     <div class="mesh">
-                                        <img v-if="previewImageUrl(model.preview_image)"
-                                            :src="previewImageUrl(model.preview_image)" :alt="model.title"
+                                        <img v-if="model.preview_image"
+                                            :src="model.preview_image" :alt="model.title"
                                             class="image-square" />
                                     </div>
                                 </a>
@@ -501,8 +501,8 @@ function nextFrame() {
                                     :href="`https://etruscan.dh.gu.se/viewer/?q=${item.id}/model`" target="_top">
                                     <div class="model-object">
 
-                                        <img v-if="previewImageUrl(item.preview_image)"
-                                            :src="previewImageUrl(item.preview_image)" :alt="item.title"
+                                        <img v-if="item.preview_image"
+                                            :src="item.preview_image" :alt="item.title"
                                             class="image-square hexagon hexagon-small" />
                                     </div>
                                     <div class="meta-data-below-text">
@@ -515,8 +515,8 @@ function nextFrame() {
                                     :href="` https://etruscan.dh.gu.se/viewer/?q=${item.id}/pointcloud`" target="_top">
                                     <div class="model-object">
 
-                                        <img v-if="previewImageUrl(item.preview_image)"
-                                            :src="previewImageUrl(item.preview_image)" :alt="item.title"
+                                        <img v-if="item.preview_image"
+                                            :src="item.preview_image" :alt="item.title"
                                             class="image-square hexagon hexagon-small" />
                                     </div>
                                     <div class="meta-data-below-text">
