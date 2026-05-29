@@ -31,11 +31,11 @@ defineProps({
 const observations = ref([]);
 const documents = ref([]);
 const pointcloud = ref([]);
-const object3jsModels = ref([]);
+const texturedMeshModels = ref([]);
 
 const combined3DModels = computed(() => [
     ...pointcloud.value.map(p => ({ ...p, modelType: 'pointcloud' })),
-    ...object3jsModels.value
+    ...texturedMeshModels.value
 ]);
 
 const sortedGroupedByYear = computed(() => {
@@ -63,8 +63,8 @@ function isPointcloud(item) {
     return 'camera_position' in item;
 }
 
-function isObject3jsModel(item) {
-    return item.modelType === 'object3js';
+function isTexturedMeshModel(item) {
+    return item.modelType === 'texturedmesh';
 }
 
 function isDocument(item) {
@@ -143,7 +143,7 @@ async function fetchMoreImages() {
         }
         images.value = [...images.value, ...newImages];
 
-        groupAndSortByYear([...images.value, ...plans.value, ...observations.value, ...documents.value, ...pointcloud.value, ...object3jsModels.value]);
+        groupAndSortByYear([...images.value, ...plans.value, ...observations.value, ...documents.value, ...pointcloud.value, ...texturedMeshModels.value]);
 
         await nextTick();
         await nextFrame();
@@ -185,7 +185,7 @@ async function loadContent() {
     const datasetQuery = selectedDatasetId.value ? `&dataset=${selectedDatasetId.value}` : "";
     const imageLimit = sort.value === 'year' ? 500 : 8;
 
-    const [fetchedImages, fetchedObservations, fetchedDocuments, fetchedPointclouds, fetchedObject3jsModels, fetchedPlans] = await Promise.all
+    const [fetchedImages, fetchedObservations, fetchedDocuments, fetchedPointclouds, fetchedTexturedMeshModels, fetchedPlans] = await Promise.all
         ([
             fetch(`${apiConfig.IMAGE}?tomb=${id.value}&limit=${imageLimit}&type_of_image=2&depth=2${datasetQuery}`).then(res => res.json()),
             dianaClient.listAll("observation", { place: id.value, ...datasetParam }),
@@ -203,12 +203,12 @@ async function loadContent() {
     observations.value = fetchedObservations;
     documents.value = fetchedDocuments;
     pointcloud.value = fetchedPointclouds;
-    object3jsModels.value = fetchedObject3jsModels.results
+    texturedMeshModels.value = fetchedTexturedMeshModels.results
         .filter((model) => model.published)
-        .map((model) => ({ ...model, modelType: 'object3js' }));
+        .map((model) => ({ ...model, modelType: 'texturedmesh' }));
     plans.value = fetchedPlans.results;
 
-    groupAndSortByYear([...images.value, ...plans.value, ...observations.value, ...documents.value, ...pointcloud.value, ...object3jsModels.value]);
+    groupAndSortByYear([...images.value, ...plans.value, ...observations.value, ...documents.value, ...pointcloud.value, ...texturedMeshModels.value]);
 
     await nextTick();
     await initMasonry();
@@ -378,8 +378,8 @@ function nextFrame() {
                                     </div>
                                 </a>
 
-                                <a v-else-if="model.modelType === 'object3js'"
-                                    :href="`https://etruscan.dh.gu.se/viewer/?q=${model.id}/model`" target="_top">
+                                <a v-else-if="model.modelType === 'texturedmesh'"
+                                    :href="`https://etruscan.dh.gu.se/viewer/?q=${model.id}/texturedmesh`" target="_top">
                                     <div class="meta-data-overlay-center">
                                         <div class="meta-data-overlay-text">
                                             <div class="meta-center-type">Textured mesh</div>
@@ -475,7 +475,7 @@ function nextFrame() {
                         <div class="gallery-label year-label">{{ year }}</div>
                         <div class="type-items year-items">
                             <div v-for="(item, index) in items" :key="index"
-                                :class="(isImage(item) || isPointcloud(item) || isObject3jsModel(item)) ? 'image-placeholder square' : ''">
+                                :class="(isImage(item) || isPointcloud(item) || isTexturedMeshModel(item)) ? 'image-placeholder square' : ''">
                                 <!-- If the item is an image -->
                                 <div class="image-square" v-if="'iiif_file' in item">
                                     <a v-if="item.iiif_file"
@@ -502,8 +502,8 @@ function nextFrame() {
                                 </div>
 
                                 <!-- If the item is a model -->
-                                <a v-else-if="isObject3jsModel(item)"
-                                    :href="`https://etruscan.dh.gu.se/viewer/?q=${item.id}/model`" target="_top">
+                                <a v-else-if="isTexturedMeshModel(item)"
+                                    :href="`https://etruscan.dh.gu.se/viewer/?q=${item.id}/texturedmesh`" target="_top">
                                     <div class="model-object">
 
                                         <img v-if="item.preview_image"
