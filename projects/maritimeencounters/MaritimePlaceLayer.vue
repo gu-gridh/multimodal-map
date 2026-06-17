@@ -505,7 +505,7 @@ onMounted(async () => {
       markerZoomAnimation: true,
     }).setView([58.0, 12.0], 9);
 
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
       maxZoom: 19,
       minZoom: 3,
     }).addTo(toRaw(map.value));
