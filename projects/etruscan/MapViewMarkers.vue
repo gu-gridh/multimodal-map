@@ -201,7 +201,7 @@ watch(
     </div>
   </ol-overlay>
 
-  <ol-overlay v-if="selectedFeature" :position="selectedCoordinates">
+  <ol-overlay v-if="selectedFeature && !showMapLabels" :position="selectedCoordinates">
     <div class="ol-popup">
       {{ selectedFeature?.get("dataset")?.short_name || "" }} -
       {{ selectedFeature?.get("name") || "" }}
