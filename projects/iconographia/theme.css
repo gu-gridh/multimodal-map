@@ -1,0 +1,70 @@
+/* Iconographia theme — dark UI carried over from the legacy mb-frontend. */
+
+:root {
+  --pane-visual: #353535;
+  --pane-data: #303030;
+  --accent: rgb(158, 60, 60);
+  --accent-hover: rgb(148, 50, 50);
+}
+
+html,
+body {
+  height: 100vh;
+  width: 100vw;
+  margin: 0 !important;
+  overflow: hidden !important;
+  background-color: var(--pane-visual);
+  font-family: "Barlow Condensed", sans-serif;
+  color: white;
+}
+
+#app {
+  height: 100vh;
+  width: 100vw;
+}
+
+/* Legacy filter chips */
+.filter-box {
+  margin-right: 8px;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 300;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  border-radius: 5px;
+  padding: 5px 10px;
+  background-color: rgba(255, 255, 255, 0.07);
+  transition: all 0.1s ease-in-out;
+  cursor: pointer;
+  display: inline-block;
+  color: white;
+  border: none;
+}
+
+.filter-box:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.filter-box-active,
+.filter-box-active:hover {
+  background-color: var(--accent);
+}
+
+/* OpenLayers widgets on the dark map */
+.ol-zoom {
+  background: none;
+}
+
+.ol-zoom button {
+  background-color: rgba(0, 0, 0, 0.55) !important;
+  color: white !important;
+  backdrop-filter: blur(3px);
+}
+
+.ol-attribution {
+  background: rgba(0, 0, 0, 0.4) !important;
+}
+
+.ol-attribution a,
+.ol-attribution li {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
