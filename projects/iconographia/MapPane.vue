@@ -76,6 +76,7 @@ onUnmounted(() => {
   margin-left:30px;
   width: calc(100% - 60px);
   height: calc(100% - 40px);
+  filter: contrast(130%) grayscale(100%);
 }
 
 </style>

@@ -71,13 +71,31 @@
   }
 
   #main-title {
-    color: white;
-    font-size: clamp(60px, 5.2vw, 52px);
+    color: #ffffff;
+    font-size: 4.5em;
     font-weight: 100;
     line-height: 0.85;
     letter-spacing: 0.02em;
     margin-bottom: 24px;
+      transition: all 0.1s ease-in-out;
   }
+
+  @media screen and (max-height: 800px) {
+  #main-title {
+    color: #ffffff;
+    font-size: 3.5em;
+    margin-bottom: 24px;
+  }
+}
+
+  @media screen and (max-height: 600px) {
+  #main-title {
+    color: #ffffff;
+    font-size: 2.5em;
+    margin-bottom: 24px;
+  }
+}
+
 
   .about-link {
     background: none;

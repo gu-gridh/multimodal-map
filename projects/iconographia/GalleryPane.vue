@@ -194,6 +194,22 @@ position: fixed;
 margin-bottom: 12px;
 }
 
+@media screen and (max-width: 900px) {
+  .gallery-count {
+ backdrop-filter: blur(5px);
+border-radius: 5px;
+padding: 5px 10px;
+background-color: rgba(0,0,0,0.7);
+bottom: 85px;
+margin-left: 45%;
+z-index: 1000;
+font-size: 16px;
+color: white;
+position: fixed;
+margin-bottom: 12px;ight: 55%;
+  }
+}
+
 .gallery-masonry {
   columns: 4 190px;
   column-gap: 10px;
