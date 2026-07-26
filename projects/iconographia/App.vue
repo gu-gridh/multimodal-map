@@ -59,8 +59,8 @@ const { sources } = useSources();
 
 #data-pane {
   flex: 0 0 44%;
-  max-width: 620px;
-  min-width: 420px;
+  max-width: 580px;
+  min-width: 320px;
   display: flex;
   flex-direction: column;
   height: 100%;

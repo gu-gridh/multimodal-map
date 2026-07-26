@@ -108,9 +108,9 @@ const yearFilterActive = computed(
           )
         }}
       </button>
-      <span class="result-count">
+    <!--   <span class="result-count">
         {{ totalCount ?? "…" }} {{ $t(totalCount === 1 ? "record" : "records") }}
-      </span>
+      </span> -->
     </div>
 
     <!-- Search with place suggestions -->
@@ -166,6 +166,7 @@ const yearFilterActive = computed(
   display: flex;
   flex-direction: column;
   gap: 10px;
+  font-size: 0.9em;
 }
 
 .collection-row {
@@ -191,7 +192,7 @@ const yearFilterActive = computed(
   padding: 10px 14px;
   border: none;
   border-radius: 8px;
-  font-size: 18px;
+  font-size: 24px;
   font-family: inherit;
   font-weight: 300;
   background: rgba(255, 255, 255, 0.09);
@@ -258,7 +259,7 @@ const yearFilterActive = computed(
   align-items: center;
   gap: 6px;
   margin-top: 6px;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 300;
   opacity: 0.85;
 }

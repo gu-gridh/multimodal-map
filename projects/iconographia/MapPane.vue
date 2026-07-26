@@ -70,7 +70,12 @@ onUnmounted(() => {
 
 <style scoped>
 .ol-map-pane {
-  width: 100%;
-  height: 100%;
+  border-radius:10px;
+  overflow:hidden;
+    margin-top:20px;
+  margin-left:30px;
+  width: calc(100% - 60px);
+  height: calc(100% - 40px);
 }
+
 </style>
