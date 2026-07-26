@@ -177,7 +177,7 @@ const hasThumb = (record) =>
 .gallery-pane {
   height: 100%;
   overflow-y: auto;
-  padding: 0px 0px 0px;
+  padding-right: 20px;
 }
 
 .gallery-count {
