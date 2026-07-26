@@ -185,7 +185,7 @@ const hasThumb = (record) =>
 border-radius: 5px;
 padding: 5px 10px;
 background-color: rgba(0,0,0,0.7);
-bottom: 100px;
+bottom: 85px;
 margin-left: 29%;
 z-index: 1000;
 font-size: 16px;
