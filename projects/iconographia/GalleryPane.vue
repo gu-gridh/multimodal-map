@@ -177,31 +177,38 @@ const hasThumb = (record) =>
 .gallery-pane {
   height: 100%;
   overflow-y: auto;
-  padding: 20px 20px 60px;
+  padding: 0px 0px 0px;
 }
 
 .gallery-count {
-  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.6);
-  margin-bottom: 12px;
+ backdrop-filter: blur(5px);
+border-radius: 5px;
+padding: 5px 10px;
+background-color: rgba(0,0,0,0.7);
+bottom: 100px;
+margin-left: 29%;
+z-index: 1000;
+font-size: 16px;
+color: white;
+position: fixed;
+margin-bottom: 12px;
 }
 
 .gallery-masonry {
   columns: 4 190px;
-  column-gap: 12px;
+  column-gap: 10px;
 }
 
 .gallery-card {
   display: inline-block;
   width: 100%;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
   text-decoration: none;
   color: white;
   break-inside: avoid;
-  border-radius: 8px;
+  border-radius: 0px;
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.04);
+  background: transparent;
   transition: transform 0.15s ease-in-out;
 }
 

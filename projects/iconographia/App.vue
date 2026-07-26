@@ -54,7 +54,7 @@ const { sources } = useSources();
   min-width: 0;
   height: 100%;
   overflow: hidden;
-  background-color: var(--pane-visual);
+  background-color: var(--pane-data);
 }
 
 #data-pane {
@@ -65,7 +65,7 @@ const { sources } = useSources();
   flex-direction: column;
   height: 100%;
   background-color: var(--pane-data);
-  box-shadow: inset 0rem 0rem 3rem rgba(0, 0, 0, 0.6);
+ /*  box-shadow: inset 0rem 0rem 3rem rgba(0, 0, 0, 0.6); */
   z-index: 2;
 }
 
