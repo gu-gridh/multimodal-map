@@ -108,7 +108,7 @@
   font-weight: 100;
   font-size: 30px;
   line-height: 0.8;
-  padding: 0px 50px 0px 30px;
+  padding: 0px 50px 5px 30px;
 }
 
 .PartnerLogo {
