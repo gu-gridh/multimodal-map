@@ -1,88 +1,81 @@
 <template>
-    <!-- Checks if all points are loaded and only then show the controls -->
-      <!-- <div :class="{ 'non-interactive': !areMapPointsLoaded }"> -->
-      <!-- <div v-if="areMapPointsLoaded"> -->
+  <!-- Checks if all points are loaded and only then show the controls -->
+  <!-- <div :class="{ 'non-interactive': !areMapPointsLoaded }"> -->
+  <!-- <div v-if="areMapPointsLoaded"> -->
 
-      <!-- This creates a 2-column section with for the controls -->
-      <div class="control-organisation justify-left" style="margin-bottom:0px;">
-        <div class="tag-section margin-3">
-          <div class="section-title">Dataset</div>
-          <div title="Narrow the result to a certain dataset" class="broad-controls">
-             <Dropdown v-model="dataSetValue" :categories="DATASET" :limit="1" styleType="dropdown" class="my-2"
-              type="datasets"/>
-          </div>
-        </div>
-
-        <div class="tag-section margin-20">
-          <div class="section-title">{{ $t('typeofdata') }}</div>
-          <div class="broad-controls">
-            <CategoryButtonList v-model="categories" 
-                :categories="{
-                  all: $t('categories.all'), 
-                  plans: $t('categories.drawings'), 
-                  models: $t('categories.models')
-                }" 
-                :limit="1" 
-                class="my-2"
-                title="Pick a data type" 
-                @click="handleCategoryClick" />
-          </div>
-        </div>
-
+  <!-- This creates a 2-column section with for the controls -->
+  <div class="control-organisation justify-left" style="margin-bottom:0px;">
+    <div class="tag-section margin-3">
+      <div class="section-title">Dataset</div>
+      <div title="Narrow the result to a certain dataset" class="broad-controls">
+        <Dropdown v-model="dataSetValue" :categories="DATASET" :limit="1" styleType="dropdown" class="my-2"
+          type="datasets" />
       </div>
+    </div>
 
-   
-
-      <!-- This creates a 2-column section width for the controls -->
-      <div class="control-organisation justify-space">
-        <div class="tag-section ">
-          <div class="section-title">{{ $t('site') }}</div>
-          <div class="broad-controls">
-            <Dropdown v-model="selectedSite" :categories="SITES" :limit="1" styleType="dropdown" class="my-2"
-            type="site"/>
-          </div>
-        </div>
-
-        <div class="tag-section margin-5">
-          <div class="section-title">{{ $t('necropolisname') }}</div>
-          <div title="Narrow the result to a certain necropolis" class="broad-controls">
-            <Dropdown v-model="necropoli" :categories="NECROPOLI" :limit="1" styleType="dropdown" class="my-2"
-              type="necropolis" />
-          </div>
-        </div>
-
-        <div class="tag-section margin-5">
-          <div  class="section-title">{{ $t('tombtype') }}</div>
-          <div title="Narrow the result to a certain tomb type" class="broad-controls">
-            <Dropdown v-model="tombType" :categories="TOMBTYPE" :limit="1" styleType="dropdown" class="my-2"
-              type="tombType" />
-          </div>
-        </div>
+    <div class="tag-section margin-20">
+      <div class="section-title">{{ $t('typeofdata') }}</div>
+      <div class="broad-controls">
+        <CategoryButtonList v-model="categories" :categories="{
+          all: $t('categories.all'),
+          plans: $t('categories.drawings'),
+          models: $t('categories.models')
+        }" :limit="1" class="my-2" title="Pick a data type" @click="handleCategoryClick" />
       </div>
+    </div>
 
-        <div class="tag-section margin-3" >
-        <!-- <div class="section-title">{{ $t('timeperiod') }}</div> -->
-        <div class="slider-widget">
-          <div class="slider-section">
-              <RangeSlider
-                ref="rangeSliderRef"
-                v-model="selectedRange"
-                :min="-700"
-                :max="-200"
-                :step="1"
-                class="my-2"
-                :isSliderVisible="true"
-              />
-          </div>
-        </div>
+  </div>
+
+
+
+  <!-- This creates a 2-column section width for the controls -->
+  <div class="control-organisation justify-space">
+    <div class="tag-section ">
+      <div class="section-title">{{ $t('site') }}</div>
+      <div class="broad-controls">
+        <Dropdown v-model="selectedSite" :categories="SITES" :limit="1" styleType="dropdown" class="my-2" type="site" />
       </div>
-    <!-- </div> -->
+    </div>
 
-      <!-- if the markers are not loaded show the loader -->
-      <!--  <div v-else>
+    <div class="tag-section margin-5">
+      <div class="section-title">{{ $t('necropolisname') }}</div>
+      <div title="Narrow the result to a certain necropolis" class="broad-controls">
+        <Dropdown v-model="necropoli" :categories="NECROPOLI" :limit="1" styleType="dropdown" class="my-2"
+          type="necropolis" />
+      </div>
+    </div>
+
+    <div class="tag-section margin-5">
+      <div class="section-title">{{ $t('tombtype') }}</div>
+      <div title="Narrow the result to a certain tomb type" class="broad-controls">
+        <Dropdown v-model="tombType" :categories="TOMBTYPE" :limit="1" styleType="dropdown" class="my-2"
+          type="tombType" />
+      </div>
+    </div>
+  </div>
+
+  <div class="tag-section margin-3">
+    <!-- <div class="section-title">{{ $t('timeperiod') }}</div> -->
+    <div class="slider-widget">
+      <div class="slider-section">
+        <RangeSlider ref="rangeSliderRef" v-model="selectedRange" :min="-700" :max="-200" :step="1" class="my-2"
+          :isSliderVisible="true" />
+      </div>
+    </div>
+  </div>
+
+  <div class="search-section">
+    <input v-model="searchQuery" class="search-box" type="text" :placeholder="$t('searchplaceholder')" />
+    <span v-if="searchQuery" class="remove-icon" @click="searchQuery = ''">&times;</span>
+    <div class="search-button"></div>
+  </div>
+  <!-- </div> -->
+
+  <!-- if the markers are not loaded show the loader -->
+  <!--  <div v-else>
         <div alt="Loading..." class="loading-svg" />
       </div> -->
-    <!-- </div> -->
+  <!-- </div> -->
 
   <!-- Data Section -->
   <div class="data-widget">
@@ -116,13 +109,9 @@
     </div>
   </div>
   <div style="display:flex; flex-direction: row; justify-content:center; width:100%;">
-    <div
-      id="resetfilters"
-      class="broad-controls theme-button category-button"
+    <div id="resetfilters" class="broad-controls theme-button category-button"
       style="margin-top:15px; width:auto; cursor:pointer; transition: all 0.2s ease-in-out; background-color:var(--theme-4); color:white;"
-      v-if="isFilterModified"
-      @click="clearAll"
-    >
+      v-if="isFilterModified" @click="clearAll">
       {{ $t('reset') }}
     </div>
   </div>
@@ -139,7 +128,7 @@ import { DianaClient } from "./settings/diana.js";
 // import { nextTick } from 'vue';
 
 const dianaClient = new DianaClient("etruscantombs");
-const { categories, selectedRange, necropoli, tombType, dataSetValue, dataParams, enable3D, enablePlan, selectedSite, showUnknownRange } = storeToRefs(etruscanStore());
+const { categories, selectedRange, necropoli, tombType, dataSetValue, dataParams, enable3D, enablePlan, selectedSite, showUnknownRange, searchQuery } = storeToRefs(etruscanStore());
 const lastClickedCategory = ref('');
 
 const isFilterModified = computed(() => {
@@ -152,6 +141,7 @@ const isFilterModified = computed(() => {
     dataSetValue.value[0] !== "all" ||
     lastClickedCategory.value !== '' ||
     necropoli.value[0] !== "all" ||
+    searchQuery.value.trim() !== "" ||
     selectedRange.value[0] !== -700 || selectedRange.value[1] !== -200
   );
 });
@@ -182,7 +172,7 @@ const NECROPOLICoordinates = ref({});
 async function fetchDataAndPopulateRef(type, refToPopulate, params = {}) {
   try {
     const data = await dianaClient.listAll(type, params);
-    
+
     if (type === "necropolis") {
       //necropolis type
       refToPopulate.value = data.map((result) => {
@@ -233,12 +223,12 @@ const handleCategoryClick = (category) => {
     //clear the lastClickedCategory since it was unselected
     lastClickedCategory.value = '';
     if (category === 'models') {
-      enable3D.value = !enable3D.value;  
+      enable3D.value = !enable3D.value;
     } else {
       enable3D.value = false;
     }
     if (category === 'plans') {
-      enablePlan.value = !enablePlan.value;  
+      enablePlan.value = !enablePlan.value;
     } else {
       enablePlan.value = false;
     }
@@ -266,15 +256,15 @@ const fetchData = async (url) => {
   totalPhotographs.value = data.photographs;
   totalPlans.value = data.drawing;
   hiddenTombs.value = data.hidden_tombs;
-  totalThreed.value = data.objects_3d; 
+  totalThreed.value = data.objects_3d;
 };
 
 watch(
   () => dataParams.value,
   async (newTagParams, oldTagParams) => {
-  const queryParams = new URLSearchParams(Object.fromEntries(Object.entries(newTagParams).map(([k, v]) => [k, String(v)])));
-  const urlWithParams = `https://diana.dh.gu.se/api/etruscantombs/info/tombs/?${queryParams.toString()}`;
-  await fetchData(urlWithParams);
+    const queryParams = new URLSearchParams(Object.fromEntries(Object.entries(newTagParams).map(([k, v]) => [k, String(v)])));
+    const urlWithParams = `https://diana.dh.gu.se/api/etruscantombs/info/tombs/?${queryParams.toString()}`;
+    await fetchData(urlWithParams);
   },
   { immediate: true }
 );
@@ -294,6 +284,7 @@ function clearAll() {
   showUnknownRange.value = true;
   dataSetValue.value = ["all"];
   lastClickedCategory.value = '';
+  searchQuery.value = "";
   selectedRange.value = [-700, -200]; //reset slider to the default range
 }
 </script>
@@ -312,7 +303,49 @@ function clearAll() {
 }
 
 #app .tag-section .broad-controls {
-font-size:0.9em;
+  font-size: 0.9em;
+}
+
+.search-section {
+  float: left;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 98%;
+  margin-top: 10px;
+  padding: 7px 8px 7px 14px;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(5px);
+}
+
+.search-box {
+  flex: 1;
+  min-width: 0;
+  min-height: 35px;
+  background: transparent;
+  font-size: 1.1em;
+}
+
+.search-box:focus {
+  outline: none;
+}
+
+.search-section .remove-icon {
+  margin-left: 5px;
+  color: inherit;
+  width: auto;
+  font-size: 2em;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.search-button {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: rgb(180, 180, 180) url("/search_white.png") center / contain no-repeat;
 }
 
 .loading-svg:hover {
@@ -329,7 +362,7 @@ font-size:0.9em;
 #app .section-title {
   margin-top: 6px;
   margin-bottom: -5px;
-  font-size:1em;
+  font-size: 1em;
 }
 
 #app .tag-section {
@@ -353,32 +386,32 @@ font-size:0.9em;
   width: 100%;
 }
 
-#app .control-organisation{
-  width:98%; 
-  float:left; 
-  display:flex; 
-  flex-direction:row; 
-  margin-top:10px;
+#app .control-organisation {
+  width: 98%;
+  float: left;
+  display: flex;
+  flex-direction: row;
+  margin-top: 10px;
 }
 
-.justify-left{
-  justify-content:left;
+.justify-left {
+  justify-content: left;
 }
 
-.justify-space{
-  justify-content:space-between;
+.justify-space {
+  justify-content: space-between;
 }
 
 .margin-20 {
-margin-left:20px;
+  margin-left: 20px;
 }
 
 .margin-5 {
-margin-left:5px;
+  margin-left: 5px;
 }
 
 .data-widget {
-  font-size:110%;
+  font-size: 110%;
   float: left;
   pointer-events: none;
   width: 98%;
@@ -424,39 +457,40 @@ margin-left:5px;
     width: 100%;
 
   }
-  #app .control-organisation{
-  width:98%; 
-  float:none; 
-  display:flex; 
-  flex-direction:row; 
-  flex-wrap: wrap;
-  margin-top:10px;
-}
 
-.justify-space{
-  justify-content:left;
-}
+  #app .control-organisation {
+    width: 98%;
+    float: none;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-top: 10px;
+  }
+
+  .justify-space {
+    justify-content: left;
+  }
 
   #app .tag-section {
- font-size:100%;
- margin-right:10px;
-}
+    font-size: 100%;
+    margin-right: 10px;
+  }
 
-.slider-widget{
-  margin-top:15px;
-}
+  .slider-widget {
+    margin-top: 15px;
+  }
 
-.margin-20 {
-margin-left:0px;
-}
+  .margin-20 {
+    margin-left: 0px;
+  }
 
-.margin-5 {
-margin-left:0px;
-}
+  .margin-5 {
+    margin-left: 0px;
+  }
 
-.data-widget {
-display:none;
-}
+  .data-widget {
+    display: none;
+  }
 }
 
 .slide-leave-active {
@@ -483,7 +517,7 @@ display:none;
   display: flex;
   flex-direction: row;
   align-items: center;
-  font-size:110%;
+  font-size: 110%;
   float: left;
   width: 98%;
   border-radius: 10px;

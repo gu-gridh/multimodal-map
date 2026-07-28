@@ -76,7 +76,7 @@ export default {
 @media screen and (max-width: 900px) {
   .show-labels-button {
     display: block;
-    margin: 10px 0 0;
+    margin: 15px 0 0;
   }
 }
 </style>

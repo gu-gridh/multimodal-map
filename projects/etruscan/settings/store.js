@@ -18,6 +18,7 @@ export const etruscanStore = defineStore("etruscan", () => {
   const areMapPointsLoaded = ref(false);
   const showMapLabels = ref(false);
   const placeId = ref(null);
+  const searchQuery = ref("");
 
-  return { categories, tags, dataSetValue, showUnknownRange, tagsLayerVisible, necropoli, selectedRange, tombType, dataParams, enable3D, enablePlan, areMapPointsLoaded, showMapLabels, imgParams, placeId, selectedSite };
+  return { categories, tags, dataSetValue, showUnknownRange, tagsLayerVisible, necropoli, selectedRange, tombType, dataParams, enable3D, enablePlan, areMapPointsLoaded, showMapLabels, imgParams, placeId, selectedSite, searchQuery };
 });
