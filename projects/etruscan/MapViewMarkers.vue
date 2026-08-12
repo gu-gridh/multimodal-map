@@ -117,6 +117,7 @@ const vectorLayer = ref(
     source: vectorSource.value,
     style: styleFunction,
     declutter: true,
+    zIndex: props.zIndex,
   })
 );
 
