@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import { ref, watch, onMounted, nextTick } from 'vue';
+import { ref, watch, onMounted, onBeforeUnmount, nextTick } from 'vue';
 import Masonry from 'masonry-layout';
 import InfiniteScroll from 'infinite-scroll';
 import { inscriptionsStore } from './settings/store';
@@ -78,7 +78,7 @@ export default {
     let pageIndex = 1;
     let infScroll;
     let lastFetchedPageIndex = 0;
-    let isFetching = false;
+    let requestId = 0;
 
     const getAspectStyle = (item) => {
       if (!item.width || !item.height) {
@@ -113,10 +113,27 @@ export default {
       }
     };
 
-    const fetchData = async (requestedPageIndex) => {
-      if (requestedPageIndex > lastFetchedPageIndex && !isFetching) {
+    const addResults = (data, requestedPageIndex) => {
+      if (data.results && data.results.length > 0) {
+        const newImages = data.results
+          .map((item) => ({
+            inscription_iiif_url: item.inscription_iiif_url,
+            panelTitle: item.panel ? item.panel.title : 'Unknown',
+            subtitle: item.title,
+            id: item.id,
+            width: item.width,
+            height: item.height,
+          }))
+          .filter((img) => img && img.inscription_iiif_url);
+
+        images.value = [...images.value, ...newImages];
+        lastFetchedPageIndex = requestedPageIndex;
+      }
+    };
+
+    const fetchData = async (requestedPageIndex, currentRequestId) => {
+      if (requestedPageIndex > lastFetchedPageIndex) {
         try {
-          isFetching = true;
           const offset = (requestedPageIndex - 1) * 50;
           const params = new URLSearchParams(store.imgParams);
           const queryString = params.toString();
@@ -127,26 +144,10 @@ export default {
 
           const res = await fetch(baseUrl);
           const data = await res.json();
-
-          if (data.results && data.results.length > 0) {
-            const newImages = data.results
-              .map((item) => ({
-                inscription_iiif_url: item.inscription_iiif_url,
-                panelTitle: item.panel ? item.panel.title : 'Unknown',
-                subtitle: item.title,
-                id: item.id,
-                width: item.width,
-                height: item.height,
-              }))
-              .filter((img) => img && img.inscription_iiif_url);
-
-            images.value = [...images.value, ...newImages];
-            lastFetchedPageIndex = requestedPageIndex;
-          }
+          if (currentRequestId !== requestId) return;
+          addResults(data, requestedPageIndex);
         } catch (error) {
           console.error(error);
-        } finally {
-          isFetching = false;
         }
       }
     };
@@ -185,6 +186,7 @@ export default {
         },
         outlayer: msnry,
         history: false,
+        responseBody: 'json',
         scrollThreshold: 200,
         elementScroll: true,
       });
@@ -193,10 +195,11 @@ export default {
         isLoading.value = true;
       });
 
-      infScroll.on('load', async () => {
+      infScroll.on('load', async (data) => {
+        infScroll.canLoad = !!data.next;
         if (pageIndex >= lastFetchedPageIndex) {
           try {
-            await fetchData(pageIndex);
+            addResults(data, pageIndex);
             pageIndex++;
             await nextTick();
             reloadAndLayout();
@@ -226,12 +229,18 @@ export default {
     watch(
       [() => store.imgParams, () => store.inscriptionId, () => store.panelStr],
       async () => {
+        const currentRequestId = ++requestId;
         isLoading.value = true;
+        infScroll?.destroy();
+        msnry?.destroy();
+        infScroll = null;
+        msnry = null;
         pageIndex = 1;
         lastFetchedPageIndex = 0;
         images.value = [];
 
-        await fetchData(pageIndex);
+        await fetchData(pageIndex, currentRequestId);
+        if (currentRequestId !== requestId) return;
         pageIndex = 2;
         await nextTick();
         await reinitInfiniteScroll();
@@ -253,6 +262,7 @@ export default {
     );
 
     onMounted(async () => {
+      const currentRequestId = ++requestId;
       isLoading.value = true;
       fetchDataAndPopulateRef(
         'https://saintsophia.dh.gu.se/api/inscriptions/graffitialignment/',
@@ -263,12 +273,18 @@ export default {
         conditions
       );
 
-      await fetchData(1);
+      await fetchData(1, currentRequestId);
+      if (currentRequestId !== requestId) return;
       pageIndex = 2;
       await nextTick();
 
       initMasonry();
       reloadAndLayout();
+    });
+
+    onBeforeUnmount(() => {
+      infScroll?.destroy();
+      msnry?.destroy();
     });
 
     return {

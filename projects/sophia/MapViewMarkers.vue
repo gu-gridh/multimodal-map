@@ -1,5 +1,5 @@
 <script setup>
-import { ref, defineProps, onMounted, inject, watch } from "vue";
+import { ref, defineProps, onMounted, onBeforeUnmount, inject, watch } from "vue";
 import GeoJSON from "ol/format/GeoJSON.js";
 import VectorSource from "ol/source/Vector";
 import Style from "ol/style/Style";
@@ -12,6 +12,9 @@ import { pointerMove } from "ol/events/condition";
 import { Vector as VectorLayer } from "ol/layer.js";
 
 let selectHover;
+let selectHandler;
+let clickHandler;
+let debounceHoverTimer;
 let currentFloorRequestId = 0;
 
 const emit = defineEmits(["deselect-surface"]);
@@ -185,9 +188,7 @@ onMounted(() => {
 
     map.addInteraction(selectHover);
 
-    let debounceHoverTimer;
-
-    selectHover.on("select", (event) => {
+    selectHandler = (event) => {
       clearTimeout(debounceHoverTimer);
 
       debounceHoverTimer = setTimeout(() => {
@@ -197,7 +198,8 @@ onMounted(() => {
       event.deselected.forEach((feature) => {
         feature.setStyle(undefined);
       });
-    });
+    };
+    selectHover.on("select", selectHandler);
 
     function handleHover(event) {
       if (event.selected.length > 0) {
@@ -214,9 +216,8 @@ onMounted(() => {
       }
     }
 
-    let clickedFeatures = [];
-    map.on("click", function (evt) {
-      clickedFeatures = []; // Clear the array before each click
+    clickHandler = (evt) => {
+      const clickedFeatures = [];
       map.forEachFeatureAtPixel(evt.pixel, function (feature) {
         clickedFeatures.push(feature);
       });
@@ -247,10 +248,22 @@ onMounted(() => {
         selectedFeature.value = undefined;
         emit("deselect-surface");
       }
-    });
+    };
+    map.on("click", clickHandler);
   } else {
     console.error("Map object is not initialized.");
   }
+});
+
+onBeforeUnmount(() => {
+  clearTimeout(debounceHoverTimer);
+  if (!map) return;
+  if (clickHandler) map.un("click", clickHandler);
+  if (selectHover) {
+    if (selectHandler) selectHover.un("select", selectHandler);
+    map.removeInteraction(selectHover);
+  }
+  map.removeLayer(vectorLayer);
 });
 
 const selectFeatureByPanel = () => {
