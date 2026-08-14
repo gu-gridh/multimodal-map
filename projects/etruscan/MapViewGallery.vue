@@ -1,6 +1,6 @@
 <template>
   <div id="gallery-container">
-    <div class="gallery">
+    <div class="gallery" :class="{ 'is-ready': isGridReady }">
       <div class="gallery__col-sizer"></div>
       <div class="gallery__gutter-sizer"></div>
       <div v-for="item in images" :key="item.featureId" class="gallery__item">
@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { ref, watch, nextTick } from 'vue'
+import { ref, watch, nextTick, onBeforeUnmount } from 'vue'
 import Masonry from 'masonry-layout'
 import InfiniteScroll from 'infinite-scroll'
 import { etruscanStore } from './settings/store'
@@ -41,12 +41,13 @@ import apiConfig from './settings/apiConfig'
 export default {
   setup() {
     const images = ref([])
+    const isGridReady = ref(false)
     const seenIds = new Set()
 
     let msnry, infScroll
     let pageIndex = 1
-    let lastFetched = 0
-    let isFetching = false
+    let requestId = 0
+    let hasNextPage = true
 
     const store = etruscanStore()
 
@@ -58,43 +59,41 @@ export default {
       return { aspectRatio: `${item.width} / ${item.height}` }
     }
 
-    const fetchData = async (page) => {
-      if (page <= lastFetched || isFetching) return
-      isFetching = true
+    const addFeatures = (features) => {
+      const newImages = features
+        .filter(f => !seenIds.has(f.id))
+        .map(f => {
+          seenIds.add(f.id)
+          const image = f.properties.default_image || f.properties.first_photograph_id
+          return {
+            featureId: f.id,
+            name: f.properties.name,
+            necropolis: f.properties.necropolis.text,
+            datasetShortName: f.properties.dataset.short_name,
+            default_image: f.properties.default_image?.iiif_file ?? null,
+            first_photograph_id: f.properties.first_photograph_id?.iiif_file ?? null,
+            width: image?.width ?? null,
+            height: image?.height ?? null,
+            published: !!f.properties.published
+          }
+        })
+        .filter(img => img.default_image || img.first_photograph_id)
+
+      images.value.push(...newImages)
+    }
+
+    const fetchData = async (page, currentRequestId) => {
       try {
         const url = `${apiConfig.PLACE}?depth=1&page=${page}&${new URLSearchParams(store.imgParams)}`
         const res = await fetch(url)
-        const { features = [] } = await res.json()
-
-        const newImages = features
-          .filter(f => !seenIds.has(f.id))
-          .map(f => {
-            seenIds.add(f.id)
-            const image = f.properties.default_image || f.properties.first_photograph_id
-            return {
-              featureId: f.id,
-              name: f.properties.name,
-              necropolis: f.properties.necropolis.text,
-              datasetShortName: f.properties.dataset.short_name,
-              default_image: f.properties.default_image?.iiif_file ?? null,
-              first_photograph_id: f.properties.first_photograph_id?.iiif_file ?? null,
-              width: image?.width ?? null,
-              height: image?.height ?? null,
-              published: !!f.properties.published
-            }
-          })
-          .filter(img => img.default_image || img.first_photograph_id)
-
-        if (newImages.length) {
-          images.value.push(...newImages)
-          lastFetched = page
-        } else {
-          infScroll && infScroll.off('load')
-        }
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`)
+        const data = await res.json()
+        if (currentRequestId !== requestId) return null
+        addFeatures(data.features || [])
+        return data
       } catch (err) {
         console.error(err)
-      } finally {
-        isFetching = false
+        return null
       }
     }
 
@@ -107,6 +106,10 @@ export default {
         percentPosition: true
       })
 
+      requestAnimationFrame(() => {
+        isGridReady.value = true
+      })
+
       infScroll = new InfiniteScroll(gallery, {
         path() {
           return `${apiConfig.PLACE}?depth=1&page=${pageIndex}&${new URLSearchParams(store.imgParams)}`
@@ -114,12 +117,15 @@ export default {
         outlayer: msnry,
         status: '.page-load-status',
         history: false,
+        responseBody: 'json',
         scrollThreshold: 1200,
         elementScroll: true
       })
+      infScroll.canLoad = hasNextPage
 
-      infScroll.on('load', async () => {
-        await fetchData(pageIndex)
+      infScroll.on('load', async (body) => {
+        addFeatures(body.features || [])
+        infScroll.canLoad = !!body.next
         pageIndex += 1
         await nextTick()
         layoutMasonry()
@@ -133,17 +139,37 @@ export default {
     }
 
     watch(() => store.imgParams, async () => {
+      const currentRequestId = ++requestId
+      isGridReady.value = false
+      infScroll?.destroy()
+      msnry?.destroy()
+      infScroll = null
+      msnry = null
       images.value.length = 0
       seenIds.clear()
       pageIndex = 1
-      lastFetched = 0
 
-      await fetchData(1)
+      const firstPage = await fetchData(1, currentRequestId)
+      if (!firstPage) return
+
+      let lastInitialPage = firstPage
       pageIndex = 2
+      if (firstPage.next) {
+        const secondPage = await fetchData(2, currentRequestId)
+        if (!secondPage) return
+        lastInitialPage = secondPage
+        pageIndex = 3
+      }
+      hasNextPage = !!lastInitialPage.next
 
       await nextTick()
       reinitInfiniteScroll()
     }, { immediate: true })
+
+    onBeforeUnmount(() => {
+      infScroll?.destroy()
+      msnry?.destroy()
+    })
 
     const updatePlaceId = (item) => { store.placeId = item.featureId }
 
@@ -152,7 +178,7 @@ export default {
       msnry?.layout()
     }
 
-    return { images, updatePlaceId, getAspectStyle }
+    return { images, isGridReady, updatePlaceId, getAspectStyle }
   }
 }
 </script>
@@ -191,6 +217,11 @@ export default {
   overflow-y: auto;
   max-width: 100%;
   margin: 0 auto;
+  opacity: 0;
+}
+
+.gallery.is-ready {
+  opacity: 1;
 }
 
 .gallery::-webkit-scrollbar {
@@ -229,7 +260,7 @@ export default {
   .gallery__col-sizer {
     width: calc(25% - 8px);
   }
-  
+
 }
 
 @media screen and (max-width: 2000px) {
@@ -356,7 +387,6 @@ export default {
   display: none;
   /* hidden by default */
   padding-top: 20px;
-  border-top: 1px solid #DDD;
   text-align: center;
   color: #777;
 }

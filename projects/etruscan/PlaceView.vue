@@ -517,7 +517,7 @@ function nextFrame() {
 
                                 <!-- If the item is a pointcloud -->
                                 <a v-else-if="isPointcloud(item)"
-                                    :href="` https://etruscan.dh.gu.se/viewer/?q=${item.id}/pointcloud`" target="_top">
+                                    :href="`https://etruscan.dh.gu.se/viewer/?q=${item.id}/pointcloud`" target="_top">
                                     <div class="model-object">
 
                                         <img v-if="item.preview_image"

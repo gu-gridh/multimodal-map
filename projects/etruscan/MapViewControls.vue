@@ -1,8 +1,4 @@
 <template>
-  <!-- Checks if all points are loaded and only then show the controls -->
-  <!-- <div :class="{ 'non-interactive': !areMapPointsLoaded }"> -->
-  <!-- <div v-if="areMapPointsLoaded"> -->
-
   <!-- This creates a 2-column section with for the controls -->
   <div class="control-organisation justify-left" style="margin-bottom:0px;">
     <div class="tag-section margin-3">
@@ -23,10 +19,7 @@
         }" :limit="1" class="my-2" title="Pick a data type" @click="handleCategoryClick" />
       </div>
     </div>
-
   </div>
-
-
 
   <!-- This creates a 2-column section width for the controls -->
   <div class="control-organisation justify-space">
@@ -69,13 +62,6 @@
     <span v-if="searchQuery" class="remove-icon" @click="searchQuery = ''">&times;</span>
     <div class="search-button"></div>
   </div>
-  <!-- </div> -->
-
-  <!-- if the markers are not loaded show the loader -->
-  <!--  <div v-else>
-        <div alt="Loading..." class="loading-svg" />
-      </div> -->
-  <!-- </div> -->
 
   <!-- Data Section -->
   <div class="data-widget">
@@ -269,11 +255,6 @@ watch(
   { immediate: true }
 );
 
-// const toggleAboutVisibility = async () => {
-//   await nextTick();
-//   visibleAbout.value = !visibleAbout.value;
-// };
-
 function clearAll() {
   categories.value = ["all"];
   necropoli.value = ["all"];
@@ -453,6 +434,12 @@ function clearAll() {
 }
 
 @media screen and (max-width: 900px) {
+
+  .search-section,
+  .slider-widget {
+    float: none !important;
+  }
+
   #app .broad-controls {
     width: 100%;
 

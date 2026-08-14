@@ -1,5 +1,5 @@
 <script setup>
-import { ref, defineProps, onMounted, inject, watch } from "vue";
+import { ref, defineProps, onMounted, onBeforeUnmount, inject, watch } from "vue";
 import GeoJSON from "ol/format/GeoJSON.js";
 import VectorSource from "ol/source/Vector.js";
 import VectorLayer from "ol/layer/Vector.js";
@@ -16,6 +16,7 @@ const { areMapPointsLoaded, showMapLabels } = storeToRefs(etruscanStore());
 const hoveredFeature = ref(null);
 const hoverCoordinates = ref(null);
 const selectedCoordinates = ref(null);
+let mapInstance;
 
 const props = defineProps({
   map: Object,
@@ -133,47 +134,57 @@ const markerRedStyle = new Style({
   }),
 });
 
+const handlePointerMove = (evt) => {
+  if (evt.dragging) return;
+
+  const featureAtPixel = mapInstance.forEachFeatureAtPixel(
+    evt.pixel,
+    (feat) => feat,
+    { hitTolerance: 5 }
+  );
+
+  if (hoveredFeature.value !== featureAtPixel) {
+    hoveredFeature.value = featureAtPixel || null;
+    hoverCoordinates.value = featureAtPixel
+      ? featureAtPixel.getGeometry().getCoordinates()
+      : null;
+    vectorLayer.value.changed();
+  }
+};
+
+const handleClick = (evt) => {
+  const feature = mapInstance.forEachFeatureAtPixel(
+    evt.pixel,
+    (feat) => feat,
+    { hitTolerance: 5 }
+  );
+  if (feature) {
+    selectedFeature.value = feature;
+    selectedCoordinates.value = feature.getGeometry().getCoordinates();
+  } else {
+    selectedFeature.value = null;
+    selectedCoordinates.value = null;
+  }
+};
+
 onMounted(() => {
-  const map = inject("map");
-  if (!map) {
-    console.error("map is not available.");
+  mapInstance = inject("map");
+  if (!mapInstance) {
+    console.error("Map is not available.");
     return;
   }
 
-  map.addLayer(vectorLayer.value);
+  mapInstance.addLayer(vectorLayer.value);
 
-  map.on("pointermove", (evt) => {
-    if (evt.dragging) return;
+  mapInstance.on("pointermove", handlePointerMove);
+  mapInstance.on("click", handleClick);
+});
 
-    const featureAtPixel = map.forEachFeatureAtPixel(
-      evt.pixel,
-      (feat) => feat,
-      { hitTolerance: 5 }
-    );
-
-    if (hoveredFeature.value !== featureAtPixel) {
-      hoveredFeature.value = featureAtPixel || null;
-      hoverCoordinates.value = featureAtPixel
-        ? featureAtPixel.getGeometry().getCoordinates()
-        : null;
-      vectorLayer.value.changed();
-    }
-  });
-
-  map.on("click", (evt) => {
-    const feature = map.forEachFeatureAtPixel(
-      evt.pixel,
-      (feat) => feat,
-      { hitTolerance: 5 }
-    );
-    if (feature) {
-      selectedFeature.value = feature;
-      selectedCoordinates.value = feature.getGeometry().getCoordinates();
-    } else {
-      selectedFeature.value = null;
-      selectedCoordinates.value = null;
-    }
-  });
+onBeforeUnmount(() => {
+  if (!mapInstance) return;
+  mapInstance.un("pointermove", handlePointerMove);
+  mapInstance.un("click", handleClick);
+  mapInstance.removeLayer(vectorLayer.value);
 });
 
 watch(
