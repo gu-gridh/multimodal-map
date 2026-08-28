@@ -1,5 +1,5 @@
 <script setup>
-import { watchEffect, ref, inject } from "vue";
+import { watchEffect, ref } from "vue";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
 import { etruscanStore } from "./settings/store";

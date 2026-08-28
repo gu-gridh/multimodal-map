@@ -71,10 +71,6 @@ function isDocument(item) {
     return 'upload' in item;
 }
 
-function previewImageUrl(previewImage) {
-    return previewImage ? `${previewImage}/full/250,/0/default.jpg` : null;
-}
-
 function getAspectStyle(image) {
     if (!image.width || !image.height) {
         return { aspectRatio: '1 / 1' };
@@ -185,8 +181,7 @@ async function loadContent() {
     const datasetQuery = selectedDatasetId.value ? `&dataset=${selectedDatasetId.value}` : "";
     const imageLimit = sort.value === 'year' ? 500 : 8;
 
-    const [fetchedImages, fetchedObservations, fetchedDocuments, fetchedPointclouds, fetchedTexturedMeshModels, fetchedPlans] = await Promise.all
-        ([
+    const [fetchedImages, fetchedObservations, fetchedDocuments, fetchedPointclouds, fetchedTexturedMeshModels, fetchedPlans] = await Promise.all([
             fetch(`${apiConfig.IMAGE}?tomb=${id.value}&limit=${imageLimit}&type_of_image=2&depth=2${datasetQuery}`).then(res => res.json()),
             dianaClient.listAll("observation", { place: id.value, ...datasetParam }),
             dianaClient.listAll("document", { place: id.value, ...datasetParam }),

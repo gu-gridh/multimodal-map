@@ -34,7 +34,7 @@ let visited = true;
 // Watcher for selectedFeature changes
 watch(
   selectedFeature,
-  (newFeature, oldFeature) => {
+  (newFeature) => {
     if (newFeature && newFeature.getGeometry) {
       const geometry = newFeature.getGeometry();
       if (geometry) {
@@ -89,9 +89,12 @@ const tagParams = computed(() => {
     delete (params)['with_plan'];
   }
 
-  etruscan.imgParams = params;
   return params;
 });
+
+watch(tagParams, (params) => {
+  etruscan.imgParams = params;
+}, { immediate: true });
 
 watch(
   tagParams,

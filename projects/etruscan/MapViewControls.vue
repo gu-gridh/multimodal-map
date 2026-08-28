@@ -146,11 +146,13 @@ const DATASET = ref({});
 const SITES = ref({});
 
 onMounted(async () => {
-  await fetchDataAndPopulateRef("epoch", TAGS);
-  await fetchDataAndPopulateRef("necropolis", NECROPOLI);
-  await fetchDataAndPopulateRef("typeoftomb", TOMBTYPE);
-  await fetchDataAndPopulateRef("dataset", DATASET);
-  await fetchDataAndPopulateRef("sites", SITES);
+  await Promise.all([
+    fetchDataAndPopulateRef("epoch", TAGS),
+    fetchDataAndPopulateRef("necropolis", NECROPOLI),
+    fetchDataAndPopulateRef("typeoftomb", TOMBTYPE),
+    fetchDataAndPopulateRef("dataset", DATASET),
+    fetchDataAndPopulateRef("sites", SITES),
+  ]);
 });
 
 const NECROPOLICoordinates = ref({});
@@ -172,7 +174,7 @@ async function fetchDataAndPopulateRef(type, refToPopulate, params = {}) {
             coordinates: result.geometry ? result.geometry.coordinates : null,
           };
         }
-      })
+      }).filter(Boolean)
     } else {
       refToPopulate.value = {};
 
@@ -247,7 +249,7 @@ const fetchData = async (url) => {
 
 watch(
   () => dataParams.value,
-  async (newTagParams, oldTagParams) => {
+  async (newTagParams) => {
     const queryParams = new URLSearchParams(Object.fromEntries(Object.entries(newTagParams).map(([k, v]) => [k, String(v)])));
     const urlWithParams = `https://diana.dh.gu.se/api/etruscantombs/info/tombs/?${queryParams.toString()}`;
     await fetchData(urlWithParams);

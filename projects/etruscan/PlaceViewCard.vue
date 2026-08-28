@@ -8,15 +8,6 @@
     id: [String, Number],
   });
 
-  const capitalize = (word) => {
-    if (word !== '') {
-      const first = word[0].toUpperCase()
-      const rest = word.slice(1)
-      return first + rest
-    }
-    else return word
-  }
-
   const title = ref(null);
   const necropolisName = ref(null);
   const siteName = ref(null);

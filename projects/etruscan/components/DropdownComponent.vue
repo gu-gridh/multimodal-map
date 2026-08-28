@@ -51,10 +51,6 @@ const displayCategories = computed(() => {
   }
 });
 
-function toggle(key) {
-  handleToggle(key);
-}
-
 function dropdownToggle(event) {
   const selectElement = event.target;
   

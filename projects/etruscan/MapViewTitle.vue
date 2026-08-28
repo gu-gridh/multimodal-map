@@ -30,7 +30,7 @@ import { mapState } from 'pinia';
 import { etruscanStore } from './settings/store';
 
 export default {
-  name: "Title",
+  name: "EtruscanTitle",
   computed: {
     ...mapState(etruscanStore, ['showMapLabels']),
   },
