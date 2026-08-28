@@ -206,7 +206,8 @@ z-index: 1000;
 font-size: 16px;
 color: white;
 position: fixed;
-margin-bottom: 12px;ight: 55%;
+margin-bottom: 12px;
+right: 55%;
   }
 }
 
