@@ -4,7 +4,7 @@
  */
 import axios from "axios";
 
-export const API_BASE = "https://iconographia2.dh.gu.se/api";
+export const API_BASE = "https://iconographia.dh.gu.se/api";
   //import.meta.env.VITE_API_URL || "http://localhost:8000/api";
 
 export class IconographiaClient {
