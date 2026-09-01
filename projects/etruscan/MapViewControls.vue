@@ -57,11 +57,11 @@
     </div>
   </div>
 
-  <div class="search-section">
+  <!-- <div class="search-section">
     <input v-model="searchQuery" class="search-box" type="text" :placeholder="$t('searchplaceholder')" />
     <span v-if="searchQuery" class="remove-icon" @click="searchQuery = ''">&times;</span>
     <div class="search-button"></div>
-  </div>
+  </div> -->
 
   <!-- Data Section -->
   <div class="data-widget">
