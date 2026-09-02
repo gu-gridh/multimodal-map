@@ -31,7 +31,6 @@
   const visibleAbout = ref(false);
   const visibleInstructions = ref(false);
   const showGallery = ref(false);
-  const showLegend = computed(() => !showGallery.value);
   let visited = true;
 
   // Watcher for selectedFeature changes
@@ -204,7 +203,7 @@
     </template>
 
     <template #background>
-      <div class="legend" v-if="showLegend">
+      <div class="legend" v-if="!showGallery">
           <!-- <div class="legend-title legend-bg">Type of documentation</div> -->
          <div class="legend-color-group">
           <div class="legend-swatch-title legend-bg">Base data</div>
@@ -223,7 +222,7 @@
       </div>
       <div class="guide-button compact" title="User Guide" @click="toggleInstructionsVisibility">?
       </div>
-      <button class="show-labels-button" @click="toggleMapLabels">
+      <button class="show-labels-map-button" @click="toggleMapLabels">
         <div class="p-1 px-2 clickable category-button about-button" :class="{ active: showMapLabels }">
           {{ $t('maplabels') }}
         </div>
@@ -356,17 +355,18 @@
     left: 30px;
   }
 
-  .show-labels-button {
+  .show-labels-map-button {
 
     pointer-events: auto;
     width: 100px;
-    height: 40px;
+    height: 25px;
     cursor: pointer;
     overflow: hidden;
     position: absolute;
     bottom: 150px;
     left: calc(50% + 50px);
     z-index: 1000;
+    border-radius:4px;
   }
 
   .guide-button {
@@ -395,5 +395,24 @@
     background-color: rgb(0, 0, 0, 1.0) !important;
     cursor: pointer;
     transform: scale(1.07);
+  }
+
+   @media screen and (max-width: 900px) {
+    .guide-button {
+      display: none;
+    }
+     .show-labels-map-button {
+    pointer-events: auto;
+    width: 100px;
+    height: 35px;
+    cursor: pointer;
+    overflow: hidden;
+    position: absolute;
+    bottom: 380px;
+    left: calc(50% - 50px);
+    z-index: 1000;
+    border-radius:4px;
+    font-size:120%;
+    }
   }
 </style>

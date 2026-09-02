@@ -103,7 +103,7 @@ function styleFunction(feature) {
     labelStyles.set(feature, new Style({
       text: new Text({
         text: `${feature.get("dataset")?.short_name || ""} - ${feature.get("name") || ""}`,
-        offsetY: -48,
+        offsetY: -58,
         font: '14px "Barlow Condensed", sans-serif',
         fill: new Fill({ color: "#282828" }),
         stroke: new Stroke({ color: "rgba(255, 255, 255, 0.9)", width: 3 }),
