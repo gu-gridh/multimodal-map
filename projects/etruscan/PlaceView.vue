@@ -79,6 +79,15 @@ function getAspectStyle(image) {
     return { aspectRatio: `${image.width} / ${image.height}` };
 }
 
+function getYearImageViewerUrl(image) {
+    const imageTypes = plans.value.some(plan => plan.id === image.id)
+        ? '&type_of_image=1&type_of_image=5'
+        : '';
+
+    return `https://etruscan.dh.gu.se/viewer/?q=${id.value}/images${imageTypes}&image=${image.id}`;
+    // Localhost: `http://localhost:8094/viewer/?q=${id.value}/images${imageTypes}&image=${image.id}`
+}
+
 function closeDropdown(event) {
     event.currentTarget.closest('details')?.removeAttribute('open');
 }
@@ -398,8 +407,9 @@ function nextFrame() {
                                 <div v-for="(image, index) in plans" :key="index" class="plan-gallery__item">
                                     <div class="masonry-image" v-if="'iiif_file' in image"
                                         :style="getAspectStyle(image)">
-                                        <a :href="`https://etruscan.dh.gu.se/viewer/?q=${image.id}/image`"
+                                        <a :href="`https://etruscan.dh.gu.se/viewer/?q=${id}/images&type_of_image=1&type_of_image=5&image=${image.id}`"
                                             target="_top">
+                                            <!-- Localhost: `http://localhost:8094/viewer/?q=${id}/images&type_of_image=1&type_of_image=5&image=${image.id}` -->
                                             <div class="meta-data-overlay">
                                                 <div class="meta-data-overlay-text">{{ image.title }}</div>
                                                 <div class="meta-data-overlay-text"> {{ image.type_of_image[0].text }}
@@ -429,8 +439,9 @@ function nextFrame() {
                                 <div v-for="(image, index) in images" :key="index" class="gallery__item">
                                     <div class="masonry-image" v-if="'iiif_file' in image"
                                         :style="getAspectStyle(image)">
-                                        <a :href="`https://etruscan.dh.gu.se/viewer/?q=${image.id}/image`"
+                                        <a :href="`https://etruscan.dh.gu.se/viewer/?q=${id}/images&image=${image.id}`"
                                             target="_top">
+                                            <!-- Localhost: `http://localhost:8094/viewer/?q=${id}/images&image=${image.id}` -->
                                             <div class="meta-data-overlay">
                                                 <div class="meta-data-overlay-text">{{ image.title }}</div>
                                                 <div class="meta-data-overlay-text">{{ image.type_of_image[0].text }}
@@ -473,8 +484,7 @@ function nextFrame() {
                                 :class="(isImage(item) || isPointcloud(item) || isTexturedMeshModel(item)) ? 'image-placeholder square' : ''">
                                 <!-- If the item is an image -->
                                 <div class="image-square" v-if="'iiif_file' in item">
-                                    <a v-if="item.iiif_file"
-                                        :href="`https://etruscan.dh.gu.se/viewer/?q=${item.id}/image`" target="_top">
+                                    <a v-if="item.iiif_file" :href="getYearImageViewerUrl(item)" target="_top">
                                         <div class="meta-data-overlay">
                                             <div class="meta-data-overlay-text">{{ item.title }}</div>
                                             <div class="meta-data-overlay-text">{{ item.type_of_image[0].text }}</div>
