@@ -84,8 +84,7 @@ function getYearImageViewerUrl(image) {
         ? '&type_of_image=1&type_of_image=5'
         : '';
 
-    return `https://etruscan.dh.gu.se/viewer/?q=${id.value}/images${imageTypes}&image=${image.id}`;
-    // Localhost: `http://localhost:8094/viewer/?q=${id.value}/images${imageTypes}&image=${image.id}`
+    return `https://etruscan.dh.gu.se/viewer/?q=${id.value}/images${imageTypes}&id=${image.id}`;
 }
 
 function closeDropdown(event) {
@@ -407,9 +406,8 @@ function nextFrame() {
                                 <div v-for="(image, index) in plans" :key="index" class="plan-gallery__item">
                                     <div class="masonry-image" v-if="'iiif_file' in image"
                                         :style="getAspectStyle(image)">
-                                        <a :href="`https://etruscan.dh.gu.se/viewer/?q=${id}/images&type_of_image=1&type_of_image=5&image=${image.id}`"
+                                        <a :href="`https://etruscan.dh.gu.se/viewer/?q=${id}/images&type_of_image=1&type_of_image=5&id=${image.id}`"
                                             target="_top">
-                                            <!-- Localhost: `http://localhost:8094/viewer/?q=${id}/images&type_of_image=1&type_of_image=5&image=${image.id}` -->
                                             <div class="meta-data-overlay">
                                                 <div class="meta-data-overlay-text">{{ image.title }}</div>
                                                 <div class="meta-data-overlay-text"> {{ image.type_of_image[0].text }}
@@ -439,9 +437,8 @@ function nextFrame() {
                                 <div v-for="(image, index) in images" :key="index" class="gallery__item">
                                     <div class="masonry-image" v-if="'iiif_file' in image"
                                         :style="getAspectStyle(image)">
-                                        <a :href="`https://etruscan.dh.gu.se/viewer/?q=${id}/images&image=${image.id}`"
+                                        <a :href="`https://etruscan.dh.gu.se/viewer/?q=${id}/images&id=${image.id}`"
                                             target="_top">
-                                            <!-- Localhost: `http://localhost:8094/viewer/?q=${id}/images&image=${image.id}` -->
                                             <div class="meta-data-overlay">
                                                 <div class="meta-data-overlay-text">{{ image.title }}</div>
                                                 <div class="meta-data-overlay-text">{{ image.type_of_image[0].text }}
