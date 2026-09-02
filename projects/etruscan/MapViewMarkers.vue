@@ -17,6 +17,7 @@ const hoveredFeature = ref(null);
 const hoverCoordinates = ref(null);
 const selectedCoordinates = ref(null);
 let mapInstance;
+let requestId = 0;
 
 const props = defineProps({
   map: Object,
@@ -45,7 +46,7 @@ const updateFeatures = (features) => {
   vectorSource.value.addFeatures(transformedFeatures);
 };
 
-const fetchData = async (initialUrl, params) => {
+const fetchData = async (initialUrl, params, currentRequestId) => {
   let nextUrl = initialUrl;
   const initialParams = new URLSearchParams({
     page_size: "1000",
@@ -62,12 +63,14 @@ const fetchData = async (initialUrl, params) => {
     if (!res) break;
 
     const data = await res.json();
+    if (currentRequestId !== requestId) return;
+
     const features = data.features || [];
     updateFeatures(features);
 
     nextUrl = data.next ? data.next.replace(/^http:/, "https:") : null;
   }
-  areMapPointsLoaded.value = true;
+  if (currentRequestId === requestId) areMapPointsLoaded.value = true;
 };
 
 const markerStyles = {
@@ -190,6 +193,7 @@ onBeforeUnmount(() => {
 watch(
   () => props.params,
   async (newParams) => {
+    const currentRequestId = ++requestId;
     areMapPointsLoaded.value = false;
     vectorSource.value.clear();
 
@@ -199,7 +203,7 @@ watch(
     selectedCoordinates.value = null;
 
     const initialUrl = "https://diana.dh.gu.se/api/etruscantombs/coordinates";
-    await fetchData(initialUrl, newParams);
+    await fetchData(initialUrl, newParams, currentRequestId);
   },
   { immediate: true }
 );
