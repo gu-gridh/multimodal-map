@@ -31,6 +31,7 @@
   const visibleAbout = ref(false);
   const visibleInstructions = ref(false);
   const showGallery = ref(false);
+  const showLegend = computed(() => !showGallery.value);
   let visited = true;
 
   // Watcher for selectedFeature changes
@@ -191,6 +192,8 @@
 
   </div>
 
+
+
   <MapViewGallery v-if="showGallery" />
   <About :visibleAbout="visibleAbout" @close="visibleAbout = false" />
   <Instructions :visibleInstructions="visibleInstructions" @close="visibleInstructions = false" />
@@ -201,6 +204,23 @@
     </template>
 
     <template #background>
+      <div class="legend" v-if="showLegend">
+          <!-- <div class="legend-title legend-bg">Type of documentation</div> -->
+         <div class="legend-color-group">
+          <div class="legend-swatch-title legend-bg">Base data</div>
+          <div class="legend-swatch" style="background-color:rgba(255, 255, 255, 1.0)"> </div>
+          
+        </div>
+
+        <div class="legend-color-group">
+          <div class="legend-swatch-title legend-bg">3D data</div>
+          <div class="legend-swatch" style="background-color:rgba(255, 150, 80, 1.0)"> </div>
+          
+          
+        </div>
+       
+
+      </div>
       <div class="guide-button compact" title="User Guide" @click="toggleInstructionsVisibility">?
       </div>
       <button class="show-labels-button" @click="toggleMapLabels">
@@ -249,6 +269,61 @@
 </template>
 
 <style>
+  .legend {
+    position: absolute;
+    right: 30px;
+    top: calc(50px);
+    display: flex;
+    flex-direction: column;
+    z-index: 100;
+    width: auto;
+    padding: 4px;
+    justify-content: right;
+     backdrop-filter: blur(2px);
+    background-color: rgba(250, 250, 210, 0.5);
+    border-radius: 7px;
+  }
+
+  @media screen and (max-width: 1200px) {
+    .legend {
+      display: none;
+    }
+  }
+
+  .legend-title {
+    text-align: right;
+    margin-bottom: 10px;
+    font-weight: 400;
+    line-height: 1.0;
+    padding: 2px;
+  }
+
+  .legend-color-group {
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+    align-items: center;
+    margin-bottom: 4px;
+  }
+
+  .legend-swatch {
+    height: 20px;
+    width: 20px;
+    margin-left: 0px;
+    border-radius: 4px;
+    border-style: solid;
+    border-width: 2px;
+    border-color: rgb(220, 215, 210);
+  }
+
+  .legend-swatch-title {
+    font-size: 14px;
+    padding: 0px 10px;
+    font-weight: 400;
+    width:70px;
+    text-align:right;
+  }
+
   #version {
     position: absolute;
     text-align: right;
