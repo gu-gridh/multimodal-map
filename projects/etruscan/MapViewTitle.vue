@@ -16,11 +16,11 @@
                   margin-left: 10px;
                 ">{{ $t('languagebutton') }}</div>
       </button>
-      <button class="show-labels-button" @click="toggleMapLabels">
+   <!--    <button class="show-labels-button" @click="toggleMapLabels">
         <div class="p-1 px-2 clickable category-button about-button" :class="{ active: showMapLabels }">
           {{ $t('maplabels') }}
         </div>
-      </button>
+      </button> -->
     </div>
 </template>
 
@@ -56,9 +56,12 @@ export default {
   display: contents;
 }
 
-.show-labels-button {
+/* .show-labels-button {
   margin-left: 10px;
-}
+  position:absolute;
+  right:30px;
+  bottom:30px;
+} */
 
 @media screen and (min-width: 901px) {
   .title-actions {

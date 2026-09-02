@@ -17,7 +17,7 @@ const messages = {
       searchplaceholder: "Search by tomb title",
       infobutton: "About the portal",
       languagebutton: "In Italiano",
-      maplabels: "Show all labels",
+      maplabels: "Show labels",
       moreinfo: "More Info",
       all: "Show all",
       threedmodel: "3D Model",
