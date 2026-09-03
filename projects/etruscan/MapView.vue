@@ -227,7 +227,7 @@
       <div class="guide-button compact" title="User Guide" @click="toggleInstructionsVisibility">?
       </div>
       <button class="show-labels-map-button" @click="toggleMapLabels">
-        <div class="p-1 px-2 clickable category-button about-button" :class="{ active: showMapLabels }">
+        <div class="p-1 px-2 clickable" :class="{ active: showMapLabels }">
           {{ $t(showMapLabels ? 'hidemaplabels' : 'maplabels') }}
         </div>
       </button>
@@ -374,6 +374,14 @@
     z-index: 1000;
     border-radius:4px;
     line-height:1;
+        backdrop-filter: blur(2px);
+    background-color: rgba(250, 250, 210, 0.5);
+    font-size:0.9em;
+  }
+
+  .show-labels-map-button:hover {
+   color:white;
+    background-color: rgba(150, 50, 10, 0.5);
   }
 
   .guide-button {
@@ -416,7 +424,7 @@
     cursor: pointer;
     overflow: hidden;
     position: absolute;
-    bottom: 380px;
+    bottom: 45vh;
     left: 50%;
     transform: translateX(-50%);
     z-index: 1000;
