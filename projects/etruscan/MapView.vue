@@ -226,7 +226,7 @@
       </div>
       <div class="guide-button compact" title="User Guide" @click="toggleInstructionsVisibility">?
       </div>
-      <button class="show-labels-map-button" @click="toggleMapLabels">
+      <button v-if="!showGallery" class="show-labels-map-button" @click="toggleMapLabels">
         <div class="p-1 px-2 clickable" :class="{ active: showMapLabels }">
           {{ $t(showMapLabels ? 'hidemaplabels' : 'maplabels') }}
         </div>
