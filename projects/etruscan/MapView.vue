@@ -367,6 +367,7 @@
     left: calc(50% + 50px);
     z-index: 1000;
     border-radius:4px;
+    line-height:1;
   }
 
   .guide-button {
