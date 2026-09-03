@@ -32,10 +32,12 @@ const observations = ref([]);
 const documents = ref([]);
 const pointcloud = ref([]);
 const texturedMeshModels = ref([]);
+const panoramas = ref([]);
 
 const combined3DModels = computed(() => [
     ...pointcloud.value.map(p => ({ ...p, modelType: 'pointcloud' })),
-    ...texturedMeshModels.value
+    ...texturedMeshModels.value,
+    ...panoramas.value
 ]);
 
 const sortedGroupedByYear = computed(() => {
@@ -65,6 +67,10 @@ function isPointcloud(item) {
 
 function isTexturedMeshModel(item) {
     return item.modelType === 'texturedmesh';
+}
+
+function isPanorama(item) {
+    return item.modelType === 'panorama';
 }
 
 function isDocument(item) {
@@ -147,7 +153,7 @@ async function fetchMoreImages() {
         }
         images.value = [...images.value, ...newImages];
 
-        groupAndSortByYear([...images.value, ...plans.value, ...observations.value, ...documents.value, ...pointcloud.value, ...texturedMeshModels.value]);
+        groupAndSortByYear([...images.value, ...plans.value, ...observations.value, ...documents.value, ...pointcloud.value, ...texturedMeshModels.value, ...panoramas.value]);
 
         await nextTick();
         await nextFrame();
@@ -189,12 +195,13 @@ async function loadContent() {
     const datasetQuery = selectedDatasetId.value ? `&dataset=${selectedDatasetId.value}` : "";
     const imageLimit = sort.value === 'year' ? 500 : 8;
 
-    const [fetchedImages, fetchedObservations, fetchedDocuments, fetchedPointclouds, fetchedTexturedMeshModels, fetchedPlans] = await Promise.all([
+    const [fetchedImages, fetchedObservations, fetchedDocuments, fetchedPointclouds, fetchedTexturedMeshModels, fetchedPanoramas, fetchedPlans] = await Promise.all([
             fetch(`${apiConfig.IMAGE}?tomb=${id.value}&limit=${imageLimit}&type_of_image=2&depth=2${datasetQuery}`).then(res => res.json()),
             dianaClient.listAll("observation", { place: id.value, ...datasetParam }),
             dianaClient.listAll("document", { place: id.value, ...datasetParam }),
             dianaClient.listAll("objectpointcloud", { tomb: id.value, depth: 2, ...datasetParam }),
             fetch(`https://diana.dh.gu.se/api/etruscantombs/objecttexturedmesh/?tomb=${id.value}&depth=1${datasetQuery}`).then(res => res.json()),
+            dianaClient.listAll("panorama", { tomb: id.value, ...datasetParam }),
             fetch(`${apiConfig.IMAGE}?tomb=${id.value}&type_of_image=1&type_of_image=5&depth=2${datasetQuery}`).then(res => res.json())
         ]);
 
@@ -209,9 +216,12 @@ async function loadContent() {
     texturedMeshModels.value = fetchedTexturedMeshModels.results
         .filter((model) => model.published)
         .map((model) => ({ ...model, modelType: 'texturedmesh' }));
+    panoramas.value = fetchedPanoramas
+        .filter((panorama) => panorama.published)
+        .map((panorama) => ({ ...panorama, modelType: 'panorama' }));
     plans.value = fetchedPlans.results;
 
-    groupAndSortByYear([...images.value, ...plans.value, ...observations.value, ...documents.value, ...pointcloud.value, ...texturedMeshModels.value]);
+    groupAndSortByYear([...images.value, ...plans.value, ...observations.value, ...documents.value, ...pointcloud.value, ...texturedMeshModels.value, ...panoramas.value]);
 
     await nextTick();
     await initMasonry();
@@ -395,6 +405,20 @@ function nextFrame() {
                                             class="image-square" />
                                     </div>
                                 </a>
+
+                                <a v-else-if="model.modelType === 'panorama'"
+                                    :href="`https://etruscan.dh.gu.se/viewer/?q=${model.id}/panorama`" target="_top">
+                                    <div class="meta-data-overlay-center">
+                                        <div class="meta-data-overlay-text">
+                                            <div class="meta-center-type">Panorama</div>
+                                            <div class="meta-center-title">{{ model.title }}</div>
+                                        </div>
+                                    </div>
+                                    <div class="mesh">
+                                        <img v-if="model.preview_image" :src="model.preview_image" :alt="model.title"
+                                            class="image-square" />
+                                    </div>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -478,7 +502,7 @@ function nextFrame() {
                         <div class="gallery-label year-label">{{ year }}</div>
                         <div class="type-items year-items">
                             <div v-for="(item, index) in items" :key="index"
-                                :class="(isImage(item) || isPointcloud(item) || isTexturedMeshModel(item)) ? 'image-placeholder square' : ''">
+                                :class="(isImage(item) || isPointcloud(item) || isTexturedMeshModel(item) || isPanorama(item)) ? 'image-placeholder square' : ''">
                                 <!-- If the item is an image -->
                                 <div class="image-square" v-if="'iiif_file' in item">
                                     <a v-if="item.iiif_file" :href="getYearImageViewerUrl(item)" target="_top">
@@ -514,6 +538,18 @@ function nextFrame() {
                                     </div>
                                     <div class="meta-data-below-text">
                                         <div class="meta-center-type">Textured mesh</div>
+                                    </div>
+                                </a>
+
+                                <!-- If the item is a panorama -->
+                                <a v-else-if="isPanorama(item)"
+                                    :href="`https://etruscan.dh.gu.se/viewer/?q=${item.id}/panorama`" target="_top">
+                                    <div class="model-object">
+                                        <img v-if="item.preview_image" :src="item.preview_image" :alt="item.title"
+                                            class="image-square hexagon hexagon-small" />
+                                    </div>
+                                    <div class="meta-data-below-text">
+                                        <div class="meta-center-type">Panorama</div>
                                     </div>
                                 </a>
 
