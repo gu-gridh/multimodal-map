@@ -381,7 +381,7 @@
 
   .show-labels-map-button:hover {
    color:white;
-    background-color: rgba(150, 50, 10, 0.5);
+    background-color: rgba(180, 50, 50, 0.5);
   }
 
   .guide-button {
