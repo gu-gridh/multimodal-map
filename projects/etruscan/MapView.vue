@@ -373,7 +373,7 @@
     transform: translateX(-50%);
     z-index: 1000;
     border-radius:4px;
-    line-height:1;
+    line-height:1.2;
         backdrop-filter: blur(2px);
     background-color: rgba(250, 250, 210, 0.5);
     font-size:0.9em;
@@ -398,9 +398,9 @@
     color: white;
     text-align: center;
     line-height: 1.9;
-    font-size: 1.4em;
+    font-size: 23px;
     font-weight: 100;
-    font-family: "Oswald", sans-serif !important;
+    font-family: "Barlow", sans-serif !important;
     user-select: none;
     -webkit-user-select: none;
     z-index: 1000;
