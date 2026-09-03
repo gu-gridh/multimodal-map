@@ -16,24 +16,14 @@
                   margin-left: 10px;
                 ">{{ $t('languagebutton') }}</div>
       </button>
-      <button class="show-labels-button" @click="toggleMapLabels">
-        <div class="p-1 px-2 clickable category-button about-button" :class="{ active: showMapLabels }">
-          {{ $t('maplabels') }}
-        </div>
-      </button>
     </div>
 </template>
 
 <script>
 import i18n from '../../src/translations/etruscan';
-import { mapState } from 'pinia';
-import { etruscanStore } from './settings/store';
 
 export default {
   name: "EtruscanTitle",
-  computed: {
-    ...mapState(etruscanStore, ['showMapLabels']),
-  },
   methods: {
     toggleLanguage() {
       if (i18n.global.locale === 'en') {
@@ -41,9 +31,6 @@ export default {
       } else {
         i18n.global.locale = 'en';
       }
-    },
-    toggleMapLabels() {
-      etruscanStore().showMapLabels = !this.showMapLabels;
     },
   },
   emits: ['toggle-about', 'toggle-instructions'],
@@ -56,10 +43,6 @@ export default {
   display: contents;
 }
 
-.show-labels-button {
-  margin-left: 10px;
-}
-
 @media screen and (min-width: 901px) {
   .title-actions {
     display: flex;
@@ -67,16 +50,9 @@ export default {
     gap: 10px;
   }
 
-  .title-actions .about-button,
-  .title-actions .show-labels-button {
+  .title-actions .about-button {
     margin-left: 0 !important;
   }
 }
 
-@media screen and (max-width: 900px) {
-  .show-labels-button {
-    display: block;
-    margin: 15px 0 0;
-  }
-}
 </style>

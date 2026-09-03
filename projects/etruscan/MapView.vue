@@ -21,7 +21,7 @@
 
 
 
-  const {selectedRange, necropoli, showUnknownRange, tombType, dataSetValue, dataParams, enable3D, enablePlan, selectedSite} = storeToRefs(etruscanStore());
+  const {selectedRange, necropoli, showUnknownRange, tombType, dataSetValue, dataParams, enable3D, enablePlan, selectedSite, showMapLabels} = storeToRefs(etruscanStore());
   const store = mapStore();
   const etruscan = etruscanStore();
   const {selectedFeature} = storeToRefs(store);
@@ -32,6 +32,10 @@
   const visibleInstructions = ref(false);
   const showGallery = ref(false);
   let visited = true;
+
+  const toggleMapLabels = () => {
+    showMapLabels.value = !showMapLabels.value;
+  };
 
   // Watcher for selectedFeature changes
   watch(
@@ -224,7 +228,7 @@
       </div>
       <button class="show-labels-map-button" @click="toggleMapLabels">
         <div class="p-1 px-2 clickable category-button about-button" :class="{ active: showMapLabels }">
-          {{ $t('maplabels') }}
+          {{ $t(showMapLabels ? 'hidemaplabels' : 'maplabels') }}
         </div>
       </button>
       <div class="map-container">
@@ -358,13 +362,15 @@
   .show-labels-map-button {
 
     pointer-events: auto;
-    width: 100px;
-    height: 25px;
+    width: auto;
+    min-width: 100px;
+    min-height: 25px;
     cursor: pointer;
-    overflow: hidden;
+    white-space: nowrap;
     position: absolute;
     bottom: 150px;
-    left: calc(50% + 50px);
+    left: calc(50% + 100px);
+    transform: translateX(-50%);
     z-index: 1000;
     border-radius:4px;
     line-height:1;
@@ -404,13 +410,15 @@
     }
      .show-labels-map-button {
     pointer-events: auto;
-    width: 100px;
+    width: auto;
+    min-width: 100px;
     height: 35px;
     cursor: pointer;
     overflow: hidden;
     position: absolute;
     bottom: 380px;
-    left: calc(50% - 50px);
+    left: 50%;
+    transform: translateX(-50%);
     z-index: 1000;
     border-radius:4px;
     font-size:120%;
