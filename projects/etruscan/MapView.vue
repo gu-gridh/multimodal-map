@@ -207,7 +207,7 @@
     </template>
 
     <template #background>
-      <div class="legend" v-if="!showGallery">
+      <div class="legend" v-if="!showGallery && !selectedFeature">
           <!-- <div class="legend-title legend-bg">Type of documentation</div> -->
          <div class="legend-color-group">
           <div class="legend-swatch-title legend-bg">Base data</div>
