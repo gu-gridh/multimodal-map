@@ -356,7 +356,7 @@
   }
 
   #app .ol-popup:before {
-    left: 30px;
+    left: 25px;
   }
 
   .show-labels-map-button {
