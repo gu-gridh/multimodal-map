@@ -36,8 +36,7 @@ const panoramas = ref([]);
 
 const combined3DModels = computed(() => [
     ...pointcloud.value.map(p => ({ ...p, modelType: 'pointcloud' })),
-    ...texturedMeshModels.value,
-    ...panoramas.value
+    ...texturedMeshModels.value
 ]);
 
 const sortedGroupedByYear = computed(() => {
@@ -370,6 +369,27 @@ function nextFrame() {
                         </div>
                     </div>
 
+                    <div class="type-row" v-if="panoramas.length > 0">
+                        <div class="gallery-label hexagon-adapted">{{ $t('panoramas') }}</div>
+                        <div class="type-items">
+                            <div v-for="panorama in panoramas" :key="panorama.id"
+                                class="image-placeholder square hexagon">
+                                <a :href="`https://etruscan.dh.gu.se/viewer/?q=${panorama.id}/panorama`" target="_top">
+                                    <div class="meta-data-overlay-center">
+                                        <div class="meta-data-overlay-text">
+                                            <div class="meta-center-type">Panorama</div>
+                                            <div class="meta-center-title">{{ panorama.title }}</div>
+                                        </div>
+                                    </div>
+                                    <div class="mesh">
+                                        <img v-if="panorama.preview_image" :src="panorama.preview_image" :alt="panorama.title"
+                                            class="image-square" />
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="type-row" v-if="combined3DModels.length > 0">
                         <div class="gallery-label hexagon-adapted">{{ $t('threedmodels') }}</div>
                         <div class="type-items">
@@ -402,20 +422,6 @@ function nextFrame() {
                                     <div class="mesh">
                                         <img v-if="model.preview_image"
                                             :src="model.preview_image" :alt="model.title"
-                                            class="image-square" />
-                                    </div>
-                                </a>
-
-                                <a v-else-if="model.modelType === 'panorama'"
-                                    :href="`https://etruscan.dh.gu.se/viewer/?q=${model.id}/panorama`" target="_top">
-                                    <div class="meta-data-overlay-center">
-                                        <div class="meta-data-overlay-text">
-                                            <div class="meta-center-type">Panorama</div>
-                                            <div class="meta-center-title">{{ model.title }}</div>
-                                        </div>
-                                    </div>
-                                    <div class="mesh">
-                                        <img v-if="model.preview_image" :src="model.preview_image" :alt="model.title"
                                             class="image-square" />
                                     </div>
                                 </a>
@@ -544,7 +550,7 @@ function nextFrame() {
                                 <!-- If the item is a panorama -->
                                 <a v-else-if="isPanorama(item)"
                                     :href="`https://etruscan.dh.gu.se/viewer/?q=${item.id}/panorama`" target="_top">
-                                    <div class="model-object">
+                                    <div class="model-object" :class="{ hexagon: !item.preview_image }">
                                         <img v-if="item.preview_image" :src="item.preview_image" :alt="item.title"
                                             class="image-square hexagon hexagon-small" />
                                     </div>
