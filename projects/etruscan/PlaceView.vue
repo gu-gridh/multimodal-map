@@ -542,7 +542,7 @@ function nextFrame() {
                                             :src="item.preview_image" :alt="item.title"
                                             class="image-square hexagon hexagon-small" />
                                     </div>
-                                    <div class="meta-data-below-text">
+                                    <div class="meta-data-below-text meta-data-below-text-hexagon">
                                         <div class="meta-center-type">Textured mesh</div>
                                     </div>
                                 </a>
@@ -550,11 +550,11 @@ function nextFrame() {
                                 <!-- If the item is a panorama -->
                                 <a v-else-if="isPanorama(item)"
                                     :href="`https://etruscan.dh.gu.se/viewer/?q=${item.id}/panorama`" target="_top">
-                                    <div class="model-object" :class="{ hexagon: !item.preview_image }">
+                                    <div class="model-object" :class="{ circle: !item.preview_image }">
                                         <img v-if="item.preview_image" :src="item.preview_image" :alt="item.title"
-                                            class="image-square hexagon hexagon-small" />
+                                            class="image-square circle-small" />
                                     </div>
-                                    <div class="meta-data-below-text">
+                                    <div class="meta-data-below-text meta-data-below-text-circle">
                                         <div class="meta-center-type">Panorama</div>
                                     </div>
                                 </a>
@@ -568,7 +568,7 @@ function nextFrame() {
                                             :src="item.preview_image" :alt="item.title"
                                             class="image-square hexagon hexagon-small" />
                                     </div>
-                                    <div class="meta-data-below-text">
+                                    <div class="meta-data-below-text meta-data-below-text-hexagon">
                                         <div class="meta-center-type">Pointcloud</div>
                                     </div>
                                 </a>
@@ -823,13 +823,20 @@ a:visited {
 
 .hexagon-small {
     transform: scale(1.0);
-    overflow: auto !important;
+    
 }
 
 .circle{
     border-radius:50%;
     background-color: rgb(180, 200, 180);
     transform:scale(0.90);
+}
+
+.circle-small{
+    border-radius:50%;
+    background-color: rgb(180, 200, 180);
+    transform:scale(0.95)!important;
+    overflow: auto !important;
 }
 
 .circle-adapted {
@@ -842,6 +849,7 @@ a:visited {
     height: 160px;
     margin-top:5px;
 }
+
 
 .meta-data-overlay-center {
     display: flex;
@@ -892,13 +900,21 @@ a:visited {
     margin-top: -160px;
     opacity: 0.0;
     background-color: rgb(0, 0, 0, 0.6);
-    clip-path: polygon(50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%);
     transition: all 0.2s ease-in-out;
     transform: scale(1.05);
 }
 
 .meta-data-below-text:hover {
     opacity: 1.0;
+}
+
+.meta-data-below-text-hexagon {
+    clip-path: polygon(50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%);
+}
+
+.meta-data-below-text-circle {
+    border-radius:50%;
+     transform: scale(0.95);
 }
 
 .meta-center-type {
@@ -910,7 +926,7 @@ a:visited {
 .meta-center-title {
     font-size: 0.8em;
     color: rgb(200,200,200);
-     text-align: center;
+    text-align: center;
 }
 
 
