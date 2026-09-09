@@ -828,6 +828,8 @@ a:visited {
 
 .circle{
     border-radius:50%;
+    background-color: rgb(180, 200, 180);
+    transform:scale(0.90);
 }
 
 .circle-adapted {
