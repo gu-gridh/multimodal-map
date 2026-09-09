@@ -370,10 +370,10 @@ function nextFrame() {
                     </div>
 
                     <div class="type-row" v-if="panoramas.length > 0">
-                        <div class="gallery-label hexagon-adapted">{{ $t('panoramas') }}</div>
+                        <div class="gallery-label circle-adapted">{{ $t('panoramas') }}</div>
                         <div class="type-items">
                             <div v-for="panorama in panoramas" :key="panorama.id"
-                                class="image-placeholder square hexagon">
+                                class="image-placeholder square circle">
                                 <a :href="`https://etruscan.dh.gu.se/viewer/?q=${panorama.id}/panorama`" target="_top">
                                     <div class="meta-data-overlay-center">
                                         <div class="meta-data-overlay-text">
@@ -824,6 +824,15 @@ a:visited {
 .hexagon-small {
     transform: scale(1.0);
     overflow: auto !important;
+}
+
+.circle{
+    border-radius:50%;
+}
+
+.circle-adapted {
+    padding-top: 80px;
+    overflow:hidden;
 }
 
 .model-object {
