@@ -823,7 +823,7 @@ a:visited {
 
 .hexagon-small {
     transform: scale(1.0);
-    
+    margin-top:10px;
 }
 
 .circle{
