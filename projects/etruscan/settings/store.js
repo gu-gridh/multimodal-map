@@ -15,10 +15,11 @@ export const etruscanStore = defineStore("etruscan", () => {
   const imgParams = ref({});
   const enable3D = ref(false);
   const enablePlan = ref(false);
+  const enablePanorama = ref(false);
   const areMapPointsLoaded = ref(false);
   const showMapLabels = ref(false);
   const placeId = ref(null);
   const searchQuery = ref("");
 
-  return { categories, tags, dataSetValue, showUnknownRange, tagsLayerVisible, necropoli, selectedRange, tombType, dataParams, enable3D, enablePlan, areMapPointsLoaded, showMapLabels, imgParams, placeId, selectedSite, searchQuery };
+  return { categories, tags, dataSetValue, showUnknownRange, tagsLayerVisible, necropoli, selectedRange, tombType, dataParams, enable3D, enablePlan, enablePanorama, areMapPointsLoaded, showMapLabels, imgParams, placeId, selectedSite, searchQuery };
 });

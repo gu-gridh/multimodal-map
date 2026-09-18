@@ -21,7 +21,7 @@
 
 
 
-  const {selectedRange, necropoli, showUnknownRange, tombType, dataSetValue, dataParams, enable3D, enablePlan, selectedSite, showMapLabels} = storeToRefs(etruscanStore());
+  const {selectedRange, necropoli, showUnknownRange, tombType, dataSetValue, dataParams, enable3D, enablePlan, enablePanorama, selectedSite, showMapLabels} = storeToRefs(etruscanStore());
   const store = mapStore();
   const etruscan = etruscanStore();
   const {selectedFeature} = storeToRefs(store);
@@ -93,6 +93,12 @@
       (params)['with_plan'] = 'true';
     } else {
       delete (params)['with_plan'];
+    }
+
+    if (enablePanorama.value) {
+      (params)['with_panorama'] = 'true';
+    } else {
+      delete (params)['with_panorama'];
     }
 
     return params;

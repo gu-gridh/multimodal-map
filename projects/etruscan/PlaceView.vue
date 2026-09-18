@@ -195,14 +195,14 @@ async function loadContent() {
     const imageLimit = sort.value === 'year' ? 500 : 8;
 
     const [fetchedImages, fetchedObservations, fetchedDocuments, fetchedPointclouds, fetchedTexturedMeshModels, fetchedPanoramas, fetchedPlans] = await Promise.all([
-            fetch(`${apiConfig.IMAGE}?tomb=${id.value}&limit=${imageLimit}&type_of_image=2&depth=2${datasetQuery}`).then(res => res.json()),
-            dianaClient.listAll("observation", { place: id.value, ...datasetParam }),
-            dianaClient.listAll("document", { place: id.value, ...datasetParam }),
-            dianaClient.listAll("objectpointcloud", { tomb: id.value, depth: 2, ...datasetParam }),
-            fetch(`https://diana.dh.gu.se/api/etruscantombs/objecttexturedmesh/?tomb=${id.value}&depth=1${datasetQuery}`).then(res => res.json()),
-            dianaClient.listAll("panorama", { tomb: id.value, ...datasetParam }),
-            fetch(`${apiConfig.IMAGE}?tomb=${id.value}&type_of_image=1&type_of_image=5&depth=2${datasetQuery}`).then(res => res.json())
-        ]);
+        fetch(`${apiConfig.IMAGE}?tomb=${id.value}&limit=${imageLimit}&type_of_image=2&depth=2${datasetQuery}`).then(res => res.json()),
+        dianaClient.listAll("observation", { place: id.value, ...datasetParam }),
+        dianaClient.listAll("document", { place: id.value, ...datasetParam }),
+        dianaClient.listAll("objectpointcloud", { tomb: id.value, depth: 2, ...datasetParam }),
+        fetch(`https://diana.dh.gu.se/api/etruscantombs/objecttexturedmesh/?tomb=${id.value}&depth=1${datasetQuery}`).then(res => res.json()),
+        dianaClient.listAll("panorama", { tomb: id.value, ...datasetParam }),
+        fetch(`${apiConfig.IMAGE}?tomb=${id.value}&type_of_image=1&type_of_image=5&depth=2${datasetQuery}`).then(res => res.json())
+    ]);
 
     images.value = fetchedImages.results.filter((image) => image.published);
     nextPageUrl.value = fetchedImages.next && fetchedImages.next.startsWith('http://')
@@ -382,8 +382,8 @@ function nextFrame() {
                                         </div>
                                     </div>
                                     <div class="mesh">
-                                        <img v-if="panorama.preview_image" :src="panorama.preview_image" :alt="panorama.title"
-                                            class="image-square" />
+                                        <img v-if="panorama.preview_image" :src="panorama.preview_image"
+                                            :alt="panorama.title" class="image-square" />
                                     </div>
                                 </a>
                             </div>
@@ -395,7 +395,7 @@ function nextFrame() {
                         <div class="type-items">
                             <div v-for="(model, index) in combined3DModels" :key="index"
                                 class="image-placeholder square hexagon">
-                                
+
                                 <a v-if="model.modelType === 'pointcloud'"
                                     :href="`https://etruscan.dh.gu.se/viewer/?q=${model.id}/pointcloud`" target="_top">
                                     <div class="meta-data-overlay-center">
@@ -405,14 +405,14 @@ function nextFrame() {
                                         </div>
                                     </div>
                                     <div class="pointcloud">
-                                        <img v-if="model.preview_image"
-                                            :src="model.preview_image" :alt="model.title"
+                                        <img v-if="model.preview_image" :src="model.preview_image" :alt="model.title"
                                             class="image-square" />
                                     </div>
                                 </a>
 
                                 <a v-else-if="model.modelType === 'texturedmesh'"
-                                    :href="`https://etruscan.dh.gu.se/viewer/?q=${model.id}/texturedmesh`" target="_top">
+                                    :href="`https://etruscan.dh.gu.se/viewer/?q=${model.id}/texturedmesh`"
+                                    target="_top">
                                     <div class="meta-data-overlay-center">
                                         <div class="meta-data-overlay-text">
                                             <div class="meta-center-type">Textured mesh</div>
@@ -420,8 +420,7 @@ function nextFrame() {
                                         </div>
                                     </div>
                                     <div class="mesh">
-                                        <img v-if="model.preview_image"
-                                            :src="model.preview_image" :alt="model.title"
+                                        <img v-if="model.preview_image" :src="model.preview_image" :alt="model.title"
                                             class="image-square" />
                                     </div>
                                 </a>
@@ -538,8 +537,7 @@ function nextFrame() {
                                     :href="`https://etruscan.dh.gu.se/viewer/?q=${item.id}/texturedmesh`" target="_top">
                                     <div class="model-object">
 
-                                        <img v-if="item.preview_image"
-                                            :src="item.preview_image" :alt="item.title"
+                                        <img v-if="item.preview_image" :src="item.preview_image" :alt="item.title"
                                             class="image-square hexagon hexagon-small" />
                                     </div>
                                     <div class="meta-data-below-text meta-data-below-text-hexagon">
@@ -564,8 +562,7 @@ function nextFrame() {
                                     :href="`https://etruscan.dh.gu.se/viewer/?q=${item.id}/pointcloud`" target="_top">
                                     <div class="model-object">
 
-                                        <img v-if="item.preview_image"
-                                            :src="item.preview_image" :alt="item.title"
+                                        <img v-if="item.preview_image" :src="item.preview_image" :alt="item.title"
                                             class="image-square hexagon hexagon-small" />
                                     </div>
                                     <div class="meta-data-below-text meta-data-below-text-hexagon">
@@ -823,31 +820,31 @@ a:visited {
 
 .hexagon-small {
     transform: scale(1.0);
-    margin-top:10px;
+    margin-top: 10px;
 }
 
-.circle{
-    border-radius:50%;
+.circle {
+    border-radius: 50%;
     background-color: rgb(180, 200, 180);
-    transform:scale(0.90);
+    transform: scale(0.90);
 }
 
-.circle-small{
-    border-radius:50%;
+.circle-small {
+    border-radius: 50%;
     background-color: rgb(180, 200, 180);
-    transform:scale(0.95)!important;
+    transform: scale(0.95) !important;
     overflow: auto !important;
 }
 
 .circle-adapted {
     padding-top: 80px;
-    overflow:hidden;
+    overflow: hidden;
 }
 
 .model-object {
     width: 160px;
     height: 160px;
-    margin-top:5px;
+    margin-top: 5px;
 }
 
 
@@ -913,8 +910,8 @@ a:visited {
 }
 
 .meta-data-below-text-circle {
-    border-radius:50%;
-     transform: scale(0.95);
+    border-radius: 50%;
+    transform: scale(0.95);
 }
 
 .meta-center-type {
@@ -925,7 +922,7 @@ a:visited {
 
 .meta-center-title {
     font-size: 0.8em;
-    color: rgb(200,200,200);
+    color: rgb(200, 200, 200);
     text-align: center;
 }
 
@@ -1002,7 +999,7 @@ a:visited {
 
     .gallery-controls {
         flex-wrap: wrap;
-        margin-left:   15px;
+        margin-left: 15px;
         margin-bottom: 10px;
     }
 
@@ -1023,18 +1020,19 @@ a:visited {
         width: 130px;
         height: 130px;
     }
-.type-row{
-    padding-bottom:10px;
-}
 
-.main-container.is-year-view .year-items .square {
-  width: 140px;
+    .type-row {
+        padding-bottom: 10px;
+    }
+
+    .main-container.is-year-view .year-items .square {
+        width: 140px;
         height: 140px;
-}
+    }
 
-.main-container.is-year-view .year-items .model-object{
-    margin-top:5px;
-}
+    .main-container.is-year-view .year-items .model-object {
+        margin-top: 5px;
+    }
 
     .main-container.is-year-view .year-items .meta-data-below-text {
         margin-top: -130px;

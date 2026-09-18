@@ -15,7 +15,8 @@
         <CategoryButtonList v-model="categories" :categories="{
           all: $t('categories.all'),
           plans: $t('categories.drawings'),
-          models: $t('categories.models')
+          models: $t('categories.models'),
+          panoramas: $t('panoramas')
         }" :limit="1" class="my-2" title="Pick a data type" @click="handleCategoryClick" />
       </div>
     </div>
@@ -114,13 +115,14 @@ import { DianaClient } from "./settings/diana.js";
 // import { nextTick } from 'vue';
 
 const dianaClient = new DianaClient("etruscantombs");
-const { categories, selectedRange, necropoli, tombType, dataSetValue, dataParams, enable3D, enablePlan, selectedSite, showUnknownRange, searchQuery } = storeToRefs(etruscanStore());
+const { categories, selectedRange, necropoli, tombType, dataSetValue, dataParams, enable3D, enablePlan, enablePanorama, selectedSite, showUnknownRange, searchQuery } = storeToRefs(etruscanStore());
 const lastClickedCategory = ref('');
 
 const isFilterModified = computed(() => {
   return (
     enablePlan.value !== false ||
     enable3D.value !== false ||
+    enablePanorama.value !== false ||
     tombType.value[0] !== "all" ||
     selectedSite.value[0] !== "all" ||
     showUnknownRange.value !== true ||
@@ -220,6 +222,11 @@ const handleCategoryClick = (category) => {
     } else {
       enablePlan.value = false;
     }
+    if (category === 'panoramas') {
+      enablePanorama.value = !enablePanorama.value;
+    } else {
+      enablePanorama.value = false;
+    }
   } else {
     //add the clicked category only if it's not the same as the last clicked one
     categories.value = [category];
@@ -228,6 +235,7 @@ const handleCategoryClick = (category) => {
     lastClickedCategory.value = category;
     enable3D.value = (category === 'models');
     enablePlan.value = (category === 'plans');
+    enablePanorama.value = (category === 'panoramas');
   }
 };
 
@@ -262,6 +270,7 @@ function clearAll() {
   necropoli.value = ["all"];
   enablePlan.value = false;
   enable3D.value = false;
+  enablePanorama.value = false;
   tombType.value = ["all"];
   selectedSite.value = ["all"];
   showUnknownRange.value = true;
