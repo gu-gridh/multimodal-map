@@ -1,6 +1,7 @@
 <script setup>
   import router from './settings/router'
   import { ref, inject, onMounted } from "vue"
+  import { fromLonLat } from "ol/proj";
   import markerIcon from "@/assets/marker-red.svg";
   import apiConfig from "./settings/apiConfig"
 
@@ -17,10 +18,10 @@
   const period = ref(null);
   const subtitle = ref(null);
   const description = ref(null);
-  const projection = ref("EPSG:4326");
+  const projection = ref("EPSG:3857");
   const zoom = ref(16);
   const rotation = ref(0);
-  const center = ref([11.999722, 42.224444])
+  const center = ref(fromLonLat([11.999722, 42.224444]))
   const minZoom = ref(12)
 
   const format = inject("ol-format");
@@ -36,7 +37,7 @@
       }
       const placeData = await response.json();
       if (placeData && placeData.geometry && placeData.geometry.coordinates) {
-        center.value = placeData.geometry.coordinates;
+        center.value = fromLonLat(placeData.geometry.coordinates);
       }
     } catch (error) {
       console.error("Error fetching place data:", error);
