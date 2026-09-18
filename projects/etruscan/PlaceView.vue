@@ -374,7 +374,7 @@ function nextFrame() {
                         <div class="type-items">
                             <div v-for="panorama in panoramas" :key="panorama.id"
                                 class="image-placeholder square circle">
-                                <a :href="`http://localhost:8094/viewer/?q=${id}/panorama`" target="_top">
+                                <a :href="`https://etruscan.dh.gu.se/viewer/?q=${panorama.id}/panorama`" target="_top">
                                     <div class="meta-data-overlay-center">
                                         <div class="meta-data-overlay-text">
                                             <div class="meta-center-type">Panorama</div>
@@ -547,7 +547,7 @@ function nextFrame() {
 
                                 <!-- If the item is a panorama -->
                                 <a v-else-if="isPanorama(item)"
-                                    :href="`http://localhost:8094/viewer/?q=${id}/panorama`" target="_top">
+                                    :href="`https://etruscan.dh.gu.se/viewer/?q=${item.id}/panorama`" target="_top">
                                     <div class="model-object" :class="{ circle: !item.preview_image }">
                                         <img v-if="item.preview_image" :src="item.preview_image" :alt="item.title"
                                             class="image-square circle-small" />
