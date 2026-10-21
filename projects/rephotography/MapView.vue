@@ -167,10 +167,10 @@ watch(showGrid, (newValue) => {
           </DianaPlaceLayer>
 
           <MapViewLayers v-for="(layer, i) in vectorLayers" :key="layer.url" :geojsonUrl="layer.url" :zIndex="2"
-            :isVisible="mapLayerVisibility" :date="true" :color="layerColors[i]" />
+            :isVisible="mapLayerVisibility" :color="layerColors[i]" />
 
           <MapViewLayers :geojsonUrl="'https://data.dh.gu.se/geography/CryoClim_GAO_SJ_1936-1972.geojson'" :zIndex="1"
-            :isVisible="mapLayerVisibilityTwo" :date=false :color="'rgb(200, 231, 247)'">
+            :isVisible="mapLayerVisibilityTwo" :color="'rgb(200, 231, 247)'">
           </MapViewLayers>
 
         </template>

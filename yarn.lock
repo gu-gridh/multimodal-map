@@ -1988,11 +1988,6 @@
   dependencies:
     vue-demi "*"
 
-"@yeger/vue-masonry-wall@^3.4.4":
-  version "3.7.0"
-  resolved "https://registry.yarnpkg.com/@yeger/vue-masonry-wall/-/vue-masonry-wall-3.7.0.tgz#59be082fc7aaa9537a92974ba08d5d319bdc19de"
-  integrity sha512-V7oJogqvYHv4ieOxYBBhgij/B3V+z+4ykz9ASYY/j9uAjvKglhbHjvucDMNng8oSbo+2zqEU4XCm+GJf2JGxNQ==
-
 "@zarrita/storage@^0.2.0":
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/@zarrita/storage/-/storage-0.2.0.tgz#b555ed467a59e49bf104eeab2e4c0beaea01e6f1"

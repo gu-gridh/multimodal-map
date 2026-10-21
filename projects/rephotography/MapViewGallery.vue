@@ -1,6 +1,5 @@
 <template>
-  <VueMasonryWall
-    :key="layoutKey"
+  <MasonryGallery
     class="masonry-wall"
     :items="images"
     :column-width="300" 
@@ -12,7 +11,7 @@
         :to="`/detail/image/${item.id}`"
         class="grid-item"
       >
-        <img :src="`${item.iiif_file}/full/450,/0/default.jpg`" @load="imageLoaded" />
+        <img :src="`${item.iiif_file}/full/450,/0/default.jpg`" />
          <div class="grid-item-info">
           <div class="grid-item-info-meta">
             <h1>{{item.title}}</h1>
@@ -20,38 +19,18 @@
         </div>
       </router-link>
     </template>
-  </VueMasonryWall>
+  </MasonryGallery>
 </template>
 
 <script setup>
-import { ref, onMounted, defineComponent } from "vue";
-import VueMasonryWall from "@yeger/vue-masonry-wall";
+import { ref, onMounted } from "vue";
+import MasonryGallery from "@/components/MasonryGallery.vue";
 import { DianaClient } from "./settings/diana.js";
 
 const diana = new DianaClient("rephotography");
 const images = ref([]);
-let layoutKey = ref(0);
-let loadedImagesCount = ref(0);
-
-const imageLoaded = () => {
-  loadedImagesCount.value++;
-  if (loadedImagesCount.value === images.value?.length) {
-    refreshMasonry();
-  }
-};
-
-const refreshMasonry = () => {
-  layoutKey.value++;
-}
-
 onMounted(async () => {
   images.value = await diana.listAll("image");
-});
-
-defineComponent({
-  components: {
-    VueMasonryWall,
-  },
 });
 </script>
 
@@ -78,10 +57,6 @@ defineComponent({
   #app .masonry-wall {
     padding: 0px 0px 0px 33%; 
   }
-}
-
-.grid-item:hover .grid-item-info {
-  opacity: 0.9;
 }
 
 .grid-item {

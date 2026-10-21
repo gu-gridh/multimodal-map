@@ -2,7 +2,7 @@
 import { ref, watch, onMounted } from "vue";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
-import VueMasonryWall from "@yeger/vue-masonry-wall";
+import MasonryGallery from "@/components/MasonryGallery.vue";
 import { useRouter, useRoute } from "vue-router";
 import {fromLonLat} from 'ol/proj.js';
 import * as turf from '@turf/turf'
@@ -11,7 +11,6 @@ import { DianaClient } from "./settings/diana.js";
 
 const { selectedFeature } = storeToRefs(mapStore());
 const diana = new DianaClient("rwanda");
-let layoutKey = ref(0);
 const router = useRouter();
 const store = mapStore();
 const route = useRoute();
@@ -200,7 +199,7 @@ function deselectPlace() {
         <div v-if="images.length != 0" class="masonry">
         <div>
           <p>Images</p>
-          <VueMasonryWall :key="layoutKey" class="masonry-wall" :items="images" :column-width="150" :gap="10">
+          <MasonryGallery class="masonry-wall" :items="images" :column-width="150" :gap="10">
             <template v-slot:default="{ item }">
               <router-link :key="item.uuid" :to="`/image/${item.id}`" class="grid-item">
                 <img :src="`${item.iiif_file}/full/450,/0/default.jpg`" />
@@ -211,7 +210,7 @@ function deselectPlace() {
                 </div>
               </router-link>
             </template>
-          </VueMasonryWall>
+          </MasonryGallery>
         </div>
       </div>
       <div v-if="comment" class="comment">

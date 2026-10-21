@@ -14,13 +14,6 @@ const hoverCoordinates = ref();
 
 const hoveredFeature = ref();
 
-/* const props = defineProps({
-  clickable: {
-    type: Boolean,
-    default: true,
-  },
-}) */
-
 const selectConditions = inject("ol-selectconditions");
 const hoverCondition = selectConditions.pointerMove;
 const selectCondition = selectConditions.click;
