@@ -3,17 +3,17 @@
   <div class="compare-toggle-section">
     <label class="compare-toggle-label">
       <input type="checkbox" v-model="compareMode" class="compare-toggle-checkbox" />
-      <span class="compare-toggle-text">Compare Resources</span>
+      <span class="compare-toggle-text">Compare Site Types</span>
     </label>
   </div>
 
   <!-- Normal mode: single data type dropdown -->
   <div v-if="!compareMode" class="control-organisation justify-space">
     <div class="tag-section ">
-      <div class="section-title">Type of Data</div>
+      <div class="section-title">Site Type</div>
       <div class="broad-controls" style="width:120px">
         <CategoryButtonDropdown v-model="dataType"
-          :categories="resourceCategories" 
+          :categories="siteTypeCategories" 
           :limit="1" styleType="dropdown" class="my-2" type="site" style="width:100%" />
       </div>
     </div>
@@ -21,25 +21,16 @@
 
   <!-- Compare mode: multi-select checkboxes -->
   <div v-else class="compare-section">
-    <div class="section-title">Select 2+ Resource Types to Compare</div>
+    <div class="section-title">Select 2+ Site Types to Compare</div>
     <div class="compare-checklist">
-      <label v-for="(label, key) in resourceCategories" :key="key" class="compare-check-item">
+      <label v-for="(label, key) in siteTypeCategories" :key="key" class="compare-check-item">
         <input type="checkbox" :value="key" v-model="compareTypes" class="compare-checkbox" />
-        <span class="compare-color-dot" :style="{ background: RESOURCE_COLORS[key] || '#666' }"></span>
+        <span class="compare-color-dot" :style="{ background: typeColor(key) }"></span>
         <span class="compare-check-label">{{ label }}</span>
       </label>
     </div>
     <div v-if="compareTypes.length < 2" class="compare-info compare-info-hint">
-      Select at least 2 resource types to find common sites
-    </div>
-  </div>
-
-  <div v-if="!compareMode" class="tag-section margin-3">
-    <div class="slider-widget">
-      <div class="slider-section">
-        <RangeSlider ref="rangeSliderRef" v-model="selectedRange" :min="-2450" :max="50" :step="1" class="my-2"
-          :isSliderVisible="true" />
-      </div>
+      Select at least 2 site types to find sites that have all of them
     </div>
   </div>
 
@@ -47,8 +38,8 @@
   <div class="data-widget">
     <div class="data-widget-section" v-if="!compareMode">
       <div class="data-widget-item">
-        <h3>Sites Available:</h3>
-        <p>{{ count }}</p>
+        <h3>Sites Shown:</h3>
+        <p>{{ visibleSiteCount }}</p>
       </div>
       <div class="data-widget-item">|</div>
       <div class="data-widget-item">
@@ -59,7 +50,7 @@
     <div class="data-widget-section" v-else>
       <div class="data-widget-item">
         <h3>Common Sites:</h3>
-        <p>{{ commonSitesCount }}</p>
+        <p>{{ visibleSiteCount }}</p>
       </div>
     </div>
   </div>
@@ -73,96 +64,38 @@
 </template>
 
 <script setup>
-import { inject, ref, computed, watch } from "vue";
+import { computed } from "vue";
 import CategoryButtonDropdown from "./CategoryButtonDropdown.vue";
-import RangeSlider from "./RangeSliderMaritime.vue";
 import { storeToRefs } from "pinia";
 import { maritimeencountersStore } from "./store";
-import API_ENDPOINTS from "./apiConfig";
-import { RESOURCE_COLORS } from "./useCompareMode";
+import { typeColor } from "./useCompareMode";
 
-const config = inject("config");
 const store = maritimeencountersStore();
-const { selectedRange, dataType, imgParams, compareMode, compareTypes, commonSitesData } = storeToRefs(store);
-const count = ref(0);
-const initialCount = ref(0);
+const { dataType, compareMode, compareTypes, sites, siteTypes, visibleSiteCount } = storeToRefs(store);
 
-const resourceCategories = {
-  'radiocarbon_dates': 'Radiocarbon Dates',
-  'individual_samples': 'Individual Samples',
-  'dna_samples': 'DNA Samples',
-  'metal_analysis': 'Metal Analysis',
-  'landing_points': 'Landing Points',
-  'new_samples': 'New Samples',
-  'lnhouses': 'Late Neolithic Houses',
-  'boats': 'Boats',
-};
-
-const commonSitesCount = computed(() => {
-  if (!commonSitesData.value || !commonSitesData.value.features) return 0;
-  return commonSitesData.value.features.length;
+// Site type text -> label, data types ("which resources the site has") first,
+// then the archaeological site types; each group by number of sites.
+const siteTypeCategories = computed(() => {
+  const ordered = [
+    ...siteTypes.value.filter((t) => t.is_data_type),
+    ...siteTypes.value.filter((t) => !t.is_data_type),
+  ];
+  return Object.fromEntries(ordered.map((t) => [t.text, `${t.text} (${t.count})`]));
 });
+
+const pointsHidden = computed(() => sites.value.length - visibleSiteCount.value);
 
 const isFilterModified = computed(() => {
   if (compareMode.value) {
-    return compareTypes.value.length > 0 ||
-      selectedRange.value[0] !== -2450 || selectedRange.value[1] !== 50;
+    return compareTypes.value.length > 0;
   }
-  return (
-    dataType.value[0] !== "all" ||
-    selectedRange.value[0] !== -2450 || selectedRange.value[1] !== 50
-  );
+  return dataType.value[0] !== "all";
 });
-
-const waitForAuthToken = () => {
-  return new Promise((resolve) => {
-    const checkToken = () => {
-      const token = sessionStorage.getItem("authToken");
-      if (token) {
-        resolve(token);
-      } else {
-        setTimeout(checkToken, 100);
-      }
-    };
-    checkToken();
-  });
-};
-
-watch(
-  imgParams,
-  async (newParams) => {
-    if (compareMode.value) return; // Skip count fetch in compare mode
-    try {
-      const token = await waitForAuthToken();
-
-      const response = await fetch(
-        `${API_ENDPOINTS.SEARCH}?page_size=500&${new URLSearchParams(newParams)}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Token ${token}`,
-          },
-        }
-      );
-      const data = await response.json();
-      if (initialCount.value === 0) {
-        initialCount.value = data.count;
-      }
-      count.value = data.count;
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  },
-  { immediate: true }
-);
-
-const pointsHidden = computed(() => initialCount.value - count.value);
 
 function clearAll() {
   dataType.value = ["all"];
   compareTypes.value = [];
   compareMode.value = false;
-  selectedRange.value = [-2450, 50];
 }
 </script>
 

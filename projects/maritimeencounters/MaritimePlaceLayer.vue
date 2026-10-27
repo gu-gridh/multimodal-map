@@ -4,7 +4,7 @@ import L from "leaflet";
 import "leaflet.markercluster";
 import { mapStore } from "@/stores/store";
 import { maritimeencountersStore } from "./store";
-import API_ENDPOINTS from "./apiConfig";
+import API_ENDPOINTS, { secureUrl } from "./apiConfig";
 import { storeToRefs } from "pinia";
 import markerIcon from "@/assets/marker-white.svg";
 import "leaflet/dist/leaflet.css";
@@ -13,7 +13,7 @@ import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 import "leaflet-draw";
 import "leaflet-draw/dist/leaflet.draw.css";
 import "leaflet.heat";
-import { useCompareMode, RESOURCE_COLORS, RESOURCE_LABELS } from "./useCompareMode";
+import { useCompareMode, typeColor } from "./useCompareMode";
 import alandData from './polygons/aland_simplified.json';
 import belgiumData from './polygons/belgium_simplified.json';
 import czechData from './polygons/czech_simplified.json';
@@ -36,10 +36,13 @@ import ukData from './polygons/uk_simplified.json';
 const map = ref(null);
 const markerClusterGroup = ref(null);
 const layerGroupMap = ref({});
-const fetchedIds = new Set();
+const markersById = new Map();
 const { selectedFeature } = storeToRefs(mapStore());
 const store = maritimeencountersStore();
-const { startRectangleDraw, showHeatMap, doneFetching, compareMode, commonSitesData } = storeToRefs(store);
+const {
+  startRectangleDraw, showHeatMap, doneFetching, compareMode, compareTypes,
+  dataType, sites, visibleSiteCount,
+} = storeToRefs(store);
 const isLoading = ref(false);
 const showDownloadChoice = ref(false);
 const drawnRectangleBounds = ref(null);
@@ -52,8 +55,21 @@ const heatmapPoints = ref([]);
 
 let hoverPopup = ref(null);
 let polylineLayer = ref(null);
-let abortController = null;
 let rectangleDrawer = null;
+
+// Site type -> resource key of the download endpoint, for the data types that
+// come from a resource table (see site_data_types.py in the backend).
+const SITE_TYPE_RESOURCES = {
+  "Radiocarbon": "radiocarbon_dates",
+  "Findspot": "individual_samples",
+  "Metalwork": "metalwork",
+  "Metal Analysis": "metal_analysis",
+  "aDNA": "dna_samples",
+  "Samples": "new_samples",
+  "Boat": "boats",
+  "Late Neolithic House": "lnhouses",
+  "Landing Point": "landing_points",
+};
 
 const props = defineProps({
   mapOptions: {
@@ -62,14 +78,6 @@ const props = defineProps({
       center: [51.505, -0.09],
       zoom: 3,
     }),
-  },
-  params: {
-    type: Object,
-    default: () => ({}),
-  },
-  compareParams: {
-    type: Object,
-    default: null,
   },
   showConnections: {
     type: Boolean,
@@ -95,31 +103,7 @@ const waitForAuthToken = () => {
 
 // ---- Compare mode (delegated to composable) ----
 
-const compare = useCompareMode(
-  map, markerClusterGroup, heatmapLayer, hoverPopup, isLoading, waitForAuthToken, props,
-);
-const { activeTypes: activeCompareTypes } = compare;
-
-// ---- Marker cluster helpers ----
-
-function clearMarkerClusterLayersInBatches() {
-  const layers = toRaw(markerClusterGroup.value)?.getLayers();
-  if (layers && layers.length > 0) {
-    const batchSize = 1000;
-    let index = 0;
-
-    function removeNextBatch() {
-      const batch = layers.slice(index, index + batchSize);
-      toRaw(markerClusterGroup.value)?.removeLayers(batch);
-      index += batchSize;
-      if (index < layers.length) {
-        setTimeout(removeNextBatch, 0);
-      }
-    }
-
-    removeNextBatch();
-  }
-}
+const compare = useCompareMode(map, markerClusterGroup, heatmapLayer, hoverPopup);
 
 // ---- Country polygon overlay ----
 
@@ -162,110 +146,121 @@ const renderGeoJSON = (geojsonArray) => {
   });
 };
 
-// ---- Data fetching ----
+// ---- Sites ----
 
-const fetchData = async (initialUrl, params) => {
-  if (abortController) {
-    abortController.abort();
-  }
-
+// Fetches every located site with its site types, once. Filtering by site type
+// happens on the client, so changing a filter never goes back to the server.
+const loadSites = async () => {
   isLoading.value = true;
-  abortController = new AbortController();
-  const signal = abortController.signal;
+  const token = await waitForAuthToken();
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `Token ${token}`,
+  };
 
-  return new Promise(async (resolve, reject) => {
-    let nextUrl = initialUrl;
-    let initialParams = new URLSearchParams({ ...params }).toString();
-    if (nextUrl && initialParams) {
-      nextUrl = `${nextUrl}?${initialParams}`;
-    }
+  try {
+    const typesRes = await fetch(API_ENDPOINTS.SITE_TYPES, { headers });
+    if (!typesRes.ok) throw new Error(`Failed to fetch site types: ${typesRes.status}`);
+    store.siteTypes = await typesRes.json();
 
-    const token = await waitForAuthToken();
-
+    const loaded = [];
+    let nextUrl = API_ENDPOINTS.MAP_SITES;
     while (nextUrl) {
-      try {
-        const res = await fetch(nextUrl.replace(/^http:/, "https:"), {
-          signal, headers: {
-            "Content-Type": "application/json",
-            Authorization: `Token ${token}`,
-          },
+      const res = await fetch(secureUrl(nextUrl), { headers });
+      if (!res.ok) throw new Error(`Failed to fetch sites: ${res.status}`);
+      const data = await res.json();
+
+      data.features.forEach((feature) => {
+        const [lng, lat] = feature.geometry?.coordinates || [];
+        if (isNaN(lat) || isNaN(lng)) return;
+        loaded.push({
+          id: feature.id,
+          name: feature.properties.name,
+          types: feature.properties.site_types || [],
+          lat,
+          lng,
         });
-        if (!res.ok) throw new Error("Failed to fetch data");
+      });
 
-        const data = await res.json();
-
-        const markersToAdd = [];
-        data.features.forEach((feature) => {
-          const featureId = feature.id;
-
-          if (fetchedIds.has(featureId)) return;
-          fetchedIds.add(featureId);
-
-          if (feature.geometry && feature.geometry.coordinates && feature.geometry.coordinates.length === 2) {
-            const coords = feature.geometry.coordinates;
-            if (!isNaN(coords[0]) && !isNaN(coords[1])) {
-              const latLng = L.latLng(coords[1], coords[0]);
-
-              const intensity = 1.5;
-              heatmapPoints.value.push([coords[1], coords[0], intensity]);
-
-              const marker = L.marker(latLng, {
-                icon: L.icon({
-                  iconUrl: markerIcon,
-                  iconSize: [30, 45],
-                }),
-              });
-
-              marker.on("click", () => {
-                selectedFeature.value = featureId;
-              });
-
-              marker.on("mouseover", () => {
-                if (hoverPopup.value) {
-                  toRaw(map.value)?.closePopup(toRaw(hoverPopup.value));
-                }
-
-                hoverPopup.value = L.popup({
-                  closeButton: false,
-                  offset: L.point(0, -30),
-                })
-                  .setLatLng(latLng)
-                  .setContent(
-                    `<b>Name:</b> ${feature.properties.name}<br><b>Coordinates:</b> ${coords[1].toFixed(6)}, ${coords[0].toFixed(6)}`
-                  )
-                  .openOn(toRaw(map.value));
-
-                marker.on("mouseout", () => {
-                  toRaw(map.value)?.closePopup(toRaw(hoverPopup.value));
-                  hoverPopup.value = null;
-                });
-              });
-
-              markersToAdd.push(marker);
-            }
-          }
-        });
-
-        toRaw(markerClusterGroup.value)?.addLayers(markersToAdd);
-
-        nextUrl = data.next ? data.next.replace(/^http:/, "https:") : null;
-      } catch (err) {
-        if (err.name === "AbortError") {
-          return;
-        } else {
-          console.error("Error fetching data:", err);
-          reject(err);
-        }
-      }
+      nextUrl = data.next;
     }
-
-    if (heatmapLayer.value && heatmapLayer.value._map) {
-      heatmapLayer.value.setLatLngs(heatmapPoints.value);
-    }
+    store.sites = loaded;
+  } finally {
     isLoading.value = false;
-    resolve();
-    abortController = null;
+  }
+};
+
+// Markers are built on first use and reused when the filter changes.
+const markerFor = (site) => {
+  let marker = markersById.get(site.id);
+  if (marker) return marker;
+
+  const latLng = L.latLng(site.lat, site.lng);
+  marker = L.marker(latLng, {
+    icon: L.icon({
+      iconUrl: markerIcon,
+      iconSize: [30, 45],
+    }),
   });
+
+  marker.on("click", () => {
+    selectedFeature.value = site.id;
+  });
+
+  marker.on("mouseover", () => {
+    if (hoverPopup.value) {
+      toRaw(map.value)?.closePopup(toRaw(hoverPopup.value));
+    }
+
+    hoverPopup.value = L.popup({
+      closeButton: false,
+      offset: L.point(0, -30),
+    })
+      .setLatLng(latLng)
+      .setContent(
+        `<b>Name:</b> ${site.name}<br><b>Site types:</b> ${site.types.join(", ")}<br><b>Coordinates:</b> ${site.lat.toFixed(6)}, ${site.lng.toFixed(6)}`
+      )
+      .openOn(toRaw(map.value));
+  });
+
+  marker.on("mouseout", () => {
+    toRaw(map.value)?.closePopup(toRaw(hoverPopup.value));
+    hoverPopup.value = null;
+  });
+
+  markersById.set(site.id, marker);
+  return marker;
+};
+
+const showSites = (list) => {
+  const cluster = toRaw(markerClusterGroup.value);
+  if (!cluster) return;
+  cluster.clearLayers();
+  cluster.addLayers(list.map(markerFor));
+
+  heatmapPoints.value = list.map((site) => [site.lat, site.lng, 1.5]);
+  if (heatmapLayer.value && heatmapLayer.value._map) {
+    heatmapLayer.value.setLatLngs(heatmapPoints.value);
+  }
+};
+
+const hasTypes = (site, types) => types.every((t) => site.types.includes(t));
+
+// Redraws the map from the loaded sites and the current site type selection.
+const updateMap = () => {
+  if (!map.value) return;
+
+  if (compareMode.value) {
+    const types = compareTypes.value;
+    const list = types.length >= 2 ? sites.value.filter((site) => hasTypes(site, types)) : [];
+    compare.render(list, types);
+    visibleSiteCount.value = list.length;
+  } else {
+    const type = dataType.value[0];
+    const list = !type || type === "all" ? sites.value : sites.value.filter((site) => hasTypes(site, [type]));
+    showSites(list);
+    visibleSiteCount.value = list.length;
+  }
 };
 
 // ---- Download helpers ----
@@ -333,8 +328,11 @@ const handleDownloadChoice = async (format) => {
   const queryParams = {
     download_format: format,
     in_bbox: bboxString,
-    ...props.params,
   };
+  const resource = !compareMode.value && SITE_TYPE_RESOURCES[dataType.value[0]];
+  if (resource) {
+    queryParams.type = resource;
+  }
 
   let downloadUrl = `${baseUrl}?${new URLSearchParams(queryParams).toString()}`;
 
@@ -406,39 +404,7 @@ const handleDownloadChoice = async (format) => {
 
 // ---- Watchers ----
 
-watch(
-  () => props.params,
-  async (newParams) => {
-    if (compareMode.value || !newParams) return;
-
-    doneFetching.value = false;
-
-    if (!map.value) {
-      await nextTick();
-    }
-    if (!map.value) {
-      console.error("Map is not initialized yet.");
-      return;
-    }
-
-    fetchedIds.clear();
-    clearMarkerClusterLayersInBatches();
-    heatmapPoints.value = [];
-    if (heatmapLayer.value && heatmapLayer.value._map) {
-      heatmapLayer.value.setLatLngs([]);
-    }
-
-    const baseUrl = API_ENDPOINTS.SEARCH;
-
-    await fetchData(baseUrl, { page_size: 500, ...newParams })
-      .then(() => {
-        doneFetching.value = true;
-      })
-      .catch((err) => {
-        console.error("Error during fetching:", err);
-      });
-  }
-);
+watch([sites, dataType, compareMode, compareTypes], updateMap, { deep: true });
 
 watch(() => props.showConnections, (newVal) => {
   if (!newVal && polylineLayer.value) {
@@ -597,18 +563,12 @@ onMounted(async () => {
 
     toRaw(map.value)?.addLayer(toRaw(markerClusterGroup.value));
 
-    const bbox = toRaw(map.value)?.getBounds().toBBoxString();
-    const urlWithBBox = `${API_ENDPOINTS.SEARCH}?in_bbox=${bbox}&page_size=100`;
-
-    fetchData(urlWithBBox, {})
-      .then(() => {
-        return fetchData(`${API_ENDPOINTS.SEARCH}?page_size=1000`, {});
-      })
+    loadSites()
       .then(() => {
         doneFetching.value = true;
       })
       .catch((err) => {
-        console.error("Error during fetching:", err);
+        console.error("Error loading sites:", err);
       });
 
     toRaw(map.value)?.on('zoomstart', () => {
@@ -628,16 +588,16 @@ onMounted(async () => {
   </div>
 
   <!-- Compare Mode Legend -->
-  <div v-if="compareMode && activeCompareTypes.length > 0" class="compare-legend">
-    <div class="compare-legend-title">Resource Types</div>
-    <div v-for="type in activeCompareTypes" :key="type" class="compare-legend-item">
-      <span class="compare-legend-dot" :style="{ background: RESOURCE_COLORS[type] }"></span>
-      <span class="compare-legend-label">{{ RESOURCE_LABELS[type] }}</span>
+  <div v-if="compareMode && compareTypes.length > 0" class="compare-legend">
+    <div class="compare-legend-title">Site Types</div>
+    <div v-for="type in compareTypes" :key="type" class="compare-legend-item">
+      <span class="compare-legend-dot" :style="{ background: typeColor(type) }"></span>
+      <span class="compare-legend-label">{{ type }}</span>
     </div>
-    <div v-if="commonSitesData && commonSitesData.features" class="compare-legend-count">
-      {{ commonSitesData.features.length }} site{{ commonSitesData.features.length !== 1 ? 's' : '' }} found
+    <div v-if="isLoading" class="compare-legend-count">Loading...</div>
+    <div v-else-if="compareTypes.length >= 2" class="compare-legend-count">
+      {{ visibleSiteCount }} site{{ visibleSiteCount !== 1 ? 's' : '' }} found
     </div>
-    <div v-else-if="isLoading" class="compare-legend-count">Loading...</div>
   </div>
 
   <!-- Download Choice -->

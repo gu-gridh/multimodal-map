@@ -1,54 +1,28 @@
-import { ref, computed, watch, toRaw } from "vue";
+import { ref, watch, toRaw } from "vue";
 import L from "leaflet";
 import "leaflet.markercluster";
 import { storeToRefs } from "pinia";
 import { maritimeencountersStore } from "./store";
 import { mapStore } from "@/stores/store";
-import API_ENDPOINTS from "./apiConfig";
 
-// Resource type colors & labels
-export const RESOURCE_COLORS = {
-  radiocarbon_dates: "#e74c3c",
-  individual_samples: "#3498db",
-  dna_samples: "#2ecc71",
-  metal_analysis: "#f39c12",
-  landing_points: "#9b59b6",
-  new_samples: "#1abc9c",
-  lnhouses: "#e67e22",
-  boats: "#2980b9",
-};
+// Distinct colours, handed out in the order the site types are listed so the
+// same type keeps its colour in the checklist, the markers and the legend.
+const PALETTE = [
+  "#e6194b", "#4363d8", "#3cb44b", "#f58231", "#911eb4", "#42d4f4",
+  "#f032e6", "#9a6324", "#469990", "#800000", "#000075", "#808000",
+];
 
-export const RESOURCE_LABELS = {
-  radiocarbon_dates: "Radiocarbon",
-  individual_samples: "Samples",
-  dna_samples: "DNA",
-  metal_analysis: "Metal",
-  landing_points: "Landing",
-  new_samples: "New Samples",
-  lnhouses: "Houses",
-  boats: "Boats",
-};
+export function typeColor(text) {
+  const index = maritimeencountersStore().siteTypes.findIndex((t) => t.text === text);
+  return index === -1 ? "#666" : PALETTE[index % PALETTE.length];
+}
 
-export function useCompareMode(
-  mapRef,
-  markerClusterRef,
-  heatmapRef,
-  hoverPopupRef,
-  isLoadingRef,
-  waitForAuthToken,
-  props,
-) {
+export function useCompareMode(mapRef, markerClusterRef, heatmapRef, hoverPopupRef) {
   const store = maritimeencountersStore();
   const { selectedFeature } = storeToRefs(mapStore());
-  const { compareMode, commonSitesData } = storeToRefs(store);
+  const { compareMode } = storeToRefs(store);
 
   const compareCluster = ref(null);
-  let abortController = null;
-
-  const activeTypes = computed(() => {
-    if (!props.compareParams || !props.compareParams.type) return [];
-    return props.compareParams.type.split(",");
-  });
 
   // ---- Init ----
 
@@ -91,18 +65,16 @@ export function useCompareMode(
     return `M ${cx} ${cy} L ${s.x} ${s.y} A ${r} ${r} 0 ${large} 0 ${e.x} ${e.y} Z`;
   }
 
-  function createIcon(resourceCounts) {
-    const types = Object.keys(resourceCounts);
+  function createIcon(types) {
     const n = types.length;
     const size = 32 + n * 4;
     const half = size / 2;
 
     const segments = types
       .map((t, i) => {
-        const color = RESOURCE_COLORS[t] || "#666";
         const a0 = (360 / n) * i;
         const a1 = (360 / n) * (i + 1);
-        return `<path d="${describeArc(half, half, half - 2, a0, a1)}" fill="${color}" stroke="white" stroke-width="1"/>`;
+        return `<path d="${describeArc(half, half, half - 2, a0, a1)}" fill="${typeColor(t)}" stroke="white" stroke-width="1"/>`;
       })
       .join("");
 
@@ -122,44 +94,32 @@ export function useCompareMode(
 
   // ---- Popup ----
 
-  function popupContent(feature) {
-    const p = feature.properties;
-    const counts = p.resource_counts || {};
-    const badges = Object.entries(counts)
-      .map(([type, count]) => {
-        const c = RESOURCE_COLORS[type] || "#666";
-        const l = RESOURCE_LABELS[type] || type;
-        return `<span style="display:inline-block;padding:2px 8px;margin:2px;border-radius:10px;background:${c};color:white;font-size:11px;">${l}: ${count}</span>`;
-      })
+  function popupContent(site) {
+    const badges = site.types
+      .map((t) => `<span style="display:inline-block;padding:2px 8px;margin:2px;border-radius:10px;background:${typeColor(t)};color:white;font-size:11px;">${t}</span>`)
       .join("");
-    return `<div style="min-width:160px"><b>${p.name || "Unknown Site"}</b><br/><div style="margin-top:4px">${badges}</div></div>`;
+    return `<div style="min-width:160px"><b>${site.name || "Unknown Site"}</b><br/><div style="margin-top:4px">${badges}</div></div>`;
   }
 
   // ---- Render ----
 
-  function render(geoJson) {
+  // Draws the given sites as pies split into the compared types.
+  function render(sites, types) {
     if (!mapRef.value || !compareCluster.value) return;
     clearLayers();
-    const features = geoJson.features || [];
-    if (!features.length) return;
 
-    const markers = [];
-    features.forEach((f) => {
-      if (!f.geometry?.coordinates) return;
-      const [lng, lat] = f.geometry.coordinates;
-      if (isNaN(lat) || isNaN(lng)) return;
-
-      const icon = createIcon(f.properties.resource_counts || {});
-      const marker = L.marker([lat, lng], { icon });
+    const icon = createIcon(types);
+    const markers = sites.map((site) => {
+      const marker = L.marker([site.lat, site.lng], { icon });
 
       marker.on("click", () => {
-        selectedFeature.value = f.id;
+        selectedFeature.value = site.id;
       });
       marker.on("mouseover", () => {
         if (hoverPopupRef.value) toRaw(mapRef.value)?.closePopup(toRaw(hoverPopupRef.value));
         hoverPopupRef.value = L.popup({ closeButton: false, offset: L.point(0, -20), maxWidth: 300 })
-          .setLatLng([lat, lng])
-          .setContent(popupContent(f))
+          .setLatLng([site.lat, site.lng])
+          .setContent(popupContent(site))
           .openOn(toRaw(mapRef.value));
       });
       marker.on("mouseout", () => {
@@ -167,52 +127,10 @@ export function useCompareMode(
         hoverPopupRef.value = null;
       });
 
-      markers.push(marker);
+      return marker;
     });
 
     toRaw(compareCluster.value).addLayers(markers);
-  }
-
-  // ---- Fetch ----
-
-  async function fetchSites(params) {
-    if (abortController) abortController.abort();
-    abortController = new AbortController();
-    const { signal } = abortController;
-
-    isLoadingRef.value = true;
-    store.commonSitesLoading = true;
-
-    const token = await waitForAuthToken();
-    const qs = new URLSearchParams({ page_size: 500, ...params }).toString();
-    let all = [];
-    let url = `${API_ENDPOINTS.COMMON_SITES}?${qs}`;
-
-    try {
-      while (url) {
-        const res = await fetch(url.replace(/^http:/, "https:"), {
-          signal,
-          headers: { "Content-Type": "application/json", Authorization: `Token ${token}` },
-        });
-        if (!res.ok) {
-          console.error(`Common sites API error ${res.status}:`, await res.text());
-          throw new Error(`Failed: ${res.status}`);
-        }
-        const data = await res.json();
-        if (data.features) all = all.concat(data.features);
-        url = data.next ? data.next.replace(/^http:/, "https:") : null;
-      }
-
-      const geoJson = { type: "FeatureCollection", features: all };
-      store.commonSitesData = geoJson;
-      render(geoJson);
-    } catch (err) {
-      if (err.name !== "AbortError") console.error("Error fetching common sites:", err);
-    } finally {
-      isLoadingRef.value = false;
-      store.commonSitesLoading = false;
-      abortController = null;
-    }
   }
 
   // ---- Watchers ----
@@ -241,22 +159,10 @@ export function useCompareMode(
           // Restore normal markers
           if (markerClusterRef.value && !raw.hasLayer(toRaw(markerClusterRef.value)))
             raw.addLayer(toRaw(markerClusterRef.value));
-          store.commonSitesData = null;
         }
-      },
-    );
-
-    watch(
-      () => props.compareParams,
-      async (p) => {
-        if (!p || !mapRef.value) {
-          clearLayers();
-          return;
-        }
-        await fetchSites(p);
       },
     );
   }
 
-  return { initLayers, setupWatchers, activeTypes, RESOURCE_COLORS, RESOURCE_LABELS };
+  return { initLayers, setupWatchers, render };
 }

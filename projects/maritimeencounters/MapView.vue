@@ -1,5 +1,4 @@
 <script setup>
-import { computed } from "vue";
 import MainLayout from "@/MainLayout.vue";
 import MapViewControls from "./MapViewControls.vue";
 import MapComponent from "@/components/MapComponent.vue";
@@ -8,7 +7,6 @@ import MapViewThumbnail from "./MapViewThumbnail.vue";
 import { storeToRefs } from "pinia";
 import { maritimeencountersStore } from "./store";
 import { mapStore } from "@/stores/store";
-import { clean } from "@/assets/utils";
 import { ref } from "vue";
 import About from "./About.vue";
 import Login from "./Login.vue";
@@ -16,7 +14,6 @@ import { onMounted, watch } from "vue";
 import { nextTick } from "vue";
 import Title from "./Title.vue"
 
-const { selectedRange, dataParams, dataType, compareMode, compareTypes } = storeToRefs(maritimeencountersStore());
 const store = mapStore();
 const maritimeencounters = maritimeencountersStore();
 const { selectedFeature } = storeToRefs(store);
@@ -52,55 +49,6 @@ const startRectangleDraw = () => {
 const toggleHeatMap = () => {
   maritimeencounters.showHeatMap = !maritimeencounters.showHeatMap;
 };
-
-const tagParams = computed(() => {
-  // In compare mode, don't generate normal search params
-  if (compareMode.value) {
-    return null;
-  }
-
-  const type = dataType.value[0];
-  const selectedRangeValue = selectedRange.value;
-
-  const initialParams = { type };
-
-   if (selectedRangeValue.length === 2) {
-    initialParams.min_year = Math.round(selectedRangeValue[0]);
-    initialParams.max_year = Math.round(selectedRangeValue[1]);
-  }
-  
-  const cleanedParams = Object.keys(initialParams)
-  .filter((key) => initialParams[key] !== "all")
-  .reduce((obj, key) => {
-    obj[key] = initialParams[key];
-    return obj;
-  }, {});
-  
-  const params = clean(cleanedParams);
-  maritimeencounters.imgParams = params;
-  
-  return params;
-});
-
-// Compare mode params
-const compareParams = computed(() => {
-  if (!compareMode.value || compareTypes.value.length < 2) {
-    return null;
-  }
-  return {
-    type: compareTypes.value.join(','),
-  };
-});
-
-watch(
-  tagParams, 
-  (newParams) => {
-    if (newParams) {
-      dataParams.value = newParams;
-    }
-  }, 
-  { immediate: true }
-);
 
 onMounted(() => {
   visibleLogin.value = true;
@@ -143,7 +91,7 @@ const toggleLoginVisilibity = async () => {
           :restrictExtent="[-45.0, 32.00, 55.0, 75.0]"    
         > 
           <template #layers>
-            <MaritimePlaceLayer :params="tagParams" :compareParams="compareParams" :showConnections="showConnections">
+            <MaritimePlaceLayer :showConnections="showConnections">
             </MaritimePlaceLayer> 
           </template>
           

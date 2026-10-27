@@ -1,4 +1,4 @@
-import { ref, computed } from "vue";
+import { ref, shallowRef, computed } from "vue";
 import { defineStore } from "pinia";
 
 export const maritimeencountersStore = defineStore("resources", () => {
@@ -21,11 +21,15 @@ export const maritimeencountersStore = defineStore("resources", () => {
   const showHeatMap = ref(false);
   const doneFetching = ref(false);
 
+  // Sites are fetched once with their site types and filtered on the client.
+  // shallowRef: thousands of plain features do not need deep reactivity.
+  const sites = shallowRef([]);
+  const siteTypes = ref([]); // [{ id, text, count, is_data_type }]
+  const visibleSiteCount = ref(0);
+
   // Compare mode state
   const compareMode = ref(false);
   const compareTypes = ref([]);
-  const commonSitesData = ref(null);
-  const commonSitesLoading = ref(false);
 
   // Computed: whether compare has enough types selected
   const canCompare = computed(() => compareTypes.value.length >= 2);
@@ -51,8 +55,9 @@ export const maritimeencountersStore = defineStore("resources", () => {
     doneFetching,
     compareMode,
     compareTypes,
-    commonSitesData,
-    commonSitesLoading,
+    sites,
+    siteTypes,
+    visibleSiteCount,
     canCompare,
   };
 });
