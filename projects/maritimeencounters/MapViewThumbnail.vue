@@ -3,8 +3,15 @@ import { watchEffect, ref, computed } from "vue";
 import { storeToRefs } from "pinia";
 import { mapStore } from "@/stores/store";
 import API_ENDPOINTS from "./apiConfig";
+import { maritimeencountersStore } from "./store";
+import { typeColor } from "./useCompareMode";
 
 const { selectedFeature } = storeToRefs(mapStore());
+const { sites } = storeToRefs(maritimeencountersStore());
+
+// The clicked site as loaded for the map: name and site types. Shown for every
+// site, including those with no resource rows (e.g. mining sites).
+const site = computed(() => sites.value.find((s) => s.id === selectedFeature.value));
 const place = ref(null);
 const previewData = ref({});
 const categoryTitles = {
@@ -88,12 +95,29 @@ function getCapitalizedVesselType(type) {
     <div class="close-card-button" @click="deselectPlace">+</div>
     <div class="placecard-container" style="margin-top: 155px; margin-right: 40px">
 
-      <!-- No Data Available Card -->
+      <!-- Site Card: name and site types -->
+      <div v-if="site" class="placecard">
+        <div class="placecard-full">
+          <div class="placecard-text">
+            <div class="placecard-title theme-color-text theme-title-typography">
+              {{ site.name || "Unnamed site" }}
+            </div>
+          </div>
+          <div class="site-types">
+            <span v-for="type in site.types" :key="type" class="site-type-badge">
+              <span class="site-type-dot" :style="{ background: typeColor(type) }"></span>
+              {{ type }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- No Resources Card -->
       <div v-if="allCategoriesEmpty" class="placecard">
         <div class="placecard-full">
           <div class="placecard-text">
             <div class="placecard-title theme-color-text theme-title-typography">
-              No data available
+              No resource records
             </div>
           </div>
         </div>
@@ -324,6 +348,30 @@ function getCapitalizedVesselType(type) {
 </template>
 
 <style>
+.site-types {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 8px 0 0 5px;
+}
+
+.site-type-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 10px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.06);
+  font-size: 0.85em;
+}
+
+.site-type-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
 .placecard-container {
   margin-right: 20px !important;
 }
