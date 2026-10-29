@@ -11,7 +11,8 @@ A map-centric user interface for exploring data from a [Diana](https://github.co
 ### Setup
 
 ```sh
-nvm use 22
+nvm install
+nvm use
 yarn install
 ```
 
