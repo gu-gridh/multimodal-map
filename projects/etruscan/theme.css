@@ -60,7 +60,7 @@ body {
 }
 
 #app .left-pane {
-  background: url("images/gradient.png");
+  background: url("../../src/assets/gradient-jubileum.png");
   background-size: contain;
   width: 54% !important;
   min-width: 900px;
