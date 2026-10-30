@@ -1,5 +1,6 @@
 <script setup>
 import { computed, ref } from "vue";
+import MapMarkers from "@/components/MapMarkers.vue";
 import MapComponent from "@/components/MapComponent.vue";
 import IdentityCircle from "./IdentityCircle.vue";
 import config from "./settings/config";
@@ -15,6 +16,7 @@ const layer = computed(() => config.layers[selectedLayer.value]);
         <ol-tile-layer v-if="layer.url" :key="selectedLayer">
           <ol-source-xyz :url="layer.url" :attributions="layer.attribution" />
         </ol-tile-layer>
+        <MapMarkers :markers="config.markers" :types="config.markerTypes" :projection="config.projection" />
         <ol-attribution-control :collapsible="false" />
       </template>
     </MapComponent>

@@ -32,7 +32,8 @@ body,
 }
 
 #app .left-pane {
-  background: linear-gradient(90deg, var(--panel-background) 0px, var(--panel-background) 410px, rgba(245, 235, 225, 0) 560px);
+  background: url("../../src/assets/gradient-jubileum.png") repeat-y left top;
+  background-size: 100% auto;
   width: 560px !important;
   min-width: 0;
   max-width: none;
@@ -210,6 +211,7 @@ button:focus-visible {
 .about-copy {
   flex: 1;
   max-width: 850px;
+  margin-top: max(0px, calc(45dvh - 150px));
 }
 
 .about-copy .about-article-main,
@@ -233,7 +235,7 @@ button:focus-visible {
 }
 
 #app .page-fade-enter-active {
-  transition: opacity .1s ease-in-out, transform .1s ease-in-out, translate .1s ease-in-out;
+  transition: opacity .6s ease-in-out, transform .6s ease-in-out, translate .6s ease-in-out;
 }
 
 #app .page-fade-leave-active {
@@ -257,6 +259,7 @@ button:focus-visible {
 
   .about-copy {
     width: 100%;
+    margin-top: 0;
   }
 
   .about-copy .category-button {

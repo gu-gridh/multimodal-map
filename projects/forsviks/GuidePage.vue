@@ -1,8 +1,9 @@
 <script setup>
+import config from "./settings/config";
 const features = [
-  { title: "Explore the map", text: "Drag to move around Forsviks bruk. Use the + and − buttons or pinch to zoom.", icon: "zoomin_big_black.png" },
+  { title: "Explore the map", text: "Drag to move around the map. Use the + and − buttons or pinch to zoom.", icon: "zoomin_big_black.png" },
   { title: "Plan and drone", text: "Switch between Plan and Drone using the toggle at the top of the map.", icon: "inspect_black.png" },
-  { title: "About the project", text: "Select About in the left pane to learn more about Forsviks bruk.", icon: "search_black.png" },
+  { title: "About the project", text: "Select About in the left pane to learn more about the project.", icon: "search_black.png" },
 ];
 </script>
 
@@ -13,9 +14,9 @@ const features = [
       <div class="content-columns">
         <div class="content-column1">
           <div class="title-fields">
-            <div class="instructions-main-title">Forsviks<br>bruk</div>
+            <div class="instructions-main-title" style="white-space: pre-line">{{ config.titleLines.join("\n") }}</div>
             <h1 class="instructions-sub-title">User guide</h1>
-            <p class="instructions-article-main">Explore Forsviks bruk through the map, site plan and drone view.</p>
+            <p class="instructions-article-main">Explore {{ config.title }} through the map, site plan and drone view.</p>
           </div>
           <div class="buttons">
             <div class="explore-button"><router-link class="category-button fullopacityui" to="/map">Close</router-link></div>
