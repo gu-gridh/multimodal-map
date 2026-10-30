@@ -9,6 +9,7 @@ export default defineConfig(({ command, mode }) => {
   console.log(`Building project "${project}"`);
   return {
     root: "projects/" + project,
+    cacheDir: fileURLToPath(new URL(`./node_modules/.vite/${project}`, import.meta.url)),
     publicDir: "../../public",
     plugins: [vue()],
     resolve: {
