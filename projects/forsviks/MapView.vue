@@ -14,7 +14,7 @@
 
   <div class="map-page">
     <div id="version">version 1.0</div>
-    <MapComponent class="map-canvas" :max-zoom="22" :min-zoom="17" :rotation="190">
+    <MapComponent class="map-canvas" :max-zoom="22" :min-zoom="17" :rotation="190" :restrictExtent="[14.4277, 58.573, 14.449, 58.59]">
       <template #layers>
         <ol-tile-layer v-if="layer.url" :key="selectedLayer">
           <ol-source-xyz :url="layer.url" :attributions="layer.attribution" />
