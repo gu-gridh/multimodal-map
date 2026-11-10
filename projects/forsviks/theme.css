@@ -12,6 +12,7 @@ body,
   height: 100%;
   margin: 0;
   overflow: hidden;
+  background-color: var(--panel-background) !important;
 }
 
 .site-shell,
@@ -47,9 +48,9 @@ body,
 }
 
 #app .left-pane {
-  background: url("../../src/assets/gradient-jubileum.png") repeat-y left top;
+  background: url("/images/gradient-forsvik.png") repeat-y left top;
   background-size: 100% auto;
-  width: 660px !important;
+  width: 560px !important;
   min-width: 0;
   max-width: none;
   height: calc(100% - 80px);

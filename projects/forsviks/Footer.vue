@@ -15,7 +15,7 @@ import config from "./settings/config";
       </div>
     </div>
     <div class="partners">
-      <router-link to="/"><div class="PartnerLogo">{{ config.title }}</div></router-link>
+      <router-link to="/"><div class="PartnerLogo">FORSVIKS BRUK</div></router-link>
       <a href="https://dh.gu.se/"><div class="GRIDHLogo">GU / GRIDH</div></a>
     </div>
   </footer>
