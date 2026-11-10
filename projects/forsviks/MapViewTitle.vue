@@ -21,12 +21,16 @@
   @keyframes LogoGrow {
 
      0%   {background-size: 10%;
+      transform:rotate(-10deg);
       opacity: 0.0;}
   25%  {background-size: 20%;
+    transform:rotate(20deg);
       opacity: 0.1;}
   70%  {background-size: 110%;
+    transform:rotate(-2deg);
       opacity: 0.6;}
   100% {background-size: 100%;
+    transform:rotate(-0deg);
       opacity: 0.8;}
 
   
@@ -43,6 +47,7 @@
     animation-name: LogoGrow;
     animation-duration: 1.5s;
     opacity: 0.8;
+    transform:rotate(-0deg);
   }
 
   @keyframes TitleGrow {
