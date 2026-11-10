@@ -50,7 +50,7 @@ body,
 #app .left-pane {
   background: url("/images/gradient-forsvik.png") repeat-y left top;
   background-size: 100% auto;
-  width: 560px !important;
+  width: 600px !important;
   min-width: 0;
   max-width: none;
   height: calc(100% - 80px);

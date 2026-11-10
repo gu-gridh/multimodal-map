@@ -82,7 +82,7 @@
   inset: auto 0 0 0;
   height: calc(100% - 80px);
   pointer-events: none;
-  width: 750px;
+  width: 650px;
   top: 0px;
   opacity: 1.0;
 }
