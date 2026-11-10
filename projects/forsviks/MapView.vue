@@ -2,7 +2,8 @@
 import { computed, ref } from "vue";
 import MapMarkers from "@/components/MapMarkers.vue";
 import MapComponent from "@/components/MapComponent.vue";
-import IdentityCircle from "./IdentityCircle.vue";
+/* import IdentityCircle from "./IdentityCircle.vue"; */
+import MapViewTitle from "./MapViewTitle.vue";
 import config from "./settings/config";
 
 const selectedLayer = ref("plan");
@@ -23,10 +24,12 @@ const layer = computed(() => config.layers[selectedLayer.value]);
     <aside class="left-pane">
       <div class="left-pane-layer">
         <div class="left-pane-content">
-          <IdentityCircle />
+        <!--   <IdentityCircle /> -->
+          <MapViewTitle />
           <div class="title-actions">
-            <router-link class="category-button about-button" to="/about">About</router-link>
-            <router-link class="category-button about-button" to="/guide">User guide</router-link>
+            <router-link class="category-button about-button" to="/about">Om siten</router-link>
+            <router-link class="category-button about-button" to="/guide">Användarguide</router-link>
+            <router-link class="category-button about-button" to="/guide">Språk</router-link>
           </div>
           <p>{{ config.about }}</p>
         </div>
@@ -42,3 +45,13 @@ const layer = computed(() => config.layers[selectedLayer.value]);
     <router-link class="guide-button" to="/guide" title="User guide">?<span class="visually-hidden"> User guide</span></router-link>
   </div>
 </template>
+
+<style>
+  .left-pane-layer p{
+    padding-left:20px;
+  }
+
+  .map-canvas{
+  
+  }
+  </style>

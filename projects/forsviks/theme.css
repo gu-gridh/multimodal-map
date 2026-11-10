@@ -1,7 +1,7 @@
 :root {
   --theme-2: #ffe3a3;
-  --theme-3: #feae00;
-  --theme-4: #feae00;
+  --theme-3: #9b4631;
+  --theme-4: #743f32;
   --theme-5: #c98900;
   --panel-background: #f5ebe1;
 }
@@ -24,6 +24,7 @@ body,
   bottom: 0;
   width: 100%;
   height: 80px;
+   background-color:var(--theme-3)!important;
 }
 
 #app .about-container,
@@ -48,14 +49,14 @@ body,
 #app .left-pane {
   background: url("../../src/assets/gradient-jubileum.png") repeat-y left top;
   background-size: 100% auto;
-  width: 560px !important;
+  width: 660px !important;
   min-width: 0;
   max-width: none;
   height: calc(100% - 80px);
 }
 
 #app .left-pane-layer {
-  width: 340px !important;
+  width: 400px !important;
   padding-right: 0 !important;
 }
 
@@ -80,17 +81,42 @@ body,
   font: 300 4em/.8 Teko, sans-serif;
 }
 
+
+ #app .ui-overlay {
+ background-color: var(--theme-3);
+
+ 
+}
+
+#app .ui-mode .item {
+  font-weight: 400;
+ 
+}
+
+#app .ol-control button{
+   background-color: var(--theme-3)!important;
+}
+
+#app .ol-control button:active,
+#app .ol-control button:hover,
+#app .ol-control button:focus {
+  background-color: var(--theme-4)!important;
+}
+
+
 .title-actions {
   display: flex;
   justify-content: center;
   gap: 10px;
-  margin: 28px 0 20px;
+  margin: 10px 0 20px;
 }
 
 .category-button {
   display: inline-block;
   padding: 5px 15px;
-  font-weight: 300;
+  font-weight: 400;
+  background-color: var(--theme-3)!important;
+  color:white!important;
 }
 
 .mode-position {
@@ -193,6 +219,7 @@ button:focus-visible {
 
   #footer {
     height: 80px;
+    background-color:var(--theme-3)!important;
   }
 
   #developer-info {
