@@ -11,7 +11,7 @@ const layer = computed(() => config.layers[selectedLayer.value]);
 
 <template>
   <div class="map-page">
-    <MapComponent class="map-canvas" :max-zoom="22">
+    <MapComponent class="map-canvas" :max-zoom="22" :min-zoom="17" :rotation="190">
       <template #layers>
         <ol-tile-layer v-if="layer.url" :key="selectedLayer">
           <ol-source-xyz :url="layer.url" :attributions="layer.attribution" />

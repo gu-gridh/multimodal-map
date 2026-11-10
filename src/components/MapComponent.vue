@@ -2,7 +2,7 @@
   <ol-map :loadTilesWhileAnimating="true" :loadTilesWhileInteracting="true"
     style="height: 100%; width: calc(100% + 200px); z-index: auto !important" ref="map">
 
-    <ol-view ref="view" style="z-index:0" :min-zoom="minZoom" :max-zoom="maxZoom" :extent="transformedRestrictExtent" />
+    <ol-view ref="view" style="z-index:0" :min-zoom="minZoom" :max-zoom="maxZoom" :extent="transformedRestrictExtent" :rotation="rotationRadians"/>
 
     <!-- <ol-fullscreen-control v-if="fullscreencontrol" /> -->
     <!--<ol-attribution-control v-if="attributioncontrol" /> -->
@@ -38,6 +38,9 @@ const isAnimating = ref(false);
 const config = inject("config");
 const projection = ref(config.projection);
 // const rotation = ref(0);
+const rotationRadians = computed(() => {
+  return (props.rotation * Math.PI) / 180;
+});
 const view = ref();
 const map = ref();
 // const projectedCenter = fromLonLat(config.center, projection.value);
@@ -66,6 +69,10 @@ const props = defineProps({
   restrictExtent: {
     type: Array,
     default: () => [],
+  },
+  rotation: {
+  type: Number,
+  default: 0,
   },
 });
 
