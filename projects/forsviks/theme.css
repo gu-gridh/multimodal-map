@@ -3,7 +3,8 @@
   --theme-3: #9b4631;
   --theme-4: #743f32;
   --theme-5: #c98900;
-  --panel-background: #f5ebe1;
+  --panel-background: #f9d0a6;
+   --panel-background-light: #fbdcbd;
 }
 
 html,
@@ -35,10 +36,11 @@ body,
   height: auto !important;
   overflow-y: auto;
   overscroll-behavior-y: contain;
+  background: var(--panel-background-light) !important;
 }
 
 #app .instructions-container {
-  background: var(--panel-background) !important;
+  background: var(--panel-background-light) !important;
 }
 
 .map-canvas {
@@ -85,7 +87,8 @@ body,
 
  #app .ui-overlay {
  background-color: var(--theme-3);
-
+/* border-color:rgba(255,255,255,0.8);
+border-width:0.5px 0 0 0; */
  
 }
 
@@ -95,7 +98,7 @@ body,
 }
 
 #app .ol-control button{
-   background-color: var(--theme-3)!important;
+background-color: var(--theme-3)!important;
 }
 
 #app .ol-control button:active,
