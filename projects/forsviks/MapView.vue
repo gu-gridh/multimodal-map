@@ -1,25 +1,50 @@
 <script setup>
-  import { computed, ref } from "vue";
-  import MapMarkers from "@/components/MapMarkers.vue";
-  import MapComponent from "@/components/MapComponent.vue";
-  /* import IdentityCircle from "./IdentityCircle.vue"; */
-  import MapViewTitle from "./MapViewTitle.vue";
-  import config from "./settings/config";
+import { computed, onMounted, ref } from "vue";
+import MapMarkers from "@/components/MapMarkers.vue";
+import MapComponent from "@/components/MapComponent.vue";
+/* import IdentityCircle from "./IdentityCircle.vue"; */
+import MapViewTitle from "./MapViewTitle.vue";
+import config from "./settings/config";
 
-  const selectedLayer = ref("plan");
-  const layer = computed(() => config.layers[selectedLayer.value]);
+const selectedLayer = ref("plan");
+const layer = computed(() => config.layers[selectedLayer.value]);
+const markers = ref([]);
+
+onMounted(async () => {
+  let url = "https://forsviksbruk.dh.gu.se/api/articles/";
+
+  try {
+    while (url) {
+      const response = await fetch(url);
+      if (!response.ok) throw new Error(response.status);
+
+      const data = await response.json();
+      markers.value.push(...data.results
+        .map((article) => ({
+          id: article.id,
+          name: article.title,
+          type: article.advanced_media?.type?.toLowerCase().replace(/[\s_-]/g, ""),
+          coordinates: [...article.location.coordinates],
+        })));
+      url = data.next;
+    }
+  } catch (error) {
+    console.error(error);
+  }
+});
 </script>
 
 <template>
 
   <div class="map-page">
     <div id="version">version 1.0</div>
-    <MapComponent class="map-canvas" :shouldAutoMove="true" :max-zoom="22" :min-zoom="17.3" :rotation="190" :showOsm="false" :restrictExtent="[14.4277, 58.573, 14.449, 58.59]">
+    <MapComponent class="map-canvas" :shouldAutoMove="true" :max-zoom="22" :min-zoom="17.3" :rotation="20"
+      :showOsm="false" :restrictExtent="[14.4277, 58.573, 14.449, 58.59]">
       <template #layers>
         <ol-tile-layer v-if="layer.url" :key="selectedLayer">
           <ol-source-xyz :url="layer.url" :attributions="layer.attribution" />
         </ol-tile-layer>
-        <MapMarkers :markers="config.markers" :types="config.markerTypes" :projection="config.projection" />
+        <MapMarkers :markers="markers" :types="config.markerTypes" :projection="config.projection" />
         <ol-attribution-control :collapsible="false" />
       </template>
     </MapComponent>
@@ -58,25 +83,25 @@
 </template>
 
 <style>
-  .left-pane-layer p {
-    padding-left: 20px;
-  }
+.left-pane-layer p {
+  padding-left: 20px;
+}
 
-  #version {
-    position: absolute;
-    text-align: right;
-    font-size: 0.7em;
-    right: 30px;
-    top: 20px;
-    z-index: 1000;
-    opacity: 0.7;
-    backdrop-filter: blur(2px);
-    background-color: rgba(250, 250, 210, 0.5);
-    border-radius: 4px;
-    padding: 2px 6px;
-  }
+#version {
+  position: absolute;
+  text-align: right;
+  font-size: 0.7em;
+  right: 30px;
+  top: 20px;
+  z-index: 1000;
+  opacity: 0.7;
+  backdrop-filter: blur(2px);
+  background-color: rgba(250, 250, 210, 0.5);
+  border-radius: 4px;
+  padding: 2px 6px;
+}
 
-  .gradient-blur {
+.gradient-blur {
   position: fixed;
   z-index: 1;
   inset: auto 0 0 0;
@@ -86,6 +111,7 @@
   top: 0px;
   opacity: 1.0;
 }
+
 @media screen and (max-width: 900px) {
   .gradient-blur {
     display: none;
@@ -178,8 +204,7 @@
       rgba(0, 0, 0, 1) 100%);
 }
 
-
-  .ol-rotate-reset {
-    display:none!important;
-  }
+.ol-rotate-reset {
+  display: none !important;
+}
 </style>
