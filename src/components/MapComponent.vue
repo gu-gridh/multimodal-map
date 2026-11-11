@@ -16,7 +16,7 @@
     <ol-zoom-control v-if="zoomcontrol" />
     <!-- <ol-zoomslider-control v-if="zoomslidercontrol" /> -->
 
-    <ol-tile-layer>
+    <ol-tile-layer v-if="showOsm">
       <ol-source-osm />
     </ol-tile-layer>
 
@@ -73,6 +73,10 @@ const props = defineProps({
   rotation: {
   type: Number,
   default: 0,
+  },
+  showOsm: { //show OpenStreetMap layer or hide it under other layers
+    type: Boolean,
+    default: true,
   },
 });
 
