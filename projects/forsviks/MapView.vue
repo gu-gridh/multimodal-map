@@ -2,7 +2,6 @@
   import { computed, onMounted, ref } from "vue";
   import MapComponent from "@/components/MapComponent.vue";
   import ForsvikMapMarkers from "./ForsvikMapMarkers.vue";
-  /* import IdentityCircle from "./IdentityCircle.vue"; */
   import MapViewTitle from "./MapViewTitle.vue";
   import config from "./settings/config";
 
@@ -230,5 +229,9 @@
 
   .ol-rotate-reset {
     display: none !important;
+  }
+
+  .ui-overlay-top{
+    padding:6px 0px!important;
   }
 </style>

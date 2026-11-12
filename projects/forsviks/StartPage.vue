@@ -1,5 +1,4 @@
 <script setup>
-import IdentityCircle from "./IdentityCircle.vue";
 import config from "./settings/config";
 </script>
 
