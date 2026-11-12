@@ -45,8 +45,7 @@ function close() {
           <p>{{ point.areaName }}</p>
         </div>
         <div class="marker-card-footer">
-          <a v-if="point.mediaUrl" class="marker-card-action" :href="point.mediaUrl" target="_blank">Utforska</a>
-          <span v-else class="marker-card-action disabled">Utforska</span>
+          <a class="marker-card-action" :href="point.mediaUrl || point.previewUrl" target="_blank">Utforska</a>
         </div>
       </article>
       <button class="marker-pin" type="button" :title="point.name" @click.stop="toggle(point)">
@@ -233,10 +232,6 @@ function close() {
 
 .marker-card-action:hover {
   background: var(--theme-4);
-}
-
-.marker-card-action.disabled {
-  opacity: .65;
 }
 
 .marker-card-footer {
