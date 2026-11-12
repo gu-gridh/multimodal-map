@@ -1,7 +1,7 @@
 <script setup>
 import { computed, onMounted, ref } from "vue";
-import MapMarkers from "@/components/MapMarkers.vue";
 import MapComponent from "@/components/MapComponent.vue";
+import ForsvikMapMarkers from "./ForsvikMapMarkers.vue";
 /* import IdentityCircle from "./IdentityCircle.vue"; */
 import MapViewTitle from "./MapViewTitle.vue";
 import config from "./settings/config";
@@ -23,9 +23,13 @@ onMounted(async () => {
         .map((article) => ({
           id: article.id,
           name: article.title,
+          areaName: article.area_name,
           type: article.advanced_media?.type?.toLowerCase().replace(/[\s_-]/g, ""),
-          coordinates: [...article.location.coordinates],
-        })));
+          mediaTitle: article.advanced_media?.title,
+          mediaUrl: article.advanced_media?.url,
+          coordinates: [article.location?.lng, article.location?.lat],
+        }))
+        .filter((article) => article.coordinates[0] != null && article.coordinates[1] != null));
       url = data.next;
     }
   } catch (error) {
@@ -38,12 +42,13 @@ onMounted(async () => {
 
   <div class="map-page">
     <div id="version">version 1.0</div>
-    <MapComponent class="map-canvas" :shouldAutoMove="true" :max-zoom="22" :min-zoom="17.3" :rotation="-190" :showOsm="false" :restrictExtent="[14.4277, 58.573, 14.449, 58.59]">
+    <MapComponent class="map-canvas" :shouldAutoMove="true" :max-zoom="22" :min-zoom="17.3" :rotation="-190"
+      :showOsm="false" :restrictExtent="[14.4277, 58.573, 14.449, 58.59]">
       <template #layers>
         <ol-tile-layer v-if="layer.url" :key="selectedLayer">
           <ol-source-xyz :url="layer.url" :attributions="layer.attribution" />
         </ol-tile-layer>
-        <MapMarkers :markers="markers" :types="config.markerTypes" :projection="config.projection" />
+        <ForsvikMapMarkers :markers="markers" :types="config.markerTypes" :projection="config.projection" />
         <ol-attribution-control :collapsible="false" />
       </template>
     </MapComponent>
