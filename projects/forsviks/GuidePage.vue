@@ -9,7 +9,7 @@ const features = [
 
 <template>
   <section class="instructions-container fullopacity">
-    <router-link to="/map" class="close-instructions-button fullopacityui" title="Close guide">+</router-link>
+    <router-link to="/" class="close-instructions-button fullopacityui" title="Close guide">+</router-link>
     <div class="instructions-flex">
       <div class="content-columns">
         <div class="content-column1">
@@ -19,7 +19,7 @@ const features = [
             <p class="instructions-article-main">Explore {{ config.title }} through the map, site plan and drone view.</p>
           </div>
           <div class="buttons">
-            <div class="explore-button"><router-link class="category-button fullopacityui" to="/map">Close</router-link></div>
+            <div class="explore-button"><router-link class="category-button fullopacityui" to="/">Close</router-link></div>
           </div>
         </div>
         <div class="content-column2">

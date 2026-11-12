@@ -11,7 +11,7 @@ import config from "./settings/config";
       </div>
       <div class="links-stack border-style">
         <router-link class="site-link link" to="/guide">User guide</router-link>
-        <router-link class="site-link link" to="/map">Explore the map</router-link>
+        <router-link class="site-link link" to="/">Explore the map</router-link>
       </div>
     </div>
     <div class="partners">

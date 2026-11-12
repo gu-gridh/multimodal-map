@@ -12,7 +12,7 @@ provide("config", config);
     <MapView />
     <router-view v-slot="{ Component, route }">
       <Transition name="page-fade" appear>
-        <component :is="Component" v-if="route.path !== '/map'" :key="route.path" />
+        <component :is="Component" v-if="route.path !== '/'" :key="route.path" />
       </Transition>
     </router-view>
     <Footer />
