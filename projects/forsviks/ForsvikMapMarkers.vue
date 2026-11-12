@@ -36,7 +36,7 @@ function close() {
         <button v-if="selectedId === point.id" class="marker-card-close" type="button" title="Stäng"
           @click="close">×</button>
         <div class="marker-card-media">
-          <img v-if="selectedId === point.id && point.mediaUrl" :src="point.mediaUrl"
+          <img v-if="selectedId === point.id && point.previewUrl" :src="point.previewUrl"
             :alt="point.mediaTitle || point.name">
           <div v-else class="marker-card-placeholder">{{ point.type }}</div>
         </div>

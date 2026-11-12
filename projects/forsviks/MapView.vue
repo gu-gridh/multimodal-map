@@ -27,6 +27,7 @@ onMounted(async () => {
           type: article.advanced_media?.type?.toLowerCase().replace(/[\s_-]/g, ""),
           mediaTitle: article.advanced_media?.title,
           mediaUrl: article.advanced_media?.url,
+          previewUrl: article.advanced_media?.preview_url || article.advanced_media?.url,
           coordinates: [article.location?.lng, article.location?.lat],
         }))
         .filter((article) => article.coordinates[0] != null && article.coordinates[1] != null));
