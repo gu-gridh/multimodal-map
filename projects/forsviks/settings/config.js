@@ -1,9 +1,8 @@
-import { markers, markerTypes } from "./markers";
+import { markerTypes } from "./markers";
 
 export default {
   title: "Forsviks bruk",
   titleLines: ["Forsviks", "bruk"],
-  markers,
   markerTypes,
   projection: "EPSG:3857",
   center: [14.4355, 58.579],
