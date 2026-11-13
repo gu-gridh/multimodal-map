@@ -164,6 +164,7 @@ function initializeMap(map) {
 
   popupOverlay = new Overlay({
     element: popupElement.value,
+    className: "ol-overlay-container forsvik-popup-overlay",
     positioning: "bottom-center",
     offset: [0, -55],
     stopEvent: true,
@@ -173,6 +174,7 @@ function initializeMap(map) {
   });
 
   olMap.addOverlay(popupOverlay);
+  popupOverlay.setPosition(undefined);
 
   clickListener = olMap.on("singleclick", handleMapClick);
 }
@@ -224,37 +226,46 @@ onBeforeUnmount(cleanupMap);
 
 </script>
 
+
 <template>
-  <ol-overlay v-for="point in points" :key="point.id" :position="point.position" positioning="bottom-center"
-    :stop-event="true">
-    <div class="forsvik-marker" :class="{ selected: selectedId === point.id }"
-      :style="{ '--marker-index': Math.min(point.index, 14) }">
-      <article class="marker-card">
-        <button v-if="selectedId === point.id" class="marker-card-close" type="button" title="Stäng"
-          @click="close">×</button>
-        <div class="marker-card-media">
-          <img v-if="selectedId === point.id && point.previewUrl" :src="point.previewUrl"
-            :alt="point.mediaTitle || point.name">
-          <div v-else class="marker-card-placeholder">{{ point.type }}</div>
-        </div>
-        <div class="marker-card-copy">
-          <h2>{{ point.name }}</h2>
-          <p>{{ point.areaName }}</p>
-        </div>
-        <div class="marker-card-footer">
-          <a class="marker-card-action" :href="point.mediaUrl || point.previewUrl" target="_blank">Utforska</a>
-        </div>
-      </article>
-      <button class="marker-pin" type="button" :title="point.name" @click.stop="toggle(point)">
-        <img v-if="point.icon" :src="point.icon" alt="">
-        <span v-else></span>
+  <div ref="popupElement" class="forsvik-popup">
+
+    <!-- CLUSTER -->
+    <div
+      v-if="selectedArticles.length > 0"
+      class="cluster-list"
+    >
+      <div class="cluster-list-header">
+        <strong>{{ selectedArticles.length }} artiklar</strong>
+
+        <button
+          class="cluster-close"
+          type="button"
+          @click.stop="closePopup"
+        >
+          ×
+        </button>
+      </div>
+
+      <button
+        v-for="article in selectedArticles"
+        :key="article.id"
+        class="cluster-list-item"
+        type="button"
+        @click.stop="selectArticle(article)"
+      >
+        <img
+          v-if="article.icon"
+          :src="article.icon"
+          alt=""
+        >
+        <span>{{ article.name }}</span>
       </button>
     </div>
 
-    <!-- Selected article card -->
     <article
       v-if="selectedArticle"
-      class="marker-card selected"
+      class="marker-card"
     >
       <button
         class="marker-card-close"
@@ -267,11 +278,10 @@ onBeforeUnmount(cleanupMap);
 
       <div class="marker-card-media">
         <img
-          v-if="selectedArticle.mediaUrl"
-          :src="selectedArticle.mediaUrl"
+          v-if="selectedArticle.previewUrl || selectedArticle.mediaUrl"
+          :src="selectedArticle.previewUrl || selectedArticle.mediaUrl"
           :alt="selectedArticle.mediaTitle || selectedArticle.name"
         >
-
         <div v-else class="marker-card-placeholder">
           {{ selectedArticle.type }}
         </div>
@@ -284,24 +294,29 @@ onBeforeUnmount(cleanupMap);
 
       <div class="marker-card-footer">
         <a
-          v-if="selectedArticle.mediaUrl"
+          v-if="selectedArticle.mediaUrl || selectedArticle.previewUrl"
           class="marker-card-action"
-          :href="selectedArticle.mediaUrl"
+          :href="selectedArticle.mediaUrl || selectedArticle.previewUrl"
           target="_blank"
           rel="noopener noreferrer"
         >
           Utforska
         </a>
-
         <span v-else class="marker-card-action disabled">
           Utforska
         </span>
       </div>
     </article>
+
   </div>
 </template>
 
 
+<style>
+.forsvik-popup-overlay {
+  z-index: 1000 !important;
+}
+</style>
 
 <style scoped>
 
@@ -425,12 +440,7 @@ onBeforeUnmount(cleanupMap);
   background: var(--theme-4);
 }
 
-.marker-card-footer {
-  height: 0;
-  overflow: hidden;
-  opacity: 0;
-  transition: height .32s ease, opacity .22s ease;
-}
+
 
 .cluster-list-header {
   display: flex;
