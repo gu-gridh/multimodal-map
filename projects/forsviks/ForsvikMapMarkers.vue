@@ -16,7 +16,7 @@ const props = defineProps({
   markers: { type: Array, default: () => [] },
   types: { type: Object, required: true },
   projection: { type: String, default: "EPSG:3857" },
-  clusterDistance: { type: Number, default: 35 },
+  clusterDistance: { type: Number, default: 15 },
   mapInstance: { type: Object, default: null }
 });
 
