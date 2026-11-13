@@ -9,6 +9,7 @@ import config from "./settings/config";
 const selectedLayer = ref("plan");
 const layer = computed(() => config.layers[selectedLayer.value]);
 const markers = ref([]);
+const forsvikMap = ref(null);
 
 onMounted(async () => {
   let url = "https://forsviksbruk.dh.gu.se/api/articles/";
@@ -43,12 +44,12 @@ onMounted(async () => {
   <div class="map-page">
     <div id="version">version 1.0</div>
     <MapComponent class="map-canvas" :shouldAutoMove="true" :max-zoom="22" :min-zoom="17.3" :rotation="-190"
-      :showOsm="false" :restrictExtent="[14.4277, 58.573, 14.449, 58.59]">
+      :showOsm="false" :restrictExtent="[14.4277, 58.573, 14.449, 58.59]" ref="forsvikMap">
       <template #layers>
         <ol-tile-layer v-if="layer.url" :key="selectedLayer">
           <ol-source-xyz :url="layer.url" :attributions="layer.attribution" />
         </ol-tile-layer>
-        <ForsvikMapMarkers :markers="markers" :types="config.markerTypes" :projection="config.projection" />
+        <ForsvikMapMarkers :markers="markers" :types="config.markerTypes" :projection="config.projection" :map-instance="forsvikMap?.map?.map" />
         <ol-attribution-control :collapsible="false" />
       </template>
     </MapComponent>

@@ -43,6 +43,7 @@ const rotationRadians = computed(() => {
 });
 const view = ref();
 const map = ref();
+defineExpose({ map });
 // const projectedCenter = fromLonLat(config.center, projection.value);
 
 // Controls
