@@ -1,30 +1,227 @@
 <script setup>
-import { computed, inject, onBeforeUnmount, onMounted, ref } from "vue";
+
+import {computed, ref, watch, onBeforeUnmount, nextTick} from "vue";
+
 import { fromLonLat } from "ol/proj";
+import Feature from "ol/Feature";
+import Point from "ol/geom/Point";
+import VectorSource from "ol/source/Vector";
+import Cluster from "ol/source/Cluster";
+import VectorLayer from "ol/layer/Vector";
+import Overlay from "ol/Overlay";
+import {Style, Circle as CircleStyle, Fill, Stroke, Text, Icon} from "ol/style";
+import { unByKey } from "ol/Observable";
 
 const props = defineProps({
   markers: { type: Array, default: () => [] },
   types: { type: Object, required: true },
   projection: { type: String, default: "EPSG:3857" },
+  clusterDistance: { type: Number, default: 15 },
+  mapInstance: { type: Object, default: null }
 });
 
-const map = inject("map");
-const selectedId = ref(null);
+const popupElement = ref(null);
+const selectedArticle = ref(null);
+const selectedArticles = ref([]);
 
-const points = computed(() => props.markers.map((marker, index) => ({
-  ...marker,
-  index,
-  position: fromLonLat(marker.coordinates, props.projection),
-  icon: props.types[marker.type]?.icon,
-})));
+let olMap = null;
+let vectorSource = null;
+let clusterSource = null;
+let clusterLayer = null;
+let popupOverlay = null;
+let clickListener = null;
 
-function toggle(point) {
-  selectedId.value = selectedId.value === point.id ? null : point.id;
+const points = computed(() =>
+  props.markers
+    .filter(marker =>
+      Array.isArray(marker.coordinates) &&
+      marker.coordinates.length === 2 &&
+      marker.coordinates.every(v => Number.isFinite(Number(v)))
+    )
+    .map(marker => ({
+      ...marker,
+      position: fromLonLat(
+        marker.coordinates.map(Number),
+        props.projection
+      ),
+      icon: props.types[marker.type]?.icon
+    }))
+);
+
+function createFeatures() {
+  return points.value.map(point => {
+    const feature = new Feature({
+      geometry: new Point(point.position),
+      article: point
+    });
+
+    feature.setId(point.id);
+    return feature;
+  });
 }
 
-function close() {
-  selectedId.value = null;
+function markerStyle(feature) {
+  const features = feature.get("features") || [];
+  const count = features.length;
+
+  if (count === 1) {
+    const article = features[0].get("article");
+
+    if (article.icon) {
+      return new Style({
+        image: new Icon({
+          src: article.icon,
+          scale: 1,
+          anchor: [0.5, 1]
+        })
+      });
+    }
+  }
+
+  return new Style({
+    image: new CircleStyle({
+      radius: count > 1 ? 22 : 14,
+      fill: new Fill({ color: "#9c5b43" }),
+      stroke: new Stroke({
+        color: "#fff8ed",
+        width: 3
+      })
+    }),
+    text: count > 1
+      ? new Text({
+          text: String(count),
+          fill: new Fill({ color: "#ffffff" }),
+          font: "bold 18px Barlow Condensed"
+        })
+      : undefined
+  });
 }
+
+function closePopup() {
+  selectedArticle.value = null;
+  selectedArticles.value = [];
+  popupOverlay?.setPosition(undefined);
+}
+
+function selectArticle(article) {
+  selectedArticle.value = article;
+  selectedArticles.value = [];
+}
+
+function handleMapClick(event) {
+  const feature = olMap.forEachFeatureAtPixel(
+    event.pixel,
+    feature => feature,
+    {
+      hitTolerance: 8,
+      layerFilter: layer => layer === clusterLayer
+    }
+  );
+
+  if (!feature) {
+    closePopup();
+    return;
+  }
+
+  const articles = feature
+    .get("features")
+    .map(f => f.get("article"));
+
+  if (articles.length === 1) {
+    selectedArticle.value = articles[0];
+    selectedArticles.value = [];
+  } else {
+    selectedArticle.value = null;
+    selectedArticles.value = articles;
+  }
+
+  popupOverlay.setPosition(
+    feature.getGeometry().getCoordinates()
+  );
+}
+
+function initializeMap(map) {
+  if (!map || typeof map.addLayer !== "function") return;
+
+  olMap = map;
+
+  vectorSource = new VectorSource({
+    features: createFeatures()
+  });
+
+  clusterSource = new Cluster({
+    distance: props.clusterDistance,
+    source: vectorSource
+  });
+
+  clusterLayer = new VectorLayer({
+    source: clusterSource,
+    style: markerStyle,
+    zIndex: 100
+  });
+
+  olMap.addLayer(clusterLayer);
+
+  popupOverlay = new Overlay({
+    element: popupElement.value,
+    positioning: "bottom-center",
+    offset: [0, -55],
+    stopEvent: true,
+    autoPan: {
+      animation: { duration: 250 }
+    }
+  });
+
+  olMap.addOverlay(popupOverlay);
+
+  clickListener = olMap.on("singleclick", handleMapClick);
+}
+
+function cleanupMap() {
+  if (clickListener) unByKey(clickListener);
+  clickListener = null;
+
+  if (olMap) {
+    if (clusterLayer) olMap.removeLayer(clusterLayer);
+    if (popupOverlay) olMap.removeOverlay(popupOverlay);
+  }
+
+  olMap = null;
+  vectorSource = null;
+  clusterSource = null;
+  clusterLayer = null;
+  popupOverlay = null;
+}
+
+watch(
+  () => props.mapInstance,
+  async map => {
+    cleanupMap();
+
+    if (!map) return;
+
+    await nextTick();
+
+    initializeMap(map);
+  },
+  { immediate: true }
+);
+
+watch(points, () => {
+  if (!vectorSource) return;
+
+  vectorSource.clear();
+  vectorSource.addFeatures(createFeatures());
+  closePopup();
+});
+
+watch(
+  () => props.clusterDistance,
+  distance => clusterSource?.setDistance(distance)
+);
+
+onBeforeUnmount(cleanupMap);
+
 </script>
 
 <template>
@@ -53,78 +250,77 @@ function close() {
         <span v-else></span>
       </button>
     </div>
-  </ol-overlay>
+
+    <!-- Selected article card -->
+    <article
+      v-if="selectedArticle"
+      class="marker-card selected"
+    >
+      <button
+        class="marker-card-close"
+        type="button"
+        title="Stäng"
+        @click.stop="closePopup"
+      >
+        ×
+      </button>
+
+      <div class="marker-card-media">
+        <img
+          v-if="selectedArticle.mediaUrl"
+          :src="selectedArticle.mediaUrl"
+          :alt="selectedArticle.mediaTitle || selectedArticle.name"
+        >
+
+        <div v-else class="marker-card-placeholder">
+          {{ selectedArticle.type }}
+        </div>
+      </div>
+
+      <div class="marker-card-copy">
+        <h2>{{ selectedArticle.name }}</h2>
+        <p>{{ selectedArticle.areaName }}</p>
+      </div>
+
+      <div class="marker-card-footer">
+        <a
+          v-if="selectedArticle.mediaUrl"
+          class="marker-card-action"
+          :href="selectedArticle.mediaUrl"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Utforska
+        </a>
+
+        <span v-else class="marker-card-action disabled">
+          Utforska
+        </span>
+      </div>
+    </article>
+  </div>
 </template>
 
+
+
 <style scoped>
-.forsvik-marker {
+
+.forsvik-popup {
   position: relative;
-  width: 40px;
-  height: 52px;
-  transform-origin: 50% 100%;
-  /* slight wait for marker, then run marker-pop animation */
-  animation: marker-pop .6s calc(var(--marker-index) * 55ms) cubic-bezier(.2, 1.5, .4, 1) both;
-}
-
-:global(.ol-overlay-container:has(.forsvik-marker.selected)) {
-  z-index: 1000 !important;
-}
-
-.marker-pin {
-  position: absolute;
-  z-index: 1;
-  inset: 0;
-  border: 0;
-  padding: 0;
-  background: transparent;
-  cursor: pointer;
-  transition: transform .25s ease, filter .25s ease;
-}
-
-.marker-pin img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-.marker-pin span {
-  display: block;
-  width: 20px;
-  height: 20px;
-  margin: 12px auto;
-  border: 2px solid white;
-  border-radius: 50%;
-  background: var(--theme-5);
-}
-
-.marker-pin:hover,
-.selected .marker-pin {
-  transform: translateY(-3px) scale(1.1);
-  filter: drop-shadow(0 6px 5px rgba(45, 20, 12, .35));
+  width: 260px;
+  pointer-events: auto;
 }
 
 .marker-card {
-  position: absolute;
-  z-index: 0;
-  bottom: 68px;
-  left: 50%;
-  width: 260px;
-  overflow: visible;
+  position: relative;
+  width: 100%;
   border-radius: 18px 18px 14px 14px;
   background: #fff8ed;
   color: #3d211b;
-  box-shadow: 0 10px 18px rgba(45, 20, 12, .18), 0 24px 50px rgba(45, 20, 12, .32);
-  opacity: 0;
-  pointer-events: none;
-  transform: translateX(-50%) translateY(18px) scale(.35);
-  transform-origin: 50% 100%;
-  transition: opacity .18s ease, transform .35s cubic-bezier(.2, .9, .25, 1.15);
-}
-
-.forsvik-marker.selected .marker-card {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0) scale(1);
-  pointer-events: auto;
+  box-shadow:
+    0 10px 18px rgba(45, 20, 12, .18),
+    0 24px 50px rgba(45, 20, 12, .32);
+  animation: card-appear .35s cubic-bezier(.2, .9, .25, 1.15);
 }
 
 .marker-card::after {
@@ -148,9 +344,7 @@ function close() {
   border: 0;
   border-radius: 50%;
   background: rgba(42, 24, 19, .76);
-  color: transparent;
   padding: 0;
-  font-size: 0;
   cursor: pointer;
 }
 
@@ -171,17 +365,10 @@ function close() {
 }
 
 .marker-card-media {
-  height: 0;
+  height: 130px;
   overflow: hidden;
   border-radius: 18px 18px 0 0;
   background: var(--panel-background);
-  opacity: 0;
-  transition: height .38s cubic-bezier(.2, .8, .25, 1), opacity .24s ease;
-}
-
-.selected .marker-card-media {
-  height: 130px;
-  opacity: 1;
 }
 
 .marker-card-media img {
@@ -202,6 +389,13 @@ function close() {
   padding: 14px 16px 12px;
 }
 
+.marker-card-copy h2 {
+  margin: 0;
+  color: var(--theme-3);
+  font-size: 21px;
+  line-height: 1.1;
+}
+
 .marker-card-copy p {
   margin: 5px 0 0;
   color: #231915;
@@ -211,11 +405,8 @@ function close() {
   text-transform: uppercase;
 }
 
-.marker-card-copy h2 {
-  margin: 0;
-  color: var(--theme-3);
-  font-size: 21px;
-  line-height: 1.1;
+.marker-card-footer {
+  height: 46px;
 }
 
 .marker-card-action {
@@ -241,44 +432,67 @@ function close() {
   transition: height .32s ease, opacity .22s ease;
 }
 
-.selected .marker-card-footer {
-  height: 46px;
-  opacity: 1;
+.cluster-list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
 }
 
-/* animation for marker pop */
-@keyframes marker-pop {
-  0% {
+.cluster-close {
+  border: none;
+  background: transparent;
+  color: #3d211b;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.cluster-list-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 14px;
+  border: none;
+  background: transparent;
+  color: #3d211b;
+  text-align: left;
+  cursor: pointer;
+}
+
+.cluster-list-item img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.cluster-list-item:hover {
+  background: #eadbca;
+}
+
+@keyframes card-appear {
+  from {
     opacity: 0;
-    transform: translateY(-18px) scale(.2);
+    transform: translateY(18px) scale(.85);
   }
 
-  70% {
+  to {
     opacity: 1;
-    transform: translateY(3px) scale(1.12);
-  }
-
-  100% {
-    opacity: 1;
-    transform: none;
+    transform: translateY(0) scale(1);
   }
 }
 
 @media (max-width: 600px) {
-  .marker-card {
+  .forsvik-popup {
     width: min(250px, calc(100vw - 32px));
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .forsvik-marker {
-    animation: none;
-  }
-
   .marker-card,
-  .marker-card-media,
-  .marker-card-footer {
-    transition: opacity .1s;
+  .cluster-list {
+    animation: none;
   }
 }
 </style>
