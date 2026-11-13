@@ -225,42 +225,29 @@ onBeforeUnmount(cleanupMap);
 </script>
 
 <template>
-  <div
-    ref="popupElement"
-    class="forsvik-popup"
-  >
-    <!-- Cluster -->
-    <div
-      v-if="selectedArticles.length"
-      class="cluster-list"
-    >
-      <div class="cluster-list-header">
-        <strong>
-          {{ selectedArticles.length }} artiklar
-        </strong>
-
-        <button
-          class="cluster-close"
-          type="button"
-          @click.stop="closePopup"
-        >
-          ×
-        </button>
-      </div>
-
-      <button
-        v-for="article in selectedArticles"
-        :key="article.id"
-        class="cluster-list-item"
-        type="button"
-        @click.stop="selectArticle(article)"
-      >
-        <img
-          v-if="article.icon"
-          :src="article.icon"
-          alt=""
-        >
-        <span>{{ article.name }}</span>
+  <ol-overlay v-for="point in points" :key="point.id" :position="point.position" positioning="bottom-center"
+    :stop-event="true">
+    <div class="forsvik-marker" :class="{ selected: selectedId === point.id }"
+      :style="{ '--marker-index': Math.min(point.index, 14) }">
+      <article class="marker-card">
+        <button v-if="selectedId === point.id" class="marker-card-close" type="button" title="Stäng"
+          @click="close">×</button>
+        <div class="marker-card-media">
+          <img v-if="selectedId === point.id && point.previewUrl" :src="point.previewUrl"
+            :alt="point.mediaTitle || point.name">
+          <div v-else class="marker-card-placeholder">{{ point.type }}</div>
+        </div>
+        <div class="marker-card-copy">
+          <h2>{{ point.name }}</h2>
+          <p>{{ point.areaName }}</p>
+        </div>
+        <div class="marker-card-footer">
+          <a class="marker-card-action" :href="point.mediaUrl || point.previewUrl" target="_blank">Utforska</a>
+        </div>
+      </article>
+      <button class="marker-pin" type="button" :title="point.name" @click.stop="toggle(point)">
+        <img v-if="point.icon" :src="point.icon" alt="">
+        <span v-else></span>
       </button>
     </div>
 
@@ -438,21 +425,11 @@ onBeforeUnmount(cleanupMap);
   background: var(--theme-4);
 }
 
-.marker-card-action.disabled {
-  opacity: .65;
-}
-
-/* cluster article list*/
-
-.cluster-list {
-  width: 100%;
-  max-height: 320px;
-  overflow-y: auto;
-  border-radius: 14px;
-  background: #fff8ed;
-  color: #3d211b;
-  box-shadow: 0 12px 30px rgba(45, 20, 12, .3);
-  animation: card-appear .3s ease-out;
+.marker-card-footer {
+  height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: height .32s ease, opacity .22s ease;
 }
 
 .cluster-list-header {
