@@ -50,7 +50,7 @@
           <ol-tile-layer v-if="layer.url" :key="selectedLayer">
             <ol-source-xyz :url="layer.url" :attributions="layer.attribution" />
           </ol-tile-layer>
-          <ForsvikMarkerLayer :markers="markers" :types="config.markerTypes" :projection="config.projection" :cluster-distance="15" :map-instance="forsvikMap?.map?.map" />
+          <ForsvikMarkerLayer :markers="markers" :types="config.markerTypes" :projection="config.projection" :cluster-distance="20" :map-instance="forsvikMap?.map?.map" />
           <ol-attribution-control :collapsible="false" />
         </template>
       </MapComponent>
