@@ -1,7 +1,7 @@
 <script setup>
   import { computed, onMounted, ref } from "vue";
   import MapComponent from "@/components/MapComponent.vue";
-  import ForsvikMapMarkers from "./ForsvikMapMarkers.vue";
+  import ForsvikMarkerLayer from "./ForsvikMarkerLayer.vue";
   import MapViewTitle from "./MapViewTitle.vue";
   import config from "./settings/config";
 
@@ -50,7 +50,7 @@
           <ol-tile-layer v-if="layer.url" :key="selectedLayer">
             <ol-source-xyz :url="layer.url" :attributions="layer.attribution" />
           </ol-tile-layer>
-          <ForsvikMapMarkers :markers="markers" :types="config.markerTypes" :projection="config.projection" :cluster-distance="15" :map-instance="forsvikMap?.map?.map" />
+          <ForsvikMarkerLayer :markers="markers" :types="config.markerTypes" :projection="config.projection" :cluster-distance="15" :map-instance="forsvikMap?.map?.map" />
           <ol-attribution-control :collapsible="false" />
         </template>
       </MapComponent>
