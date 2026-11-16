@@ -245,7 +245,7 @@ onBeforeUnmount(cleanupMap);
   width: 44px;
   height: 44px;
   place-items: center;
-  border: 3px solid #fff8ed;
+  border: 4px solid #fff8ed;
   border-radius: 50%;
   background: #9c5b43;
   color: white;
@@ -253,18 +253,18 @@ onBeforeUnmount(cleanupMap);
   cursor: pointer;
   transform-origin: 50% 100%;
   transition: transform .25s ease, filter .25s ease;
-  animation: marker-pop .45s var(--marker-delay) cubic-bezier(.2, 1.5, .4, 1) both;
+  animation: marker-pop 2.45s var(--marker-delay) cubic-bezier(.2, 1.5, .4, 1) both;
 }
 
 .marker-cluster:hover,
 .marker-cluster.selected {
-  transform: translateY(-3px) scale(1.1);
+  transform: translateY(-30px) scale(1.1);
   filter: drop-shadow(0 6px 5px rgba(45, 20, 12, .35));
 }
 
 .popup-position {
   z-index: 1000;
-  width: 260px;
+  width: auto;
   transform: translate(-50%, calc(-100% - 55px));
 }
 
@@ -274,14 +274,14 @@ onBeforeUnmount(cleanupMap);
     transform: translateY(-18px) scale(.2);
   }
 
-  70% {
+  90% {
     opacity: 1;
     transform: translateY(3px) scale(1.12);
   }
 
   100% {
     opacity: 1;
-    transform: none;
+    transform: translateY(3px) scale(1.12);
   }
 }
 

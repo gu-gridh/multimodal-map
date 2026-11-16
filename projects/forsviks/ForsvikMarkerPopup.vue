@@ -9,14 +9,16 @@ defineEmits(["close", "select"]);
 
 <template>
   <div v-if="articles.length" class="cluster-list">
+      <!-- 
     <div class="cluster-list-header">
-      <strong>{{ articles.length }} artiklar</strong>
-      <button class="cluster-close" type="button" @click.stop="$emit('close')">×</button>
+    <strong>{{ articles.length }} artiklar</strong>
+      <button class="cluster-close" type="button" @click.stop="$emit('close')">×</button> 
     </div>
+    -->
     <button v-for="item in articles" :key="item.id" class="cluster-list-item" type="button"
       @click.stop="$emit('select', item)">
       <img v-if="item.icon" :src="item.icon" alt="">
-      <span>{{ item.name }}</span>
+      <span>{{ item.areaName }}</span>
     </button>
   </div>
 
@@ -42,6 +44,7 @@ defineEmits(["close", "select"]);
 </template>
 
 <style scoped>
+
 .marker-card,
 .cluster-list {
   position: relative;
@@ -50,14 +53,26 @@ defineEmits(["close", "select"]);
   background: #fff8ed;
   color: #3d211b;
   box-shadow: 0 10px 18px rgba(45, 20, 12, .18), 0 24px 50px rgba(45, 20, 12, .32);
-  animation: card-appear .35s cubic-bezier(.2, .9, .25, 1.15);
+  animation: card-appear 0.8s ease, transform 0.8s cubic-bezier(.2, .9, .25, 1.15);
+}
+
+.marker-card{
+  max-width:260px;
+  min-width:260px;
+  top:-20px;
 }
 
 .cluster-list {
   max-height: 320px;
   overflow-y: auto;
   border-radius: 14px;
+  width:auto;
+  padding:8px 10px 10px 10px;
+   top:20px;
+  
 }
+
+
 
 .cluster-list-header {
   display: flex;
@@ -79,12 +94,13 @@ defineEmits(["close", "select"]);
   align-items: center;
   gap: 10px;
   width: 100%;
-  padding: 10px 14px;
-  border: 0;
+  padding: 5px 20px 5px 0px;
+  border-radius: 8px;
   background: transparent;
   color: #3d211b;
   text-align: left;
   cursor: pointer;
+    animation: list-item-appear 0.8s forwards;
 }
 
 .cluster-list-item:hover {
@@ -92,11 +108,24 @@ defineEmits(["close", "select"]);
 }
 
 .cluster-list-item img {
-  width: 24px;
-  height: 24px;
+  width: 44px;
+  height: 44px;
   object-fit: contain;
   flex-shrink: 0;
 }
+
+.cluster-list::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  width: 16px;
+  height: 16px;
+  background: #fff8ed;
+  transform: translateX(-50%) rotate(45deg);
+}
+
+
 
 .marker-card::after {
   content: "";
@@ -141,12 +170,19 @@ defineEmits(["close", "select"]);
   transform: translate(-50%, -50%) rotate(-45deg);
 }
 
+
 .marker-card-media {
-  height: 130px;
+  height: 0;
   overflow: hidden;
   border-radius: 18px 18px 0 0;
   background: var(--panel-background);
+  opacity: 0;
+  transition: height .38s cubic-bezier(.2, .8, .25, 1), opacity .24s ease;
+  animation: media-appear 0.8s forwards;
 }
+
+
+
 
 .marker-card-media img {
   width: 100%;
@@ -207,14 +243,53 @@ defineEmits(["close", "select"]);
 }
 
 @keyframes card-appear {
-  from {
+   0% {
     opacity: 0;
-    transform: translateY(18px) scale(.35);
+    transform: translateY(-18px) scale(.2);
   }
 
-  to {
+  70% {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: translateY(3px) scale(1.12);
+  }
+
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes media-appear {
+   0% {
+    opacity: 0;
+    height:0px;
+  }
+
+  70% {
+    opacity: 1;
+    height:150px;
+  }
+
+  100% {
+    opacity: 1;
+  height:130px;
+  }
+}
+
+@keyframes list-item-appear {
+   0% {
+    opacity: 0;
+    height:0px;
+  }
+
+  70% {
+    opacity: 1;
+    height:60px;
+  }
+
+  100% {
+    opacity: 1;
+  height:50px;
   }
 }
 
