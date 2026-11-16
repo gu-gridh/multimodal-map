@@ -27,6 +27,7 @@ let renderListener = null;
 let clickListener = null;
 let clusterIndex = null;
 let featureSignature = "";
+let isCentering = false;
 
 const points = computed(() =>
   props.markers
@@ -82,7 +83,7 @@ function renderFeatures() {
   ).join("|");
 
   if (signature === featureSignature) return;
-  if (featureSignature) closePopup();
+  if (featureSignature && !isCentering) closePopup();
   featureSignature = signature;
 
   displayedFeatures.value = features.map((feature, index) => ({
@@ -109,6 +110,7 @@ function pixelStyle(position) {
 }
 
 function openPoint(point, position) {
+  centerMap(position);
   selectedArticle.value = point;
   selectedArticles.value = [];
   selectedClusterId.value = null;
@@ -121,12 +123,24 @@ function openCluster(feature) {
     return;
   }
 
+  centerMap(feature.position);
   selectedArticle.value = null;
   selectedArticles.value = clusterIndex
     .getLeaves(feature.clusterId, Infinity)
     .map(leaf => leaf.properties.point);
   selectedClusterId.value = feature.clusterId;
   popupPosition.value = feature.position;
+}
+
+function centerMap(position) {
+  const view = olMap?.getView();
+  if (!view || !position) return;
+
+  view.cancelAnimations();
+  isCentering = true;
+  view.animate({ center: position, duration: 300 }, () => {
+    isCentering = false;
+  });
 }
 
 function selectArticle(article) {
@@ -162,6 +176,7 @@ function cleanupMap() {
   clickListener = null;
   clusterIndex = null;
   featureSignature = "";
+  isCentering = false;
   displayedFeatures.value = [];
   closePopup();
 }
