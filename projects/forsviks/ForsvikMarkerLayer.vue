@@ -210,8 +210,8 @@ onBeforeUnmount(cleanupMap);
       </div>
 
       <div v-if="selectedArticle || selectedArticles.length" class="popup-position" :style="pixelStyle(popupPosition)">
-        <ForsvikMarkerPopup :article="selectedArticle" :articles="selectedArticles" @close="closePopup"
-          @select="selectArticle" />
+        <ForsvikMarkerPopup :key="selectedArticle ? `article-${selectedArticle.id}` : `cluster-${selectedClusterId}`"
+          :article="selectedArticle" :articles="selectedArticles" @close="closePopup" @select="selectArticle" />
       </div>
     </div>
   </Teleport>

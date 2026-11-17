@@ -9,7 +9,7 @@ defineEmits(["close", "select"]);
 
 <template>
   <div v-if="articles.length" class="cluster-list">
-      <!-- 
+    <!-- 
     <div class="cluster-list-header">
     <strong>{{ articles.length }} artiklar</strong>
       <button class="cluster-close" type="button" @click.stop="$emit('close')">×</button> 
@@ -44,7 +44,6 @@ defineEmits(["close", "select"]);
 </template>
 
 <style scoped>
-
 .marker-card,
 .cluster-list {
   position: relative;
@@ -56,20 +55,20 @@ defineEmits(["close", "select"]);
   animation: card-appear 0.8s ease, transform 0.8s cubic-bezier(.2, .9, .25, 1.15);
 }
 
-.marker-card{
-  max-width:260px;
-  min-width:260px;
-  
+.marker-card {
+  max-width: 260px;
+  min-width: 260px;
+
 }
 
 .cluster-list {
   max-height: 320px;
   overflow-y: auto;
   border-radius: 14px;
-  width:auto;
-  padding:8px 10px 10px 10px;
-  top:40px;
-  
+  width: auto;
+  padding: 8px 10px 10px 10px;
+  top: 40px;
+
 }
 
 
@@ -100,7 +99,7 @@ defineEmits(["close", "select"]);
   color: #3d211b;
   text-align: left;
   cursor: pointer;
-    animation: list-item-appear 0.8s forwards;
+  animation: list-item-appear 0.8s forwards;
 }
 
 .cluster-list-item:hover {
@@ -244,7 +243,7 @@ defineEmits(["close", "select"]);
 }
 
 @keyframes card-appear {
-   0% {
+  0% {
     opacity: 0;
     transform: translateY(-18px) scale(.2);
   }
@@ -261,36 +260,36 @@ defineEmits(["close", "select"]);
 }
 
 @keyframes media-appear {
-   0% {
+  0% {
     opacity: 0;
-    height:0px;
+    height: 0px;
   }
 
   70% {
     opacity: 1;
-    height:150px;
+    height: 150px;
   }
 
   100% {
     opacity: 1;
-  height:130px;
+    height: 130px;
   }
 }
 
 @keyframes list-item-appear {
-   0% {
+  0% {
     opacity: 0;
-    height:0px;
+    height: 0px;
   }
 
   70% {
     opacity: 1;
-    height:60px;
+    height: 60px;
   }
 
   100% {
     opacity: 1;
-  height:50px;
+    height: 50px;
   }
 }
 
