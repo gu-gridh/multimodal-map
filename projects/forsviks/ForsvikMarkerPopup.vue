@@ -68,7 +68,7 @@ defineEmits(["close", "select"]);
   border-radius: 14px;
   width:auto;
   padding:8px 10px 10px 10px;
-   top:40px;
+  top:40px;
   
 }
 
