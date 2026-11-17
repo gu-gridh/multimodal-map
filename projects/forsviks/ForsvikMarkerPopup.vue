@@ -59,7 +59,7 @@ defineEmits(["close", "select"]);
 .marker-card{
   max-width:260px;
   min-width:260px;
-  top:-20px;
+  
 }
 
 .cluster-list {
@@ -68,7 +68,7 @@ defineEmits(["close", "select"]);
   border-radius: 14px;
   width:auto;
   padding:8px 10px 10px 10px;
-   top:20px;
+   top:40px;
   
 }
 
@@ -136,6 +136,7 @@ defineEmits(["close", "select"]);
   height: 16px;
   background: #fff8ed;
   transform: translateX(-50%) rotate(45deg);
+  pointer-events: none;
 }
 
 .marker-card-close {

@@ -266,6 +266,7 @@ onBeforeUnmount(cleanupMap);
   z-index: 1000;
   width: auto;
   transform: translate(-50%, calc(-100% - 55px));
+  translate: 0px -20px;
 }
 
 @keyframes marker-pop {
