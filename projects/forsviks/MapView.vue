@@ -44,7 +44,7 @@
   <div class="map-page">
     <div class="shadow-layer">  </div>
       <div id="version">version 1.0</div>
-      <MapComponent ref="forsvikMap" class="map-canvas" :shouldAutoMove="true" :max-zoom="22" :min-zoom="17.3" :rotation="-190"
+      <MapComponent ref="forsvikMap" class="map-canvas" :shouldAutoMove="true" :max-zoom="22" :min-zoom="17.3" :rotation="-170"
         :showOsm="false" :restrictExtent="[14.4277, 58.573, 14.449, 58.59]">
         <template #layers>
           <ol-tile-layer v-if="layer.url" :key="selectedLayer">
