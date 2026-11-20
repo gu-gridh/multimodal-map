@@ -1,5 +1,5 @@
 <script setup>
-  import { computed, onMounted, ref } from "vue";
+  import { computed, onMounted, ref, watch } from "vue";
   import MapComponent from "@/components/MapComponent.vue";
   import ForsvikMarkerLayer from "./ForsvikMarkerLayer.vue";
   import MapViewTitle from "./MapViewTitle.vue";
@@ -11,14 +11,22 @@
   const markers = ref([]);
   const forsvikMap = ref(null);
   const selectedType = ref(null);
+  const url = ref("https://forsviksbruk.dh.gu.se/api/articles/");
  
 
   onMounted(async () => {
-    let url = "https://forsviksbruk.dh.gu.se/api/articles/";
+    fetchMarkers();
+  });
 
+  const filter = (type) => {
+    selectedType.value = type;
+  };
+
+  const fetchMarkers = async () => {
+    markers.value = [];
     try {
-      while (url) {
-        const response = await fetch(url);
+      while (url.value) {
+        const response = await fetch(url.value);
         if (!response.ok) throw new Error(response.status);
 
         const data = await response.json();
@@ -34,16 +42,22 @@
             coordinates: [article.location?.lng, article.location?.lat],
           }))
           .filter((article) => article.coordinates[0] != null && article.coordinates[1] != null));
-        url = data.next;
+        url.value = data.next;
       }
     } catch (error) {
       console.error(error);
     }
-  });
-
-  const filter = (type) => {
-    selectedType.value = type;
   };
+
+  watch(selectedType, (newType) => {
+    if (newType === null) {
+      url.value = "https://forsviksbruk.dh.gu.se/api/articles/";
+      fetchMarkers();
+    } else {
+      url.value = `https://forsviksbruk.dh.gu.se/api/articles?media_type=${newType}`;
+      fetchMarkers();
+    }
+  });
   
 </script>
 
