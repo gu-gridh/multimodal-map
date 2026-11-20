@@ -8,7 +8,7 @@
   const selectedLayer = ref("plan");
   const layer = computed(() => config.layers[selectedLayer.value]);
   const markers = ref([]);
- const forsvikMap = ref(null);
+  const forsvikMap = ref(null);
 
   onMounted(async () => {
     let url = "https://forsviksbruk.dh.gu.se/api/articles/";

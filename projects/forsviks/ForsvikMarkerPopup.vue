@@ -8,7 +8,7 @@ defineEmits(["close", "select"]);
 </script>
 
 <template>
-  <div v-if="articles.length" class="cluster-list" :style="{ '--columns': Math.min(articles.length, 3) }">
+  <div v-if="articles.length && !article" class="cluster-list" :style="{ '--columns': Math.min(articles.length, 3) }">
     <!-- 
     <div class="cluster-list-header">
     <strong>{{ articles.length }} artiklar</strong>
