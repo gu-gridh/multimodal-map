@@ -4,9 +4,10 @@ import red from "@/assets/marker-red.svg";
 import blue from "@/assets/marker-blue.svg";
 
 export const markerTypes = {
-  image: { icon: red },
-  panorama: { icon: gold },
-  pointcloud: { icon: white },
-  texturedmodel: { icon: blue },
-  texturedmesh: { icon: blue },
+  all: { label: "Alla", value: null },
+  image: { icon: red, label: "Bilder", value: "image" },
+  panorama: { icon: gold, label: "Panorama", value: "panorama" },
+  pointcloud: { icon: white, label: "Punktmoln", value: "pointcloud" },
+  texturedmodel: { icon: blue, label: "Texturerad modell", value: "textured_model" },
+  texturedmesh: { icon: blue, label: "Texturerad mesh", value: "textured_mesh" },
 };

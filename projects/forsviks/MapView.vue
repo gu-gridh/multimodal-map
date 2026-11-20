@@ -4,11 +4,14 @@
   import ForsvikMarkerLayer from "./ForsvikMarkerLayer.vue";
   import MapViewTitle from "./MapViewTitle.vue";
   import config from "./settings/config";
+  import FilterButtons from "./FilterButtons.vue";
 
   const selectedLayer = ref("plan");
   const layer = computed(() => config.layers[selectedLayer.value]);
   const markers = ref([]);
   const forsvikMap = ref(null);
+  const selectedType = ref(null);
+ 
 
   onMounted(async () => {
     let url = "https://forsviksbruk.dh.gu.se/api/articles/";
@@ -37,6 +40,11 @@
       console.error(error);
     }
   });
+
+  const filter = (type) => {
+    selectedType.value = type;
+  };
+  
 </script>
 
 <template>
@@ -54,6 +62,14 @@
           <ol-attribution-control :collapsible="false" />
         </template>
       </MapComponent>
+      <div class="filter-buttons-container">
+        <FilterButtons
+          :types="config.markerTypes"
+          :selected-type="selectedType"
+          @update:selectedType="filter"
+        />
+      </div>
+      
       <div class="gradient-blur">
         <div></div>
         <div></div>
@@ -234,5 +250,12 @@
 
   .ui-overlay-top{
     padding:6px 0px!important;
+  }
+
+  .filter-buttons-container {
+    position: absolute;
+    top: 80px;
+    right: 30px;
+    z-index: 1001;
   }
 </style>
