@@ -9,5 +9,4 @@ export const markerTypes = {
   panorama: { icon: gold, label: "Panorama", value: "panorama" },
   pointcloud: { icon: white, label: "Punktmoln", value: "pointcloud" },
   texturedmodel: { icon: blue, label: "Texturerad modell", value: "textured_model" },
-  texturedmesh: { icon: blue, label: "Texturerad mesh", value: "textured_mesh" },
 };
