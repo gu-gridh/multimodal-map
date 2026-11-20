@@ -10,8 +10,7 @@
   const layer = computed(() => config.layers[selectedLayer.value]);
   const markers = ref([]);
   const forsvikMap = ref(null);
-  const selectedType = ref(null);
-  const url = ref("https://forsviksbruk.dh.gu.se/api/articles/");
+  const selectedType = ref([]);
  
 
   onMounted(async () => {
@@ -22,16 +21,26 @@
     selectedType.value = type;
   };
 
-  const fetchMarkers = async () => {
-    markers.value = [];
-    try {
-      while (url.value) {
-        const response = await fetch(url.value);
-        if (!response.ok) throw new Error(response.status);
+  
+const fetchMarkers = async (types = []) => {
+  const params = new URLSearchParams();
+  types.forEach(type => {
+    params.append("media_type", type);
+  });
+  let url = `https://forsviksbruk.dh.gu.se/api/articles/?${params.toString()}`;
 
-        const data = await response.json();
-        markers.value.push(...data.results
-          .map((article) => ({
+  const results = [];
+
+  try {
+    while (url) {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+      const data = await response.json();
+      results.push(
+        ...data.results
+          .map(article => ({
             id: article.id,
             name: article.title,
             areaName: article.area_name,
@@ -39,30 +48,33 @@
             mediaTitle: article.advanced_media?.title,
             mediaUrl: article.advanced_media?.url,
             previewUrl: article.advanced_media?.preview_url || article.advanced_media?.url,
-            coordinates: [article.location?.lng, article.location?.lat],
+            coordinates: [
+              article.location?.lng,
+              article.location?.lat
+            ]
           }))
-          .filter((article) => article.coordinates[0] != null && article.coordinates[1] != null));
-        url.value = data.next;
-      }
-    } catch (error) {
-      console.error(error);
+          .filter(article =>
+            article.coordinates.every(value => value != null)
+          )
+      );
+      url = data.next;
     }
-  };
 
-  watch(selectedType, (newType) => {
-    if (newType === null) {
-      url.value = "https://forsviksbruk.dh.gu.se/api/articles/";
-      fetchMarkers();
-    } else {
-      url.value = `https://forsviksbruk.dh.gu.se/api/articles?media_type=${newType}`;
-      fetchMarkers();
-    }
-  });
-  
+    markers.value = results;
+
+  } catch (error) {
+    console.error("Error fetching markers:", error);
+  }
+};
+
+watch(selectedType,(types) => {
+    fetchMarkers(types);
+  },
+  { immediate: true }
+);
 </script>
 
 <template>
-
   <div class="map-page">
     <div class="shadow-layer">  </div>
       <div id="version">version 1.0</div>

@@ -3,8 +3,16 @@
     <button
       v-for="(marker, key) in types"
       :key="key"
+      type="button"
       class="filterBtn"
-      :class="{ selected: selectedType === marker.value }"
+      :class="{
+        selected: marker.value === null
+          ? selectedType.length === 0
+          : selectedType.includes(marker.value)
+      }"
+      :aria-pressed="marker.value === null
+        ? selectedType.length === 0
+        : selectedType.includes(marker.value)"
       @click="selectType(marker.value)"
     >
       {{ marker.label }}
@@ -14,18 +22,15 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-import config from "./settings/config";
 
 const props = defineProps({
   types: {
-    label: String,
-    value: String,
-    default: "all"
+    type: Object,
+    required: true
   },
   selectedType: {
-    type: String,
-    default: "all"
+    type: Array,
+    default: () => []
   }
 });
 
@@ -33,9 +38,17 @@ const props = defineProps({
 const emit = defineEmits(["update:selectedType"]);
 
 const selectType = (type) => {
-  emit("update:selectedType", type);
-  console.log(type);
-};
+  if (type === null) {
+    emit("update:selectedType", []);
+    return;
+  }
+  const selected = props.selectedType;
+  const updated = selected.includes(type)
+    ? selected.filter(t => t !== type)
+    : [...selected, type];
+
+  emit("update:selectedType", updated);
+}
 </script>
 
 <style scoped>
