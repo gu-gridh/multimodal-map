@@ -44,10 +44,14 @@ const points = computed(() =>
 );
 
 function closePopup() {
+  if (selectedArticle.value && selectedArticles.value.length > 0) {
+    // close article card, return to cluster list if cluster
+    selectedArticle.value = null;
+    return;
+  }
+  // close popup
   selectedArticle.value = null;
   selectedArticles.value = [];
-  selectedClusterId.value = null;
-  popupPosition.value = null;
 }
 
 function rebuildIndex() {
@@ -145,7 +149,7 @@ function centerMap(position) {
 
 function selectArticle(article) {
   selectedArticle.value = article;
-  selectedArticles.value = [];
+  //selectedArticles.value = []; //the list should still be open
 }
 
 function initializeMap(map) {
