@@ -8,7 +8,7 @@ defineEmits(["close", "select"]);
 </script>
 
 <template>
-  <div v-if="articles.length" class="cluster-list">
+  <div v-if="articles.length" class="cluster-list" :style="{ '--columns': Math.min(articles.length, 3) }">
     <!-- 
     <div class="cluster-list-header">
     <strong>{{ articles.length }} artiklar</strong>
@@ -62,13 +62,20 @@ defineEmits(["close", "select"]);
 }
 
 .cluster-list {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(var(--columns), 1fr);
+  gap: 10px;
+  width: max-content;
   max-height: 320px;
-  overflow-y: auto;
+  max-width: min(650px, calc(100vw - 40px));
+  /* overflow-y: auto; */
   border-radius: 14px;
-  width: auto;
-  padding: 8px 10px 10px 10px;
-  top: 40px;
-
+  /* width: auto; */
+  padding: 12px;
+  /* padding: 8px 10px 10px 10px; */
+  /* top: 40px; */
+  
 }
 
 
@@ -90,14 +97,17 @@ defineEmits(["close", "select"]);
 
 .cluster-list-item {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 10px;
-  width: 100%;
-  padding: 5px 20px 5px 0px;
+  justify-content: center;
+  gap: 8px;
+  width: 80px;;
+  padding: 4px;
+  border: 0;
   border-radius: 8px;
   background: transparent;
   color: #3d211b;
-  text-align: left;
+  text-align: center;
   cursor: pointer;
   animation: list-item-appear 0.8s forwards;
 }
@@ -122,6 +132,12 @@ defineEmits(["close", "select"]);
   height: 16px;
   background: #fff8ed;
   transform: translateX(-50%) rotate(45deg);
+}
+
+.cluster-list-item span {
+  font-size: 13px;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
 }
 
 
@@ -292,6 +308,7 @@ defineEmits(["close", "select"]);
     height: 50px;
   }
 }
+
 
 @media (prefers-reduced-motion: reduce) {
 
