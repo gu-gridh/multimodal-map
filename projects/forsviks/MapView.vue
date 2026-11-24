@@ -128,7 +128,7 @@
             </div>
             
            <div class="short-instructions">
-              Aktivera allt material på kartan eller endast en viss typ med hjälp av valen till vänster. 
+              Aktivera allt material på kartan, eller endast en viss kategori, med hjälp av valen till vänster. 
             </div>
 
           </div>
