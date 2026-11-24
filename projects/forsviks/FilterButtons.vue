@@ -46,12 +46,12 @@
 <style scoped>
   .filter-buttons {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     flex-wrap: wrap;
-    justify-content: space-between;
-    background-color:rgba(255,255,255,0.4);
+    justify-content: left;
+    /* background-color:rgba(255,255,255,0.4); */
     border-radius:8px;
-    padding:10px 0px 0px 10px;
+    padding:10px 0px 0px 0px;
     width:100%;
   }
 
@@ -64,24 +64,28 @@
     font-size: 0.9em;
     text-align: center;
     cursor: pointer;
-    border: 0;
-    border-radius: 4px;
-    background-color: #f9f9f9;
+    border-radius: 0px;
+    background-color: var(--theme-6);
     padding: 5px 10px 5px 6px;
     margin-right: 10px;
+    width:100px;
+     border-width:0px 0px 0px 4px;
+     border-style:solid;
+     border-color:transparent;
   }
 
   .filterBtn.selected {
-    background-color: var(--theme-3);
-    color: white;
+   
+    border-color:var(--theme-3);
   }
 
   .markerColor {
     display: inline-block;
     width: 18px;
     height: 18px;
+    margin-right:5px;
     border-radius: 3px;
     flex-shrink: 0;
-     box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+    /*  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5); */
   }
 </style>

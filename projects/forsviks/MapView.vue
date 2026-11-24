@@ -174,15 +174,16 @@
      display: flex !important;
     flex-direction: column !important;
 
-    align-items: center;
+    align-items: left;
   }
 
   .filter-section {
     margin-top:20px;
-    margin-left: 0px;
+    padding-left: 20px;
     width: auto;
     display:flex;
    flex-direction: row;
+
   }
 
   #version {
