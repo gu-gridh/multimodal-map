@@ -11,7 +11,7 @@
   const markers = ref([]);
   const forsvikMap = ref(null);
   const selectedType = ref([]);
- 
+
 
   onMounted(async () => {
     fetchMarkers();
@@ -21,113 +21,120 @@
     selectedType.value = type;
   };
 
-  
-const fetchMarkers = async (types = []) => {
-  const params = new URLSearchParams();
-  types.forEach(type => {
-    params.append("media_type", type);
-  });
-  let url = `https://forsviksbruk.dh.gu.se/api/articles/?${params.toString()}`;
 
-  const results = [];
+  const fetchMarkers = async (types = []) => {
+    const params = new URLSearchParams();
+    types.forEach(type => {
+      params.append("media_type", type);
+    });
+    let url = `https://forsviksbruk.dh.gu.se/api/articles/?${params.toString()}`;
 
-  try {
-    while (url) {
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
+    const results = [];
+
+    try {
+      while (url) {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
+        const data = await response.json();
+        results.push(
+          ...data.results
+            .map(article => ({
+              id: article.id,
+              name: article.title,
+              areaName: article.area_name,
+              type: article.advanced_media?.type?.toLowerCase().replace(/[\s_-]/g, ""),
+              mediaTitle: article.advanced_media?.title,
+              mediaUrl: article.advanced_media?.url,
+              previewUrl: article.advanced_media?.preview_url || article.advanced_media?.url,
+              coordinates: [
+                article.location?.lng,
+                article.location?.lat
+              ]
+            }))
+            .filter(article =>
+              article.coordinates.every(value => value != null)
+            )
+        );
+        url = data.next;
       }
-      const data = await response.json();
-      results.push(
-        ...data.results
-          .map(article => ({
-            id: article.id,
-            name: article.title,
-            areaName: article.area_name,
-            type: article.advanced_media?.type?.toLowerCase().replace(/[\s_-]/g, ""),
-            mediaTitle: article.advanced_media?.title,
-            mediaUrl: article.advanced_media?.url,
-            previewUrl: article.advanced_media?.preview_url || article.advanced_media?.url,
-            coordinates: [
-              article.location?.lng,
-              article.location?.lat
-            ]
-          }))
-          .filter(article =>
-            article.coordinates.every(value => value != null)
-          )
-      );
-      url = data.next;
+
+      markers.value = results;
+
+    } catch (error) {
+      console.error("Error fetching markers:", error);
     }
+  };
 
-    markers.value = results;
-
-  } catch (error) {
-    console.error("Error fetching markers:", error);
-  }
-};
-
-watch(selectedType,(types) => {
+  watch(selectedType, (types) => {
     fetchMarkers(types);
   },
-  { immediate: true }
-);
+    { immediate: true }
+  );
 </script>
 
 <template>
   <div class="map-page">
-    <div class="shadow-layer">  </div>
-      <div id="version">version 1.0</div>
-      <MapComponent ref="forsvikMap" class="map-canvas" :shouldAutoMove="true" :max-zoom="22" :min-zoom="17.3" :rotation="-170"
-        :showOsm="false" :restrictExtent="[14.4277, 58.573, 14.449, 58.59]">
-        <template #layers>
-          <ol-tile-layer v-if="layer.url" :key="selectedLayer">
-            <ol-source-xyz :url="layer.url" :attributions="layer.attribution" />
-          </ol-tile-layer>
-          <ForsvikMarkerLayer :markers="markers" :types="config.markerTypes" :projection="config.projection" :cluster-distance="20" :map-instance="forsvikMap?.map?.map" />
-          <ol-attribution-control :collapsible="false" />
-        </template>
-      </MapComponent>
-      <div class="filter-buttons-container">
-        <FilterButtons
-          :types="config.markerTypes"
-          :selected-type="selectedType"
-          @update:selectedType="filter"
-        />
-      </div>
-      
-      <div class="gradient-blur">
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-      </div>
-      <aside class="left-pane">
-        <div class="left-pane-layer">
-          <div class="left-pane-content">
-            <!--   <IdentityCircle /> -->
-            <MapViewTitle />
-            <div class="title-actions">
-              <router-link class="category-button about-button" to="/about">Om siten</router-link>
-              <router-link class="category-button about-button" to="/guide">Användarguide</router-link>
-              <router-link class="category-button about-button" to="/guide">Språk</router-link>
-            </div>
+    <div class="shadow-layer"> </div>
+    <div id="version">version 1.0</div>
+    <MapComponent ref="forsvikMap" class="map-canvas" :shouldAutoMove="true" :max-zoom="22" :min-zoom="17.3"
+      :rotation="-170" :showOsm="false" :restrictExtent="[14.4277, 58.573, 14.449, 58.59]">
+      <template #layers>
+        <ol-tile-layer v-if="layer.url" :key="selectedLayer">
+          <ol-source-xyz :url="layer.url" :attributions="layer.attribution" />
+        </ol-tile-layer>
+        <ForsvikMarkerLayer :markers="markers" :types="config.markerTypes" :projection="config.projection"
+          :cluster-distance="20" :map-instance="forsvikMap?.map?.map" />
+        <ol-attribution-control :collapsible="false" />
+      </template>
+    </MapComponent>
+
+
+    <div class="gradient-blur">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+    <aside class="left-pane">
+      <div class="left-pane-layer">
+        <div class="left-pane-content">
+           
+          <MapViewTitle />
+       
+
+          <div class="title-actions">
+            <router-link class="category-button about-button" to="/about">Om siten</router-link>
+            <router-link class="category-button about-button" to="/guide">Användarguide</router-link>
+            <router-link class="category-button about-button" to="/guide">Språk</router-link>
+          </div>
+
+          <div class="short-about">
             <p>{{ config.about }}</p>
           </div>
-        </div>
-      </aside>
-      <div class="mode-position">
-        <div class="ui-mode ui-overlay ui-overlay-top">
-          <button v-for="(item, key) in config.layers" :key="key" class="item"
-            :class="{ selected: selectedLayer === key }" :aria-pressed="selectedLayer === key"
-            @click="selectedLayer = key">{{ item.title }}</button>
+
+          
+            <div class="filter-section">
+              <FilterButtons :types="config.markerTypes" :selected-type="selectedType" @update:selectedType="filter" />
+            </div>
+          
+
         </div>
       </div>
-      <router-link class="guide-button" to="/guide" title="User guide">?<span class="visually-hidden"> User
-          guide</span></router-link>
+    </aside>
+    <div class="mode-position">
+      <div class="ui-mode ui-overlay ui-overlay-top">
+        <button v-for="(item, key) in config.layers" :key="key" class="item"
+          :class="{ selected: selectedLayer === key }" :aria-pressed="selectedLayer === key"
+          @click="selectedLayer = key">{{ item.title }}</button>
+      </div>
     </div>
+    <router-link class="guide-button" to="/guide" title="User guide">?<span class="visually-hidden"> User
+        guide</span></router-link>
+  </div>
 
 </template>
 
@@ -135,22 +142,40 @@ watch(selectedType,(types) => {
   .shadow-layer {
     width: calc(100vw + 40px);
     height: calc(100vh - 80px);
-    margin-left:-20px;
-    box-shadow: 0px -5px 20px rgba(0,0,0,0.3) inset;
-    z-index:1000;
-    position:fixed;
+    margin-left: -20px;
+    box-shadow: 0px -5px 20px rgba(0, 0, 0, 0.3) inset;
+    z-index: 1000;
+    position: fixed;
     pointer-events: none;
   }
 
   @media screen and (max-width: 900px) {
-  .shadow-layer {
-   display:none;
+    .shadow-layer {
+      display: none;
+    }
   }
-}
+
+  .left-pane-layer {
+    display: flex !important;
+    flex-direction: column !important;
+  }
 
 
   .left-pane-layer p {
     padding-left: 20px;
+  }
+
+  .left-pane-content {
+     display: flex !important;
+    flex-direction: column !important;
+
+    align-items: center;
+  }
+
+  .filter-section {
+    margin-top:20px;
+    padding-left: 20px;
+    width: auto;
   }
 
   #version {
@@ -274,8 +299,8 @@ watch(selectedType,(types) => {
     display: none !important;
   }
 
-  .ui-overlay-top{
-    padding:6px 0px!important;
+  .ui-overlay-top {
+    padding: 6px 0px !important;
   }
 
   .filter-buttons-container {
