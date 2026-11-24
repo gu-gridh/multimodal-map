@@ -25,8 +25,13 @@
   const fetchMarkers = async (types = []) => {
     const params = new URLSearchParams();
     types.forEach(type => {
-      params.append("media_type", type);
+      if (type === 'pointcloud'){
+        //also add textured_model as media_type
+        params.append("media_type", "textured_model");
+      }
+        params.append("media_type", type);
     });
+
     let url = `https://forsviksbruk.dh.gu.se/api/articles/?${params.toString()}`;
 
     const results = [];
