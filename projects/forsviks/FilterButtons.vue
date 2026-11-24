@@ -68,7 +68,7 @@
     background-color: var(--theme-6);
     padding: 5px 10px 5px 6px;
     margin-right: 10px;
-    width:100px;
+    width:120px;
      border-width:0px 0px 0px 4px;
      border-style:solid;
      border-color:transparent;

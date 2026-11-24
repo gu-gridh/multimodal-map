@@ -160,7 +160,7 @@
 
   .short-instructions{
     font-size: 0.9em;
-    padding-left:25px;
+    padding-left:20px;
     padding-top:20px;
   }
 
