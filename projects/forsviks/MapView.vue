@@ -25,11 +25,11 @@
   const fetchMarkers = async (types = []) => {
     const params = new URLSearchParams();
     types.forEach(type => {
-      if (type === 'pointcloud'){
+      if (type === 'pointcloud') {
         //also add textured_model as media_type
         params.append("media_type", "textured_model");
       }
-        params.append("media_type", type);
+      params.append("media_type", type);
     });
 
     let url = `https://forsviksbruk.dh.gu.se/api/articles/?${params.toString()}`;
@@ -107,9 +107,9 @@
     <aside class="left-pane">
       <div class="left-pane-layer">
         <div class="left-pane-content">
-           
+
           <MapViewTitle />
-       
+
 
           <div class="title-actions">
             <router-link class="category-button about-button" to="/about">Om siten</router-link>
@@ -117,15 +117,22 @@
             <router-link class="category-button about-button" to="/guide">Språk</router-link>
           </div>
 
-          <div class="short-about">
-            <p>{{ config.about }}</p>
-          </div>
+           <div class="short-about">
+              <p>{{ config.about }}</p>
+            </div>
 
-          
+          <div class="instruction-container">
+
             <div class="filter-section">
               <FilterButtons :types="config.markerTypes" :selected-type="selectedType" @update:selectedType="filter" />
             </div>
-          
+            
+           <div class="short-instructions">
+              Aktivera allt material på kartan eller endast en viss typ med hjälp av valen till vänster. 
+            </div>
+
+          </div>
+
 
         </div>
       </div>
@@ -144,6 +151,20 @@
 </template>
 
 <style>
+  .instruction-container {
+    display: flex;
+    flex-direction: row;
+    align-items:self-start;
+    justify-content: flex-start;
+  }
+
+  .short-instructions{
+    font-size: 0.9em;
+    padding-left:25px;
+    padding-top:20px;
+  }
+
+
   .shadow-layer {
     width: calc(100vw + 40px);
     height: calc(100vh - 80px);
@@ -171,18 +192,17 @@
   }
 
   .left-pane-content {
-     display: flex !important;
+    display: flex !important;
     flex-direction: column !important;
-
     align-items: left;
   }
 
   .filter-section {
-    margin-top:20px;
+    margin-top: 10px;
     padding-left: 20px;
     width: auto;
-    display:flex;
-   flex-direction: row;
+    display: flex;
+    flex-direction: row;
 
   }
 

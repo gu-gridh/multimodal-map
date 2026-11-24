@@ -61,7 +61,7 @@
     gap: 6px;
     width: auto;
     margin-bottom: 8px;
-    font-size: 0.9em;
+    font-size: 1.0em;
     text-align: center;
     cursor: pointer;
     border-radius: 0px;
@@ -75,7 +75,7 @@
   }
 
   .filterBtn.selected {
-   
+   color:var(--theme-3);
     border-color:var(--theme-3);
   }
 
