@@ -14,11 +14,4 @@ export default {
     plan: { title: "Historisk plan", url: "https://dh.gu.se/tiles/forsvik_old/{z}/{x}/{y}.png", attribution: "" },
     drone: { title: "Nutida karta", url: "https://dh.gu.se/tiles/forsvik_modern/{z}/{x}/{y}.png", attribution: "© OpenStreetMap" },
   },
-/*   filters: [
-    { type: "image", label: "Bilder" },
-    { type: "panorama", label: "Panorama" },
-    { type: "pointcloud", label: "Punktmoln" },
-    { type: "textured_model", label: "Texturerad modell" },
-    { type: null, label: "Alla" }
-  ] */
 };

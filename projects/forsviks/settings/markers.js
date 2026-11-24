@@ -7,6 +7,6 @@ export const markerTypes = {
   all: { label: "Alla", value: null },
   image: { icon: red, label: "Bilder", value: "image" },
   panorama: { icon: gold, label: "Panorama", value: "panorama" },
-  pointcloud: { icon: white, label: "Punktmoln", value: "pointcloud" },
-  texturedmodel: { icon: blue, label: "Texturerad modell", value: "textured_model" },
+  pointcloud: { icon: white, label: "3D", value: "pointcloud" },
+  texturedmodel: { icon: white, label: "textured_model", value: "textured_model" },
 };
