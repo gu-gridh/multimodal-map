@@ -179,8 +179,10 @@
 
   .filter-section {
     margin-top:20px;
-    padding-left: 20px;
+    margin-left: 0px;
     width: auto;
+    display:flex;
+   flex-direction: row;
   }
 
   #version {

@@ -51,7 +51,8 @@
     justify-content: space-between;
     background-color:rgba(255,255,255,0.4);
     border-radius:8px;
-    padding:10px 0px 10px 10px;
+    padding:10px 0px 0px 10px;
+    width:100%;
   }
 
   .filterBtn {
@@ -60,12 +61,13 @@
     gap: 6px;
     width: auto;
     margin-bottom: 8px;
+    font-size: 0.9em;
     text-align: center;
     cursor: pointer;
     border: 0;
     border-radius: 4px;
     background-color: #f9f9f9;
-    padding: 5px 10px;
+    padding: 5px 10px 5px 6px;
     margin-right: 10px;
   }
 
@@ -80,5 +82,6 @@
     height: 18px;
     border-radius: 3px;
     flex-shrink: 0;
+     box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
   }
 </style>
