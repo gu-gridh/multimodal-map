@@ -72,6 +72,11 @@
      border-width:0px 0px 0px 4px;
      border-style:solid;
      border-color:transparent;
+     transition: all 0.1s ease-in-out;
+  }
+
+   .filterBtn:hover {
+    transform:scale(1.05);
   }
 
   .filterBtn.selected {
