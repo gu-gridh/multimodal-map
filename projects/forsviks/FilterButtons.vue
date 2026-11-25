@@ -5,7 +5,9 @@
           selected: marker.value === null ? selectedType.length === 0 : selectedType.includes(marker.value)
         }" 
         :aria-pressed="marker.value === null ? selectedType.length === 0 : selectedType.includes(marker.value)" @click="selectType(marker.value)">
-        <span v-if="marker.color" class="markerColor" :style="{ backgroundColor: marker.color}"></span>{{ marker.label }}
+        <!-- <span v-if="marker.color" class="markerColor" :style="{ backgroundColor: marker.color}"></span>{{ marker.label }} -->
+         <img v-if="marker.icon" :src="marker.icon" class="filter-icon">
+         <span>{{ marker.label }}</span>
       </button>
     </template>
   </div>
@@ -92,5 +94,12 @@
     border-radius: 3px;
     flex-shrink: 0;
     /*  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5); */
+  }
+
+  .filter-icon {
+    width: 20px;
+    height: 24px;
+    object-fit: contain;
+    flex-shrink: 0;
   }
 </style>
